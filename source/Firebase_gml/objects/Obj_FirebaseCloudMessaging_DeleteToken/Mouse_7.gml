@@ -1,0 +1,2 @@
+
+FirebaseCloudMessaging_DeleteToken()

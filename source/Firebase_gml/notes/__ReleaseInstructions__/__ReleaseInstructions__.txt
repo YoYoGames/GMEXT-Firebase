@@ -1,0 +1,76 @@
+
+######################## Firebase Analytics ########################
+
++ FirebaseSetup (extension)
++ Firebase Analytics (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Analytics_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
+
+######################## Firebase Crashlytics ########################
+
++ FirebaseSetup (extension)
++ Firebase Crashlytics (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Crashlytics_Documentation.pdf
+
+######################## Firebase Cloud Messaging ########################
+
++ FirebaseSetup (extension)
++ Firebase Cloud Messaging (folder)
++ Local Notifications (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Cloud_Messaging_Documentation.pdf
++ datafiles/Local Notifications Extension.pdf
+
+######################## Firebase Remote Config ########################
+
++ FirebaseSetup (extension)
++ Firebase Remote Config (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Remote_Config_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
+
+######################## Firebase Realtime Database ########################
+
++ FirebaseSetup (extension)
++ Firebase RealTime (folder)
++ YoYo Extensions Assets (folder)
++ FirebasePathsUserFunctions (script)
++ datafiles/Firebase_Realtime_Database_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
+
+######################## Firebase Firestore ########################
+
++ FirebaseSetup (extension)
++ Firebase Firestore (folder)
++ YoYo Extensions Assets (folder)
++ FirebasePathsUserFunctions (script)
++ datafiles/Firebase_Firestore_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
+
+######################## Firebase Cloud Storage ########################
+
++ FirebaseSetup (extension)
++ Firebase Storage (folder)
++ YoYo Extensions Assets (folder)
++ FirebasePathsUserFunctions (script)
++ datafiles/Firebase_Cloud_Storage_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
+
+######################## Firebase Cloud Functions ########################
+
++ Firebase Cloud Functions (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Cloud_Functions_Documentation.pdf
++ datafiles/CloudFunctions - Release.zip
+
+######################## Firebase Authentication ########################
+
++ FirebaseSetup (extension)
++ Firebase Authentication (folder)
++ Firebase Authentication Extra Logins (folder)
++ YoYo Extensions Assets (folder)
++ datafiles/Firebase_Authentication_Documentation.pdf
++ datafiles/Firebase Web Setup - Release.zip
++ datafiles/Firebase reCatcha Web - Release.zip

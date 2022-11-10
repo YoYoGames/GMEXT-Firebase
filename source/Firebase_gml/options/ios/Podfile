@@ -1,0 +1,18 @@
+# This podfile is provided as a template. It can be modified with your own inputs should you require, once it is within your project.
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '10.0'
+
+# ${project_name} macro will be expanded when your game is compiled.
+target '${YYProjectName}' do
+    # Comment the next line if you don't want to use dynamic frameworks
+    use_frameworks!
+  
+    # If this macro is present then GameMaker will install cocoapods specified by iOS and tvOS extenions 
+    ${YYExtensionProvidedCocoaPods}
+  
+  end
+  

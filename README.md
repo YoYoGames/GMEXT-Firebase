@@ -1,2 +1,2 @@
-# GMEXT-Firebase-1
+# GMEXT-Firebase
 Repository for GameMaker's Firebase Extension

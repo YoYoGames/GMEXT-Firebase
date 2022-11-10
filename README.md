@@ -60,6 +60,6 @@ BONUS:
 
 ## Documentation
 
-We provide both a PDF version of the documentation included with the extension and inside the demo project (datafiles).
+We provide a PDF version of the documentation included with the extension and inside the demo project (datafiles).
 
 ---

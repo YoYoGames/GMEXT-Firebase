@@ -57,7 +57,7 @@
     {"id":{"name":"Room_FirebaseFirestore_Query","path":"rooms/Room_FirebaseFirestore_Query/Room_FirebaseFirestore_Query.yy",},"order":1,},
     {"id":{"name":"Obj_FirebaseRealTime_Query_OrderByValue","path":"objects/Obj_FirebaseRealTime_Query_OrderByValue/Obj_FirebaseRealTime_Query_OrderByValue.yy",},"order":4,},
     {"id":{"name":"Obj_FirebaseAuthentication_AppleSignIn","path":"objects/Obj_FirebaseAuthentication_AppleSignIn/Obj_FirebaseAuthentication_AppleSignIn.yy",},"order":0,},
-    {"id":{"name":"GooglePlayServices","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},"order":5,},
+    {"id":{"name":"GooglePlayServices","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},"order":4,},
     {"id":{"name":"Obj_FirebaseCloudFunction_Echo","path":"objects/Obj_FirebaseCloudFunction_Echo/Obj_FirebaseCloudFunction_Echo.yy",},"order":0,},
     {"id":{"name":"Obj_FirebaseFirestore_Collection_Query_LessEqualThan","path":"objects/Obj_FirebaseFirestore_Collection_Query_LessEqualThan/Obj_FirebaseFirestore_Collection_Query_LessEqualThan.yy",},"order":7,},
     {"id":{"name":"Obj_YoYo_Button_toRoom","path":"objects/Obj_YoYo_Button_toRoom/Obj_YoYo_Button_toRoom.yy",},"order":3,},
@@ -198,7 +198,6 @@
     {"id":{"name":"Room_FirebaseRemoteConfig","path":"rooms/Room_FirebaseRemoteConfig/Room_FirebaseRemoteConfig.yy",},"order":0,},
     {"id":{"name":"Spr_FirebaseAuthentication_Google","path":"sprites/Spr_FirebaseAuthentication_Google/Spr_FirebaseAuthentication_Google.yy",},"order":1,},
     {"id":{"name":"Obj_FirebaseAuthentication_LinkWithEmailPassword","path":"objects/Obj_FirebaseAuthentication_LinkWithEmailPassword/Obj_FirebaseAuthentication_LinkWithEmailPassword.yy",},"order":12,},
-    {"id":{"name":"FacebookExtension2","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},"order":4,},
     {"id":{"name":"Obj_FirebaseAnalytics_SetUserProperty","path":"objects/Obj_FirebaseAnalytics_SetUserProperty/Obj_FirebaseAnalytics_SetUserProperty.yy",},"order":7,},
     {"id":{"name":"FirebaseREST_HTTP_Failed_Authentication","path":"scripts/FirebaseREST_HTTP_Failed_Authentication/FirebaseREST_HTTP_Failed_Authentication.yy",},"order":7,},
     {"id":{"name":"FirebaseREST_asyncCall_Authentication","path":"scripts/FirebaseREST_asyncCall_Authentication/FirebaseREST_asyncCall_Authentication.yy",},"order":5,},
@@ -231,6 +230,7 @@
     {"id":{"name":"Obj_FirebaseFirestore_Document_Read","path":"objects/Obj_FirebaseFirestore_Document_Read/Obj_FirebaseFirestore_Document_Read.yy",},"order":6,},
     {"id":{"name":"Obj_FirebaseAuthentication_ChangeEmail","path":"objects/Obj_FirebaseAuthentication_ChangeEmail/Obj_FirebaseAuthentication_ChangeEmail.yy",},"order":8,},
     {"id":{"name":"url_encode","path":"scripts/url_encode/url_encode.yy",},"order":0,},
+    {"id":{"name":"FacebookExtension2","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},"order":5,},
     {"id":{"name":"FirebaseREST_asyncFunction_Firestore","path":"scripts/FirebaseREST_asyncFunction_Firestore/FirebaseREST_asyncFunction_Firestore.yy",},"order":17,},
     {"id":{"name":"Obj_FirebaseCloudFunction_IdTokenDecoder","path":"objects/Obj_FirebaseCloudFunction_IdTokenDecoder/Obj_FirebaseCloudFunction_IdTokenDecoder.yy",},"order":1,},
     {"id":{"name":"Obj_FirebaseCrashlytics_SetCustomKey","path":"objects/Obj_FirebaseCrashlytics_SetCustomKey/Obj_FirebaseCrashlytics_SetCustomKey.yy",},"order":6,},
@@ -387,6 +387,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Performance_Monitoring_Documentation.pdf","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.9.1.51",
+    "IDEVersion": "2022.900.0.39",
   },
 }

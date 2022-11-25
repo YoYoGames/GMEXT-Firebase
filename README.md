@@ -56,6 +56,14 @@ BONUS:
   * ANDROID SOURCE: `source/Firebase_gml/extensions/YYLocalNotifications/AndroidSource/Java`
   * IOS SOURCE: `source/Firebase_gml/extensions/YYLocalNotifications/iOSSource`
 
+
+---
+
+## Important
+
+Do not download from the **main branch** this branch is a work in place branch and probably has features that might be broken or not working properly, please download from the releases panel (right side instead).
+
+
 ---
 
 ## Documentation

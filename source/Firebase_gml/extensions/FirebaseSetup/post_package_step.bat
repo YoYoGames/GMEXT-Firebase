@@ -1,11 +1,11 @@
 echo off
 
 if "%YYPLATFORM_name%" == "Android" (
-    rmdir /s /q "%YYprojectDir%\extensions\FirebaseSetup\AndroidSource\"
+    rmdir /s /q "%YYprojectDir%\extensions\FirebaseSetup\AndroidSource\ProjectFiles\"
 )
 
 if "%YYPLATFORM_name%" == "iOS" (
-    rmdir /s /q "%YYprojectDir%\extensions\FirebaseSetup\iOSProjectFiles\"
+    rmdir /s /q "%YYprojectDir%\extensions\FirebaseSetup\iOSProjectFiles\iOSProjectFiles\"
 )
 
 echo "############################## FIREBASE CONFIGURATION ##############################"

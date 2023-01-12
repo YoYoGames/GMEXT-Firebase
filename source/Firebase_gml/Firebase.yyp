@@ -385,8 +385,9 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Realtime_Database_Documentation.pdf","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Remote_Config_Documentation.pdf","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Performance_Monitoring_Documentation.pdf","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"_index.html","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.11.1.56",
+    "IDEVersion": "2022.11.0.54",
   },
 }

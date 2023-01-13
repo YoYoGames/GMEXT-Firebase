@@ -7,6 +7,10 @@ call :pathExtractDirectory "%~0" SCRIPT_PATH
 call :pathExtractBase "%~0" EXTENSION_NAME
 call :toUpper "%EXTENSION_NAME%" EXTENSION_NAME
 
+set RUNTIME_VERSION_STABLE="2022.9.0.0"
+set RUNTIME_VERSION_BETA="2022.900.0.0"
+set RUNTIME_VERSION_RED="9.1.1.0"
+
 :: ######################################################################################
 :: Script Functions
 
@@ -24,6 +28,9 @@ exit /b 0
 
 :: ######################################################################################
 :: Script Logic
+
+:: Version lock
+call :checkMinVersion %RUNTIME_VERSION_STABLE% %RUNTIME_VERSION_BETA% %RUNTIME_VERSION_RED% runtime
 
 call :logInformation "We are copying the Firebase configuration files into your project."
 call :setup%YYPLATFORM_name%

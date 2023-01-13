@@ -1,6 +1,42 @@
 #!/bin/bash
 
-#!/bin/bash
+# ######################################################################################
+# Macros
+
+macros() {
+    pathExtractDirectory "$0" SCRIPT_PATH
+    pathExtractBase "$0" EXTENSION_NAME
+    toUpper "$EXTENSION_NAME" EXTENSION_NAME
+
+    export SCRIPT_PATH
+    export EXTENSION_NAME
+}
+
+# ######################################################################################
+# Script Functions
+
+setupAndroid() {
+    # Resolve the credentials file path and copy it to the Android ProjectFiles folder
+    pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_jsonFile" FILE_PATH
+    mkdir -p "${FILE_PATH}/AndroidSource/ProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_jsonFile}" "${FILE_PATH}/AndroidSource/ProjectFiles/"
+}
+
+setupiOS() {
+    # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
+    pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_plistFile" FILE_PATH
+    mkdir -p "${FILE_PATH}/iOSProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_plistFile}" "${FILE_PATH}/iOSProjectFiles/"
+}
+
+# ######################################################################################
+# Script Logic
+
+main() {
+
+    logInformation "We are copying the Firebase configuration files into your project."
+
+    setup$YYPLATFORM_name
+
+}
 
 # ######################################################################################
 # Auxiliar Functions
@@ -11,24 +47,13 @@ toUpper() { # str result
 }
 
 # Extracts the full folder path from a filepath
-pathExtract() { # fullpath result
-    export $2="$(dirname "${$1}")"
+pathExtractDirectory() { # fullpath result
+    export $2="$(dirname "$1")"
 }
 
 # Extracts the parent folder from a path
-pathExtractParent() { # fullpath result
-    # https://www.linuxquestions.org/questions/linux-newbie-8/bash-getting-parent-folder-name-4175662474/
-}
-
-# Checks minimum product version for the 3 available builds (handles errors)
-checkMinVersion() { # current stable beta develop identifier
-    compareVersions "$1" "$3" result
-    [[ "$result" -ge "0" ]] && return
-    compareVersions "$1" "$2" result
-    [[ "$result" -ge "0" ]] && return
-    compareVersions "$1" "$4" result
-    [[ "$result" -ge "0" ]] && return
-    errorMinVersion "$1" "STABLE v$2 or BETA v$3" "$5"
+pathExtractBase() { # fullpath result
+    export $2="$(basename $(dirname "$1"))"
 }
 
 # Resolves a relative path if required
@@ -50,10 +75,9 @@ pathResolveExisting() { # basePath relativePath result
     pushd "$1" >/dev/null
     [[ ! -d "$2" ]] && errorPathInexistant "$2"
     popd >/dev/null
-
-    local loc_test
     pathResolve "$1" "$2" loc_test
     export $3=$loc_test
+    unsetVars loc_test
 }
 
 # Copies file to provided location (handles errors)
@@ -81,15 +105,14 @@ fileGetHash() { # pathToBinary
 
 # Asserts a file hash
 assertFileHash() { # pathToBinary hash name
-    local loc_name=$(basename -- "$1")
-    [[ $# == 3 ]] && loc_name="$3"
-    local loc_output
+    setWithDefault loc_identifier $(basename -- "$1") $3
     fileGetHash "$1" loc_output
     shopt -s nocasematch
     case "$loc_output" in
     $2 ) return;;
-    *) echo errorHashMismatch "$loc_name";;
+    *) echo errorHashMismatch "$loc_identifier";;
     esac
+    unsetVars loc_identifier loc_output
 }
 
 # Compares two version numbers and saves result into variable
@@ -125,22 +148,31 @@ compareVersions() { # version1 version2 result
     export $3=0 %% return 0
 }
 
+# Checks minimum product version for the 3 available builds (handles errors)
+checkMinVersion() { # current stable beta develop identifier
+    compareVersions "$1" "$3" result
+    [[ "$result" -ge "0" ]] && return
+    compareVersions "$1" "$2" result
+    [[ "$result" -ge "0" ]] && return
+    compareVersions "$1" "$4" result
+    [[ "$result" -ge "0" ]] && return
+    errorMinVersion "$1" "STABLE v$2 or BETA v$3" "$5"
+}
+
 # Asserts an exact version number
 assertExactVersion() { # version reqVersion name
-    local loc_name="file"
-    [[ $# == 3 ]] && loc_name=$3
-    local loc_output
+    setWithDefault loc_identifier "file" $3
     compareVersion "$1" "$2" loc_output
-    [[ $loc_output != 0 ]] && errorExactVersion "$1" "$2" "$loc_name"
+    [[ $loc_output != 0 ]] && errorExactVersion "$1" "$2" "$loc_identifier"
+    unsetVars loc_identifier loc_output
 }
 
 # Asserts a minimum version number
 assertMinVersion() { # version minVersion name
-    local loc_name="file"
-    [[ $# == 3 ]] && loc_name=$3
-    local loc_output
+    setWithDefault loc_identifier "file" $3
     compareVersion "$1" "$2" loc_output
-    [[ $loc_output == -1 ]] && errorMinVersion "$1" "$2" "$loc_name"
+    [[ $loc_output == -1 ]] && errorMinVersion "$1" "$2" "$loc_identifier"
+    unsetVars loc_identifier loc_output
 }
 
 # Sets a variable to a given value with default
@@ -150,7 +182,7 @@ setWithDefault() { # variable optional value
 }
 
 # Unsets a collection of variables
-unset() { # variables
+unsetVars() { # variables
     for var in "$@" do; unset $var; done
 }
 
@@ -179,96 +211,46 @@ log() { # tag message
 # Error Messages
 
 errorExactVersion() { # version reqVersion name
-    echo "########################################## ERROR ##########################################"
-    echo "# Invalid '$3' version, requires '$2' (got '$1')"
-    echo "###########################################################################################"
+    logError "Invalid '$3' version, requires '$2' (got '$1')"
     exit 1
 }
 
 errorMinVersion() { # version minVersion name
-    echo "########################################## ERROR ##########################################"
-    echo "# Invalid '$3' version, requires at least '$2' (got '$1')"
-    echo "###########################################################################################"
+    logError "Invalid '$3' version, requires at least '$2' (got '$1')"
     exit 1
 }
 
 errorHashMismatch() { # identifier
-    echo "########################################## ERROR ##########################################"
-    echo "# Invalid '$1' version, sha256 hash mismatch. Please check documentation."
-    echo "###########################################################################################"
+    logError "Invalid '$1' version, sha256 hash mismatch. Please check documentation."
     exit 1
 }
 
 errorPathInexistant() { # fullpath
-    echo "########################################## ERROR ##########################################"
-    echo "# Invalid path '$1' does not exist."
-    echo "###########################################################################################"
+    logError "Invalid path '$1' does not exist."
     exit 1
 }
 
 errorFileExtract() { # filepath identifier
-    local loc_name="file"
-    [[ $# == 2 ]] && loc_name=$2
-    echo "########################################## ERROR ##########################################"
-    echo "# Failed to expand $loc_name '$1' (please file a bug on this issue)."
-    echo "###########################################################################################"
+    setWithDefault loc_identifier "file" $2
+    logError "Failed to expand $loc_identifier '$1' (please file a bug on this issue)."
     exit 1
 }
 
 errorFolderCompress() { # folderpath identifier
-    local loc_name="folder"
-    [[ $# == 2 ]] && loc_name=$2
-    echo "########################################## ERROR ##########################################"
-    echo "# Failed to compress $loc_name '$1' (please file a bug on this issue)."
-    echo "###########################################################################################"
+    setWithDefault loc_identifier "folder" $2
+    logError "Failed to compress $loc_identifier '$1' (please file a bug on this issue)."
     exit 1
 }
 
 errorDirectoryDelete() { # fullpath
-    echo "########################################## ERROR ##########################################"
-    echo "# Failed to delete folder '$1' (please file a bug on this issue)."
-    echo "###########################################################################################"
+    logError "Failed to delete folder '$1' (please file a bug on this issue)."
     exit 1
 }
 
 errorFileCopy() { # source destination
-    echo "########################################## ERROR ##########################################"
-    echo "# Failed to copy file '$1' to '$2' (please file a bug on this issue)."
-    echo "###########################################################################################"
+    logError "Failed to copy file '$1' to '$2' (please file a bug on this issue)."
     exit 1
 }
 
-# ######################################################################################
-# Script Functions
-
-# ######################################################################################
-# Script Logic
-
-echo "####################### FIREBASE CONFIGURATION #######################"
-echo "We are currently configuring the firebase using your private key files"
-echo "######################################################################"
-
-if [[ "${YYPLATFORM_name}" == "Android" ]]; then
-
-    if [[ ! -f "${YYEXTOPT_FirebaseSetup_jsonFile}" ]]; then
-        echo "########################## FIREBASE CONFIGURATION (ERROR) ##########################"
-        echo "The path to google-services.json file was not configured correctly."
-        echo "####################################################################################"
-        exit 1
-    fi
-
-    mkdir -p "${YYprojectDir}/extensions/FirebaseSetup/AndroidSource/ProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_jsonFile}" "${YYprojectDir}/extensions/FirebaseSetup/AndroidSource/ProjectFiles/"
-
-elif [[ "${YYPLATFORM_name}" == "iOS" ]]; then
-
-    if [[ ! -f "${YYEXTOPT_FirebaseSetup_plistFile}" ]]; then
-        echo "########################## FIREBASE CONFIGURATION (ERROR) ##########################"
-	    echo "The path to GoogleServices-Info.plist file was not configured correctly."
-        echo "####################################################################################"
-        exit 1
-    fi
-
-    mkdir -p "${YYprojectDir}/extensions/FirebaseSetup/iOSProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_plistFile}" "${YYprojectDir}/extensions/FirebaseSetup/iOSProjectFiles/"
-fi
-
-exit 0
+# Call the macros and main methods
+macros "$@"; main "$@"; exit

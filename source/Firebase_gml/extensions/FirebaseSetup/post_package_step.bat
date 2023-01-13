@@ -1,5 +1,24 @@
 @echo off
-goto :macros
+
+:: ######################################################################################
+:: Macros
+
+call :pathExtractDirectory "%~0" SCRIPT_PATH
+call :pathExtractBase "%~0" EXTENSION_NAME
+call :toUpper "%EXTENSION_NAME%" EXTENSION_NAME
+
+:: ######################################################################################
+:: Script Functions
+
+:: ######################################################################################
+:: Script Logic
+
+call :logInformation "We are cleaning the configuration files from your project."
+
+if exist "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" )
+if exist "%SCRIPT_PATH%\iOSProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\iOSProjectFiles\" )
+
+exit 0
 
 :: ######################################################################################
 :: Auxiliar Functions
@@ -10,24 +29,13 @@ goto :macros
 exit /b 0
 
 :: Extracts the full folder path from a filepath
-:pathExtract fullpath result
+:pathExtractDirectory fullpath result
     set "%~2=%~dp1"
 exit /b 0
 
 :: Extracts the parent folder path from a filepath
-:pathExtractParent fullpath result
+:pathExtractBase fullpath result
     for %%I in ("%~dp1\.") do set "%2=%%~nI%%~xI"
-exit /b 0
-
-:: Checks minimum product version for the 3 available builds (handles errors)
-:checkMinVersion current stable beta develop identifier
-    call :compareVersions "%~1" "%~3" loc_result
-    if %loc_result% geq 0 exit /b 0
-    call :compareVersions "%~1" "%~2" loc_result
-    if %loc_result% geq 0 exit /b 0
-    call :compareVersions "%~1" "%~4" loc_result
-    if %loc_result% geq 0 exit /b 0
-    call :errorMinVersion "%~1" "STABLE v%~2 or BETA v%~3" "%~5"
 exit /b 0
 
 :: Resolves a relative path if required
@@ -81,6 +89,17 @@ exit /b 0
     for /f "tokens=* usebackq" %%F in (`powershell -NoLogo -NoProfile -Command ^([System.Version]'%~1'^).compareTo^([System.Version]'%~2'^)`) do ( set "%~3=%%F" )
 exit /b 0
 
+:: Checks minimum product version for the 3 available builds (handles errors)
+:checkMinVersion current stable beta develop identifier
+    call :compareVersions "%~1" "%~3" loc_result
+    if %loc_result% geq 0 exit /b 0
+    call :compareVersions "%~1" "%~2" loc_result
+    if %loc_result% geq 0 exit /b 0
+    call :compareVersions "%~1" "%~4" loc_result
+    if %loc_result% geq 0 exit /b 0
+    call :errorMinVersion "%~1" "STABLE v%~2 or BETA v%~3" "%~5"
+exit /b 0
+
 :: Asserts an exact version number
 :assertExactVersion version reqVersion identifier
     set loc_identifier=file
@@ -107,7 +126,7 @@ exit /b 0
     if "%~3" neq "" ( set "%~1=%~3" )
 exit /b 0
 
-:unset variables
+:unsetVars variables
     for %%x in (%*) do ( set "%%~x=" )
 exit /b 0
 
@@ -150,14 +169,14 @@ exit 1
     call :pathResolve "%~1" loc_fullpath
     call :setWithDefault loc_identifier "file" "%~2"
     call :logError "Failed to expand %loc_identifier% '%loc_fullpath%' (please file a bug on this issue)."
-    call :unset loc_fullpath loc_identifier
+    call :unsetVars loc_fullpath loc_identifier
 exit 1
 
 :errorFolderCompress folderpath identifier
     call :pathResolve "%~1" loc_fullpath
     call :setWithDefault loc_identifier "folder" "%~2"
     call :logError "Failed to compress %loc_identifier% '%loc_fullpath%' (please file a bug on this issue)."
-    call :unset loc_fullpath loc_identifier
+    call :unsetVars loc_fullpath loc_identifier
 exit 1
 
 :errorDirectoryDelete fullpath
@@ -168,30 +187,4 @@ exit 1
 :errorFileCopy source destination
     call :logError "Failed to copy file '%~1' to '%~2' (please file a bug on this issue)."
 exit 1
-
-
-:macros
-:: ######################################################################################
-:: Macros
-
-call :pathExtract "%~0" SCRIPT_PATH
-call :pathExtractParent "%~0" EXTENSION_NAME
-call :toUpper %EXTENSION_NAME% EXTENSION_NAME
-goto :start
-
-
-:: ######################################################################################
-:: Script Functions
-
-
-:start
-:: ######################################################################################
-:: Script Logic
-
-call :logInformation "Cleaning the configuration files from your project."
-
-if exist "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" )
-if exist "%SCRIPT_PATH%\iOSProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\iOSProjectFiles\" )
-
-exit 0
 

@@ -52,7 +52,7 @@ exit /b 0
 
 :: Extracts the parent folder path from a filepath
 :pathExtractBase fullpath result
-    for %%I in ("%~dp1\.") do set "%2=%%~nI%%~xI"
+    for %%I in ("%~dp1\.") do set "%~2=%%~nI%%~xI"
 exit /b 0
 
 :: Resolves a relative path if required

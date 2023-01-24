@@ -211,6 +211,7 @@
     {"id":{"name":"Obj_FirebaseAnalytics_SetUserId","path":"objects/Obj_FirebaseAnalytics_SetUserId/Obj_FirebaseAnalytics_SetUserId.yy",},"order":6,},
     {"id":{"name":"Spr_FirebaseStorage_img","path":"sprites/Spr_FirebaseStorage_img/Spr_FirebaseStorage_img.yy",},"order":0,},
     {"id":{"name":"Obj_FirebaseRealTime_Read_String","path":"objects/Obj_FirebaseRealTime_Read_String/Obj_FirebaseRealTime_Read_String.yy",},"order":5,},
+    {"id":{"name":"changelog","path":"notes/changelog/changelog.yy",},"order":0,},
     {"id":{"name":"Room_FirebaseAnalytics","path":"rooms/Room_FirebaseAnalytics/Room_FirebaseAnalytics.yy",},"order":2,},
     {"id":{"name":"Obj_FirebaseAuthetication_StartLogIn","path":"objects/Obj_FirebaseAuthetication_StartLogIn/Obj_FirebaseAuthetication_StartLogIn.yy",},"order":0,},
     {"id":{"name":"FirebaseREST_Firestore_getURL","path":"scripts/FirebaseREST_Firestore_getURL/FirebaseREST_Firestore_getURL.yy",},"order":6,},

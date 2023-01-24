@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "YYLocalNotifications",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -16,29 +19,24 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"filename":"LocalNotifications.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
-        {"externalName":"LocalPushNotification_Create","kind":4,"help":"LocalPushNotification_Create(ID,seconds,title,message,data)","hidden":false,"returnType":1,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"LocalNotifications.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"LocalPushNotification_Create","externalName":"LocalPushNotification_Create","kind":4,"help":"LocalPushNotification_Create(ID,seconds,title,message,data)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
             1,
             1,
             1,
-          ],"resourceVersion":"1.0","name":"LocalPushNotification_Create","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"LocalPushNotification_Cancel","kind":4,"help":"LocalPushNotification_Cancel(ID)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"LocalPushNotification_Cancel","externalName":"LocalPushNotification_Cancel","kind":4,"help":"LocalPushNotification_Cancel(ID)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"LocalPushNotification_Cancel","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"LocalPushNotification_iOS_Permission_Request","kind":4,"help":"LocalPushNotification_iOS_Permission_Request()","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Request","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"LocalPushNotification_iOS_Permission_Status","kind":4,"help":"LocalPushNotification_iOS_Permission_Status()","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Request","externalName":"LocalPushNotification_iOS_Permission_Request","kind":4,"help":"LocalPushNotification_iOS_Permission_Request()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status","externalName":"LocalPushNotification_iOS_Permission_Status","kind":4,"help":"LocalPushNotification_iOS_Permission_Status()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
       ],"constants":[
-        {"value":"\"Authorized\"","hidden":false,"resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_Authorized","tags":[],"resourceType":"GMExtensionConstant",},
-        {"value":"\"Denied\"","hidden":false,"resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_Denied","tags":[],"resourceType":"GMExtensionConstant",},
-        {"value":"\"NotDetermined\"","hidden":false,"resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_NotDetermined","tags":[],"resourceType":"GMExtensionConstant",},
-      ],"ProxyFiles":[],"copyToTargets":-1,"order":[
-        {"name":"YYLocalNotifications","path":"extensions/YYLocalNotifications/YYLocalNotifications.yy",},
-        {"name":"YYLocalNotifications","path":"extensions/YYLocalNotifications/YYLocalNotifications.yy",},
-        {"name":"YYLocalNotifications","path":"extensions/YYLocalNotifications/YYLocalNotifications.yy",},
-        {"name":"YYLocalNotifications","path":"extensions/YYLocalNotifications/YYLocalNotifications.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_Authorized","value":"\"Authorized\"","hidden":false,},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_Denied","value":"\"Denied\"","hidden":false,},
+        {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_NotDetermined","value":"\"NotDetermined\"","hidden":false,},
+      ],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
   "classname": "LocalNotifications",
   "tvosclassname": "LocalNotifications",
@@ -63,7 +61,7 @@
   "ioscodeinjection": "\r\n<YYIosEntitlements>\r\n<key>aps-environment</key>\r\n<string>development</string>\r\n</YYIosEntitlements>\r\n",
   "tvoscodeinjection": "<YYTvosPlist>\r\n\r\n</YYTvosPlist>\r\n\r\n",
   "iosSystemFrameworkEntries": [
-    {"weakReference":false,"embed":0,"resourceVersion":"1.0","name":"UserNotifications.framework","tags":[],"resourceType":"GMExtensionFrameworkEntry",},
+    {"resourceType":"GMExtensionFrameworkEntry","resourceVersion":"1.0","name":"UserNotifications.framework","weakReference":false,"embed":0,},
   ],
   "tvosSystemFrameworkEntries": [],
   "iosThirdPartyFrameworkEntries": [],
@@ -82,8 +80,4 @@
     "name": "Extensions",
     "path": "folders/Local Notifications/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "YYLocalNotifications",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

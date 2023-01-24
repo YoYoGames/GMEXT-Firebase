@@ -20,20 +20,20 @@
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libAppleSignInMacLib.dylib","origname":"","init":"Mac_AppleSignIn_Init","final":"Mac_AppleSignIn_Final","kind":1,"uncompress":false,"functions":[
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_Init","externalName":"Mac_AppleSignIn_Init","kind":1,"help":"Mac_AppleSignIn_Init()","hidden":false,"returnType":2,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_AuthoriseUser","externalName":"Mac_AppleSignIn_AuthoriseUser","kind":1,"help":"Mac_AppleSignIn_AuthoriseUser()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_Init","externalName":"Mac_AppleSignIn_Init","kind":1,"help":"Mac_AppleSignIn_Init()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_AuthoriseUser","externalName":"Mac_AppleSignIn_AuthoriseUser","kind":1,"help":"Mac_AppleSignIn_AuthoriseUser()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_AddScope","externalName":"Mac_AppleSignIn_AddScope","kind":1,"help":"Mac_AppleSignIn_AddScope(scope)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_ClearScopes","externalName":"Mac_AppleSignIn_ClearScopes","kind":1,"help":"Mac_AppleSignIn_ClearScopes()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_ClearScopes","externalName":"Mac_AppleSignIn_ClearScopes","kind":1,"help":"Mac_AppleSignIn_ClearScopes()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_GetCredentialState","externalName":"Mac_AppleSignIn_GetCredentialState","kind":1,"help":"Mac_AppleSignIn_GetCredentialState(identitiy_token)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"RegisterCallbacks","externalName":"RegisterCallbacks","kind":1,"help":"Glue function, not required to be called.","hidden":false,"returnType":2,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_Final","externalName":"Mac_AppleSignIn_Final","kind":1,"help":"Mac_AppleSignIn_Final()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"RegisterCallbacks","externalName":"RegisterCallbacks","kind":1,"help":"Glue function, not required to be called.","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_Final","externalName":"Mac_AppleSignIn_Final","kind":1,"help":"Mac_AppleSignIn_Final()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"Mac_AppleSignIn_RegisterWindow","externalName":"RegisterWindow","kind":1,"help":"Mac_AppleSignIn_RegisterWindow(window_handle())","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
       ],"constants":[
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"mac_applesignin_scope_fullname","value":"\"fullname\"","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"mac_applesignin_scope_email","value":"\"email\"","hidden":false,},
@@ -45,7 +45,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"mac_applesignin_realuserstatus_likelyreal","value":"5102","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"mac_applesignin_realuserstatus_unknown","value":"5101","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"mac_applesignin_realuserstatus_unsupported","value":"5100","hidden":false,},
-      ],"ProxyFiles":[],"copyToTargets":2,"order":[
+      ],"ProxyFiles":[],"copyToTargets":2,"usesRunnerInterface":false,"order":[
         {"name":"Mac_AppleSignIn_Init","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},
         {"name":"Mac_AppleSignIn_Final","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},
         {"name":"Mac_AppleSignIn_AuthoriseUser","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},

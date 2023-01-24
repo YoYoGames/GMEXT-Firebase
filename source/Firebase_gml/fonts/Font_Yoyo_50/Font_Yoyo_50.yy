@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "Font_YoYo_50",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -21,6 +24,7 @@
     "path": "texturegroups/Default",
   },
   "ascenderOffset": 0,
+  "ascender": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":19,"h":77,"character":32,"shift":19,"offset":0,},
     "33": {"x":151,"y":160,"w":9,"h":77,"character":33,"shift":19,"offset":5,},
@@ -252,8 +256,4 @@
     "name": "Font",
     "path": "folders/YoYo Extensions Assets/Font.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Font_YoYo_50",
-  "tags": [],
-  "resourceType": "GMFont",
 }

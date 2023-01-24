@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "YYFirebaseAuthentication_tools",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
@@ -16,22 +19,22 @@
   "androidProps": true,
   "installdir": "",
   "files": [
-    {"filename":"FirebaseAuthentication_tools.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[
-        {"externalName":"FirebaseAuthentication_Tools_UrlOpen","kind":5,"help":"FirebaseAuthentication_Tools_UrlOpen(url)","hidden":false,"returnType":1,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication_tools.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_UrlOpen","externalName":"FirebaseAuthentication_Tools_UrlOpen","kind":5,"help":"FirebaseAuthentication_Tools_UrlOpen(url)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_UrlOpen","tags":[],"resourceType":"GMExtensionFunction",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+          ],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[
         {"name":"FirebaseAuthentication_Tools_UrlOpen","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
-    {"filename":"FirebaseAuthentication_tools.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
-        {"externalName":"FirebaseAuthentication_Tools_WebView_Create","kind":4,"help":"FirebaseAuthentication_Tools_WebView_Create(url)","hidden":false,"returnType":1,"argCount":0,"args":[
+      ],},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication_tools.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_WebView_Create","externalName":"FirebaseAuthentication_Tools_WebView_Create","kind":4,"help":"FirebaseAuthentication_Tools_WebView_Create(url)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],"resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_WebView_Create","tags":[],"resourceType":"GMExtensionFunction",},
-        {"externalName":"FirebaseAuthentication_Tools_WebView_Delete","kind":4,"help":"FirebaseAuthentication_Tools_WebView_Delete()","hidden":false,"returnType":1,"argCount":0,"args":[],"resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_WebView_Delete","tags":[],"resourceType":"GMExtensionFunction",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseAuthentication_Tools_WebView_Delete","externalName":"FirebaseAuthentication_Tools_WebView_Delete","kind":4,"help":"FirebaseAuthentication_Tools_WebView_Delete()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[
         {"name":"FirebaseAuthentication_Tools_WebView_Create","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},
         {"name":"FirebaseAuthentication_Tools_WebView_Delete","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},
-      ],"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMExtensionFile",},
+      ],},
   ],
   "classname": "FirebaseAuthentication_tools",
   "tvosclassname": null,
@@ -70,8 +73,4 @@
     "name": "Extensions",
     "path": "folders/Firebase Authentication/Extensions.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "YYFirebaseAuthentication_tools",
-  "tags": [],
-  "resourceType": "GMExtension",
 }

@@ -1,10 +1,14 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "Obj_FirebaseRealTime_Remove_Node",
   "spriteId": {
     "name": "Spr_YoYo_button",
     "path": "sprites/Spr_YoYo_button/Spr_YoYo_button.yy",
   },
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -24,7 +28,7 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"isDnD":false,"eventNum":7,"eventType":6,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":7,"eventType":6,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
@@ -32,8 +36,4 @@
     "name": "CRUD",
     "path": "folders/Firebase RealTime/Testing/CRUD.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "Obj_FirebaseRealTime_Remove_Node",
-  "tags": [],
-  "resourceType": "GMObject",
 }

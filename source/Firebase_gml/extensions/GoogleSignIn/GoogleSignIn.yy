@@ -22,15 +22,15 @@
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"GoogleSignIn.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GoogleSignIn_Show","externalName":"GoogleSignIn_Show","kind":4,"help":"GoogleSignIn_Show(token)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+          ],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[
         {"name":"GoogleSignIn_Show","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
       ],},
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"GoogleSignIn.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GoogleSignIn_Show_","externalName":"GoogleSignIn_Show_","kind":5,"help":"GoogleSignIn_Show_(token)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+          ],"documentation":"",},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[
         {"name":"GoogleSignIn_Show_","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
       ],},
   ],

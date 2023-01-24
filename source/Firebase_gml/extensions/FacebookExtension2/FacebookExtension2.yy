@@ -27,36 +27,36 @@
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_login","externalName":"fb_login","kind":4,"help":"fb_login(permissions_list, login_type)","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
             2,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_logout","externalName":"fb_logout","kind":4,"help":"fb_logout()","hidden":false,"returnType":2,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_status","externalName":"fb_status","kind":4,"help":"fb_status()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_logout","externalName":"fb_logout","kind":4,"help":"fb_logout()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_status","externalName":"fb_status","kind":4,"help":"fb_status()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_graph_request","externalName":"fb_graph_request","kind":4,"help":"fb_graph_request( graph_path, httpMethod, ds_map_params )","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
             1,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_dialog","externalName":"fb_dialog","kind":4,"help":"fb_dialog(link_url)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_request_read_permissions","externalName":"fb_request_read_permissions","kind":4,"help":"fb_request_read_permissions( permissions_list )","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_check_permission","externalName":"fb_check_permission","kind":4,"help":"fb_check_permission( permission )","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_accesstoken","externalName":"fb_accesstoken","kind":4,"help":"fb_accesstoken()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_accesstoken","externalName":"fb_accesstoken","kind":4,"help":"fb_accesstoken()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_request_publish_permissions","externalName":"fb_request_publish_permissions","kind":4,"help":"fb_request_publish_permissions( permissions_list )","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_user_id","externalName":"fb_user_id","kind":4,"help":"fb_user_id()","hidden":false,"returnType":1,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_ready","externalName":"fb_ready","kind":4,"help":"fb_ready()","hidden":false,"returnType":2,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_init","externalName":"fb_init","kind":4,"help":"","hidden":true,"returnType":2,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_refresh_accesstoken","externalName":"fb_refresh_accesstoken","kind":4,"help":"fb_refresh_accesstoken()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_user_id","externalName":"fb_user_id","kind":4,"help":"fb_user_id()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_ready","externalName":"fb_ready","kind":4,"help":"fb_ready()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_init","externalName":"fb_init","kind":4,"help":"","hidden":true,"returnType":2,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_refresh_accesstoken","externalName":"fb_refresh_accesstoken","kind":4,"help":"fb_refresh_accesstoken()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"fb_send_event","externalName":"fb_send_event","kind":4,"help":"fb_send_event( event_id, event_value_float, event_value_object )","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
             2,
             2,
-          ],},
+          ],"documentation":"",},
       ],"constants":[
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"FacebookExtension2_EVENT_ACHIEVED_LEVEL","value":"101","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"FacebookExtension2_EVENT_ADDED_PAYMENT_INFO","value":"102","hidden":false,},
@@ -87,7 +87,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"FacebookExtension2_LOGIN_TYPE_WEB_VIEW","value":"10004","hidden":false,},
       ],"ProxyFiles":[
         {"resourceType":"GMProxyFile","resourceVersion":"1.0","name":"FacebookExtJS.js","TargetMask":5,},
-      ],"copyToTargets":44,"order":[
+      ],"copyToTargets":44,"usesRunnerInterface":false,"order":[
         {"name":"fb_accesstoken","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
         {"name":"fb_check_permission","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
         {"name":"fb_dialog","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},

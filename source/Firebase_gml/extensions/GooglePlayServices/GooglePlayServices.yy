@@ -22,93 +22,93 @@
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"GooglePlayService.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_Show","externalName":"GooglePlayServices_Achievements_Show","kind":4,"help":"GooglePlayServices_Achievements_Show()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_Show","externalName":"GooglePlayServices_Achievements_Show","kind":4,"help":"GooglePlayServices_Achievements_Show()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_Increment","externalName":"GooglePlayServices_Achievements_Increment","kind":4,"help":"GooglePlayServices_Achievements_Increment(arch_id,steps)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_Reveal","externalName":"GooglePlayServices_Achievements_Reveal","kind":4,"help":"GooglePlayServices_Achievements_Reveal(id)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_SetSteps","externalName":"GooglePlayServices_Achievements_SetSteps","kind":4,"help":"GooglePlayServices_Achievements_SetSteps(id,steps)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_Unlock","externalName":"GooglePlayServices_Achievements_Unlock","kind":4,"help":"GooglePlayServices_Achievements_Unlock(id)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_ShowAll","externalName":"GooglePlayServices_Leaderboard_ShowAll","kind":4,"help":"GooglePlayServices_Leaderboard_ShowAll()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_ShowAll","externalName":"GooglePlayServices_Leaderboard_ShowAll","kind":4,"help":"GooglePlayServices_Leaderboard_ShowAll()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_Show","externalName":"GooglePlayServices_Leaderboard_Show","kind":4,"help":"GooglePlayServices_Leaderboard_Show(id)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_SubmitScore","externalName":"GooglePlayServices_Leaderboard_SubmitScore","kind":4,"help":"GooglePlayServices_Leaderboard_SubmitScore(leader_id,score,scoreTag)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_ShowSavedGamesUI","externalName":"GooglePlayServices_SavedGames_ShowSavedGamesUI","kind":4,"help":"GooglePlayServices_SavedGames_ShowSavedGamesUI(tittle,buttonAdd,buttonDelete,max)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
             2,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_CommitAndClose","externalName":"GooglePlayServices_SavedGames_CommitAndClose","kind":4,"help":"GooglePlayServices_SavedGames_CommitAndClose(name,descripction,data,pathImage)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_Load","externalName":"GooglePlayServices_SavedGames_Load","kind":4,"help":"GooglePlayServices_SavedGames_Load(forced)","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_Delete","externalName":"GooglePlayServices_SavedGames_Delete","kind":4,"help":"GooglePlayServices_SavedGames_Delete(name)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_DiscardAndClose","externalName":"GooglePlayServices_SavedGames_DiscardAndClose","kind":4,"help":"GooglePlayServices_SavedGames_DiscardAndClose(fileName)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_Open","externalName":"GooglePlayServices_SavedGames_Open","kind":4,"help":"GooglePlayServices_SavedGames_Open(fileName)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_ResolveConflict","externalName":"GooglePlayServices_SavedGames_ResolveConflict","kind":4,"help":"GooglePlayServices_SavedGames_ResolveConflict()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_ResolveConflict","externalName":"GooglePlayServices_SavedGames_ResolveConflict","kind":4,"help":"GooglePlayServices_SavedGames_ResolveConflict()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SavedGames_CommitNew","externalName":"GooglePlayServices_SavedGames_CommitNew","kind":4,"help":"GooglePlayServices_SavedGames_CommitNew(name,description,data,pathImage)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Player_Current","externalName":"GooglePlayServices_Player_Current","kind":4,"help":"GooglePlayServices_Player_Current()","hidden":false,"returnType":1,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Player_CurrentID","externalName":"GooglePlayServices_Player_CurrentID","kind":4,"help":"GooglePlayServices_Player_CurrentID()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Player_Current","externalName":"GooglePlayServices_Player_Current","kind":4,"help":"GooglePlayServices_Player_Current()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Player_CurrentID","externalName":"GooglePlayServices_Player_CurrentID","kind":4,"help":"GooglePlayServices_Player_CurrentID()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_UriToPath","externalName":"GooglePlayServices_UriToPath","kind":4,"help":"GooglePlayServices_UriToPath(uri)","hidden":false,"returnType":2,"argCount":0,"args":[
             1,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_IsAvailable","externalName":"GooglePlayServices_IsAvailable","kind":4,"help":"GooglePlayServices_IsAvailable()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_IsAvailable","externalName":"GooglePlayServices_IsAvailable","kind":4,"help":"GooglePlayServices_IsAvailable()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Achievements_GetStatus","externalName":"GooglePlayServices_Achievements_GetStatus","kind":4,"help":"GooglePlayServices_Achievements_GetStatus(force_reload)","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_LoadPlayerCenteredScores","externalName":"GooglePlayServices_Leaderboard_LoadPlayerCenteredScores","kind":4,"help":"GooglePlayServices_Leaderboard_LoadPlayerCenteredScores(leaderboardId, span, leaderboardCollection, maxResults, forceReload)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
             2,
             2,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_Leaderboard_LoadTopScores","externalName":"GooglePlayServices_Leaderboard_LoadTopScores","kind":4,"help":"GooglePlayServices_Leaderboard_LoadTopScores(leaderboardId, span, leaderboardCollection, maxResults, forceReload)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
             2,
             2,
             2,
-          ],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SignIn","externalName":"GooglePlayServices_SignIn","kind":4,"help":"GooglePlayServices_SignIn()","hidden":false,"returnType":1,"argCount":0,"args":[],},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_isAuthenticated","externalName":"GooglePlayServices_isAuthenticated","kind":4,"help":"GooglePlayServices_isAuthenticated()","hidden":false,"returnType":1,"argCount":0,"args":[],},
+          ],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_SignIn","externalName":"GooglePlayServices_SignIn","kind":4,"help":"GooglePlayServices_SignIn()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_isAuthenticated","externalName":"GooglePlayServices_isAuthenticated","kind":4,"help":"GooglePlayServices_isAuthenticated()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_RequestServerSideAccess","externalName":"GooglePlayServices_RequestServerSideAccess","kind":4,"help":"GooglePlayServices_RequestServerSideAccess(serverClientId,forceRefreshToken)","hidden":false,"returnType":1,"argCount":0,"args":[
             1,
             2,
-          ],},
+          ],"documentation":"",},
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"GooglePlayServices_PlayerStats_LoadPlayerStats","externalName":"GooglePlayServices_PlayerStats_LoadPlayerStats","kind":4,"help":"GooglePlayServices_PlayerStats_LoadPlayerStats(forcedLoad)","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
-          ],},
+          ],"documentation":"",},
       ],"constants":[
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"Achievement_STATE_HIDDEN","value":"2","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"Achievement_STATE_REVEALED","value":"1","hidden":false,},
@@ -120,7 +120,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"Leaderboard_TIME_SPAN_ALL_TIME","value":"2","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"Leaderboard_COLLECTION_PUBLIC","value":"0","hidden":false,},
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"Leaderboard_COLLECTION_SOCIAL","value":"1","hidden":false,},
-      ],"ProxyFiles":[],"copyToTargets":8,"order":[
+      ],"ProxyFiles":[],"copyToTargets":8,"usesRunnerInterface":false,"order":[
         {"name":"GooglePlayServices_Achievements_Show","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},
         {"name":"GooglePlayServices_Achievements_Increment","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},
         {"name":"GooglePlayServices_Achievements_Reveal","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},

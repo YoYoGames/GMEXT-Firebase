@@ -22,13 +22,13 @@ RUNTIME_VERSION_RED="9.1.1.0"
 setupAndroid() {
     # Resolve the credentials file path and copy it to the Android ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_jsonFile" FILE_PATH
-    mkdir -p "${FILE_PATH}/AndroidSource/ProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_jsonFile}" "${FILE_PATH}/AndroidSource/ProjectFiles/"
+    mkdir -p "${SCRIPT_PATH}/AndroidSource/ProjectFiles/" && cp -rf "${FILE_PATH}" "${SCRIPT_PATH}/AndroidSource/ProjectFiles/"
 }
 
 setupiOS() {
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_plistFile" FILE_PATH
-    mkdir -p "${FILE_PATH}/iOSProjectFiles/" && cp -rf "${YYEXTOPT_FirebaseSetup_plistFile}" "${FILE_PATH}/iOSProjectFiles/"
+    mkdir -p "${SCRIPT_PATH}/iOSProjectFiles/" && cp -rf "${FILE_PATH}" "${SCRIPT_PATH}/iOSProjectFiles/"
 }
 
 # ######################################################################################

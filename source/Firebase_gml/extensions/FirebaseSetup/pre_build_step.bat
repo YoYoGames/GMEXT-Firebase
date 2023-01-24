@@ -30,12 +30,12 @@ exit 0
 
 :setupAndroid
     :: Resolve the credentials file path and copy it to the Android ProjectFiles folder
-    call :pathResolveExisting "%YYprojectDir%" "%YYEXTOPT_FirebaseSetup_jsonFile%" FILE_PATH
+    call %Utils% pathResolveExisting "%YYprojectDir%" "%YYEXTOPT_FirebaseSetup_jsonFile%" FILE_PATH
     xcopy /y "%FILE_PATH%" "%SCRIPT_PATH%\AndroidSource\ProjectFiles\"
 exit /b 0
 
 :setupIOS
     :: Resolve the credentials file path and copy it to the iOS ProjectFiles folder
-    call :pathResolveExisting "%YYprojectDir%" "%YYEXTOPT_FirebaseSetup_plistFile%" FILE_PATH
+    call %Utils% pathResolveExisting "%YYprojectDir%" "%YYEXTOPT_FirebaseSetup_plistFile%" FILE_PATH
     xcopy /y "%FILE_PATH%" "%SCRIPT_PATH%\iOSProjectFiles\"
 exit /b 0

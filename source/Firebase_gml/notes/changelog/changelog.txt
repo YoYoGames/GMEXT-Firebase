@@ -2,3 +2,4 @@
 v1.0.0 (FirebaseSetup)
 - Added changelog file (further development should be logged here)
 - Added fixed for FirebaseSetup extension on macOS
+- Bumped iOS build version to 11.0

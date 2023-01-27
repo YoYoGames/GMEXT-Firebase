@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAnalytics.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -57,6 +58,7 @@
       ],},
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAnalytics.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseAnalytics",
   "tvosclassname": null,
   "tvosdelegatename": null,

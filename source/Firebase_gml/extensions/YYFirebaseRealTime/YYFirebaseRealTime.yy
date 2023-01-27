@@ -24,6 +24,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseRealTime.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -43,6 +44,7 @@
         {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseRealTime",
   "tvosclassname": null,
   "tvosdelegatename": null,

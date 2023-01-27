@@ -21,6 +21,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FacebookExt2.ext","origname":"extensions\\FacebookExt2.ext","init":"fb_init","final":"","kind":4,"uncompress":false,"functions":[
@@ -104,6 +105,7 @@
         {"name":"fb_send_event","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "FacebookExtension2",
   "tvosclassname": "",
   "tvosdelegatename": null,

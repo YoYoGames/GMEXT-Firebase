@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseCloudMessaging.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -47,6 +48,7 @@
         {"name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseCloudMessaging",
   "tvosclassname": null,
   "tvosdelegatename": null,

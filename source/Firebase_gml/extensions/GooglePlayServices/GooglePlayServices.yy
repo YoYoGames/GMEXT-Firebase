@@ -19,6 +19,7 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"GooglePlayService.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -146,6 +147,7 @@
         {"name":"GooglePlayServices_IsAvailable","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": "",
   "tvosdelegatename": "",

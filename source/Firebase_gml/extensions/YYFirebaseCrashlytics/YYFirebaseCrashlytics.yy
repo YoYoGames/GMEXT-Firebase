@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseCrashlytics.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -58,6 +59,7 @@
         {"name":"FirebaseCrashlytics_UnsentReports_Check","path":"extensions/YYFirebaseCrashlytics/YYFirebaseCrashlytics.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseCrashlytics",
   "tvosclassname": null,
   "tvosdelegatename": null,

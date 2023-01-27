@@ -17,6 +17,7 @@
   "iosProps": false,
   "tvosProps": false,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"libAppleSignInMacLib.dylib","origname":"","init":"Mac_AppleSignIn_Init","final":"Mac_AppleSignIn_Final","kind":1,"uncompress":false,"functions":[
@@ -56,6 +57,7 @@
         {"name":"RegisterCallbacks","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "",
   "tvosclassname": "",
   "tvosdelegatename": "",

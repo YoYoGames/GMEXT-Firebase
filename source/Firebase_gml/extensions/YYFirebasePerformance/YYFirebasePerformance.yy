@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebasePerformanceMonitoring.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -128,6 +129,7 @@
         {"name":"FirebasePerformance_Trace_Metric_GetLong","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebasePerformance",
   "tvosclassname": null,
   "tvosdelegatename": null,

@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication_tools.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[
@@ -36,6 +37,7 @@
         {"name":"FirebaseAuthentication_Tools_WebView_Delete","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "FirebaseAuthentication_tools",
   "tvosclassname": null,
   "tvosdelegatename": null,

@@ -24,6 +24,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -516,6 +517,7 @@
         {"name":"SDKFirebaseAuthentication_IdTokenListener_Remove","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseAuthentication",
   "tvosclassname": null,
   "tvosdelegatename": null,

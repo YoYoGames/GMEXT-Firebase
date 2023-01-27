@@ -7,7 +7,7 @@
   "option_ios_version": "1.0.0.0",
   "option_ios_output_dir": "~/gamemakerstudio2",
   "option_ios_team_id": "C9E7J7HL3D",
-  "option_ios_min_version": "10.0",
+  "option_ios_min_version": "11.0",
   "option_ios_cocoapods_checkbox": true,
   "option_ios_orientation_portrait": true,
   "option_ios_orientation_portrait_flipped": true,

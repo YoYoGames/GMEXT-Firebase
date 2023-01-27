@@ -10,13 +10,14 @@
   "packageId": "",
   "productId": "",
   "author": "",
-  "date": "2021-08-23T07:59:21.4039452-07:00",
+  "date": "2021-08-23T15:59:21.4039452+01:00",
   "license": "",
   "description": "",
   "helpfile": "",
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"GoogleSignIn.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -34,6 +35,7 @@
         {"name":"GoogleSignIn_Show_","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYGoogleSignIn",
   "tvosclassname": null,
   "tvosdelegatename": null,

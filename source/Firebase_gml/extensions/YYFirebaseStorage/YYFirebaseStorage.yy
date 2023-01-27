@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"YYFirebaseStorage.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -92,6 +93,7 @@
         {"name":"SDKFirebaseStorage_Cancel","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseStorage",
   "tvosclassname": null,
   "tvosdelegatename": null,

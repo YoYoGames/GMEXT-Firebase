@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": true,
   "androidProps": false,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"AppleSignIn.ext","origname":"","init":"AppleSignIn_Init","final":"","kind":4,"uncompress":false,"functions":[
@@ -48,6 +49,7 @@
         {"name":"AppleSignIn_GetCredentialState","path":"extensions/AppleSignIn/AppleSignIn.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YY_AppleSignIn",
   "tvosclassname": "YY_AppleSignIn",
   "tvosdelegatename": "",

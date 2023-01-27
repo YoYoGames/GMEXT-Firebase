@@ -24,6 +24,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseFirestore.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -43,6 +44,7 @@
         {"name":"FirebaseFirestore_SDK","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseFirestore",
   "tvosclassname": null,
   "tvosdelegatename": null,

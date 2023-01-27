@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": false,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseRemoteConfig.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -84,6 +85,7 @@
         {"name":"FirebaseRemoteConfig_GetDouble","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
       ],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "YYFirebaseRemoteConfig",
   "tvosclassname": null,
   "tvosdelegatename": null,

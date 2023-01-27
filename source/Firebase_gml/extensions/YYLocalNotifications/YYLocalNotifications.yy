@@ -17,6 +17,7 @@
   "iosProps": true,
   "tvosProps": true,
   "androidProps": true,
+  "html5Props": false,
   "installdir": "",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"LocalNotifications.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
@@ -38,6 +39,7 @@
         {"resourceType":"GMExtensionConstant","resourceVersion":"1.0","name":"LocalPushNotification_iOS_Permission_Status_NotDetermined","value":"\"NotDetermined\"","hidden":false,},
       ],"ProxyFiles":[],"copyToTargets":-1,"usesRunnerInterface":false,"order":[],},
   ],
+  "HTML5CodeInjection": "",
   "classname": "LocalNotifications",
   "tvosclassname": "LocalNotifications",
   "tvosdelegatename": null,

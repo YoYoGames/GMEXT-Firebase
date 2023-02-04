@@ -10,3 +10,9 @@ if(os_type == os_ios)
 	// Event of the same name with the respective value.
 	LocalPushNotification_iOS_Permission_Status();
 }	
+else
+if(os_type == os_android)
+{
+	if(!os_check_permission("android.permission.POST_NOTIFICATIONS"))
+		os_request_permission("android.permission.POST_NOTIFICATIONS")
+}

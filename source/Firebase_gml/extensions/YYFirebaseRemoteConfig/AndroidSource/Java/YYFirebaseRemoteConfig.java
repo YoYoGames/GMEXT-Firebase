@@ -83,7 +83,7 @@ public class YYFirebaseRemoteConfig
 			public void onComplete(@NonNull Task<Void> task) 
 			{
 				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRemoteConfig_setDefaultsAsync");		
+				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRemoteConfig_SetDefaultsAsync");		
 				if(task.isSuccessful()) 
 					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1);
 				else 

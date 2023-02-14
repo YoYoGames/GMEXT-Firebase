@@ -99,6 +99,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
                                                               error:&jsonError];
 	
     [[FIRRemoteConfig remoteConfig] setDefaults:jsonMap];
+	
+	int dsMapIndex = dsMapCreate();
+	dsMapAddString(dsMapIndex, "type","FirebaseRemoteConfig_SetDefaultsAsync");
+	dsMapAddDouble(dsMapIndex, "success",1.0);
+	createSocialAsyncEventWithDSMap(dsMapIndex);
 }
 
 -(NSString*) FirebaseRemoteConfig_GetKeys

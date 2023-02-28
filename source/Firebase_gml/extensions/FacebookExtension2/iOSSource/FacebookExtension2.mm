@@ -78,9 +78,9 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
 	NSLog(@"sharer completed");
 	
 	int dsMapIndex = dsMapCreate();
-	dsMapAddString(dsMapIndex, "type", "fb_dialog");
-	dsMapAddString(dsMapIndex, "status", "success");
-	dsMapAddInt(dsMapIndex, "requestId", [dialog getRequestId]);
+	dsMapAddString(dsMapIndex, (char*)"type", (char*)"fb_dialog");
+	dsMapAddString(dsMapIndex, (char*)"status", (char*)"success");
+	dsMapAddInt(dsMapIndex, (char*)"requestId", [dialog getRequestId]);
 	createSocialAsyncEventWithDSMap(dsMapIndex);
 }
 
@@ -333,13 +333,13 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
 	[request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error)
 	{
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type", "fb_graph_request");
-		dsMapAddInt(dsMapIndex, "requestId", currentRequestId);
+		dsMapAddString(dsMapIndex, (char*)"type", (char*)"fb_graph_request");
+		dsMapAddInt(dsMapIndex, (char*)"requestId", currentRequestId);
 		
 		if(!error)
 		{
 			NSLog(@"graphRequest Result: %@", result);
-			dsMapAddString(dsMapIndex, "status", "success");
+			dsMapAddString(dsMapIndex, (char*)"status", (char*)"success");
 			
 			NSError* error;
 			NSString* resultString = nil;
@@ -358,13 +358,13 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
 			}
 			
 			if(resultString != nil)
-				dsMapAddString(dsMapIndex, "response_text", (char*)[resultString UTF8String]);
+				dsMapAddString(dsMapIndex, (char*)"response_text", (char*)[resultString UTF8String]);
 		}
 		else
 		{
 			NSLog(@"error %@", error.description);
-			dsMapAddString(dsMapIndex, "status", "error");
-			dsMapAddString(dsMapIndex, "exception", (char*)[error.description UTF8String]);
+			dsMapAddString(dsMapIndex, (char*)"status", (char*)"error");
+			dsMapAddString(dsMapIndex, (char*)"exception", (char*)[error.description UTF8String]);
 		}
 		
 		createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -491,7 +491,7 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
         {
             NSNumber *num = (NSNumber *)obj;
             NSInteger val = [num integerValue];
-            dsMapAddInt(dsMapIndex, currentKey, val);
+            dsMapAddInt(dsMapIndex, (char*)currentKey, (int)val);
             NSLog(@"Added %ld to ds_map %d for key %@", (long)val, dsMapIndex, nsKey);
         }
     }
@@ -569,18 +569,18 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
 		[FBSDKAccessToken refreshCurrentAccessToken: ^(FBSDKGraphRequestConnection *result, id res, NSError *error) 
 		{
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type", "fb_refresh_accesstoken");
-			dsMapAddInt(dsMapIndex, "requestId", currentRequestId);
+			dsMapAddString(dsMapIndex, (char*)"type", (char*)"fb_refresh_accesstoken");
+			dsMapAddInt(dsMapIndex, (char*)"requestId", currentRequestId);
 			
 			if(error)
 			{
-				dsMapAddString(dsMapIndex, "status", "error");
-				dsMapAddString(dsMapIndex, "exception", (char*)[error.description UTF8String]);
+				dsMapAddString(dsMapIndex, (char*)"status", (char*)"error");
+				dsMapAddString(dsMapIndex, (char*)"exception", (char*)[error.description UTF8String]);
 				[self fb_set_status: @"FAILED"];
 			}
 			else
 			{
-				dsMapAddString(dsMapIndex, "status", "success");
+				dsMapAddString(dsMapIndex, (char*)"status", (char*)"success");
 				[self fb_set_status: @"AUTHORISED"];
 			}
 			
@@ -590,10 +590,10 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
 	else
 	{
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type", "fb_refresh_accesstoken");
-		dsMapAddInt(dsMapIndex, "requestId", currentRequestId);
-		dsMapAddString(dsMapIndex, "status", "error");
-		dsMapAddString(dsMapIndex, "exception", "User must be logged in before access token can be refreshed.");
+		dsMapAddString(dsMapIndex, (char*)"type", (char*)"fb_refresh_accesstoken");
+		dsMapAddInt(dsMapIndex, (char*)"requestId", currentRequestId);
+		dsMapAddString(dsMapIndex, (char*)"status", (char*)"error");
+		dsMapAddString(dsMapIndex, (char*)"exception", (char*)"User must be logged in before access token can be refreshed.");
 		createSocialAsyncEventWithDSMap(dsMapIndex);
 		
 		[self fb_set_status: @"IDLE"];
@@ -696,37 +696,37 @@ const int FacebookExtension2_LOGIN_TYPE_WEB_VIEW = 			10004;
     return [^(FBSDKLoginManagerLoginResult * _Nullable result, NSError * _Nullable error)
     {
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type", "facebook_login_result");
-		dsMapAddInt(dsMapIndex, "requestId", _requestId);
+		dsMapAddString(dsMapIndex, (char*)"type", (char*)"facebook_login_result");
+		dsMapAddInt(dsMapIndex, (char*)"requestId", _requestId);
 		
 		if (error)
 		{
 			// Error
-			dsMapAddString(dsMapIndex, "status", "error");
-			dsMapAddString(dsMapIndex, "exception", (char*)[error.description UTF8String]);
+			dsMapAddString(dsMapIndex, (char*)"status", (char*)"error");
+			dsMapAddString(dsMapIndex, (char*)"exception", (char*)[error.description UTF8String]);
 			
 			[self fb_set_status:@"FAILED"];
 		}
 		else if (result.isCancelled)
 		{
 			// Cancellations
-			dsMapAddString(dsMapIndex, "status", "cancelled");
+			dsMapAddString(dsMapIndex, (char*)"status", (char*)"cancelled");
 			[self fb_set_status:@"IDLE"];
 		}
 		else
 		{
-			dsMapAddString(dsMapIndex, "status", "success");
+			dsMapAddString(dsMapIndex, (char*)"status", (char*)"success");
 			// Success
 			for (NSString* item in result.grantedPermissions)
 			{
 				char *it8 = (char*)[item UTF8String];
-				dsMapAddString(dsMapIndex, it8, "granted");
+				dsMapAddString(dsMapIndex, it8, (char*)"granted");
 			}
 			
 			for (NSString* item  in result.declinedPermissions)
 			{
 				char *it8 = (char*)[item UTF8String];
-				dsMapAddString(dsMapIndex, it8, "declined");
+				dsMapAddString(dsMapIndex, it8, (char*)"declined");
 			}
 			
 			[self fb_set_status:@"AUTHORISED"];

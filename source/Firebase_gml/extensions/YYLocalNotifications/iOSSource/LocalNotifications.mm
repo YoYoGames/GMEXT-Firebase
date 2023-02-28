@@ -77,20 +77,20 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		 {
             
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","LocalPushNotification_iOS_Permission_Request");
+			dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Request");
 			
 			if(error == nil)
-				dsMapAddDouble(dsMapIndex,"success",1.0);
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			else
-				dsMapAddDouble(dsMapIndex,"success",0.0);
+				dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
 			
             if(granted)
             {
                 [[UNUserNotificationCenter currentNotificationCenter] setDelegate:(LocalNotifications_Delegate*)[UIApplication sharedApplication].delegate];
-                dsMapAddDouble(dsMapIndex,"value",1.0);
+                dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
             }
             else
-                dsMapAddDouble(dsMapIndex,"value",0.0);
+                dsMapAddDouble(dsMapIndex,(char*)"value",0.0);
             
 			CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 		 }];
@@ -103,9 +103,9 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 		
 			int dsMapIndex = dsMapCreate();//iOS < 10? go ahead
-			dsMapAddString(dsMapIndex, "type","LocalPushNotification_iOS_Permission_Request");
-			dsMapAddDouble(dsMapIndex,"success",1.0);
-			dsMapAddDouble(dsMapIndex,"value",1.0);
+			dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Request");
+			dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+			dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
 			CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 	}
     [[UIApplication sharedApplication] registerForRemoteNotifications];
@@ -117,20 +117,20 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 	[center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings)
 	{
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type","LocalPushNotification_iOS_Permission_Status");
+		dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Status");
 		
 		switch (settings.authorizationStatus) 
 		{
 			case UNAuthorizationStatusAuthorized:
-				dsMapAddString(dsMapIndex, "value","Authorized");
+				dsMapAddString(dsMapIndex, (char*)"value",(char*)"Authorized");
 			break;
 			
 			case UNAuthorizationStatusDenied:
-				dsMapAddString(dsMapIndex, "value","Denied");
+				dsMapAddString(dsMapIndex,(char*) "value",(char*)"Denied");
 			break;
 			
 			case UNAuthorizationStatusNotDetermined:
-				dsMapAddString(dsMapIndex, "value","NotDetermined");
+				dsMapAddString(dsMapIndex, (char*)"value",(char*)"NotDetermined");
 			break;
 		}
 		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);

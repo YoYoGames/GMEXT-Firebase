@@ -21,6 +21,8 @@
   "gradleinject": "\r\n        implementation platform('com.google.firebase:firebase-bom:31.1.1')\r\n",
   "hasConvertedCodeInjection": true,
   "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
   "IncludedResources": [],
   "installdir": "",
   "iosCocoaPodDependencies": "",

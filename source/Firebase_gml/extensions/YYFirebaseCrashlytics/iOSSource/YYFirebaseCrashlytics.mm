@@ -112,12 +112,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRCrashlytics crashlytics] checkAndUpdateUnsentReportsWithCompletion:^(FIRCrashlyticsReport * _Nullable report) {
         
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type","FirebaseCrashlytics_UnsentReports_Check");
+		dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCrashlytics_UnsentReports_Check");
 		
 		if(report == nil)
-			dsMapAddDouble(dsMapIndex, "value",0);
+			dsMapAddDouble(dsMapIndex,(char*) "value",0);
 		else
-			dsMapAddDouble(dsMapIndex, "value",1);
+			dsMapAddDouble(dsMapIndex, (char*)"value",1);
 		
 		createSocialAsyncEventWithDSMap(dsMapIndex);
     }];

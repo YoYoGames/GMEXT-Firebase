@@ -116,13 +116,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] signInWithCustomToken:token completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignInWithCustomToken");
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignInWithCustomToken");
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -135,14 +135,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] signInWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError *error) 
 	{
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_Email");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+		dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Email");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
 		if(error)
-        {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+        {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
 		else
         {
-			dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+			dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
 		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 	}];
@@ -155,14 +155,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] createUserWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError *_Nullable error)
 	{
 		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_Email");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+		dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Email");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
 		if(error)
-			{dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+			{dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
 		else
         {
-			dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+			dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
 		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 	}];
@@ -175,14 +175,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] signInAnonymouslyWithCompletion:^(FIRAuthDataResult * _Nullable authResult, NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_Anonymously");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Anonymously");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
      }];
@@ -195,12 +195,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] sendPasswordResetWithEmail:email completion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SendPasswordResetEmail");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SendPasswordResetEmail");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -212,12 +212,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser updateEmail:email completion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangeEmail");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ChangeEmail");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -229,12 +229,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser updatePassword:password completion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangePassword");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ChangePassword");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -248,12 +248,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_ChangeDisplayName");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ChangeDisplayName");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -267,12 +267,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_ChangePhotoURL");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ChangePhotoURL");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -284,12 +284,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser sendEmailVerificationWithCompletion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SendEmailVerification");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SendEmailVerification");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -301,12 +301,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser deleteWithCompletion:^(NSError *_Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_DeleteAccount");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_DeleteAccount");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -324,14 +324,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithEmailPassword");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithEmailPassword");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);   dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);   dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -345,14 +345,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] signInWithCredential:authCredential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_OAuth");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_OAuth");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 	}];
@@ -366,14 +366,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithOAuthCredential");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithOAuthCredential");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -407,14 +407,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser unlinkFromProvider:provider completion:^(FIRUser * _Nullable user, NSError * _Nullable error)
      {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_UnlinkProvider");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_UnlinkProvider");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -427,12 +427,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser reloadWithCompletion:^(NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_RefreshUserData");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_RefreshUserData");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
-            dsMapAddDouble(dsMapIndex,"status",200);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 	return (double)Id;
@@ -444,14 +444,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser getIDTokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_GetIdToken");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_GetIdToken");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[token UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[token UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -466,23 +466,23 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         if(error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_GameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_GameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }
         
         [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_GameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_GameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
             if(error)
-                {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             else
             {
-                dsMapAddDouble(dsMapIndex,"status",200);
-                dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+                dsMapAddDouble(dsMapIndex,(char*)"status",200);
+                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
             }
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }];
@@ -498,23 +498,23 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         if(error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithGameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithGameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }
         
         [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithGameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
+            dsMapAddString(dsMapIndex,(char*)"type","FirebaseAuthentication_LinkWithGameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
             if(error)
-                {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             else
             {
-                dsMapAddDouble(dsMapIndex,"status",200);
-                dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+                dsMapAddDouble(dsMapIndex,(char*)"status",200);
+                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
             }
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }];
@@ -530,23 +530,23 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         if(error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }
         
         [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
         {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
-			dsMapAddDouble(dsMapIndex,"listener",Id);
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
+			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
             if(error)
-                {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
             else
             {
-                dsMapAddDouble(dsMapIndex,"status",200);
-                dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+                dsMapAddDouble(dsMapIndex,(char*)"status",200);
+                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
             }
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         }];
@@ -562,14 +562,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignInWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignInWithPhoneNumber");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -584,14 +584,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_LinkWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_LinkWithPhoneNumber");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -605,14 +605,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithEmail");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithEmail");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -627,14 +627,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithOAuth");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithOAuth");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -649,14 +649,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithPhoneNumber");
+		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         if(error)
-            {dsMapAddDouble(dsMapIndex,"status",400);  dsMapAddString(dsMapIndex,"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
+            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
         else
         {
-            dsMapAddDouble(dsMapIndex,"status",200);
-            dsMapAddString(dsMapIndex, "value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
         }
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -705,10 +705,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
          if(user == nil)
          {
              int dsMapIndex = dsMapCreate();
-             dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_IdTokenListener");
-             dsMapAddDouble(dsMapIndex,"listener",Id);
-                 dsMapAddDouble(dsMapIndex,"status",200);
-                 dsMapAddString(dsMapIndex, "value", "");
+             dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_IdTokenListener");
+             dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
+                 dsMapAddString(dsMapIndex, (char*)"value", (char*)"");
              CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
          }
          
@@ -717,10 +717,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
               if(error == nil)
               {
                   int dsMapIndex = dsMapCreate();
-                  dsMapAddString(dsMapIndex,"type","FirebaseAuthentication_IdTokenListener");
-                  dsMapAddDouble(dsMapIndex,"listener",Id);
-                  dsMapAddDouble(dsMapIndex,"status",200);
-                  dsMapAddString(dsMapIndex, "value", (char*)[token UTF8String]);
+                  dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_IdTokenListener");
+                  dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+                  dsMapAddDouble(dsMapIndex,(char*)"status",200);
+                  dsMapAddString(dsMapIndex, (char*)"value", (char*)[token UTF8String]);
                   CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
               }
           }];

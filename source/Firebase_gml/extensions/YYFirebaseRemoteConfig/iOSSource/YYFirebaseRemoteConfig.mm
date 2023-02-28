@@ -53,13 +53,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRRemoteConfig remoteConfig] fetchAndActivateWithCompletionHandler:^(FIRRemoteConfigFetchAndActivateStatus status, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, "type","FirebaseRemoteConfig_FetchAndActivate");
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_FetchAndActivate");
         
         if(status == FIRRemoteConfigFetchAndActivateStatusSuccessFetchedFromRemote)
-            dsMapAddDouble(dsMapIndex, "success",1.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
         else
         {
-            dsMapAddDouble(dsMapIndex, "success",0.0);
+            dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
 			if(error)
 				NSLog([error localizedDescription]);
         }
@@ -101,8 +101,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [[FIRRemoteConfig remoteConfig] setDefaults:jsonMap];
 	
 	int dsMapIndex = dsMapCreate();
-	dsMapAddString(dsMapIndex, "type","FirebaseRemoteConfig_SetDefaultsAsync");
-	dsMapAddDouble(dsMapIndex, "success",1.0);
+	dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_SetDefaultsAsync");
+	dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
 	createSocialAsyncEventWithDSMap(dsMapIndex);
 }
 

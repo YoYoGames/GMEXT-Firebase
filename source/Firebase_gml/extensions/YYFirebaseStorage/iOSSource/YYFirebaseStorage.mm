@@ -83,14 +83,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [downloadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot *snapshot)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-        dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Download");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
 
-        dsMapAddDouble(dsMapIndex,"transferred",snapshot.progress.completedUnitCount);
-        dsMapAddDouble(dsMapIndex,"total",snapshot.progress.totalUnitCount);
-        dsMapAddDouble(dsMapIndex,"success",1.0);
+        dsMapAddDouble(dsMapIndex,(char*)"transferred",snapshot.progress.completedUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"total",snapshot.progress.totalUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
         
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -98,11 +98,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [downloadTask observeStatus:FIRStorageTaskStatusFailure handler:^(FIRStorageTaskSnapshot *snapshot)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-        dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
-        dsMapAddDouble(dsMapIndex,"success",0.0);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Download");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
+        dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         return;
     }];
@@ -111,21 +111,21 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [downloadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot *snapshot)
     {
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");
-            dsMapAddDouble(dsMapIndex,"listener",listener);
-            dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-            dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Download");
+            dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+            dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
     
             if(snapshot.error)
             {
-                dsMapAddString(dsMapIndex,"error",(char*)[snapshot.error.localizedDescription UTF8String]);
-                dsMapAddDouble(dsMapIndex,"success",0.0);
+                dsMapAddString(dsMapIndex,(char*)"error",(char*)[snapshot.error.localizedDescription UTF8String]);
+                dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
                 CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
                 return;
             }
             
-            dsMapAddDouble(dsMapIndex,"transferred",snapshot.progress.completedUnitCount);
-            dsMapAddDouble(dsMapIndex,"total",snapshot.progress.totalUnitCount);
+            dsMapAddDouble(dsMapIndex,(char*)"transferred",snapshot.progress.completedUnitCount);
+            dsMapAddDouble(dsMapIndex,(char*)"total",snapshot.progress.totalUnitCount);
             
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -146,11 +146,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [uploadTask observeStatus:FIRStorageTaskStatusFailure handler:^(FIRStorageTaskSnapshot *snapshot)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-        dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
-        dsMapAddDouble(dsMapIndex,"success",0.0);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Upload");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
+        dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         return;
     }];
@@ -159,14 +159,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot *snapshot)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-        dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Upload");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
 
-        dsMapAddDouble(dsMapIndex,"transferred",snapshot.progress.completedUnitCount);
-        dsMapAddDouble(dsMapIndex,"total",snapshot.progress.totalUnitCount);
-        dsMapAddDouble(dsMapIndex,"success",1.0);
+        dsMapAddDouble(dsMapIndex,(char*)"transferred",snapshot.progress.completedUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"total",snapshot.progress.totalUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
         
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -174,21 +174,21 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot *snapshot)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
-        dsMapAddString(dsMapIndex,"localPath",(char*)[localPath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Upload");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"localPath",(char*)[localPath UTF8String]);
 
         if(snapshot.error)
         {
-            dsMapAddString(dsMapIndex,"error",(char*)[snapshot.error.localizedDescription UTF8String]);
-            dsMapAddDouble(dsMapIndex,"success",0.0);
+            dsMapAddString(dsMapIndex,(char*)"error",(char*)[snapshot.error.localizedDescription UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
             return;
         }
         
-        dsMapAddDouble(dsMapIndex,"transferred",snapshot.progress.completedUnitCount);
-        dsMapAddDouble(dsMapIndex,"total",snapshot.progress.totalUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"transferred",snapshot.progress.completedUnitCount);
+        dsMapAddDouble(dsMapIndex,(char*)"total",snapshot.progress.totalUnitCount);
         
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -202,13 +202,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [ref deleteWithCompletion:^(NSError *error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_Delete");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_Delete");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
         if(error)
-            dsMapAddDouble(dsMapIndex,"success",0.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
         else
-            dsMapAddDouble(dsMapIndex,"success",1.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
@@ -224,15 +224,15 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [ref downloadURLWithCompletion:^(NSURL *URL, NSError *error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_GetURL");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_GetURL");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
         if(error)
-            dsMapAddDouble(dsMapIndex,"success",0.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
         else
         {
-            dsMapAddDouble(dsMapIndex,"success",1.0);
-            dsMapAddString(dsMapIndex,"value",(char*)[[URL absoluteString] UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[URL absoluteString] UTF8String]);
         }
 
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
@@ -249,18 +249,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     id callback = ^(FIRStorageListResult * _Nonnull result, NSError * _Nullable error)
    {
        int dsMapIndex = dsMapCreate();
-       dsMapAddString(dsMapIndex,"type","FirebaseStorage_List");
-       dsMapAddDouble(dsMapIndex,"listener",listener);
-       dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
+       dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_List");
+       dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+       dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
        
        if(error)
-           dsMapAddDouble(dsMapIndex,"success",0.0);
+           dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
        else
        {
-           dsMapAddDouble(dsMapIndex,"success",1.0);
-           dsMapAddString(dsMapIndex,"pageToken",(char*)[[result pageToken] UTF8String]);
-           dsMapAddString(dsMapIndex,"files",(char*)[[self listOfReferencesToJSON:result.items] UTF8String]);
-           dsMapAddString(dsMapIndex,"folders",(char*)[[self listOfReferencesToJSON:result.prefixes] UTF8String]);
+           dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+           dsMapAddString(dsMapIndex,(char*)"pageToken",(char*)[[result pageToken] UTF8String]);
+           dsMapAddString(dsMapIndex,(char*)"files",(char*)[[self listOfReferencesToJSON:result.items] UTF8String]);
+           dsMapAddString(dsMapIndex,(char*)"folders",(char*)[[self listOfReferencesToJSON:result.prefixes] UTF8String]);
        }
 
        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
@@ -282,18 +282,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [ref listAllWithCompletion:^(FIRStorageListResult * _Nonnull result, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseStorage_ListAll");
-        dsMapAddDouble(dsMapIndex,"listener",listener);
-        dsMapAddString(dsMapIndex,"path",(char*)[firebasePath UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseStorage_ListAll");
+        dsMapAddDouble(dsMapIndex,(char*)"listener",listener);
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[firebasePath UTF8String]);
         
         if(error)
-            dsMapAddDouble(dsMapIndex,"success",0.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
         else
         {
-            dsMapAddDouble(dsMapIndex,"success",1.0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 //            dsMapAddString(dsMapIndex,"pageToken",(char*)[[result pageToken] UTF8String]);
-            dsMapAddString(dsMapIndex,"files",(char*)[[self listOfReferencesToJSON:result.items] UTF8String]);
-            dsMapAddString(dsMapIndex,"folders",(char*)[[self listOfReferencesToJSON:result.prefixes] UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"files",(char*)[[self listOfReferencesToJSON:result.items] UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"folders",(char*)[[self listOfReferencesToJSON:result.prefixes] UTF8String]);
         }
 
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);

@@ -94,10 +94,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [ref setValue: value withCompletionBlock:^(NSError *error, FIRDatabaseReference *ref)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Set");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Set");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
         [self InsertCallbackStatus:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
     return (double)Id;
@@ -143,12 +143,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     {
         int dsMapIndex = dsMapCreate();
         if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Read"])
-            dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Read");
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Read");
         if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Listener"])
-            dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Listener");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,"status",200);
-        dsMapAddDouble(dsMapIndex,"listener",Id);
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Listener");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+        dsMapAddDouble(dsMapIndex,(char*)"status",200);
+        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         
         if(!snapshot.exists)
         {
@@ -158,16 +158,16 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         
         id value = snapshot.value;
         if([value isKindOfClass:[NSString class]])
-            dsMapAddString(dsMapIndex,"value",(char*)[(NSString*)snapshot.value UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"value",(char*)[(NSString*)snapshot.value UTF8String]);
         
         if([value isKindOfClass:[NSNumber class]])
-            dsMapAddDouble(dsMapIndex,"value",[snapshot.value doubleValue]);
+            dsMapAddDouble(dsMapIndex,(char*)"value",[snapshot.value doubleValue]);
         
         if([value isKindOfClass:[NSDictionary class]])
-            dsMapAddString(dsMapIndex,"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
 
         if([value isKindOfClass:[NSArray class]])
-            dsMapAddString(dsMapIndex,"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
         
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     };
@@ -176,12 +176,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     {
         int dsMapIndex = dsMapCreate();
         if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Read"])
-            dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Read");
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Read");
         if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Listener"])
-            dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Listener");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Listener");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
         [self InsertCallbackStatus:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     };
     
@@ -204,9 +204,9 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [ref removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref)
      {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Delete");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Delete");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
      }];
     return (double)Id;
@@ -223,19 +223,19 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             exists = 1.0;
         
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Exists");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,"status",200);
-        dsMapAddDouble(dsMapIndex,"listener",Id);
-        dsMapAddDouble(dsMapIndex,"value",exists);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Exists");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+        dsMapAddDouble(dsMapIndex,(char*)"status",200);
+        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+        dsMapAddDouble(dsMapIndex,(char*)"value",exists);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 
     } withCancelBlock:^(NSError * _Nonnull error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","FirebaseRealTime_Exists");
-        dsMapAddString(dsMapIndex,"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,"listener",Id);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Exists");
+        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
+        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
     return (double)Id;
@@ -332,25 +332,25 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         switch(error.code)
         {
             case 1:
-                dsMapAddDouble(dsMapIndex,"status",401);
-                dsMapAddString(dsMapIndex,"errorMessage","permission_denied");
+                dsMapAddDouble(dsMapIndex,(char*)"status",401);
+                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"permission_denied");
                 break;
             case 2:
-                dsMapAddDouble(dsMapIndex,"status",503);
-                dsMapAddString(dsMapIndex,"errorMessage","unavailable");
+                dsMapAddDouble(dsMapIndex,(char*)"status",503);
+                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"unavailable");
                 break;
             case 3:
-                dsMapAddDouble(dsMapIndex,"status",400);
-                dsMapAddString(dsMapIndex,"errorMessage","WriteCanceled");
+                dsMapAddDouble(dsMapIndex,(char*)"status",400);
+                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"WriteCanceled");
                 break;
             default:
-                dsMapAddDouble(dsMapIndex,"status",400);
-                dsMapAddString(dsMapIndex,"errorMessage","Unknown Error");
+                dsMapAddDouble(dsMapIndex,(char*)"status",400);
+                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"Unknown Error");
                 break;
         };
     }
     else
-        dsMapAddDouble(dsMapIndex,"status",200);
+        dsMapAddDouble(dsMapIndex,(char*)"status",200);
 }
 
 @end

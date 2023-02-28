@@ -38,7 +38,7 @@ const char*  YYNotification_data = "data";
         [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
     
     // Check if any superclasses implement this method and call it
-    if([[${YYExtAppDelegateBaseClass} class] instancesRespondToSelector:@selector(application:willFinishLaunchingWithOptions:)])
+    if([[iPad_RunnerAppDelegate class] instancesRespondToSelector:@selector(application:willFinishLaunchingWithOptions:)])
     {
         [super application:application willFinishLaunchingWithOptions:launchOptions];
     }
@@ -91,7 +91,7 @@ const char*  YYNotification_data = "data";
     }
     
     // Check if any superclasses implement this method and call it
-    if([[${YYExtAppDelegateBaseClass} class] instancesRespondToSelector:@selector(application:didFinishLaunchingWithOptions:)])
+    if([[iPad_RunnerAppDelegate class] instancesRespondToSelector:@selector(application:didFinishLaunchingWithOptions:)])
     {
         [super application:application didFinishLaunchingWithOptions:launchOptions];
     }
@@ -142,7 +142,7 @@ const char*  YYNotification_data = "data";
 		NSString *body = notification.request.content.body;
 		NSString *data = notification.request.content.userInfo[@"data_key"];
 		identifier = [identifier substringFromIndex: [[LocalNotifications prefix]length]];
-		dsMapAddString(dsMapIndex,"type","Notification_Local");
+		dsMapAddString(dsMapIndex,(char*)"type",(char*)"Notification_Local");
 		dsMapAddString(dsMapIndex,(char*)YYNotification_id, (char*)[identifier UTF8String]);
 		dsMapAddString(dsMapIndex,(char*)YYNotification_title, (char*)[title UTF8String]);
 		dsMapAddString(dsMapIndex,(char*)YYNotification_message, (char*)[body UTF8String]);
@@ -151,7 +151,7 @@ const char*  YYNotification_data = "data";
 	else
 	{
         NSLog(@"is Remote");
-		dsMapAddString(dsMapIndex, "type","Notification_Remote");
+		dsMapAddString(dsMapIndex, (char*)"type",(char*)"Notification_Remote");
 		NSDictionary *data = notification.request.content.userInfo;
 		for(id key in data)
 		{

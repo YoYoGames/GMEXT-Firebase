@@ -102,6 +102,8 @@
   "gradleinject": "\r\n    implementation 'com.facebook.android:facebook-android-sdk:12.0.1'\r\n",
   "hasConvertedCodeInjection": true,
   "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
   "IncludedResources": [],
   "installdir": "",
   "iosCocoaPodDependencies": "",

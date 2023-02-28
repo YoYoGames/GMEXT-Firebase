@@ -59,6 +59,8 @@
   "gradleinject": "\r\n       implementation 'com.google.firebase:firebase-analytics'\r\n",
   "hasConvertedCodeInjection": true,
   "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
   "IncludedResources": [],
   "installdir": "",
   "iosCocoaPodDependencies": "",

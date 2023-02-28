@@ -49,6 +49,8 @@
   "gradleinject": "\r\n     implementation 'com.google.firebase:firebase-messaging'\r\n",
   "hasConvertedCodeInjection": true,
   "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
   "IncludedResources": [],
   "installdir": "",
   "iosCocoaPodDependencies": "",

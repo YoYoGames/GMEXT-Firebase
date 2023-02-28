@@ -44,9 +44,9 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 	- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken
 	{
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, "type","FirebaseMessaging_OnNewToken");
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseMessaging_OnNewToken");
 		if(fcmToken != nil)
-			dsMapAddString(dsMapIndex, "value",(char*)[fcmToken UTF8String]);
+			dsMapAddString(dsMapIndex, (char*)"value",(char*)[fcmToken UTF8String]);
 		createSocialAsyncEventWithDSMap(dsMapIndex);
 	}
 	
@@ -55,14 +55,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		[[FIRMessaging messaging] tokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error) 
 		{
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","FirebaseCloudMessaging_GetToken");
+			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_GetToken");
 			if(error == nil)
 			{
-				dsMapAddDouble(dsMapIndex, "success",1.0);
-				dsMapAddString(dsMapIndex, "value",(char*)[token UTF8String]);
+				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
+				dsMapAddString(dsMapIndex, (char*)"value",(char*)[token UTF8String]);
 			}
 			else
-				dsMapAddDouble(dsMapIndex, "success",0.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
 			createSocialAsyncEventWithDSMap(dsMapIndex);
 		}];
 	}
@@ -72,13 +72,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		[[FIRMessaging messaging] subscribeToTopic:Topic completion:^(NSError * _Nullable error)
 		{
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","FirebaseCloudMessaging_SubscribeToTopic");
-            dsMapAddString(dsMapIndex, "topic",(char*)[Topic UTF8String]);
+			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_SubscribeToTopic");
+            dsMapAddString(dsMapIndex, (char*)"topic",(char*)[Topic UTF8String]);
 
 			if(error == nil)
-				dsMapAddDouble(dsMapIndex, "success",1.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
 			else
-				dsMapAddDouble(dsMapIndex, "success",0.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
 			createSocialAsyncEventWithDSMap(dsMapIndex);
 		}];		
 	}
@@ -88,13 +88,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		[[FIRMessaging messaging] unsubscribeFromTopic: Topic completion:^(NSError * _Nullable error) 
 		{
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","FirebaseCloudMessaging_UnsubscribeFromTopic");
-            dsMapAddString(dsMapIndex, "topic",(char*)[Topic UTF8String]);
+			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_UnsubscribeFromTopic");
+            dsMapAddString(dsMapIndex, (char*)"topic",(char*)[Topic UTF8String]);
 
 			if(error == nil)
-				dsMapAddDouble(dsMapIndex, "success",1.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
 			else
-				dsMapAddDouble(dsMapIndex, "success",0.0);
+				dsMapAddDouble(dsMapIndex,(char*) "success",0.0);
 			createSocialAsyncEventWithDSMap(dsMapIndex);
 		}];
 	}
@@ -117,11 +117,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		[[FIRMessaging messaging] deleteTokenWithCompletion:^(NSError * _Nullable error) 
 		{
 			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","FirebaseCloudMessaging_DeleteToken");
+			dsMapAddString(dsMapIndex,(char*) "type",(char*)"FirebaseCloudMessaging_DeleteToken");
 			if(error == nil)
-				dsMapAddDouble(dsMapIndex, "success",1.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
 			else
-				dsMapAddDouble(dsMapIndex, "success",0.0);
+				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
 			createSocialAsyncEventWithDSMap(dsMapIndex);
 		}];
 	}

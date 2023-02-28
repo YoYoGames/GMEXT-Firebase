@@ -219,13 +219,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             [array addObject:[GameCenter GKSavedGameDic: savedGame]];
         
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,"type","GameCenter_SavedGames_Fetch");
-        dsMapAddString(dsMapIndex,"slots",(char*)[[GameCenter toJSON: array] UTF8String]);
+        dsMapAddString(dsMapIndex,(char*)"type",(char*)"GameCenter_SavedGames_Fetch");
+        dsMapAddString(dsMapIndex,(char*)"slots",(char*)[[GameCenter toJSON: array] UTF8String]);
         if(error == nil)
-            dsMapAddDouble(dsMapIndex,"success",1);
+            dsMapAddDouble(dsMapIndex,(char*)"success",1);
         else
         {
-            dsMapAddDouble(dsMapIndex,"success",0);
+            dsMapAddDouble(dsMapIndex,(char*)"success",0);
             NSLog([error localizedDescription]);
         }
         createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -238,14 +238,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [localPlayer saveGameData:[mNSData dataUsingEncoding:NSUTF8StringEncoding] withName:name completionHandler:^(GKSavedGame * _Nullable savedGame, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_Save");
-        dsMapAddString(dsMapIndex, "name",(char*)[name UTF8String]);
-        dsMapAddString(dsMapIndex, "slot",(char*)[[GameCenter GKSavedGameJSON: savedGame]UTF8String]);
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_Save");
+        dsMapAddString(dsMapIndex, (char*)"name",(char*)[name UTF8String]);
+        dsMapAddString(dsMapIndex, (char*)"slot",(char*)[[GameCenter GKSavedGameJSON: savedGame]UTF8String]);
         if(error == nil)
-            dsMapAddDouble(dsMapIndex, "success",1);
+            dsMapAddDouble(dsMapIndex, (char*)"success",1);
         else
         {
-            dsMapAddDouble(dsMapIndex, "success",0);
+            dsMapAddDouble(dsMapIndex, (char*)"success",0);
             NSLog([error localizedDescription]);
         }
         createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -258,13 +258,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [localPlayer deleteSavedGamesWithName:name completionHandler:^(NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_Delete");
-        dsMapAddString(dsMapIndex, "name",(char*)[name UTF8String]);
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_Delete");
+        dsMapAddString(dsMapIndex, (char*)"name",(char*)[name UTF8String]);
         if(error == nil)
-            dsMapAddDouble(dsMapIndex, "success",1);
+            dsMapAddDouble(dsMapIndex, (char*)"success",1);
         else
         {
-            dsMapAddDouble(dsMapIndex, "success",0);
+            dsMapAddDouble(dsMapIndex, (char*)"success",0);
             NSLog([error localizedDescription]);
         }
         createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -280,9 +280,9 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         {
             NSLog([error localizedDescription]);
             int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_GetData");
-            dsMapAddString(dsMapIndex, "name",(char*)[name UTF8String]);
-            dsMapAddDouble(dsMapIndex, "success",0);
+            dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_GetData");
+            dsMapAddString(dsMapIndex, (char*)"name",(char*)[name UTF8String]);
+            dsMapAddDouble(dsMapIndex, (char*)"success",0);
             createSocialAsyncEventWithDSMap(dsMapIndex);
             return;
         }
@@ -293,19 +293,19 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             [mGKSavedGame loadDataWithCompletionHandler:^(NSData * _Nullable data, NSError * _Nullable error)
             {
                 int dsMapIndex = dsMapCreate();
-                dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_GetData");
-                dsMapAddString(dsMapIndex, "name",(char*)[name UTF8String]);
+                dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_GetData");
+                dsMapAddString(dsMapIndex, (char*)"name",(char*)[name UTF8String]);
                 if(error == nil && data != nil)
                 {
-                    dsMapAddDouble(dsMapIndex, "success",1);
+                    dsMapAddDouble(dsMapIndex, (char*)"success",1);
                     
                     const void *_Nullable rawData = [data bytes];
                     if(rawData != nil)
-                        dsMapAddString(dsMapIndex, "data",(char *)rawData);
+                        dsMapAddString(dsMapIndex, (char*)"data",(char *)rawData);
                 }
                 else
                 {
-                    dsMapAddDouble(dsMapIndex, "success",0);
+                    dsMapAddDouble(dsMapIndex, (char*)"success",0);
                     NSLog([error localizedDescription]);
                 }
                 createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -322,13 +322,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [localPlayer resolveConflictingSavedGames:self.ArrayOfConflicts[(int)conflict_ind] withData:[data dataUsingEncoding:NSUTF8StringEncoding] completionHandler:^(NSArray<GKSavedGame *> * _Nullable savedGames, NSError * _Nullable error)
     {
         int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_ResolveConflict");
-        dsMapAddDouble(dsMapIndex, "conflict_ind",conflict_ind);
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_ResolveConflict");
+        dsMapAddDouble(dsMapIndex, (char*)"conflict_ind",conflict_ind);
         if(error == nil)
-            dsMapAddDouble(dsMapIndex, "success",1);
+            dsMapAddDouble(dsMapIndex, (char*)"success",1);
         else
         {
-            dsMapAddDouble(dsMapIndex, "success",0);
+            dsMapAddDouble(dsMapIndex, (char*)"success",0);
             NSLog([error localizedDescription]);
         }
         createSocialAsyncEventWithDSMap(dsMapIndex);
@@ -348,18 +348,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         [array addObject:[GameCenter GKSavedGameJSON: savedGame]];
     
     int dsMapIndex = dsMapCreate();
-    dsMapAddString(dsMapIndex, "type","GameCenter_SavedGames_HasConflict");
-    dsMapAddDouble(dsMapIndex, "conflict_ind",conflict_ind);
-    dsMapAddString(dsMapIndex, "slots",(char*)[[GameCenter toJSON: array] UTF8String]);
+    dsMapAddString(dsMapIndex, (char*)"type",(char*)"GameCenter_SavedGames_HasConflict");
+    dsMapAddDouble(dsMapIndex, (char*)"conflict_ind",conflict_ind);
+    dsMapAddString(dsMapIndex, (char*)"slots",(char*)[[GameCenter toJSON: array] UTF8String]);
     createSocialAsyncEventWithDSMap(dsMapIndex);
 }
 
 - (void)player:(GKPlayer *)player didModifySavedGame:(GKSavedGame *)savedGame;
 {
     int dsMapIndex = CreateDsMap(4,
-                                 "type", 0.0, "GameCenter_SavedGames_DidModify",
-                                 "player",0.0,[[GameCenter GKPlayerJSON:player]UTF8String],
-                                 "slot",0.0,[[GameCenter GKSavedGameJSON:savedGame] UTF8String]);
+                                 (char*)"type", 0.0, (char*)"GameCenter_SavedGames_DidModify",
+                                 (char*)"player",0.0,[[GameCenter GKPlayerJSON:player]UTF8String],
+                                 (char*)"slot",0.0,[[GameCenter GKSavedGameJSON:savedGame] UTF8String]);
     CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 }
 
@@ -400,8 +400,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         }
         
         int dsMapIndex = CreateDsMap(2,
-                                     "type", 0.0, "GameCenter_Leaderboard_Submit",
-                                     "success", success, (void*)NULL);
+                                     (char*)"type", 0.0, (char*)"GameCenter_Leaderboard_Submit",
+                                     (char*)"success", success, (void*)NULL);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 }
@@ -426,8 +426,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
          }
          
          int dsMapIndex = CreateDsMap(2,
-                                      "type", 0.0, "GameCenter_Achievement_Report",
-                                      "success", success, (void*)NULL);
+                                      (char*)"type", 0.0, (char*)"GameCenter_Achievement_Report",
+                                      (char*)"success", success, (void*)NULL);
          CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
 }
@@ -446,8 +446,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         }
         
         int dsMapIndex = CreateDsMap(2,
-                                 "type", 0.0, "GameCenter_Achievement_ResetAll",
-                                 "success", success, (void*)NULL);
+                                     (char*) "type", 0.0, (char*)"GameCenter_Achievement_ResetAll",
+                                     (char*) "success", success, (void*)NULL);
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
         
     }];

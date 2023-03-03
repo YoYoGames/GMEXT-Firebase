@@ -1,8 +1,8 @@
 #!/bin/bash
 
-utils="$(dirname "$0")/scriptUtils.sh" 
-[[ ! -x "$utils" ]] && chmod +x "$utils"
-[[ $(file "$utils") == *CRLF* ]] && sed -i -e 's/\\r$//' "$utils"
+utils="$(dirname "$0")/scriptUtils.sh"
+[ ! -x "$utils" ] && chmod +x "$utils"
+[[ $(file "$utils") =~ CRLF ]] && sed -i 's/\r$//' "$utils"
 source "$utils"
 
 # ######################################################################################

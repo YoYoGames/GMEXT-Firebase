@@ -312,7 +312,7 @@ function RESTFirebaseFirestore_Document_Update(path,json)
 					FirebaseREST_Firestore_getURL(path),
 					"PATCH",
 					FirebaseREST_Firestore_headerToken(),
-					FirebaseREST_Firestore_jsonEncode(json),
+					FirebaseREST_Firestore_jsonEncode(json)
 				)
 	listener.url += FriebaseREST_Firestore_urlUpdateMask(json)
 	show_debug_message(listener.url)

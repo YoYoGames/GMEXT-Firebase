@@ -13,6 +13,6 @@ if(os_type == os_ios)
 else
 if(os_type == os_android)
 {
-	if(!os_check_permission("android.permission.POST_NOTIFICATIONS"))
+	if(os_check_permission("android.permission.POST_NOTIFICATIONS") != os_permission_granted)
 		os_request_permission("android.permission.POST_NOTIFICATIONS")
 }

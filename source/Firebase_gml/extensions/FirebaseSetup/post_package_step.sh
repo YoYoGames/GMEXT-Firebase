@@ -1,31 +1,23 @@
 #!/bin/bash
 
-utils="$(dirname "$0")/scriptUtils.sh"
-[ ! -x "$utils" ] && chmod +x "$utils"
-[[ $(file "$utils") =~ CRLF ]] && sed -i 's/\r$//' "$utils"
-source "$utils"
-
-# ######################################################################################
-# Macros
-
-pathExtractDirectory "$0" SCRIPT_PATH
-pathExtractBase "$0" EXTENSION_NAME
-toUpper "$EXTENSION_NAME" EXTENSION_NAME
-
-RUNTIME_VERSION_STABLE="2022.9.0.0"
-RUNTIME_VERSION_BETA="2022.900.0.0"
-RUNTIME_VERSION_RED="9.1.1.0"
-
-# ######################################################################################
-# Script Functions
+chmod +x "$(dirname "$0")/scriptUtils.sh"
+source "$(dirname "$0")/scriptUtils.sh"
 
 # ######################################################################################
 # Script Logic
 
+# Always init the script
+scriptInit
+
+# Version locks
+optionGetValue "versionStable" RUNTIME_VERSION_STABLE
+optionGetValue "versionBeta" RUNTIME_VERSION_BETA
+optionGetValue "versionDev" RUNTIME_VERSION_DEV
+
 # Version lock
-checkMinVersion "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_RED" "runtime"
+versionLockCheck "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_RED"
 
-logInformation "We are cleaning the configuration files from your project."
+echo "Removing credential files from your project."
 
-[[ -d "${SCRIPT_PATH}/AndroidSource/ProjectFiles/" ]] && rm -r "${SCRIPT_PATH}/AndroidSource/ProjectFiles/"
-[[ -d "${SCRIPT_PATH}/iOSProjectFiles/" ]] && rm -r "${SCRIPT_PATH}/iOSProjectFiles/"
+itemDelete "$(dirname "$0")/AndroidSource/ProjectFiles/"
+itemDelete "$(dirname "$0")/iOSProjectFiles/"

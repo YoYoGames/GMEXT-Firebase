@@ -1,43 +1,42 @@
 #!/bin/bash
 
-utils="$(dirname "$0")/scriptUtils.sh"
-[ ! -x "$utils" ] && chmod +x "$utils"
-[[ $(file "$utils") =~ CRLF ]] && sed -i 's/\r$//' "$utils"
-source "$utils"
-
-# ######################################################################################
-# Macros
-
-pathExtractDirectory "$0" SCRIPT_PATH
-pathExtractBase "$0" EXTENSION_NAME
-toUpper "$EXTENSION_NAME" EXTENSION_NAME
-
-RUNTIME_VERSION_STABLE="2022.9.0.0"
-RUNTIME_VERSION_BETA="2022.900.0.0"
-RUNTIME_VERSION_RED="9.1.1.0"
+chmod +x "$(dirname "$0")/scriptUtils.sh"
+source "$(dirname "$0")/scriptUtils.sh"
 
 # ######################################################################################
 # Script Functions
 
 setupAndroid() {
+    echo "Copying Android Firebase credentials into your project."
+    optionGetValue "jsonFile" CREDENTIAL_FILE
+
     # Resolve the credentials file path and copy it to the Android ProjectFiles folder
-    pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_jsonFile" FILE_PATH
-    mkdir -p "${SCRIPT_PATH}/AndroidSource/ProjectFiles/" && cp -rf "${FILE_PATH}" "${SCRIPT_PATH}/AndroidSource/ProjectFiles/"
+    pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
+    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles/"
 }
 
 setupiOS() {
+    echo "Copying iOS Firebase credentials into your project."
+    optionGetValue "jsonFile" CREDENTIAL_FILE
+
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
-    pathResolveExisting "$YYprojectDir" "$YYEXTOPT_FirebaseSetup_plistFile" FILE_PATH
-    mkdir -p "${SCRIPT_PATH}/iOSProjectFiles/" && cp -rf "${FILE_PATH}" "${SCRIPT_PATH}/iOSProjectFiles/"
+    pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
+    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles/"
 }
 
 # ######################################################################################
 # Script Logic
 
+# Always init the script
+scriptInit
+
+# Version locks
+optionGetValue "versionStable" RUNTIME_VERSION_STABLE
+optionGetValue "versionBeta" RUNTIME_VERSION_BETA
+optionGetValue "versionDev" RUNTIME_VERSION_DEV
+
 # Version lock
-checkMinVersion "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_RED" "runtime"
+versionLockCheck "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_RED"
 
-logInformation "We are copying the Firebase configuration files into your project."
-
-setup$YYPLATFORM_name
+setup$YYPLATFORM_name "$(dirname "$0")"
 

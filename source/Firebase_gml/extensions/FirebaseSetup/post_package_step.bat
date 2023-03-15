@@ -1,29 +1,24 @@
 @echo off
-
 set Utils="%~dp0\scriptUtils.bat"
-
-:: ######################################################################################
-:: Macros
-
-call %Utils% pathExtractDirectory "%~0" SCRIPT_PATH
-call %Utils% pathExtractBase "%~0" EXTENSION_NAME
-call %Utils% toUpper "%EXTENSION_NAME%" EXTENSION_NAME
 
 :: ######################################################################################
 :: Script Logic
 
+:: Always init the script
+call %Utils% scriptInit
+
 :: Version locks
-set RUNTIME_VERSION_STABLE="2022.9.0.0"
-set RUNTIME_VERSION_BETA="2022.900.0.0"
-set RUNTIME_VERSION_DEV="9.1.1.0"
+call %Utils% optionGetValue "versionStable" RUNTIME_VERSION_STABLE
+call %Utils% optionGetValue "versionBeta" RUNTIME_VERSION_BETA
+call %Utils% optionGetValue "versionDev" RUNTIME_VERSION_DEV
 
 :: Checks IDE and Runtime versions
-call %Utils% checkMinVersion "%YYruntimeVersion%" %RUNTIME_VERSION_STABLE% %RUNTIME_VERSION_BETA% %RUNTIME_VERSION_DEV% runtime
+call %Utils% versionLockCheck "%YYruntimeVersion%" %RUNTIME_VERSION_STABLE% %RUNTIME_VERSION_BETA% %RUNTIME_VERSION_DEV%
 
-call %Utils% logInformation "We are cleaning the configuration files from your project."
+echo "Removing credential files from your project."
 
-if exist "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\AndroidSource\ProjectFiles\" )
-if exist "%SCRIPT_PATH%\iOSProjectFiles\" ( rmdir /s /q "%SCRIPT_PATH%\iOSProjectFiles\" )
+call %Utils% itemDelete "%~dp0\AndroidSource\ProjectFiles\"
+call %Utils% itemDelete "%~dp0\iOSProjectFiles\"
 
-exit 0
+exit %errorlevel%
 

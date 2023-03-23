@@ -14,7 +14,7 @@
   "option_html5_google_analytics_enable": false,
   "option_html5_google_tracking_id": "",
   "option_html5_icon": "fav.ico",
-  "option_html5_index": "index.html",
+  "option_html5_index": "use_default",
   "option_html5_interpolate_pixels": true,
   "option_html5_jsprepend": "",
   "option_html5_loadingbar": "Use Default",

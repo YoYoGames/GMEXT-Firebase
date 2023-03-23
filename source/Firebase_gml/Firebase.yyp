@@ -89,7 +89,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Sprites","folderPath":"folders/YoYo Extensions Assets/Sprites.yy",},
   ],
   "IncludedFiles": [
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"_index.html","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"CloudFunctions - Release.zip","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase reCatcha Web - Release.zip","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase Web Setup - Release.zip","CopyToMask":0,"filePath":"datafiles",},
@@ -110,7 +109,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.2.0.71",
+    "IDEVersion": "2023.2.1.75",
   },
   "resources": [
     {"id":{"name":"Obj_FirebaseAuthentication_GameCenter","path":"objects/Obj_FirebaseAuthentication_GameCenter/Obj_FirebaseAuthentication_GameCenter.yy",},},

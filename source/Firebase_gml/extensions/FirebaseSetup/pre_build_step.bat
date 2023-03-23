@@ -40,3 +40,6 @@ exit /b %errorlevel%
     call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FILE_PATH
     call %Utils% itemCopyTo "%FILE_PATH%" "%~1\iOSProjectFiles\"
 exit /b %errorlevel%
+
+:setupHTML5
+exit /b %errorlevel%

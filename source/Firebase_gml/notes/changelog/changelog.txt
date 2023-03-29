@@ -1,4 +1,9 @@
 
+v1.1.0
+- This is a compatibility version ready to work with LTSr1
+NOTE: The github repo will on be compatible with latest Stable, to use in LTS import
+		the release version local package or use the marketplace asset.
+
 v1.0.0 (FirebaseSetup)
 - Added changelog file (further development should be logged here)
 - Added fixed for FirebaseSetup extension on macOS

@@ -34,9 +34,10 @@ scriptInit
 optionGetValue "versionStable" RUNTIME_VERSION_STABLE
 optionGetValue "versionBeta" RUNTIME_VERSION_BETA
 optionGetValue "versionDev" RUNTIME_VERSION_DEV
+optionGetValue "versionLTS" RUNTIME_VERSION_LTS
 
 # Version lock
-versionLockCheck "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_RED"
+versionLockCheck "$YYruntimeVersion" $RUNTIME_VERSION_STABLE $RUNTIME_VERSION_BETA $RUNTIME_VERSION_RED $RUNTIME_VERSION_LTS
 
 setup$YYPLATFORM_name "$(dirname "$0")"
 

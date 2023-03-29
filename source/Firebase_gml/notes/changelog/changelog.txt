@@ -1,5 +1,8 @@
 
 v1.1.0
+- Added new HTML5 code injection capabilities (no need to copy the 'index.html' anymore)
+	* Check the 'FirebaseSetup' extension under 'HTML5 OPTIONS'
+	* The config struct should have their " (double quotes) replaced with ' (single quotes).
 - This is a compatibility version ready to work with LTSr1
 NOTE: The github repo will on be compatible with latest Stable, to use in LTS import
 		the release version local package or use the marketplace asset.

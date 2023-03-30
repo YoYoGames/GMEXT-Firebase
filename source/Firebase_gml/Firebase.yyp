@@ -89,7 +89,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Sprites","folderPath":"folders/YoYo Extensions Assets/Sprites.yy",},
   ],
   "IncludedFiles": [
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"_index.html","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"CloudFunctions - Release.zip","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase reCatcha Web - Release.zip","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase Web Setup - Release.zip","CopyToMask":0,"filePath":"datafiles",},
@@ -103,7 +102,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Performance_Monitoring_Documentation.pdf","CopyToMask":-1,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Realtime_Database_Documentation.pdf","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Firebase_Remote_Config_Documentation.pdf","CopyToMask":0,"filePath":"datafiles",},
-    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"index.html","CopyToMask":32,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"Local Notifications Extension.pdf","CopyToMask":0,"filePath":"datafiles",},
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"img_close.png","CopyToMask":-1,"filePath":"datafiles/WebView",},
   ],

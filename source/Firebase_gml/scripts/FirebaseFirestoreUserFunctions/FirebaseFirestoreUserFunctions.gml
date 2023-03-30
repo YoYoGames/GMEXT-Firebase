@@ -18,18 +18,18 @@ function FirebaseFirestore_updatedPath(path)
 {
 	if(is_undefined(path))
 	{
-		_isDocument = false
-		_isCollection = false
+		_isDocument = 0.0//false
+		_isCollection = 0.0//false
 	}	
 	else if(FirebaseREST_Firestore_path_isDocument(path))
 	{
-		_isDocument = true
-		_isCollection = false
+		_isDocument = 1.0//true
+		_isCollection = 0.0//false
 	}
 	else
 	{
-		_isDocument = false
-		_isCollection = true
+		_isDocument = 0.0//false
+		_isCollection = 1.0//true
 	}
 }
 

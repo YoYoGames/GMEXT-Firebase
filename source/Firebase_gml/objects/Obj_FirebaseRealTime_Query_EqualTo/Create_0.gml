@@ -2,6 +2,6 @@
 event_inherited();
 
 text = "EqualTo"
-locked = true
+//locked = true
 
 

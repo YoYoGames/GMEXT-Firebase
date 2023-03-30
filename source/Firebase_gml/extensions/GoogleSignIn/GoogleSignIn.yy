@@ -13,7 +13,7 @@
   "author": "",
   "classname": "YYGoogleSignIn",
   "copyToTargets": 9007199254741036,
-  "date": "2021-08-23T15:59:21.4039452+01:00",
+  "date": "2021-08-23T07:59:21.4039452-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "0.0.1",
@@ -52,7 +52,10 @@
   "maccompilerflags": "",
   "maclinkerflags": "",
   "macsourcedir": "",
-  "options": [],
+  "options": [
+    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"option_name","defaultValue":"0","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"937ba959-39fa-4a7d-a854-91b8e5881c11","hidden":false,"listItems":[],"optType":1,},
+    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"option_name1","defaultValue":"0","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"2c3a48ad-0cb9-4e8b-9834-fa19b718339d","hidden":false,"listItems":[],"optType":1,},
+  ],
   "optionsFile": "options.json",
   "packageId": "",
   "parent": {

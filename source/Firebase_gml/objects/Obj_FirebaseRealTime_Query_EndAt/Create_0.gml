@@ -2,4 +2,4 @@
 event_inherited();
 
 text = "EndAt"
-locked = true
+//locked = true

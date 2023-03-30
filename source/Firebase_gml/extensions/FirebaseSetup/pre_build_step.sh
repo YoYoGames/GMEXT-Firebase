@@ -12,7 +12,7 @@ setupAndroid() {
 
     # Resolve the credentials file path and copy it to the Android ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles/"
+    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles/google-services.json"
 }
 
 setupiOS() {
@@ -21,7 +21,10 @@ setupiOS() {
 
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles/"
+    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles/GoogleService-Info.plist"
+}
+
+setupHTML5() {
 }
 
 # ######################################################################################

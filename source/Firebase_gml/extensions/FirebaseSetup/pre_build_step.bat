@@ -30,7 +30,7 @@ exit %errorlevel%
 
     :: Resolve the credentials file path and copy it to the Android ProjectFiles folder
     call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FILE_PATH
-    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\AndroidSource\ProjectFiles\"
+    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\AndroidSource\ProjectFiles\google-services.json"
 exit /b %errorlevel%
 
 :setupIOS
@@ -39,7 +39,7 @@ exit /b %errorlevel%
 
     :: Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FILE_PATH
-    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\iOSProjectFiles\"
+    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\iOSProjectFiles\GoogleService-Info.plist"
 exit /b %errorlevel%
 
 :setupHTML5

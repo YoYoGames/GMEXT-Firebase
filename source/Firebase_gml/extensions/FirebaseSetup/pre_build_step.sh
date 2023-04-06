@@ -26,6 +26,7 @@ setupiOS() {
 }
 
 setupHTML5() {
+    echo "Building for HTML5 no extra setup required"
 }
 
 # ######################################################################################

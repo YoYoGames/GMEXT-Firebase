@@ -13,7 +13,7 @@
   "author": "",
   "classname": "YYFirebaseCrashlytics",
   "copyToTargets": 9007199254741004,
-  "date": "2021-08-03T12:59:33.6450293-07:00",
+  "date": "2021-08-03T20:59:33.6450293+01:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.0.0",

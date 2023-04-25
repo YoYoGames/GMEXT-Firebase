@@ -16,7 +16,7 @@
   "date": "2021-09-28T23:03:54.5279463+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.0.0",
+  "extensionVersion": "2.0.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"YYFirebaseStorage.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseStorage_Cancel","argCount":0,"args":[

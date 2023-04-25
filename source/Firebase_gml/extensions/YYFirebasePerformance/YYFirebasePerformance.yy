@@ -16,7 +16,7 @@
   "date": "2022-11-03T18:13:51.3192218+00:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "0.0.1",
+  "extensionVersion": "1.0.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebasePerformanceMonitoring.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebasePerformance_setPerformanceCollectionEnabled","argCount":0,"args":[

@@ -16,7 +16,7 @@
   "date": "2021-08-28T03:33:16.375664+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.0.0",
+  "extensionVersion": "2.1.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseRealTime.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseRealTime_SDK","argCount":0,"args":[

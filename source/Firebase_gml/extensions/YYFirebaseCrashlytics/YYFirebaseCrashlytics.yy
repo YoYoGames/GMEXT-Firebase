@@ -16,7 +16,7 @@
   "date": "2021-08-03T20:59:33.6450293+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.0.0",
+  "extensionVersion": "2.0.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseCrashlytics.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseCrashlytics_Log","argCount":0,"args":[

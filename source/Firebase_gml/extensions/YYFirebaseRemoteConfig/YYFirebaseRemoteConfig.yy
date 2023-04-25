@@ -16,7 +16,7 @@
   "date": "2021-08-04T17:04:28.9619456+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.0.0",
+  "extensionVersion": "2.0.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseRemoteConfig.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseRemoteConfig_Initialize","argCount":0,"args":[

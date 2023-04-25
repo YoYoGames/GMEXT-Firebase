@@ -16,7 +16,7 @@
   "date": "2021-07-18T06:04:24.0799295+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.0.0",
+  "extensionVersion": "2.0.1",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseCloudMessaging.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseCloudMessaging_GetToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_GetToken","help":"FirebaseCloudMessaging_GetToken()","hidden":false,"kind":4,"returnType":1,},

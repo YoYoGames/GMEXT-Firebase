@@ -28,7 +28,7 @@ if(!Obj_FirebaseRealTime_Query_LimitToFirst.locked)
 
 string_function += ".Read()"
 
-draw_set_font(Font_YoYo_20)
+draw_set_font(Font_YoYo_15)
 draw_set_halign(fa_center)
 draw_set_valign(fa_center)
 

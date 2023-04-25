@@ -1,6 +1,5 @@
-if (asset_get_index("Room_Firebase") != -1) {
-	instance_destroy();
-}
 
-font = Font_YoYo_50;
+valign = fa_middle;
+halign = fa_left;
+font = Font_YoYo_30;
 text = "Firebase Cloud Storage"

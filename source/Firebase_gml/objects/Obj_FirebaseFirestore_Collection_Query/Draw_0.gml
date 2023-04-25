@@ -36,7 +36,7 @@ if(!Obj_FirebaseFirestore_Collection_Query_Limit.locked)
 
 string_function += ".Query()"
 
-draw_set_font(Font_YoYo_20)
+draw_set_font(Font_YoYo_15)
 draw_set_halign(fa_center)
 draw_set_valign(fa_center)
 

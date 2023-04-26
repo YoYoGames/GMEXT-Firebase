@@ -35,7 +35,9 @@ function FirebaseAnalytics_SetUserId(userID)
 	
 function FirebaseAnalytics_SetUserProperty(event,value)
 {
-	firebase.analytics().setUserProperties(event,value);
+	let obj = {};
+	obj[event] = value;
+	firebase.analytics().setUserProperties(obj);
 }
 
 function FirebaseAnalytics_SetConsent(ads,analytics)

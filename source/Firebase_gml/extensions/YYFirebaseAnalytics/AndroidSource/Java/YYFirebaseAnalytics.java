@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.json.JSONObject;
-import org.json.JSONException;
+import java.lang.Exception;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Collections;
 
 import android.util.Log;
+
+import java.util.HashMap;
 
 public class YYFirebaseAnalytics extends RunnerSocial
 {
@@ -62,19 +64,26 @@ public class YYFirebaseAnalytics extends RunnerSocial
 	
 	public void FirebaseAnalytics_SetConsent(double ads,double analytics)
 	{
-		Map map = Collections.emptyMap();
-		
-		if(ads >= 0.5)
-			map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
-		else
-			map.put( FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
-		
-		if(analytics >= 0.5)
-			map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
-		else
-			map.put( FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
-		
-		FirebaseAnalytics.getInstance(activity).setConsent(map);
+		try
+		{
+			Map map = new HashMap();
+			
+			if(ads >= 0.5)
+				map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
+			else
+				map.put( FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
+			
+			if(analytics >= 0.5)
+				map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
+			else
+				map.put( FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
+			
+			FirebaseAnalytics.getInstance(activity).setConsent(map);
+		} 
+		catch (Exception e)
+		{
+			Log.i("yoyo","FirebaseAnalytics_SetConsent Exception: " + e.getMessage());
+		}
 	}
 	
 	public static Bundle jsonStringToBundle(String jsonString)
@@ -95,7 +104,7 @@ public class YYFirebaseAnalytics extends RunnerSocial
 			}
 			return bundle;
 		} 
-		catch (JSONException ignored) 
+		catch (Exception e) 
 		{
 		}
 		return new Bundle();

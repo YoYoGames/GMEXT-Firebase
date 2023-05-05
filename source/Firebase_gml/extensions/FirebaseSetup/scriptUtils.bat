@@ -98,33 +98,50 @@ exit /b 0
 
 :: Copies a file or folder to the specified destination folder (displays log messages)
 :itemCopyTo srcPath destFolder
-
-    call :pathResolve "%cd%" "%~2" destination
-
     if not exist "%~1" (
-        call :logError "Failed to copy '%~1' to '%destination%' (source doesn't exist)."
+        call :logError "Failed to copy '%~1' to '%~2' (source doesn't exist)."
         exit /b 1
     )
 
-    for /f "delims=" %%a in ('dir /b /a:d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "New-Item -ItemType Directory -Force -Path '%destination%'; Copy-Item -Path '%~1' -Destination '%destination%' -Recurse"
-        )
+    :: Check if the source is a file
+    if not exist "%~1\*" (
+        :: Source is a file
+        call :copyFileToDestination "%~1" "%~2"
+    ) else (
+        :: Source is a folder
+        call :copyFolderContents "%~1" "%~2"
     )
 
-    for /f "delims=" %%a in ('dir /b /a:-d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "New-Item -ItemType Directory -Force -Path (Split-Path -Parent '%destination%'); Copy-Item -Path '%~1' -Destination '%destination%' -Force"
-        )
-    )
-    
     :: Check if the copy operation succeeded
     if %errorlevel% neq 0 (
-        call :logError "Failed to copy '%~1' to '%destination%'."
+        call :logError "Failed to copy '%~1' to '%~2'."
         exit /b 1
     )
 
-    call :logInformation "Copied '%~1' to '%destination%'."
+    call :logInformation "Copied '%~1' to '%~2'."
+exit /b 0
+
+:copyFolderContents srcFolder destFolder
+    if not exist "%~2" (
+        mkdir "%~2"
+    )
+    xcopy "%~1\*.*" "%~2" /E /I /Y
+exit /b 0
+
+:copyFileToDestination srcFile destPath
+    set "destDir=%~dp2"
+    set "destFile=%~nx2"
+    
+    if "%~x2"=="" (
+        :: Destination is a folder
+        set "destFile=%~nx1"
+    )
+    
+    if not exist "%destDir%" (
+        mkdir "%destDir%"
+    )
+    
+    copy /Y "%~1" "%destDir%\%destFile%"
 exit /b 0
 
 :: Deletes a file or folder at the specified path (displays log messages)

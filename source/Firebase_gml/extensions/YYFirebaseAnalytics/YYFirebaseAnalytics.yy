@@ -16,7 +16,7 @@
   "date": "2021-07-18T06:04:24.0799295+01:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "2.1.1",
+  "extensionVersion": "2.1.2",
   "files": [
     {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseAnalytics.ext","final":"","functions":[
         {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"FirebaseAnalytics_LogEvent","argCount":0,"args":[
@@ -79,8 +79,8 @@
   "optionsFile": "options.json",
   "packageId": "",
   "parent": {
-    "name": "Firebase Analitycs",
-    "path": "folders/Firebase Analitycs.yy",
+    "name": "Firebase Analytics",
+    "path": "folders/Firebase Analytics.yy",
   },
   "productId": "",
   "sourcedir": "",

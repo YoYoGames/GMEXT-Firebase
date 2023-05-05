@@ -2,8 +2,8 @@
   "FolderOrderSettings": [
     {"name":"__ReleaseThings__","order":15,"path":"folders/__ReleaseThings__.yy",},
     {"name":"Firebase Authentication Extras Logins (Extensions)","order":2,"path":"folders/__ReleaseThings__/Firebase Authentication Extras Logins (Extensions).yy",},
-    {"name":"Firebase Analitycs","order":2,"path":"folders/Firebase Analitycs.yy",},
-    {"name":"Objects","order":5,"path":"folders/Firebase Analitycs/Objects.yy",},
+    {"name":"Firebase Analytics","order":2,"path":"folders/Firebase Analytics.yy",},
+    {"name":"Objects","order":5,"path":"folders/Firebase Analytics/Objects.yy",},
     {"name":"Firebase Authentication Extras Logins","order":4,"path":"folders/Firebase Authentication Extras Logins.yy",},
     {"name":"Apple","order":2,"path":"folders/Firebase Authentication Extras Logins/Apple.yy",},
     {"name":"Scripts","order":3,"path":"folders/Firebase Authentication Extras Logins/Apple/Scripts.yy",},

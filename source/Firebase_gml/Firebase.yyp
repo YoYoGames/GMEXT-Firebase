@@ -13,8 +13,8 @@
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"__ReleaseThings__","folderPath":"folders/__ReleaseThings__.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Firebase Authentication Extras Logins (Extensions)","folderPath":"folders/__ReleaseThings__/Firebase Authentication Extras Logins (Extensions).yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Firebase Analitycs","folderPath":"folders/Firebase Analitycs.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Firebase Analitycs/Objects.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Firebase Analytics","folderPath":"folders/Firebase Analytics.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Firebase Analytics/Objects.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Firebase Authentication Extras Logins","folderPath":"folders/Firebase Authentication Extras Logins.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Apple","folderPath":"folders/Firebase Authentication Extras Logins/Apple.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Scripts","folderPath":"folders/Firebase Authentication Extras Logins/Apple/Scripts.yy",},

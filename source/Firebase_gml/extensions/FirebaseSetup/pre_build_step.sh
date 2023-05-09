@@ -18,7 +18,7 @@ setupAndroid() {
 
 setupiOS() {
     echo "Copying iOS Firebase credentials into your project."
-    optionGetValue "jsonFile" CREDENTIAL_FILE
+    optionGetValue "plistFile" CREDENTIAL_FILE
 
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH

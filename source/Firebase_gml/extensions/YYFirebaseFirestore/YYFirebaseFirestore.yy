@@ -16,14 +16,14 @@
     "date": "2021-08-28T03:33:55.4551561+01:00",
     "description": "",
     "exportToGame": true,
-    "extensionVersion": "2.4.0",
+    "extensionVersion": "2.4.1",
     "files": [
         {
             "resourceType": "GMExtensionFile",
             "resourceVersion": "1.0",
             "name": "",
             "constants": [],
-            "copyToTargets": -1,
+            "copyToTargets": 44,
             "filename": "FirebaseFirestore.ext",
             "final": "",
             "functions": [
@@ -61,7 +61,7 @@
             "resourceVersion": "1.0",
             "name": "",
             "constants": [],
-            "copyToTargets": -1,
+            "copyToTargets": 32,
             "filename": "FirebaseFirestore.js",
             "final": "",
             "functions": [

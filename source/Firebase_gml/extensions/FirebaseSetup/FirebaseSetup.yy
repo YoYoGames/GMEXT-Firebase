@@ -16,7 +16,7 @@
   "date": "2021-12-14T10:57:03.5622447+00:00",
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "1.1.0",
+  "extensionVersion": "1.2.0",
   "files": [],
   "gradleinject": "\r\n        implementation platform('com.google.firebase:firebase-bom:31.1.1')\r\n",
   "hasConvertedCodeInjection": true,

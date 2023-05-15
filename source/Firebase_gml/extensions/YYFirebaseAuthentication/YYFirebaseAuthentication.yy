@@ -16,14 +16,14 @@
     "date": "2021-08-28T03:34:23.6487954+01:00",
     "description": "",
     "exportToGame": true,
-    "extensionVersion": "2.1.0",
+    "extensionVersion": "2.1.1",
     "files": [
         {
             "resourceType": "GMExtensionFile",
             "resourceVersion": "1.0",
             "name": "",
             "constants": [],
-            "copyToTargets": -1,
+            "copyToTargets": 44,
             "filename": "FirebaseAuthentication.ext",
             "final": "",
             "functions": [
@@ -663,7 +663,7 @@
             "resourceVersion": "1.0",
             "name": "",
             "constants": [],
-            "copyToTargets": -1,
+            "copyToTargets": 32,
             "filename": "FirebaseAuthentication.js",
             "final": "",
             "functions": [

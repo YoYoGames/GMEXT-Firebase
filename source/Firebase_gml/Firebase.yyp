@@ -108,7 +108,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.4.0.84",
+    "IDEVersion": "2023.600.0.330",
   },
   "resources": [
     {"id":{"name":"Obj_FirebaseAuthentication_GameCenter","path":"objects/Obj_FirebaseAuthentication_GameCenter/Obj_FirebaseAuthentication_GameCenter.yy",},},

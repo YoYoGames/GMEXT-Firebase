@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
+
 import java.lang.Exception;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -99,13 +101,25 @@ public class YYFirebaseAnalytics extends RunnerSocial
 				Object aObj = jsonObject.get(key);
 				if(aObj instanceof String)
 					bundle.putString(key,jsonObject.getString(key));
-				else
+				else if (aObj instanceof JSONArray){
+					JSONArray jsonArray = jsonObject.getJSONArray(key);
+					for(int i = 0; i < jsonArray.length(); i++)
+					{
+						JSONObject obj = jsonArray.getJSONObject(i);
+						
+						Bundle itemBundle = new Bundle();
+						itemBundle.putString("item_id", obj.getString("item_id"));
+						itemBundle.putString("item_name", obj.getString("item_name"));
+						bundle.putParcelableArray(key, new Bundle[] {itemBundle});
+					}
+				} else
 					bundle.putDouble(key,jsonObject.getDouble(key));
 			}
 			return bundle;
 		} 
 		catch (Exception e) 
 		{
+					Log.e("yoyo", "jsonStringToBundle Exception: " + e.getMessage(), e);
 		}
 		return new Bundle();
 	}

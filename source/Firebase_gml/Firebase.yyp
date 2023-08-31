@@ -108,7 +108,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.600.0.330",
+    "IDEVersion": "2023.800.0.394",
   },
   "resources": [
     {"id":{"name":"Obj_FirebaseAuthentication_GameCenter","path":"objects/Obj_FirebaseAuthentication_GameCenter/Obj_FirebaseAuthentication_GameCenter.yy",},},
@@ -369,6 +369,7 @@
     {"roomId":{"name":"Room_FirebaseFirestore_Query","path":"rooms/Room_FirebaseFirestore_Query/Room_FirebaseFirestore_Query.yy",},},
     {"roomId":{"name":"Room_FirebasePerformance","path":"rooms/Room_FirebasePerformance/Room_FirebasePerformance.yy",},},
   ],
+  "templateType": null,
   "TextureGroups": [
     {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"targets":-1,},
   ],

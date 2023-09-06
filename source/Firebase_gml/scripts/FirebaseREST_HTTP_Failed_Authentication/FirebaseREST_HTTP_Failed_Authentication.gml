@@ -14,13 +14,18 @@ function FirebaseREST_HTTP_Failed_Authentication()
 			else
 			{
 				var list = map[?"default"]
-				if(ds_exists(list,ds_type_list))
-				if(ds_list_size(list))
-					map = list[|0]
-				
-				if(ds_map_exists(map,"error"))
-				if(ds_map_exists(map[?"error"],"message"))
-					errorMessage = map[?"error"][?"message"]
+				if(is_string(list))
+					errorMessage = list
+				else
+				{
+					if(ds_exists(list,ds_type_list))
+					if(ds_list_size(list))
+						map = list[|0]
+					
+					if(ds_map_exists(map,"error"))
+					if(ds_map_exists(map[?"error"],"message"))
+						errorMessage = map[?"error"][?"message"]
+				}
 			}
 		}
 		else

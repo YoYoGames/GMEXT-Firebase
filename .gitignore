@@ -1,2 +1,4 @@
 source/Firebase_gml/options/extensions/*
 output/
+
+source/Firebase_gml/extensions/FirebaseSetup/iOSProjectFiles/GoogleService-Info.plist

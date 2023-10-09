@@ -155,23 +155,13 @@ exit /b 0
         exit /b 0
     )
 
-    :: Set environment variables for target
-    set "PS_TARGET=%target%"
-
-    for /f "delims=" %%a in ('dir /b /a:d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "Remove-Item -Path $env:PS_TARGET -Recurse -Force"
-        )
+    IF EXIST "%target%\" (
+        RD /S /Q "%target%"
+        call :logInformation "Folder '%target%' deleted."
+    ) ELSE (
+        DEL /F /Q "%target%"
+        call :logInformation "File '%target%' deleted."
     )
-
-    for /f "delims=" %%a in ('dir /b /a:-d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "Remove-Item -Path $env:PS_TARGET -Force"
-        )
-    )
-
-    :: Clean up environment variables
-    set "PS_TARGET="
     
     :: Check if the deletion operation succeeded
     if %errorlevel% neq 0 (

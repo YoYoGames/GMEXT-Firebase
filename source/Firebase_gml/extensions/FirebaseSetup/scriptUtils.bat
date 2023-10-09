@@ -155,11 +155,11 @@ exit /b 0
         exit /b 0
     )
 
-    IF EXIST "%target%\" (
-        RD /S /Q "%target%"
+    IF exist "%target%\" (
+        rd /s /q "%target%"
         call :logInformation "Folder '%target%' deleted."
     ) ELSE (
-        DEL /F /Q "%target%"
+        del /f /q "%target%"
         call :logInformation "File '%target%' deleted."
     )
     

@@ -13,7 +13,7 @@
   ],
   "exportToGame": true,
   "supportedTargets": -1,
-  "extensionVersion": "2.2.2",
+  "extensionVersion": "2.2.3",
   "packageId": "",
   "productId": "",
   "author": "",

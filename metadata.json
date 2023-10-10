@@ -52,7 +52,7 @@
         "extensionFile": "source/Firebase_gml/extensions/YYFirebaseStorage/YYFirebaseStorage.yy",
         "packageId": "com.yoyogames.firebasecloudstorageext",
         "packageName": "Firebase Cloud Storage Ext",
-        "packageVersion": "2.1.1",
+        "packageVersion": "2.1.2",
         "includeFolders": "Firebase Storage,Firebase Utils,YoYo Extensions Assets",
         "includeResources": "FirebaseSetup,Firebase_Cloud_Storage_Documentation.pdf,Firebase Web Setup - Release.zip",
         "excludeFolders": null,

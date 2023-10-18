@@ -105,36 +105,29 @@ exit /b 0
     endlocal
 exit /b 0
 
-:: Copies a file or folder to the specified destination folder (displays log messages)
-:itemCopyTo srcPath destFolder
-
-    call :pathResolve "%cd%" "%~2" destination
-
+:: Copies a file, folder, or files based on a pattern to a specified destination folder
+:itemCopyTo srcPathOrPattern destFolder
     if not exist "%~1" (
-        call :logError "Failed to copy '%~1' to '%destination%' (source doesn't exist)."
+        call :logError "Failed to copy '%~1' to '%~2' (source doesn't exist)."
         exit /b 1
     )
 
-    :: Set environment variables for srcPath and destination
-    set "PS_SRCPATH=%~1"
-    set "PS_DESTINATION=%destination%"
+    call :pathResolve "%cd%" "%~2" destination
 
-    for /f "delims=" %%a in ('dir /b /a:d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "New-Item -ItemType Directory -Force -Path $env:PS_DESTINATION; Copy-Item -Path $env:PS_SRCPATH -Destination $env:PS_DESTINATION -Recurse"
+    :: Create destination folder if it doesn't exist
+    if not exist "%~2" (
+        mkdir "%destination%"
+    )
+
+    :: Determine if source is a directory, file, or pattern and copy accordingly
+    if exist "%~1\" (
+        xcopy /E /Y "%~1" "%destination%\"
+    ) else (
+        for %%f in (%~1) do (
+            copy /Y "%%f" "%destination%\"
         )
     )
 
-    for /f "delims=" %%a in ('dir /b /a:-d "%~1" 2^>nul') do (
-        if "%%~a" == "%~nx1" (
-            powershell -NoLogo -NoProfile -Command "New-Item -ItemType Directory -Force -Path (Split-Path -Parent $env:PS_DESTINATION); Copy-Item -Path $env:PS_SRCPATH -Destination $env:PS_DESTINATION -Force"
-        )
-    )
-
-    :: Clean up environment variables
-    set "PS_SRCPATH="
-    set "PS_DESTINATION="
-    
     :: Check if the copy operation succeeded
     if %errorlevel% neq 0 (
         call :logError "Failed to copy '%~1' to '%destination%'."
@@ -143,7 +136,6 @@ exit /b 0
 
     call :logInformation "Copied '%~1' to '%destination%'."
 exit /b 0
-
 
 :: Deletes a file or folder at the specified path (displays log messages)
 :itemDelete targetPath

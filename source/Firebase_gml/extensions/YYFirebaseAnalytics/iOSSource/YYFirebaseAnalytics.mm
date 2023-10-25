@@ -48,7 +48,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
     -(void) FirebaseAnalytics_LogEvent:(NSString*) event Value:(NSString*) json
     {
-        [FIRAnalytics logEventWithName:event parameters:[YYFirebaseAnalytics makeDic: json]];
+        [FIRAnalytics logEventWithName:event parameters:[YYFirebaseAnalytics jsonStringToMutableDictionary: json]];
     }
     
     -(void) FirebaseAnalytics_ResetAnalyticsData:(NSString*) event Value:(NSString*) JSON_value
@@ -58,7 +58,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     
     -(void) FirebaseAnalytics_SetDefaultEventParameters:(NSString*) json
     {
-        [FIRAnalytics setDefaultEventParameters:[YYFirebaseAnalytics makeDic: json]];
+        [FIRAnalytics setDefaultEventParameters:[YYFirebaseAnalytics jsonStringToMutableDictionary: json]];
     }
     
     -(void) FirebaseAnalytics_SetSessionTimeoutInterval:(double) time
@@ -96,18 +96,23 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         */
     }
     
-    +(NSMutableDictionary*) makeDic:(NSString*) json
-    {
-        NSError *jsonError;
-        NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dicValues = [NSJSONSerialization JSONObjectWithData:objectData options:NSJSONReadingMutableContainers error:&jsonError];
+    + (NSMutableDictionary *)jsonStringToMutableDictionary:(NSString *)jsonString {
+        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error = nil;
         
-        NSMutableDictionary *mParams = [NSMutableDictionary new];
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
         
-        for(NSString *key in dicValues)
-            [mParams setValue:[dicValues objectForKey:key] forKey:key];
+        if (error) {
+            NSLog(@"Failed to convert JSON string to NSMutableDictionary: %@", [error localizedDescription]);
+            return [NSMutableDictionary dictionary];
+        }
         
-        return mParams;
+        if ([jsonObject isKindOfClass:[NSMutableDictionary class]]) {
+            return (NSMutableDictionary *)jsonObject;
+        } else {
+            NSLog(@"JSON string did not produce a dictionary as expected.");
+            return [NSMutableDictionary dictionary];
+        }
     }
 
 @end

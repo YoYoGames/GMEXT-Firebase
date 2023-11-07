@@ -14,8 +14,8 @@ function FirebaseREST_HTTP_Failed_Authentication()
 			else
 			{
 				var list = map[?"default"]
-				if(is_string(list))
-					errorMessage = list
+				if(!is_real(list))
+					errorMessage = string(list)
 				else
 				{
 					if(ds_exists(list,ds_type_list))

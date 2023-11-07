@@ -13,7 +13,7 @@ setupAndroid() {
 
     # Resolve the credentials file path and copy it to the Android ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles/google-services.json"
+    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles"
 }
 
 setupiOS() {
@@ -22,7 +22,7 @@ setupiOS() {
 
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles/GoogleService-Info.plist"
+    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles"
 }
 
 setupHTML5() {
@@ -43,6 +43,10 @@ optionGetValue "versionLTS" RUNTIME_VERSION_LTS
 
 # Version lock
 versionLockCheck "$YYruntimeVersion" $RUNTIME_VERSION_STABLE $RUNTIME_VERSION_BETA $RUNTIME_VERSION_RED $RUNTIME_VERSION_LTS
+
+# Delete pre-existing credential files
+itemDelete "$(dirname "$0")/AndroidSource/ProjectFiles/"
+itemDelete "$(dirname "$0")/iOSProjectFiles/"
 
 setup$YYPLATFORM_name "$(dirname "$0")"
 

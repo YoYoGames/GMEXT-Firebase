@@ -17,6 +17,10 @@ call %Utils% optionGetValue "versionLTS" RUNTIME_VERSION_LTS
 :: Checks IDE and Runtime versions
 call %Utils% versionLockCheck "%YYruntimeVersion%" %RUNTIME_VERSION_STABLE% %RUNTIME_VERSION_BETA% %RUNTIME_VERSION_DEV% %RUNTIME_VERSION_LTS%
 
+:: Delete pre-existing credential files
+call %Utils% itemDelete "%~dp0\AndroidSource\ProjectFiles\"
+call %Utils% itemDelete "%~dp0\iOSProjectFiles\"
+
 call :setup%YYPLATFORM_name% "%~dp0"
 
 exit %errorlevel%
@@ -30,7 +34,7 @@ exit %errorlevel%
 
     :: Resolve the credentials file path and copy it to the Android ProjectFiles folder
     call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FILE_PATH
-    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\AndroidSource\ProjectFiles\google-services.json"
+    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\AndroidSource\ProjectFiles"
 exit /b %errorlevel%
 
 :setupIOS
@@ -39,7 +43,7 @@ exit /b %errorlevel%
 
     :: Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FILE_PATH
-    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\iOSProjectFiles\GoogleService-Info.plist"
+    call %Utils% itemCopyTo "%FILE_PATH%" "%~1\iOSProjectFiles"
 exit /b %errorlevel%
 
 :setupHTML5

@@ -161,27 +161,26 @@ itemCopyTo() {
     # Resolve the destination folder to an absolute path
     pathResolve "$PWD" "$destination" resolved_destination
 
-    # If 'resolved_destination' ends with a "/", ensure the path exists
-    if [[ "${resolved_destination: -1}" == "/" ]]; then
-        mkdir -p "$resolved_destination"
-    else
-        # Create all parent directories up until the destination path
-        parent_directory=$(dirname "$resolved_destination")
-        mkdir -p "$parent_directory"
-    fi
-
-    if [ -d "$source" ]; then
-        # Source is a folder
-        cp -rf "$source" "$resolved_destination"
-    elif [ -f "$source" ]; then
-        # Source is a file
-        cp -f "$source" "$resolved_destination"
-    else
-        logError "Failed to copy '$source' does not exist or is not accessible."
+    # Check if source exists
+    if [[ ! -e "$source" ]]; then
+        logError "Failed to copy '$source' to '$resolved_destination' (source doesn't exist)."
         exit 1
     fi
 
-    if [ $? -ne 0 ]; then
+    # Create the destination folder if it doesn't exist
+    mkdir -p "$resolved_destination"
+
+    # Copy the source to the destination
+    if [[ -d "$source" ]]; then
+        # Source is a directory
+        cp -r "$source"/* "$resolved_destination"
+    else
+        # Source is a file or pattern
+        cp "$source" "$resolved_destination"
+    fi
+
+    # Check if the copy operation succeeded
+    if [[ $? -ne 0 ]]; then
         logError "Failed to copy '$source' to '$resolved_destination'."
         exit 1
     fi

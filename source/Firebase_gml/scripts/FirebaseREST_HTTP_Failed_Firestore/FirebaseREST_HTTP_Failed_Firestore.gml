@@ -6,23 +6,18 @@ function FirebaseREST_HTTP_Failed_Firestore()
 		var map = map_error
 		if(ds_map_exists(map,"default"))//Some times this is a list....
 		{
-			if(map[?"default"] = "")
-				errorMessage = ""
+			var list = map[?"default"]
+			if(!is_real(list))
+				errorMessage = "Firebase Error: Expecting ds_list index"
 			else
 			{
-				var list = map[?"default"]
-				if(!is_real(list))
-					errorMessage = string(list)
-				else
-				{
-					if(ds_exists(list,ds_type_list))
-					if(ds_list_size(list))
-						map = list[|0]
+				if(ds_exists(list,ds_type_list))
+				if(ds_list_size(list))
+					map = list[|0]
 					
-					if(ds_map_exists(map,"error"))
-					if(ds_map_exists(map[?"error"],"message"))
-						errorMessage = map[?"error"][?"message"]
-				}
+				if(ds_map_exists(map,"error"))
+				if(ds_map_exists(map[?"error"],"message"))
+					errorMessage = map[?"error"][?"message"]
 			}
 		}
 		else

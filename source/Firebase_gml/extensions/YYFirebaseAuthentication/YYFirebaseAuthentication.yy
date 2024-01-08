@@ -2,126 +2,117 @@
   "resourceType": "GMExtension",
   "resourceVersion": "1.2",
   "name": "YYFirebaseAuthentication",
-  "optionsFile": "options.json",
-  "options": [
-    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"WebAPIKey","extensionId":null,"guid":"2df2e529-85ff-4387-bb93-5f6df9f9f215","displayName":"WebAPI Key","listItems":[],"description":"Get this from your Firebase project's dashboard.","defaultValue":"","exportToINI":false,"hidden":false,"optType":2,},
-    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"Config","extensionId":null,"guid":"04e841fc-69d6-4b67-9520-26032dc733fb","displayName":"Mode (SDK or REST)","listItems":[
-        "SDKs_Only",
-        "SDKs_When_Available",
-        "Only_REST_API",
-      ],"description":"The SDK is limited to some platforms (check the manual)","defaultValue":"SDKs_When_Available","exportToINI":false,"hidden":false,"optType":6,},
-  ],
-  "exportToGame": true,
-  "supportedTargets": -1,
-  "extensionVersion": "2.1.3",
-  "packageId": "",
-  "productId": "",
-  "author": "",
-  "date": "2021-08-28T03:34:23.6487954+01:00",
-  "license": "",
-  "description": "",
-  "helpfile": "",
-  "iosProps": true,
-  "tvosProps": false,
+  "androidactivityinject": "",
+  "androidclassname": "YYFirebaseAuthentication",
+  "androidcodeinjection": "\r\n<YYAndroidGradleDependencies>\r\n        implementation 'com.google.firebase:firebase-auth'\r\n</YYAndroidGradleDependencies>\r\n",
+  "androidinject": "",
+  "androidmanifestinject": "",
+  "androidPermissions": [],
   "androidProps": true,
-  "html5Props": false,
-  "installdir": "",
+  "androidsourcedir": "",
+  "author": "",
+  "classname": "YYFirebaseAuthentication",
+  "copyToTargets": 3035426170322551022,
+  "date": "2021-08-27T19:34:23.6487954-07:00",
+  "description": "",
+  "exportToGame": true,
+  "extensionVersion": "2.1.3",
   "files": [
-    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication.ext","origname":"","init":"","final":"","kind":4,"uncompress":false,"functions":[
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithCustomToken","externalName":"SDKFirebaseAuthentication_SignInWithCustomToken","kind":4,"help":"SDKFirebaseAuthentication_SignInWithCustomToken(token)","hidden":false,"returnType":2,"argCount":0,"args":[
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"FirebaseAuthentication.ext","constants":[],"copyToTargets":44,"filename":"FirebaseAuthentication.ext","final":"","functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithCustomToken","argCount":0,"args":[
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Email","externalName":"SDKFirebaseAuthentication_SignIn_Email","kind":4,"help":"SDKFirebaseAuthentication_SignIn_Email(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignUp_Email","externalName":"SDKFirebaseAuthentication_SignUp_Email","kind":4,"help":"SDKFirebaseAuthentication_SignUp_Email(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithCustomToken","help":"SDKFirebaseAuthentication_SignInWithCustomToken(token)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Email","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Anonymously","externalName":"SDKFirebaseAuthentication_SignIn_Anonymously","kind":4,"help":"SDKFirebaseAuthentication_SignIn_Anonymously()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendPasswordResetEmail","externalName":"SDKFirebaseAuthentication_SendPasswordResetEmail","kind":4,"help":"SDKFirebaseAuthentication_SendPasswordResetEmail(email)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeEmail","externalName":"SDKFirebaseAuthentication_ChangeEmail","kind":4,"help":"SDKFirebaseAuthentication_ChangeEmail(email)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePassword","externalName":"SDKFirebaseAuthentication_ChangePassword","kind":4,"help":"SDKFirebaseAuthentication_ChangePassword(password)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UpdateProfile","externalName":"SDKFirebaseAuthentication_UpdateProfile","kind":4,"help":"SDKFirebaseAuthentication_UpdateProfile(TODO...l","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendEmailVerification","externalName":"SDKFirebaseAuthentication_SendEmailVerification","kind":4,"help":"SDKFirebaseAuthentication_SendEmailVerification()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_DeleteAccount","externalName":"SDKFirebaseAuthentication_DeleteAccount","kind":4,"help":"SDKFirebaseAuthentication_DeleteAccount()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignOut","externalName":"SDKFirebaseAuthentication_SignOut","kind":4,"help":"SDKFirebaseAuthentication_SignOut()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetUserData","externalName":"SDKFirebaseAuthentication_GetUserData","kind":4,"help":"SDKFirebaseAuthentication_GetUserData()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithOAuthCredential","externalName":"SDKFirebaseAuthentication_LinkWithOAuthCredential","kind":4,"help":"SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_Email","help":"SDKFirebaseAuthentication_SignIn_Email(email,password)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignUp_Email","argCount":0,"args":[
             1,
             1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignUp_Email","help":"SDKFirebaseAuthentication_SignUp_Email(email,password)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Anonymously","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_Anonymously","help":"SDKFirebaseAuthentication_SignIn_Anonymously()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendPasswordResetEmail","argCount":0,"args":[
             1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SendPasswordResetEmail","help":"SDKFirebaseAuthentication_SendPasswordResetEmail(email)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeEmail","argCount":0,"args":[
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UnlinkProvider","externalName":"SDKFirebaseAuthentication_UnlinkProvider","kind":4,"help":"SDKFirebaseAuthentication_UnlinkProvider(provider)","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_RefreshUserData","externalName":"SDKFirebaseAuthentication_RefreshUserData","kind":4,"help":"SDKFirebaseAuthentication_RefreshUserData()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetIdToken","externalName":"SDKFirebaseAuthentication_GetIdToken","kind":4,"help":"SDKFirebaseAuthentication_GetIdToken()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithEmailPassword","externalName":"SDKFirebaseAuthentication_LinkWithEmailPassword","kind":4,"help":"SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangeEmail","help":"SDKFirebaseAuthentication_ChangeEmail(email)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePassword","argCount":0,"args":[
             1,
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeDisplayName","externalName":"SDKFirebaseAuthentication_ChangeDisplayName","kind":4,"help":"SDKFirebaseAuthentication_ChangeDisplayName(name)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePhotoURL","externalName":"SDKFirebaseAuthentication_ChangePhotoURL","kind":4,"help":"SDKFirebaseAuthentication_ChangePhotoURL(photoURL)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_OAuth","externalName":"SDKFirebaseAuthentication_SignIn_OAuth","kind":4,"help":"SDKFirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangePassword","help":"SDKFirebaseAuthentication_ChangePassword(password)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UpdateProfile","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_UpdateProfile","help":"SDKFirebaseAuthentication_UpdateProfile(TODO...l","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendEmailVerification","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SendEmailVerification","help":"SDKFirebaseAuthentication_SendEmailVerification()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_DeleteAccount","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_DeleteAccount","help":"SDKFirebaseAuthentication_DeleteAccount()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignOut","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SignOut","help":"SDKFirebaseAuthentication_SignOut()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetUserData","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_GetUserData","help":"SDKFirebaseAuthentication_GetUserData()","hidden":false,"kind":4,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithOAuthCredential","argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_GameCenter","externalName":"SDKFirebaseAuthentication_SignIn_GameCenter","kind":4,"help":"SDKFirebaseAuthentication_SignIn_GameCenter()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithGameCenter","externalName":"SDKFirebaseAuthentication_LinkWithGameCenter","kind":4,"help":"SDKFirebaseAuthentication_LinkWithGameCenter()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithPhoneNumber","externalName":"SDKFirebaseAuthentication_SignInWithPhoneNumber","kind":4,"help":"SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessioninfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithOAuthCredential","help":"SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UnlinkProvider","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_UnlinkProvider","help":"SDKFirebaseAuthentication_UnlinkProvider(provider)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_RefreshUserData","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_RefreshUserData","help":"SDKFirebaseAuthentication_RefreshUserData()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetIdToken","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_GetIdToken","help":"SDKFirebaseAuthentication_GetIdToken()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithEmailPassword","argCount":0,"args":[
+            1,
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithEmailPassword","help":"SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeDisplayName","argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangeDisplayName","help":"SDKFirebaseAuthentication_ChangeDisplayName(name)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePhotoURL","argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangePhotoURL","help":"SDKFirebaseAuthentication_ChangePhotoURL(photoURL)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_OAuth","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithPhoneNumber","externalName":"SDKFirebaseAuthentication_LinkWithPhoneNumber","kind":4,"help":"SDKFirebaseAuthentication_LinkWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_OAuth","help":"SDKFirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_GameCenter","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_GameCenter","help":"SDKFirebaseAuthentication_SignIn_GameCenter()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithGameCenter","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithGameCenter","help":"SDKFirebaseAuthentication_LinkWithGameCenter()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithPhoneNumber","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","externalName":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","kind":4,"help":"SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithPhoneNumber","help":"SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessioninfo)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithPhoneNumber","argCount":0,"args":[
+            1,
+            1,
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithPhoneNumber","help":"SDKFirebaseAuthentication_LinkWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithEmail","externalName":"SDKFirebaseAuthentication_ReauthenticateWithEmail","kind":4,"help":"SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","help":"SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithEmail","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","externalName":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","kind":4,"help":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithEmail","help":"SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithProvider","externalName":"SDKFirebaseAuthentication_SignInWithProvider","kind":4,"help":"SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","help":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithProvider","externalName":"SDKFirebaseAuthentication_LinkWithProvider","kind":4,"help":"SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithProvider","help":"SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":4,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","externalName":"SDKFirebaseAuthentication_ReauthenticateWithProvider","kind":4,"help":"SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithProvider","help":"SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":4,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter","externalName":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter","kind":4,"help":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener","externalName":"SDKFirebaseAuthentication_IdTokenListener","kind":4,"help":"SDKFirebaseAuthentication_IdTokenListener()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener_Remove","externalName":"SDKFirebaseAuthentication_IdTokenListener_Remove","kind":4,"help":"SDKFirebaseAuthentication_IdTokenListener_Remove()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":44,"usesRunnerInterface":false,"order":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithProvider","help":"SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":4,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter","help":"SDKFirebaseAuthentication_ReauthenticateWithGameCenter()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_IdTokenListener","help":"SDKFirebaseAuthentication_IdTokenListener()","hidden":false,"kind":4,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener_Remove","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_IdTokenListener_Remove","help":"SDKFirebaseAuthentication_IdTokenListener_Remove()","hidden":false,"kind":4,"returnType":2,},
+      ],"init":"","kind":4,"order":[
         {"name":"SDKFirebaseAuthentication_GetUserData","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_SignInWithCustomToken","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_SignIn_Email","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
@@ -155,100 +146,100 @@
         {"name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_IdTokenListener","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_IdTokenListener_Remove","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
-      ],},
-    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"FirebaseAuthentication.js","origname":"","init":"","final":"","kind":5,"uncompress":false,"functions":[
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetUserData","externalName":"SDKFirebaseAuthentication_GetUserData","kind":5,"help":"SDKFirebaseAuthentication_GetUserData()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithCustomToken","externalName":"SDKFirebaseAuthentication_SignInWithCustomToken","kind":5,"help":"SDKFirebaseAuthentication_SignInWithCustomToken(token)","hidden":false,"returnType":2,"argCount":0,"args":[
+      ],"origname":"","ProxyFiles":[],"uncompress":false,"usesRunnerInterface":false,},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"FirebaseAuthentication.js","constants":[],"copyToTargets":32,"filename":"FirebaseAuthentication.js","final":"","functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetUserData","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_GetUserData","help":"SDKFirebaseAuthentication_GetUserData()","hidden":false,"kind":5,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithCustomToken","argCount":0,"args":[
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Email","externalName":"SDKFirebaseAuthentication_SignIn_Email","kind":5,"help":"SDKFirebaseAuthentication_SignIn_Email(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignUp_Email","externalName":"SDKFirebaseAuthentication_SignUp_Email","kind":5,"help":"SDKFirebaseAuthentication_SignUp_Email(email,passoword)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithCustomToken","help":"SDKFirebaseAuthentication_SignInWithCustomToken(token)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Email","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Anonymously","externalName":"SDKFirebaseAuthentication_SignIn_Anonymously","kind":5,"help":"SDKFirebaseAuthentication_SignIn_Anonymously()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendPasswordResetEmail","externalName":"SDKFirebaseAuthentication_SendPasswordResetEmail","kind":5,"help":"SDKFirebaseAuthentication_SendPasswordResetEmail(email)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeEmail","externalName":"SDKFirebaseAuthentication_ChangeEmail","kind":5,"help":"SDKFirebaseAuthentication_ChangeEmail(email)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePassword","externalName":"SDKFirebaseAuthentication_ChangePassword","kind":5,"help":"SDKFirebaseAuthentication_ChangePassword()","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendEmailVerification","externalName":"SDKFirebaseAuthentication_SendEmailVerification","kind":5,"help":"SDKFirebaseAuthentication_SendEmailVerification()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_DeleteAccount","externalName":"SDKFirebaseAuthentication_DeleteAccount","kind":5,"help":"SDKFirebaseAuthentication_DeleteAccount()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignOut","externalName":"SDKFirebaseAuthentication_SignOut","kind":5,"help":"SDKFirebaseAuthentication_SignOut()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithOAuthCredential","externalName":"SDKFirebaseAuthentication_LinkWithOAuthCredential","kind":5,"help":"SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_Email","help":"SDKFirebaseAuthentication_SignIn_Email(email,password)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignUp_Email","argCount":0,"args":[
             1,
             1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignUp_Email","help":"SDKFirebaseAuthentication_SignUp_Email(email,passoword)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_Anonymously","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_Anonymously","help":"SDKFirebaseAuthentication_SignIn_Anonymously()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendPasswordResetEmail","argCount":0,"args":[
             1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SendPasswordResetEmail","help":"SDKFirebaseAuthentication_SendPasswordResetEmail(email)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeEmail","argCount":0,"args":[
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UnlinkProvider","externalName":"SDKFirebaseAuthentication_UnlinkProvider","kind":5,"help":"SDKFirebaseAuthentication_UnlinkProvider(provider)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangeEmail","help":"SDKFirebaseAuthentication_ChangeEmail(email)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePassword","argCount":0,"args":[
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_RefreshUserData","externalName":"SDKFirebaseAuthentication_RefreshUserData","kind":5,"help":"SDKFirebaseAuthentication_RefreshUserData()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetIdToken","externalName":"SDKFirebaseAuthentication_GetIdToken","kind":5,"help":"SDKFirebaseAuthentication_GetIdToken()","hidden":false,"returnType":2,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithEmailPassword","externalName":"SDKFirebaseAuthentication_LinkWithEmailPassword","kind":5,"help":"SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeDisplayName","externalName":"SDKFirebaseAuthentication_ChangeDisplayName","kind":5,"help":"SDKFirebaseAuthentication_ChangeDisplayName(name)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePhotoURL","externalName":"SDKFirebaseAuthentication_ChangePhotoURL","kind":5,"help":"SDKFirebaseAuthentication_ChangePhotoURL(photoURL)","hidden":false,"returnType":2,"argCount":0,"args":[
-            1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_OAuth","externalName":"SDKFirebaseAuthentication_SignIn_OAuth","kind":5,"help":"SDKFirebaseAuthentication_SignIn_OAuth_(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangePassword","help":"SDKFirebaseAuthentication_ChangePassword()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SendEmailVerification","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SendEmailVerification","help":"SDKFirebaseAuthentication_SendEmailVerification()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_DeleteAccount","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_DeleteAccount","help":"SDKFirebaseAuthentication_DeleteAccount()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignOut","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_SignOut","help":"SDKFirebaseAuthentication_SignOut()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithOAuthCredential","argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithPhoneNumber","externalName":"SDKFirebaseAuthentication_SignInWithPhoneNumber","kind":5,"help":"SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessionInfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithOAuthCredential","help":"SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_UnlinkProvider","argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_UnlinkProvider","help":"SDKFirebaseAuthentication_UnlinkProvider(provider)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_RefreshUserData","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_RefreshUserData","help":"SDKFirebaseAuthentication_RefreshUserData()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_GetIdToken","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_GetIdToken","help":"SDKFirebaseAuthentication_GetIdToken()","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithEmailPassword","argCount":0,"args":[
+            1,
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithEmailPassword","help":"SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangeDisplayName","argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangeDisplayName","help":"SDKFirebaseAuthentication_ChangeDisplayName(name)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ChangePhotoURL","argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ChangePhotoURL","help":"SDKFirebaseAuthentication_ChangePhotoURL(photoURL)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignIn_OAuth","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithPhoneNumber","externalName":"SDKFirebaseAuthentication_LinkWithPhoneNumber","kind":5,"help":"SDKFirebaseAuthentication_LinkWithPhoneNumber(phone,code,sessionInfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignIn_OAuth","help":"SDKFirebaseAuthentication_SignIn_OAuth_(token,token_kind,provider,requestUri)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithPhoneNumber","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","externalName":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","kind":5,"help":"SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithPhoneNumber","help":"SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessionInfo)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithPhoneNumber","argCount":0,"args":[
+            1,
+            1,
+            1,
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithPhoneNumber","help":"SDKFirebaseAuthentication_LinkWithPhoneNumber(phone,code,sessionInfo)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","argCount":0,"args":[
             1,
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithEmail","externalName":"SDKFirebaseAuthentication_ReauthenticateWithEmail","kind":5,"help":"SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithOAuth","help":"SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithEmail","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","externalName":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","kind":5,"help":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"returnType":2,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithEmail","help":"SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","argCount":0,"args":[
             1,
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithProvider","externalName":"SDKFirebaseAuthentication_SignInWithProvider","kind":5,"help":"SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber","help":"SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,code,sessionInfo)","hidden":false,"kind":5,"returnType":2,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_SignInWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithProvider","externalName":"SDKFirebaseAuthentication_LinkWithProvider","kind":5,"help":"SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithProvider","help":"SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":5,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_LinkWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","externalName":"SDKFirebaseAuthentication_ReauthenticateWithProvider","kind":5,"help":"SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)","hidden":false,"returnType":1,"argCount":0,"args":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_LinkWithProvider","help":"SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":5,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","argCount":0,"args":[
             1,
             1,
-          ],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener","externalName":"SDKFirebaseAuthentication_IdTokenListener","kind":5,"help":"SDKFirebaseAuthentication_IdTokenListener","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener_Remove","externalName":"SDKFirebaseAuthentication_IdTokenListener_Remove","kind":5,"help":"SDKFirebaseAuthentication_IdTokenListener_Remove()","hidden":false,"returnType":1,"argCount":0,"args":[],"documentation":"",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":32,"usesRunnerInterface":false,"order":[
+          ],"documentation":"","externalName":"SDKFirebaseAuthentication_ReauthenticateWithProvider","help":"SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)","hidden":false,"kind":5,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_IdTokenListener","help":"SDKFirebaseAuthentication_IdTokenListener","hidden":false,"kind":5,"returnType":1,},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"SDKFirebaseAuthentication_IdTokenListener_Remove","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseAuthentication_IdTokenListener_Remove","help":"SDKFirebaseAuthentication_IdTokenListener_Remove()","hidden":false,"kind":5,"returnType":1,},
+      ],"init":"","kind":5,"order":[
         {"name":"SDKFirebaseAuthentication_GetUserData","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_SignInWithCustomToken","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_SignIn_Email","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
@@ -515,44 +506,53 @@
         {"name":"SDKFirebaseAuthentication_ReauthenticateWithProvider","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_IdTokenListener","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
         {"name":"SDKFirebaseAuthentication_IdTokenListener_Remove","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},
-      ],},
+      ],"origname":"","ProxyFiles":[],"uncompress":false,"usesRunnerInterface":false,},
   ],
-  "HTML5CodeInjection": "",
-  "classname": "YYFirebaseAuthentication",
-  "tvosclassname": null,
-  "tvosdelegatename": null,
-  "iosdelegatename": "",
-  "androidclassname": "YYFirebaseAuthentication",
-  "sourcedir": "",
-  "androidsourcedir": "",
-  "macsourcedir": "",
-  "maccompilerflags": "",
-  "tvosmaccompilerflags": "",
-  "maclinkerflags": "",
-  "tvosmaclinkerflags": "",
-  "iosplistinject": "",
-  "tvosplistinject": "",
-  "androidinject": "",
-  "androidmanifestinject": "",
-  "androidactivityinject": "",
   "gradleinject": "\r\n        implementation 'com.google.firebase:firebase-auth'\r\n",
-  "androidcodeinjection": "\r\n<YYAndroidGradleDependencies>\r\n        implementation 'com.google.firebase:firebase-auth'\r\n</YYAndroidGradleDependencies>\r\n",
   "hasConvertedCodeInjection": true,
-  "ioscodeinjection": "\r\n<YYIosCocoaPods>\r\npod 'Firebase/Auth','8.4.0'\r\n</YYIosCocoaPods>\r\n\r\n",
-  "tvoscodeinjection": "",
-  "iosSystemFrameworkEntries": [],
-  "tvosSystemFrameworkEntries": [],
-  "iosThirdPartyFrameworkEntries": [],
-  "tvosThirdPartyFrameworkEntries": [],
+  "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
   "IncludedResources": [],
-  "androidPermissions": [],
-  "copyToTargets": 3035426170322551022,
-  "iosCocoaPods": "\r\npod 'Firebase/Auth','8.4.0'\r\n",
-  "tvosCocoaPods": "",
+  "installdir": "",
   "iosCocoaPodDependencies": "",
-  "tvosCocoaPodDependencies": "",
+  "iosCocoaPods": "\r\npod 'Firebase/Auth','8.4.0'\r\n",
+  "ioscodeinjection": "\r\n<YYIosCocoaPods>\r\npod 'Firebase/Auth','8.4.0'\r\n</YYIosCocoaPods>\r\n\r\n",
+  "iosdelegatename": "",
+  "iosplistinject": "",
+  "iosProps": true,
+  "iosSystemFrameworkEntries": [],
+  "iosThirdPartyFrameworkEntries": [],
+  "license": "",
+  "maccompilerflags": "",
+  "maclinkerflags": "",
+  "macsourcedir": "",
+  "options": [
+    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"WebAPIKey","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"WebAPI Key","exportToINI":false,"extensionId":null,"guid":"2df2e529-85ff-4387-bb93-5f6df9f9f215","hidden":false,"listItems":[],"optType":2,},
+    {"resourceType":"GMExtensionOption","resourceVersion":"1.0","name":"Config","defaultValue":"SDKs_When_Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"04e841fc-69d6-4b67-9520-26032dc733fb","hidden":false,"listItems":[
+        "SDKs_Only",
+        "SDKs_When_Available",
+        "Only_REST_API",
+      ],"optType":6,},
+  ],
+  "optionsFile": "options.json",
+  "packageId": "",
   "parent": {
     "name": "Extensions",
     "path": "folders/Firebase Authentication/Extensions.yy",
   },
+  "productId": "",
+  "sourcedir": "",
+  "supportedTargets": -1,
+  "tvosclassname": null,
+  "tvosCocoaPodDependencies": "",
+  "tvosCocoaPods": "",
+  "tvoscodeinjection": "",
+  "tvosdelegatename": null,
+  "tvosmaccompilerflags": "",
+  "tvosmaclinkerflags": "",
+  "tvosplistinject": "",
+  "tvosProps": false,
+  "tvosSystemFrameworkEntries": [],
+  "tvosThirdPartyFrameworkEntries": [],
 }

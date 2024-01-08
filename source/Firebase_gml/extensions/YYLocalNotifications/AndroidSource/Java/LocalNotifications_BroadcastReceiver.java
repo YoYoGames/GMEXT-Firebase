@@ -61,9 +61,11 @@ public class LocalNotifications_BroadcastReceiver extends BroadcastReceiver
 		
 		resultIntent.putExtras(intent);
 
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-		stackBuilder.addNextIntentWithParentStack(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_IMMUTABLE);
+		// TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		// stackBuilder.addNextIntentWithParentStack(resultIntent);
+		// PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_IMMUTABLE);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(context, (int)System.currentTimeMillis(), resultIntent, PendingIntent.FLAG_IMMUTABLE);
+
 		
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
 			.setDefaults(Notification.DEFAULT_ALL)

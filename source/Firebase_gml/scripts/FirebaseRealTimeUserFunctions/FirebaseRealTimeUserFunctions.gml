@@ -126,22 +126,49 @@ function Firebase_RealTime_builder(database) constructor
 			value = string(value)
 		}
 		else
-		if(is_struct(value))
+		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
+		{
 			ok = true
+			value = json_encode(value)
+		}
+		else
+		if(is_struct(value) or is_array(value))
+		{
+			ok = true
+			value = json_stringify(value)
+		}
 		else
 		if(is_string(value))
 		{
-			var map = json_decode(value)
-			var value_ = json_encode(map)
-			ds_map_destroy(map)
-		
-			if(!string_count("default",value) and string_count("default",value_))
+			var its_json_string = false
+			
+			
+			//This improve the performance
+			its_json_string = (string_char_at(value,1) == "{" and string_char_at(value,string_length(value)-1) == "}")
+			if(!its_json_string)
+				its_json_string = (string_char_at(value,1) == "[" and string_char_at(value,string_length(value)-1) == "]")
+			
+			
+			if(!its_json_string)//heavy verification...?
+			if(!((string_char_at(value,1) != "{" and string_char_at(value,1) != "[" and string_char_at(value,1) != " ")))
 			{
+				var map = json_decode(value)
+				var value_ = json_encode(map)
+				ds_map_destroy(map)
+				
+				its_json_string = !(!string_count("default",value) and string_count("default",value_))
+			}
+			
+			if(its_json_string)
+			{
+				ok = true
+			}
+			else
+			{
+				//Just a string....
 				ok = true
 				value = "\"" + value + "\""
 			}
-			else
-				ok = true
 		}
 	
 		var listener = undefined

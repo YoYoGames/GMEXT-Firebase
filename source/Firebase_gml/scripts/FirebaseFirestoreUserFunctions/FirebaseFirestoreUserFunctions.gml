@@ -192,6 +192,22 @@ function Firebase_Firestore_builder(path) constructor
 		_action = "Set"
 		_value = value
 		
+		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
+		{
+			_value = json_encode(value)
+		}
+		else
+		if(is_struct(value))
+		{
+			_value = json_stringify(value)
+		}
+		else
+		if(!is_string(value))
+		{
+			show_debug_message("Firestore: type error Set()")
+			exit
+		}
+		
 		if(FirebaseFirestore_Library_useSDK)
 			return FirebaseFirestore_SDK(json_stringify(self))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
@@ -205,6 +221,23 @@ function Firebase_Firestore_builder(path) constructor
     {
 		_action = "Update"
 		_value = value
+		
+		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
+		{
+			_value = json_encode(value)
+		}
+		else
+		if(is_struct(value) or is_array(value))
+		{
+			_value = json_stringify(value)
+		}
+		else
+		if(!is_string(value))
+		{
+			show_debug_message("Firestore: type error Update()")
+			exit
+		}
+		
 		if(FirebaseFirestore_Library_useSDK)
 			return FirebaseFirestore_SDK(json_stringify(self))
 		if(FirebaseREST_Firestore_path_isDocument(_path))

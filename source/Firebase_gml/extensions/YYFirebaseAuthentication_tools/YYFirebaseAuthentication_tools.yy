@@ -13,7 +13,6 @@
   "author": "",
   "classname": "FirebaseAuthentication_tools",
   "copyToTargets": 9007199254741038,
-  "date": "2021-09-15T11:03:46.6962555-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "1.0.3",

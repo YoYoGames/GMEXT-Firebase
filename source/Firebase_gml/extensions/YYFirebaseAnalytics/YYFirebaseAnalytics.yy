@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YYFirebaseAnalytics",
   "copyToTargets": 9007199254741036,
-  "date": "2021-07-17T22:04:24.0799295-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.2.2",

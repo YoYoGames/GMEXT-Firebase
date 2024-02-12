@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YYGoogleSignIn",
   "copyToTargets": 9007199254741036,
-  "date": "2021-08-23T07:59:21.4039452-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "0.0.1",

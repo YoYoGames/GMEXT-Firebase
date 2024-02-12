@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YYFirebaseRemoteConfig",
   "copyToTargets": 9007199254741036,
-  "date": "2021-08-04T09:04:28.9619456-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.1.2",

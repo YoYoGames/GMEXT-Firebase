@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YYFirebaseFirestore",
   "copyToTargets": 3035426170322551022,
-  "date": "2021-08-27T19:33:55.4551561-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.4.3",

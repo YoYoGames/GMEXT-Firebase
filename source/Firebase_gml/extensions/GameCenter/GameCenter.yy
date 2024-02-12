@@ -13,7 +13,6 @@
   "author": "",
   "classname": "GameCenter",
   "copyToTargets": 9007199254740996,
-  "date": "2019-03-28T05:11:31",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "0.0.1",

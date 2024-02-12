@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YYFirebaseAuthentication",
   "copyToTargets": 3035426170322551022,
-  "date": "2021-08-27T19:34:23.6487954-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.1.3",

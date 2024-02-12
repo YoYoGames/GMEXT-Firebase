@@ -17,7 +17,6 @@
   "author": "",
   "classname": "LocalNotifications",
   "copyToTargets": 9007199254741004,
-  "date": "2021-07-13T15:03:51.430796-07:00",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "1.0.1",

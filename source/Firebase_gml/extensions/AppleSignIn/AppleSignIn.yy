@@ -13,7 +13,6 @@
   "author": "",
   "classname": "YY_AppleSignIn",
   "copyToTargets": 9007199254740996,
-  "date": "2019-08-12T00:14:17",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "0.0.2",

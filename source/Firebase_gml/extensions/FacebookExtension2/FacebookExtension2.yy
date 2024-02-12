@@ -13,7 +13,6 @@
   "author": "",
   "classname": "FacebookExtension2",
   "copyToTargets": 44,
-  "date": "2018-06-22T10:00:03",
   "description": "",
   "exportToGame": true,
   "extensionVersion": "2.0.5",

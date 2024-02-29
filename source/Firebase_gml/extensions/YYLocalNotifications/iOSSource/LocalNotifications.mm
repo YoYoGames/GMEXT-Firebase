@@ -74,40 +74,45 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		// For iOS 10 display notification (sent via APNS)
 		UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
 		[[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error)
-		 {
-            
+		{
 			int dsMapIndex = dsMapCreate();
 			dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Request");
-			
+				
 			if(error == nil)
+			{
 				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+			}
 			else
+			{
 				dsMapAddDouble(dsMapIndex,(char*)"success",0.0);
-			
-            if(granted)
-            {
-                [[UNUserNotificationCenter currentNotificationCenter] setDelegate:(LocalNotifications_Delegate*)[UIApplication sharedApplication].delegate];
-                dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
-            }
-            else
-                dsMapAddDouble(dsMapIndex,(char*)"value",0.0);
-            
-			CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-		 }];
-	}
-	else
-	{
+			}
+			if(granted)
+			{
+				dispatch_async(dispatch_get_main_queue(), ^{
+				[[UNUserNotificationCenter currentNotificationCenter] setDelegate:(LocalNotifications_Delegate*)[UIApplication sharedApplication].delegate];
+				});
+				dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
+			}
+			else
+			{
+				dsMapAddDouble(dsMapIndex,(char*)"value",0.0);
+			}
+			CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+         }];
+    }
+    else
+    {
 		// iOS 10 notifications aren't available; fall back to iOS 8-9 notifications.
 		UIUserNotificationType allNotificationTypes = (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
 		UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
 		[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 		
-			int dsMapIndex = dsMapCreate();//iOS < 10? go ahead
-			dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Request");
-			dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
-			dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
-			CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-	}
+		int dsMapIndex = dsMapCreate();//iOS < 10? go ahead
+		dsMapAddString(dsMapIndex, (char*)"type",(char*)"LocalPushNotification_iOS_Permission_Request");
+		dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+		dsMapAddDouble(dsMapIndex,(char*)"value",1.0);
+		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+    }
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
@@ -123,14 +128,20 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		{
 			case UNAuthorizationStatusAuthorized:
 				dsMapAddString(dsMapIndex, (char*)"value",(char*)"Authorized");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
 			
 			case UNAuthorizationStatusDenied:
 				dsMapAddString(dsMapIndex,(char*) "value",(char*)"Denied");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
 			
 			case UNAuthorizationStatusNotDetermined:
 				dsMapAddString(dsMapIndex, (char*)"value",(char*)"NotDetermined");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+			break;
+			default:
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
 		}
 		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);

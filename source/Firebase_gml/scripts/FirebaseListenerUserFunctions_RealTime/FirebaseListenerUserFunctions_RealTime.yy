@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "FirebaseListenerUserFunctions_RealTime",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Listeners RealTime",
-    "path": "folders/Firebase RealTime/Extensions/Firebase REST API Library (Don't Touch)/Listeners RealTime.yy",
+  "$GMScript":"",
+  "%Name":"FirebaseListenerUserFunctions_RealTime",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"FirebaseListenerUserFunctions_RealTime",
+  "parent":{
+    "name":"Listeners RealTime",
+    "path":"folders/Firebase RealTime/Extensions/Firebase REST API Library (Don't Touch)/Listeners RealTime.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

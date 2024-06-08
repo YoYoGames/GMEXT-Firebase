@@ -14,7 +14,7 @@
   "copyToTargets":3035426170322551022,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.2.3",
+  "extensionVersion":"2.2.4",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseRealTime.ext","constants":[],"copyToTargets":44,"filename":"FirebaseRealTime.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseRealTime_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseRealTime_SDK","help":"FirebaseRealTime_SDK(json)","hidden":false,"kind":4,"name":"FirebaseRealTime_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},

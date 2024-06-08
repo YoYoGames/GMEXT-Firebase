@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.1.3",
+  "extensionVersion":"2.1.4",
   "files":[
     {"$GMExtensionFile":"","%Name":"YYFirebaseStorage.ext","constants":[],"copyToTargets":-1,"filename":"YYFirebaseStorage.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_Cancel","argCount":0,"args":[1,],"documentation":"","externalName":"SDKFirebaseStorage_Cancel","help":"SDKFirebaseStorage_Cancel(listener)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_Cancel","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},

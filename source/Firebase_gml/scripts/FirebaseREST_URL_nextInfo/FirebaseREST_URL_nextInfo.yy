@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseREST_URL_nextInfo",
   "isCompatibility":false,
   "isDnD":false,

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseAuthentication_controllerVerification",
   "isCompatibility":false,
   "isDnD":false,

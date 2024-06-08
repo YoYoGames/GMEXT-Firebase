@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"AppleSignInCrossPlatformFunctions",
   "isCompatibility":false,
   "isDnD":false,

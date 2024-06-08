@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseREST_Database_ListResquest_Builder",
   "isCompatibility":false,
   "isDnD":false,

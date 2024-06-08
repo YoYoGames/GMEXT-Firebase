@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"url_encode",
   "isCompatibility":false,
   "isDnD":false,

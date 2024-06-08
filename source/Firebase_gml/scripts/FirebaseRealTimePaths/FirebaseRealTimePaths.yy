@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseRealTimePaths",
   "isCompatibility":false,
   "isDnD":false,

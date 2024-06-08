@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseCrashlyticsReportGML",
   "isCompatibility":false,
   "isDnD":false,

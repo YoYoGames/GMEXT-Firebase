@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseRealTimeUserFunctions",
   "isCompatibility":false,
   "isDnD":false,

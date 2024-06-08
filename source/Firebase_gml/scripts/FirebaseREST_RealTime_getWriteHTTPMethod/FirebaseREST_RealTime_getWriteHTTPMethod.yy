@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseREST_RealTime_getWriteHTTPMethod",
   "isCompatibility":false,
   "isDnD":false,

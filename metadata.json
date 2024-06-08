@@ -29,7 +29,7 @@
             "postRemovals": []
         },
         {
-            "extensionFile": null,
+            "extensionFile": "source/Firebase_gml/extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.yy",
             "packageId": "com.yoyogames.firebasecloudfunctionsext",
             "packageName": "Firebase Cloud Functions Ext",
             "packageVersion": "1.0.6",

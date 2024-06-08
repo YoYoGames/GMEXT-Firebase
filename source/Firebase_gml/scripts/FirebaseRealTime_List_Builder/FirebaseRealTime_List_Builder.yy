@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseRealTime_List_Builder",
   "isCompatibility":false,
   "isDnD":false,

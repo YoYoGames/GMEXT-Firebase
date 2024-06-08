@@ -30,6 +30,7 @@
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Authentication/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Testing","folderPath":"folders/Firebase Authentication/Testing.yy","name":"Testing","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Cloud Functions","folderPath":"folders/Firebase Cloud Functions.yy","name":"Firebase Cloud Functions","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Firebase Cloud Functions/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Cloud Functions/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Cloud Functions/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Cloud Messaging","folderPath":"folders/Firebase Cloud Messaging.yy","name":"Firebase Cloud Messaging","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -107,7 +108,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.4.0.137",
+    "IDEVersion":"2024.600.0.562",
   },
   "name":"Firebase",
   "resources":[
@@ -121,6 +122,7 @@
     {"id":{"name":"YYFirebaseAnalytics","path":"extensions/YYFirebaseAnalytics/YYFirebaseAnalytics.yy",},},
     {"id":{"name":"YYFirebaseAuthentication_tools","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},},
     {"id":{"name":"YYFirebaseAuthentication","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},},
+    {"id":{"name":"YYFirebaseCloudFunctions","path":"extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.yy",},},
     {"id":{"name":"YYFirebaseCloudMessaging","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},},
     {"id":{"name":"YYFirebaseCrashlytics","path":"extensions/YYFirebaseCrashlytics/YYFirebaseCrashlytics.yy",},},
     {"id":{"name":"YYFirebaseFirestore","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},},
@@ -133,7 +135,6 @@
     {"id":{"name":"Font_YoYo_20","path":"fonts/Font_YoYo_20/Font_YoYo_20.yy",},},
     {"id":{"name":"Font_YoYo_30","path":"fonts/Font_YoYo_30/Font_YoYo_30.yy",},},
     {"id":{"name":"__ReleaseInstructions__","path":"notes/__ReleaseInstructions__/__ReleaseInstructions__.yy",},},
-    {"id":{"name":"changelog","path":"notes/changelog/changelog.yy",},},
     {"id":{"name":"DOWNLOAD_APPLE_SIGNIN_EXT","path":"notes/DOWNLOAD_APPLE_SIGNIN_EXT/DOWNLOAD_APPLE_SIGNIN_EXT.yy",},},
     {"id":{"name":"DOWNLOAD_FACEBOOK_EXT","path":"notes/DOWNLOAD_FACEBOOK_EXT/DOWNLOAD_FACEBOOK_EXT.yy",},},
     {"id":{"name":"DOWNLOAD_GAMECENTER_EXT","path":"notes/DOWNLOAD_GAMECENTER_EXT/DOWNLOAD_GAMECENTER_EXT.yy",},},

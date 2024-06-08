@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseREST_refreshTokenOnPath",
   "isCompatibility":false,
   "isDnD":false,

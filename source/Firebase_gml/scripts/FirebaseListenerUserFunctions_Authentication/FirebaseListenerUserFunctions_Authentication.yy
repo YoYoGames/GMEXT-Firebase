@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseListenerUserFunctions_Authentication",
   "isCompatibility":false,
   "isDnD":false,

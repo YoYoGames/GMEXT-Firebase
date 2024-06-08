@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"FirebaseREST_asyncFunction_Authentication",
   "isCompatibility":false,
   "isDnD":false,

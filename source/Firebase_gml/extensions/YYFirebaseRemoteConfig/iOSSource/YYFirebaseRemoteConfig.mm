@@ -131,6 +131,44 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     return [[[[FIRRemoteConfig remoteConfig] configValueForKey:key] numberValue] doubleValue];
 }
 
+
+-(void) FirebaseRemoteConfig_AddOnConfigUpdateListener
+{
+	[[FIRRemoteConfig remoteConfig] addOnConfigUpdateListener:^(FIRRemoteConfigUpdate * _Nonnull configUpdate, NSError * _Nullable error)
+	{
+        int dsMapIndex = dsMapCreate();
+        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_AddOnConfigUpdateListener");
+        
+		if (error != nil)
+		{
+            dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
+		}
+		else 
+		{
+            dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
+            
+            bool first = true;
+            NSString *_str_stirng = @"[";
+            for(NSString *_str in configUpdate.updatedKeys)
+            {
+                if (first) {
+                    first = false;
+                }
+                else
+                {
+                    _str_stirng = [NSString stringWithFormat:@"%@,",_str_stirng];
+                }
+                _str_stirng = [NSString stringWithFormat:@"%@%@",_str_stirng,_str];
+            }
+            _str_stirng = [NSString stringWithFormat:@"%@]",_str_stirng];
+            
+            dsMapAddString(dsMapIndex, (char*)"keys",(char*)[_str_stirng UTF8String]);
+
+            createSocialAsyncEventWithDSMap(dsMapIndex);
+		}
+	}];
+}
+
 +(NSString*) toJSON:(id) obj
 {
     NSError *error = nil;

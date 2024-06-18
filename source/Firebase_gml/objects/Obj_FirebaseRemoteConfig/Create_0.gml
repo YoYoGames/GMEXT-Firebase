@@ -7,6 +7,9 @@
 // avoid unecessary queries you should up the value for production.
 FirebaseRemoteConfig_Initialize(3600)
 
+//RealTime Changes Updater - Only Android & iOS
+FirebaseRemoteConfig_AddOnConfigUpdateListener()
+
 // Definition of the default values
 var defaults = {
    Data0: "default_data0",
@@ -21,3 +24,4 @@ var defaults = {
 // on the remote server and when the application fails to fetch from remote.
 var defaultsJSON = json_stringify(defaults);
 FirebaseRemoteConfig_SetDefaultsAsync(defaultsJSON);
+

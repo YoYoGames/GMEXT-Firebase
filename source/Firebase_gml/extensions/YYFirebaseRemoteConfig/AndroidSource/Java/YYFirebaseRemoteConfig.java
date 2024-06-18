@@ -7,6 +7,9 @@ import com.yoyogames.runner.RunnerJNILib;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue;
+import com.google.firebase.remoteconfig.ConfigUpdate;
+import com.google.firebase.remoteconfig.ConfigUpdateListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 
 import android.app.Activity;
 import androidx.annotation.NonNull;
@@ -26,7 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.lang.Exception;
 
-public class YYFirebaseRemoteConfig
+public class YYFirebaseRemoteConfig implements ConfigUpdateListener
 {
 	private static final int EVENT_OTHER_SOCIAL = 70;
 	private static Activity activity = RunnerActivity.CurrentActivity;
@@ -113,7 +116,46 @@ public class YYFirebaseRemoteConfig
 	{		
 		return FirebaseRemoteConfig.getInstance().getDouble(key);
 	}
+
+	public void FirebaseRemoteConfig_AddOnConfigUpdateListener()
+	{
+		FirebaseRemoteConfig.getInstance().addOnConfigUpdateListener(this);
+	}
+
+	@Override
+	public void onError(FirebaseRemoteConfigException error) 
+	{
+		int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
+		RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRemoteConfig_AddOnConfigUpdateListener");
+		RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0);
+		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+	}
 	
+	@Override
+	public void onUpdate(ConfigUpdate configUpdate) 
+	{
+		Iterator<String> keys = configUpdate.getUpdatedKeys().iterator();
+		boolean first = true;
+		String _str = "[";
+		while(keys.hasNext())
+		{
+			if(first)
+				first = false;
+			else
+				_str += ",";
+			
+			_str += keys.next();
+		}
+		
+		_str += "]";
+		
+		int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
+		RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRemoteConfig_AddOnConfigUpdateListener");
+		RunnerJNILib.DsMapAddString(dsMapIndex,"keys",_str);
+		RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1);
+		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+	}
+		
 	public static Map<String,Object> jsonToMap(String jsonStr)
 	{
 		try

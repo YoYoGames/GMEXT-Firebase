@@ -8,6 +8,7 @@
 FirebaseRemoteConfig_Initialize(3600)
 
 //RealTime Changes Updater - Only Android & iOS
+if(os_type == os_android or os_type == os_ios)
 FirebaseRemoteConfig_AddOnConfigUpdateListener()
 
 // Definition of the default values

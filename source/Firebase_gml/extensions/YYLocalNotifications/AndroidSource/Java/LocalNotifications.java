@@ -23,6 +23,8 @@ import android.graphics.Color;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.File;
+
 public class LocalNotifications extends RunnerSocial
 {
 	// On the GML side we are inside a push notification event and we have already identified the
@@ -33,6 +35,7 @@ public class LocalNotifications extends RunnerSocial
 	public static final String KEY_NTF_DATA = "data";
 	public static final String KEY_NTF_TYPE = "type";
 	public static final String KEY_NTF_ID = "id";
+	public static final String KEY_NTF_PATH_ICON = "icon_path";
 	
 	public static final String DEFAULT_CHANNEL_ID = "GMS2DefaultChannel";
 	
@@ -87,6 +90,32 @@ public class LocalNotifications extends RunnerSocial
 		intent.putExtra(KEY_NTF_MESSAGE,message);
 		intent.putExtra(KEY_NTF_ID,ID);
 		intent.putExtra(KEY_NTF_DATA,data);
+		
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, getUniqueInteger(ID), intent, PendingIntent.FLAG_IMMUTABLE);
+		AlarmManager am = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
+		am.set(AlarmManager.RTC_WAKEUP, fireTimeMs, pendingIntent);
+	}
+	
+	public void LocalPushNotification_Create_Android(String ID ,double fireTime, String title, String message, String data,String imagePath)
+	{
+		if(fireTime <= 0)
+			return;
+		
+		long fireTimeMs = System.currentTimeMillis() + (long)(fireTime*1000.0);
+
+		Intent intent = new Intent(activity, LocalNotifications_BroadcastReceiver.class);
+		intent.putExtra(KEY_NTF_TITLE,title);
+		intent.putExtra(KEY_NTF_MESSAGE,message);
+		intent.putExtra(KEY_NTF_ID,ID);
+		intent.putExtra(KEY_NTF_DATA,data);
+		
+		File localFile = new File(activity.getFilesDir() + "/" + imagePath);
+		if(localFile.exists())
+		{
+			intent.putExtra(KEY_NTF_PATH_ICON,imagePath);
+		}
+		// else
+			// Log.i("yoyo","[LocalPushNotification_Create_Android] NO Icon Attached");
 		
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, getUniqueInteger(ID), intent, PendingIntent.FLAG_IMMUTABLE);
 		AlarmManager am = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);

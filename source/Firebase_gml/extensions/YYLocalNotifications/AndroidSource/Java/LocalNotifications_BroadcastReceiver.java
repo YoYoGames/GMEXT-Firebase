@@ -22,6 +22,10 @@ import androidx.core.app.TaskStackBuilder;
 import android.os.Build;
 import android.graphics.Color;
 
+import java.io.File;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+
 public class LocalNotifications_BroadcastReceiver extends BroadcastReceiver
 {
 	private static final String DEFAULT_CHANNEL_ID = "GMS2DefaultChannel";
@@ -55,7 +59,6 @@ public class LocalNotifications_BroadcastReceiver extends BroadcastReceiver
 		//Craeting a new intent due if not not works :)
 		// Intent resultIntent = new Intent(context, RunnerActivity.class);
 		// resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		Log.i("yoyo",context.getPackageName());
 		Intent resultIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
 		resultIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		
@@ -66,15 +69,26 @@ public class LocalNotifications_BroadcastReceiver extends BroadcastReceiver
 		// PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_IMMUTABLE);
 		PendingIntent resultPendingIntent = PendingIntent.getActivity(context, (int)System.currentTimeMillis(), resultIntent, PendingIntent.FLAG_IMMUTABLE);
 
-		
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
-			.setDefaults(Notification.DEFAULT_ALL)
 			.setSmallIcon(R.drawable.notification_icon)
+			.setDefaults(Notification.DEFAULT_ALL)
 			.setColor(context.getResources().getColor(R.color.notification_color))
 			.setContentTitle(title)
 			.setContentText(message)
 			.setContentIntent(resultPendingIntent)
 			.setAutoCancel(true);
+		
+		String imagePath = extras.getString(LocalNotifications.KEY_NTF_PATH_ICON);
+		if(imagePath != null)
+		{
+			File localFile = new File(context.getFilesDir() + "/" + imagePath);
+			Bitmap bitmap;
+			if(localFile.exists())
+			{
+				bitmap = BitmapFactory.decodeFile(context.getFilesDir() + "/" + imagePath);
+				notificationBuilder.setLargeIcon(bitmap);
+			}
+		}
 		
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 		notificationManager.notify(LocalNotifications.getUniqueInteger(ID), notificationBuilder.build());

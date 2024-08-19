@@ -1,0 +1,21 @@
+/**
+ * @module cloud_functions
+ * @title Cloud Functions Overview
+ * @desc 
+ * 
+ * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/Cloud%20FunctionsBanner.png)
+ * 
+ * Cloud Functions for Firebase is a server-less framework that lets you automatically run backend code in response to events triggered by Firebase features and HTTPS requests. Your JavaScript or TypeScript code is stored in Google's cloud and runs in a managed environment, meaning there is no need to manage and scale your own servers.
+ * Check the [official page](https://firebase.google.com/docs/functions) for more information.
+ * 
+ * @section Setup
+ * @desc Before starting to use any Firebase extensions, you are required to follow some initial configuration steps. However unlike most of the modules this is purely server-side, as you will be creating JavaScript functions that you can later call using the ${function.http_request} function from inside your GameMaker project.
+ * 
+ * @ref page.Create_Project
+ * @ref page.Firebase_Console
+ * @ref Create_and_Deploy (creating functions with JavaScript and deploying them)
+ * 
+ * @section_end
+ * 
+ * @module_end
+ */

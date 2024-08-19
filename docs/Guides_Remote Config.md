@@ -1,0 +1,29 @@
+<a id="top"></a>
+<!-- Page HTML do not touch -->
+<a /><p align="right">[Back To Top](#top)</p>
+
+# Platform Setup
+
+  The Firebase Remote Config implementation uses SDK dependencies and therefore is only available on **Android** , **iOS** and **Web** targets. In this section we will cover the required setup necessary to start using the Firebase Remote Config extension in your game.
+  Select your target platform below and follow the simple steps to get your project up and running (you only need follow these topics once per project):
+
+* [Android Setup](Platform-Setup#Android_Setup)
+* [iOS Setup](Platform-Setup#iOS Setup)
+* [Web Setup](Platform-Setup#Web_Setup)
+
+## Enabling Remote Config
+
+1. Go to **Remote Config**  **and click on the Create configuration** button:<br>
+          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigEnable.PNG)
+
+2. Click on the **Add parameter** button:<br>
+      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigAddParameter.PNG)
+ ** 
+
+3. Add a **Parameter name (key)** and a **Default value (string/real),** then click **Save:** <br>
+          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigCreateParameter.PNG)
+
+4. After adding all your parameters, don't forget to click **Publish changes:** <br>
+      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigPublish.PNG)
+
+5. You are now all set to use the Remote Config extension!

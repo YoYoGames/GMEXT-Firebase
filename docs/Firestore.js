@@ -3,7 +3,7 @@
  * @title Firestore
  * @desc 
  * 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firestoreBanner.png)
+ * ![](assets/firestoreBanner.png)
  * 
  * Cloud Firestore is a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud. Like Firebase Realtime Database, it keeps your data in sync across client apps through real-time listeners and offers offline support for mobile and web so you can build responsive apps that work regardless of network latency or Internet connectivity. Cloud Firestore also offers seamless integration with other Firebase and Google Cloud products, including Cloud Functions.
  * Check the [official page](https://firebase.google.com/docs/firestore) for more information.

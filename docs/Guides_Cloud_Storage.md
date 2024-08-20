@@ -7,16 +7,16 @@
   Before using the Firebase Could Storage extension, you need to configure and enable your storage services in the [Firebase Console](https://console.firebase.google.com/). Follow the steps below to get started:
 
 1. Go to **Storage** section and click on the **Get Started** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/storageEnable.PNG)
+      ![](assets/storageEnable.PNG)
 
 2. You will get a pop-up (we will change the rules later), so click on the **Next** button:<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/storageStep1.PNG)
+          ![](assets/storageStep1.PNG)
 
 3. Select your **Cloud Storage location** and click on **Done** :<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/storageStep2.PNG)
+          ![](assets/storageStep2.PNG)
 
 4. Go to **Rules** section and change the rules condition to **`true`** (this just for testing purposes, and you will need to create your own rules before sending the app to production). Then click on **Publish** .<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/storageRules.PNG)
+          ![](assets/storageRules.PNG)
 
 5. You can now use Firebase Cloud Storage on iOS &amp; Android, and some features on Web.
 

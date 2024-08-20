@@ -181,7 +181,7 @@
  * 
  * [[Note: Paths are a representation of references in the database (i.e.: the path to get `"Opera X YoYoGames"` is `"Testing/String"`).]]
  * 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/realtimeNode.png)
+ * ![](assets/realtimeNode.png)
  * 
  * @param {string} path The path reference to the database entry.
  * 
@@ -230,7 +230,7 @@
  * 
  * In this image below we can see the auto-generated keys in &quot;Testing/List&quot;.
  * 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/realtimePush.png)
+ * ![](assets/realtimePush.png)
  * 
  * @returns {struct.dbEntryRef}
  * @example

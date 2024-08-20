@@ -2,7 +2,7 @@
  * @module authentication
  * @title Authentication
  * @desc 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/authenticationBanner.png)
+ * ![](assets/authenticationBanner.png)
  * 
  * Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app. It supports authentication using passwords, phone numbers, popular federated identity providers like Google, Facebook and Twitter, and more.
  * Check the [official page](https://firebase.google.com/docs/auth) for more information.

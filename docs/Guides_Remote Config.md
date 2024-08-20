@@ -14,16 +14,16 @@
 ## Enabling Remote Config
 
 1. Go to **Remote Config**  **and click on the Create configuration** button:<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigEnable.PNG)
+          ![](assets/remoteConfigEnable.PNG)
 
 2. Click on the **Add parameter** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigAddParameter.PNG)
+      ![](assets/remoteConfigAddParameter.PNG)
  ** 
 
 3. Add a **Parameter name (key)** and a **Default value (string/real),** then click **Save:** <br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigCreateParameter.PNG)
+          ![](assets/remoteConfigCreateParameter.PNG)
 
 4. After adding all your parameters, don't forget to click **Publish changes:** <br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/remoteConfigPublish.PNG)
+      ![](assets/remoteConfigPublish.PNG)
 
 5. You are now all set to use the Remote Config extension!

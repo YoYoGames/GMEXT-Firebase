@@ -7,13 +7,13 @@
   Before being able to use the Firebase Firestore extension we need to configure a new database to work with in the [Firebase Console](https://console.firebase.google.com/). Follow the steps below to get your first database set up.
 
 1. On your Firebase project's dashboard, click on **Firestore Database** and then Create Database:<br>
-        ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firestoreEnable.PNG)
+        ![](assets/firestoreEnable.PNG)
 
 2. Select **Start in**  **test mode**  **(otherwise you will need add your own rules for production mode) and click on Next** .<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firestoreSetp1.PNG)
+      ![](assets/firestoreSetp1.PNG)
 
 3. Select your database server location and click on **Enable** .<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firestoreSetp2.PNG)
+      ![](assets/firestoreSetp2.PNG)
 
 4. You are now ready to start using Firebase Firestore extension.
 
@@ -38,7 +38,7 @@
 ## Advanced Configuration
 
   Firebase Firestore by default uses SDKs on **Android** , **iOS** and **Web** targets and uses REST API on all other exports, but you can change this behavior (i.e.: forcing REST API to be used even on SDK enabled platforms) by changing the extension options value inside extension window (2).
-  ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/FirestoreExtOpt.png)
+  ![](assets/FirestoreExtOpt.png)
 
 
 <br><br>
@@ -53,12 +53,12 @@
   This setup is necessary for syncing the Firebase console with the REST API implementation of the extension.
 
 1. On your Firebase console, click on the **Settings** icon (next to **Project Overview** ) and then on **Project settings** .<br>
-        ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectSettings.PNG)
+        ![](assets/setupProjectSettings.PNG)
 
 2. Copy the **Project ID** .<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectSettingsPage.png)
+          ![](assets/setupProjectSettingsPage.png)
 
 3. In your GameMaker project, open the **YYFirebaseFirestore** extension window using the asset browser. And fill in the **Project ID** information (1) also make sure you select the REST API mode (2) to make sure it works on all the available platforms.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/FirestoreExtOpt.png)
+      ![](assets/FirestoreExtOpt.png)
 
 4. The extension should now work on all your REST API exports!

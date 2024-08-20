@@ -8,22 +8,22 @@
 
 1. Go to the [Firebase Console](https://console.firebase.google.com/) web site.
 2. Click on **Add Project** to create your new project.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep1.PNG)
+      ![](assets/setupProjectStep1.PNG)
 
 3. Enter a name for your project and click on the **C**  **ontinue** button.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep2.PNG)
+      ![](assets/setupProjectStep2.PNG)
 
 4. On the next page, make sure that **Enable Google Analytics for this project** is enabled and then click the **Continue** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep3.PNG)
+      ![](assets/setupProjectStep3.PNG)
 
 5. Select your account and click the **Create project** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep4.PNG)
+      ![](assets/setupProjectStep4.PNG)
 
 6. Wait a moment until you project is created; after a few moments you should see the page shown below:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep5.PNG)
+      ![](assets/setupProjectStep5.PNG)
 
 7. You will now be taken to your new project's home page:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectStep6.PNG)
+      ![](assets/setupProjectStep6.PNG)
 
 8. Continue your adventure with the Firebase extensions provided for GameMaker!
 

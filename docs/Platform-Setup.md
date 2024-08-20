@@ -11,30 +11,30 @@ This setup is necessary for all the Firebase modules using Android and needs to 
 > Please refer to [this Helpdesk article](https://help.gamemaker.io/hc/en-us/articles/115001368727-Setting-Up-For-Android) for instructions on setting up an Android project.
 
 1. Click the **Settings** icon (next to Project Overview) and select **Project settings:** <br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectSettings.PNG)
+          ![](assets/setupProjectSettings.PNG)
 
 2. Now go to the **Your apps**  **section and click on the Android** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupYourAppsSelect.PNG)
+      ![](assets/setupYourAppsSelect.PNG)
 
 3. On this screen you need enter your **Package name** (required), **App nickname** (optional) and Debug signing certificate SHA-1 (required if you are using Firebase Authentication).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupAndroidStep1.PNG)
+      ![](assets/setupAndroidStep1.PNG)
 You can get your package name from the [Android Game Options](https://manual.gamemaker.io/monthly/en/#t=Settings%2FGame_Options%2FAndroid.htm), and your **Debug signing certificate SHA-1** from the [Android Preferences](https://manual.gamemaker.io/monthly/en/#t=Setting_Up_And_Version_Information%2FPlatform_Preferences%2FAndroid.htm) (under Keystore):<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/keyHash.png)
+      ![](assets/keyHash.png)
 
 4. Click on ** **Download google-services.json**  (make sure to save this file as we will need it in subsequent steps).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupAndroidStep2.PNG)
+      ![](assets/setupAndroidStep2.PNG)
 
 5. Ignore this screen, as this is already done in the extension.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupAndroidStep3.PNG)
+      ![](assets/setupAndroidStep3.PNG)
 
 6. Click on the **Continue to console** button.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupAndroidStep4.PNG)
+      ![](assets/setupAndroidStep4.PNG)
 
 7. Now go into GameMaker, double click the extension **FirebaseSetup** asset.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firebaseSetupAsset.png)
+      ![](assets/firebaseSetupAsset.png)
 
 8. In the extension panel just fill in the paths for the correct files (Android and/or iOS).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firebaseSetupExtensionOptions.png)
+      ![](assets/firebaseSetupExtensionOptions.png)
 
 > **:warning: IMPORTANT**
 >
@@ -59,31 +59,31 @@ You can get your package name from the [Android Game Options](https://manual.gam
 > Please refer to [this Helpdesk article](https://help.gamemaker.io/hc/en-us/articles/115001368747-Setting-Up-For-iOS-Including-iPadOS) for instructions on setting up an iOS project.
 
 1. Click the **Settings** icon (next to Project Overview) and select **Project settings:** <br>
-        ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectSettings.PNG)
+        ![](assets/setupProjectSettings.PNG)
 
 2. Now go to the **Your apps**  **section and click on the iOS** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupYourAppsSelect.PNG)
+      ![](assets/setupYourAppsSelect.PNG)
 
 3. Fill the form with your **iOS Bundle ID** , **App nickname** and **AppStore ID** (last two are optional).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupiOSStep1.PNG)
+      ![](assets/setupiOSStep1.PNG)
 
 4. Click on ** **Download GoogleService-info.plist**  (make sure to save this file as we will need it in subsequent steps).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupiOSStep2.PNG)
+      ![](assets/setupiOSStep2.PNG)
 
 5. Ignore this screen, as this is already done in the extension.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupiOSStep3.PNG)
+      ![](assets/setupiOSStep3.PNG)
 
 6. Ignore this screen as well, as this is also done in the extension.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupiOSStep4.PNG)
+      ![](assets/setupiOSStep4.PNG)
 
 7. Click on the **Continue to console** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupiOSStep5.PNG)
+      ![](assets/setupiOSStep5.PNG)
 
 8. Now go into GameMaker, double click the extension **FirebaseSetup** asset.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firebaseSetupAsset.png)
+      ![](assets/firebaseSetupAsset.png)
 
 9. In the extension panel just fill in the paths for the correct files (Android and/or iOS).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/firebaseSetupExtensionOptions.png)
+      ![](assets/firebaseSetupExtensionOptions.png)
 
 > **:warning: IMPORTANT**
 >
@@ -104,28 +104,28 @@ You can get your package name from the [Android Game Options](https://manual.gam
   This setup is necessary for all the Firebase modules using Web export and needs to be done once per project, and basically involves adding Firebase libraries and your Firebase values to the **index.html**  file in your project.
 
 1. Click the **Settings** icon (next to Project Overview) and then **Project settings:** <br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupProjectSettings.PNG)
+      ![](assets/setupProjectSettings.PNG)
 
 2. Now go to the **Your apps**  **section and click on the Web** (``) button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupYourAppsSelect.PNG)
+      ![](assets/setupYourAppsSelect.PNG)
 
-3. Enter your App nickname (required):![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebStep1.PNG)
+3. Enter your App nickname (required):![](assets/setupWebStep1.PNG)
 
 4. On this screen, just copy the **firebaseConfig** struct:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebStep2.PNG)
+      ![](assets/setupWebStep2.PNG)
 
 5. Now go back into GameMaker 2 and **build** your project.
 6. Choose the **Package As Zip** option:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebCreatePackage.PNG)
+      ![](assets/setupWebCreatePackage.PNG)
 
 7. Locate the created package and **extract it** into a folder.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebExtractZip.PNG)
+      ![](assets/setupWebExtractZip.PNG)
 
 8. Open the extracted folder and look for an **index.html** file.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebOpenIndexFile.PNG)
+      ![](assets/setupWebOpenIndexFile.PNG)
 
 9. Open the **index.html** file in Notepad++ or Visual Studio Code (or any other text editor you prefer).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebIndexFileBefore.PNG)
+      ![](assets/setupWebIndexFileBefore.PNG)
 
 10. Now we need to add the following code between the `` and `<body>`</body> tags (line 72 in the **html.index** image above):
 
@@ -152,24 +152,24 @@ You can get your package name from the [Android Game Options](https://manual.gam
 ```
 
 11. Replace the **const**  **firebaseConfig** part with the one copied in step 4:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebIndexFileAfter.png)
+      ![](assets/setupWebIndexFileAfter.png)
 
 12. Go back into GameMaker and open your **Included Files** folder.<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebIncludedFiles.PNG)
+          ![](assets/setupWebIncludedFiles.PNG)
 
 13. Press the **Open in Explorer** button:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebOpenIncludedFilesExplorer.PNG)
+      ![](assets/setupWebOpenIncludedFilesExplorer.PNG)
 
 14. Place your **index.html** file inside the folder that opens (/datafiles).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebIndexFileExplorer.PNG)
+      ![](assets/setupWebIndexFileExplorer.PNG)
 
 15. Back in GameMaker, click on the **Game Options button.** <br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebIDEConfigurations.PNG)
+      ![](assets/setupWebIDEConfigurations.PNG)
 
 16. Go into the **HTML5** platform settings<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebHTML5Settings.PNG)
+      ![](assets/setupWebHTML5Settings.PNG)
 
 17. In the **Advanced** section go to the &quot;Include file as index.html&quot; dropdown and select the **index.html** option (this is the file we have just added to the included files).<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/setupWebCustomIndexFile.PNG)
+      ![](assets/setupWebCustomIndexFile.PNG)
 
 18. Press **Apply** and the main setup for all Firebase Web modules is finished!

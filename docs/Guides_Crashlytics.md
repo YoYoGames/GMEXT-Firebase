@@ -8,10 +8,10 @@
 
 1. Build your project from GMS2 first (using the iOS target) so it creates an Xcode project that we will edit in the steps below.
 2. Before building your project further from Xcode, go to **Build Phases** and drag the **Run Script** item to the bottom:<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/crashlyticsRunScriptBefore.png)
+      ![](assets/crashlyticsRunScriptBefore.png)
 
 3. The result should look like this (with **Run Script** at the bottom of the list):<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/crashlyticsRunScriptAfter.png)
+      ![](assets/crashlyticsRunScriptAfter.png)
 
 4. You can now continue with the building process and the application will work as expected.
 
@@ -34,10 +34,10 @@
 ## Enabling Crashlytics
 
 1. On your Firebase console, select **Crashlytics** under &quot;Release &amp; Monitor&quot;; then **select your Android** / **iOS** project **and click on Enable Crashlytics** .<br>
-          ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/crashlyticsEnable.png)
+          ![](assets/crashlyticsEnable.png)
 
 2. On this screen, the Firebase console will wait for a test crash from your app. To skip this screen you need to build a project (see [Building on iOS](#Building_on_iOS) if you are building for the iOS target), unplug your device and run a call to the included [FirebaseCrashlytics_Crash](Functions_Crashlytics#FirebaseCrashlytics_Crash) function.<br>
-      ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/crashlyticsWaiting.png)
+      ![](assets/crashlyticsWaiting.png)
 
 3. You are now all set to monitor your game crash logs.
 

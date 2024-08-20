@@ -3,7 +3,7 @@
  * @title Realtime Database
  * @desc
  * 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/realtimeBanner.png)
+ * ![](assets/realtimeBanner.png)
  * 
  * The Firebase Realtime Database is a cloud-hosted database. Data in the Realtime Database is stored as JSON and synchronized in real time to every connected client. When you build cross-platform apps with the iOS, Android, and JavaScript SDKs, all of your clients share one Realtime Database instance and automatically receive updates with the newest data.
  * Check the [official page](https://firebase.google.com/docs/database) for more information.

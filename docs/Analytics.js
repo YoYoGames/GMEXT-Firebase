@@ -5,7 +5,9 @@
  * 
  * @section Analytics Overview
  *
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/analyticsBanner.png)
+ * @desc
+ * 
+ * ![](assets/analyticsBanner.png)
  *
  * Google Analytics for Firebase provides free, unlimited reporting on up to 500 distinct events. The SDK automatically captures certain key events and user properties, and you can define your own custom events to measure the things that uniquely matter to your business.
  * Analytics surfaces data about user behavior in your iOS and Android and Web apps, enabling you to make better decisions about your app or game and marketing optimization. View crash data, notification effectiveness, deep-link performance, in-app purchase data, and more. 

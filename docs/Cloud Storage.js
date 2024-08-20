@@ -2,7 +2,7 @@
  * @module cloud_storage
  * @title Cloud Storage Overview
  * 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/storageBanner.png)
+ * ![](assets/storageBanner.png)
  * 
  * Cloud Storage for Firebase is a powerful, simple, and cost-effective object storage service. The Firebase SDKs for Cloud Storage add Google security to file uploads and downloads for your Firebase apps, regardless of network quality.
  * Check the [official page](https://firebase.google.com/docs/storage) for more information.

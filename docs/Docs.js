@@ -22,6 +22,7 @@
  * @ref module.performance
  * @ref module.realtime_database
  * @ref module.remote_config
+ * @ref module.local_notifications
  * @section_end
  * 
  * @module_end

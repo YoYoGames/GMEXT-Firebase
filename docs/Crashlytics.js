@@ -2,7 +2,7 @@
  * @module crashlytics
  * @title Crashlytics
  * @desc 
- * ![](https://github.com/YoYoGames/GMEXT-Firebase/blob/main/docs/assets/crashlyticsBanner.png)
+ * ![](assets/crashlyticsBanner.png)
  * 
  * Firebase Crashlytics is a lightweight, real-time crash reporter that helps you track, prioritize, and fix stability issues that erode your app quality. Crashlytics saves you troubleshooting time by intelligently grouping crashes and highlighting the circumstances that lead up to them.
  * Find out if a particular crash is impacting a lot of users. Get alerts when an issue suddenly increases in severity. Figure out which lines of code are causing crashes. All this information gets delivered to you through the online Firebase Console. Crashlytics also easily integrates into your Android, iOS, macOS, tvOS, and watchOS apps.

@@ -1,8 +1,10 @@
+@title Authentication Guides
+
 <a id="top"></a>
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Firebase_Console">Firebase Console
+# Firebase Console
 
   Before we are able to use the Firebase Authentication extension, we need to enable it within the [Firebase Console](https://console.firebase.google.com/).
 
@@ -22,7 +24,7 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Platform Setup">Platform Setup
+# Platform Setup
 
   Firebase Authentication implementation uses both SDK (working on **Android** , **iOS** and **Web** ) and REST API that allows it to work on other platforms. In this section we will cover the required setup necessary to start using the Firebase Authentication extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running:
@@ -45,11 +47,11 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="REST_API_Setup">REST API Setup
+# REST API Setup
 
   This setup is necessary for syncing the Firebase Authentication console with the REST API implementation.
 
-1. On your Firebase console, click on the **Settings** icon (next to **Project Overview** ) and then on Project settings:<br>
+1. On your Firebase console, click on the **Settings** icon (next to **Project Overview**) and then on Project settings:<br>
         ![](assets/setupProjectSettings.PNG)
 
 2. Now copy your **Web API Key** (shown at the bottom):<br>

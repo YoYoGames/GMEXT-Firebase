@@ -1,10 +1,12 @@
+@title Remote Config Guides
+
 <a id="top"></a>
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
 # Platform Setup
 
-  The Firebase Remote Config implementation uses SDK dependencies and therefore is only available on **Android** , **iOS** and **Web** targets. In this section we will cover the required setup necessary to start using the Firebase Remote Config extension in your game.
+  The Firebase Remote Config implementation uses SDK dependencies and therefore is only available on **Android**, **iOS** and **Web** targets. In this section we will cover the required setup necessary to start using the Firebase Remote Config extension in your game.
   Select your target platform below and follow the simple steps to get your project up and running (you only need follow these topics once per project):
 
 * [Android Setup](Platform-Setup#Android_Setup)

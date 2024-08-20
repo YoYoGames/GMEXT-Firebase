@@ -1,8 +1,10 @@
+@title Cloud Storage Guides
+
 <a id="top"></a>
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Firebase_Console">Firebase Console
+# Firebase Console
 
   Before using the Firebase Could Storage extension, you need to configure and enable your storage services in the [Firebase Console](https://console.firebase.google.com/). Follow the steps below to get started:
 
@@ -28,7 +30,7 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Platform_Setup">Platform Setup
+# Platform Setup
 
   Firebase Cloud Storage implementation uses SDK dependencies and therefore is only available on **Android** , **iOS** targets and **Web** with limited functionality. In this section we will cover the required setup necessary to start using the Firebase Cloud Storage extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running:

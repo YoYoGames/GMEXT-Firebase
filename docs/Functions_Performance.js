@@ -1,7 +1,6 @@
 /**
  * @function FirebasePerformance_isPerformanceCollectionEnabled
- * 
- * Returns whether performance monitoring is enabled or disabled. This respects the Firebase Performance specific values first, and if these aren't set, uses the Firebase wide data collection switch.
+ * @desc This function returns whether performance monitoring is enabled or disabled. This respects the Firebase Performance specific values first, and if these aren't set, uses the Firebase wide data collection switch.
  * 
  * @returns {bool}
  * @example
@@ -14,7 +13,7 @@
 
 /**
  * @func FirebasePerformance_setPerformanceCollectionEnabled
- * @desc Enables or disables performance monitoring. This setting is persisted and applied on future invocations of your application. By default, performance monitoring is enabled.
+ * @desc This function enables or disables performance monitoring. This setting is persisted and applied on future invocations of your application. By default, performance monitoring is enabled.
  * 
  * To disable performance monitoring before of start the app in the extension injection change `firebase_performance_collection_enabled` to false.
  * 
@@ -30,7 +29,7 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Attribute_Get
- * @desc Returns the value of an attribute.
+ * @desc This function returns the value of an attribute.
  * 
  * [[Note: this function is only available in Android.]]
  * 
@@ -40,7 +39,7 @@
  * @returns {string}
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -59,10 +58,9 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Attribute_GetAll
- * @desc Returns all attributes in JSON format.
+ * @desc This function returns all attributes in JSON format.
  * 
  * [[Note: This function is only available in Android.]]
- * 
  * 
  * @param {string} name HttpMetric name
  * @param {string} attribute Attribute name
@@ -70,7 +68,7 @@
  * @returns {string}
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -89,7 +87,7 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Attribute_Put
- * @desc Sets a String value for the specified attribute. Updates the value of the attribute if the attribute already exists.
+ * @desc This function sets a String value for the specified attribute. Updates the value of the attribute if the attribute already exists.
  * 
  * [[Note: This function is only available in Android.]]
  * 
@@ -99,7 +97,7 @@
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -118,7 +116,7 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Attribute_Remove
- * @desc Removes an already added attribute from the HttpMetric.
+ * @desc This function removes an already added attribute from the HttpMetric.
  * 
  * [[Note: This function is only available in Android.]]
  * 
@@ -127,7 +125,7 @@
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -146,7 +144,7 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Create
- * @desc Creates a HttpMetric object for collecting network performance data for one request/response
+ * @desc This function creates a HttpMetric object for collecting network performance data for one request/response.
  * 
  * @param {string} name HttpMetric name
  * @param {string} url a valid url String, cannot be empty
@@ -173,14 +171,14 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_SetHttpResponseCode
- * @desc Sets the httpResponse code of the request
+ * @desc This function sets the HTTP response code of the request.
  * 
  * @param {string} name HttpMetric name
  * @param {real} responseCode valid values are greater than 0
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -199,13 +197,13 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_SetRequestPayloadSize
- * @desc Sets the size of the request payload.
+ * @desc This function sets the size of the request payload.
  * 
  * @param {real} arg The argument to be passed in
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -224,14 +222,14 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_SetResponseContentType
- * @desc Content type of the response such as text/html, application/json, etc.
+ * @desc This function sets the content type of the response such as text/html, application/json, etc.
  * 
  * @param {string} name HttpMetric Name
  * @param {string} contentType valid string of MIME type. Invalid usage will be logged.
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -250,14 +248,14 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_SetResponsePayloadSize
- * @desc Sets the size of the response payload
+ * @desc This function sets the size of the response payload.
  * 
  * @param {string} name HttpMetric name
  * @param {string} bytes Valid values are greater than or equal to 0. Invalid usage will be logged.
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -276,13 +274,13 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Start
- * @desc Marks the start time of the request
+ * @desc This function marks the start time of the request.
  * 
  * @param {string} name HttpMetric name
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET")
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET")
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -302,13 +300,13 @@
 
 /**
  * @func FirebasePerformance_HttpMetric_Stop
- * @desc Marks the end time of the response and queues the network request metric on the device for transmission. Check logcat for transmission info.
+ * @desc This function marks the end time of the response and queues the network request metric on the device for transmission. Check logcat for transmission info.
  * 
  * @param {string} name HttpMetric name
  * 
  * @example
  * ```gml
- * FirebasePerformance_HttpMetric_Create(httpMetric,"yoyogames.com","GET");
+ * FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
  * FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
  * show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
@@ -327,7 +325,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Attribute_GetAll
- * @desc Returns the map of all the attributes added to this trace.
+ * @desc This function returns the map of all the attributes added to this trace.
  * 
  * [[Note: This function is only available in Android.]]
  * 
@@ -356,7 +354,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Attribute_Put
- * @desc Sets a String value for the specified attribute.
+ * @desc This function sets a String value for the specified attribute.
  * 
  * [[Note: This function is only available in Android.]]
  * 
@@ -385,7 +383,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Attribute_Remove
- * @desc Removes an already added attribute from the Traces. If the trace has been stopped, this method returns without removing the attribute.
+ * @desc This function removes an already added attribute from the Traces. If the trace has been stopped, this method returns without removing the attribute.
  * 
  * [[Note: This function is only available in Android.]]
  * 
@@ -413,7 +411,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Create
- * @desc Creates a Trace object with given name.
+ * @desc This function creates a Trace object with given name.
  * 
  * @param {string} name Trace name
  * 
@@ -438,7 +436,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Metric_GetLong
- * @desc Gets the value of the metric with the given name in the current trace. If a metric with the given name doesn't exist, it is NOT created and a 0 is returned. This method is atomic.
+ * @desc This function gets the value of the metric with the given name in the current trace. If a metric with the given name doesn't exist, it is NOT created and a 0 is returned. This method is atomic.
  * 
  * @param {string} name Trace name
  * @param {string} metric Metric name
@@ -465,7 +463,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Metric_Increment
- * @desc Atomically increments the metric with the given name in this trace by the incrementBy value. If the metric does not exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action.
+ * @desc This function atomically increments the metric with the given name in this trace by the incrementBy value. If the metric does not exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action.
  * 
  * @param {string} name Trace name
  * @param {string} metric Metric name
@@ -492,7 +490,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Metric_Put
- * @desc Sets the value of the metric with the given name in this trace to the value provided. If a metric with the given name doesn't exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action. This method is atomic.
+ * @desc This function sets the value of the metric with the given name in this trace to the value provided. If a metric with the given name doesn't exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action. This method is atomic.
  * 
  * @param {string} name Trace name
  * @param {string} metric Metric name
@@ -519,10 +517,10 @@
 
 /**
  * @func FirebasePerformance_Trace_Start
- * @desc Starts this trace.
-|name|Trace nam|
-
-
+ * @desc This function starts the trace.
+ * 
+ * @param {string} name The trace name
+ * 
  * @example
  * ```gml
  * FirebasePerformance_Trace_Create(TraceName);
@@ -544,7 +542,7 @@
 
 /**
  * @func FirebasePerformance_Trace_Stop
- * @desc Stops this trace.
+ * @desc This function stops the trace with the given name.
  * 
  * @param {string} name Trace name
  * 

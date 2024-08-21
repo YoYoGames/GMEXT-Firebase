@@ -4,7 +4,7 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Create_and_Deploy">Create and Deploy
+# Create and Deploy
 
   Firebase Cloud Functions have very little to do with GML itself and more with programming server-side functions in JavaScript (or TypeScript). This guide will get you going with creating your first function and deploying it to the Firebase Cloud Functions server.
 
@@ -63,7 +63,7 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Firebase_Console">Firebase Console
+# Firebase Console
 
   This guide covers setting up and enabling Cloud Functions from inside the [Firebase Console](https://console.firebase.google.com/).
 

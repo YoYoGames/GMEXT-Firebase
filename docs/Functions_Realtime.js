@@ -2,7 +2,7 @@
  * @function FirebaseRealTime
  * @desc This function is the entry point for database interactions using the Firebase Realtime Database extension.  It returns a **&lt; *dbEntryRef** &gt;* that can be further modified and configured using chained methods.
  * 
- * Note: The Firebase Realtime Database implements a fluent-API meaning almost all functions return **self** allowing them to be chained and for you to build complex database interactions while keeping the code clean and easy to follow. Entries in the database are structs and are referred to in this documentation as *dbEntryRef::* ** These, under the hood, are structs that point to a specific path in the database (they are NOT the actual entry). 
+ * [[Note: The Firebase Realtime Database implements a fluent-API meaning almost all functions return **self** allowing them to be chained and for you to build complex database interactions while keeping the code clean and easy to follow. Entries in the database are structs and are referred to in this documentation as *dbEntryRef::* ** These, under the hood, are structs that point to a specific path in the database (they are NOT the actual entry).]]
  * 
  * @param {string} [database] Overwrite the default database
  * 
@@ -51,7 +51,7 @@
  *     }
  *     else
  *     {
- *         var errorMessage = async_load[? "errorMessage"];
+ *         var _errorMessage = async_load[? "errorMessage"];
  *     }
  * }
  * ```
@@ -90,11 +90,11 @@
  *     }
  *     else
  *     {
- *         var errorMessage = async_load[?"errorMessage"];
+ *         var _errorMessage = async_load[?"errorMessage"];
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , providing a success message if the entry exists in the database.
+ * The code above matches the response against the correct event **type**, providing a success message if the entry exists in the database.
  *
  * @function_end
  */
@@ -128,11 +128,11 @@
  *     }
  *     else
  *     {
- *         var errorMessage = async_load[?"errorMessage"];
+ *         var _errorMessage = async_load[?"errorMessage"];
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , providing a success message if **status** is valid.
+ * The code above matches the response against the correct event **type**, providing a success message if **status** is valid.
  * @function_end
  */
 
@@ -204,7 +204,7 @@
  * @example
  * ```gml
  * var _parentNode = "characters/player";
- * var _nodeRef = FirebaseRealTime().Path(_parentNode).Child("heath");
+ * var _nodeRef = FirebaseRealTime().Path(_parentNode).Child("health");
  * ```
  * The code sample above will create a &lt;dbNodeRef&gt; to the `"characters/player"` path (using the ${function.dbEntryRef::Path} method) and afterwards append the relative path `"health"` to it, meaning the resulting reference (`nodeRef`) now points to the `"characters/player/health"` path.
  * @function_end
@@ -277,7 +277,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , providing the document **data** if the task succeeded.
+ * The code above matches the response against the correct event **type**, providing the document **data** if the task succeeded.
  * @function_end
  */
 
@@ -308,8 +308,8 @@
  * listenerId = FirebaseRealTime().Path("enemies/bat/name").Set("Monster");
  * 
  * // (3) Set value using a struct
- * var data = { health: 100, magic: 99 };
- * listenerId = FirebaseRealTime().Path("enemies/bat").Set(data);
+ * var _data = { health: 100, magic: 99 };
+ * listenerId = FirebaseRealTime().Path("enemies/bat").Set(_data);
  * 
  * // (4) Time stamps
  * var _data = {};

@@ -32,7 +32,7 @@
 
 # Platform Setup
 
-  Firebase Cloud Storage implementation uses SDK dependencies and therefore is only available on **Android** , **iOS** targets and **Web** with limited functionality. In this section we will cover the required setup necessary to start using the Firebase Cloud Storage extension on your game.
+  Firebase Cloud Storage implementation uses SDK dependencies and therefore is only available on **Android**, **iOS** targets and **Web** with limited functionality. In this section we will cover the required setup necessary to start using the Firebase Cloud Storage extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running:
 
 > **:warning: IMPORTANT**
@@ -40,8 +40,8 @@
 > Web target exports will have limited functionality.
 
 * [Android Setup](Platform-Setup#Android_Setup) (once per project)
-* [iOS Setup](Platform-Setup#iOS Setup) (once per project)
-* [Web Setup](Platform-Setup#Web_Setup) (once per project)
+* [iOS Setup](Platform_Setup#iOS_Setup) (once per project)
+* [Web Setup](Platform_Setup#Web_Setup) (once per project)
 
 
 <br><br>

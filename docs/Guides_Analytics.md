@@ -4,7 +4,7 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Create_Project">Create Project
+# Create Project
 
   Before working with any Firebase functions, you must set up your Firebase project:
 
@@ -12,7 +12,7 @@
 2. Click on **Add Project** to create your new project.<br>
       ![](assets/setupProjectStep1.PNG)
 
-3. Enter a name for your project and click on the **C**  **ontinue** button.<br>
+3. Enter a name for your project and click on the **Continue** button.<br>
       ![](assets/setupProjectStep2.PNG)
 
 4. On the next page, make sure that **Enable Google Analytics for this project** is enabled and then click the **Continue** button:<br>
@@ -37,14 +37,14 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Platform_Setup">Platform Setup
+# Platform Setup
 
-  Firebase Analytics implementation uses SDK dependencies and therefore is only available on the **Android** , **iOS** and **Web** targets. In this section we will cover the required setup necessary to start using the Analytics extension on your game.
-  Select your target platform below and follow the simple steps to get your project up and running (you only need follow this topics once per project):
+Firebase Analytics implementation uses SDK dependencies and therefore is only available on the **Android**, **iOS** and **Web** targets. In this section we will cover the required setup necessary to start using the Analytics extension on your game.
+Select your target platform below and follow the simple steps to get your project up and running (you only need follow this topics once per project):
 
-* [Android Setup](Platform-Setup#Android_Setup)
-* [iOS Setup](Platform-Setup#iOS Setup)
-* [Web Setup](Platform-Setup#Web_Setup)
+* [Android Setup](Platform_Setup#Android_Setup)
+* [iOS Setup](Platform_Setup#iOS_Setup)
+* [Web Setup](Platform_Setup#Web_Setup)
 
 
 <br><br>

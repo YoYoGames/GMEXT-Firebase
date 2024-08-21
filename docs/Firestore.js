@@ -11,11 +11,11 @@
  * @section Setup
  * @desc  Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.
  * 
- * [[Note: The **SDK** version is only available for the Android, iOS and Web targets; if you're targeting other devices please follow the steps for **REST API** .]]
+ * [[Note: The **SDK** version is only available for the Android, iOS and Web targets; if you're targeting other devices please follow the steps for **REST API**.]]
  * 
- * [Create Project](Guides_Analytics#Create_Project) (skip this if you already have a project)
- * [Firebase Console](Guides_Firestore#Firebase_Console) (enabling Firebase Firestore)
- * [Platform Setup](Guides_Firestore#Platform_Setup) (configuring SDKs or REST API)
+ * * [Create Project](Guides_Analytics#Create_Project) (skip this if you already have a project)
+ * * [Firebase Console](Guides_Firestore#Firebase_Console) (enabling Firebase Firestore)
+ * * [Platform Setup](Guides_Firestore#Platform_Setup) (configuring SDKs or REST API)
  * 
  * @section_end
  * 

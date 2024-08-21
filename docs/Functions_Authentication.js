@@ -34,7 +34,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -73,7 +73,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -113,7 +113,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -190,7 +190,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -270,7 +270,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -453,7 +453,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -494,7 +494,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -535,7 +535,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -574,7 +574,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -616,7 +616,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -657,7 +657,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -680,7 +680,7 @@
  * ```gml
  * listenerId = FirebaseAuthentication_RecaptchaParams();
  * ```
- * In the code above we attempt to get the recaptcha parameters that can be used for phone number authentication (see [FirebaseAuthentication_LinkWithPhoneNumber](#FirebaseAuthentication_LinkWithPhoneNumber)). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * In the code above we attempt to get the recaptcha parameters that can be used for phone number authentication (see ${function.FirebaseAuthentication_LinkWithPhoneNumber}). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * 
  * ```gml
  * if (async_load[? "type"] == "FirebaseAuthentication_RecaptchaParams")
@@ -696,7 +696,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -734,7 +734,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -771,7 +771,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -809,7 +809,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -848,7 +848,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -885,7 +885,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -925,7 +925,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -966,7 +966,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event **type**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1005,7 +1005,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1046,7 +1046,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1098,7 +1098,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1136,7 +1136,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1175,7 +1175,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1216,7 +1216,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1254,7 +1254,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1296,7 +1296,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1336,7 +1336,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */
 
@@ -1377,6 +1377,6 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event listener **id** , checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
+ * The code above matches the response against the correct event listener **id**, checks for a **status** value of `200` meaning that it was successful and logs the result of the task.
  * @function_end
  */

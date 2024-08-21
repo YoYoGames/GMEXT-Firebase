@@ -32,7 +32,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , and if the function task succeeded it gets all keys (using the function ${function.FirebaseRemoteConfig_GetKeys}) that are afterwards parsed into an array (using the ${function.json_parse} function). Finally it gets all their values as strings (using ${function.FirebaseRemoteConfig_GetString} and logs them to the console.
+ * The code above matches the response against the correct event **type**, and if the function task succeeded it gets all keys (using the function ${function.FirebaseRemoteConfig_GetKeys}) that are afterwards parsed into an array (using the ${function.json_parse} function). Finally it gets all their values as strings (using ${function.FirebaseRemoteConfig_GetString} and logs them to the console.
  * @function_end
  */
 
@@ -68,8 +68,8 @@
  * 
  * for(var i = 0 ; i < _count; i++)
  * {
- *      var key = keys[i];
- *      show_debug_message("key: " + FirebaseRemoteConfig_GetString(key)));
+ *      var _key = _keys[i];
+ *      show_debug_message("key: " + FirebaseRemoteConfig_GetString(_key)));
  * }
  * ```
  * The code above gets all keys (using the function ${function.FirebaseRemoteConfig_GetKeys}) that are afterwards parsed into an array (using the ${function.json_parse} function). Finally it gets all their values as strings (using ${function.FirebaseRemoteConfig_GetString} and logs them to the console.
@@ -161,7 +161,7 @@
  * FirebaseRemoteConfig_SetDefaultsAsync(json_stringify(_jsonData));
  * 
  * ```
- * In the code above we request to set the default values for the parameters inside the struct (`jsonData`) the struct is then converted to JSON formatted string (using the built-in function ${function.json_stringify}). The function callback can be caught inside a ${event.social}.
+ * In the code above we request to set the default values for the parameters inside the struct (`_jsonData`) the struct is then converted to JSON formatted string (using the built-in function ${function.json_stringify}). The function callback can be caught inside a ${event.social}.
  * ```gml
  * if (async_load[? "type"] == "FirebaseRemoteConfig_SetDefaultsAsync")
  * {
@@ -175,6 +175,6 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , and logs the success of the operation.
+ * The code above matches the response against the correct event **type**, and logs the success of the operation.
  * @function_end
  */

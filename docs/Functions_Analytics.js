@@ -31,7 +31,7 @@
  *     FirebaseAnalytics_SetAnalyticsCollectionEnabled(false);
  * }
  * ```
- * The code above will check if a global variable is set to true (`global.stopDataCollection`) and if so we will clear the local collected data for this extension and disable the analytics data collection (using the function [FirebaseAnalytics_SetAnalyticsCollectionEnabled](#FirebaseAnalytics_SetAnalyticsCollectionEnabled)).
+ * The code above will check if a global variable is set to true (`global.stopDataCollection`) and if so we will clear the local collected data for this extension and disable the analytics data collection (using the function ${function.FirebaseAnalytics_SetAnalyticsCollectionEnabled}).
  * @function_end
  */
 
@@ -49,7 +49,7 @@
  *     FirebaseAnalytics_SetAnalyticsCollectionEnabled(false);
  * }
  * ```
- * The code above will check if a global variable is set to true and if so we will clear the local collected data (using the function [FirebaseAnalytics_ResetAnalyticsData](#FirebaseAnalytics_ResetAnalyticsData)) for this extension and disable the analytics data collection.
+ * The code above will check if a global variable is set to true and if so we will clear the local collected data (using the function ${function.FirebaseAnalytics_ResetAnalyticsData}) for this extension and disable the analytics data collection.
  * @function_end
  */
 
@@ -68,7 +68,7 @@
  * 
  * FirebaseAnalytics_SetDefaultEventParameters(json_stringify(_parameters));
  * ```
- * With the code above we are setting the default parameters to be used on all further calls to [FirebaseAnalytics_LogEvent](#FirebaseAnalytics_LogEvent). First we create a struct (`parameters`) with a `"playerName"` and `"bossName"` keys, the boss name is set to `pointer_null` meaning it will be removed from the set of default event parameters.
+ * With the code above we are setting the default parameters to be used on all further calls to ${function.FirebaseAnalytics_LogEvent}. First we create a struct (`_parameters`) with a `"playerName"` and `"bossName"` keys, the boss name is set to `pointer_null` meaning it will be removed from the set of default event parameters.
  * @function_end
  */
 

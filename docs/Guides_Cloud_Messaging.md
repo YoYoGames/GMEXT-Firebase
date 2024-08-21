@@ -4,13 +4,13 @@
 <!-- Page HTML do not touch -->
 <a /><p align="right">[Back To Top](#top)</p>
 
-# <a name="Platform_Setup">Platform Setup
+# Platform Setup
 
   Firebase Cloud Messaging implementation uses SDK dependencies and therefore is only available on **Android** and **iOS** targets. In this section we will cover the required setup necessary to start using the Cloud Messaging extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running (you only need follow this setup once per project):
 
-* [Android Setup](Platform-Setup#Android_Setup)
-* [iOS Setup](Platform-Setup#iOS Setup)
+* [Android Setup](Platform_Setup#Android_Setup)
+* [iOS Setup](Platform_Setup#iOS_Setup)
 
 ## Additional steps for iOS
 
@@ -40,7 +40,7 @@
 * Here, upload your P8 file and enter the other required details that you retrieved from the Apple Developer site.<br>
       ![](assets/iOS_setup_7.png)
 
-  You can now send notifications to the iOS client game by going under **&quot;Engage&quot;** and selecting **&quot;Cloud Messaging&quot;** on your Firebase dashboard.
+  You can now send notifications to the iOS client game by going under **&quot;Engage&quot;** and selecting **&quot;Cloud Messaging&quot;** on your Firebase dashboard.<br>
   ![](assets/iOS_setup_8.png)
 
 

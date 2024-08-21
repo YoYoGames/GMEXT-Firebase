@@ -14,9 +14,9 @@
  * 
  * Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.
  * 
- * [Create Project](Guides_Analytics#Create_Project) (skip this if you already have a project)
- * [Firebase Console](Guides_Authentication#Firebase_Console) (enabling Firebase Authentication)
- * [Platform Setup](Guides_Authentication#Platform Setup) (configure SDKs or REST API)
+ * * [Create Project](Guides_Analytics#Create_Project) (skip this if you already have a project)
+ * * [Firebase Console](Guides_Authentication#Firebase_Console) (enabling Firebase Authentication)
+ * * [Platform Setup](Guides_Authentication#Platform_Setup) (configure SDKs or REST API)
  * 
  * @section_end
  * 
@@ -40,14 +40,14 @@
  * @section Auth Configuration
  * @desc These are the available authentication setup guides that you can follow to implement the desired authentication method in your project.
  * 
- * [Apple](LogIns_Authentication#Apple Authentication)
- * [Custom](LogIns_Authentication#Custom Authentication)
- * [Email](LogIns_Authentication#Email_Authentication)
- * [Facebook](LogIns_Authentication#Facebook Authentication)
- * [GameCenter](LogIns_Authentication#GameCenter Authentication)
- * [Google](LogIns_Authentication#Google Authentication)
- * [GooglePlay](LogIns_Authentication#Google_Play_Services_Authentication)
- * [Phone](LogIns_Authentication#Phone Authentication)
+ * * [Apple](LogIns_Authentication#Apple_Authentication)
+ * * [Custom](LogIns_Authentication#Custom_Authentication)
+ * * [Email](LogIns_Authentication#Email_Authentication)
+ * * [Facebook](LogIns_Authentication#Facebook_Authentication)
+ * * [GameCenter](LogIns_Authentication#GameCenter_Authentication)
+ * * [Google](LogIns_Authentication#Google_Authentication)
+ * * [GooglePlay](LogIns_Authentication#Google_Play_Services_Authentication)
+ * * [Phone](LogIns_Authentication#Phone_Authentication)
  * 
  * @section_end
  * 

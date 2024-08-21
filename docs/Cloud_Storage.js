@@ -11,8 +11,8 @@
  * @desc Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.
  * 
  * * [Create Project](Guides_Analytics#Create_Project)
- * * [Firebase Console](Guides_Cloud-Storage#Firebase_Console)
- * * [Platform Setup](Guides_Cloud-Storage#Platform_Setup)
+ * * [Firebase Console](Guides_Cloud_Storage#Firebase_Console)
+ * * [Platform Setup](Guides_Cloud_Storage#Platform_Setup)
  * 
  * @section_end
  * 

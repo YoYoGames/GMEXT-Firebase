@@ -11,7 +11,7 @@
  * @section_end
  * 
  * @section_const
- * @ref LocalPushNotification_iOS_Permission_Status
+ * @ref LocalPushNotification_iOS_Permission
  * @section_end
  * 
  * @module_end
@@ -28,6 +28,8 @@
  * @param {string} title The notification title
  * @param {string} message The notification message
  * @param {string} data The notification data
+ * 
+ * @returns {real}
  * 
  * @event push_notification
  * @desc This event is triggered when the push notification is shown.
@@ -77,6 +79,8 @@
  * @function LocalPushNotification_iOS_Permission_Request
  * @desc This function requests permissions for sending local push notifications on iOS.
  * 
+ * @returns {real}
+ * 
  * @event social
  * @desc 
  * @member {string} type The string `"LocalPushNotification_iOS_Permission_Request"`
@@ -121,7 +125,7 @@
  * }
  * ```
  * In the Async Social event the event type is checked. A type of `"LocalPushNotification_iOS_Permission_Request"` indicates a response to the earlier request.
- * If the request was unsuccesful further code execution is stopped. If it was successful, the corresponding value of ${constant.LocalPushNotification_iOS_Permission_Status} is assigned to the variable `iOS_permission_status`.
+ * If the request was unsuccesful, further code execution is stopped. If it was successful, the corresponding value of ${constant.LocalPushNotification_iOS_Permission} is assigned to the variable `iOS_permission_status`.
  * @func_end
  */
 
@@ -133,7 +137,7 @@
  * 
  * @event social
  * @member {string} type The string `"LocalPushNotification_iOS_Permission_Status"`
- * @member {constant.LocalPushNotification_iOS_Permission_Status} value The status of the permission
+ * @member {constant.LocalPushNotification_iOS_Permission} value The status of the permission
  * @event_end
  * 
  * @example
@@ -181,12 +185,17 @@
  * @function LocalPushNotification_Create_Android
  * @desc This function creates a local push notification on Android.
  * 
+ * The function allows you to provide a custom icon image to display on the notification.
+ * You can save any sprite from GameMaker to a PNG file using the ${function.sprite_save} function and pass the resulting file as the `filename` parameter.
+ * 
  * @param {string} uid The ID of the notification
  * @param {real} seconds The number of seconds after which to display the notification
  * @param {string} title The notification title
  * @param {string} message The notification message
- * @param {string} data The notification data
+ * @param {string} data Extra data to include with the notification (can be retrieved in the ${var.async_load} in the async event)
  * @param {string} filename The path to a custom icon image to display on the notification
+ * 
+ * @returns {real}
  * 
  * @event push_notification
  * @desc This event is triggered when the push notification is shown.
@@ -200,7 +209,10 @@
  * @example
  * ```gml
  * /// Create Event
- * LocalPushNotification_Create("notification", 10, "Title", "This is a notification!", "data_goes_here");
+ * icon_sprite = sprite_duplicate(spr_notification);
+ * sprite_save(icon_sprite, 0, "icon.png");
+ * sprite_delete(icon_sprite);
+ * LocalPushNotification_Create_Android("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");
  * ```
  * In the Create event a local push notification is created. The notification is shown after 10 seconds.
  * ```gml
@@ -222,7 +234,7 @@
 // Constants
 
 /**
- * @constant LocalPushNotification_iOS_Permission_Status
+ * @constant LocalPushNotification_iOS_Permission
  * @desc This set of constants holds the possible values for the permission on iOS.
  * @member LocalPushNotification_iOS_Permission_Status_Authorized Authorized to deliver notifications to the user
  * @member LocalPushNotification_iOS_Permission_Status_Denied Denied authorization to deliver notifications to the user

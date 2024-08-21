@@ -46,7 +46,7 @@
  *     }
  *     else
  *     {
- *         var errorMessage = async_load[?"errorMessage"];
+ *         var _errorMessage = async_load[?"errorMessage"];
  *     }
  * }
  * ```
@@ -67,7 +67,7 @@
  * ```gml
  * var _data = { name: "Hero", level: 99 };
  * var _json = json_stringify(_data);
- * FirebaseFirestore("playersCollection/heroDocument").Set(json);
+ * FirebaseFirestore("playersCollection/heroDocument").Set(_json);
  * ```
  * The code sample above will create a data structure (`_data`) that will be stored inside the database. This data needs to be converted to string using the ${function.json_stringify} function. Afterwards it creates a &lt;dbReference&gt; to the path `"playersCollection/heroDocument"` and calls the ${function.dbReference::Set} method on it (setting the database path to the specified value).
  * @function_end
@@ -105,7 +105,7 @@
  *     }
  *     else
  *     {
- *         var errorMessage = async_load[? "errorMessage"];
+ *         var _errorMessage = async_load[? "errorMessage"];
  *     }
  * }
  * ```

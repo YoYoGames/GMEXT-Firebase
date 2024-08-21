@@ -96,7 +96,7 @@
 
 /**
  * @func FirebaseCloudMessaging_SubscribeToTopic
- * @desc Subscribes the user to the given topic in the background. The subscription operation is persistent and will keep retrying until it is successful. This uses the FCM registration token to identify the app instance, generating one if it does not exist (see [FirebaseCloudMessaging_GetToken](#FirebaseCloudMessaging_GetToken)), which periodically sends data to the Firebase backend when auto-init is enabled. To delete the data, delete the token (see ${function.FirebaseCloudMessaging_DeleteToken}).
+ * @desc Subscribes the user to the given topic in the background. The subscription operation is persistent and will keep retrying until it is successful. This uses the FCM registration token to identify the app instance, generating one if it does not exist (see ${function.FirebaseCloudMessaging_GetToken}), which periodically sends data to the Firebase backend when auto-init is enabled. To delete the data, delete the token (see ${function.FirebaseCloudMessaging_DeleteToken}).
  * @param {string} topic The name of the topic to subscribe to.
  * 
  * @event social

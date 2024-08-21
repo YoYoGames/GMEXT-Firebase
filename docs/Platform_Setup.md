@@ -129,7 +129,7 @@ You can get your package name from the [Android Game Options](https://manual.gam
 9. Open the **index.html** file in Notepad++ or Visual Studio Code (or any other text editor you prefer).<br>
       ![](assets/setupWebIndexFileBefore.PNG)
 
-10. Now we need to add the following code between the `` and `<body>`</body> tags (line 72 in the **html.index** image above):
+10. Now we need to add the following code between the `<body>` and `</body>` tags (line 72 in the **html.index** image above):
 
 ```gml
 <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>

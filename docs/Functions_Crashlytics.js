@@ -20,7 +20,7 @@
  *     show_debug_message(_info);
  * });
  * ```
- * The code above catches all the exceptions and trigger a **fatal error** report with the information from the exception converted to a string (using the function ${function.json_stringify} and will also print the same information to the debug console.
+ * The code above catches all the exceptions and trigger a **fatal error** report with the information from the exception converted to a string (using the function ${function.json_stringify}) and will also print the same information to the debug console.
  * @function_end
  */
 
@@ -164,7 +164,7 @@
  *     }
  * }
  * ```
- * The code above matches the response against the correct event **type** , and if there are unsent reports we proceed to send them to the Crashlytics servers (using the function ${function.FirebaseCrashlytics_UnsentReports_Send}).
+ * The code above matches the response against the correct event **type**, and if there are unsent reports we proceed to send them to the Crashlytics servers (using the function ${function.FirebaseCrashlytics_UnsentReports_Send}).
  * @function_end
  */
 

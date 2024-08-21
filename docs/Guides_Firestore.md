@@ -29,17 +29,17 @@
 
 # Platform Setup
 
-  Firebase Firestore implementation uses both SDK (working on **Android** , **iOS** and **Web** ) and also REST API that allows it to work on any other platform. In this section we will cover the steps necessary to start using the Firebase Firestore extension in your game.
+  Firebase Firestore implementation uses both SDK (working on **Android**, **iOS** and **Web** ) and also REST API that allows it to work on any other platform. In this section we will cover the steps necessary to start using the Firebase Firestore extension in your game.
   Select your target platform below and follow the simple steps to get your project up and running:
 
-* [Android Setup](Platform-Setup#Android_Setup) (once per project)
-* [iOS Setup](Platform-Setup#iOS Setup) (once per project)
-* [Web Setup](Platform-Setup#Web_Setup) (once per project)
+* [Android Setup](Platform_Setup#Android_Setup) (once per project)
+* [iOS Setup](Platform_Setup#iOS_Setup) (once per project)
+* [Web Setup](Platform_Setup#Web_Setup) (once per project)
 * [REST API Setup](#REST_API_Setup)
 
 ## Advanced Configuration
 
-  Firebase Firestore by default uses SDKs on **Android** , **iOS** and **Web** targets and uses REST API on all other exports, but you can change this behavior (i.e.: forcing REST API to be used even on SDK enabled platforms) by changing the extension options value inside extension window (2).
+  Firebase Firestore by default uses SDKs on **Android**, **iOS** and **Web** targets and uses REST API on all other exports, but you can change this behavior (i.e.: forcing REST API to be used even on SDK enabled platforms) by changing the extension options value inside extension window (2).
   ![](assets/FirestoreExtOpt.png)
 
 

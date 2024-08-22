@@ -116,62 +116,6 @@ You can get your package name from the [Android Game Options](https://manual.gam
 4. On this screen, just copy the **firebaseConfig** struct:<br>
       ![](assets/setupWebStep2.PNG)
 
-5. Now go back into GameMaker 2 and **build** your project.
-6. Choose the **Package As Zip** option:<br>
-      ![](assets/setupWebCreatePackage.PNG)
+5. Paste the struct's contents in a text editor, replace all double quotes `"` with single quotes `'` and copy the resulting text.
 
-7. Locate the created package and **extract it** into a folder.<br>
-      ![](assets/setupWebExtractZip.PNG)
-
-8. Open the extracted folder and look for an **index.html** file.<br>
-      ![](assets/setupWebOpenIndexFile.PNG)
-
-9. Open the **index.html** file in Notepad++ or Visual Studio Code (or any other text editor you prefer).<br>
-      ![](assets/setupWebIndexFileBefore.PNG)
-
-10. Now we need to add the following code between the `<body>` and `</body>` tags (line 72 in the **html.index** image above):
-
-```gml
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-remote-config.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "",
-    measurementId: ""
-  };
-  firebase.initializeApp(firebaseConfig);
-</script>
-```
-
-11. Replace the **const**  **firebaseConfig** part with the one copied in step 4:<br>
-      ![](assets/setupWebIndexFileAfter.png)
-
-12. Go back into GameMaker and open your **Included Files** folder.<br>
-          ![](assets/setupWebIncludedFiles.PNG)
-
-13. Press the **Open in Explorer** button:<br>
-      ![](assets/setupWebOpenIncludedFilesExplorer.PNG)
-
-14. Place your **index.html** file inside the folder that opens (/datafiles).<br>
-      ![](assets/setupWebIndexFileExplorer.PNG)
-
-15. Back in GameMaker, click on the **Game Options button.** <br>
-      ![](assets/setupWebIDEConfigurations.PNG)
-
-16. Go into the **HTML5** platform settings<br>
-      ![](assets/setupWebHTML5Settings.PNG)
-
-17. In the **Advanced** section go to the &quot;Include file as index.html&quot; dropdown and select the **index.html** option (this is the file we have just added to the included files).<br>
-      ![](assets/setupWebCustomIndexFile.PNG)
-
-18. Press **Apply** and the main setup for all Firebase Web modules is finished!
+6. Paste the result in the **Firebase Config Struct** extension option. Note that this cannot contain any double quotes `"`.

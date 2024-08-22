@@ -11,8 +11,8 @@
  * @section Setup
  * @desc Before you can start using any Firebase module extensions you are required to follow some initial configuration. However if you've already done these for any of the other modules you can skip this configuration section and go straight to using the API functions.
  * 
- * * [Create Project](Guides_Analytics#Create_Project)
- * * [Platform Setup](Guides_Cloud_Messaging#Platform_Setup) (**Remote Config** enabling steps are required)
+ * * ${page.Guides_Analytics#Create_Project}
+ * * ${page.Guides_Cloud_Messaging#Platform_Setup} (**Remote Config** enabling steps are required)
  * 
  * @section_end
  * 

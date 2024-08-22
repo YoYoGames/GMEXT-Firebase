@@ -6,10 +6,10 @@
 
 # Firebase Console
 
-  Before being able to use the Firebase Realtime Database extension we need to configure a new database to work with in the [Firebase Console](https://console.firebase.google.com/). Follow the steps below to get your first database set up.
+Before being able to use the Firebase Realtime Database extension we need to configure a new database to work with in the [Firebase Console](https://console.firebase.google.com/). Follow the steps below to get your first database set up.
 
 1. On your Firebase project, click on **Realtime Database** and select **Create Database** .<br>
-          ![](assets/realtimeEnable.PNG)
+      ![](assets/realtimeEnable.PNG)
 
 2. Select your database location and click on **Next** .<br>
       ![](assets/realtimeStep1.PNG)
@@ -32,10 +32,10 @@
   Firebase Realtime Database implementation uses both SDK (working on **Android**, **iOS** and **Web**) and also REST API that allows it to work on any other platform. In this section we will cover the steps necessary to start using the Firebase Realtime Database extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running:
 
-* [Android Setup](Platform_Setup#Android_Setup) (once per project)
-* [iOS Setup](Platform_Setup#iOS_Setup) (once per project)
-* [Web Setup](Platform_Setup#Web_Setup) (once per project)
-* [REST API Setup](#REST_API_Setup)
+* ${page.Platform_Setup#Android_Setup} (once per project)
+* ${page.Platform_Setup#iOS_Setup} (once per project)
+* ${page.Platform_Setup#Web_Setup} (once per project)
+* ${page.Platform_Setup#REST_API_Setup}
 
 ## Advanced Configuration
 
@@ -52,7 +52,7 @@
 
 # REST API Setup
 
-  This setup is necessary for syncing the Firebase Realtime Database console with the REST API implementation. 
+This setup is necessary for syncing the Firebase Realtime Database console with the REST API implementation. 
 
 1. On your Firebase project's dashboard, click on **Realtime Database** and copy your database's link.<br>
         ![](assets/realtimeDatabaseLink.png)

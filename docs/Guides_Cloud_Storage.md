@@ -39,9 +39,9 @@
 >
 > Web target exports will have limited functionality.
 
-* [Android Setup](Platform-Setup#Android_Setup) (once per project)
-* [iOS Setup](Platform_Setup#iOS_Setup) (once per project)
-* [Web Setup](Platform_Setup#Web_Setup) (once per project)
+* ${page.Platform_Setup#Android_Setup} (once per project)
+* ${page.Platform_Setup#iOS_Setup} (once per project)
+* ${page.Platform_Setup#Web_Setup} (once per project)
 
 
 <br><br>

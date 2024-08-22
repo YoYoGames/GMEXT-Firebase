@@ -9,12 +9,11 @@
  * Check the [official page](https://firebase.google.com/products/crashlytics) for more information.
  * 
  * @section Setup
+ * @desc Before starting to use any Firebase extensions, you are required to follow some general configuration steps; however the Crashlytics extension has some specific requirements which you can read in the pages below:
  * 
- * Before starting to use any Firebase extensions, you are required to follow some general configuration steps; however the Crashlytics extension has some specific requirements which you can read in the pages below:
- * 
- * * [Create Project](Guides_Analytics#Create_Project)
- * * [Platform Setup](Guides_Crashlytics#Crashlytics Setup)
- * * [Building on iOS](Guides_Crashlytics#Building_on_iOS)
+ * * ${page.Guides_Analytics#Create_Project}
+ * * ${page.Guides_Crashlytics#Crashlytics Setup}
+ * * ${page.Guides_Crashlytics#Building_on_iOS}
  * 
  * @section_end
  * 

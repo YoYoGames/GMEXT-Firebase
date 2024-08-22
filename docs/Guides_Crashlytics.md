@@ -6,7 +6,7 @@
 
 # Building on iOS
 
-  Building your project on iOS requires some Xcode project changes:
+Building your project on iOS requires some Xcode project changes:
 
 1. Build your project from GMS2 first (using the iOS target) so it creates an Xcode project that we will edit in the steps below.
 2. Before building your project further from Xcode, go to **Build Phases** and drag the **Run Script** item to the bottom:<br>
@@ -27,11 +27,11 @@
 
 # Crashlytics Setup
 
-  Firebase Crashlytics implementation uses SDK dependencies and therefore is only available on **Android** and **iOS** targets. In this section we will cover the steps necessary to start using the Firebase Crashlytics extension in your game.
-  Select your target platform below and follow the simple steps to get your project up and running (you only need follow this setup once per project):
+Firebase Crashlytics implementation uses SDK dependencies and therefore is only available on **Android** and **iOS** targets. In this section we will cover the steps necessary to start using the Firebase Crashlytics extension in your game.
+Select your target platform below and follow the simple steps to get your project up and running (you only need follow this setup once per project):
 
-* [Android Setup](Platform-Setup#Android_Setup)
-* [iOS Setup](Platform-Setup#iOS Setup)
+* ${page.Platform_Setup#Android_Setup}
+* ${page.Platform_Setup#iOS_Setup}
 
 ## Enabling Crashlytics
 

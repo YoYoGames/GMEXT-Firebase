@@ -14,7 +14,7 @@
   "copyToTargets":3035426170322551022,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.1.4",
+  "extensionVersion":"2.2.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseAuthentication.ext","constants":[],"copyToTargets":44,"filename":"FirebaseAuthentication.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseAuthentication_SignInWithCustomToken","argCount":0,"args":[1,],"documentation":"","externalName":"SDKFirebaseAuthentication_SignInWithCustomToken","help":"SDKFirebaseAuthentication_SignInWithCustomToken(token)","hidden":false,"kind":4,"name":"SDKFirebaseAuthentication_SignInWithCustomToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},

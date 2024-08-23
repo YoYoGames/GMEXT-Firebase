@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.1.3",
+  "extensionVersion":"2.2.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseRemoteConfig.ext","constants":[],"copyToTargets":-1,"filename":"FirebaseRemoteConfig.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseRemoteConfig_Initialize","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseRemoteConfig_Initialize","help":"FirebaseRemoteConfig_Initialize(seconds)","hidden":false,"kind":4,"name":"FirebaseRemoteConfig_Initialize","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

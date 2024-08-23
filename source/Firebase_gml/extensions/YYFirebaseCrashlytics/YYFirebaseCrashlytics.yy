@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.1.3",
+  "extensionVersion":"2.2.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseCrashlytics.ext","constants":[],"copyToTargets":-1,"filename":"FirebaseCrashlytics.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_Log","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseCrashlytics_Log","help":"FirebaseCrashlytics_Log(string)","hidden":false,"kind":4,"name":"FirebaseCrashlytics_Log","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

@@ -15,7 +15,7 @@
  * 
  * * ${page.guides_analytics#Create_Project} (skip this if you already have a project)
  * * ${page.guides_firestore#Firebase_Console} (enabling Firebase Firestore)
- * * ${page.guides_firestore#platform_setup} (configuring SDKs or REST API)
+ * * ${page.guides_firestore#Platform_Setup} (configuring SDKs or REST API)
  * 
  * @section_end
  * 

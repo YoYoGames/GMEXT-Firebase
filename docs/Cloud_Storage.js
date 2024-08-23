@@ -12,7 +12,7 @@
  * 
  * * ${page.guides_analytics#Create_Project}
  * * ${page.guides_cloud_storage#Firebase_Console}
- * * ${page.guides_cloud_storage#platform_setup}
+ * * ${page.guides_cloud_storage#Platform_Setup}
  * 
  * @section_end
  * 

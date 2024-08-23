@@ -38,7 +38,7 @@ Select your target platform below and follow the simple steps to get your projec
 1. On your Firebase console, select **Crashlytics** under &quot;Release &amp; Monitor&quot;; then **select your Android** / **iOS** project **and click on Enable Crashlytics** .<br>
           ![](assets/crashlyticsEnable.png)
 
-2. On this screen, the Firebase console will wait for a test crash from your app. To skip this screen you need to build a project (see [Building on iOS](#Building_on_iOS) if you are building for the iOS target), unplug your device and run a call to the included [FirebaseCrashlytics_Crash](crashlytics#FirebaseCrashlytics_Crash) function.<br>
+2. On this screen, the Firebase console will wait for a test crash from your app. To skip this screen you need to build a project (see ${page.guides_crashlytics#Building_on_iOS} if you are building for the iOS target), unplug your device and run a call to the included ${function.FirebaseCrashlytics_Crash} function.<br>
       ![](assets/crashlyticsWaiting.png)
 
 3. You are now all set to monitor your game crash logs.

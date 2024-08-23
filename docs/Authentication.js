@@ -14,9 +14,9 @@
  * 
  * Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.
  * 
- * * ${page.guides_analytics#create_project} (skip this if you already have a project)
- * * ${page.guides_authentication#firebase_console} (enabling Firebase Authentication)
- * * ${page.guides_authentication#platform_setup} (configure SDKs or REST API)
+ * * ${page.guides_analytics#Create_Project} (skip this if you already have a project)
+ * * ${page.guides_authentication#Firebase_Console} (enabling Firebase Authentication)
+ * * ${page.guides_authentication#Platform_Setup} (configure SDKs or REST API)
  * 
  * @section_end
  * 

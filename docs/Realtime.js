@@ -15,7 +15,7 @@
  * 
  * * ${page.guides_analytics#Create_Project} (skip this if you already have a project)
  * * ${page.guides_realtime#Firebase_Console} (enabling Firebase Realtime Database)
- * * ${page.guides_realtime#platform_setup} (configuring SDKs or REST API)
+ * * ${page.guides_realtime#Platform_Setup} (configuring SDKs or REST API)
  * 
  * @section_end
  * 

@@ -79,7 +79,7 @@
 4. After some loading you need to click on Continue, after which you will see the following page:<br>
       ![](assets/CloudFunctions2.PNG)
 
-5. We are done configuring the Firebase Console. We can now continue to [creating and deploying a Cloud Functions project](#Create_and_Deploy).
+5. We are done configuring the Firebase Console. We can now continue to ${page.setup_cloud_functions#Create_and_Deploy}.
 
 
 <br><br>

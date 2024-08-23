@@ -32,7 +32,7 @@
 * ${page.platform_setup#Android_Setup} (once per project)
 * ${page.platform_setup#iOS_Setup} (once per project)
 * ${page.platform_setup#Web_Setup} (once per project)
-* ${page.platform_setup#REST_API_Setup}
+* ${page.guides_authentication#REST_API_Setup}
 
 ## Advanced Configuration
 

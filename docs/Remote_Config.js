@@ -12,7 +12,7 @@
  * @desc Before you can start using any Firebase module extensions you are required to follow some initial configuration. However if you've already done these for any of the other modules you can skip this configuration section and go straight to using the API functions.
  * 
  * * ${page.guides_analytics#Create_Project}
- * * ${page.guides_cloud_messaging#platform_setup} (**Remote Config** enabling steps are required)
+ * * ${page.guides_cloud_messaging#Platform_Setup} (**Remote Config** enabling steps are required)
  * 
  * @section_end
  * 

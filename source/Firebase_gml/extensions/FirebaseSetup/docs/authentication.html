@@ -180,9 +180,9 @@ Check the <a href="https://firebase.google.com/docs/auth">official page</a> for 
 </div>
 <p>Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.</p>
 <ul>
-<li><a href="guides_analytics.html#create_project">create project</a> (skip this if you already have a project)</li>
-<li><a href="guides_authentication.html#firebase_console">firebase console</a> (enabling Firebase Authentication)</li>
-<li><a href="guides_authentication.html#platform_setup">platform setup</a> (configure SDKs or REST API)</li>
+<li><a href="guides_analytics.html#create-project">Create Project</a> (skip this if you already have a project)</li>
+<li><a href="guides_authentication.html#firebase-console">Firebase Console</a> (enabling Firebase Authentication)</li>
+<li><a href="guides_authentication.html#platform-setup">Platform Setup</a> (configure SDKs or REST API)</li>
 </ul>
 <h2 id="compatibility">Compatibility</h2>
 <p>Below is the GameMaker compatibility table for each provider depending on the target platform (keep in mind that the <strong>REST API</strong> can be used on every platform).</p>
@@ -265,14 +265,14 @@ Check the <a href="https://firebase.google.com/docs/auth">official page</a> for 
 <h2 id="auth-configuration">Auth Configuration</h2>
 <p>These are the available authentication setup guides that you can follow to implement the desired authentication method in your project.</p>
 <ul>
-<li><a href="logins_authentication.html#Apple_Authentication">Apple Authentication</a></li>
-<li><a href="logins_authentication.html#Custom_Authentication">Custom Authentication</a></li>
-<li><a href="logins_authentication.html#Email_Authentication">Email Authentication</a></li>
-<li><a href="logins_authentication.html#Facebook_Authentication">Facebook Authentication</a></li>
-<li><a href="logins_authentication.html#GameCenter_Authentication">GameCenter Authentication</a></li>
-<li><a href="logins_authentication.html#Google_Authentication">Google Authentication</a></li>
-<li><a href="logins_authentication.html#Google_Play_Services_Authentication">Google Play Services Authentication</a></li>
-<li><a href="logins_authentication.html#Phone_Authentication">Phone Authentication</a></li>
+<li><a href="logins_authentication.html#apple-authentication">Apple Authentication</a></li>
+<li><a href="logins_authentication.html#custom-authentication">Custom Authentication</a></li>
+<li><a href="logins_authentication.html#email-authentication">Email Authentication</a></li>
+<li><a href="logins_authentication.html#facebook-authentication">Facebook Authentication</a></li>
+<li><a href="logins_authentication.html#gamecenter-authentication">GameCenter Authentication</a></li>
+<li><a href="logins_authentication.html#google-authentication">Google Authentication</a></li>
+<li><a href="logins_authentication.html#google-play-services-authentication">Google Play Services Authentication</a></li>
+<li><a href="logins_authentication.html#phone-authentication">Phone Authentication</a></li>
 </ul>
 <h2 id="functions">Functions</h2>
 <p>The functions listed here are given for working with Firebase Authentication extension.</p>
@@ -1126,7 +1126,7 @@ The code above will return a JSON formatted string of an array with raw user dat
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_linkwithemailpassword">FirebaseAuthentication_LinkWithEmailPassword</h1>
-<p>This function establishes a link between an email/password pair and the current user (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function establishes a link between an email/password pair and the current user (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1224,7 +1224,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_linkwithoauthcredential">FirebaseAuthentication_LinkWithOAuthCredential</h1>
-<p>This function establishes a link between an OAuth credential and the current user  (used for <a href="logins_authentication.html#Apple Authentication">Apple</a>, <a href="logins_authentication.html#Facebook Authentication">Facebook</a>, <a href="logins_authentication.html#Google Authentication">Google</a> and <a href="logins_authentication.html#Google_Play_Services_Authentication">GooglePlay</a> based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function establishes a link between an OAuth credential and the current user  (used for <a href="logins_authentication.html#apple-authentication">Apple Authentication</a>, ?{page.logins_authentication#Facebook_Authentication}, <a href="logins_authentication.html#google-authentication">Google Authentication</a> and <a href="logins_authentication.html#google-play-services-authentication">Google Play Services Authentication</a> based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1435,7 +1435,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_reauthenticatewithemail">FirebaseAuthentication_ReauthenticateWithEmail</h1>
-<p>This function re-authenticates the current user using an email/password (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function re-authenticates the current user using an email/password (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1533,7 +1533,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_reauthenticatewithoauth">FirebaseAuthentication_ReauthenticateWithOAuth</h1>
-<p>This function re-authenticates the current user using an OAuth credential (used for <a href="logins_authentication.html#Apple Authentication">Apple</a>, <a href="logins_authentication.html#Facebook Authentication">Facebook</a>, <a href="logins_authentication.html#Google Authentication">Google</a> and <a href="logins_authentication.html#Google_Play_Services_Authentication">GooglePlay</a> based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function re-authenticates the current user using an OAuth credential (used for <a href="logins_authentication.html#apple-authentication">Apple Authentication</a>, <a href="logins_authentication.html#facebook-authentication">Facebook Authentication</a>, <a href="logins_authentication.html#google-authentication">Google Authentication</a> and <a href="logins_authentication.html#google-play-services-authentication">Google Play Services Authentication</a>). The returned value is a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1900,7 +1900,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_sendemailverification">FirebaseAuthentication_SendEmailVerification</h1>
-<p>This function sends an email verification to the current user (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function sends an email verification to the current user (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1988,7 +1988,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_sendpasswordresetemail">FirebaseAuthentication_SendPasswordResetEmail</h1>
-<p>This function sends a password reset email to the current user (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function sends a password reset email to the current user (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2081,7 +2081,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_sendverificationcode">FirebaseAuthentication_SendVerificationCode</h1>
-<p>This function sends a verification code and requests for a <strong>sessionInfo</strong>  key (used for <a href="logins_authentication.html#Phone Authentication">Phone</a> based authentication), it then returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function sends a verification code and requests for a <strong>sessionInfo</strong>  key (used for <a href="logins_authentication.html#phone-authentication">Phone Authentication</a> based authentication), it then returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2256,7 +2256,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_signin_email">FirebaseAuthentication_SignIn_Email</h1>
-<p>This function signs in a user with an email and password (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function signs in a user with an email and password (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2354,7 +2354,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_signin_oauth">FirebaseAuthentication_SignIn_OAuth</h1>
-<p>This function signs in a user with an OAuth credential (used for <a href="logins_authentication.html#Apple Authentication">Apple</a>, <a href="logins_authentication.html#Facebook Authentication">Facebook</a>, <a href="logins_authentication.html#Google Authentication">Google</a> and <a href="logins_authentication.html#Google_Play_Services_Authentication">GooglePlay</a> based authentications) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function signs in a user with an OAuth credential (used for <a href="logins_authentication.html#apple-authentication">Apple Authentication</a>, <a href="logins_authentication.html#facebook-authentication">Facebook Authentication</a>, <a href="logins_authentication.html#google-authentication">Google Authentication</a> and <a href="logins_authentication.html#google-play-services-authentication">Google Play Services Authentication</a> based authentications) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2462,7 +2462,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_signinwithcustomtoken">FirebaseAuthentication_SignInWithCustomToken</h1>
-<p>This function tries to sign in a user with a given custom token. Use this function after you retrieve a Firebase Auth Custom Token from your server (used with <a href="logins_authentication.html#Custom Authentication">Custom</a> authentication). The function returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function tries to sign in a user with a given custom token. Use this function after you retrieve a Firebase Auth Custom Token from your server (used with <a href="logins_authentication.html#custom-authentication">Custom Authentication</a>). The function returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2555,7 +2555,7 @@ The code above matches the response against the correct event listener <strong>i
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_signinwithphonenumber">FirebaseAuthentication_SignInWithPhoneNumber</h1>
-<p>This function signs in a user with a phone number (used for <a href="logins_authentication.html#Phone Authentication">Phone</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function signs in a user with a phone number (used for <a href="logins_authentication.html#phone-authentication">Phone Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2681,7 +2681,7 @@ The code above will log the current user out of the Firebase Authentication syst
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebaseauthentication_signup_email">FirebaseAuthentication_SignUp_Email</h1>
-<p>This function signs up a user with an email and password (used for <a href="logins_authentication.html#Email_Authentication">Email</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function signs up a user with an email and password (used for <a href="logins_authentication.html#email-authentication">Email Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2867,7 +2867,7 @@ The code above matches the response against the correct event listener <strong>i
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="sdkfirebaseauthentication_linkwithgamecenter">SDKFirebaseAuthentication_LinkWithGameCenter</h1>
-<p>This function links a Game Center account to the current user (used for <a href="logins_authentication.html#GameCenter Authentication">GameCenter</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function links a Game Center account to the current user (used for <a href="logins_authentication.html#gamecenter-authentication">GameCenter Authentication</a>) based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This function is only available on iOS.</p>
@@ -3026,7 +3026,7 @@ The code above matches the response against the correct event listener <strong>i
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">listenerId = SDKFirebaseAuthentication_LinkWithProvider("apple.com");</code></pre>
-In the code above we attempt to link the current user to the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#Apple Authentication">Apple</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+In the code above we attempt to link the current user to the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#apple-authentication">Apple Authentication</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
 <pre class="highlight"><code class="language-gml">if (async_load[? "id"] == listenerId)
 {
     if (async_load[? "status"] == 200)
@@ -3045,7 +3045,7 @@ The code above matches the response against the correct event listener <strong>i
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="sdkfirebaseauthentication_reauthenticatewithgamecenter">SDKFirebaseAuthentication_ReauthenticateWithGameCenter</h1>
-<p>This function re-authenticates the user using a Game Center account (used for <a href="logins_authentication.html#GameCenter Authentication">GameCenter</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function re-authenticates the user using a Game Center account (used for <a href="logins_authentication.html#gamecenter-authentication">GameCenter Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This function is only available on iOS.</p>
@@ -3204,7 +3204,7 @@ The code above matches the response against the correct event listener <strong>i
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">listenerId = SDKFirebaseAuthentication_ReauthenticateWithProvider("apple.com");</code></pre>
-In the code above we attempt to re-authenticate the current user to the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#Apple Authentication">Apple</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+In the code above we attempt to re-authenticate the current user to the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#apple-authentication">Apple Authentication</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><pre class="highlight"><code class="language-gml">if (async_load[? "id"] == listenerId)
 {
     if (async_load[? "status"] == 200)
@@ -3223,7 +3223,7 @@ The code above matches the response against the correct event listener <strong>i
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="sdkfirebaseauthentication_signin_gamecenter">SDKFirebaseAuthentication_SignIn_GameCenter</h1>
-<p>This function signs in the current user with a Game Center account (used for <a href="logins_authentication.html#GameCenter Authentication">GameCenter</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function signs in the current user with a Game Center account (used for <a href="logins_authentication.html#gamecenter-authentication">GameCenter Authentication</a> based authentication) and returns a listener identifier that can be used for tracking progress on the request.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This function is only available on iOS.</p>
@@ -3382,7 +3382,7 @@ The code above matches the response against the correct event listener <strong>i
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">listenerId = SDKFirebaseAuthentication_SignInWithProvider("apple.com");</code></pre>
-In the code above we attempt to sign in the current user using the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#Apple Authentication">Apple</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+In the code above we attempt to sign in the current user using the <code>"apple.com"</code> provider (see <a href="logins_authentication.html#apple-authentication">Apple Authentication</a> for more information on this authentication method). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><pre class="highlight"><code class="language-gml">if (async_load[? "id"] == listenerId)
 {
     if (async_load[? "status"] == 200)

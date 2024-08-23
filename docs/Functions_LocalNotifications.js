@@ -7,7 +7,7 @@
  * @ref LocalPushNotification_Cancel
  * @ref LocalPushNotification_iOS_Permission_Request
  * @ref LocalPushNotification_iOS_Permission_Status
- * @ref LocalPushNotification_Create_Android
+ * @ref LocalPushNotification_Create_With_Icon
  * @section_end
  * 
  * @section_const
@@ -182,11 +182,13 @@
  */
 
 /**
- * @function LocalPushNotification_Create_Android
- * @desc This function creates a local push notification on Android.
+ * @function LocalPushNotification_Create_With_Icon
+ * @desc This function creates a local push notification which can have an icon image on it.
  * 
  * The function allows you to provide a custom icon image to display on the notification.
  * You can save any sprite from GameMaker to a PNG file using the ${function.sprite_save} function and pass the resulting file as the `filename` parameter.
+ * 
+ * [[Note: This function can only be used on Android.]]
  * 
  * @param {string} uid The ID of the notification
  * @param {real} seconds The number of seconds after which to display the notification
@@ -212,7 +214,7 @@
  * icon_sprite = sprite_duplicate(spr_notification);
  * sprite_save(icon_sprite, 0, "icon.png");
  * sprite_delete(icon_sprite);
- * LocalPushNotification_Create_Android("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");
+ * LocalPushNotification_Create_With_Icon("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");
  * ```
  * In the Create event a local push notification is created. The notification is shown after 10 seconds.
  * ```gml

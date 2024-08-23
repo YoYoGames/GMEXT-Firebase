@@ -17,14 +17,8 @@
  * @section_end
  * 
  * @section_func Functions
- * @desc The following functions are given for working with Firebase Remote Config extension:
- * @ref FirebaseRemoteConfig_FetchAndActivate
- * @ref FirebaseRemoteConfig_GetDouble
- * @ref FirebaseRemoteConfig_GetKeys
- * @ref FirebaseRemoteConfig_GetString
- * @ref FirebaseRemoteConfig_Initialize
- * @ref FirebaseRemoteConfig_Reset
- * @ref FirebaseRemoteConfig_SetDefaultsAsync
+ * @desc The following functions are given for working with the Firebase Remote Config extension:
+ * @ref FirebaseRemoteConfig_*
  * @section_end
  * 
  * @module_end

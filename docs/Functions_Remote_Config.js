@@ -178,3 +178,45 @@
  * The code above matches the response against the correct event **type**, and logs the success of the operation.
  * @function_end
  */
+
+/**
+ * @function FirebaseRemoteConfig_AddOnConfigUpdateListener
+ * @desc This function starts listening for real-time config updates from the Remote Config backend and automatically fetches updates from the RC backend when they are available.
+ * 
+ * [[Note: This function is only available on Android and iOS.]]
+ * 
+ * @event social
+ * @member {string} type The string `"FirebaseRemoteConfig_AddOnConfigUpdateListener"`
+ * @member {string} keys An JSON-encoded array of strings
+ * @member {boolean} success Whether successful
+ * @event_end
+ * 
+ * @example
+ * ```gml
+ * /// Create Event
+ * if(os_type == os_android or os_type == os_ios)
+ * {
+ *     FirebaseRemoteConfig_AddOnConfigUpdateListener();
+ * }
+ * ```
+ * In the ${event.create}, the function is called if ${var.os_type} is either `os_android` or `os_ios`.
+ * ```gml
+ * /// Async Social Event
+ * switch(async_load[?"type"])
+ * {
+ *     // @triggered by FirebaseRemoteConfig_FetchAndActivate()
+ *     case "FirebaseRemoteConfig_AddOnConfigUpdateListener":
+ *         if(async_load[?"success"])
+ *         {
+ *             var _arr_strings = json_parse(async_load[?"keys"]);
+ *             array_foreach(_arr_strings, show_debug_message);
+ *         }
+ *         break;
+ *     
+ *     // Other cases..
+ * }
+ * ```
+ * In the ${event.social}, the event type is checked. The `"FirebaseRemoteConfig_AddOnConfigUpdateListener"` event type indicates a config update.
+ * If the update is successful, the `"keys"` value is parsed using ${function.json_parse} and the value of each string in the resulting array is output in a debug message (going through all items using ${function.array_foreach}).
+ * @function_end
+ */

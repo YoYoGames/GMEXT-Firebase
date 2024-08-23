@@ -144,7 +144,7 @@ public class YYFirebaseRemoteConfig implements ConfigUpdateListener
 			else
 				_str += ",";
 			
-			_str += keys.next();
+			_str += "\""+keys.next()+"\"";
 		}
 		
 		_str += "]";

@@ -7,7 +7,7 @@
  * @ref LocalPushNotification_Cancel
  * @ref LocalPushNotification_iOS_Permission_Request
  * @ref LocalPushNotification_iOS_Permission_Status
- * @ref LocalPushNotification_Create_With_Icon
+ * @ref LocalPushNotification_Create_Ext
  * @section_end
  * 
  * @section_const
@@ -182,7 +182,7 @@
  */
 
 /**
- * @function LocalPushNotification_Create_With_Icon
+ * @function LocalPushNotification_Create_Ext
  * @desc This function creates a local push notification which can have an icon image on it.
  * 
  * The function allows you to provide a custom icon image to display on the notification.
@@ -214,7 +214,7 @@
  * icon_sprite = sprite_duplicate(spr_notification);
  * sprite_save(icon_sprite, 0, "icon.png");
  * sprite_delete(icon_sprite);
- * LocalPushNotification_Create_With_Icon("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");
+ * LocalPushNotification_Create_Ext("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");
  * ```
  * In the Create event a local push notification is created. The notification is shown after 10 seconds.
  * ```gml

@@ -287,7 +287,7 @@
  * 
  * [[Tip: It's also possible to add a time-stamp value to the database entry if you set it to `{ .sv: "timestamp" }` (example below).]]
  * 
- * @param value {real|string|struct} The data to be set within the current database entry.
+ * @param {real|string|struct} value The data to be set within the current database entry.
  * 
  * @returns {real}
  * @event social

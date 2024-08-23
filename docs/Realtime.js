@@ -13,9 +13,9 @@
  * 
  * [[Note: The **SDK** version is only available for the Android, iOS and Web targets; if you're targeting other devices, please follow the steps for **REST API**.]]
  * 
- * * ${page.Guides_Analytics#Create_Project} (skip this if you already have a project)
- * * ${page.Guides_Realtime#Firebase_Console} (enabling Firebase Realtime Database)
- * * ${page.Guides_Realtime#Platform_Setup} (configuring SDKs or REST API)
+ * * ${page.guides_analytics#Create_Project} (skip this if you already have a project)
+ * * ${page.guides_realtime#Firebase_Console} (enabling Firebase Realtime Database)
+ * * ${page.guides_realtime#platform_setup} (configuring SDKs or REST API)
  * 
  * @section_end
  * 

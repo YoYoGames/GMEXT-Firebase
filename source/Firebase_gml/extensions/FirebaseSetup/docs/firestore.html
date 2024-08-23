@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Firestore - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Firestore";
+        var mkdocs_page_input_path = "firestore.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Firestore</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#filter-functions">Filter Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#structs">Structs</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Firestore</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/firestore.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="firestore"><strong>Firestore</strong></h1>
+<p><img alt="" src="assets/firestoreBanner.png" /></p>
+<p>Cloud Firestore is a flexible, scalable database for mobile, web, and server development from Firebase and Google Cloud. Like Firebase Realtime Database, it keeps your data in sync across client apps through real-time listeners and offers offline support for mobile and web so you can build responsive apps that work regardless of network latency or Internet connectivity. Cloud Firestore also offers seamless integration with other Firebase and Google Cloud products, including Cloud Functions.
+Check the <a href="https://firebase.google.com/docs/firestore">official page</a> for more information.</p>
+<h2 id="setup">Setup</h2>
+<p>Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>SDK</strong> version is only available for the Android, iOS and Web targets; if you're targeting other devices please follow the steps for <strong>REST API</strong>.</p>
+</div>
+<ul>
+<li><a href="guides_analytics.html#Create_Project">Create Project</a> (skip this if you already have a project)</li>
+<li><a href="guides_firestore.html#Firebase_Console">Firebase Console</a> (enabling Firebase Firestore)</li>
+<li><a href="guides_firestore.html#platform_setup">platform setup</a> (configuring SDKs or REST API)</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>The Firestore extension was implemented using a fluent-API (method chaining) approach and the entry point for interacting with the database is using the function <a href="firestore.html#firebasefirestore">FirebaseFirestore</a>, which will return a <a href="firestore.html#dbreference">dbReference</a>, that can be either a <em>&lt;dbCollection&gt;</em> or a <em>&lt;dbDocument&gt;</em>.
+The following functions are given for working with the Firebase Firestore extension:</p>
+<ul>
+<li><a href="firestore.html#firebasefirestore">FirebaseFirestore</a></li>
+<li><a href="firestore.html#dbreferencechild">&lt;dbReference&gt;.Child</a></li>
+<li><a href="firestore.html#dbreferencedelete">&lt;dbReference&gt;.Delete</a></li>
+<li><a href="firestore.html#dbreferencelistener">&lt;dbReference&gt;.Listener</a></li>
+<li><a href="firestore.html#dbreferencelistenerremove">&lt;dbReference&gt;.ListenerRemove</a></li>
+<li><a href="firestore.html#dbreferencelistenerremoveall">&lt;dbReference&gt;.ListenerRemoveAll</a></li>
+<li><a href="firestore.html#dbreferenceparent">&lt;dbReference&gt;.Parent</a></li>
+<li><a href="firestore.html#dbreferenceread">&lt;dbReference&gt;.Read</a></li>
+<li><a href="firestore.html#dbreferenceset">&lt;dbReference&gt;.Set</a></li>
+<li><a href="firestore.html#dbreferenceupdate">&lt;dbReference&gt;.Update</a></li>
+<li><a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a></li>
+</ul>
+<h2 id="filter-functions">Filter Functions</h2>
+<p>The functions given below should only be used for filtering data when querying the database using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function given above.</p>
+<ul>
+<li><a href="firestore.html#dbreferenceendat">&lt;dbReference&gt;.EndAt</a></li>
+<li><a href="firestore.html#dbreferencelimit">&lt;dbReference&gt;.Limit</a></li>
+<li><a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a></li>
+<li><a href="firestore.html#dbreferencestartat">&lt;dbReference&gt;.StartAt</a></li>
+<li><a href="firestore.html#dbreferencewhere">&lt;dbReference&gt;.Where</a></li>
+<li><a href="firestore.html#dbreferencewhereequal">&lt;dbReference&gt;.WhereEqual</a></li>
+<li><a href="firestore.html#dbreferencewheregreaterthan">&lt;dbReference&gt;.WhereGreaterThan</a></li>
+<li><a href="firestore.html#dbreferencewheregreaterthanorequal">&lt;dbReference&gt;.WhereGreaterThanOrEqual</a></li>
+<li><a href="firestore.html#dbreferencewherelessthan">&lt;dbReference&gt;.WhereLessThan</a></li>
+<li><a href="firestore.html#dbreferencewherelessthanorequal">&lt;dbReference&gt;.WhereLessThanOrEqual</a></li>
+<li><a href="firestore.html#dbreferencewherenotequal">&lt;dbReference&gt;.WhereNotEqual</a></li>
+</ul>
+<h2 id="structs">Structs</h2>
+<p>This module offers a collection of structs, which serve as custom data models for organizing and structuring data. Explore the provided structs to better understand the relationships between data elements and simplify your data manipulation tasks.</p>
+<ul>
+<li><a href="firestore.html#dbreference">dbReference</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencechild">&lt;dbReference&gt;.Child</h1>
+<p>The method appends the given relative path to the current path of a <a href="firestore.html#dbreference">dbReference</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Child(path)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The relative child path.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _rootPath = "database";
+var _dbReference = FirebaseFirestore(_rootPath).Child("players/hero");</code></pre>
+  The code sample above will create a &lt;dbReference&gt; to the <code>"database"</code> path and afterwards appends the relative path <code>"player/hero"</code> to it, meaning the resulting reference (<code>dbReference</code>) now points to the <code>"database/player/hero"</code> path.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencedelete">&lt;dbReference&gt;.Delete</h1>
+<p>This method deletes the current document reference and returns a listener identifier.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function will only work on dbDocuments; if you pass in a dbCollection it won't be deleted.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Delete()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Document_Delete"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection/oldDoc").Delete();</code></pre>
+In the code above we first get the reference to a database path (<code>"myCollection/oldDoc"</code>) and then delete that entry. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Delete")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Document was deleted successfully.");
+    }
+    else
+    {
+        var _errorMessage = async_load[?"errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, providing a success message if <strong>status</strong> is valid.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasefirestore">FirebaseFirestore</h1>
+<p>This function is the entry point for database interactions using the Firebase Firestore extension.  It returns a <a href="firestore.html#dbreference">dbReference</a> that can further be modified and configured using chained methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Firebase Firestore implements a fluent-API meaning almost all functions return <strong>self</strong> allowing them to be chained and for you to build complex database interactions while keeping the code clean and easy to follow. Entries in the database are structs and are referred as <em>&lt; </em><em>dbReference</em> &gt;** in this documentation (they can be either a &lt;dbDocument&gt; or a &lt;dbCollection&gt; depending on the path). These, under the hood, are structs that point to a specific path in the database (they are NOT the actual entry).</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseFirestore(path=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path reference to document or collection</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _data = { name: "Hero", level: 99 };
+var _json = json_stringify(_data);
+FirebaseFirestore("playersCollection/heroDocument").Set(_json);</code></pre>
+The code sample above will create a data structure (<code>_data</code>) that will be stored inside the database. This data needs to be converted to string using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function. Afterwards it creates a &lt;dbReference&gt; to the path <code>"playersCollection/heroDocument"</code> and calls the <a href="firestore.html#dbreferenceset">&lt;dbReference&gt;.Set</a> method on it (setting the database path to the specified value).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencelistener">&lt;dbReference&gt;.Listener</h1>
+<p>The method listens for changes to a given document in the database. If you need to stop listening to changes you can use <a href="firestore.html#dbreferencelistenerremove">&lt;dbReference&gt;.ListenerRemove</a> for a specific database reference or <a href="firestore.html#dbreferencelistenerremoveall">&lt;dbReference&gt;.ListenerRemoveAll</a> to remove all listeners.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When you no longer need to listen to changes make sure to remove the listeners; not doing so can lead to memory leaks.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Listener()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Document_Listener"</code> or <code>"FirebaseFirestore_Collection_Listener"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of either a <strong>struct</strong> (document) or <strong>array</strong> (collection)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection/newDoc").Listener();</code></pre>
+The code above starts listening for updates on the document (<code>"myCollection/newDoc"</code>). If this reference gets updated, set or deleted an Async event will be triggered. The function call will return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Listener")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Changes were made to this document");
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs when changes are made to the database reference being listened to.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencelistenerremove">&lt;dbReference&gt;.ListenerRemove</h1>
+<p>This function removes a previously created listener (that was created using the function <a href="firestore.html#dbreferencelistener">&lt;dbReference&gt;.Listener</a>).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you wish to remove all created listeners use the function <a href="firestore.html#dbreferencelistenerremoveall">&lt;dbReference&gt;.ListenerRemoveAll</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.ListenerRemove(listenerId)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>listenerId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The listener ID to be removed.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection/myDoc").Listener();
+
+// Some time later
+FirebaseFirestore().ListenerRemove(listenerId);</code></pre>
+The code sample above starts by creating a listener to a database reference path (using the <a href="firestore.html#dbreferencelistener">&lt;dbReference&gt;.Listener</a> function) which returns a listener ID (<code>listenerId</code>); at a later stage it removes that listener.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencelistenerremoveall">&lt;dbReference&gt;.ListenerRemoveAll</h1>
+<p>This function removes all previously created listeners (that were created using the function <a href="firestore.html#dbreferencelistener">&lt;dbReference&gt;.Listener</a>).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you wish to remove a specific listener use the function <a href="firestore.html#dbreferencelistenerremove">&lt;dbReference&gt;.ListenerRemove</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.ListenerRemoveAll()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId1 = FirebaseFirestore("myCollection/myDoc").Listener();
+listenerId2 = FirebaseFirestore("myCollection/otherDoc").Listener();
+listenerId3 = FirebaseFirestore("myCollection").Listener();
+
+// Some time later
+FirebaseFirestore().ListenerRemoveAll();</code></pre>
+The code above creates three listeners (using the <a href="firestore.html#dbreferencelistener">&lt;dbReference&gt;.Listener</a> function) and after some time it removes them all.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceparent">&lt;dbReference&gt;.Parent</h1>
+<p>This method goes up the hierarchy to the parent path of the current &lt;dbReference&gt; struct.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Parent()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _dbPath = "database/player/hero";
+var _dbReference = FirebaseFirestore(_dbPath).Parent();</code></pre>
+The code above creates a &lt;dbReference&gt; to the <code>"database/player/hero"</code> path and afterwards goes up to the parent path meaning the resulting reference (<code>_dbReference</code>) now points to the <code>"database/player"</code> path.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceread">&lt;dbReference&gt;.Read</h1>
+<p>This method reads the current database reference and returns a listener identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Read()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Document_Read"</code> or <code>"FirebaseFirestore_Collection_Read"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of either a <strong>struct</strong> (document) or <strong>array</strong> (collection)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection/myDoc").Read();</code></pre>
+The code above first gets the reference to a database document (<code>"myCollection/oldDoc"</code>) and then reads that entry. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Read")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Document data is: " + async_load[? "value"]);
+    }
+    else
+    {
+        var _errorMessage = async_load[?"errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, providing the document <strong>data</strong> if the task succeeded.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceset">&lt;dbReference&gt;.Set</h1>
+<p>This method creates or overwrites a document on the database. If &lt;dbReference&gt; is a collection then a document will be automatically created with an auto-generated name. If you wish to update an existing document instead of replacing it use <a href="firestore.html#dbreferenceupdate">&lt;dbReference&gt;.Update</a> instead. This function returns a listener identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Set(json)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>json</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string to fill the document with.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Document_Set"</code> or <code>"FirebaseFirestore_Collection_Add"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _json = json_stringify({ name: "Hero", level: 100 });
+listenerId = FirebaseFirestore("myCollection/newDoc").Set(_json);</code></pre>
+The code above creates a JSON formatted string of a struct (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function) and then sets the database document (<code>"myCollection/newDoc"</code>) to the new string. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Set")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Set() function call succeeded!");
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs the success of the task.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceupdate">&lt;dbReference&gt;.Update</h1>
+<p>This method updates the given document on the database, without deleting any omitted keys. This function returns a listener identifier.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will only work on dbDocuments; if you pass in a dbCollection it won't be updated.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Update(json)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>json</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string to update the document with.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Document_Update"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _json = json_stringify({ level: 200 });
+listenerId = FirebaseFirestore("myCollection/newDoc").Update(_json);</code></pre>
+The code above creates a JSON formatted string of a struct (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function) and then updates the document (<code>"myCollection/newDoc"</code>) with the new key/value pairs (omitted keys will not be deleted). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Update")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message(".Update() function call succeeded!");
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs the success of the task.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceendat">&lt;dbReference&gt;.EndAt</h1>
+<p>This method is a filter that should be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> that is ordered by a specific field. The filter assures that the queried documents stop at a specific value (relative to the field specified in <a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a>).</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.EndAt(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to stop the query at.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").OrderBy("Points", "ASCENDING").EndAt(99).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> ordered by the <code>"Points"</code> field in an ascending order (using the <a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a> function) ending the query results when the <code>"Points"</code> reach the value <code>99</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencelimit">&lt;dbReference&gt;.Limit</h1>
+<p>This method is a filter that should be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> that will limit the number of queried documents.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Limit(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The maximum number of documents to return.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").OrderBy("Points", "ASCENDING").Limit(10).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> ordered by the <code>"Points"</code> field in an ascending order (using the <a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a> function) and returns the first <code>10</code> elements.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferenceorderby">&lt;dbReference&gt;.OrderBy</h1>
+<p>This method is a filter that should be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> that will return documents ordered by a specific field.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function does not ensure that the data you receive from your query will be sorted, however any other filter functions being called after this will see the data sorted in the correct order. For example, if you call this function to sort a collection in an <strong>ascending order</strong> and then call <code>.Limit(5)</code>, you will get the first 5 items from that <strong>sorted list</strong> however those 5 items may not get to you in the same order.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.OrderBy(path, direction)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to the field to be used for sorting/ordering</td>
+</tr>
+<tr>
+<td>direction</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The direction to order by <code>"ASCENDING"</code> or <code>"DESCENDING"</code></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").OrderBy("Points", "ASCENDING").Limit(10).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> ordered by the <code>"Points"</code> field in an ascending order and returns the first <code>10</code> elements (using the <a href="firestore.html#dbreferencelimit">&lt;dbReference&gt;.Limit</a> function).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencequery">&lt;dbReference&gt;.Query</h1>
+<p>This method executes a query and returns a listener identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Query()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseFirestore_Collection_Query"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of an <strong>array</strong></td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").OrderBy("Points", "ASCENDING").Limit(10).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> ordered by the <code>"Points"</code> field in an ascending order and returns the first <code>10</code> elements (using the <a href="firestore.html#dbreferencelimit">&lt;dbReference&gt;.Limit</a> function). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Collection_Query")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message(async_load[? "value"]);
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs the results of the performed query.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencestartat">&lt;dbReference&gt;.StartAt</h1>
+<p>This method is a filter that should be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> that is ordered by a specific field. The filter assures that the queried documents start at a specific value (relative to the field specified in <a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a>).</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.StartAt(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to start the query at.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").OrderBy("Points", "ASCENDING").StartAt(10).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> ordered by the <code>"Points"</code> field in an ascending order (using the <a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a> function) starting the query results when the <code>"Points"</code> fields is higher then <code>10</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewhere">&lt;dbReference&gt;.Where</h1>
+<p>This method is a filter that should be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and allows you to perform comparison operations on a field's values.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.Where(path, operation, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>operation</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Any one of the following operations (as strings): <code>"=="</code>,<code>"!="</code>,<code>""</code>,<code>"&gt;"</code>,<code>"&gt;="</code>,<code>"="</code></td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").Where("Points", "&gt;=", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is more than or equal to <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewhereequal">&lt;dbReference&gt;.WhereEqual</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is equal to <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereEqual(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereEqual("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is equal to <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewheregreaterthan">&lt;dbReference&gt;.WhereGreaterThan</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is greater than <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereGreaterThan(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereGreaterThan("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is greater than <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewheregreaterthanorequal">&lt;dbReference&gt;.WhereGreaterThanOrEqual</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is greater than or equal to <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereGreaterThanOrEqual(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereGreaterThanOrEqual("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is greater than or equal to <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewherelessthan">&lt;dbReference&gt;.WhereLessThan</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is less than <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereLessThan(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereLessThan("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is less than <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewherelessthanorequal">&lt;dbReference&gt;.WhereLessThanOrEqual</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is less than or equal to <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereLessThanOrEqual(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereLessThanOrEqual("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is less than or equal to <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreferencewherenotequal">&lt;dbReference&gt;.WhereNotEqual</h1>
+<p>This method is a filter that can be used when performing a <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> and selects elements where the field's <code>path</code> value is not equal to <code>value</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbReference&gt;.WhereNotEqual(path, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to field.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value used for the comparison.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="firestore.html#dbreference">dbReference</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseFirestore("myCollection").WhereNotEqual("Points", 1000).Query();</code></pre>
+The code above performs a query (using the <a href="firestore.html#dbreferencequery">&lt;dbReference&gt;.Query</a> function) on the database reference <code>"myCollection"</code> returning every element where the <code>"Points"</code> field is not equal to <code>1000</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbreference">dbReference</h1>
+<p>This struct is used by the Firestore functions. You use methods on it to build and refine the query.</p>
+<p>See the examples included with the various functions.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="firestore.html#dbreferencechild">&lt;dbReference&gt;.Child</a></li>
+<li><a href="firestore.html#firebasefirestore">FirebaseFirestore</a></li>
+<li><a href="firestore.html#dbreferenceparent">&lt;dbReference&gt;.Parent</a></li>
+<li><a href="firestore.html#dbreferenceendat">&lt;dbReference&gt;.EndAt</a></li>
+<li><a href="firestore.html#dbreferencelimit">&lt;dbReference&gt;.Limit</a></li>
+<li><a href="firestore.html#dbreferenceorderby">&lt;dbReference&gt;.OrderBy</a></li>
+<li><a href="firestore.html#dbreferencestartat">&lt;dbReference&gt;.StartAt</a></li>
+<li><a href="firestore.html#dbreferencewhere">&lt;dbReference&gt;.Where</a></li>
+<li><a href="firestore.html#dbreferencewhereequal">&lt;dbReference&gt;.WhereEqual</a></li>
+<li><a href="firestore.html#dbreferencewheregreaterthan">&lt;dbReference&gt;.WhereGreaterThan</a></li>
+<li><a href="firestore.html#dbreferencewheregreaterthanorequal">&lt;dbReference&gt;.WhereGreaterThanOrEqual</a></li>
+<li><a href="firestore.html#dbreferencewherelessthan">&lt;dbReference&gt;.WhereLessThan</a></li>
+<li><a href="firestore.html#dbreferencewherelessthanorequal">&lt;dbReference&gt;.WhereLessThanOrEqual</a></li>
+<li><a href="firestore.html#dbreferencewherenotequal">&lt;dbReference&gt;.WhereNotEqual</a></li>
+</ul>
+<p><br></p>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="guides_crashlytics.html" class="btn btn-neutral float-left" title="Crashlytics Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="guides_firestore.html" class="btn btn-neutral float-right" title="Firestore Guides">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="guides_crashlytics.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="guides_firestore.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

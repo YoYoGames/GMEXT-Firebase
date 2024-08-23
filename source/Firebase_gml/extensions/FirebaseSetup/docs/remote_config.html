@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Remote Config - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Remote Config";
+        var mkdocs_page_input_path = "remote_config.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Remote Config</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Remote Config</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/remote_config.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="remote-config"><strong>Remote Config</strong></h1>
+<p><img alt="" src="assets/remoteconfigBanner.png" /></p>
+<p>Firebase Remote Config is a cloud service that lets you change the behavior and appearance of your app without requiring users to download an app update. When using Remote Config, you create in-app default values that control the behavior and appearance of your app. Then, you can later use the Firebase console or the Remote Config backend APIs to override in-app default values for all app users or for segments of your user base. Your app controls when updates are applied, and it can frequently check for updates and apply them with a negligible impact on performance.
+Check the <a href="https://firebase.google.com/docs/remote-config">official page</a> for more information.</p>
+<h2 id="setup">Setup</h2>
+<p>Before you can start using any Firebase module extensions you are required to follow some initial configuration. However if you've already done these for any of the other modules you can skip this configuration section and go straight to using the API functions.</p>
+<ul>
+<li><a href="guides_analytics.html#Create_Project">Create Project</a></li>
+<li><a href="guides_cloud_messaging.html#platform_setup">platform setup</a> (<strong>Remote Config</strong> enabling steps are required)</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>The following functions are given for working with the Firebase Remote Config extension:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfig_fetchandactivate">FirebaseRemoteConfig_FetchAndActivate</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_getdouble">FirebaseRemoteConfig_GetDouble</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_getkeys">FirebaseRemoteConfig_GetKeys</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_getstring">FirebaseRemoteConfig_GetString</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_initialize">FirebaseRemoteConfig_Initialize</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_reset">FirebaseRemoteConfig_Reset</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_setdefaultsasync">FirebaseRemoteConfig_SetDefaultsAsync</a></li>
+<li><a href="remote_config.html#firebaseremoteconfig_addonconfigupdatelistener">FirebaseRemoteConfig_AddOnConfigUpdateListener</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_fetchandactivate">FirebaseRemoteConfig_FetchAndActivate</h1>
+<p>This function asynchronously fetches and then activates the fetched configs. If the time elapsed since the last fetch from the Firebase Remote Config backend is more than the set minimum fetch interval, configs are fetched from the backend. After the fetch is complete, the configs are activated so that the fetched key-value pairs take effect.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_FetchAndActivate()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRemoteConfig_FetchAndActivate"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_FetchAndActivate();</code></pre>
+In the code above we are fetching and activating the Remote Config data from the Firebase servers. The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRemoteConfig_FetchAndActivate")
+{
+    if (async_load[? "success"])
+    {
+        var _keysJSON = FirebaseRemoteConfig_GetKeys();
+        var _keys = json_parse(_keysJSON);
+        var _count = array_length(_keys);
+        show_debug_message("Remote Config Data:");
+
+        for(var i = 0 ; i &lt; _count; i++)
+        {
+            var _key = _keys[i];
+            show_debug_message("key: " + FirebaseRemoteConfig_GetString(_key));
+        }
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and if the function task succeeded it gets all keys (using the function <a href="remote_config.html#firebaseremoteconfig_getkeys">FirebaseRemoteConfig_GetKeys</a>) that are afterwards parsed into an array (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a> function). Finally it gets all their values as strings (using <a href="remote_config.html#firebaseremoteconfig_getstring">FirebaseRemoteConfig_GetString</a> and logs them to the console.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_getdouble">FirebaseRemoteConfig_GetDouble</h1>
+<p>This function returns the parameter value for the given key as a real. It evaluates the value of the parameter in the following order:</p>
+<ol>
+<li>The activated value, if the last successful <a href="remote_config.html#firebaseremoteconfig_fetchandactivate">FirebaseRemoteConfig_FetchAndActivate</a> contained the key.</li>
+<li>The default value, if the key was set with <a href="remote_config.html#firebaseremoteconfig_setdefaultsasync">FirebaseRemoteConfig_SetDefaultsAsync</a>.</li>
+<li>The default real value: <code>0</code> (zero).</li>
+</ol>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_GetDouble(key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The key of the remote config parameter to get the value from.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _magicNumber = FirebaseRemoteConfig_GetDouble("MagicNumber");</code></pre>
+The code above reads the <strong>double</strong> value parameter for the key <code>"MagicNumber"</code> that is stored in the Remote Config Extension map.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_getkeys">FirebaseRemoteConfig_GetKeys</h1>
+<p>Returns a JSON formatted string of all the available keys.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_GetKeys()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _keysJSON = FirebaseRemoteConfig_GetKeys();
+var _keys = json_parse(_keysJSON);
+var _count = array_length(_keys);
+show_debug_message("Remote Config Data:");
+
+for(var i = 0 ; i &lt; _count; i++)
+{
+     var _key = _keys[i];
+     show_debug_message("key: " + FirebaseRemoteConfig_GetString(_key)));
+}</code></pre>
+The code above gets all keys (using the function <a href="remote_config.html#firebaseremoteconfig_getkeys">FirebaseRemoteConfig_GetKeys</a>) that are afterwards parsed into an array (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a> function). Finally it gets all their values as strings (using <a href="remote_config.html#firebaseremoteconfig_getstring">FirebaseRemoteConfig_GetString</a> and logs them to the console.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_getstring">FirebaseRemoteConfig_GetString</h1>
+<p>This function returns the parameter value for the given key as a string. It evaluates the value of the parameter in the following order:</p>
+<ol>
+<li>The activated value, if the last successful <a href="remote_config.html#firebaseremoteconfig_fetchandactivate">FirebaseRemoteConfig_FetchAndActivate</a> contained the key.</li>
+<li>The default value, if the key was set with <a href="remote_config.html#firebaseremoteconfig_setdefaultsasync">FirebaseRemoteConfig_SetDefaultsAsync</a>.</li>
+<li>The default string value: <code>""</code> (empty string).</li>
+</ol>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_GetString(key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The key of the remote config parameter to get the value from.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _configuration = FirebaseRemoteConfig_GetString("Configuration");</code></pre>
+The code above reads the <strong>string</strong> value parameter for the key <code>"Configuration"</code> that is stored in the Remote Config Extension map.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_initialize">FirebaseRemoteConfig_Initialize</h1>
+<p>This function initializes the Firebase Remote Config extension and sets the minimum interval between successive fetch calls. Any fetches performed within the interval of the last fetch will use values returned during that fetch.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default fetch interval is 3600 seconds.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_Initialize(fetchInterval)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fetchInterval</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The minimum fetch Interval duration in seconds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_Initialize(1000);</code></pre>
+  The code above initializes the Firebase Remote Config extension and sets the fetch interval to <code>1000</code> seconds.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_reset">FirebaseRemoteConfig_Reset</h1>
+<p>This function deletes all activated, fetched and defaults configs and resets all Firebase Remote Config settings.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_Reset()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRemoteConfig_Reset"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_Reset();</code></pre>
+In the code above we request for the reset of the Remote Config value. The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRemoteConfig_Reset")
+{
+    if (async_load[? "success"])
+    {
+        show_debug_message("FirebaseRemoteConfig_Reset() SUCCEEDED");
+    }
+    else
+    {
+        show_debug_message("FirebaseRemoteConfig_Reset() FAILED");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and logs the success of the operation.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_setdefaultsasync">FirebaseRemoteConfig_SetDefaultsAsync</h1>
+<p>This function asynchronously sets the default configs using the given JSON formatted string with a set of key-value pairs. Contained values can only be strings or reals.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_SetDefaultsAsync(jsonString)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>jsonString</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The JSON formatted representation of a struct with default key/value pairs.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRemoteConfig_SetDefaultsAsync"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _jsonData = { name: "John", age: 10 };
+FirebaseRemoteConfig_SetDefaultsAsync(json_stringify(_jsonData));
+</code></pre>
+In the code above we request to set the default values for the parameters inside the struct (<code>_jsonData</code>) the struct is then converted to JSON formatted string (using the built-in function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a>). The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRemoteConfig_SetDefaultsAsync")
+{
+    if (async_load[? "success"])
+    {
+        show_debug_message("Default values were set successfully!");
+    }
+    else
+    {
+        show_debug_message("Default values failed to be set!");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and logs the success of the operation.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfig_addonconfigupdatelistener">FirebaseRemoteConfig_AddOnConfigUpdateListener</h1>
+<p>This function starts listening for real-time config updates from the Remote Config backend and automatically fetches updates from the RC backend when they are available.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available on Android and iOS.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRemoteConfig_AddOnConfigUpdateListener()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRemoteConfig_AddOnConfigUpdateListener"</code></td>
+</tr>
+<tr>
+<td>keys</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>An JSON-encoded array of strings</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether successful</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">/// Create Event
+if(os_type == os_android or os_type == os_ios)
+{
+    FirebaseRemoteConfig_AddOnConfigUpdateListener();
+}</code></pre>
+In the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Object_Events.htm">Create Event</a>, the function is called if <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/OS_And_Compiler/os_type.htm">os_type</a> is either <code>os_android</code> or <code>os_ios</code>.
+<pre class="highlight"><code class="language-gml">/// Async Social Event
+switch(async_load[?"type"])
+{
+    // @triggered by FirebaseRemoteConfig_FetchAndActivate()
+    case "FirebaseRemoteConfig_AddOnConfigUpdateListener":
+        if(async_load[?"success"])
+        {
+            var _arr_strings = json_parse(async_load[?"keys"]);
+            array_foreach(_arr_strings, show_debug_message);
+        }
+        break;
+
+    // Other cases..
+}</code></pre>
+In the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>, the event type is checked. The <code>"FirebaseRemoteConfig_AddOnConfigUpdateListener"</code> event type indicates a config update.
+If the update is successful, the <code>"keys"</code> value is parsed using <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a> and the value of each string in the resulting array is output in a debug message (going through all items using <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Variable_Functions/array_foreach.htm">array_foreach</a>).</p>
+<p><br></p>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="guides_realtime.html" class="btn btn-neutral float-left" title="Realtime Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="guides_remote_config.html" class="btn btn-neutral float-right" title="Remote Config Guides">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="guides_realtime.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="guides_remote_config.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

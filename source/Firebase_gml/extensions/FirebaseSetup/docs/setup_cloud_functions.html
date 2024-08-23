@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Cloud Functions Guides - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Cloud Functions Guides";
+        var mkdocs_page_input_path = "setup_cloud_functions.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Cloud Functions Guides</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Cloud Functions Guides</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/setup_cloud_functions.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<!-- Page HTML do not touch -->
+<p><a /><p align="right"><a href="#top">Back To Top</a></p></p>
+<h1 id="create-and-deploy">Create and Deploy</h1>
+<p>Firebase Cloud Functions have very little to do with GML itself and more with programming server-side functions in JavaScript (or TypeScript). This guide will get you going with creating your first function and deploying it to the Firebase Cloud Functions server.</p>
+<ol>
+<li>
+<p>We'll move to the folder where we want work using the <code>cd $Path</code> command (this will change the path you're working in):<br>
+      <img alt="" src="assets/cloudfunctions__cd.PNG" /></p>
+</li>
+<li>
+<p>We now need to call the ** <code>firebase init</code> command:<br>
+      <img alt="" src="assets/image.png" /></p>
+</li>
+<li>
+<p>You will be asked &quot; <strong>Are you ready to proceed?</strong> &quot;, where your response should be <strong>Y</strong> (yes).</p>
+</li>
+<li>
+<p>Now use the arrow keys to navigate the list and select <strong>Functions</strong>  <strong>with the Space</strong> key; after that, press the <strong>Enter</strong> key to continue.<br>
+      <img alt="" src="assets/image1.png" /></p>
+</li>
+<li>
+<p>At this point we recommend using an existing Firebase project (as this will make configuration easier).<br>
+      <img alt="" src="assets/image2.png" /></p>
+</li>
+<li>
+<p>Now enter your <strong>Project ID</strong> , which you can get under <strong>Project Settings</strong> in the <a href="https://console.firebase.google.com/">Firebase Console</a> for your project.<br>
+      <img alt="" src="assets/image3.png" /></p>
+</li>
+<li>
+<p>Choose <strong>JavaScript</strong> (for the purpose of this tutorial).<br>
+      <img alt="" src="assets/image4.png" /></p>
+</li>
+<li>
+<p>Choose <strong>N</strong> (unless you are experienced with JS and wish to use ESLint).<br>
+      <img alt="" src="assets/image5.png" /></p>
+</li>
+<li>
+<p>Finally select <strong>Y</strong> (for installing dependencies).<br>
+      <img alt="" src="assets/image6.png" /></p>
+</li>
+<li>
+<p>After the process is over, you can see that your folder now has the following structure:<br>
+      <img alt="" src="assets/image7.png" /></p>
+</li>
+<li>
+<p>Inside the <strong>functions</strong> folder we can see a <strong><code>index.js</code></strong> file, which is where we will be declaring our functions.<br>
+      <img alt="" src="assets/image8.png" /></p>
+</li>
+<li>
+<p>In the <code>index.js</code> file you will see the following code, which creates a function called <strong>helloWorld</strong> and initialises its code.<br>
+      <img alt="" src="assets/image10.png" /></p>
+</li>
+</ol>
+<blockquote>
+<p><strong><img alt="ℹ️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/2139.png" title=":information_source:" /> NOTE</strong></p>
+<p>We can see that we are exporting a <code>helloWorld</code> function that registers to an <code>onRequest</code> event with the arguments <code>request</code> and <code>response</code>; these correspond to the &quot;message sent by the client&quot; (GameMaker) and the &quot;message we will send back&quot;, respectively.</p>
+</blockquote>
+<ol>
+<li>Deploy it with <code>firebase deploy</code> command.</li>
+<li>
+<p>When the deploy process is done, you will see the &quot; <strong>Deploy complete&quot;</strong> message.<br>
+      <img alt="" src="assets/image11.png" /></p>
+</li>
+<li>
+<p>After deploying has finished, you will see the function on the Firebase Console in the <strong>Functions</strong> tab:<br>
+      <img alt="" src="assets/image12.png" /></p>
+</li>
+<li>
+<p>This way you are able to publish your own functions to the Firebase Cloud Functions.</p>
+</li>
+</ol>
+<p><br><br></p>
+<hr />
+<!-- Page HTML do not touch -->
+<p><a /><p align="right"><a href="#top">Back To Top</a></p></p>
+<h1 id="firebase-console">Firebase Console</h1>
+<p>This guide covers setting up and enabling Cloud Functions from inside the <a href="https://console.firebase.google.com/">Firebase Console</a>.</p>
+<ol>
+<li>
+<p>Head over to the <strong>Functions</strong> section, ** however to use this you will need to have upgraded your project to Blaze (pay as you go).<br>
+      <img alt="" src="assets/upgrade%20projectPNG.PNG" /></p>
+</li>
+<li>
+<p>After upgrading the project you will see an <strong>Instructions</strong> button that you need to click on:<br>
+      <img alt="" src="assets/instructions.PNG" /></p>
+</li>
+<li>
+<p>The first instruction is to use <code>npm install -g firebase-tools</code> in the command line (you will need to install <a href="https://nodejs.org/">NodeJS</a> for this).<br>
+      <img alt="" src="assets/Cloud%20Functions.PNG" /></p>
+</li>
+<li>
+<p>After some loading you need to click on Continue, after which you will see the following page:<br>
+      <img alt="" src="assets/CloudFunctions2.PNG" /></p>
+</li>
+<li>
+<p>We are done configuring the Firebase Console. We can now continue to <a href="#Create_and_Deploy">creating and deploying a Cloud Functions project</a>.</p>
+</li>
+</ol>
+<p><br><br></p>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="cloud_functions.html" class="btn btn-neutral float-left" title="Cloud Functions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="cloud_messaging.html" class="btn btn-neutral float-right" title="Cloud Messaging">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="cloud_functions.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="cloud_messaging.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

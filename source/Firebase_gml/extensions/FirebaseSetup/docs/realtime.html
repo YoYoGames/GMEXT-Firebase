@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Realtime - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Realtime";
+        var mkdocs_page_input_path = "realtime.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Realtime</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#filter-functions">Filter Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#structs">Structs</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Realtime</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/realtime.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="realtime-database"><strong>Realtime Database</strong></h1>
+<p><img alt="" src="assets/realtimeBanner.png" /></p>
+<p>The Firebase Realtime Database is a cloud-hosted database. Data in the Realtime Database is stored as JSON and synchronized in real time to every connected client. When you build cross-platform apps with the iOS, Android, and JavaScript SDKs, all of your clients share one Realtime Database instance and automatically receive updates with the newest data.
+Check the <a href="https://firebase.google.com/docs/database">official page</a> for more information.</p>
+<h2 id="setup">Setup</h2>
+<p>Before starting to use any Firebase extensions, you are required to follow some initial configuration steps.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <strong>SDK</strong> version is only available for the Android, iOS and Web targets; if you're targeting other devices, please follow the steps for <strong>REST API</strong>.</p>
+</div>
+<ul>
+<li><a href="guides_analytics.html#Create_Project">Create Project</a> (skip this if you already have a project)</li>
+<li><a href="guides_realtime.html#Firebase_Console">Firebase Console</a> (enabling Firebase Realtime Database)</li>
+<li><a href="guides_realtime.html#platform_setup">platform setup</a> (configuring SDKs or REST API)</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>The Firebase Realtime Database extension was implemented using a fluent-API (method chaining) approach and the entry point for interacting with the database is using the function <a href="realtime.html#firebaserealtime">FirebaseRealTime</a>, which will return a <a href="realtime.html#dbentryref">dbEntryRef</a> of the database.
+The following functions are given for working with Firebase Firestore extension:</p>
+<ul>
+<li><a href="realtime.html#firebaserealtime">FirebaseRealTime</a></li>
+<li><a href="realtime.html#dbentryrefchild">&lt;dbEntryRef&gt;.Child</a></li>
+<li><a href="realtime.html#dbentryrefdelete">&lt;dbEntryRef&gt;.Delete</a></li>
+<li><a href="realtime.html#dbentryrefexists">&lt;dbEntryRef&gt;.Exists</a></li>
+<li><a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a></li>
+<li><a href="realtime.html#dbentryreflistenerremove">&lt;dbEntryRef&gt;.ListenerRemove</a></li>
+<li><a href="realtime.html#dbentryreflistenerremoveall">&lt;dbEntryRef&gt;.ListenerRemoveAll</a></li>
+<li><a href="realtime.html#dbentryrefparent">&lt;dbEntryRef&gt;.Parent</a></li>
+<li><a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a></li>
+<li><a href="realtime.html#dbentryrefpush">&lt;dbEntryRef&gt;.Push</a></li>
+<li><a href="realtime.html#dbentryrefset">&lt;dbEntryRef&gt;.Set</a></li>
+<li><a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a></li>
+</ul>
+<h2 id="filter-functions">Filter Functions</h2>
+<p>The functions given below should only be used for filtering data when reading from the database using the <code>Read()</code> function given above.</p>
+<ul>
+<li><a href="realtime.html#dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</a></li>
+<li><a href="realtime.html#dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</a></li>
+<li><a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a></li>
+<li><a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a></li>
+<li><a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a></li>
+<li><a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a></li>
+<li><a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a></li>
+<li><a href="realtime.html#dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</a></li>
+</ul>
+<h2 id="structs">Structs</h2>
+<p>This module offers a collection of structs, which serve as custom data models for organizing and structuring data. Explore the provided structs to better understand the relationships between data elements and simplify your data manipulation tasks.</p>
+<ul>
+<li><a href="realtime.html#dbentryref">dbEntryRef</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaserealtime">FirebaseRealTime</h1>
+<p>This function is the entry point for database interactions using the Firebase Realtime Database extension.  It returns a <strong>&lt; *dbEntryRef</strong> &gt;* that can be further modified and configured using chained methods.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Firebase Realtime Database implements a fluent-API meaning almost all functions return <strong>self</strong> allowing them to be chained and for you to build complex database interactions while keeping the code clean and easy to follow. Entries in the database are structs and are referred to in this documentation as <em>dbEntryRef::</em> ** These, under the hood, are structs that point to a specific path in the database (they are NOT the actual entry).</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseRealTime(database=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>database</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Overwrite the default database</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// 1) This will use the default database
+FirebaseRealTime().Path("players/hero/hp").Set(100);
+
+// 2) This will use a custom database url
+FirebaseRealTime(dbUrl).Path("players/hero/hp").Set(100);</code></pre>
+Above we have two database interaction examples. In the first one we create a reference to a database entry (<code>"players/hero/hp"</code>, using the chained method <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> and afterwards we set that entry to the value <code>100</code> (using the method <a href="realtime.html#dbentryrefset">&lt;dbEntryRef&gt;.Set</a>). The second example is very similar but we pass in a specific database URL (<code>dbUrl</code>) to the main function call; this is very powerful and allows the developer to have access as many different databases as needed.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreflistener">&lt;dbEntryRef&gt;.Listener</h1>
+<p>The method listens for changes to a given entry in the database. If you need to stop listening to changes you can use <a href="realtime.html#dbentryreflistenerremove">&lt;dbEntryRef&gt;.ListenerRemove</a> for a specific database reference or <a href="realtime.html#dbentryreflistenerremoveall">&lt;dbEntryRef&gt;.ListenerRemoveAll</a> to remove all listeners.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When you no longer need to listen to changes make sure to remove the listeners, as not doing so can lead to memory leaks.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Listener()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRealTime_Listener"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Structs.htm">Struct</a></td>
+<td>The new value of the entry</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime("players/hero").Listener();</code></pre>
+The code above starts listening for updates on the database entry (<code>"player/hero"</code>). If this reference gets updated, set or deleted an async event will be triggered. The function call will return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRealTime_Listener")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Changes were made to this entry");
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs when changes are made to the database reference being listened to.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefexists">&lt;dbEntryRef&gt;.Exists</h1>
+<p>This method checks if a reference exists on the database and returns a listener identifier for tracking purposes.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Exists()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRealTime_Exists"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>values</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the database path exists.</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("myCollection/oldDoc").Exists();</code></pre>
+In the code above we first get the reference to a database path (<code>"myCollection/oldDoc"</code>, using the function <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a>) and check if that entry exists in our database. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRealTime_Exists")
+{
+    if (async_load[? "status"] == 200 &amp;&amp; async_load[? "values"])
+    {
+        show_debug_message("Database entry exists.");
+    }
+    else
+    {
+        var _errorMessage = async_load[?"errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, providing a success message if the entry exists in the database.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefdelete">&lt;dbEntryRef&gt;.Delete</h1>
+<p>This method deletes a reference on the database and returns a listener identifier for tracking purposes.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Delete()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRealTime_Delete"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("myCollection/oldDoc").Delete();</code></pre>
+In the code above we first get the reference to a database path (<code>"myCollection/oldDoc"</code>, using the method <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a>) and then delete that entry. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRealTime_Delete")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("Database entry was successfully deleted.");
+    }
+    else
+    {
+        var _errorMessage = async_load[?"errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, providing a success message if <strong>status</strong> is valid.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreflistenerremove">&lt;dbEntryRef&gt;.ListenerRemove</h1>
+<p>This method removes a previously created listener (that was created using the function <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a>).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you wish to remove all created listeners use the function <a href="realtime.html#dbentryreflistenerremoveall">&lt;dbEntryRef&gt;.ListenerRemoveAll</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.ListenerRemove(listenerId)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>listenerId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The listener Id to be removed.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime("players/hero").Listener();
+
+// Some time later
+
+FirebaseRealTime().ListenerRemove(listenerId);
+</code></pre>
+The code sample above starts by creating a listener to a database entry reference (using the <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> method). This function returns a listener ID (<code>listenerId</code>) and at a later stage we use that ID to remove the listener.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreflistenerremoveall">&lt;dbEntryRef&gt;.ListenerRemoveAll</h1>
+<p>This method removes all previously created listeners (that were created using the function <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a>).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you wish to remove a specific listener use the <a href="realtime.html#dbentryreflistenerremove">&lt;dbEntryRef&gt;.ListenerRemove</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.ListenerRemoveAll()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId1 = FirebaseRealTime().Path("players/hero").Listener();
+listenerId2 = FirebaseRealTime().Path("players/knight").Listener();
+
+// Some time later
+FirebaseRealTime().ListenerRemoveAll();</code></pre>
+  The code above creates two listeners (using the <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> function) on different database entries (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) and after some time it removes them all.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefpath">&lt;dbEntryRef&gt;.Path</h1>
+<p>This method attaches a path reference to the current database's <strong>&lt;dbEntryRef&gt;</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Paths are a representation of references in the database (i.e.: the path to get <code>"Opera X YoYoGames"</code> is <code>"Testing/String"</code>).</p>
+</div>
+<p><img alt="" src="assets/realtimeNode.png" /></p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Path(path)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path reference to the database entry.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseRealTime().Path("Testing/String").Read();</code></pre>
+The code above first creates the reference to a database entry (<code>"Testing/String"</code>) and then reads that entry (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefchild">&lt;dbEntryRef&gt;.Child</h1>
+<p>This method appends the given relatives path to the current path of a Realtime Database &lt;dbEntryRef&gt; struct.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Child(path)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Relative child path</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _parentNode = "characters/player";
+var _nodeRef = FirebaseRealTime().Path(_parentNode).Child("health");</code></pre>
+The code sample above will create a &lt;dbNodeRef&gt; to the <code>"characters/player"</code> path (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) and afterwards append the relative path <code>"health"</code> to it, meaning the resulting reference (<code>nodeRef</code>) now points to the <code>"characters/player/health"</code> path.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefparent">&lt;dbEntryRef&gt;.Parent</h1>
+<p>This method goes up the hierarchy to the parent path of the current &lt;dbEntryRef&gt; struct.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Parent()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _dbPath = "players/hero/name";
+var _dbEntryRef = FirebaseRealTime().Path(dbPath).Parent().Child("magic").Set(99);</code></pre>
+The code above creates a &lt;dbEntryRef&gt; to the <code>"players/hero/name"</code> path (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> function) and afterwards goes up to the parent path meaning the resulting reference (<code>dbEntryRef</code>) now points to the <code>"players/hero"</code> path. We then go into the child database entry (using the <a href="realtime.html#dbentryrefchild">&lt;dbEntryRef&gt;.Child</a> method) and finally set this new reference (<code>"players/hero/magic"</code>) to the value <code>99</code> (using the <a href="realtime.html#dbentryrefset">&lt;dbEntryRef&gt;.Set</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefpush">&lt;dbEntryRef&gt;.Push</h1>
+<p>This method is useful for storing arrays inside the database. Database elements can be of type <strong>string</strong> , <strong>real</strong> or <strong>struct</strong> , meaning that arrays are not a valid type within a Firebase Realtime Database. This method attaches an auto-generated child location to the current database entry reference.</p>
+<p>In this image below we can see the auto-generated keys in &quot;Testing/List&quot;.</p>
+<p><img alt="" src="assets/realtimePush.png" /></p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Push()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _data = { health: 100, magic: 99 };
+var _jsonData = json_stringify(_data);
+
+FirebaseRealTime().Path("Enemies/List").Push().Set(_jsonData);</code></pre>
+The code above first creates the reference to a database entry (<code>"Enemies/List"</code>, using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) and then pushes a new auto-generated key into that reference (this is what emulates arrays/collections). Finally it sets that database entry with the previously created data (using the <a href="realtime.html#dbentryrefset">&lt;dbEntryRef&gt;.Set</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefread">&lt;dbEntryRef&gt;.Read</h1>
+<p>This method reads the current database reference and returns a listener identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Read()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRealTime_Read"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Structs.htm">Struct</a></td>
+<td>The value being read</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/hero").Read();</code></pre>
+The code above first gets the reference to a database entry (<code>"players/hero"</code>, using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) and then reads that entry. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRealTime_Read")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message("The entry data is: " + async_load[? "value"]);
+    }
+    else
+    {
+        var _errorMessage = async_load[?"errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, providing the document <strong>data</strong> if the task succeeded.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefset">&lt;dbEntryRef&gt;.Set</h1>
+<p>This method creates or overwrites a database entry value of type  <strong>real</strong> ,  <strong>string</strong> , or <strong>struct</strong> (arrays are not a valid type) and returns a listener ID to be used for tracking purposes.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It's also possible to add a time-stamp value to the database entry if you set it to <code>{ .sv: "timestamp" }</code> (example below).</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.Set(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Structs.htm">Struct</a></td>
+<td>The data to be set within the current database entry.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseRealTime_Set"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path of the database reference.</td>
+</tr>
+<tr>
+<td>status</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The HTTP status response code (see <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">reference</a>)</td>
+</tr>
+<tr>
+<td>errorMessage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The readable error message</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// (1) Set value using a real
+listenerId = FirebaseRealTime().Path("enemies/bat/health").Set(999);
+
+// (2) Set value using a string
+listenerId = FirebaseRealTime().Path("enemies/bat/name").Set("Monster");
+
+// (3) Set value using a struct
+var _data = { health: 100, magic: 99 };
+listenerId = FirebaseRealTime().Path("enemies/bat").Set(_data);
+
+// (4) Time stamps
+var _data = {};
+_data[$ ".sv"] = "timestamp";
+listenerId = FirebaseRealTime().Path("enemies/bat/timestamp").Set(_data);</code></pre>
+The code sample above provides three example for setting values in a database entry using a <strong>real</strong> , a <strong>string</strong> and a <strong>struct</strong> (a <strong>timestamp</strong> example is also provided). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseRealTime_Set")
+{
+    if (async_load[? "status"] == 200)
+    {
+        show_debug_message(".Set() function call succeeded!");
+    }
+    else
+    {
+        var _errorMessage = async_load[? "errorMessage"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs the success of the task.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</h1>
+<p>This function is a filter that should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> that is ordered in some way (see <a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a>, <a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a> and <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a>). The filter assures that the returned results stop after the first <code>amount</code> elements.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method will filter elements from the start of the ordered group; if you want to read from the end, use <a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.LimitToFirst(amount)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of results to read (from the start)</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/healthList").OrderByValue().LimitToFirst(5).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"players/healthList"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the value (using the <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a> method), returning only the first <code>5</code> results.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</h1>
+<p>This method should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating a <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a>, and orders the returned results by a child field <code>path</code> so they can be then filtered using one of the filtering methods (see <a href="realtime.html#dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</a>, <a href="realtime.html#dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</a>, <a href="realtime.html#dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</a>, <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> and<a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The final result from the <code>Read()</code> call will not be sorted; the sort order is only used by any filter methods chained after this.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.OrderByChild(path)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The path to the specified field to sort the values by.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("enemies").OrderByChild("points").LimitToLast(5).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"enemies"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the children <code>"points"</code>, returning only the last <code>5</code> results (using the<a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</h1>
+<p>This function is a filter that should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> that is ordered in some way (see <a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a>, <a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a> and <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a>). The filter assures that the returned results have a specific value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.EqualTo(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to equal to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/healthList").OrderByValue().EqualTo(77).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"players/healthList"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the value (using the <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a> method), returning only values that are equal to <code>77</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</h1>
+<p>This function is a filter that should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating a <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> that is ordered in some way (see <a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a>, <a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a> and <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a>). The filter assures that the returned results start at a specific value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.StartAt(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to start the query at.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/healthList").OrderByValue().StartAt(10).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"players/healthList"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the value (using the <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a> method), returning only those values that are above or equal to <code>10</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</h1>
+<p>This function is a filter that should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> that is ordered in some way (see <a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a>, <a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a> and <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a>). The filter assures that the returned results stop at a specific value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.EndAt(value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to stop the query at.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/healthList").OrderByValue().EndAt(99).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"players/healthList"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the value (using the <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a> method), returning only values below or equal to <code>99</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</h1>
+<p>This function is a filter that should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a> that is ordered in some way (see <a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a>, <a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a> and <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a>). The filter assures that the returned results are the last <code>amount</code> of elements.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method will filter elements from the end of the ordered group; if you want to read from the start, use <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> instead.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.LimitToLast(amount)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>amount</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of results to read (from the end)</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("players/healthList").OrderByValue().LimitToLast(5).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"players/healthList"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordered by the value (using the <a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a> method), returning only the last <code>5</code> results.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</h1>
+<p>This method should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating a <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a>, and orders the returned results by key so they can be then filtered using one of the filtering methods (see <a href="realtime.html#dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</a>, <a href="realtime.html#dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</a>, <a href="realtime.html#dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</a>, <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> and<a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The final result from the <code>Read()</code> call will not be sorted; the sort order is only used by any filter methods chained after this.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.OrderByKey()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("enemies/names").OrderByKey().LimitToFirst(5).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"enemies/names"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordering the results by key and returning only the first <code>5</code> elements (using the <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</h1>
+<p>This method should be used when performing a <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> operation or creating a <a href="realtime.html#dbentryreflistener">&lt;dbEntryRef&gt;.Listener</a>, and orders the returned results by value so they can be then filtered using one of the filtering methods (see <a href="realtime.html#dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</a>, <a href="realtime.html#dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</a>, <a href="realtime.html#dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</a>, <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> and<a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The final result from the <code>Read()</code> call will not be sorted; the sort order is only used by any filter methods chained after this.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">&lt;dbEntryRef&gt;.OrderByValue()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="realtime.html#dbentryref">dbEntryRef</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseRealTime().Path("enemies/names").OrderByValue().LimitToFirst(5).Read();</code></pre>
+The code above performs a read operation (using the <a href="realtime.html#dbentryrefread">&lt;dbEntryRef&gt;.Read</a> method) on the database reference <code>"enemies/names"</code> (using the <a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a> method) ordering the results by value and returning only the first <code>5</code> elements (using the <a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a> method).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="dbentryref">dbEntryRef</h1>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="realtime.html#firebaserealtime">FirebaseRealTime</a></li>
+<li><a href="realtime.html#dbentryrefpath">&lt;dbEntryRef&gt;.Path</a></li>
+<li><a href="realtime.html#dbentryrefchild">&lt;dbEntryRef&gt;.Child</a></li>
+<li><a href="realtime.html#dbentryrefparent">&lt;dbEntryRef&gt;.Parent</a></li>
+<li><a href="realtime.html#dbentryrefpush">&lt;dbEntryRef&gt;.Push</a></li>
+<li><a href="realtime.html#dbentryreflimittofirst">&lt;dbEntryRef&gt;.LimitToFirst</a></li>
+<li><a href="realtime.html#dbentryreforderbychild">&lt;dbEntryRef&gt;.OrderByChild</a></li>
+<li><a href="realtime.html#dbentryrefequalto">&lt;dbEntryRef&gt;.EqualTo</a></li>
+<li><a href="realtime.html#dbentryrefstartat">&lt;dbEntryRef&gt;.StartAt</a></li>
+<li><a href="realtime.html#dbentryrefendat">&lt;dbEntryRef&gt;.EndAt</a></li>
+<li><a href="realtime.html#dbentryreflimittolast">&lt;dbEntryRef&gt;.LimitToLast</a></li>
+<li><a href="realtime.html#dbentryreforderbykey">&lt;dbEntryRef&gt;.OrderByKey</a></li>
+<li><a href="realtime.html#dbentryreforderbyvalue">&lt;dbEntryRef&gt;.OrderByValue</a></li>
+</ul>
+<p><br></p>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="guides_performance.html" class="btn btn-neutral float-left" title="Performance Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="guides_realtime.html" class="btn btn-neutral float-right" title="Realtime Guides">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="guides_performance.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="guides_realtime.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

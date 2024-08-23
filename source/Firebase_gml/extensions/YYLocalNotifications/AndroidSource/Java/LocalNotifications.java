@@ -96,7 +96,7 @@ public class LocalNotifications extends RunnerSocial
 		am.set(AlarmManager.RTC_WAKEUP, fireTimeMs, pendingIntent);
 	}
 	
-	public void LocalPushNotification_Create_Android(String ID ,double fireTime, String title, String message, String data,String imagePath)
+	public void LocalPushNotification_Create_Ext(String ID ,double fireTime, String title, String message, String data,String imagePath)
 	{
 		if(fireTime <= 0)
 			return;

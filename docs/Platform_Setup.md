@@ -116,6 +116,13 @@ You can get your package name from the [Android Game Options](https://manual.gam
 4. On this screen, just copy the **firebaseConfig** struct:<br>
       ![](assets/setupWebStep2.PNG)
 
-5. Paste the struct's contents in a text editor, replace all double quotes `"` with single quotes `'` and copy the resulting text. Also make sure to add single quotes `'` to the struct keys.
+5. Paste the struct's contents in a text editor, replace all double quotes `"` with single quotes `'` and copy the resulting text.
+
+> [!TIP]
+> The final string should look like the following:
+>
+>    {apiKey: 'xxxxxxxx',authDomain: 'xxxxxxxx.firebaseapp.com',databaseURL: 'xxxxxxxx',projectId: 'xxxxxxxx',storageBucket: 'xxxxxxxx',messagingSenderId: 'xxxxxxxx',appId: 'xxxxxxxx',measurementId: 'xxxxxxxx'}
+>
+> Note that some entries might be missing depending on the features you have enabled.
 
 6. Paste the result in the **Firebase Config Struct** extension option. Note that this cannot contain any double quotes `"`.

@@ -121,7 +121,7 @@ You can get your package name from the [Android Game Options](https://manual.gam
 > [!TIP]
 > The final string should look like the following:
 >
->    {apiKey: 'xxxxxxxx',authDomain: 'xxxxxxxx.firebaseapp.com',databaseURL: 'xxxxxxxx',projectId: 'xxxxxxxx',storageBucket: 'xxxxxxxx',messagingSenderId: 'xxxxxxxx',appId: 'xxxxxxxx',measurementId: 'xxxxxxxx'}
+>    `{apiKey: 'xxxxxxxx',authDomain: 'xxxxxxxx.firebaseapp.com',databaseURL: 'xxxxxxxx',projectId: 'xxxxxxxx',storageBucket: 'xxxxxxxx',messagingSenderId: 'xxxxxxxx',appId: 'xxxxxxxx',measurementId: 'xxxxxxxx'}`
 >
 > Note that some entries might be missing depending on the features you have enabled.
 

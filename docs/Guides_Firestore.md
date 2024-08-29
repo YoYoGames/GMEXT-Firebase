@@ -32,10 +32,10 @@
   Firebase Firestore implementation uses both SDK (working on **Android**, **iOS** and **Web** ) and also REST API that allows it to work on any other platform. In this section we will cover the steps necessary to start using the Firebase Firestore extension in your game.
   Select your target platform below and follow the simple steps to get your project up and running:
 
-* ${page.Platform_Setup#Android_Setup} (once per project)
-* ${page.Platform_Setup#iOS_Setup} (once per project)
-* ${page.Platform_Setup#Web_Setup} (once per project)
-* ${page.Platform_Setup#REST_API_Setup}
+* ${page.platform_setup#Android_Setup} (once per project)
+* ${page.platform_setup#iOS_Setup} (once per project)
+* ${page.platform_setup#Web_Setup} (once per project)
+* ${page.guides_authentication#REST_API_Setup}
 
 ## Advanced Configuration
 

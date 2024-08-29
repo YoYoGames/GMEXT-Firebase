@@ -30,15 +30,15 @@ Building your project on iOS requires some Xcode project changes:
 Firebase Crashlytics implementation uses SDK dependencies and therefore is only available on **Android** and **iOS** targets. In this section we will cover the steps necessary to start using the Firebase Crashlytics extension in your game.
 Select your target platform below and follow the simple steps to get your project up and running (you only need follow this setup once per project):
 
-* ${page.Platform_Setup#Android_Setup}
-* ${page.Platform_Setup#iOS_Setup}
+* ${page.platform_setup#Android_Setup}
+* ${page.platform_setup#iOS_Setup}
 
 ## Enabling Crashlytics
 
 1. On your Firebase console, select **Crashlytics** under &quot;Release &amp; Monitor&quot;; then **select your Android** / **iOS** project **and click on Enable Crashlytics** .<br>
           ![](assets/crashlyticsEnable.png)
 
-2. On this screen, the Firebase console will wait for a test crash from your app. To skip this screen you need to build a project (see [Building on iOS](#Building_on_iOS) if you are building for the iOS target), unplug your device and run a call to the included [FirebaseCrashlytics_Crash](Functions_Crashlytics#FirebaseCrashlytics_Crash) function.<br>
+2. On this screen, the Firebase console will wait for a test crash from your app. To skip this screen you need to build a project (see ${page.guides_crashlytics#Building_on_iOS} if you are building for the iOS target), unplug your device and run a call to the included ${function.FirebaseCrashlytics_Crash} function.<br>
       ![](assets/crashlyticsWaiting.png)
 
 3. You are now all set to monitor your game crash logs.

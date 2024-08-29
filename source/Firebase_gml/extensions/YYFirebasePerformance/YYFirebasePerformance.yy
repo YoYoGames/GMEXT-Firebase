@@ -14,7 +14,7 @@
   "copyToTargets":12,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"1.1.3",
+  "extensionVersion":"1.2.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebasePerformanceMonitoring.ext","constants":[],"copyToTargets":-1,"filename":"FirebasePerformanceMonitoring.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_setPerformanceCollectionEnabled","argCount":0,"args":[2,],"documentation":"","externalName":"FirebasePerformance_setPerformanceCollectionEnabled","help":"FirebasePerformance_setPerformanceCollectionEnabled(bool)","hidden":false,"kind":4,"name":"FirebasePerformance_setPerformanceCollectionEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

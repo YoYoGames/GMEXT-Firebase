@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Cloud Messaging - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Cloud Messaging";
+        var mkdocs_page_input_path = "cloud_messaging.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Cloud Messaging</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Cloud Messaging</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/cloud_messaging.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="cloud-messaging"><strong>Cloud Messaging</strong></h1>
+<p><img alt="" src="assets/cloudMessagingBanner.png" /></p>
+<p>Using Firebase Cloud Messaging you can notify an app client that a new email or other data is available to be synced. You can send notification messages to drive user re-engagement and retention. For use cases such as instant messaging, a message can transfer a payload of up to 4000 bytes to an app client.
+Check the <a href="https://firebase.google.com/docs/cloud-messaging">official page</a> for more information.</p>
+<h2 id="setup">Setup</h2>
+<p>Before starting to use any Firebase extensions, you are required to follow some initial configuration steps. However if you've already done these for any of the other modules you can skip this configuration section and go straight to using the API functions.</p>
+<ul>
+<li><a href="guides_analytics.html">Analytics Guides</a></li>
+<li><a href="guides_cloud_messaging.html">Cloud Messaging Guides</a> (<strong>iOS</strong> requires some additional steps)</li>
+</ul>
+<h2 id="functions">Functions</h2>
+<p>The following functions are provided for working with the Firebase Cloud Messaging extension:</p>
+<ul>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_deletetoken">FirebaseCloudMessaging_DeleteToken</a></li>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_gettoken">FirebaseCloudMessaging_GetToken</a></li>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_isautoinitenabled">FirebaseCloudMessaging_IsAutoInitEnabled</a></li>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_setautoinitenabled">FirebaseCloudMessaging_SetAutoInitEnabled</a></li>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_subscribetotopic">FirebaseCloudMessaging_SubscribeToTopic</a></li>
+<li><a href="cloud_messaging.html#firebasecloudmessaging_unsubscribefromtopic">FirebaseCloudMessaging_UnsubscribeFromTopic</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_deletetoken">FirebaseCloudMessaging_DeleteToken</h1>
+<p>This function deletes the FCM registration token for this Firebase project. Note that if auto-init is enabled, a new token will be generated the next time the app is started. Disable auto-init (using the function <a href="cloud_messaging.html#firebasecloudmessaging_setautoinitenabled">FirebaseCloudMessaging_SetAutoInitEnabled</a>) to avoid this behaviour.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_DeleteToken()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The constant <code>"FirebaseCloudMessaging_DeleteToken"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_DeleteToken()</code></pre>
+In the code above we request for the FCM token to be deleted. The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "FirebaseCloudMessaging_DeleteToken")
+{
+    if(async_load[?"success"])
+    {
+       show_debug_message("FCM token deleted");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and provides a success message if <strong>success</strong> is true.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_gettoken">FirebaseCloudMessaging_GetToken</h1>
+<p>Requests the FCM registration token for this Firebase project. This sends information about the application and the device where it's running to the Firebase backend. See <a href="cloud_messaging.html#firebasecloudmessaging_deletetoken">FirebaseCloudMessaging_DeleteToken</a> for information on deleting the token.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_GetToken()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The constant <code>"FirebaseCloudMessaging_GetToken"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The FCM registration token.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_GetToken();</code></pre>
+In the code above we request for the current FCM token. The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "FirebaseCloudMessaging_GetToken")
+{
+    if(async_load[?"success"])
+    {
+        global.fcmToken = async_load[? "value"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and if the tasks succeeds it stores the token value into a global variable (<code>global.fcmToken</code>).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_isautoinitenabled">FirebaseCloudMessaging_IsAutoInitEnabled</h1>
+<p>Returns whether FCM auto-initialization is enabled or disabled.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_IsAutoInitEnabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (FirebaseCloudMessaging_IsAutoInitEnabled())
+{
+    FirebaseCloudMessaging_SetAutoInitEnabled(false);
+}</code></pre>
+The code above checks if auto-initialization is enabled and if it is it disables it (using <a href="cloud_messaging.html#firebasecloudmessaging_setautoinitenabled">FirebaseCloudMessaging_SetAutoInitEnabled</a>).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_setautoinitenabled">FirebaseCloudMessaging_SetAutoInitEnabled</h1>
+<p>Enables or disables auto-initialization of Firebase Cloud Messaging.</p>
+<p>When enabled, Firebase Cloud Messaging generates a registration token on app startup if there is no valid one (see <a href="cloud_messaging.html#firebasecloudmessaging_gettoken">FirebaseCloudMessaging_GetToken</a>) and periodically sends data to the Firebase backend to validate the token. This setting is persistent across app restarts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, Firebase Cloud Messaging auto-initialization is enabled.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_SetAutoInitEnabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether auto-initialization should be turned on or off.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (FirebaseCloudMessaging_IsAutoInitEnabled())
+{
+    FirebaseCloudMessaging_SetAutoInitEnabled(false);
+}</code></pre>
+The code above checks if auto-initialization is enabled (using the <a href="cloud_messaging.html#firebasecloudmessaging_isautoinitenabled">FirebaseCloudMessaging_IsAutoInitEnabled</a> function) and if it is disables it.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_subscribetotopic">FirebaseCloudMessaging_SubscribeToTopic</h1>
+<p>Subscribes the user to the given topic in the background. The subscription operation is persistent and will keep retrying until it is successful. This uses the FCM registration token to identify the app instance, generating one if it does not exist (see <a href="cloud_messaging.html#firebasecloudmessaging_gettoken">FirebaseCloudMessaging_GetToken</a>), which periodically sends data to the Firebase backend when auto-init is enabled. To delete the data, delete the token (see <a href="cloud_messaging.html#firebasecloudmessaging_deletetoken">FirebaseCloudMessaging_DeleteToken</a>).</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_SubscribeToTopic(topic)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>topic</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name of the topic to subscribe to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The constant <code>"FirebaseCloudMessaging_SubscribeToTopic"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name of topic subscription requested.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_SubscribeToTopic("my_awesome_topic");</code></pre>
+In the code above we request a subscription to a topic (<code>"my_awesome topic"</code>). The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "FirebaseCloudMessaging_SubscribeToTopic")
+{
+    var _topic = async_load[? "topic"];
+
+    if(async_load[?"success"])
+    {
+        show_debug_message("Subscription to " + _topic + " SUCCEEDED");
+    }
+    else
+    {
+        show_debug_message("Subscription to " + _topic + " FAILED");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and if the tasks succeeds it stores the topic value in a local variable (<code>_topic</code>) and logs the success of the operation.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecloudmessaging_unsubscribefromtopic">FirebaseCloudMessaging_UnsubscribeFromTopic</h1>
+<p>Unsubscribes from a previously subscribed topic (see <a href="cloud_messaging.html#firebasecloudmessaging_subscribetotopic">FirebaseCloudMessaging_SubscribeToTopic</a>) in the background. The unsubscribe operation is persistent and will keep retrying until it is completed.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_UnsubscribeFromTopic(topic)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>topic</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name of the topic to unsubscribe from.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The constant <code>"FirebaseCloudMessaging_UnsubscribeFromTopic"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function task succeeded.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name of topic subscription requested.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebaseCloudMessaging_UnsubscribeFromTopic("my_awesome_topic");</code></pre>
+In the code above we request for the subscription to the topic <code>"my_awesome topic"</code> to be canceled. The function callback can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "FirebaseCloudMessaging_UnsubscribeFromTopic")
+{
+    var _topic = async_load[? "topic"];
+
+    if(async_load[?"success"])
+    {
+        show_debug_message("Subscription removed successfully");
+    }
+    else
+    {
+        show_debug_message("Subscription could not be removed");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong>, and if the tasks succeeds it stores the topic value in a local variable (<code>_topic</code>) and logs the success of the operation.</p>
+<p><br></p>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="setup_cloud_functions.html" class="btn btn-neutral float-left" title="Cloud Functions Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="guides_cloud_messaging.html" class="btn btn-neutral float-right" title="Cloud Messaging Guides">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="setup_cloud_functions.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="guides_cloud_messaging.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

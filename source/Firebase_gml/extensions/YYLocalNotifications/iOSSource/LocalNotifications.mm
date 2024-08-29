@@ -58,6 +58,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     }];
 }
 
+-(void) LocalPushNotification_Create_Ext:(NSString*) ID fire_time: (double) fire_time title: (NSString*) title message:(NSString*) message data:(NSString*) data imagePath:(NSString*) imagePath
+{
+	NSLog(@"LocalPushNotification_Create_Ext :: not compatible with iOS");
+}
+
 -(void) LocalPushNotification_Cancel:(NSString*) ID
 {
 	ID = [[LocalNotifications prefix] stringByAppendingString:ID];

@@ -420,7 +420,7 @@
 
 /**
  * @func FirebaseAuthentication_LinkWithEmailPassword
- * @desc This function establishes a link between an email/password pair and the current user (used for [Email](LogIns_Authentication#Email_Authentication) based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.
+ * @desc This function establishes a link between an email/password pair and the current user (used for ${page.logins_authentication#Email_Authentication} based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to link the current user to.
  * @param {string} pass The password to link to the current user account.
@@ -459,7 +459,7 @@
 
 /**
  * @func FirebaseAuthentication_LinkWithOAuthCredential
- * @desc This function establishes a link between an OAuth credential and the current user  (used for [Apple](LogIns_Authentication#Apple Authentication), [Facebook](LogIns_Authentication#Facebook Authentication), [Google](LogIns_Authentication#Google Authentication) and [GooglePlay](LogIns_Authentication#Google_Play_Services_Authentication) based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.
+ * @desc This function establishes a link between an OAuth credential and the current user  (used for ${page.logins_authentication#Apple_Authentication}, ?{page.logins_authentication#Facebook_Authentication}, ${page.logins_authentication#Google_Authentication} and ${page.logins_authentication#Google_Play_Services_Authentication} based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} token The provider token.
  * @param {string} token_kind One of the provided strings `"id_token"`, `"access_token"` or `"serverAuthCode"`
@@ -541,7 +541,7 @@
 
 /**
  * @func FirebaseAuthentication_ReauthenticateWithEmail
- * @desc This function re-authenticates the current user using an email/password (used for [Email](LogIns_Authentication#Email_Authentication) based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.
+ * @desc This function re-authenticates the current user using an email/password (used for ${page.logins_authentication#Email_Authentication} based authentication). The returned value is a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to link the current user to.
  * @param {string} pass The password to link to the current user account.
@@ -580,7 +580,7 @@
 
 /**
  * @func FirebaseAuthentication_ReauthenticateWithOAuth
- * @desc This function re-authenticates the current user using an OAuth credential (used for [Apple](LogIns_Authentication#Apple Authentication), [Facebook](LogIns_Authentication#Facebook Authentication), [Google](LogIns_Authentication#Google Authentication) and [GooglePlay](LogIns_Authentication#Google_Play_Services_Authentication) based authentications). The returned value is a listener identifier that can be used for tracking progress on the request.
+ * @desc This function re-authenticates the current user using an OAuth credential (used for ${page.logins_authentication#Apple_Authentication}, ${page.logins_authentication#Facebook_Authentication}, ${page.logins_authentication#Google_Authentication} and ${page.logins_authentication#Google_Play_Services_Authentication}). The returned value is a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} token The provider token.
  * @param {string} token_kind One of the provided strings `"id_token"` or `"access_token"` or `"serverAuthCode"`
@@ -740,7 +740,7 @@
 
 /**
  * @func FirebaseAuthentication_SendEmailVerification
- * @desc This function sends an email verification to the current user (used for [Email](LogIns_Authentication#Email_Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function sends an email verification to the current user (used for ${page.logins_authentication#Email_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to be verified.
  * 
@@ -777,7 +777,7 @@
 
 /**
  * @func FirebaseAuthentication_SendPasswordResetEmail
- * @desc This function sends a password reset email to the current user (used for [Email](LogIns_Authentication#Email_Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function sends a password reset email to the current user (used for ${page.logins_authentication#Email_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to send the password reset email to.
  * 
@@ -815,7 +815,7 @@
 
 /**
  * @func FirebaseAuthentication_SendVerificationCode
- * @desc This function sends a verification code and requests for a **sessionInfo**  key (used for [Phone](LogIns_Authentication#Phone Authentication) based authentication), it then returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function sends a verification code and requests for a **sessionInfo**  key (used for ${page.logins_authentication#Phone_Authentication} based authentication), it then returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} phoneNumber The phone number to send the verification code to, including country code (i.e.: `"+44123456789"`)
  * @param {string} recaptchaToken The recaptcha token (obtained from solving the reCAPTCHA puzzle).
@@ -891,7 +891,7 @@
 
 /**
  * @func FirebaseAuthentication_SignIn_Email
- * @desc This function signs in a user with an email and password (used for [Email](LogIns_Authentication#Email_Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function signs in a user with an email and password (used for ${page.logins_authentication#Email_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to sign in with.
  * @param {string} pass The password associated with the email above (not the actual email's password).
@@ -931,7 +931,7 @@
 
 /**
  * @func FirebaseAuthentication_SignIn_OAuth
- * @desc This function signs in a user with an OAuth credential (used for [Apple](LogIns_Authentication#Apple Authentication), [Facebook](LogIns_Authentication#Facebook Authentication), [Google](LogIns_Authentication#Google Authentication) and [GooglePlay](LogIns_Authentication#Google_Play_Services_Authentication) based authentications) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function signs in a user with an OAuth credential (used for ${page.logins_authentication#Apple_Authentication}, ${page.logins_authentication#Facebook_Authentication}, ${page.logins_authentication#Google_Authentication} and ${page.logins_authentication#Google_Play_Services_Authentication} based authentications) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} token The provider token.
  * @param {string} token_kind One of the provided strings `"id_token"`, `"access_token"` or `"serverAuthCode"`
@@ -972,7 +972,7 @@
 
 /**
  * @func FirebaseAuthentication_SignInWithCustomToken
- * @desc This function tries to sign in a user with a given custom token. Use this function after you retrieve a Firebase Auth Custom Token from your server (used with [Custom](LogIns_Authentication#Custom Authentication) authentication). The function returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function tries to sign in a user with a given custom token. Use this function after you retrieve a Firebase Auth Custom Token from your server (used with ${page.logins_authentication#Custom_Authentication}). The function returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} customToken The user's Firebase custom token.
  * 
@@ -1011,7 +1011,7 @@
 
 /**
  * @func FirebaseAuthentication_SignInWithPhoneNumber
- * @desc This function signs in a user with a phone number (used for [Phone](LogIns_Authentication#Phone Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function signs in a user with a phone number (used for ${page.logins_authentication#Phone_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} phone The phone number, including country code (i.e.: `"+44123456789"`)
  * @param {string} code The code from the SMS.
@@ -1064,7 +1064,7 @@
 
 /**
  * @func FirebaseAuthentication_SignUp_Email
- * @desc This function signs up a user with an email and password (used for [Email](LogIns_Authentication#Email_Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function signs up a user with an email and password (used for ${page.logins_authentication#Email_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * @param {string} email The email to to be used during sign-up.
  * @param {string} pass The password to be associated with the email provided (not the actual email's password)
@@ -1142,7 +1142,7 @@
 
 /**
  * @func SDKFirebaseAuthentication_LinkWithGameCenter
- * @desc This function links a Game Center account to the current user (used for [GameCenter](LogIns_Authentication#GameCenter Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function links a Game Center account to the current user (used for ${page.logins_authentication#GameCenter_Authentication}) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * [[Warning: This function is only available on iOS.]]
  * 
@@ -1202,7 +1202,7 @@
  * ```gml
  * listenerId = SDKFirebaseAuthentication_LinkWithProvider("apple.com");
  * ```
- * In the code above we attempt to link the current user to the `"apple.com"` provider (see [Apple](LogIns_Authentication#Apple Authentication) for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * In the code above we attempt to link the current user to the `"apple.com"` provider (see ${page.logins_authentication#Apple_Authentication} for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * ```gml
  * if (async_load[? "id"] == listenerId)
  * {
@@ -1222,7 +1222,7 @@
 
 /**
  * @func SDKFirebaseAuthentication_ReauthenticateWithGameCenter
- * @desc This function re-authenticates the user using a Game Center account (used for [GameCenter](LogIns_Authentication#GameCenter Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function re-authenticates the user using a Game Center account (used for ${page.logins_authentication#GameCenter_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * [[Warning: This function is only available on iOS.]]
  * 
@@ -1281,7 +1281,7 @@
  * ```gml
  * listenerId = SDKFirebaseAuthentication_ReauthenticateWithProvider("apple.com");
  * ```
- * In the code above we attempt to re-authenticate the current user to the `"apple.com"` provider (see [Apple](LogIns_Authentication#Apple Authentication) for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * In the code above we attempt to re-authenticate the current user to the `"apple.com"` provider (see ${page.logins_authentication#Apple_Authentication} for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * 
  * ```gml
  * if (async_load[? "id"] == listenerId)
@@ -1302,7 +1302,7 @@
 
 /**
  * @func SDKFirebaseAuthentication_SignIn_GameCenter
- * @desc This function signs in the current user with a Game Center account (used for [GameCenter](LogIns_Authentication#GameCenter Authentication) based authentication) and returns a listener identifier that can be used for tracking progress on the request.
+ * @desc This function signs in the current user with a Game Center account (used for ${page.logins_authentication#GameCenter_Authentication} based authentication) and returns a listener identifier that can be used for tracking progress on the request.
  * 
  * [[Warning: This function is only available on iOS.]]
  * 
@@ -1362,7 +1362,7 @@
  * ```gml
  * listenerId = SDKFirebaseAuthentication_SignInWithProvider("apple.com");
  * ```
- * In the code above we attempt to sign in the current user using the `"apple.com"` provider (see [Apple](LogIns_Authentication#Apple Authentication) for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * In the code above we attempt to sign in the current user using the `"apple.com"` provider (see ${page.logins_authentication#Apple_Authentication} for more information on this authentication method). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * 
  * ```gml
  * if (async_load[? "id"] == listenerId)

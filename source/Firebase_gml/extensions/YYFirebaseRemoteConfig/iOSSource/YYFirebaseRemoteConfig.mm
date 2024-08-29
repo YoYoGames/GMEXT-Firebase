@@ -158,7 +158,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
                 {
                     _str_stirng = [NSString stringWithFormat:@"%@,",_str_stirng];
                 }
-                _str_stirng = [NSString stringWithFormat:@"%@%@",_str_stirng,_str];
+                _str_stirng = [NSString stringWithFormat:@"%@\"%@\"", _str_stirng, _str];
             }
             _str_stirng = [NSString stringWithFormat:@"%@]",_str_stirng];
             

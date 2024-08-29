@@ -11,9 +11,9 @@
  * @section Setup
  * @desc Before starting to use any Firebase extensions, you are required to follow some general configuration steps; however the Crashlytics extension has some specific requirements which you can read in the pages below:
  * 
- * * ${page.Guides_Analytics#Create_Project}
- * * ${page.Guides_Crashlytics#Crashlytics Setup}
- * * ${page.Guides_Crashlytics#Building_on_iOS}
+ * * ${page.guides_analytics#Create_Project}
+ * * ${page.guides_crashlytics#Crashlytics_Setup}
+ * * ${page.guides_crashlytics#Building_on_iOS}
  * 
  * @section_end
  * 

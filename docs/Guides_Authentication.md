@@ -29,10 +29,10 @@
   Firebase Authentication implementation uses both SDK (working on **Android**, **iOS** and **Web** ) and REST API that allows it to work on other platforms. In this section we will cover the required setup necessary to start using the Firebase Authentication extension on your game.
   Select your target platform below and follow the simple steps to get your project up and running:
 
-* ${page.Platform_Setup#Android_Setup} (once per project)
-* ${page.Platform_Setup#iOS_Setup} (once per project)
-* ${page.Platform_Setup#Web_Setup} (once per project)
-* ${page.Platform_Setup#REST_API_Setup}
+* ${page.platform_setup#Android_Setup} (once per project)
+* ${page.platform_setup#iOS_Setup} (once per project)
+* ${page.platform_setup#Web_Setup} (once per project)
+* ${page.guides_authentication#REST_API_Setup}
 
 ## Advanced Configuration
 

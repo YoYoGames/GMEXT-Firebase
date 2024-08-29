@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.2.3",
+  "extensionVersion":"2.3.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseAnalytics.ext","constants":[],"copyToTargets":-1,"filename":"FirebaseAnalytics.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseAnalytics_LogEvent","argCount":0,"args":[1,1,],"documentation":"","externalName":"FirebaseAnalytics_LogEvent","help":"FirebaseAnalytics_LogEvent(event,json)","hidden":false,"kind":4,"name":"FirebaseAnalytics_LogEvent","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

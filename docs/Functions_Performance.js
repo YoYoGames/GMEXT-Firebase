@@ -358,9 +358,9 @@
  * 
  * [[Note: This function is only available in Android.]]
  * 
- * @param {string } name Trace name
- * @param {string } attribute Attribute name
- * @param {string } value Value of the attribute
+ * @param {string} name Trace name
+ * @param {string} attribute Attribute name
+ * @param {string} value Value of the attribute
  * 
  * @example
  * ```gml

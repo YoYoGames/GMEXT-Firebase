@@ -17,8 +17,8 @@
  * @section Setup
  * @desc Before starting to use any Firebase extensions, you are required to follow some initial configuration steps. However if you've already done these for any of the other modules you can skip this configuration section and go straight to using the API functions.
  * 
- * * ${page.Guides_Analytics#Create_Project}
- * * ${page.Platform_Setup}
+ * * ${page.guides_analytics#Create_Project}
+ * * ${page.platform_setup}
  * 
  * @section_end
  * 

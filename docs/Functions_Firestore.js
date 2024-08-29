@@ -207,7 +207,7 @@
  * @func dbReference::Set
  * @desc This method creates or overwrites a document on the database. If &lt;dbReference&gt; is a collection then a document will be automatically created with an auto-generated name. If you wish to update an existing document instead of replacing it use ${function.dbReference::Update} instead. This function returns a listener identifier.
  * 
- * @param {string} json A JSON formatted string to fill the document with.
+ * @param {string|struct|array} json A struct, array or JSON formatted string to fill the document with.
  * 
  * @returns {real}
  * @event social
@@ -221,10 +221,13 @@
  * 
  * @example
  * ```gml
- * var _json = json_stringify({ name: "Hero", level: 100 });
+ * var _data = { name: "Hero", level: 100 };
+ * var _json = json_stringify(_data);
  * listenerId = FirebaseFirestore("myCollection/newDoc").Set(_json);
+ * // OR:
+ * // listenerId = FirebaseFirestore("myCollection/newDoc").Set(_data);
  * ```
- * The code above creates a JSON formatted string of a struct (using the ${function.json_stringify} function) and then sets the database document (`"myCollection/newDoc"`) to the new string. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * The code above creates a JSON formatted string of a struct using the ${function.json_stringify} function (or directly from the struct as shown in the comments) and then sets the database document (`"myCollection/newDoc"`) to the new string. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * ```gml
  * if (async_load[? "type"] == "FirebaseFirestore_Document_Set")
  * {
@@ -248,7 +251,7 @@
  * 
  * [[Note: This function will only work on dbDocuments; if you pass in a dbCollection it won't be updated.]]
  * 
- * @param {string} json A JSON formatted string to update the document with.
+ * @param {string|struct|array} json A struct, array or JSON formatted string to fill the document with.
  * 
  * @returns {real}
  * @event social
@@ -262,10 +265,13 @@
  * 
  * @example
  * ```gml
- * var _json = json_stringify({ level: 200 });
+ * var _data = { level: 200 };
+ * var _json = json_stringify(_data);
  * listenerId = FirebaseFirestore("myCollection/newDoc").Update(_json);
+ * // OR:
+ * // listenerId = FirebaseFirestore("myCollection/newDoc").Update(_data);
  * ```
- * The code above creates a JSON formatted string of a struct (using the ${function.json_stringify} function) and then updates the document (`"myCollection/newDoc"`) with the new key/value pairs (omitted keys will not be deleted). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * The code above creates a JSON formatted string of a struct using the ${function.json_stringify} function (or directly from the struct as shown in the comments) and then updates the document (`"myCollection/newDoc"`) with the new key/value pairs (omitted keys will not be deleted). The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * 
  * ```gml
  * if (async_load[? "type"] == "FirebaseFirestore_Document_Update")
@@ -437,6 +443,7 @@
 /**
  * @func dbReference::WhereGreaterThanOrEqual
  * @desc This method is a filter that can be used when performing a ${function.dbReference::Query} and selects elements where the field's `path` value is greater than or equal to `value`.
+ * 
  * @param {string} path The path to field.
  * @param {real|string} value The value used for the comparison.
  * 

@@ -22,6 +22,9 @@
  * 
  * @section_func Functions
  * @desc The Firestore extension was implemented using a fluent-API (method chaining) approach and the entry point for interacting with the database is using the function ${function.FirebaseFirestore}, which will return a ${struct.dbReference}, that can be either a *&lt;dbCollection&gt;* or a *&lt;dbDocument&gt;*.
+ * 
+ * [[Note: The write functions ${function.dbReference::Set} and ${function.dbReference::Update} can take a struct, an array or a JSON encoded string.]]
+ * 
  * The following functions are given for working with the Firebase Firestore extension:
  * 
  * @ref FirebaseFirestore

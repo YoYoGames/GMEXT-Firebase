@@ -152,6 +152,7 @@
 
     - (void)putPrimitiveInDictionary:(NSMutableDictionary *)dictionary key:(NSString *)key value:(id)value methodName:(NSString *)methodName {
         if ([value isKindOfClass:[NSString class]]) {
+            NSLog(@"%@: Added value %@ for key: %@", methodName, value, key);
             dictionary[key] = value;
         } else if ([value isKindOfClass:[NSNumber class]]) {
             // Convert all numbers to double

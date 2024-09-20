@@ -30,13 +30,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 -(id) init
 {
-	if(self = [super init])
-	{
-		if(![FIRApp defaultApp])
-			[FIRApp configure];
-			
-		return self;
-	}
+    if (self = [super init]) {
+        if (![FIRApp defaultApp]) {
+            [FIRApp configure];
+        }
+    }
+    return self; // Always return self at the end.
 }
 
 

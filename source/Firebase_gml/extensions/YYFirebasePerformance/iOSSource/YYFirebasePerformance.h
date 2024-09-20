@@ -12,11 +12,10 @@
 
 #endif  // defined(__has_include)
 
-@interface YYFirebasePerformance:NSObject
-{
-	NSMutableDictionary *Map_Trace;
-	NSMutableDictionary *Map_HttpMetric;
-}
+@interface YYFirebasePerformance : NSObject
+
+@property (nonatomic, strong) NSMutableDictionary<NSString *, FIRTrace *> *traceDictionary;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, FIRHTTPMetric *> *httpMetricsDictionary;
 
 @end
 

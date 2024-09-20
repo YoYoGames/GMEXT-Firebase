@@ -29,19 +29,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 	-(id) init
 	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-				
-			return self;
-		}
+        if (self = [super init]) {
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+            }
+        }
+        return self; // Always return self at the end.
 	}
 
     -(void) Init
     {
-	   Map_Trace = [[NSMutableDictionary alloc]init];
-	   Map_HttpMetric = [[NSMutableDictionary alloc]init];
+		self.traceDictionary = [[NSMutableDictionary alloc]init];
+    	self.httpMetricsDictionary = [[NSMutableDictionary alloc]init];
     }
 
 -(double) FirebasePerformance_isPerformanceCollectionEnabled
@@ -60,18 +59,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 	-(void) FirebasePerformance_Trace_Create:(NSString*) name
 	{
 		FIRTrace *mTrace = [[FIRPerformance sharedInstance] traceWithName:name];
-		[Map_Trace setValue:mTrace forKey:name];
+		[self.traceDictionary setValue:mTrace forKey:name];
 	}
 	
 	-(void) FirebasePerformance_Trace_Start:(NSString*) name
 	{
-		[[Map_Trace valueForKey:name] start];
+		[[self.traceDictionary valueForKey:name] start];
 	}
 
 	-(void) FirebasePerformance_Trace_Stop:(NSString*) name
 	{
-		[[Map_Trace valueForKey:name] stop];
-		[Map_Trace removeObjectForKey: name];
+		[[self.traceDictionary valueForKey:name] stop];
+		[self.traceDictionary removeObjectForKey: name];
 	}
 
 	-(void) FirebasePerformance_Trace_Attribute_Remove:(NSString*) name attribute:(NSString*) attribute
@@ -98,17 +97,17 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 	
 	-(void) FirebasePerformance_Trace_Metric_Put:(NSString*) name metric:(NSString*) metric value:(double) value
 	{
-		[[Map_Trace valueForKey:name] setIntValue:value forMetric: metric];
+		[[self.traceDictionary valueForKey:name] setIntValue:value forMetric: metric];
 	}
 	
 	-(void) FirebasePerformance_Trace_Metric_Increment:(NSString*) name metric:(NSString*) metric value:(double) value
 	{
-		[[Map_Trace valueForKey:name] incrementMetric:metric byInt: value];
+		[[self.traceDictionary valueForKey:name] incrementMetric:metric byInt: value];
 	}
 
 	-(double) FirebasePerformance_Trace_Metric_GetLong:(NSString*) name metric:(NSString*) metric
 	{
-		return (double) [[Map_Trace valueForKey:name] valueForIntMetric:metric];
+		return (double) [[self.traceDictionary valueForKey:name] valueForIntMetric:metric];
 	}
 	
 	
@@ -139,18 +138,18 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 			firmethod = FIRHTTPMethodCONNECT ;
 			
 		FIRHTTPMetric *metric = [[FIRHTTPMetric alloc] initWithURL: [NSURL URLWithString: url] HTTPMethod: firmethod];
-		[Map_HttpMetric setValue:metric forKey:name];
+		[self.httpMetricsDictionary setValue:metric forKey:name];
 	}
 	
 	-(void) FirebasePerformance_HttpMetric_Start:(NSString*) name
 	{
-		[[Map_HttpMetric valueForKey:name] start];
+		[[self.httpMetricsDictionary valueForKey:name] start];
 	}
 
 	-(void) FirebasePerformance_HttpMetric_Stop:(NSString*) name
 	{
-		[[Map_HttpMetric valueForKey:name] stop];
-		[Map_HttpMetric removeObjectForKey: name];
+		[[self.httpMetricsDictionary valueForKey:name] stop];
+		[self.httpMetricsDictionary removeObjectForKey: name];
 	}
 	
 	-(NSString*) FirebasePerformance_HttpMetric_Attribute_Get:(NSString*) name attribute:(NSString*) attribute
@@ -177,22 +176,22 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 	-(void) FirebasePerformance_HttpMetric_SetHttpResponseCode:(NSString*) name responseCode:(double) responseCode
 	{
-        [[Map_HttpMetric valueForKey:name] setResponseCode:responseCode];
+        [[self.httpMetricsDictionary valueForKey:name] setResponseCode:responseCode];
 	}
 
 	-(void) FirebasePerformance_HttpMetric_SetRequestPayloadSize:(NSString*) name bytes:(double) bytes
 	{
-        [[Map_HttpMetric valueForKey:name] setRequestPayloadSize:bytes];
+        [[self.httpMetricsDictionary valueForKey:name] setRequestPayloadSize:bytes];
 	}
 
 	-(void) FirebasePerformance_HttpMetric_SetResponseContentType:(NSString*) name contentType:(NSString*) contentType
 	{
-        [[Map_HttpMetric valueForKey:name] setResponseContentType:contentType];
+        [[self.httpMetricsDictionary valueForKey:name] setResponseContentType:contentType];
 	}
 
 	-(void) FirebasePerformance_HttpMetric_SetResponsePayloadSize:(NSString*) name bytes: (double) bytes
 	{
-        [[Map_HttpMetric valueForKey:name] setResponsePayloadSize:bytes];
+        [[self.httpMetricsDictionary valueForKey:name] setResponsePayloadSize:bytes];
 	}
 
 

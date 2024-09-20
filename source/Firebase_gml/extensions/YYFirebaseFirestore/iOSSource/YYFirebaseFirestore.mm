@@ -27,85 +27,84 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 @implementation YYFirebaseFirestore
 
-	-(id) init
-	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-				
-			return self;
-		}
-	}
-
-    -(void) Init
-    {
-		//Start point of index
-		//Autentication 5000
-		//storage 6000
-		//Firestore 7000
-		//RealTime 10000
-		Firestore_indMap = 7000;
-	
-        Firestore_ListenerMap = [[NSMutableDictionary alloc]init];
+-(id) init
+{
+    if (self = [super init]) {
+        if (![FIRApp defaultApp]) {
+            [FIRApp configure];
+        }
     }
+    return self; // Always return self at the end.
+}
 
-	-(double) FirebaseFirestore_SDK:(NSString*) fluent_json
-	{
-        NSDictionary *fluent_obj = [YYFirebaseFirestore json2dic:fluent_json];
-        
-        NSString *action = [fluent_obj valueForKey:@"_action"];
-        double isDocument = [[fluent_obj valueForKey:@"_isDocument"] doubleValue];
+-(void) Init
+{
+    //Start point of index
+    //Autentication 5000
+    //storage 6000
+    //Firestore 7000
+    //RealTime 10000
+    Firestore_indMap = 7000;
+    
+    Firestore_ListenerMap = [[NSMutableDictionary alloc]init];
+}
 
-		if([action isEqualToString:@"Set"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_set_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_add_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Update"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_update_:fluent_obj];
-			else
-				NSLog(@"Firestore: You can't update a Collection");
-		}
-		else if([action isEqualToString:@"Read"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_get_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_get_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Listener"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_listener_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_listener_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Delete"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_delete_:fluent_obj];
-			else
-				NSLog(@"Firestore: You can't delete a Collection");
-		}
-		else if([action isEqualToString:@"Query"])
-		{
-			if(isDocument < 0.5)
-				return [self Firebase_Firestore_collection_query_:fluent_obj];
-			else
-				NSLog(@"Firestore:You can Query collecctions");
-		}
-		else if([action isEqualToString:@"ListenerRemove"])
-            [self Firebase_Firestore_listener_remove_:fluent_obj];
-        else if([action isEqualToString:@"ListenerRemoveAll"])
-            [self Firebase_Firestore_listener_removeAll];
-		
-		return 0.0;
-	}
+-(double) FirebaseFirestore_SDK:(NSString*) fluent_json
+{
+    NSDictionary *fluent_obj = [YYFirebaseFirestore json2dic:fluent_json];
+    
+    NSString *action = [fluent_obj valueForKey:@"_action"];
+    double isDocument = [[fluent_obj valueForKey:@"_isDocument"] doubleValue];
+    
+    if([action isEqualToString:@"Set"])
+    {
+        if(isDocument >= 0.5)
+            return [self Firebase_Firestore_document_set_:fluent_obj];
+        else
+            return [self Firebase_Firestore_collection_add_:fluent_obj];
+    }
+    else if([action isEqualToString:@"Update"])
+    {
+        if(isDocument >= 0.5)
+            return [self Firebase_Firestore_document_update_:fluent_obj];
+        else
+            NSLog(@"Firestore: You can't update a Collection");
+    }
+    else if([action isEqualToString:@"Read"])
+    {
+        if(isDocument >= 0.5)
+            return [self Firebase_Firestore_document_get_:fluent_obj];
+        else
+            return [self Firebase_Firestore_collection_get_:fluent_obj];
+    }
+    else if([action isEqualToString:@"Listener"])
+    {
+        if(isDocument >= 0.5)
+            return [self Firebase_Firestore_document_listener_:fluent_obj];
+        else
+            return [self Firebase_Firestore_collection_listener_:fluent_obj];
+    }
+    else if([action isEqualToString:@"Delete"])
+    {
+        if(isDocument >= 0.5)
+            return [self Firebase_Firestore_document_delete_:fluent_obj];
+        else
+            NSLog(@"Firestore: You can't delete a Collection");
+    }
+    else if([action isEqualToString:@"Query"])
+    {
+        if(isDocument < 0.5)
+            return [self Firebase_Firestore_collection_query_:fluent_obj];
+        else
+            NSLog(@"Firestore:You can Query collecctions");
+    }
+    else if([action isEqualToString:@"ListenerRemove"])
+        [self Firebase_Firestore_listener_remove_:fluent_obj];
+    else if([action isEqualToString:@"ListenerRemoveAll"])
+        [self Firebase_Firestore_listener_removeAll];
+    
+    return 0.0;
+}
 
 -(double) Firestore_getListenerInd
 {
@@ -123,8 +122,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     NSError *jsonError;
     NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dicValues = [NSJSONSerialization JSONObjectWithData:objectData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&jsonError];
+                                                              options:NSJSONReadingMutableContainers
+                                                                error:&jsonError];
     return dicValues;
 }
 
@@ -140,7 +139,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]] addDocumentWithData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Add");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -155,8 +154,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]] getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot,
-                                 NSError * _Nullable error)
-    {
+                                                                                                                  NSError * _Nullable error)
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Read");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -165,10 +164,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             [self AddStatusToCallback:dsMapIndex error:error];
         else
         {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
+            dsMapAddDouble(dsMapIndex,(char*)"status",200);
+            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
         }
-
+        
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
     return listenerInd;
@@ -179,8 +178,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     int listenerInd = [self Firestore_getListenerInd];
     
     id<FIRListenerRegistration> ID = [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]]
-    addSnapshotListener:^(FIRQuerySnapshot *snapshot, NSError *error)
-    {
+                                      addSnapshotListener:^(FIRQuerySnapshot *snapshot, NSError *error)
+                                      {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Listener");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -192,7 +191,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             dsMapAddDouble(dsMapIndex,(char*)"status",200);
             dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
         }
-
+        
         CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
     [self Firestore_listenerToMaps:ID ind:listenerInd];
@@ -214,33 +213,33 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             NSString* where_op = [dic valueForKey:@"operation"];
             id value = [dic valueForKey:@"value"];
             if([where_op isEqualToString:@"EQUAL"])
-                    query = [query queryWhereField:path isEqualTo:value];
+                query = [query queryWhereField:path isEqualTo:value];
             if([where_op isEqualToString:@"GREATER_THAN_OR_EQUAL"])
-                    query = [query queryWhereField:path isGreaterThanOrEqualTo:value];
+                query = [query queryWhereField:path isGreaterThanOrEqualTo:value];
             if([where_op isEqualToString:@"GREATER_THAN"])
-                    query = [query queryWhereField:path isGreaterThan:value];
+                query = [query queryWhereField:path isGreaterThan:value];
             if([where_op isEqualToString:@"LESS_THAN_OR_EQUAL"])
-                    query = [query queryWhereField:path isLessThanOrEqualTo:value];
+                query = [query queryWhereField:path isLessThanOrEqualTo:value];
             if([where_op isEqualToString:@"LESS_THAN"])
-                    query = [query queryWhereField:path isLessThan:value];
+                query = [query queryWhereField:path isLessThan:value];
         }
     }
     
     if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null])
-    if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null] && [fluent_obj valueForKey:@"_orderBy_field"] != [NSNull null])
-    {
-		if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"ASCENDING"])
-			query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:FALSE];
-		if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"DESCENDING"])
-			query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:TRUE];
-    }
-	else
-		query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"]];
-	
-	if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null])
+        if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null] && [fluent_obj valueForKey:@"_orderBy_field"] != [NSNull null])
+        {
+            if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"ASCENDING"])
+                query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:FALSE];
+            if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"DESCENDING"])
+                query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:TRUE];
+        }
+        else
+            query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"]];
     
-    if([fluent_obj valueForKey:@"_start"] != [NSNull null])
-        query = [query queryStartingAtValues:@[[fluent_obj valueForKey:@"_start"]]];
+    if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null])
+        
+        if([fluent_obj valueForKey:@"_start"] != [NSNull null])
+            query = [query queryStartingAtValues:@[[fluent_obj valueForKey:@"_start"]]];
     
     if([fluent_obj valueForKey:@"_end"] != [NSNull null])
         query = [query queryEndingAtValues:@[[fluent_obj valueForKey:@"_start"]]];
@@ -249,8 +248,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         query = [query queryLimitedTo: [[fluent_obj valueForKey:@"_limit"] intValue]];
     
     [query getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot,
-                                 NSError * _Nullable error)
-    {
+                                        NSError * _Nullable error)
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Query");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -273,7 +272,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] setData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Set");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -288,7 +287,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] updateData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Update");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -304,7 +303,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     int listenerInd = [self Firestore_getListenerInd];
     
     [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] getDocumentWithCompletion:^(FIRDocumentSnapshot * _Nullable snapshot, NSError * _Nullable error)
-    {
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Read");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -333,7 +332,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] deleteDocumentWithCompletion:^(NSError * _Nullable error)
-    {
+     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Delete");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -348,7 +347,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     int listenerInd = [self Firestore_getListenerInd];
     id<FIRListenerRegistration> ID = [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] addSnapshotListener:^(FIRDocumentSnapshot *snapshot, NSError *error)
-    {
+                                      {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Listener");
         dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
@@ -422,8 +421,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     NSError *jsonError = nil;
     NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&jsonError];
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&jsonError];
     if(jsonError == nil)
         return dic;
     return nil;
@@ -433,8 +432,8 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 {
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj
-                                                           options:0//NSJSONWritingPrettyPrinted
-                                                             error:&error];
+                                                       options:0//NSJSONWritingPrettyPrinted
+                                                         error:&error];
     if(error == nil)
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     else
@@ -442,24 +441,24 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 }
 
 enum Error {
-  kErrorOk = 0,
-  kErrorNone = 0,
-  kErrorCancelled = 1,
-  kErrorUnknown = 2,
-  kErrorInvalidArgument = 3,
-  kErrorDeadlineExceeded = 4,
-  kErrorNotFound = 5,
-  kErrorAlreadyExists = 6,
-  kErrorPermissionDenied = 7,
-  kErrorResourceExhausted = 8,
-  kErrorFailedPrecondition = 9,
-  kErrorAborted = 10,
-  kErrorOutOfRange = 11,
-  kErrorUnimplemented = 12,
-  kErrorInternal = 13,
-  kErrorUnavailable = 14,
-  kErrorDataLoss = 15,
-  kErrorUnauthenticated = 16
+    kErrorOk = 0,
+    kErrorNone = 0,
+    kErrorCancelled = 1,
+    kErrorUnknown = 2,
+    kErrorInvalidArgument = 3,
+    kErrorDeadlineExceeded = 4,
+    kErrorNotFound = 5,
+    kErrorAlreadyExists = 6,
+    kErrorPermissionDenied = 7,
+    kErrorResourceExhausted = 8,
+    kErrorFailedPrecondition = 9,
+    kErrorAborted = 10,
+    kErrorOutOfRange = 11,
+    kErrorUnimplemented = 12,
+    kErrorInternal = 13,
+    kErrorUnavailable = 14,
+    kErrorDataLoss = 15,
+    kErrorUnauthenticated = 16
 };
 
 -(void) AddStatusToCallback:(int) dsMapIndex error:(NSError*) e
@@ -471,57 +470,57 @@ enum Error {
         dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[e localizedDescription] UTF8String]);
         switch(e.code)
         {
-          case Error::kErrorCancelled:
+            case Error::kErrorCancelled:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnknown:
+                break;
+            case Error::kErrorUnknown:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorInvalidArgument:
+                break;
+            case Error::kErrorInvalidArgument:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorDeadlineExceeded:
+                break;
+            case Error::kErrorDeadlineExceeded:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorNotFound:
+                break;
+            case Error::kErrorNotFound:
                 dsMapAddDouble(dsMapIndex,(char*)"status",404);
-            break;
-          case Error::kErrorAlreadyExists:
+                break;
+            case Error::kErrorAlreadyExists:
                 dsMapAddDouble(dsMapIndex,(char*)"status",409);
-            break;
-          case Error::kErrorPermissionDenied:
+                break;
+            case Error::kErrorPermissionDenied:
                 dsMapAddDouble(dsMapIndex,(char*)"status",403);
-            break;
-          case Error::kErrorUnauthenticated:
+                break;
+            case Error::kErrorUnauthenticated:
                 dsMapAddDouble(dsMapIndex,(char*)"status",401);
-            break;
-          case Error::kErrorResourceExhausted:
+                break;
+            case Error::kErrorResourceExhausted:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorFailedPrecondition:
+                break;
+            case Error::kErrorFailedPrecondition:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorAborted:
+                break;
+            case Error::kErrorAborted:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorOutOfRange:
+                break;
+            case Error::kErrorOutOfRange:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnimplemented:
+                break;
+            case Error::kErrorUnimplemented:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorInternal:
+                break;
+            case Error::kErrorInternal:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnavailable:
+                break;
+            case Error::kErrorUnavailable:
                 dsMapAddDouble(dsMapIndex,(char*)"status",503);
-            break;
-          case Error::kErrorDataLoss:
+                break;
+            case Error::kErrorDataLoss:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          default:
+                break;
+            default:
                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
+                break;
         }
     }
     else

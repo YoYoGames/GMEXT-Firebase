@@ -30,15 +30,13 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
    
 	-(id) init
 	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-			
-			[FIRMessaging messaging].delegate = self;
-			
-			return self;
-		}
+        if (self = [super init]) {
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+            }
+            [FIRMessaging messaging].delegate = self;
+        }
+        return self; // Always return self at the end.
 	}
 	
 	- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken

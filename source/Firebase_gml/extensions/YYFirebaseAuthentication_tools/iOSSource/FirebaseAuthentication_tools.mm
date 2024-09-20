@@ -34,7 +34,7 @@ extern int g_DeviceHeight;
                                [NSLayoutConstraint constraintWithItem:self.webView
                                                             attribute:NSLayoutAttributeBottom
                                                             relatedBy:NSLayoutRelationEqual
-                                                               toItem:g_controller.bottomLayoutGuide
+                                                               toItem:g_controller.view.safeAreaLayoutGuide.bottomAnchor
                                                             attribute:NSLayoutAttributeBottom
                                                            multiplier:1
                                                              constant:0],

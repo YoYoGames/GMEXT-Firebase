@@ -32,13 +32,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 	-(id) init
 	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-				
-			return self;
-		}
+        if (self = [super init]) {
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+            }
+        }
+        return self; // Always return self at the end.
 	}
 
 	
@@ -261,7 +260,6 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     NSString *ListenerString = [RealTime_ListenerMap objectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
     NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
     unsigned long listener = [[formatter numberFromString:ListenerString] unsignedLongValue];
-    [formatter release];
     
     [ref removeObserverWithHandle:(FIRDatabaseHandle)listener];
     [RealTime_ListenerMap removeObjectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
@@ -279,7 +277,6 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
         unsigned long listener = [[formatter numberFromString:ListenerString] unsignedLongValue];
         [ref removeObserverWithHandle:(FIRDatabaseHandle)listener];
-        [formatter release];
     }
     [RealTime_ListenerMap removeAllObjects];
     [RealTime_ReferenceMap removeAllObjects];

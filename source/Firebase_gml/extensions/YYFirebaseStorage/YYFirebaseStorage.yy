@@ -63,7 +63,7 @@
   "iosSystemFrameworkEntries":[],
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
-  "maccompilerflags":"",
+  "maccompilerflags":"-fobjc-arc",
   "maclinkerflags":"",
   "macsourcedir":"",
   "name":"YYFirebaseStorage",

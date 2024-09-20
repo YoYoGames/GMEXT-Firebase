@@ -2,65 +2,59 @@
 #import "YYFirebaseAnalytics.h"
 #import <UIKit/UIKit.h>
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
-
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
-
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
-
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
-
 @implementation YYFirebaseAnalytics
 
-    -(id) init
-    {
+    - (instancetype)init {
         if (self = [super init]) {
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-            }
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                if (![FIRApp defaultApp]) {
+                    [FIRApp configure];
+                }
+            });
         }
-        return self; // Always return self at the end.
+        return self;
     }
         
     -(void) FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double) enabled
     {
-        if(enabled >= .5)
-            [FIRAnalytics setAnalyticsCollectionEnabled:YES];
-        else
-            [FIRAnalytics setAnalyticsCollectionEnabled:NO];
+        [FIRAnalytics setAnalyticsCollectionEnabled: enabled >= .5 ? YES : NO];
+
     }
 
-    -(void) FirebaseAnalytics_LogEvent:(NSString*) event Value:(NSString*) json
-    {
-        [FIRAnalytics logEventWithName:event parameters:[YYFirebaseAnalytics makeDic: json]];
+    - (void)FirebaseAnalytics_LogEvent:(NSString *)event Value:(NSString *)json {
+        __weak YYFirebaseAnalytics *weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            YYFirebaseAnalytics *strongSelf = weakSelf;
+            if (!strongSelf) return;
+            NSDictionary *params = [strongSelf dictionaryFromJsonString:json methodName:@(__FUNCTION__)];
+            if (params) {
+                [FIRAnalytics logEventWithName:event parameters:params];
+            } else {
+                NSLog(@"FirebaseAnalytics_LogEvent: Failed to parse JSON for event %@", event);
+            }
+        });
     }
     
-    -(void) FirebaseAnalytics_ResetAnalyticsData:(NSString*) event Value:(NSString*) JSON_value
-    {
+    - (void)FirebaseAnalytics_ResetAnalyticsData {
         [FIRAnalytics resetAnalyticsData];
     }
     
-    -(void) FirebaseAnalytics_SetDefaultEventParameters:(NSString*) json
-    {
-        [FIRAnalytics setDefaultEventParameters:[YYFirebaseAnalytics makeDic: json]];
+    - (void)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
+        __weak YYFirebaseAnalytics *weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            YYFirebaseAnalytics *strongSelf = weakSelf;
+            if (!strongSelf) return;
+            NSDictionary *params = [strongSelf dictionaryFromJsonString:json methodName:@(__FUNCTION__)];
+            if (params) {
+                [FIRAnalytics setDefaultEventParameters:params];
+            } else {
+                NSLog(@"%@: Failed to parse JSON", @(__FUNCTION__));
+            }
+        });
     }
     
-    -(void) FirebaseAnalytics_SetSessionTimeoutInterval:(double) time
+    -(void) FirebaseAnalytics_SetSessionTimeoutDuration:(double) time
     {
         [FIRAnalytics setSessionTimeoutInterval:(long)time];
     }
@@ -70,43 +64,102 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         [FIRAnalytics setUserID:userID];
     }
     
-    -(void) FirebaseAnalytics_SetUserPropertyString:(NSString*) event Value:(NSString*) value
-    {
-        [FIRAnalytics setUserPropertyString:value forName:event];
+    - (void)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName Value:(NSString *)value {
+        [FIRAnalytics setUserPropertyString:value forName:propertyName];
     }
-    
-    -(void) FirebaseAnalytics_SetConsent:(double) ads analytics:(double) analytics
-    {
-        /* Xcode not found constants... https://firebase.google.com/docs/reference/ios/firebaseanalytics/api/reference/Type-Definitions
         
-        NSMutableDictionary *dic = [NSMutableDictionary new];
+    - (void)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
+        NSMutableDictionary<NSString *, NSString *> *consentSettings = [NSMutableDictionary dictionary];
         
-        if(ads >= 0.5)
-            [dic setObject: ConsentStatus.granted forKey: ConsentType.adStorage];
-        else
-            [dic setObject: ConsentStatus.denied forKey: ConsentType.adStorage];
-            
-        if(analytics >= 0.5)
-            [dic setObject: ConsentStatus.granted forKey:ConsentType.analyticsStorage];
-        else
-            [dic setObject: ConsentStatus.denied forKey:ConsentType.analyticsStorage];
-            
-        [FIRAnalytics setConsent:dic];
-        */
+        if (ads >= 0.5) {
+            [consentSettings setObject:FIRConsentStatusGranted forKey:FIRConsentTypeAdStorage];
+        } else {
+            [consentSettings setObject:FIRConsentStatusDenied forKey:FIRConsentTypeAdStorage];
+        }
+
+        if (analytics >= 0.5) {
+            [consentSettings setObject:FIRConsentStatusGranted forKey:FIRConsentTypeAnalyticsStorage];
+        } else {
+            [consentSettings setObject:FIRConsentStatusDenied forKey:FIRConsentTypeAnalyticsStorage];
+        }
+
+        [FIRAnalytics setConsent:consentSettings];
     }
-    
-    +(NSMutableDictionary*) makeDic:(NSString*) json
-    {
-        NSError *jsonError;
-        NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dicValues = [NSJSONSerialization JSONObjectWithData:objectData options:NSJSONReadingMutableContainers error:&jsonError];
+
+    - (NSDictionary *) dictionaryFromJsonString:(NSString *)jsonString methodName:(NSString *)methodName {
+        if (jsonString == nil || [jsonString length] == 0) {
+            return nil;
+        }
         
-        NSMutableDictionary *mParams = [NSMutableDictionary new];
+        NSError *error = nil;
+        id jsonObject = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                        options:0
+                                                        error:&error];
+        if (error) {
+            NSLog(@"%@: Failed to parse JSON string: %@", methodName, error.localizedDescription);
+            return nil;
+        }
         
-        for(NSString *key in dicValues)
-            [mParams setValue:[dicValues objectForKey:key] forKey:key];
+        if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+            return [self dictionaryFromJsonObject:jsonObject methodName:methodName];
+        } else {
+            NSLog(@"%@: Root JSON object is not a dictionary", methodName);
+            return nil;
+        }
+    }
+
+    - (NSMutableDictionary *)dictionaryFromJsonObject:(NSDictionary *)jsonObject methodName:(NSString *)methodName {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
         
-        return mParams;
+        for (NSString *key in jsonObject) {
+            id value = jsonObject[key];
+            
+            if ([value isKindOfClass:[NSArray class]]) {
+                NSArray *array = (NSArray *)value;
+                NSArray *convertedArray = [self arrayFromJsonArray:array methodName:methodName];
+                if (convertedArray) {
+                    dictionary[key] = convertedArray;
+                }
+                else if ([value isKindOfClass:[NSDictionary class]]) {
+                    NSLog(@"%@: Nested dictionaries are not supported for key: %@", methodName, key);
+                    // Skip the nested dictionary
+                } else {
+                    [self putPrimitiveInDictionary:dictionary key:key value:value methodName:methodName];
+                }
+            }
+        }
+        
+        return dictionary;
+    }
+
+
+    - (NSArray *)arrayFromJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName {
+        NSMutableArray *dictionaryArray = [NSMutableArray arrayWithCapacity:jsonArray.count];
+        
+        for (id value in jsonArray) {
+            if ([value isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *dict = [self dictionaryFromJsonObject:value methodName:methodName];
+                if (dict) {
+                    [dictionaryArray addObject:dict];
+                }
+            } else {
+                NSLog(@"%@: Unsupported type inside array: %@", methodName, NSStringFromClass([value class]));
+            }
+        }
+        
+        return [dictionaryArray copy];
+    }
+
+    - (void)putPrimitiveInDictionary:(NSMutableDictionary *)dictionary key:(NSString *)key value:(id)value methodName:(NSString *)methodName {
+        if ([value isKindOfClass:[NSString class]]) {
+            dictionary[key] = value;
+        } else if ([value isKindOfClass:[NSNumber class]]) {
+            // Convert all numbers to double
+            NSNumber *numberValue = (NSNumber *)value;
+            dictionary[key] = @([numberValue doubleValue]);
+        } else {
+            NSLog(@"%@: Unsupported type %@ for key: %@", methodName, NSStringFromClass([value class]), key);
+        }
     }
 
 @end

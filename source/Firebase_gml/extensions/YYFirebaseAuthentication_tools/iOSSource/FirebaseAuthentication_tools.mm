@@ -21,7 +21,7 @@ extern int g_DeviceHeight;
     self.webView = [[WKWebView alloc] initWithFrame:mCGRectMake configuration:webConfiguration];
     self.webView.UIDelegate = self;
     
-    NSString *urlString = [[NSString stringWithFormat:@"%@", url] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlString = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 
     NSURL *nsurl = [NSURL URLWithString:urlString];
     

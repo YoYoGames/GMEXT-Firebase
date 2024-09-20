@@ -16,4 +16,12 @@ switch(async_load[?"type"])
 		// At this point if 'success' is true we were able to reset all the keys
 		// this function is not compatible with iOS.
 		break;
+		
+	case "FirebaseRemoteConfig_AddOnConfigUpdateListener":
+		
+		show_debug_message(json_encode(async_load))
+		if(async_load[?"success"])
+		{
+		}
+		break
 }

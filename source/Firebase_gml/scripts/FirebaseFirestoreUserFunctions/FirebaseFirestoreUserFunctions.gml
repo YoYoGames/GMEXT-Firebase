@@ -211,9 +211,9 @@ function Firebase_Firestore_builder(path) constructor
 		if(FirebaseFirestore_Library_useSDK)
 			return FirebaseFirestore_SDK(json_stringify(self))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Set(_path,value)
+			return RESTFirebaseFirestore_Document_Set(_path,_value)
 		else
-			return RESTFirebaseFirestore_Collection_Add(_path,value)
+			return RESTFirebaseFirestore_Collection_Add(_path,_value)
     }
 	
 	/// @function Update(value)
@@ -241,7 +241,7 @@ function Firebase_Firestore_builder(path) constructor
 		if(FirebaseFirestore_Library_useSDK)
 			return FirebaseFirestore_SDK(json_stringify(self))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Update(_path,value)
+			return RESTFirebaseFirestore_Document_Update(_path,_value)
 		else
 		{
 			show_debug_message("Firestore: You can't update a Collection")

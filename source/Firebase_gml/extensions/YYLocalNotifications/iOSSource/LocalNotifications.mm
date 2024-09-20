@@ -58,6 +58,11 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     }];
 }
 
+-(void) LocalPushNotification_Create_Ext:(NSString*) ID fire_time: (double) fire_time title: (NSString*) title message:(NSString*) message data:(NSString*) data imagePath:(NSString*) imagePath
+{
+	NSLog(@"LocalPushNotification_Create_Ext :: not compatible with iOS");
+}
+
 -(void) LocalPushNotification_Cancel:(NSString*) ID
 {
 	ID = [[LocalNotifications prefix] stringByAppendingString:ID];
@@ -120,10 +125,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 		{
 			case UNAuthorizationStatusAuthorized:
 				dsMapAddString(dsMapIndex, (char*)"value",(char*)"Authorized");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
 			
 			case UNAuthorizationStatusDenied:
 				dsMapAddString(dsMapIndex,(char*) "value",(char*)"Denied");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
 			
             case UNAuthorizationStatusEphemeral:
@@ -136,8 +143,12 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
                 
 			case UNAuthorizationStatusNotDetermined:
 				dsMapAddString(dsMapIndex, (char*)"value",(char*)"NotDetermined");
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
 			break;
-}
+			default:
+				dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
+			break;
+		}
 		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
 	}];
 }

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Local Notifications - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Local Notifications";
+        var mkdocs_page_input_path = "local_notifications.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Local Notifications</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Local Notifications</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/local_notifications.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="local-notifications"><strong>Local Notifications</strong></h1>
+<h2 id="functions">Functions</h2>
+<p>This module offers a collection of functions designed to address specific tasks and provide utilities for various purposes. Explore the available functions to make the most of the functionalities provided by this module.</p>
+<ul>
+<li><a href="local_notifications.html#localpushnotification_create">LocalPushNotification_Create</a></li>
+<li><a href="local_notifications.html#localpushnotification_cancel">LocalPushNotification_Cancel</a></li>
+<li><a href="local_notifications.html#localpushnotification_ios_permission_request">LocalPushNotification_iOS_Permission_Request</a></li>
+<li><a href="local_notifications.html#localpushnotification_ios_permission_status">LocalPushNotification_iOS_Permission_Status</a></li>
+<li><a href="local_notifications.html#localpushnotification_create_ext">LocalPushNotification_Create_Ext</a></li>
+</ul>
+<h2 id="constants">Constants</h2>
+<p>This module includes a set of predefined constants that can be utilized for various purposes. Browse through the available constants to find values relevant to your needs and enhance the efficiency of your code.</p>
+<ul>
+<li><a href="local_notifications.html#localpushnotification_ios_permission">LocalPushNotification_iOS_Permission</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_create">LocalPushNotification_Create</h1>
+<p>This function creates a local push notification to be delivered some time in the future.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_Create(uid, seconds, title, message, data)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uid</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The ID of the notification</td>
+</tr>
+<tr>
+<td>seconds</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of seconds after which to display the notification</td>
+</tr>
+<tr>
+<td>title</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification title</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification message</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification data</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a></p>
+</blockquote>
+<p>This event is triggered when the push notification is shown.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"Notification_Local"</code></td>
+</tr>
+<tr>
+<td>id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique ID of the notification</td>
+</tr>
+<tr>
+<td>title</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification title</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification message</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification data</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">/// Create Event
+LocalPushNotification_Create("notification", 10, "Title", "This is a notification!", "data_goes_here");</code></pre>
+In the Create event a local push notification is created. The notification is shown after 10 seconds.
+<pre class="highlight"><code class="language-gml">/// Async Push Notification Event
+if(async_load[? "type"] == "Notification_Local")
+{
+    // At this point a notification has been fired.
+    // We are now able to access all its parameters.
+    show_debug_message("notification_id: " + async_load[? "id"]);
+    show_debug_message("notification_title: " + async_load[? "title"]);
+    show_debug_message("notification_message: " + async_load[? "message"]);
+    show_debug_message("notification_data: " + async_load[? "data"]);
+}</code></pre>
+When the notification is shown the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a> is also triggered. The details of the notification can be retrieved from the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> variable.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_cancel">LocalPushNotification_Cancel</h1>
+<p>This function cancels the previously created local notification with the given unique ID.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_Cancel(uid)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uid</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique ID of the local notification</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_Cancel(uid);</code></pre>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_ios_permission_request">LocalPushNotification_iOS_Permission_Request</h1>
+<p>This function requests permissions for sending local push notifications on iOS.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_iOS_Permission_Request()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"LocalPushNotification_iOS_Permission_Request"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether the request was successful</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether the permission was granted (<code>true</code>) or denied (<code>false</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">/// Create Event
+iOS_permission_status = LocalPushNotification_iOS_Permission_Status_NotDetermined;
+if(os_type == os_ios)
+{
+    LocalPushNotification_iOS_Permission_Request();
+}</code></pre>
+In the Create event a request to obtain permissions on iOS is made.
+<pre class="highlight"><code class="language-gml">/// Async Social Event
+switch(async_load[? "type"])
+{
+    // @triggered by LocalPushNotification_iOS_Permission_Request()
+    case "LocalPushNotification_iOS_Permission_Request":
+
+        // Early exit if the request was not successful
+        if (!async_load[?"success"]) break;
+
+        // The 'value' key contains either the value: 0 - Permission was denied; 1 - Permission was granted
+        if(async_load[?"value"])
+        {
+            // At this point we know we have been authorized to deliver notifications to the user.
+            iOS_permission_status = LocalPushNotification_iOS_Permission_Status_Authorized;
+        }
+        else
+        {
+            // At this point we know we have been denied to deliver notifications to the user.
+            iOS_permission_status = LocalPushNotification_iOS_Permission_Status_Denied;
+        }
+        break;
+
+    // Other cases...
+}</code></pre>
+In the Async Social event the event type is checked. A type of <code>"LocalPushNotification_iOS_Permission_Request"</code> indicates a response to the earlier request.
+If the request was unsuccesful, further code execution is stopped. If it was successful, the corresponding value of <a href="local_notifications.html#localpushnotification_ios_permission">LocalPushNotification_iOS_Permission</a> is assigned to the variable <code>iOS_permission_status</code>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_ios_permission_status">LocalPushNotification_iOS_Permission_Status</h1>
+<p>This function requests the current permission status regarding local push notifications on iOS.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_iOS_Permission_Status()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"LocalPushNotification_iOS_Permission_Status"</code></td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="local_notifications.html#localpushnotification_ios_permission">LocalPushNotification_iOS_Permission</a></td>
+<td>The status of the permission</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">/// Create Event
+iOS_permission_status = LocalPushNotification_iOS_Permission_Status_NotDetermined;
+if(os_type == os_ios)
+{
+    LocalPushNotification_iOS_Permission_Status();
+}</code></pre>
+In the Create event a variable is first set to store the permission status on iOS. It is assigned the constant <code>LocalPushNotification_iOS_Permission_Status_NotDetermined</code> to indicate that the status hasn't been determined yet.
+In case the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/OS_And_Compiler/os_type.htm">os_type</a> equals <code>os_ios</code>, an asynchronous request is made to retrieve the permission.
+<pre class="highlight"><code class="language-gml">/// Async Social Event
+switch(async_load[? "type"])
+{
+    // @triggered by LocalPushNotification_iOS_Permission_Status()
+    case "LocalPushNotification_iOS_Permission_Status":
+        iOS_permission_status =  async_load[? "value"];
+        switch(iOS_permission_status)
+        {
+            case LocalPushNotification_iOS_Permission_Status_Authorized:
+                // At this point we know we have been authorized to deliver notifications to the user.
+                break;
+            case LocalPushNotification_iOS_Permission_Status_Denied:
+                // At this point we know we have been denided to deliver notifications to the user.
+                break;
+            case LocalPushNotification_iOS_Permission_Status_NotDetermined:
+                // At this point we know we haven't requested for permissions just yet
+                // We use this logic to request for the permission the function below doesn't return
+                // any value but triggers an Async Push Notification Event of the same 'type' value.
+                LocalPushNotification_iOS_Permission_Request();
+                break;
+        }
+
+    // Other cases ...</code></pre>
+In the Async Social event the event type is checked. When it is the string <code>"LocalPushNotification_iOS_Permission_Status"</code> this means it's a response to the request sent earlier.
+<a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a>'s <code>value</code> member is then assigned to <code>iOS_permission_status</code> and the value is then checked. If the permission status is still undetermined, a request for permissions is sent using <a href="local_notifications.html#localpushnotification_ios_permission_request">LocalPushNotification_iOS_Permission_Request</a>.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_create_ext">LocalPushNotification_Create_Ext</h1>
+<p>This function creates a local push notification which can have an icon image on it.</p>
+<p>The function allows you to provide a custom icon image to display on the notification.
+You can save any sprite from GameMaker to a PNG file using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_save.htm">sprite_save</a> function and pass the resulting file as the <code>filename</code> parameter.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function can only be used on Android.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">LocalPushNotification_Create_Ext(uid, seconds, title, message, data, filename)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uid</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The ID of the notification</td>
+</tr>
+<tr>
+<td>seconds</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of seconds after which to display the notification</td>
+</tr>
+<tr>
+<td>title</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification title</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification message</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Extra data to include with the notification (can be retrieved in the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> in the async event)</td>
+</tr>
+<tr>
+<td>filename</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to a custom icon image to display on the notification</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a></p>
+</blockquote>
+<p>This event is triggered when the push notification is shown.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"Notification_Local"</code></td>
+</tr>
+<tr>
+<td>id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique ID of the notification</td>
+</tr>
+<tr>
+<td>title</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification title</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification message</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The notification data</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">/// Create Event
+icon_sprite = sprite_duplicate(spr_notification);
+sprite_save(icon_sprite, 0, "icon.png");
+sprite_delete(icon_sprite);
+LocalPushNotification_Create_Ext("notification", 10, "Title", "This is a notification!", "data_goes_here", "icon.png");</code></pre>
+In the Create event a local push notification is created. The notification is shown after 10 seconds.
+<pre class="highlight"><code class="language-gml">/// Async Push Notification Event
+if(async_load[? "type"] == "Notification_Local")
+{
+    // At this point a notification has been fired.
+    // We are now able to access all its parameters.
+    show_debug_message("notification_id: " + async_load[? "id"]);
+    show_debug_message("notification_title: " + async_load[? "title"]);
+    show_debug_message("notification_message: " + async_load[? "message"]);
+    show_debug_message("notification_data: " + async_load[? "data"]);
+}</code></pre>
+When the notification is shown the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Push_Notifications.htm">Push Notification Async Event</a> is also triggered. The details of the notification can be retrieved from the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> variable.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="localpushnotification_ios_permission">LocalPushNotification_iOS_Permission</h1>
+<p>This set of constants holds the possible values for the permission on iOS.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="local_notifications.html#localpushnotification_ios_permission_status">LocalPushNotification_iOS_Permission_Status</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>LocalPushNotification_iOS_Permission_Status_Authorized</code></td>
+<td>Authorized to deliver notifications to the user</td>
+</tr>
+<tr>
+<td><code>LocalPushNotification_iOS_Permission_Status_Denied</code></td>
+<td>Denied authorization to deliver notifications to the user</td>
+</tr>
+<tr>
+<td><code>LocalPushNotification_iOS_Permission_Status_NotDetermined</code></td>
+<td>Not determined if we're autorized to deliver notifications. The request for the permission still needs to be made.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="guides_remote_config.html" class="btn btn-neutral float-left" title="Remote Config Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="guides_remote_config.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Performance - GMEXT-Firebase</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Performance";
+        var mkdocs_page_input_path = "performance.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-Firebase
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Firebase</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="platform_setup.html">Platform Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="analytics.html">Analytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_analytics.html">Analytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_authentication.html">Authentication Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="logins_authentication.html">Authentication Logins</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_functions.html">Cloud Functions</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup_cloud_functions.html">Cloud Functions Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_messaging.html">Cloud Messaging</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_messaging.html">Cloud Messaging Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cloud_storage.html">Cloud Storage</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_cloud_storage.html">Cloud Storage Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="crashlytics.html">Crashlytics</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_crashlytics.html">Crashlytics Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="firestore.html">Firestore</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_firestore.html">Firestore Guides</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Performance</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#general-functions">General Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#http-metric-functions">HTTP Metric Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#trace-functions">Trace Functions</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_performance.html">Performance Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="realtime.html">Realtime</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_realtime.html">Realtime Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-Firebase</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Performance</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/performance.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="performance-monitoring"><strong>Performance Monitoring</strong></h1>
+<p><img alt="" src="assets/overviewPerformanceMonitoring.png" /></p>
+<p>Firebase Performance Monitoring is a service that helps you to gain insight into the performance characteristics of your Apple, Android, and web apps.
+You use the Performance Monitoring SDK to collect performance data from your app, then review and analyze that data in the Firebase console. Performance Monitoring helps you to understand in real time where the performance of your app can be improved so that you can use that information to fix performance issues.</p>
+<h2 id="general-functions">General Functions</h2>
+<p>These functions are provided for general interaction with the extension:</p>
+<ul>
+<li><a href="performance.html#firebaseperformance_isperformancecollectionenabled">FirebasePerformance_isPerformanceCollectionEnabled</a></li>
+<li><a href="performance.html#firebaseperformance_setperformancecollectionenabled">FirebasePerformance_setPerformanceCollectionEnabled</a></li>
+</ul>
+<h2 id="http-metric-functions">HTTP Metric Functions</h2>
+<p>Metric is used to collect data for network requests/responses. A new object must be used for every request/response.</p>
+<ul>
+<li><a href="performance.html#firebaseperformance_httpmetric_attribute_get">FirebasePerformance_HttpMetric_Attribute_Get</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_attribute_getall">FirebasePerformance_HttpMetric_Attribute_GetAll</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_attribute_put">FirebasePerformance_HttpMetric_Attribute_Put</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_attribute_remove">FirebasePerformance_HttpMetric_Attribute_Remove</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_create">FirebasePerformance_HttpMetric_Create</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_sethttpresponsecode">FirebasePerformance_HttpMetric_SetHttpResponseCode</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_setrequestpayloadsize">FirebasePerformance_HttpMetric_SetRequestPayloadSize</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_setresponsecontenttype">FirebasePerformance_HttpMetric_SetResponseContentType</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_setresponsepayloadsize">FirebasePerformance_HttpMetric_SetResponsePayloadSize</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_start">FirebasePerformance_HttpMetric_Start</a></li>
+<li><a href="performance.html#firebaseperformance_httpmetric_stop">FirebasePerformance_HttpMetric_Stop</a></li>
+</ul>
+<h2 id="trace-functions">Trace Functions</h2>
+<p>Trace allows you to set beginning and end of a certain action in your app. This will allow you to measure performance of tasks.</p>
+<ul>
+<li><a href="performance.html#firebaseperformance_trace_attribute_getall">FirebasePerformance_Trace_Attribute_GetAll</a></li>
+<li><a href="performance.html#firebaseperformance_trace_attribute_put">FirebasePerformance_Trace_Attribute_Put</a></li>
+<li><a href="performance.html#firebaseperformance_trace_attribute_remove">FirebasePerformance_Trace_Attribute_Remove</a></li>
+<li><a href="performance.html#firebaseperformance_trace_create">FirebasePerformance_Trace_Create</a></li>
+<li><a href="performance.html#firebaseperformance_trace_metric_getlong">FirebasePerformance_Trace_Metric_GetLong</a></li>
+<li><a href="performance.html#firebaseperformance_trace_metric_increment">FirebasePerformance_Trace_Metric_Increment</a></li>
+<li><a href="performance.html#firebaseperformance_trace_metric_put">FirebasePerformance_Trace_Metric_Put</a></li>
+<li><a href="performance.html#firebaseperformance_trace_start">FirebasePerformance_Trace_Start</a></li>
+<li><a href="performance.html#firebaseperformance_trace_stop">FirebasePerformance_Trace_Stop</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_isperformancecollectionenabled">FirebasePerformance_isPerformanceCollectionEnabled</h1>
+<p>This function returns whether performance monitoring is enabled or disabled. This respects the Firebase Performance specific values first, and if these aren't set, uses the Firebase wide data collection switch.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_isPerformanceCollectionEnabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_setPerformanceCollectionEnabled(!FirebasePerformance_isPerformanceCollectionEnabled());</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_setperformancecollectionenabled">FirebasePerformance_setPerformanceCollectionEnabled</h1>
+<p>This function enables or disables performance monitoring. This setting is persisted and applied on future invocations of your application. By default, performance monitoring is enabled.</p>
+<p>To disable performance monitoring before of start the app in the extension injection change <code>firebase_performance_collection_enabled</code> to false.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_setPerformanceCollectionEnabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Should performance monitoring be enabled</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_setPerformanceCollectionEnabled(!FirebasePerformance_isPerformanceCollectionEnabled());</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_attribute_get">FirebasePerformance_HttpMetric_Attribute_Get</h1>
+<p>This function returns the value of an attribute.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>this function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Attribute_Get(name, attribute)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Attribute name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html")//, application/json, etc...
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_attribute_getall">FirebasePerformance_HttpMetric_Attribute_GetAll</h1>
+<p>This function returns all attributes in JSON format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Attribute_GetAll(name, attribute)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Attribute name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc...
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_attribute_put">FirebasePerformance_HttpMetric_Attribute_Put</h1>
+<p>This function sets a String value for the specified attribute. Updates the value of the attribute if the attribute already exists.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Attribute_Put(name, attribute, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Attribute name</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Value of the attribute</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_attribute_remove">FirebasePerformance_HttpMetric_Attribute_Remove</h1>
+<p>This function removes an already added attribute from the HttpMetric.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Attribute_Remove(name, attribute)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Attribute name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_create">FirebasePerformance_HttpMetric_Create</h1>
+<p>This function creates a HttpMetric object for collecting network performance data for one request/response.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(name, url, method)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>url</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>a valid url String, cannot be empty</td>
+</tr>
+<tr>
+<td>method</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>One of the values GET, PUT, POST, DELETE, HEAD, PATCH, OPTIONS, TRACE, or CONNECT</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_sethttpresponsecode">FirebasePerformance_HttpMetric_SetHttpResponseCode</h1>
+<p>This function sets the HTTP response code of the request.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_SetHttpResponseCode(name, responseCode)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>responseCode</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>valid values are greater than 0</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_setrequestpayloadsize">FirebasePerformance_HttpMetric_SetRequestPayloadSize</h1>
+<p>This function sets the size of the request payload.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_SetRequestPayloadSize(arg)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>arg</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The argument to be passed in</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_setresponsecontenttype">FirebasePerformance_HttpMetric_SetResponseContentType</h1>
+<p>This function sets the content type of the response such as text/html, application/json, etc.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_SetResponseContentType(name, contentType)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric Name</td>
+</tr>
+<tr>
+<td>contentType</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>valid string of MIME type. Invalid usage will be logged.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_setresponsepayloadsize">FirebasePerformance_HttpMetric_SetResponsePayloadSize</h1>
+<p>This function sets the size of the response payload.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_SetResponsePayloadSize(name, bytes)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+<tr>
+<td>bytes</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Valid values are greater than or equal to 0. Invalid usage will be logged.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_start">FirebasePerformance_HttpMetric_Start</h1>
+<p>This function marks the start time of the request.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Start(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET")
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);
+</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_httpmetric_stop">FirebasePerformance_HttpMetric_Stop</h1>
+<p>This function marks the end time of the response and queues the network request metric on the device for transmission. Check logcat for transmission info.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Stop(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>HttpMetric name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_HttpMetric_Create(httpMetric,"gamemaker.io","GET");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key1","value1");
+FirebasePerformance_HttpMetric_Attribute_Put(httpMetric,"key2","value2");
+show_debug_message(FirebasePerformance_HttpMetric_Attribute_Get(httpMetric));
+FirebasePerformance_HttpMetric_SetRequestPayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetResponseContentType(httpMetric,"text/html");//, application/json, etc.
+FirebasePerformance_HttpMetric_SetResponsePayloadSize(httpMetric,100);
+FirebasePerformance_HttpMetric_SetHttpResponseCode(httpMetric,200);
+FirebasePerformance_HttpMetric_Start(httpMetric);
+
+//After some time
+FirebasePerformance_HttpMetric_Stop(httpMetric);</code></pre>
+ The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_attribute_getall">FirebasePerformance_Trace_Attribute_GetAll</h1>
+<p>This function returns the map of all the attributes added to this trace.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Attribute_GetAll(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_attribute_put">FirebasePerformance_Trace_Attribute_Put</h1>
+<p>This function sets a String value for the specified attribute.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Attribute_Put(name, attribute, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Attribute name</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Value of the attribute</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_attribute_remove">FirebasePerformance_Trace_Attribute_Remove</h1>
+<p>This function removes an already added attribute from the Traces. If the trace has been stopped, this method returns without removing the attribute.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is only available in Android.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Attribute_Remove(name, attribute)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+<tr>
+<td>attribute</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Name of the attribute to be removed from the running Traces.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_create">FirebasePerformance_Trace_Create</h1>
+<p>This function creates a Trace object with given name.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_metric_getlong">FirebasePerformance_Trace_Metric_GetLong</h1>
+<p>This function gets the value of the metric with the given name in the current trace. If a metric with the given name doesn't exist, it is NOT created and a 0 is returned. This method is atomic.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Metric_GetLong(name, metric)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+<tr>
+<td>metric</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Metric name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_metric_increment">FirebasePerformance_Trace_Metric_Increment</h1>
+<p>This function atomically increments the metric with the given name in this trace by the incrementBy value. If the metric does not exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Metric_Increment(name, metric, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+<tr>
+<td>metric</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Metric name</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Amount by which the metric has to be incremented.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_metric_put">FirebasePerformance_Trace_Metric_Put</h1>
+<p>This function sets the value of the metric with the given name in this trace to the value provided. If a metric with the given name doesn't exist, a new one will be created. If the trace has not been started or has already been stopped, returns immediately without taking action. This method is atomic.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Metric_Put(name, metric, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+<tr>
+<td>metric</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Metric name</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value to which the metric should be set to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_start">FirebasePerformance_Trace_Start</h1>
+<p>This function starts the trace.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Start(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The trace name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseperformance_trace_stop">FirebasePerformance_Trace_Stop</h1>
+<p>This function stops the trace with the given name.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Stop(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Trace name</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">FirebasePerformance_Trace_Create(TraceName);
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key1","value1");
+FirebasePerformance_Trace_Attribute_Put(TraceName,"key2","value2");
+show_debug_message(FirebasePerformance_Trace_Attribute_Get(TraceName,"key1"));
+show_debug_message(FirebasePerformance_Trace_Attribute_GetAll(TraceName));
+FirebasePerformance_Trace_Metric_Put(TraceName,"key3",10);
+FirebasePerformance_Trace_Metric_Increment(TraceName,"key3",1);
+show_debug_message(FirebasePerformance_Trace_Metric_GetLong(TraceName,"key3"));
+FirebasePerformance_Trace_Start(TraceName);
+
+//After some time...
+FirebasePerformance_Trace_Stop(TraceName);</code></pre>
+The above code shows a code example.</p>
+<p><br></p>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="guides_firestore.html" class="btn btn-neutral float-left" title="Firestore Guides"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="guides_performance.html" class="btn btn-neutral float-right" title="Performance Guides">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="guides_firestore.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="guides_performance.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

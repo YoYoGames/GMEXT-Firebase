@@ -1,8 +1,5 @@
 
-package ${YYAndroidPackageName};
-
-import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
+package com.yoyogames.YoyoPlayServices;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,7 +12,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collections;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,18 +22,15 @@ import java.util.HashMap;
 
 public class YYFirebaseAnalytics extends RunnerSocial
 {
-	private static final String LOG_TAG = "yoyo";
-
+	private static final String LOG_TAG = "YYFirebaseAnalytics";
 	private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-	// Cached Variables
-
-	public static Activity activity = RunnerActivity.CurrentActivity;
-	private FirebaseAnalytics firebaseAnalytics;
+	private static FirebaseAnalytics analytics;
 
 	public YYFirebaseAnalytics() {
+		Activity activity = RunnerActivity.CurrentActivity;
         if (activity != null) {
-            firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+            analytics = FirebaseAnalytics.getInstance(activity);
         } else {
             Log.e(LOG_TAG, "Activity is null, cannot initialize FirebaseAnalytics");
         }
@@ -47,55 +40,49 @@ public class YYFirebaseAnalytics extends RunnerSocial
 
 	public void FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled)
 	{
-		firebaseAnalytics.setAnalyticsCollectionEnabled(enabled >= .5);
+		analytics.setAnalyticsCollectionEnabled(enabled >= .5);
 	}
 
 	public void FirebaseAnalytics_LogEvent(String event,String jsonValues)
 	{
 		final String methodName = "FirebaseAnalytics_LogEvent";
-		executorService.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Bundle params = jsonStringToBundle(jsonValues, methodName);
-					firebaseAnalytics.logEvent(event, params);
-				} catch (Exception e) {
-					Log.e(LOG_TAG, methodName + " :: Thread exception", e);
-				}
-			}
-		});
+		executorService.submit(() -> {
+            try {
+                Bundle params = jsonStringToBundle(jsonValues, methodName);
+                analytics.logEvent(event, params);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, methodName + " :: Thread exception", e);
+            }
+        });
 	}
 	
 	public void FirebaseAnalytics_ResetAnalyticsData()
 	{
-		firebaseAnalytics.resetAnalyticsData();
+		analytics.resetAnalyticsData();
 	}
 
 	public void FirebaseAnalytics_SetDefaultEventParameters(String jsonValues)
 	{
 		final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
-		executorService.submit(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Bundle params = jsonStringToBundle(jsonValues, methodName);
-					firebaseAnalytics.setDefaultEventParameters(params);
-				} catch (Exception e) {
-					Log.e(LOG_TAG, methodName + " :: Thread exception", e);
-				}
-			}
-		});
+		executorService.submit(() -> {
+            try {
+                Bundle params = jsonStringToBundle(jsonValues, methodName);
+                analytics.setDefaultEventParameters(params);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, methodName + " :: Thread exception", e);
+            }
+        });
 	}
 		
 	public void FirebaseAnalytics_SetSessionTimeoutDuration(double time)
 	{
-		firebaseAnalytics.setSessionTimeoutDuration((long)time);
+		analytics.setSessionTimeoutDuration((long)time);
 	}
 		
 	public void FirebaseAnalytics_SetUserId(String userID)
 	{
 		if (userID != null) {
-			firebaseAnalytics.setUserId(userID);
+			analytics.setUserId(userID);
 		} else {
 			Log.w(LOG_TAG, "FirebaseAnalytics_SetUserId :: userID is null");
 		}
@@ -103,36 +90,36 @@ public class YYFirebaseAnalytics extends RunnerSocial
 		
 	public void FirebaseAnalytics_SetUserProperty(String event,String value)
 	{
-		firebaseAnalytics.setUserProperty(event,value);
+		analytics.setUserProperty(event,value);
 	}
 	
-	public void FirebaseAnalytics_SetConsent(double ads, double analytics)
+	public void FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent)
 	{
 		try
 		{
 			Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> map = new HashMap<>();
 			
-			if(ads >= 0.5)
+			if(adsConsent >= 0.5)
 				map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
 			else
 				map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
 			
-			if(analytics >= 0.5)
+			if(analyticsConsent >= 0.5)
 				map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE, FirebaseAnalytics.ConsentStatus.GRANTED);
 			else
 				map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE, FirebaseAnalytics.ConsentStatus.DENIED);
 			
-			firebaseAnalytics.setConsent(map);
+			analytics.setConsent(map);
 		} 
 		catch (Exception e)
 		{
-			Log.i(LOG_TAG,"FirebaseAnalytics_SetConsent Exception: " + e.getMessage());
+			Log.i(LOG_TAG,"FirebaseAnalytics_SetConsent :: Exception with error " + e.getMessage());
 		}
 	}
 
 	//#endregion
 
-	//#region Application Life Cicle
+	//#region Application Life Cycle
 
 	@Override
 	public void onDestroy() {
@@ -196,7 +183,7 @@ public class YYFirebaseAnalytics extends RunnerSocial
 				// Recursively convert JSONObject to Bundle
 				bundleArray[i] = jsonObjectToBundle((JSONObject) value, methodName);
 			} else {
-				Log.w(LOG_TAG, "Unsupported type inside array: " + value.getClass().getSimpleName());
+				Log.w(LOG_TAG, methodName + " :: Unsupported type inside array: " + value.getClass().getSimpleName());
 			}
 		}
 

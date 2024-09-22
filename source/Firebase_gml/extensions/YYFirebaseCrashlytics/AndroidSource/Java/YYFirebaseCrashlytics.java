@@ -1,155 +1,160 @@
+package com.yoyogames.YoyoPlayServices;
 
-package ${YYAndroidPackageName};
-
-import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
-
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-// import com.google.firebase.crashlytics.CustomKeysAndValues;
-import android.app.Activity;
-import androidx.annotation.NonNull;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 
- import java.lang.Exception;
-// import org.json.JSONObject;
-// import java.util.Iterator;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.yoyogames.runner.RunnerJNILib;
 
-public class YYFirebaseCrashlytics
-{
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+
+public class YYFirebaseCrashlytics {
 	private static final int EVENT_OTHER_SOCIAL = 70;
-	private static Activity activity = RunnerActivity.CurrentActivity;
-	
-	//https://firebase.google.com/docs/reference/android/com/crashlytics/sdk/android/crashlytics/Crashlytics.html
-	
-	public void FirebaseCrashlytics_SetUserIdentifier(String user_id)
-	{
-		FirebaseCrashlytics.getInstance().setUserId(user_id);
+	private static final String LOG_TAG = "YYFirebaseCrashlytics";
+	private static final String CRASHLYTICS_PREFS = "YYFirebaseCrashlyticsPrefs";
+
+	private final FirebaseCrashlytics crashlytics;
+	private Boolean isAutoDataCollectionEnabled = false;
+
+	public YYFirebaseCrashlytics() {
+		// Initialize the cached instance
+		crashlytics = FirebaseCrashlytics.getInstance();
 	}
 
-	public void FirebaseCrashlytics_SetCustomKey(String key,String value)
-	{
-		FirebaseCrashlytics.getInstance().setCustomKey(key,value);
-	}
+	public void FirebaseCrashlytics_Initialize() {
+		// Obtain the application context
+        Context appContext = RunnerActivity.CurrentActivity.getApplicationContext();
 
-	public void FirebaseCrashlytics_SetCustomKey(String key,double value)
-	{
-		FirebaseCrashlytics.getInstance().setCustomKey(key,(float)value);
-	}
-	
-	// public void FirebaseCrashlytics_SetCustomKeys(String json_str)
-	// {
-		
-		// JSONObject jsonObject = jsonToJSONObject(json_str);
-		
-		// Iterator<String> keys = jsonObject.keys();
+        // Access SharedPreferences directly
+        SharedPreferences prefs = appContext.getSharedPreferences(CRASHLYTICS_PREFS, Context.MODE_PRIVATE);
 
-
-        // CustomKeysAndValues.Builder builder = new CustomKeysAndValues.Builder();
-				
-		// while(keys.hasNext()) 
-		// {
-			// String key = keys.next();
-			// if (jsonObject.get(key) instanceof String)
-				// builder.putString(jsonObject.get(key));
-			// else
-				// builder.putDouble(jsonObject.get(key));
-		// }
-		
-		// FirebaseCrashlytics.getInstance().setCustomKeys(builder.build);
-	// }
-	
-	public void FirebaseCrashlytics_Log(String message)
-	{
-		FirebaseCrashlytics.getInstance().log(message);
-	}
-	
-	public void FirebaseCrashlytics_Crash(final String message) throws Exception
-	{
-		RunnerActivity.ViewHandler.post( new Runnable() 
-		{
-			public void run() throws RuntimeException
-		    {
-				throw new RuntimeException(message);
-		    }
-		});
-	}
-	
-	public void FirebaseCrashlytics_RecordException(String message)
-	{	
-		FirebaseCrashlytics.getInstance().recordException(new Throwable(message));
-	}
-	
-	public void FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set(double bool)
-	{	
-		FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(bool >= 0.5);
-	}
-	
-	
-	public double FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check()
-	{	
-		Log.i("yoyo","FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check: This function is not compatible with Android");
-		return 0.0;
-		
-		// //FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled
-		// if(BuildConfig.DEBUG)//https://stackoverflow.com/a/62915831
-		// // if(FirebaseCrashlytics.getInstance().isCrashlyticsCollectionEnabled)
-			// return 1.0;
-		// else
-			// return 0.0;
-	}
-	
-	public double FirebaseCrashlytics_DidCrashOnPreviousExecution()
-	{	
-		if(FirebaseCrashlytics.getInstance().didCrashOnPreviousExecution())
-			return 1.0;
-		else
-			return 0.0;
-	}
-	
-	public void FirebaseCrashlytics_UnsentReports_Delete()
-	{	
-		FirebaseCrashlytics.getInstance().deleteUnsentReports();
-	}
-	
-	public void FirebaseCrashlytics_UnsentReports_Send()
-	{	
-		FirebaseCrashlytics.getInstance().sendUnsentReports();
-	}
-	
-	public void FirebaseCrashlytics_UnsentReports_Check()
-	{
-		FirebaseCrashlytics.getInstance().checkForUnsentReports().addOnCompleteListener(activity,new OnCompleteListener<Boolean>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<Boolean> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				RunnerJNILib.DsMapAddString( dsMapIndex, "type", "FirebaseCrashlytics_UnsentReports_Check" );
-				
-				if (task.isSuccessful() && task.getResult())
-					RunnerJNILib.DsMapAddDouble( dsMapIndex, "value", 1 );
-				else 
-					RunnerJNILib.DsMapAddDouble( dsMapIndex, "value", 0 );
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+		if (prefs.contains("CrashlyticsCollectionEnabled")) {
+			// Retrieve the value
+			isAutoDataCollectionEnabled = prefs.getBoolean("CrashlyticsCollectionEnabled", true); // Default to true
+		}
+		else {
+			try {
+				ApplicationInfo ai = appContext.getPackageManager().getApplicationInfo(appContext.getPackageName(), PackageManager.GET_META_DATA);
+				Bundle bundle = ai.metaData;
+				isAutoDataCollectionEnabled = bundle.getBoolean("firebase_crashlytics_collection_enabled", true); // Default to true
+			} catch (PackageManager.NameNotFoundException e) {
+				Log.e(LOG_TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+			} catch (NullPointerException e) {
+				Log.e(LOG_TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
 			}
-		});
-	}
-	
-	// public static JSONObject jsonToJSONObject(String json_str)
-	// {
-		// try
-		// {
-			// return new JSONObject(json_str);
-		// }
-		// catch(Exception e)
-		// {
-			// return new JSONObject("{}");
-		// }	
-	// }
-}
+		}
+    }
 
+	public void FirebaseCrashlytics_SetUserIdentifier(String user_id) {
+		crashlytics.setUserId(user_id);
+	}
+
+	public void FirebaseCrashlytics_SetCustomKey(String key, String value) {
+		crashlytics.setCustomKey(key, value);
+	}
+
+	public void FirebaseCrashlytics_SetCustomKey(String key, double value) {
+		crashlytics.setCustomKey(key, value);
+	}
+
+	public void FirebaseCrashlytics_SetCustomKeys(String json_str) {
+		try {
+			JSONObject jsonObject = new JSONObject(json_str);
+			Iterator<String> keys = jsonObject.keys();
+			while (keys.hasNext()) {
+				String key = keys.next();
+				Object value = jsonObject.get(key);
+				if (value instanceof String) {
+					crashlytics.setCustomKey(key, (String) value);
+				} else if (value instanceof Integer) {
+					crashlytics.setCustomKey(key, (Integer) value);
+				} else if (value instanceof Long) {
+					crashlytics.setCustomKey(key, (Long) value);
+				} else if (value instanceof Double) {
+					crashlytics.setCustomKey(key, (Double) value);
+				} else if (value instanceof Boolean) {
+					crashlytics.setCustomKey(key, (Boolean) value);
+				} else {
+					Log.w(LOG_TAG, "Unsupported value type for key: " + key);
+				}
+			}
+		} catch (JSONException e) {
+			Log.e(LOG_TAG, "Failed to parse JSON for custom keys", e);
+		}
+	}
+
+	public void FirebaseCrashlytics_Log(String message) {
+		crashlytics.log(message);
+	}
+
+	public void FirebaseCrashlytics_Crash(final String message) {
+		Handler mainHandler = new Handler(Looper.getMainLooper());
+		mainHandler.post(() -> {
+            throw new RuntimeException(message);
+        });
+	}
+
+	public void FirebaseCrashlytics_RecordException(String message) {
+		Exception exception = new Exception(message);
+		crashlytics.recordException(exception);
+	}
+
+	public void FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set(double bool) {
+		isAutoDataCollectionEnabled = bool >= 0.5;
+
+		// Obtain the application context
+		Context appContext = RunnerActivity.CurrentActivity.getApplicationContext();
+
+		// Access SharedPreferences directly
+		SharedPreferences prefs = appContext.getSharedPreferences(CRASHLYTICS_PREFS, Context.MODE_PRIVATE);
+
+		// Save the new preference
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean("CrashlyticsCollectionEnabled", isAutoDataCollectionEnabled);
+		boolean success = editor.commit(); // Returns true if the save was successful
+
+		Log.i(LOG_TAG, "Saved CrashlyticsCollectionEnabled: " + isAutoDataCollectionEnabled + ", success: " + success);
+
+		crashlytics.setCrashlyticsCollectionEnabled(isAutoDataCollectionEnabled);
+	}
+
+	public double FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check() {
+		return isAutoDataCollectionEnabled ? 1.0 : 0.0;
+	}
+
+	public double FirebaseCrashlytics_DidCrashOnPreviousExecution() {
+		return crashlytics.didCrashOnPreviousExecution() ? 1.0 : 0.0;
+	}
+
+	public void FirebaseCrashlytics_UnsentReports_Delete() {
+		crashlytics.deleteUnsentReports();
+	}
+
+	public void FirebaseCrashlytics_UnsentReports_Send() {
+		crashlytics.sendUnsentReports();
+	}
+
+	public void FirebaseCrashlytics_UnsentReports_Check() {
+		crashlytics.checkForUnsentReports().addOnCompleteListener(task -> {
+            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+            RunnerJNILib.DsMapAddString(dsMapIndex, "type", "FirebaseCrashlytics_UnsentReports_Check");
+
+            if (task.isSuccessful() && task.getResult() != null && task.getResult()) {
+                RunnerJNILib.DsMapAddDouble(dsMapIndex, "value", 1);
+            } else {
+                RunnerJNILib.DsMapAddDouble(dsMapIndex, "value", 0);
+            }
+            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+        });
+	}
+}

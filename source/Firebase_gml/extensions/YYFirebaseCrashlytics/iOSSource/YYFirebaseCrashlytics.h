@@ -4,8 +4,6 @@
 
 @interface YYFirebaseCrashlytics : NSObject
 
-@property (nonatomic, assign) BOOL isAutoDataCollectionEnabled;
-
 - (void)FirebaseCrashlytics_SetUserIdentifier:(NSString *)string;
 - (void)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(id)value;
 - (void)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString;

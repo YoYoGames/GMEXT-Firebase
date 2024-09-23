@@ -1,7 +1,7 @@
 {
   "$GMRoom":"v1",
   "%Name":"Room_Firebase",
-  "creationCodeFile":"${project_dir}/rooms/Room_Firebase/RoomCreationCode.gml",
+  "creationCodeFile":"rooms/Room_Firebase/RoomCreationCode.gml",
   "inheritCode":false,
   "inheritCreationOrder":false,
   "inheritLayers":false,

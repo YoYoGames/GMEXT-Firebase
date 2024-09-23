@@ -1,213 +1,220 @@
-
 package com.yoyogames.YoyoPlayServices;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import java.util.Iterator;
 import java.util.Map;
-
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.util.Log;
+public class YYFirebaseAnalytics extends RunnerSocial {
+    private static final String TAG = "YYFirebaseAnalytics";
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private FirebaseAnalytics analytics;
 
-import java.util.HashMap;
-
-public class YYFirebaseAnalytics extends RunnerSocial
-{
-	private static final String LOG_TAG = "YYFirebaseAnalytics";
-	private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
-
-	private static FirebaseAnalytics analytics;
-
-	public YYFirebaseAnalytics() {
-		Activity activity = RunnerActivity.CurrentActivity;
-        if (activity != null) {
-            analytics = FirebaseAnalytics.getInstance(activity);
+    public YYFirebaseAnalytics() {
+        // Initialize FirebaseAnalytics with application context to avoid memory leaks
+        Context context = RunnerActivity.CurrentActivity.getApplicationContext();
+        if (context != null) {
+            analytics = FirebaseAnalytics.getInstance(context);
         } else {
-            Log.e(LOG_TAG, "Activity is null, cannot initialize FirebaseAnalytics");
+            Log.e(TAG, "Context is null, cannot initialize FirebaseAnalytics");
         }
     }
 
-	//#region General API
+    // <editor-fold desc="General API">
 
-	public void FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled)
-	{
-		analytics.setAnalyticsCollectionEnabled(enabled >= .5);
-	}
+    public void FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled) {
+        analytics.setAnalyticsCollectionEnabled(enabled >= 0.5);
+        Log.d(TAG, "SetAnalyticsCollectionEnabled: " + (enabled >= 0.5));
+    }
 
-	public void FirebaseAnalytics_LogEvent(String event,String jsonValues)
-	{
-		final String methodName = "FirebaseAnalytics_LogEvent";
-		executorService.submit(() -> {
+    public void FirebaseAnalytics_LogEvent(String event, String jsonValues) {
+        final String methodName = "FirebaseAnalytics_LogEvent";
+        executorService.submit(() -> {
             try {
-                Bundle params = jsonStringToBundle(jsonValues, methodName);
+                Bundle params = parseJsonStringToBundle(jsonValues, methodName);
                 analytics.logEvent(event, params);
+                Log.d(TAG, methodName + " :: Event logged: " + event);
+            } catch (JSONException e) {
+                Log.e(TAG, methodName + " :: JSON parsing error", e);
             } catch (Exception e) {
-                Log.e(LOG_TAG, methodName + " :: Thread exception", e);
+                Log.e(TAG, methodName + " :: Exception", e);
             }
         });
-	}
-	
-	public void FirebaseAnalytics_ResetAnalyticsData()
-	{
-		analytics.resetAnalyticsData();
-	}
+    }
 
-	public void FirebaseAnalytics_SetDefaultEventParameters(String jsonValues)
-	{
-		final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
-		executorService.submit(() -> {
+    public void FirebaseAnalytics_ResetAnalyticsData() {
+        analytics.resetAnalyticsData();
+        Log.d(TAG, "ResetAnalyticsData called");
+    }
+
+    public void FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
+        final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
+        executorService.submit(() -> {
             try {
-                Bundle params = jsonStringToBundle(jsonValues, methodName);
+                Bundle params = parseJsonStringToBundle(jsonValues, methodName);
                 analytics.setDefaultEventParameters(params);
+                Log.d(TAG, methodName + " :: Default event parameters set");
+            } catch (JSONException e) {
+                Log.e(TAG, methodName + " :: JSON parsing error", e);
             } catch (Exception e) {
-                Log.e(LOG_TAG, methodName + " :: Thread exception", e);
+                Log.e(TAG, methodName + " :: Exception", e);
             }
         });
-	}
-		
-	public void FirebaseAnalytics_SetSessionTimeoutDuration(double time)
-	{
-		analytics.setSessionTimeoutDuration((long)time);
-	}
-		
-	public void FirebaseAnalytics_SetUserId(String userID)
-	{
-		if (userID != null) {
-			analytics.setUserId(userID);
-		} else {
-			Log.w(LOG_TAG, "FirebaseAnalytics_SetUserId :: userID is null");
-		}
-	}
-		
-	public void FirebaseAnalytics_SetUserProperty(String event,String value)
-	{
-		analytics.setUserProperty(event,value);
-	}
-	
-	public void FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent)
-	{
-		try
-		{
-			Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> map = new HashMap<>();
-			
-			if(adsConsent >= 0.5)
-				map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.GRANTED);
-			else
-				map.put(FirebaseAnalytics.ConsentType.AD_STORAGE,FirebaseAnalytics.ConsentStatus.DENIED);
-			
-			if(analyticsConsent >= 0.5)
-				map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE, FirebaseAnalytics.ConsentStatus.GRANTED);
-			else
-				map.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE, FirebaseAnalytics.ConsentStatus.DENIED);
-			
-			analytics.setConsent(map);
-		} 
-		catch (Exception e)
-		{
-			Log.i(LOG_TAG,"FirebaseAnalytics_SetConsent :: Exception with error " + e.getMessage());
-		}
-	}
+    }
 
-	//#endregion
+    public void FirebaseAnalytics_SetSessionTimeoutDuration(double time) {
+        analytics.setSessionTimeoutDuration((long) time);
+        Log.d(TAG, "SetSessionTimeoutDuration: " + (long) time);
+    }
 
-	//#region Application Life Cycle
+    public void FirebaseAnalytics_SetUserId(String userID) {
+        if (userID != null) {
+            analytics.setUserId(userID);
+            Log.d(TAG, "SetUserId: " + userID);
+        } else {
+            Log.w(TAG, "FirebaseAnalytics_SetUserId :: userID is null, clearing user ID");
+            analytics.setUserId(null); // Clear the user ID
+        }
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		shutdownExecutor();
-	}
+    public void FirebaseAnalytics_SetUserProperty(String name, String value) {
+        analytics.setUserProperty(name, value);
+        Log.d(TAG, "SetUserProperty: " + name + " = " + value);
+    }
 
-	//#endregion
+    public void FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent) {
+        try {
+            Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
 
-	//#region Helper Methods
+            consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE,
+                    adsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
-	/**
-	 * Converts a JSON string to a Bundle for Firebase Analytics.
-	 * Note: Nested bundles (JSONObjects inside JSONObjects) are not supported.
-	 */
-	private static Bundle jsonStringToBundle(String jsonString, final String methodName) {
-		
-		if (jsonString == null || jsonString.isEmpty())
-        	return null;
-		
-		try {
-			JSONObject jsonObject = new JSONObject(jsonString);
-			return jsonObjectToBundle(jsonObject, methodName);
-		} catch (JSONException e) {
-			Log.e(LOG_TAG, methodName + " :: Failed to parse JSON string", e);
-		}
+            consentMap.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,
+                    analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
-		return null;
-	}
+            analytics.setConsent(consentMap);
+            Log.d(TAG, "SetConsent: AdsConsent=" + (adsConsent >= 0.5) + ", AnalyticsConsent=" + (analyticsConsent >= 0.5));
+        } catch (Exception e) {
+            Log.e(TAG, "FirebaseAnalytics_SetConsent :: Exception", e);
+        }
+    }
 
-	private static Bundle jsonObjectToBundle(JSONObject jsonObject, final String methodName) throws JSONException {
-		
-		Bundle bundle = new Bundle();
-		
-		Iterator<String> keys = jsonObject.keys();
-		while (keys.hasNext()) {
-			String key = keys.next();
-			Object value = jsonObject.get(key);
+    // </editor-fold>
 
-			if (value instanceof JSONArray) {
-				JSONArray array = (JSONArray) value;
-				Bundle[] parcelableArray = jsonArrayToBundleArray(array, methodName);
-				bundle.putParcelableArray(key, parcelableArray);
-			} else {
-				// Handle primitive types
-				putPrimitiveInBundle(bundle, key, value, methodName);
-			}
-		}
+    // <editor-fold desc="Application Lifecycle">
 
-		return bundle;
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        shutdownExecutor();
+    }
 
-	private static Bundle[] jsonArrayToBundleArray(JSONArray jsonArray, final String methodName) throws JSONException {
-		int length = jsonArray.length();
+    // </editor-fold>
+
+    // <editor-fold desc="Helper Methods">
+
+    /**
+     * Parses a JSON string to a Bundle for Firebase Analytics.
+     *
+     * @param jsonString The JSON string to parse.
+     * @param methodName The method name for logging purposes.
+     * @return A Bundle containing the parsed data.
+     * @throws JSONException If parsing fails.
+     */
+    private Bundle parseJsonStringToBundle(String jsonString, final String methodName) throws JSONException {
+        if (jsonString == null || jsonString.isEmpty()) {
+            Log.w(TAG, methodName + " :: JSON string is null or empty");
+            return null;
+        }
+
+        JSONObject jsonObject = new JSONObject(jsonString);
+        return parseJsonObjectToBundle(jsonObject, methodName);
+    }
+
+    private Bundle parseJsonObjectToBundle(JSONObject jsonObject, final String methodName) throws JSONException {
+        Bundle bundle = new Bundle();
+
+        Iterator<String> keys = jsonObject.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Object value = jsonObject.get(key);
+
+            if (value instanceof JSONArray) {
+                JSONArray array = (JSONArray) value;
+                Bundle[] bundleArray = parseJsonArrayToBundleArray(array, methodName);
+                bundle.putParcelableArray(key, bundleArray);
+            } else if (value instanceof JSONObject) {
+                Bundle nestedBundle = parseJsonObjectToBundle((JSONObject) value, methodName);
+                bundle.putBundle(key, nestedBundle);
+            } else {
+                // Handle primitive types
+                putPrimitiveInBundle(bundle, key, value, methodName);
+            }
+        }
+
+        return bundle;
+    }
+
+    private Bundle[] parseJsonArrayToBundleArray(JSONArray jsonArray, final String methodName) throws JSONException {
+        int length = jsonArray.length();
         Bundle[] bundleArray = new Bundle[length];
 
-		for (int i = 0; i < length; i++) {
-			Object value = jsonArray.get(i);
+        for (int i = 0; i < length; i++) {
+            Object value = jsonArray.get(i);
 
-			if (value instanceof JSONObject) {
-				// Recursively convert JSONObject to Bundle
-				bundleArray[i] = jsonObjectToBundle((JSONObject) value, methodName);
-			} else {
-				Log.w(LOG_TAG, methodName + " :: Unsupported type inside array: " + value.getClass().getSimpleName());
-			}
-		}
+            if (value instanceof JSONObject) {
+                // Recursively convert JSONObject to Bundle
+                bundleArray[i] = parseJsonObjectToBundle((JSONObject) value, methodName);
+            } else {
+                Log.w(TAG, methodName + " :: Unsupported type inside array: " + value.getClass().getSimpleName());
+                // Create a Bundle with a single key "value"
+                Bundle tempBundle = new Bundle();
+                putPrimitiveInBundle(tempBundle, "value", value, methodName);
+                bundleArray[i] = tempBundle;
+            }
+        }
 
-		return bundleArray;
-	}
+        return bundleArray;
+    }
 
-	private static void putPrimitiveInBundle(Bundle bundle, String key, Object value, final String methodName) {
+    private void putPrimitiveInBundle(Bundle bundle, String key, Object value, final String methodName) {
         if (value instanceof String) {
             bundle.putString(key, (String) value);
-		} else if (value instanceof Number) {
-			// Convert all numbers to Double
-			bundle.putDouble(key, ((Number) value).doubleValue());
-		} else if (value instanceof Boolean) {
-			// Convert boolean to double (1.0 for true, 0.0 for false)
-			bundle.putDouble(key, (Boolean) value ? 1.0 : 0.0);
+        } else if (value instanceof Integer) {
+            bundle.putInt(key, (Integer) value);
+        } else if (value instanceof Long) {
+            bundle.putLong(key, (Long) value);
+        } else if (value instanceof Double) {
+            bundle.putDouble(key, (Double) value);
+        } else if (value instanceof Float) {
+            bundle.putFloat(key, (Float) value);
+        } else if (value instanceof Boolean) {
+            bundle.putBoolean(key, (Boolean) value);
         } else {
-            Log.w(LOG_TAG, methodName + " :: Unsupported type " + value.getClass().getSimpleName() + " for key: " + key);
+            Log.w(TAG, methodName + " :: Unsupported type " + value.getClass().getSimpleName() + " for key: " + key);
+            bundle.putString(key, value.toString());
         }
     }
 
-	private void shutdownExecutor() {
-		executorService.shutdown();
-	}
+    private void shutdownExecutor() {
+        try {
+            executorService.shutdown();
+            Log.d(TAG, "ExecutorService shutdown initiated.");
+        } catch (Exception e) {
+            Log.e(TAG, "Error shutting down ExecutorService", e);
+        }
+    }
 
-	//#endregion
+    // </editor-fold>
 }
-

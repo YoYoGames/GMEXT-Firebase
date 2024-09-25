@@ -1,14 +1,6 @@
 #import "YYFirebaseAnalytics.h"
 #import <UIKit/UIKit.h>
 
-const int EVENT_OTHER_SOCIAL = 70;
-
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char *_key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char *_key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char *_key, char *_value);
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
-
 @interface YYFirebaseAnalytics ()
 
 // Private methods and properties can be declared here if needed.
@@ -18,6 +10,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 - (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName;
 - (NSDictionary *)processJsonObject:(id)jsonObject methodName:(NSString *)methodName;
 - (NSArray *)processJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName;
+
 
 @end
 
@@ -31,6 +24,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         dispatch_once(&onceToken, ^{
             if (![FIRApp defaultApp]) {
                 [FIRApp configure];
+                NSLog(@"Firebase initialized in YYFirebaseAnalytics");
             }
         });
     }
@@ -42,6 +36,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 - (void)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {
     BOOL isEnabled = enabled >= 0.5;
     [FIRAnalytics setAnalyticsCollectionEnabled:isEnabled];
+    NSLog(@"FirebaseAnalytics_SetAnalyticsCollectionEnabled: %@", isEnabled ? @"Enabled" : @"Disabled");
 }
 
 - (void)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json {
@@ -50,17 +45,19 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         __strong YYFirebaseAnalytics *strongSelf = weakSelf;
         if (!strongSelf) return;
 
-        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:[NSString stringWithUTF8String:__FUNCTION__]];
+        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_LogEvent"];
         if (params) {
             [FIRAnalytics logEventWithName:event parameters:params];
+            NSLog(@"FirebaseAnalytics_LogEvent: Event '%@' logged with parameters: %@", event, params);
         } else {
-            NSLog(@"%s :: Failed to parse JSON for event %@", __FUNCTION__, event);
+            NSLog(@"FirebaseAnalytics_LogEvent: Failed to parse JSON for event %@", event);
         }
     });
 }
 
 - (void)FirebaseAnalytics_ResetAnalyticsData {
     [FIRAnalytics resetAnalyticsData];
+    NSLog(@"FirebaseAnalytics_ResetAnalyticsData called");
 }
 
 - (void)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
@@ -69,26 +66,29 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
         __strong YYFirebaseAnalytics *strongSelf = weakSelf;
         if (!strongSelf) return;
 
-        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:[NSString stringWithUTF8String:__FUNCTION__]];
+        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_SetDefaultEventParameters"];
         if (params) {
             [FIRAnalytics setDefaultEventParameters:params];
+            NSLog(@"FirebaseAnalytics_SetDefaultEventParameters: Parameters set: %@", params);
         } else {
-            NSLog(@"%s :: Failed to parse JSON", __FUNCTION__);
+            NSLog(@"FirebaseAnalytics_SetDefaultEventParameters: Failed to parse JSON");
         }
     });
 }
 
 - (void)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time {
     [FIRAnalytics setSessionTimeoutInterval:time];
-
+    NSLog(@"FirebaseAnalytics_SetSessionTimeoutDuration: Timeout interval set to %f seconds", time);
 }
 
 - (void)FirebaseAnalytics_SetUserID:(NSString *)userID {
     [FIRAnalytics setUserID:userID];
+    NSLog(@"FirebaseAnalytics_SetUserID: UserID set to %@", userID);
 }
 
 - (void)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
     [FIRAnalytics setUserPropertyString:value forName:propertyName];
+    NSLog(@"FirebaseAnalytics_SetUserPropertyString: Property '%@' set to '%@'", propertyName, value);
 }
 
 - (void)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
@@ -98,13 +98,17 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     consentSettings[FIRConsentTypeAnalyticsStorage] = (analytics >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
 
     [FIRAnalytics setConsent:consentSettings];
+
+    NSLog(@"FirebaseAnalytics_SetConsent: AdStorage=%@, AnalyticsStorage=%@",
+          consentSettings[FIRConsentTypeAdStorage],
+          consentSettings[FIRConsentTypeAnalyticsStorage]);
 }
 
 #pragma mark - Helper Methods
 
 - (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName {
     if (jsonString == nil || jsonString.length == 0) {
-        NSLog(@"%s :: JSON string is nil or empty", [methodName UTF8String]);
+        NSLog(@"%@: JSON string is nil or empty", methodName);
         return nil;
     }
 
@@ -113,14 +117,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
 
     if (error) {
-        NSLog(@"%s :: Failed to parse JSON string: %@", [methodName UTF8String], error.localizedDescription);
+        NSLog(@"%@: Failed to parse JSON string: %@", methodName, error.localizedDescription);
         return nil;
     }
 
     NSDictionary *resultDict = [self processJsonObject:jsonObject methodName:methodName];
 
     if (!resultDict) {
-        NSLog(@"%s :: Failed to process JSON object", [methodName UTF8String]);
+        NSLog(@"%@: Failed to process JSON object", methodName);
     }
 
     return resultDict;
@@ -135,25 +139,25 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             id value = jsonDict[key];
 
             if ([value isKindOfClass:[NSDictionary class]]) {
-                NSLog(@"%s :: Nested dictionaries are not supported for key: %@", [methodName UTF8String], key);
+                NSLog(@"%@: Nested dictionaries are not supported for key: %@", methodName, key);
                 // Skip nested dictionaries
             } else if ([value isKindOfClass:[NSArray class]]) {
                 NSArray *arrayValue = [self processJsonArray:value methodName:methodName];
                 if (arrayValue) {
                     resultDict[key] = arrayValue;
                 } else {
-                    NSLog(@"%s :: Failed to process array for key: %@", [methodName UTF8String], key);
+                    NSLog(@"%@: Failed to process array for key: %@", methodName, key);
                 }
             } else if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
                 resultDict[key] = value;
             } else {
-                NSLog(@"%s :: Unsupported type %@ for key: %@", [methodName UTF8String], NSStringFromClass([value class]), key);
+                NSLog(@"%@: Unsupported type %@ for key: %@", methodName, NSStringFromClass([value class]), key);
             }
         }
 
         return [resultDict copy];
     } else {
-        NSLog(@"%s :: Expected a dictionary but received %@", [methodName UTF8String], NSStringFromClass([jsonObject class]));
+        NSLog(@"%@: Expected a dictionary but received %@", methodName, NSStringFromClass([jsonObject class]));
         return nil;
     }
 }
@@ -163,15 +167,15 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
     for (id value in jsonArray) {
         if ([value isKindOfClass:[NSDictionary class]]) {
-            NSLog(@"%s :: Nested dictionaries inside arrays are not supported", [methodName UTF8String]);
+            NSLog(@"%@: Nested dictionaries inside arrays are not supported", methodName);
             // Skip nested dictionaries inside arrays
         } else if ([value isKindOfClass:[NSArray class]]) {
-            NSLog(@"%s :: Nested arrays are not supported", [methodName UTF8String]);
+            NSLog(@"%@: Nested arrays are not supported", methodName);
             // Skip nested arrays
         } else if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
             [resultArray addObject:value];
         } else {
-            NSLog(@"%s :: Unsupported type %@ in array", [methodName UTF8String], NSStringFromClass([value class]));
+            NSLog(@"%@: Unsupported type %@ in array", methodName, NSStringFromClass([value class]));
         }
     }
 

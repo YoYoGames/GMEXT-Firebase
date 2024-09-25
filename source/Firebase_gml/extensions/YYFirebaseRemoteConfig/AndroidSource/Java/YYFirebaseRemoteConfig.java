@@ -33,11 +33,13 @@ import java.util.concurrent.Executors;
 public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdateListener {
     private static final int EVENT_OTHER_SOCIAL = 70;
     private static final String TAG = "YYFirebaseRemoteConfig";
+    private Context appContext;
     private FirebaseRemoteConfig remoteConfig;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public YYFirebaseRemoteConfig() {
-        // Get the remote config singleton
+        // Get the application context
+        appContext = RunnerActivity.CurrentActivity.getApplicationContext();
         remoteConfig = FirebaseRemoteConfig.getInstance();
     }
 

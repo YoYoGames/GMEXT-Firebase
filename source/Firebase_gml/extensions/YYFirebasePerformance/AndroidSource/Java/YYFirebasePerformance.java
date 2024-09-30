@@ -28,16 +28,16 @@ public class YYFirebasePerformance {
 
     private HashMap<String, Trace> traceMap;
     private HashMap<String, HttpMetric> httpMetricMap;
-	private FirebasePerformance performance;
+    private FirebasePerformance performance;
 
     public YYFirebasePerformance() {
         traceMap = new HashMap<>();
         httpMetricMap = new HashMap<>();
-		performance = FirebasePerformance.getInstance();
-		Log.d(TAG, "YYFirebasePerformance initialized.");
+        performance = FirebasePerformance.getInstance();
+        Log.d(TAG, "YYFirebasePerformance initialized.");
     }
 
-	// <editor-fold desc="Performance Collection Methods">
+    // <editor-fold desc="Performance Collection Methods">
 
     public double FirebasePerformance_isPerformanceCollectionEnabled() {
         boolean isEnabled = performance.isPerformanceCollectionEnabled();
@@ -49,9 +49,9 @@ public class YYFirebasePerformance {
         performance.setPerformanceCollectionEnabled(isEnabled);
     }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	// <editor-fold desc="Trace Methods">
+    // <editor-fold desc="Trace Methods">
 
     public double FirebasePerformance_Trace_Create(String name) {
         if (name == null || name.isEmpty()) {
@@ -64,7 +64,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Failed to create trace: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
+            return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
         }
     }
 
@@ -75,7 +75,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -87,7 +87,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -98,7 +98,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -109,7 +109,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -125,59 +125,55 @@ public class YYFirebasePerformance {
         }
     }
 
-	public double FirebasePerformance_Trace_Attribute_Put(String name,String attribute, String value)
-	{
+    public double FirebasePerformance_Trace_Attribute_Put(String name, String attribute, String value) {
         Trace trace = traceMap.get(name);
         if (trace != null) {
             trace.putAttribute(attribute, value);
-			return FIREBASE_PERFORMANCE_SUCCESS;
+            return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
-	}
+    }
 
-	public double FirebasePerformance_Trace_Attribute_Remove(String name,String attribute)
-	{
-		Trace trace = traceMap.get(name);
-		if (trace != null) {
-			trace.removeAttribute(attribute);
-			return FIREBASE_PERFORMANCE_SUCCESS;
-		} else {
-			Log.e(TAG, "Trace not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
-		}
-	}
+    public double FirebasePerformance_Trace_Attribute_Remove(String name, String attribute) {
+        Trace trace = traceMap.get(name);
+        if (trace != null) {
+            trace.removeAttribute(attribute);
+            return FIREBASE_PERFORMANCE_SUCCESS;
+        } else {
+            Log.e(TAG, "Trace not found: " + name);
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+        }
+    }
 
-	public String FirebasePerformance_Trace_Attribute_Get(String name,String attribute)
-	{
-		Trace trace = traceMap.get(name);
-		if (trace != null) {
-			String value = trace.getAttribute(attribute);
-			return value;
-		} else {
-			Log.e(TAG, "Trace not found: " + name);
-		}
+    public String FirebasePerformance_Trace_Attribute_Get(String name, String attribute) {
+        Trace trace = traceMap.get(name);
+        if (trace != null) {
+            String value = trace.getAttribute(attribute);
+            return value;
+        } else {
+            Log.e(TAG, "Trace not found: " + name);
+        }
         return "";
-	}
+    }
 
-	public String FirebasePerformance_Trace_Attribute_GetAll(String name)
-	{
-		final String methodName = "FirebasePerformance_Trace_Attribute_GetAll";
+    public String FirebasePerformance_Trace_Attribute_GetAll(String name) {
+        final String methodName = "FirebasePerformance_Trace_Attribute_GetAll";
 
-		Trace trace = traceMap.get(name);
-		if (trace != null) {
-			Map<String, String> attributes = trace.getAttributes();
-			return convertMapToJson(attributes, methodName);
-		} else {
-			Log.e(TAG, "Trace not found: " + name);
-		}
-		return "{}";
-	}
+        Trace trace = traceMap.get(name);
+        if (trace != null) {
+            Map<String, String> attributes = trace.getAttributes();
+            return convertMapToJson(attributes, methodName);
+        } else {
+            Log.e(TAG, "Trace not found: " + name);
+        }
+        return "{}";
+    }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	// <editor-fold desc="HTTP Metric Methods">
+    // <editor-fold desc="HTTP Metric Methods">
 
     public double FirebasePerformance_HttpMetric_Create(String name, String url, String method) {
         if (name == null || name.isEmpty() || method == null || method.isEmpty()) {
@@ -185,10 +181,10 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_ERROR_INVALID_URL;
         }
 
-		if (url == null || url.isEmpty()) {
-			Log.e(TAG, "Invalid url for HTTP Metric creation.");
-			return FIREBASE_PERFORMANCE_ERROR_INVALID_URL;
-		}
+        if (url == null || url.isEmpty()) {
+            Log.e(TAG, "Invalid url for HTTP Metric creation.");
+            return FIREBASE_PERFORMANCE_ERROR_INVALID_URL;
+        }
 
         HttpMetric httpMetric = performance.newHttpMetric(url, method);
         if (httpMetric != null) {
@@ -196,7 +192,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "Failed to create HTTP Metric: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
+            return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
         }
     }
 
@@ -207,7 +203,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -219,7 +215,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -230,7 +226,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -241,7 +237,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -252,7 +248,7 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
@@ -263,71 +259,100 @@ public class YYFirebasePerformance {
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
-	public double FirebasePerformance_HttpMetric_Attribute_Put(String name, String attribute, String value) {
+    public double FirebasePerformance_HttpMetric_Attribute_Put(String name, String attribute, String value) {
         HttpMetric httpMetric = httpMetricMap.get(name);
         if (httpMetric != null) {
-			httpMetric.putAttribute(attribute, value);
-			return FIREBASE_PERFORMANCE_SUCCESS;
+            httpMetric.putAttribute(attribute, value);
+            return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
 
     public double FirebasePerformance_HttpMetric_Attribute_Remove(String name, String attribute) {
-		HttpMetric httpMetric = httpMetricMap.get(name);
-		if (httpMetric != null) {
-			httpMetric.removeAttribute(attribute);
-			return FIREBASE_PERFORMANCE_SUCCESS;
-		} else {
-			Log.e(TAG, "HTTP Metric not found: " + name);
-			return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
-		}
+        HttpMetric httpMetric = httpMetricMap.get(name);
+        if (httpMetric != null) {
+            httpMetric.removeAttribute(attribute);
+            return FIREBASE_PERFORMANCE_SUCCESS;
+        } else {
+            Log.e(TAG, "HTTP Metric not found: " + name);
+            return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
+        }
     }
 
     public String FirebasePerformance_HttpMetric_Attribute_Get(String name, String attribute) {
-		HttpMetric httpMetric = httpMetricMap.get(name);
-		if (httpMetric != null) {
-			String value = httpMetric.getAttribute(attribute);
-			Log.d(TAG, "Attribute retrieved from HTTP Metric: " + attribute + " = " + value);
-			return value;
-		} else {
-			Log.e(TAG, "HTTP Metric not found: " + name);
-		}
+        HttpMetric httpMetric = httpMetricMap.get(name);
+        if (httpMetric != null) {
+            String value = httpMetric.getAttribute(attribute);
+            Log.d(TAG, "Attribute retrieved from HTTP Metric: " + attribute + " = " + value);
+            return value;
+        } else {
+            Log.e(TAG, "HTTP Metric not found: " + name);
+        }
         return "";
     }
 
     public String FirebasePerformance_HttpMetric_Attribute_GetAll(String name) {
-		final String methodName = "FirebasePerformance_HttpMetric_Attribute_GetAll";
+        final String methodName = "FirebasePerformance_HttpMetric_Attribute_GetAll";
 
         HttpMetric httpMetric = httpMetricMap.get(name);
-		if (httpMetric != null) {
-			Map<String, String> attributes = httpMetric.getAttributes();
-			return convertMapToJson(attributes, methodName);
-		} else {
+        if (httpMetric != null) {
+            Map<String, String> attributes = httpMetric.getAttributes();
+            return convertMapToJson(attributes, methodName);
+        } else {
             Log.e(TAG, "HTTP Metric not found: " + name);
-		}
-		return "{}";
+        }
+        return "{}";
     }
 
-	// </editor-fold>
+    // </editor-fold>
 
-	// <editor-fold desc="Helper Methods">
+    // <editor-fold desc="Helper Methods">
 
-	public static String convertMapToJson(Map map, String methodName)
-	{
-		String json = "{}";
-		try {
-			json = new JSONObject(map).toString();
-		} catch (Exception e) {
-			Log.e(TAG, methodName + " :: Error converting map to JSON: " + e.getMessage());
-		}
-		return json;
-	}
+    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
+            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
+            if (data != null) {
+                for (Map.Entry<String, Object> entry : data.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    if (value instanceof String) {
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
+                    } else if (value instanceof Double) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
+                    } else if (value instanceof Integer) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
+                    } else if (value instanceof Boolean) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
+                    } else if (value instanceof Long) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
+                    } else if (value instanceof Float) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
+                    } else {
+                        // Convert other types to String
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
+                    }
+                }
+            }
+            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+        });
+    }
 
-	// </editor-fold>
+    public static String convertMapToJson(Map map, String methodName) {
+        String json = "{}";
+        try {
+            json = new JSONObject(map).toString();
+        } catch (Exception e) {
+            Log.e(TAG, methodName + " :: Error converting map to JSON: " + e.getMessage());
+        }
+        return json;
+    }
+
+    // </editor-fold>
 }

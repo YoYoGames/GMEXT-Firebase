@@ -35,7 +35,6 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     public void FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled) {
         analytics.setAnalyticsCollectionEnabled(enabled >= 0.5);
-        Log.d(TAG, "SetAnalyticsCollectionEnabled: " + (enabled >= 0.5));
     }
 
     public void FirebaseAnalytics_LogEvent(String event, String jsonValues) {
@@ -55,7 +54,6 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     public void FirebaseAnalytics_ResetAnalyticsData() {
         analytics.resetAnalyticsData();
-        Log.d(TAG, "ResetAnalyticsData called");
     }
 
     public void FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
@@ -75,13 +73,11 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     public void FirebaseAnalytics_SetSessionTimeoutDuration(double time) {
         analytics.setSessionTimeoutDuration((long) time);
-        Log.d(TAG, "SetSessionTimeoutDuration: " + (long) time);
     }
 
     public void FirebaseAnalytics_SetUserId(String userID) {
         if (userID != null) {
             analytics.setUserId(userID);
-            Log.d(TAG, "SetUserId: " + userID);
         } else {
             Log.w(TAG, "FirebaseAnalytics_SetUserId :: userID is null, clearing user ID");
             analytics.setUserId(null); // Clear the user ID
@@ -124,14 +120,36 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     // <editor-fold desc="Helper Methods">
 
-    /**
-     * Parses a JSON string to a Bundle for Firebase Analytics.
-     *
-     * @param jsonString The JSON string to parse.
-     * @param methodName The method name for logging purposes.
-     * @return A Bundle containing the parsed data.
-     * @throws JSONException If parsing fails.
-     */
+    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
+            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
+            if (data != null) {
+                for (Map.Entry<String, Object> entry : data.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    if (value instanceof String) {
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
+                    } else if (value instanceof Double) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
+                    } else if (value instanceof Integer) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
+                    } else if (value instanceof Boolean) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
+                    } else if (value instanceof Long) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
+                    } else if (value instanceof Float) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
+                    } else {
+                        // Convert other types to String
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
+                    }
+                }
+            }
+            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+        });
+    }
+
     private Bundle parseJsonStringToBundle(String jsonString, final String methodName) throws JSONException {
         if (jsonString == null || jsonString.isEmpty()) {
             Log.w(TAG, methodName + " :: JSON string is null or empty");

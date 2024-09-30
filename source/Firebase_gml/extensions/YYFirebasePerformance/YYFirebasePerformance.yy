@@ -16,7 +16,15 @@
   "exportToGame":true,
   "extensionVersion":"1.2.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebasePerformanceMonitoring.ext","constants":[],"copyToTargets":-1,"filename":"FirebasePerformanceMonitoring.ext","final":"","functions":[
+    {"$GMExtensionFile":"","%Name":"FirebasePerformanceMonitoring.ext","constants":[
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_SUCCESS","hidden":false,"name":"FIREBASE_PERFORMANCE_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_NOT_FOUND","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_NOT_FOUND","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-1",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_NAME","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_NAME","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-2",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-3",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_PARAMETERS","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_PARAMETERS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-4",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_URL","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_URL","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-5",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_UNSUPPORTED","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_UNSUPPORTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-6",},
+      ],"copyToTargets":-1,"filename":"FirebasePerformanceMonitoring.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_setPerformanceCollectionEnabled","argCount":0,"args":[2,],"documentation":"","externalName":"FirebasePerformance_setPerformanceCollectionEnabled","help":"FirebasePerformance_setPerformanceCollectionEnabled(bool)","hidden":false,"kind":4,"name":"FirebasePerformance_setPerformanceCollectionEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_isPerformanceCollectionEnabled","argCount":0,"args":[],"documentation":"","externalName":"FirebasePerformance_isPerformanceCollectionEnabled","help":"FirebasePerformance_isPerformanceCollectionEnabled()","hidden":false,"kind":4,"name":"FirebasePerformance_isPerformanceCollectionEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_Trace_Create","argCount":0,"args":[1,],"documentation":"","externalName":"FirebasePerformance_Trace_Create","help":"FirebasePerformance_Trace_Create(name)","hidden":false,"kind":4,"name":"FirebasePerformance_Trace_Create","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

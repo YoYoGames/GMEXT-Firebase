@@ -22,8 +22,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 @implementation YYFirebaseRemoteConfig
 
-- (id)init
-{
+- (id)init {
     if (self = [super init]) {
         if (![FIRApp defaultApp]) {
             [FIRApp configure];
@@ -34,16 +33,14 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 #pragma mark - Firebase Remote Config Methods
 
-- (void)FirebaseRemoteConfig_Initialize:(double)seconds
-{
+- (void)FirebaseRemoteConfig_Initialize:(double)seconds {
     FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] init];
     remoteConfigSettings.minimumFetchInterval = seconds;
     [FIRRemoteConfig remoteConfig].configSettings = remoteConfigSettings;
     NSLog(@"FirebaseRemoteConfig initialized with fetch interval: %f seconds", seconds);
 }
 
-- (void)FirebaseRemoteConfig_FetchAndActivate
-{
+- (void)FirebaseRemoteConfig_FetchAndActivate {
     __weak YYFirebaseRemoteConfig *weakSelf = self;
     [[FIRRemoteConfig remoteConfig] fetchAndActivateWithCompletionHandler:^(FIRRemoteConfigFetchAndActivateStatus status, NSError *_Nullable error) {
         __strong YYFirebaseRemoteConfig *strongSelf = weakSelf;
@@ -70,8 +67,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     }];
 }
 
-- (void)FirebaseRemoteConfig_Reset
-{
+- (void)FirebaseRemoteConfig_Reset {
     NSLog(@"FirebaseRemoteConfig_Reset: This function is not supported on iOS");
     // Optionally, send an event back indicating that reset is not supported
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
@@ -81,8 +77,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     [self sendAsyncEventWithType:@"FirebaseRemoteConfig_Reset" data:data];
 }
 
-- (void)FirebaseRemoteConfig_SetDefaultsAsync:(NSString *)json
-{
+- (void)FirebaseRemoteConfig_SetDefaultsAsync:(NSString *)json {
     // Offload JSON parsing to a background thread
     __weak YYFirebaseRemoteConfig *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -110,8 +105,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     });
 }
 
-- (NSString *)FirebaseRemoteConfig_GetKeys
-{
+- (NSString *)FirebaseRemoteConfig_GetKeys {
     NSArray<NSString *> *remoteKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceRemote];
     NSArray<NSString *> *defaultKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceDefault];
 
@@ -126,22 +120,19 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     return keysJson;
 }
 
-- (NSString *)FirebaseRemoteConfig_GetString:(NSString *)key
-{
+- (NSString *)FirebaseRemoteConfig_GetString:(NSString *)key {
     NSString *value = [[[FIRRemoteConfig remoteConfig] configValueForKey:key] stringValue];
     NSLog(@"FirebaseRemoteConfig_GetString: Key=%@, Value=%@", key, value);
     return value;
 }
 
-- (double)FirebaseRemoteConfig_GetDouble:(NSString *)key
-{
+- (double)FirebaseRemoteConfig_GetDouble:(NSString *)key {
     double value = [[[[FIRRemoteConfig remoteConfig] configValueForKey:key] numberValue] doubleValue];
     NSLog(@"FirebaseRemoteConfig_GetDouble: Key=%@, Value=%f", key, value);
     return value;
 }
 
-- (void)FirebaseRemoteConfig_AddOnConfigUpdateListener
-{
+- (void)FirebaseRemoteConfig_AddOnConfigUpdateListener {
     __weak YYFirebaseRemoteConfig *weakSelf = self;
     [[FIRRemoteConfig remoteConfig] addOnConfigUpdateListener:^(FIRRemoteConfigUpdate *_Nonnull configUpdate, NSError *_Nullable error) {
         __strong YYFirebaseRemoteConfig *strongSelf = weakSelf;
@@ -237,8 +228,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     });
 }
 
-- (NSString *)convertObjectToJsonString:(id)obj
-{
+- (NSString *)convertObjectToJsonString:(id)obj {
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
     if (error == nil) {

@@ -31,7 +31,7 @@
     {"$GMFolder":"","%Name":"Testing","folderPath":"folders/Firebase Authentication/Testing.yy","name":"Testing","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Cloud Functions","folderPath":"folders/Firebase Cloud Functions.yy","name":"Firebase Cloud Functions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Firebase Cloud Functions/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Cloud Functions/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Cloud Functions/Extensions/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Cloud Functions/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Cloud Messaging","folderPath":"folders/Firebase Cloud Messaging.yy","name":"Firebase Cloud Messaging","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Firebase Cloud Messaging/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -98,7 +98,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.800.0.618",
+    "IDEVersion":"2024.1100.0.626",
   },
   "name":"Firebase",
   "resources":[

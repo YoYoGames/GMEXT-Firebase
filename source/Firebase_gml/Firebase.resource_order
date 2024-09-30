@@ -21,6 +21,7 @@
     {"name":"Testing","order":3,"path":"folders/Firebase Authentication/Testing.yy",},
     {"name":"Firebase Cloud Functions","order":11,"path":"folders/Firebase Cloud Functions.yy",},
     {"name":"Extensions","order":2,"path":"folders/Firebase Cloud Functions/Extensions.yy",},
+    {"name":"Objects","order":1,"path":"folders/Firebase Cloud Functions/Extensions/Objects.yy",},
     {"name":"Rooms","order":1,"path":"folders/Firebase Cloud Functions/Rooms.yy",},
     {"name":"Firebase Cloud Messaging","order":7,"path":"folders/Firebase Cloud Messaging.yy",},
     {"name":"Extensions","order":6,"path":"folders/Firebase Cloud Messaging/Extensions.yy",},

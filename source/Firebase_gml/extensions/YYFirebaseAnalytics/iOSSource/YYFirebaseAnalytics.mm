@@ -7,6 +7,11 @@ extern "C" void dsMapAddDouble(int _dsMap, char *_key, double _value);
 extern "C" void dsMapAddString(int _dsMap, char *_key, char *_value);
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
+// Error Codes
+static const double kFirebaseAnalyticsAsync = 1.0;
+static const double kFirebaseAnalyticsSuccess = 0.0;
+static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
+
 @interface YYFirebaseAnalytics ()
 
 // Private methods and properties can be declared here if needed.
@@ -14,6 +19,9 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 #pragma mark - Helper Methods
 
 - (void)sendAsyncEventWithType:(NSString *)eventType data:(NSDictionary *)data;
+- (BOOL)isStringNullOrEmpty:(NSString *)string;
+- (BOOL)isValidEventName:(NSString *)eventName;
+- (BOOL)isValidPropertyName:(NSString *)propertyName
 - (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName;
 - (NSDictionary *)processJsonObject:(id)jsonObject methodName:(NSString *)methodName;
 - (NSArray *)processJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName;
@@ -42,43 +50,63 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 - (void)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {
     BOOL isEnabled = enabled >= 0.5;
     [FIRAnalytics setAnalyticsCollectionEnabled:isEnabled];
-    NSLog(@"FirebaseAnalytics_SetAnalyticsCollectionEnabled: %@", isEnabled ? @"Enabled" : @"Disabled");
 }
 
-- (void)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json {
+- (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json {
+    if (![self isValidEventName:event]) {
+        return kFirebaseAnalyticsErrorInvalidParameters;
+    }
+
     __weak YYFirebaseAnalytics *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         __strong YYFirebaseAnalytics *strongSelf = weakSelf;
         if (!strongSelf) return;
 
         NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_LogEvent"];
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
         if (params) {
             [FIRAnalytics logEventWithName:event parameters:params];
-            NSLog(@"FirebaseAnalytics_LogEvent: Event '%@' logged with parameters: %@", event, params);
+            [data setObject:@(1) forKey:@"success"];
         } else {
-            NSLog(@"FirebaseAnalytics_LogEvent: Failed to parse JSON for event %@", event);
+            NSString *errorMessage = [NSString stringWithFormat:@"Failed to parse JSON for event %@", event];
+            [data setObject:errorMessage forKey:@"error"];
+            [data setObject:@(0) forKey:@"success"];
         }
+
+        [data setObject:jsonError.localizedDescription forKey:@"error"];
+        [strongSelf sendAsyncEventWithType:@"FirebaseAnalytics_LogEvent" data:data];
     });
+
+    return kFirebaseAnalyticsAsync;
 }
 
 - (void)FirebaseAnalytics_ResetAnalyticsData {
     [FIRAnalytics resetAnalyticsData];
 }
 
-- (void)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
+- (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
+    if ([self isStringNullOrEmpty:json]) {
+        NSLog(@"FirebaseAnalytics_SetDefaultEventParameters :: json is empty, clearing default parameters");
+        [FIRAnalytics setDefaultEventParameters:nil];
+        return kFirebaseAnalyticsSuccess;
+    }
+
     __weak YYFirebaseAnalytics *weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         __strong YYFirebaseAnalytics *strongSelf = weakSelf;
         if (!strongSelf) return;
 
         NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_SetDefaultEventParameters"];
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
         if (params) {
             [FIRAnalytics setDefaultEventParameters:params];
-            NSLog(@"FirebaseAnalytics_SetDefaultEventParameters: Parameters set: %@", params);
+            [data setObject:@(1) forKey:@"success"];
         } else {
-            NSLog(@"FirebaseAnalytics_SetDefaultEventParameters: Failed to parse JSON");
+            [data setObject:@"Failed to parse JSON for default parameters" forKey:@"error"];
+            [data setObject:@(0) forKey:@"success"];
         }
     });
+    return kFirebaseAnalyticsAsync;
 }
 
 - (void)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time {
@@ -86,11 +114,26 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 }
 
 - (void)FirebaseAnalytics_SetUserID:(NSString *)userID {
+    if ([self isStringNullOrEmpty:userID]) {
+        NSLog(@"FirebaseAnalytics_SetUserId :: userID is empty, clearing user ID");
+        userID = nil;
+    }
+    
     [FIRAnalytics setUserID:userID];
 }
 
-- (void)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
+- (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
+    if (![self isValidPropertyName:propertyName]) {
+        return kFirebaseAnalyticsErrorInvalidParameters;
+    }
+
+    if ([self isStringNullOrEmpty:value]) {
+        NSLog(@"FirebaseAnalytics_SetUserPropertyString :: property value is empty, clearing property");
+        value = nil;
+    }
     [FIRAnalytics setUserPropertyString:value forName:propertyName];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
 - (void)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
@@ -169,6 +212,40 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
         createSocialAsyncEventWithDSMap(dsMapIndex);
     });
+}
+
+- (BOOL)isStringNullOrEmpty:(NSString *)string {
+    return string == nil || [string length] == 0
+}
+
+- (BOOL)isValidEventName:(NSString *)eventName {
+    if (eventName == nil) {
+        return NO;  // Null strings are not valid
+    }
+    
+    // Define the regex pattern
+    NSString *pattern = @"^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,39}$";
+    
+    // Create an NSPredicate with the regex pattern
+    NSPredicate *regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    
+    // Evaluate the string against the regex
+    return [regex evaluateWithObject:eventName];
+}
+
+- (BOOL)isValidPropertyName:(NSString *)propertyName {
+    if (propertyName == nil) {
+        return NO;  // Null strings are not valid
+    }
+    
+    // Define the regex pattern
+    NSString *pattern = @"^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,23}$";
+    
+    // Create an NSPredicate with the regex pattern
+    NSPredicate *regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    
+    // Evaluate the string against the regex
+    return [regex evaluateWithObject:propertyName];
 }
 
 - (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName {

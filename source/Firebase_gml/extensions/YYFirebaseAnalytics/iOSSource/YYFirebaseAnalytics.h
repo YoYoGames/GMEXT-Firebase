@@ -5,9 +5,9 @@
 @interface YYFirebaseAnalytics : NSObject
 
 - (void)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled;
-- (void)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json;
+- (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json;
 - (void)FirebaseAnalytics_ResetAnalyticsData;
-- (void)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json;
+- (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json;
 - (void)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time;
 - (void)FirebaseAnalytics_SetUserID:(NSString *)userID;
 - (void)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value;

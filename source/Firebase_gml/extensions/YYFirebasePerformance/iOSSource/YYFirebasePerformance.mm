@@ -84,7 +84,6 @@ static const double kFirebasePerformanceErrorUnsupported = -6.0;
     FIRTrace *trace = [self.traceDictionary objectForKey:name];
     if (trace) {
         [trace start];
-        // Successfully started trace
         return kFirebasePerformanceSuccess;
     } else {
         NSLog(@"[FirebasePerformance] Error: Trace not found: %@", name);

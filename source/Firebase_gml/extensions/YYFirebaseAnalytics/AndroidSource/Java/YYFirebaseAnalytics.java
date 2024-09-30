@@ -15,9 +15,17 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
 
 public class YYFirebaseAnalytics extends RunnerSocial {
+    private static final int EVENT_OTHER_SOCIAL = 70;
     private static final String TAG = "YYFirebaseAnalytics";
+
+    // Error Codes
+    public static final double FIREBASE_ANALYTICS_ASYNC = 1.0;
+    public static final double FIREBASE_ANALYTICS_SUCCESS = 0.0;
+    public static final double FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS = -1.0;
+
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private FirebaseAnalytics analytics;
 
@@ -37,38 +45,53 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         analytics.setAnalyticsCollectionEnabled(enabled >= 0.5);
     }
 
-    public void FirebaseAnalytics_LogEvent(String event, String jsonValues) {
+    public double FirebaseAnalytics_LogEvent(String event, String jsonValues) {
+        if (!isValidEventName(event)) {
+            return FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS;
+        }
+
         final String methodName = "FirebaseAnalytics_LogEvent";
         executorService.submit(() -> {
+            Map<String, Object> data = new HashMap<>();
             try {
                 Bundle params = parseJsonStringToBundle(jsonValues, methodName);
                 analytics.logEvent(event, params);
-                Log.d(TAG, methodName + " :: Event logged: " + event);
-            } catch (JSONException e) {
-                Log.e(TAG, methodName + " :: JSON parsing error", e);
-            } catch (Exception e) {
-                Log.e(TAG, methodName + " :: Exception", e);
+                data.put("success", 1.0);
+            } catch (Exception e) {  // Catch all exceptions in a single block
+                data.put("error", e.toString());
+                data.put("success", 0.0);
             }
+            sendAsyncEvent(methodName, data);
         });
+        return FIREBASE_ANALYTICS_ASYNC;
     }
 
     public void FirebaseAnalytics_ResetAnalyticsData() {
         analytics.resetAnalyticsData();
     }
 
-    public void FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
+    public double FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
         final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
+        
+        if (isStringNullOrEmpty(jsonValues)) {
+            Log.w(TAG, methodName + " :: json is empty, clearing default parameters");
+            analytics.setDefaultEventParameters(null);
+            return FIREBASE_ANALYTICS_SUCCESS;
+        }
+
         executorService.submit(() -> {
+            Map<String, Object> data = new HashMap<>();
             try {
                 Bundle params = parseJsonStringToBundle(jsonValues, methodName);
                 analytics.setDefaultEventParameters(params);
-                Log.d(TAG, methodName + " :: Default event parameters set");
-            } catch (JSONException e) {
-                Log.e(TAG, methodName + " :: JSON parsing error", e);
+                data.put("success", 1.0);
             } catch (Exception e) {
-                Log.e(TAG, methodName + " :: Exception", e);
+                data.put("error", e.toString());
+                data.put("success", 0.0);
             }
+            sendAsyncEvent(methodName, data);
         });
+        return FIREBASE_ANALYTICS_ASYNC;
     }
 
     public void FirebaseAnalytics_SetSessionTimeoutDuration(double time) {
@@ -76,34 +99,38 @@ public class YYFirebaseAnalytics extends RunnerSocial {
     }
 
     public void FirebaseAnalytics_SetUserId(String userID) {
-        if (userID != null) {
-            analytics.setUserId(userID);
-        } else {
+        if (isStringNullOrEmpty(userID)) {
             Log.w(TAG, "FirebaseAnalytics_SetUserId :: userID is null, clearing user ID");
-            analytics.setUserId(null); // Clear the user ID
+            userID = null;
         }
+
+        analytics.setUserId(userID);
     }
 
-    public void FirebaseAnalytics_SetUserProperty(String name, String value) {
+    public double FirebaseAnalytics_SetUserProperty(String name, String value) {
+        if (!isValidPropertyName(name)) {
+            return FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS;
+        }
+
+        if (isStringNullOrEmpty(value)) {
+            Log.w(TAG, "FirebaseAnalytics_SetUserProperty :: property value is empty, clearing property");
+            value = null;
+        }
+
         analytics.setUserProperty(name, value);
-        Log.d(TAG, "SetUserProperty: " + name + " = " + value);
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
     public void FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent) {
-        try {
-            Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
+        Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
 
-            consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE,
-                    adsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
+        consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE,
+                adsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
-            consentMap.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,
-                    analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
+        consentMap.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,
+                analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
-            analytics.setConsent(consentMap);
-            Log.d(TAG, "SetConsent: AdsConsent=" + (adsConsent >= 0.5) + ", AnalyticsConsent=" + (analyticsConsent >= 0.5));
-        } catch (Exception e) {
-            Log.e(TAG, "FirebaseAnalytics_SetConsent :: Exception", e);
-        }
+        analytics.setConsent(consentMap);
     }
 
     // </editor-fold>
@@ -148,6 +175,28 @@ public class YYFirebaseAnalytics extends RunnerSocial {
             }
             RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
         });
+    }
+
+    private boolean isStringNullOrEmpty(String string) {
+        return string == null || string.isEmpty();
+    }
+
+    private boolean isValidEventName(String eventName) {
+        if (eventName == null) {
+            return false;  // Null strings are not valid
+        }
+        // Define the regex pattern
+        String pattern = "^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,39}$";
+        return Pattern.matches(pattern, eventName);
+    }
+
+    private boolean isValidPropertyName(String propertyName) {
+        if (propertyName == null) {
+            return false;  // Null strings are not valid
+        }
+        // Define the regex pattern
+        String pattern = "^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,23}$";
+        return Pattern.matches(pattern, propertyName);
     }
 
     private Bundle parseJsonStringToBundle(String jsonString, final String methodName) throws JSONException {

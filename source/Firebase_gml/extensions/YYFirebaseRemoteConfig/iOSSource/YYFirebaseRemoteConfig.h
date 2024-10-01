@@ -5,13 +5,13 @@
 
 @interface YYFirebaseRemoteConfig : NSObject
 
-- (void)FirebaseRemoteConfig_Initialize:(double)seconds;
-- (void)FirebaseRemoteConfig_FetchAndActivate;
-- (void)FirebaseRemoteConfig_Reset;
-- (void)FirebaseRemoteConfig_SetDefaultsAsync:(NSString *)json;
+- (double)FirebaseRemoteConfig_Initialize:(double)seconds;
+- (double)FirebaseRemoteConfig_FetchAndActivate;
+- (double)FirebaseRemoteConfig_Reset;
+- (double)FirebaseRemoteConfig_SetDefaultsAsync:(NSString *)json;
 - (NSString *)FirebaseRemoteConfig_GetKeys;
 - (NSString *)FirebaseRemoteConfig_GetString:(NSString *)key;
 - (double)FirebaseRemoteConfig_GetDouble:(NSString *)key;
-- (void)FirebaseRemoteConfig_AddOnConfigUpdateListener;
+- (double)FirebaseRemoteConfig_AddOnConfigUpdateListener;
 
 @end

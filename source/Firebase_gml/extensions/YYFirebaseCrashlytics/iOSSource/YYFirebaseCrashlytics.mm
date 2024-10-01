@@ -133,7 +133,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
     @throw exception;
 }
 
-- (void)FirebaseCrashlytics_RecordException:(NSString *)message {
+- (double)FirebaseCrashlytics_RecordException:(NSString *)message {
     FIRExceptionModel *exceptionModel = [FIRExceptionModel exceptionModelWithName:@"FirebaseCrashlytics_RecordException" reason:message];
     [[FIRCrashlytics crashlytics] recordExceptionModel:exceptionModel];
     return kFirebaseCrashlyticsSuccess;
@@ -141,7 +141,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
 
 #pragma mark - Crashlytics Collection Control
 
-- (void)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled {
+- (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled {
     self.isAutoDataCollectionEnabled = enabled >= 0.5;
     [[FIRCrashlytics crashlytics] setCrashlyticsCollectionEnabled:self.isAutoDataCollectionEnabled];
 

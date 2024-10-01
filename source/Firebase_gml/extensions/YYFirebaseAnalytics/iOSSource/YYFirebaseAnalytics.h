@@ -4,13 +4,13 @@
 
 @interface YYFirebaseAnalytics : NSObject
 
-- (void)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled;
+- (double)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled;
 - (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json;
-- (void)FirebaseAnalytics_ResetAnalyticsData;
+- (double)FirebaseAnalytics_ResetAnalyticsData;
 - (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json;
-- (void)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time;
-- (void)FirebaseAnalytics_SetUserID:(NSString *)userID;
-- (void)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value;
-- (void)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics;
+- (double)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time;
+- (double)FirebaseAnalytics_SetUserID:(NSString *)userID;
+- (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value;
+- (double)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics;
 
 @end

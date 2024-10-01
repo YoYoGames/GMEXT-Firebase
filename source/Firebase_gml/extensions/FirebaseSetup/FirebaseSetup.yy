@@ -19,7 +19,7 @@
   "gradleinject":"\r\n        implementation platform('com.google.firebase:firebase-bom:32.6.0')\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
-  "HTML5CodeInjection":"\r\n<GM_HTML5_PreBody>\r\n\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-remote-config.js\"></script>\r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-storage.js\"></script>\r\n\r\n<script>\r\n\r\n  // Your web app's Firebase configuration\r\n  // For Firebase JS SDK v7.20.0 and later, measurementId is optional\r\n  const firebaseConfig = ${YYEXTOPT_FirebaseSetup_html5Config};\r\n\r\n  firebase.initializeApp(firebaseConfig);\r\n</script>\r\n\r\n</GM_HTML5_PreBody>\r\n",
+  "HTML5CodeInjection":"\r\n<GM_HTML5_PreBody>\r\n<script type=\"module\">\r\n    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';\r\n\r\n    const firebaseConfig = ${YYEXTOPT_FirebaseSetup_html5Config};\r\n    initializeApp(firebaseConfig);\r\n</script>\r\n</GM_HTML5_PreBody>\r\n",
   "html5Props":true,
   "IncludedResources":[],
   "installdir":"",

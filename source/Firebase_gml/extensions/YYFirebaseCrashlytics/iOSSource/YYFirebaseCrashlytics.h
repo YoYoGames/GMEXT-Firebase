@@ -11,8 +11,8 @@
 - (double)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString;
 - (double)FirebaseCrashlytics_Log:(NSString *)message;
 - (void)FirebaseCrashlytics_Crash:(NSString *)message;
-- (void)FirebaseCrashlytics_RecordException:(NSString *)message;
-- (void)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled;
+- (double)FirebaseCrashlytics_RecordException:(NSString *)message;
+- (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled;
 - (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check;
 - (double)FirebaseCrashlytics_DidCrashOnPreviousExecution;
 - (double)FirebaseCrashlytics_UnsentReports_Delete;

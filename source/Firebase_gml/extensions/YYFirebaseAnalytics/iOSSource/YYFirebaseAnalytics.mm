@@ -8,7 +8,6 @@ extern "C" void dsMapAddString(int _dsMap, char *_key, char *_value);
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 // Error Codes
-static const double kFirebaseAnalyticsAsync = 1.0;
 static const double kFirebaseAnalyticsSuccess = 0.0;
 static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
 
@@ -47,9 +46,11 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
 
 #pragma mark - Public API Methods
 
-- (void)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {
+- (double)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {
     BOOL isEnabled = enabled >= 0.5;
     [FIRAnalytics setAnalyticsCollectionEnabled:isEnabled];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
 - (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json {
@@ -80,8 +81,10 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
     return kFirebaseAnalyticsAsync;
 }
 
-- (void)FirebaseAnalytics_ResetAnalyticsData {
+- (double)FirebaseAnalytics_ResetAnalyticsData {
     [FIRAnalytics resetAnalyticsData];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
 - (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
@@ -106,20 +109,25 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
             [data setObject:@(0) forKey:@"success"];
         }
     });
-    return kFirebaseAnalyticsAsync;
+    
+    return kFirebaseAnalyticsSuccess;
 }
 
-- (void)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time {
+- (double)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time {
     [FIRAnalytics setSessionTimeoutInterval:time];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
-- (void)FirebaseAnalytics_SetUserID:(NSString *)userID {
+- (double)FirebaseAnalytics_SetUserID:(NSString *)userID {
     if ([self isStringNullOrEmpty:userID]) {
         NSLog(@"FirebaseAnalytics_SetUserId :: userID is empty, clearing user ID");
         userID = nil;
     }
     
     [FIRAnalytics setUserID:userID];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
 - (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
@@ -136,13 +144,15 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
     return kFirebaseAnalyticsSuccess;
 }
 
-- (void)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
+- (double)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
     NSMutableDictionary<NSString *, NSString *> *consentSettings = [NSMutableDictionary dictionary];
 
     consentSettings[FIRConsentTypeAdStorage] = (ads >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
     consentSettings[FIRConsentTypeAnalyticsStorage] = (analytics >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
 
     [FIRAnalytics setConsent:consentSettings];
+
+    return kFirebaseAnalyticsSuccess;
 }
 
 #pragma mark - Helper Methods

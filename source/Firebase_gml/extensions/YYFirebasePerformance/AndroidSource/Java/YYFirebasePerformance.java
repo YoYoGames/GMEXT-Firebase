@@ -15,7 +15,8 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class YYFirebasePerformance {
-    private static final String TAG = "YYFirebasePerformance";
+    private static final int EVENT_OTHER_SOCIAL = 70;
+    private static final String LOG_TAG = "YYFirebasePerformance";
 
     // Error Codes
     public static final double FIREBASE_PERFORMANCE_SUCCESS = 0.0;
@@ -34,7 +35,7 @@ public class YYFirebasePerformance {
         traceMap = new HashMap<>();
         httpMetricMap = new HashMap<>();
         performance = FirebasePerformance.getInstance();
-        Log.d(TAG, "YYFirebasePerformance initialized.");
+        Log.d(LOG_TAG, "YYFirebasePerformance initialized.");
     }
 
     // <editor-fold desc="Performance Collection Methods">
@@ -55,7 +56,7 @@ public class YYFirebasePerformance {
 
     public double FirebasePerformance_Trace_Create(String name) {
         if (name == null || name.isEmpty()) {
-            Log.e(TAG, "Invalid trace name.");
+            Log.e(LOG_TAG, "Invalid trace name.");
             return FIREBASE_PERFORMANCE_ERROR_INVALID_NAME;
         }
         Trace trace = performance.newTrace(name);
@@ -63,7 +64,7 @@ public class YYFirebasePerformance {
             traceMap.put(name, trace);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Failed to create trace: " + name);
+            Log.e(LOG_TAG, "Failed to create trace: " + name);
             return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
         }
     }
@@ -74,7 +75,7 @@ public class YYFirebasePerformance {
             trace.start();
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -86,7 +87,7 @@ public class YYFirebasePerformance {
             traceMap.remove(name);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -97,7 +98,7 @@ public class YYFirebasePerformance {
             trace.putMetric(metric, (long) value);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -108,7 +109,7 @@ public class YYFirebasePerformance {
             trace.incrementMetric(metric, (long) value);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -117,10 +118,10 @@ public class YYFirebasePerformance {
         Trace trace = traceMap.get(name);
         if (trace != null) {
             long metricValue = trace.getLongMetric(metric);
-            Log.d(TAG, "Metric value retrieved from trace '" + name + "': " + metric + " = " + metricValue);
+            Log.d(LOG_TAG, "Metric value retrieved from trace '" + name + "': " + metric + " = " + metricValue);
             return (double) metricValue;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return 0.0;
         }
     }
@@ -131,7 +132,7 @@ public class YYFirebasePerformance {
             trace.putAttribute(attribute, value);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -142,7 +143,7 @@ public class YYFirebasePerformance {
             trace.removeAttribute(attribute);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -153,7 +154,7 @@ public class YYFirebasePerformance {
             String value = trace.getAttribute(attribute);
             return value;
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
         }
         return "";
     }
@@ -166,7 +167,7 @@ public class YYFirebasePerformance {
             Map<String, String> attributes = trace.getAttributes();
             return convertMapToJson(attributes, methodName);
         } else {
-            Log.e(TAG, "Trace not found: " + name);
+            Log.e(LOG_TAG, "Trace not found: " + name);
         }
         return "{}";
     }
@@ -177,12 +178,12 @@ public class YYFirebasePerformance {
 
     public double FirebasePerformance_HttpMetric_Create(String name, String url, String method) {
         if (name == null || name.isEmpty() || method == null || method.isEmpty()) {
-            Log.e(TAG, "Invalid parameters for HTTP Metric creation.");
+            Log.e(LOG_TAG, "Invalid parameters for HTTP Metric creation.");
             return FIREBASE_PERFORMANCE_ERROR_INVALID_URL;
         }
 
         if (url == null || url.isEmpty()) {
-            Log.e(TAG, "Invalid url for HTTP Metric creation.");
+            Log.e(LOG_TAG, "Invalid url for HTTP Metric creation.");
             return FIREBASE_PERFORMANCE_ERROR_INVALID_URL;
         }
 
@@ -191,7 +192,7 @@ public class YYFirebasePerformance {
             httpMetricMap.put(name, httpMetric);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "Failed to create HTTP Metric: " + name);
+            Log.e(LOG_TAG, "Failed to create HTTP Metric: " + name);
             return FIREBASE_PERFORMANCE_ERROR_CREATION_FAILED;
         }
     }
@@ -202,7 +203,7 @@ public class YYFirebasePerformance {
             httpMetric.start();
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -214,7 +215,7 @@ public class YYFirebasePerformance {
             httpMetricMap.remove(name);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -225,7 +226,7 @@ public class YYFirebasePerformance {
             httpMetric.setHttpResponseCode((int) responseCode);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -236,7 +237,7 @@ public class YYFirebasePerformance {
             httpMetric.setRequestPayloadSize((long) bytes);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -247,7 +248,7 @@ public class YYFirebasePerformance {
             httpMetric.setResponseContentType(contentType);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -258,7 +259,7 @@ public class YYFirebasePerformance {
             httpMetric.setResponsePayloadSize((long) bytes);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -269,7 +270,7 @@ public class YYFirebasePerformance {
             httpMetric.putAttribute(attribute, value);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -280,7 +281,7 @@ public class YYFirebasePerformance {
             httpMetric.removeAttribute(attribute);
             return FIREBASE_PERFORMANCE_SUCCESS;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
             return FIREBASE_PERFORMANCE_ERROR_NOT_FOUND;
         }
     }
@@ -289,10 +290,10 @@ public class YYFirebasePerformance {
         HttpMetric httpMetric = httpMetricMap.get(name);
         if (httpMetric != null) {
             String value = httpMetric.getAttribute(attribute);
-            Log.d(TAG, "Attribute retrieved from HTTP Metric: " + attribute + " = " + value);
+            Log.d(LOG_TAG, "Attribute retrieved from HTTP Metric: " + attribute + " = " + value);
             return value;
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
         }
         return "";
     }
@@ -305,7 +306,7 @@ public class YYFirebasePerformance {
             Map<String, String> attributes = httpMetric.getAttributes();
             return convertMapToJson(attributes, methodName);
         } else {
-            Log.e(TAG, "HTTP Metric not found: " + name);
+            Log.e(LOG_TAG, "HTTP Metric not found: " + name);
         }
         return "{}";
     }
@@ -349,7 +350,7 @@ public class YYFirebasePerformance {
         try {
             json = new JSONObject(map).toString();
         } catch (Exception e) {
-            Log.e(TAG, methodName + " :: Error converting map to JSON: " + e.getMessage());
+            Log.e(LOG_TAG, methodName + " :: Error converting map to JSON: " + e.getMessage());
         }
         return json;
     }

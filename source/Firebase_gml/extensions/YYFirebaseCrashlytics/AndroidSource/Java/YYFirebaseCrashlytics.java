@@ -1,5 +1,9 @@
 package ${YYAndroidPackageName};
 
+import ${YYAndroidPackageName}.R;
+import com.yoyogames.runner.RunnerJNILib;
+
+
 import android.util.Log;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,8 +13,6 @@ import android.os.Bundle;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.crashlytics.CustomKeysAndValues;
-
-import com.yoyogames.runner.RunnerJNILib;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,16 +25,17 @@ import java.util.concurrent.Executors;
 
 public class YYFirebaseCrashlytics extends RunnerSocial {
     private static final int EVENT_OTHER_SOCIAL = 70;
-    private static final String TAG = "YYFirebaseCrashlytics";
+    private static final String LOG_TAG = "YYFirebaseCrashlytics";
     private static final String CRASHLYTICS_PREFS = "YYFirebaseCrashlyticsPrefs";
 
     // Error Codes
     public static final double FIREBASE_CRASHLYTICS_SUCCESS = 0.0;
     public static final double FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS = -1.0;
 
-    private final FirebaseCrashlytics crashlytics;
-    private Boolean isAutoDataCollectionEnabled = false;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    private FirebaseCrashlytics crashlytics;
+    private Boolean isAutoDataCollectionEnabled = false;
 
     public YYFirebaseCrashlytics() {
         // Initialize the cached instance
@@ -54,9 +57,9 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
                     Bundle bundle = ai.metaData;
                     isAutoDataCollectionEnabled = bundle.getBoolean("firebase_crashlytics_collection_enabled", true); // Default to true
                 } catch (PackageManager.NameNotFoundException e) {
-                    Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+                    Log.e(LOG_TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
                 } catch (NullPointerException e) {
-                    Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
+                    Log.e(LOG_TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
                 }
             }
         });
@@ -108,7 +111,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
                     } else if (value instanceof Boolean) {
                         builder.putBoolean(key, (Boolean) value);
                     } else {
-                        Log.w(TAG, methodName + " :: Unsupported value type for key: " + key);
+                        Log.w(LOG_TAG, methodName + " :: Unsupported value type for key: " + key);
                     }
                 }
     
@@ -153,7 +156,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
 
     // <editor-fold desc="Crashlytics Collection">
 
-    public void FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set(final double bool) {
+    public double FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set(final double bool) {
         isAutoDataCollectionEnabled = bool >= 0.5;
         crashlytics.setCrashlyticsCollectionEnabled(isAutoDataCollectionEnabled);
 
@@ -168,9 +171,9 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("CrashlyticsCollectionEnabled", isAutoDataCollectionEnabled);
             boolean success = editor.commit(); // Returns true if the save was successful
-
-            Log.i(TAG, "Saved CrashlyticsCollectionEnabled: " + isAutoDataCollectionEnabled + ", success: " + success);
         });
+        
+        return FIREBASE_CRASHLYTICS_SUCCESS;
     }
 
     public double FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check() {
@@ -205,10 +208,10 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
             Map<String, Object> data = new HashMap<>();
             if (task.isSuccessful() && task.getResult() != null) {
                 data.put("value", 1.0);
-                Log.d(TAG, "FirebaseCrashlytics_UnsentReports_Check: Unsent reports available.");
+                Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: Unsent reports available.");
             } else {
                 data.put("value", 0.0);
-                Log.d(TAG, "FirebaseCrashlytics_UnsentReports_Check: No unsent reports.");
+                Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: No unsent reports.");
             }
             sendAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
         });
@@ -266,9 +269,9 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
     private void shutdownExecutor() {
         try {
             executorService.shutdown();
-            Log.d(TAG, "ExecutorService shutdown initiated.");
+            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
         } catch (Exception e) {
-            Log.e(TAG, "Error shutting down ExecutorService", e);
+            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
         }
     }
 

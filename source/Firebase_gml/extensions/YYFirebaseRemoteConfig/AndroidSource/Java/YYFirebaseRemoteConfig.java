@@ -32,32 +32,36 @@ import java.util.concurrent.Executors;
 
 public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdateListener {
     private static final int EVENT_OTHER_SOCIAL = 70;
-    private static final String TAG = "YYFirebaseRemoteConfig";
-    private Context appContext;
+    private static final String LOG_TAG = "YYFirebaseRemoteConfig";
+
+    // Error Codes
+    public static final double FIREBASE_REMOTE_CONFIG_SUCCESS = 0.0;
+    public static final double FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED = -1.0;
+
     private FirebaseRemoteConfig remoteConfig;
+    private boolean updateListenerEnabled = false;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public YYFirebaseRemoteConfig() {
         // Get the application context
-        appContext = RunnerActivity.CurrentActivity.getApplicationContext();
         remoteConfig = FirebaseRemoteConfig.getInstance();
     }
 
     // <editor-fold desc="Setup">
 
-    public void FirebaseRemoteConfig_Initialize(double milisecs) {
+    public double FirebaseRemoteConfig_Initialize(double seconds) {
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds((long) milisecs)
+                .setMinimumFetchIntervalInSeconds((long) seconds)
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
-        Log.d(TAG, "FirebaseRemoteConfig initialized with fetch interval: " + (long) milisecs + " seconds");
+        return FIREBASE_REMOTE_CONFIG_SUCCESS;
     }
 
     // </editor-fold>
 
     // <editor-fold desc="Remote Config Methods">
 
-    public void FirebaseRemoteConfig_FetchAndActivate() {
+    public double FirebaseRemoteConfig_FetchAndActivate() {
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(new OnCompleteListener<Boolean>() {
                     @Override
@@ -66,24 +70,24 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                         if (task.isSuccessful()) {
                             boolean updated = task.getResult();
                             data.put("success", updated ? 1.0 : 0.0);
-                            Log.d(TAG, "Fetch and activate succeeded: " + updated);
+                            Log.d(LOG_TAG, "Fetch and activate succeeded: " + updated);
                         } else {
                             data.put("success", 0.0);
                             Exception e = task.getException();
                             if (e != null) {
                                 String errorMessage = e.getMessage();
                                 data.put("error", errorMessage);
-                                Log.e(TAG, "Fetch and activate failed: " + errorMessage);
                             } else {
-                                Log.e(TAG, "Fetch and activate failed with unknown error");
+                                data.put("error", "Failed with unknown error");
                             }
                         }
                         sendAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", data);
                     }
                 });
+        return FIREBASE_REMOTE_CONFIG_SUCCESS;
     }
 
-    public void FirebaseRemoteConfig_Reset() {
+    public double FirebaseRemoteConfig_Reset() {
         remoteConfig.reset()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -91,24 +95,23 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                         Map<String, Object> data = new HashMap<>();
                         if (task.isSuccessful()) {
                             data.put("success", 1.0);
-                            Log.d(TAG, "FirebaseRemoteConfig reset succeeded");
                         } else {
                             data.put("success", 0.0);
                             Exception e = task.getException();
                             if (e != null) {
                                 String errorMessage = e.getMessage();
                                 data.put("error", errorMessage);
-                                Log.e(TAG, "FirebaseRemoteConfig reset failed: " + errorMessage);
                             } else {
-                                Log.e(TAG, "FirebaseRemoteConfig reset failed with unknown error");
+                                data.put("error", "Failed with unknown error");
                             }
                         }
                         sendAsyncEvent("FirebaseRemoteConfig_Reset", data);
                     }
                 });
+        return FIREBASE_REMOTE_CONFIG_SUCCESS;
     }
 
-    public void FirebaseRemoteConfig_SetDefaultsAsync(final String json) {
+    public double FirebaseRemoteConfig_SetDefaultsAsync(final String json) {
         // Offload JSON parsing to background thread
 
         final String methodName = "FirebaseRemoteConfig_SetDefaultsAsync";
@@ -118,7 +121,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             public void run() {
                 final Map<String, Object> defaultsMap = jsonStringToMap(json, methodName);
                 if (defaultsMap.isEmpty()) {
-                    Log.e(TAG, "SetDefaultsAsync failed: Invalid JSON");
+                    Log.e(LOG_TAG, "SetDefaultsAsync failed: Invalid JSON");
                     Map<String, Object> data = new HashMap<>();
                     data.put("success", 0.0);
                     data.put("error", "Invalid JSON");
@@ -133,19 +136,22 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                 Map<String, Object> data = new HashMap<>();
                                 if (task.isSuccessful()) {
                                     data.put("success", 1.0);
-                                    Log.d(TAG, "SetDefaultsAsync succeeded");
                                 } else {
                                     data.put("success", 0.0);
                                     Exception e = task.getException();
-                                    String errorMessage = (e != null) ? e.getMessage() : "Unknown error";
-                                    data.put("error", errorMessage);
-                                    Log.e(TAG, "SetDefaultsAsync failed: " + errorMessage);
+                                    if (e != null) {
+                                        String errorMessage = e.getMessage();
+                                        data.put("error", errorMessage);
+                                    } else {
+                                        data.put("error", "Failed with unknown error");
+                                    }
                                 }
                                 sendAsyncEvent(methodName, data);
                             }
                         });
             }
         });
+        return FIREBASE_REMOTE_CONFIG_SUCCESS;
     }
 
     public String FirebaseRemoteConfig_GetKeys() {
@@ -155,31 +161,35 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             jsonArray.put(key);
         }
         String keysString = jsonArray.toString();
-        Log.d(TAG, "FirebaseRemoteConfig_GetKeys: " + keysString);
         return keysString;
     }
 
     public String FirebaseRemoteConfig_GetString(String key) {
         if (remoteConfig.getKeysByPrefix(key).isEmpty()) {
-            Log.w(TAG, "FirebaseRemoteConfig_GetString: Key not found - " + key);
+            Log.w(LOG_TAG, "FirebaseRemoteConfig_GetString: Key not found - " + key);
         }
         String value = remoteConfig.getString(key);
-        Log.d(TAG, "FirebaseRemoteConfig_GetString: Key=" + key + ", Value=" + value);
         return value;
     }
 
     public double FirebaseRemoteConfig_GetDouble(String key) {
         if (remoteConfig.getKeysByPrefix(key).isEmpty()) {
-            Log.w(TAG, "FirebaseRemoteConfig_GetDouble: Key not found - " + key);
+            Log.w(LOG_TAG, "FirebaseRemoteConfig_GetDouble: Key not found - " + key);
         }
         double value = remoteConfig.getDouble(key);
-        Log.d(TAG, "FirebaseRemoteConfig_GetDouble: Key=" + key + ", Value=" + value);
         return value;
     }
 
-    public void FirebaseRemoteConfig_AddOnConfigUpdateListener() {
+    public double FirebaseRemoteConfig_AddOnConfigUpdateListener() {
         remoteConfig.addOnConfigUpdateListener(this);
-        Log.d(TAG, "FirebaseRemoteConfig_AddOnConfigUpdateListener: Listener added");
+        
+        if (updateListenerEnabled) {
+            Log.w(LOG_TAG, "FirebaseRemoteConfig_AddOnConfigUpdateListener :: Multiple listeners are not supported.");
+            return FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED;
+        }
+        
+        updateListenerEnabled = true;
+        return FIREBASE_REMOTE_CONFIG_SUCCESS;
     }
 
     // </editor-fold>
@@ -193,9 +203,9 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
         if (error != null) {
             String errorMessage = error.getMessage();
             data.put("error", errorMessage);
-            Log.e(TAG, "ConfigUpdateListener onError: " + errorMessage);
+            Log.e(LOG_TAG, "ConfigUpdateListener onError: " + errorMessage);
         } else {
-            Log.e(TAG, "ConfigUpdateListener onError: Unknown error");
+            Log.e(LOG_TAG, "ConfigUpdateListener onError: Unknown error");
         }
         sendAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
     }
@@ -211,11 +221,11 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                 jsonArray.put(key);
             }
             String keysString = jsonArray.toString();
-            Log.d(TAG, "ConfigUpdateListener onUpdate: Keys=" + keysString);
+            Log.d(LOG_TAG, "ConfigUpdateListener onUpdate: Keys=" + keysString);
             data.put("keys", keysString);
             data.put("success", 1.0);
         } else {
-            Log.e(TAG, "ConfigUpdateListener onUpdate: ConfigUpdate is null");
+            Log.e(LOG_TAG, "ConfigUpdateListener onUpdate: ConfigUpdate is null");
             data.put("success", 0.0);
             data.put("error", "ConfigUpdate is null");
         }
@@ -241,7 +251,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             JSONObject json = new JSONObject(jsonStr);
             return jsonObjectToMap(json);
         } catch (JSONException e) {
-            Log.e(TAG, methodName + " :: Error parsing JSON: " + e.getMessage());
+            Log.e(LOG_TAG, methodName + " :: Error parsing JSON: " + e.getMessage());
             return new HashMap<>();
         }
     }
@@ -309,9 +319,9 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
     public void shutdownExecutor() {
 		try {
 			executorService.shutdown();
-			Log.d(TAG, "ExecutorService shutdown initiated.");
+			Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
 		} catch (Exception e) {
-			Log.e(TAG, "Error shutting down ExecutorService: " + e.getMessage());
+			Log.e(LOG_TAG, "Error shutting down ExecutorService: " + e.getMessage());
 		}
     }
 

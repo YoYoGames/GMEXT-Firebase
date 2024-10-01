@@ -1,4 +1,8 @@
-package com.yoyogames.YoyoPlayServices;
+package ${YYAndroidPackageName};
+
+import ${YYAndroidPackageName}.R;
+import com.yoyogames.runner.RunnerJNILib;
+
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,14 +23,14 @@ import java.util.regex.Pattern;
 
 public class YYFirebaseAnalytics extends RunnerSocial {
     private static final int EVENT_OTHER_SOCIAL = 70;
-    private static final String TAG = "YYFirebaseAnalytics";
+    private static final String LOG_TAG = "YYFirebaseAnalytics";
 
     // Error Codes
-    public static final double FIREBASE_ANALYTICS_ASYNC = 1.0;
     public static final double FIREBASE_ANALYTICS_SUCCESS = 0.0;
     public static final double FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS = -1.0;
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    
     private FirebaseAnalytics analytics;
 
     public YYFirebaseAnalytics() {
@@ -35,14 +39,15 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         if (context != null) {
             analytics = FirebaseAnalytics.getInstance(context);
         } else {
-            Log.e(TAG, "Context is null, cannot initialize FirebaseAnalytics");
+            Log.e(LOG_TAG, "Context is null, cannot initialize FirebaseAnalytics");
         }
     }
 
     // <editor-fold desc="General API">
 
-    public void FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled) {
+    public double FirebaseAnalytics_SetAnalyticsCollectionEnabled(double enabled) {
         analytics.setAnalyticsCollectionEnabled(enabled >= 0.5);
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
     public double FirebaseAnalytics_LogEvent(String event, String jsonValues) {
@@ -63,48 +68,46 @@ public class YYFirebaseAnalytics extends RunnerSocial {
             }
             sendAsyncEvent(methodName, data);
         });
-        return FIREBASE_ANALYTICS_ASYNC;
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
-    public void FirebaseAnalytics_ResetAnalyticsData() {
+    public double FirebaseAnalytics_ResetAnalyticsData() {
         analytics.resetAnalyticsData();
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
     public double FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
         final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
-        
-        if (isStringNullOrEmpty(jsonValues)) {
-            Log.w(TAG, methodName + " :: json is empty, clearing default parameters");
-            analytics.setDefaultEventParameters(null);
-            return FIREBASE_ANALYTICS_SUCCESS;
-        }
-
         executorService.submit(() -> {
             Map<String, Object> data = new HashMap<>();
+            
             try {
-                Bundle params = parseJsonStringToBundle(jsonValues, methodName);
+                Bundle params = isStringNullOrEmpty(jsonValues) ? null : parseJsonStringToBundle(jsonValues, methodName);
                 analytics.setDefaultEventParameters(params);
                 data.put("success", 1.0);
             } catch (Exception e) {
                 data.put("error", e.toString());
                 data.put("success", 0.0);
             }
+            
             sendAsyncEvent(methodName, data);
         });
-        return FIREBASE_ANALYTICS_ASYNC;
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
-    public void FirebaseAnalytics_SetSessionTimeoutDuration(double time) {
+    public double FirebaseAnalytics_SetSessionTimeoutDuration(double time) {
         analytics.setSessionTimeoutDuration((long) time);
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
-    public void FirebaseAnalytics_SetUserId(String userID) {
+    public double FirebaseAnalytics_SetUserId(String userID) {
         if (isStringNullOrEmpty(userID)) {
-            Log.w(TAG, "FirebaseAnalytics_SetUserId :: userID is null, clearing user ID");
+            Log.w(LOG_TAG, "FirebaseAnalytics_SetUserId :: userID is null, clearing user ID");
             userID = null;
         }
 
         analytics.setUserId(userID);
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
     public double FirebaseAnalytics_SetUserProperty(String name, String value) {
@@ -113,7 +116,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         }
 
         if (isStringNullOrEmpty(value)) {
-            Log.w(TAG, "FirebaseAnalytics_SetUserProperty :: property value is empty, clearing property");
+            Log.w(LOG_TAG, "FirebaseAnalytics_SetUserProperty :: property value is empty, clearing property");
             value = null;
         }
 
@@ -121,7 +124,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         return FIREBASE_ANALYTICS_SUCCESS;
     }
 
-    public void FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent) {
+    public double FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent) {
         Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
 
         consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE,
@@ -131,6 +134,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
         analytics.setConsent(consentMap);
+        return FIREBASE_ANALYTICS_SUCCESS;
     }
 
     // </editor-fold>
@@ -201,7 +205,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     private Bundle parseJsonStringToBundle(String jsonString, final String methodName) throws JSONException {
         if (jsonString == null || jsonString.isEmpty()) {
-            Log.w(TAG, methodName + " :: JSON string is null or empty");
+            Log.w(LOG_TAG, methodName + " :: JSON string is null or empty");
             return null;
         }
 
@@ -244,7 +248,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 // Recursively convert JSONObject to Bundle
                 bundleArray[i] = parseJsonObjectToBundle((JSONObject) value, methodName);
             } else {
-                Log.w(TAG, methodName + " :: Unsupported type inside array: " + value.getClass().getSimpleName());
+                Log.w(LOG_TAG, methodName + " :: Unsupported type inside array: " + value.getClass().getSimpleName());
                 // Create a Bundle with a single key "value"
                 Bundle tempBundle = new Bundle();
                 putPrimitiveInBundle(tempBundle, "value", value, methodName);
@@ -269,7 +273,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         } else if (value instanceof Boolean) {
             bundle.putBoolean(key, (Boolean) value);
         } else {
-            Log.w(TAG, methodName + " :: Unsupported type " + value.getClass().getSimpleName() + " for key: " + key);
+            Log.w(LOG_TAG, methodName + " :: Unsupported type " + value.getClass().getSimpleName() + " for key: " + key);
             bundle.putString(key, value.toString());
         }
     }
@@ -277,9 +281,9 @@ public class YYFirebaseAnalytics extends RunnerSocial {
     private void shutdownExecutor() {
         try {
             executorService.shutdown();
-            Log.d(TAG, "ExecutorService shutdown initiated.");
+            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
         } catch (Exception e) {
-            Log.e(TAG, "Error shutting down ExecutorService", e);
+            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
         }
     }
 

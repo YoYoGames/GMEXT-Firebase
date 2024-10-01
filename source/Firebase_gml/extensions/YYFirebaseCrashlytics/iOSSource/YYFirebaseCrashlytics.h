@@ -6,17 +6,17 @@
 
 @property (nonatomic, assign) BOOL isAutoDataCollectionEnabled;
 
-- (void)FirebaseCrashlytics_SetUserIdentifier:(NSString *)string;
-- (void)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(id)value;
-- (void)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString;
-- (void)FirebaseCrashlytics_Log:(NSString *)message;
+- (double)FirebaseCrashlytics_SetUserIdentifier:(NSString *)string;
+- (double)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(NSString *)value;
+- (double)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString;
+- (double)FirebaseCrashlytics_Log:(NSString *)message;
 - (void)FirebaseCrashlytics_Crash:(NSString *)message;
 - (void)FirebaseCrashlytics_RecordException:(NSString *)message;
 - (void)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled;
 - (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check;
 - (double)FirebaseCrashlytics_DidCrashOnPreviousExecution;
-- (void)FirebaseCrashlytics_UnsentReports_Delete;
-- (void)FirebaseCrashlytics_UnsentReports_Send;
-- (void)FirebaseCrashlytics_UnsentReports_Check;
+- (double)FirebaseCrashlytics_UnsentReports_Delete;
+- (double)FirebaseCrashlytics_UnsentReports_Send;
+- (double)FirebaseCrashlytics_UnsentReports_Check;
 
 @end

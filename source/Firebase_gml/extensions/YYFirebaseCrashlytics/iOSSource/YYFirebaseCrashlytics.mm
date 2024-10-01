@@ -9,6 +9,10 @@ extern "C" void dsMapAddDouble(int _dsMap, char *_key, double _value);
 extern "C" void dsMapAddString(int _dsMap, char *_key, char *_value);
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
+// Error Codes
+static const double kFirebaseCrashlyticsSuccess = 0.0;
+static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
+
 @interface YYFirebaseCrashlytics ()
 
 // Private methods and properties can be declared here if needed.
@@ -16,6 +20,7 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 #pragma mark - Helper Methods
 
 - (void)sendAsyncEventWithType:(NSString *)eventType data:(NSDictionary *)data;
+- (BOOL)isStringNullOrEmpty:(NSString *)string;
 
 @end
 
@@ -31,62 +36,56 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
                 [FIRApp configure];
             }
         });
+
+        __weak YYFirebaseCrashlytics *weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            __strong YYFirebaseCrashlytics *strongSelf = weakSelf;
+            if (!strongSelf) return;
+
+            // Read the user's preference from NSUserDefaults
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            BOOL isCrashlyticsEnabled;
+            
+            if ([defaults objectForKey:@"CrashlyticsCollectionEnabled"] != nil) {
+                isCrashlyticsEnabled = [defaults boolForKey:@"CrashlyticsCollectionEnabled"];
+            } else {
+                // If the user hasn't set a preference, read from Info.plist
+                NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+                NSNumber *crashlyticsEnabled = infoDictionary[@"FirebaseCrashlyticsCollectionEnabled"];
+                if (crashlyticsEnabled != nil) {
+                    isCrashlyticsEnabled = [crashlyticsEnabled boolValue];
+                } else {
+                    // Default to YES if not set in Info.plist
+                    isCrashlyticsEnabled = YES;
+                }
+            }
+
+            strongSelf.isAutoDataCollectionEnabled = isCrashlyticsEnabled;
+        });
     }
     return self;
 }
 
-#pragma mark - Initialization
-
-- (void)FirebaseCrashlytics_Initialize {
-    // Read the user's preference from NSUserDefaults
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL isCrashlyticsEnabled;
-    
-    if ([defaults objectForKey:@"CrashlyticsCollectionEnabled"] != nil) {
-        isCrashlyticsEnabled = [defaults boolForKey:@"CrashlyticsCollectionEnabled"];
-        NSLog(@"CrashlyticsCollectionEnabled from NSUserDefaults: %d", isCrashlyticsEnabled);
-    } else {
-        // If the user hasn't set a preference, read from Info.plist
-        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        NSNumber *crashlyticsEnabled = infoDictionary[@"FirebaseCrashlyticsCollectionEnabled"];
-        if (crashlyticsEnabled != nil) {
-            isCrashlyticsEnabled = [crashlyticsEnabled boolValue];
-            NSLog(@"CrashlyticsCollectionEnabled from Info.plist: %d", isCrashlyticsEnabled);
-        } else {
-            // Default to YES if not set in Info.plist
-            isCrashlyticsEnabled = YES;
-            NSLog(@"CrashlyticsCollectionEnabled not set in Info.plist, defaulting to YES");
-        }
-    }
-
-    self.isAutoDataCollectionEnabled = isCrashlyticsEnabled;
-
-    // Optionally, send an event back to the game engine indicating initialization is complete
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(isCrashlyticsEnabled) forKey:@"isEnabled"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_Initialize" data:data];
-}
-
 #pragma mark - User Identification and Custom Keys
 
-- (void)FirebaseCrashlytics_SetUserIdentifier:(NSString *)string {
-    [[FIRCrashlytics crashlytics] setUserID:string];
-    NSLog(@"FirebaseCrashlytics_SetUserIdentifier: %@", string);
+- (double)FirebaseCrashlytics_SetUserIdentifier:(NSString *)userId {
+    [[FIRCrashlytics crashlytics] setUserID:userId];
+    return kFirebaseCrashlyticsSuccess;
 }
 
-- (void)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(id)value {
+- (double)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(NSString *)value {
     if (key && value) {
         [[FIRCrashlytics crashlytics] setCustomValue:value forKey:key];
-        NSLog(@"FirebaseCrashlytics_SetCustomKey: %@ = %@", key, value);
+        return kFirebaseCrashlyticsSuccess;
     } else {
-        NSLog(@"FirebaseCrashlytics_SetCustomKey: Invalid key or value.");
+        return kFirebaseCrashlyticsErrorInvalidParameters;
     }
 }
 
-- (void)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString {
+- (double)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString {
     if (!jsonString) {
         NSLog(@"FirebaseCrashlytics_SetCustomKeys: JSON string is nil.");
-        return;
+        return kFirebaseCrashlyticsErrorInvalidParameters;
     }
 
     __weak YYFirebaseCrashlytics *weakSelf = self;
@@ -108,127 +107,93 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
             return;
         }
 
-        for (NSString *key in keyValues) {
-            id value = keyValues[key];
-            if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
-                [[FIRCrashlytics crashlytics] setCustomValue:value forKey:key];
-                NSLog(@"FirebaseCrashlytics_SetCustomKeys: %@ = %@", key, value);
-            } else {
-                NSLog(@"FirebaseCrashlytics_SetCustomKeys: Unsupported value type for key: %@", key);
-            }
-        }
+        [[FIRCrashlytics crashlytics] setCustomKeysAndValues:keyValues];
 
         // Send event back indicating success
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
         [data setObject:@(1) forKey:@"success"];
         [strongSelf sendAsyncEventWithType:@"FirebaseCrashlytics_SetCustomKeys" data:data];
     });
+
+    return kFirebaseCrashlyticsSuccess;
 }
 
 #pragma mark - Logging and Exception Handling
 
-- (void)FirebaseCrashlytics_Log:(NSString *)message {
-    [[FIRCrashlytics crashlytics] log:message];
-    NSLog(@"FirebaseCrashlytics_Log: %@", message);
+- (double)FirebaseCrashlytics_Log:(NSString *)message {
+    if (message) {
+        [[FIRCrashlytics crashlytics] log:message];
+        return kFirebaseCrashlyticsSuccess;
+    }
+    return kFirebaseCrashlyticsErrorInvalidParameters;
 }
 
 - (void)FirebaseCrashlytics_Crash:(NSString *)message {
-    // Log the message before crashing
-    [[FIRCrashlytics crashlytics] log:message];
-    NSLog(@"FirebaseCrashlytics_Crash: %@", message);
-
-    // Create a custom exception and record it
-    NSException *exception = [NSException exceptionWithName:@"ForcedCrash" reason:message userInfo:nil];
-    [[FIRCrashlytics crashlytics] recordExceptionModel:[FIRExceptionModel exceptionModelWithName:exception.name reason:exception.reason]];
-
-    // Terminate the app
-    abort();
+    NSException *exception = [NSException exceptionWithName:@"FirebaseCrashlytics_Crash" reason:message userInfo:nil];
+    @throw exception;
 }
 
 - (void)FirebaseCrashlytics_RecordException:(NSString *)message {
-    if (message) {
-        NSException *exception = [NSException exceptionWithName:@"RecordedException" reason:message userInfo:nil];
-        FIRExceptionModel *exceptionModel = [FIRExceptionModel exceptionModelWithName:exception.name reason:exception.reason];
-        [[FIRCrashlytics crashlytics] recordExceptionModel:exceptionModel];
-        NSLog(@"FirebaseCrashlytics_RecordException: %@", message);
-
-        // Optionally, send event back indicating exception recorded
-        NSMutableDictionary *data = [NSMutableDictionary dictionary];
-        [data setObject:@(1) forKey:@"success"];
-        [self sendAsyncEventWithType:@"FirebaseCrashlytics_RecordException" data:data];
-    } else {
-        NSLog(@"FirebaseCrashlytics_RecordException: Message is nil.");
-        // Send event back indicating error
-        NSMutableDictionary *data = [NSMutableDictionary dictionary];
-        [data setObject:@(0) forKey:@"success"];
-        [data setObject:@"Message is nil" forKey:@"error"];
-        [self sendAsyncEventWithType:@"FirebaseCrashlytics_RecordException" data:data];
-    }
+    FIRExceptionModel *exceptionModel = [FIRExceptionModel exceptionModelWithName:@"FirebaseCrashlytics_RecordException" reason:message];
+    [[FIRCrashlytics crashlytics] recordExceptionModel:exceptionModel];
+    return kFirebaseCrashlyticsSuccess;
 }
 
 #pragma mark - Crashlytics Collection Control
 
 - (void)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled {
     self.isAutoDataCollectionEnabled = enabled >= 0.5;
-
-    // Store the preference
-    [[NSUserDefaults standardUserDefaults] setBool:self.isAutoDataCollectionEnabled forKey:@"CrashlyticsCollectionEnabled"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
     [[FIRCrashlytics crashlytics] setCrashlyticsCollectionEnabled:self.isAutoDataCollectionEnabled];
 
-    NSLog(@"FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set: %d", self.isAutoDataCollectionEnabled);
+    __weak YYFirebaseCrashlytics *weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        __strong YYFirebaseCrashlytics *strongSelf = weakSelf;
+        if (!strongSelf) return;
 
-    // Send event back indicating the new state
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(self.isAutoDataCollectionEnabled) forKey:@"isEnabled"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set" data:data];
+        // Store the preference
+        [[NSUserDefaults standardUserDefaults] setBool:strongSelf.isAutoDataCollectionEnabled forKey:@"CrashlyticsCollectionEnabled"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    });
+
+    return kFirebaseCrashlyticsSuccess;
 }
 
 - (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check {
-    NSLog(@"FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check: %d", self.isAutoDataCollectionEnabled);
     return self.isAutoDataCollectionEnabled ? 1.0 : 0.0;
 }
 
 - (double)FirebaseCrashlytics_DidCrashOnPreviousExecution {
     BOOL didCrash = [[FIRCrashlytics crashlytics] didCrashDuringPreviousExecution];
-    NSLog(@"FirebaseCrashlytics_DidCrashOnPreviousExecution: %d", didCrash);
-
-    // Optionally, send event back
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(didCrash) forKey:@"didCrash"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_DidCrashOnPreviousExecution" data:data];
-
     return didCrash ? 1.0 : 0.0;
 }
 
 #pragma mark - Unsent Reports Management
 
-- (void)FirebaseCrashlytics_UnsentReports_Delete {
-    NSLog(@"FirebaseCrashlytics_UnsentReports_Delete: Not supported in the latest SDK.");
-    // Optionally, send event back indicating not supported
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(0) forKey:@"success"];
-    [data setObject:@"Delete unsent reports is not supported in the latest SDK" forKey:@"error"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_UnsentReports_Delete" data:data];
+- (double)FirebaseCrashlytics_UnsentReports_Delete {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[FIRCrashlytics crashlytics] deleteUnsentReports];
+    });
+    return kFirebaseCrashlyticsSuccess;
 }
 
-- (void)FirebaseCrashlytics_UnsentReports_Send {
-    NSLog(@"FirebaseCrashlytics_UnsentReports_Send: Not supported in the latest SDK.");
-    // Optionally, send event back indicating not supported
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(0) forKey:@"success"];
-    [data setObject:@"Send unsent reports is not supported in the latest SDK" forKey:@"error"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_UnsentReports_Send" data:data];
+- (double)FirebaseCrashlytics_UnsentReports_Send {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[FIRCrashlytics crashlytics] sendUnsentReports];
+    });
+    return kFirebaseCrashlyticsSuccess;
 }
 
-- (void)FirebaseCrashlytics_UnsentReports_Check {
-    NSLog(@"FirebaseCrashlytics_UnsentReports_Check: Not supported in the latest SDK.");
-    // Optionally, send event back indicating not supported
-    NSMutableDictionary *data = [NSMutableDictionary dictionary];
-    [data setObject:@(0) forKey:@"success"];
-    [data setObject:@"Check for unsent reports is not supported in the latest SDK" forKey:@"error"];
-    [self sendAsyncEventWithType:@"FirebaseCrashlytics_UnsentReports_Check" data:data];
+- (double)FirebaseCrashlytics_UnsentReports_Check {
+    __weak YYFirebaseCrashlytics *weakSelf = self;
+    [[FIRCrashlytics crashlytics] checkAndUpdateUnsentReportsWithCompletion:^(FIRCrashlyticsReport * _Nullable report) {
+        __strong YYFirebaseCrashlytics *strongSelf = weakSelf;
+        if (!strongSelf) return;
+
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+		[data setObject:@(report == nil ? 0 : 1) forKey:@"value"];
+        [strongSelf sendAsyncEventWithType:@"FirebaseCrashlytics_UnsentReports_Check" data:data];
+    }];
+    return kFirebaseCrashlyticsSuccess;
 }
 
 #pragma mark - Helper Methods
@@ -298,6 +263,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
         createSocialAsyncEventWithDSMap(dsMapIndex);
     });
+}
+
+- (BOOL)isStringNullOrEmpty:(NSString *)string {
+    return string == nil || [string length] == 0
 }
 
 @end

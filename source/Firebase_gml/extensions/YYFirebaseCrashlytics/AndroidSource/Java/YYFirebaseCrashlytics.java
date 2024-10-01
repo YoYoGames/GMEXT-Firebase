@@ -1,4 +1,4 @@
-package com.yoyogames.YoyoPlayServices;
+package ${YYAndroidPackageName};
 
 import android.util.Log;
 import android.content.Context;

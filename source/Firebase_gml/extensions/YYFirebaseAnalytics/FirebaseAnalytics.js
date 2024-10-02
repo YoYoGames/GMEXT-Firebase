@@ -1,17 +1,15 @@
 
 // Global namespace for Firebase Analytics
-window.FirebaseAnalyticsExt = {
-    analyticsInstance: null,
-    analyticsModule: null,
-
+// Merge the new methods and properties into the existing FirebaseAnalyticsExt object
+window.FirebaseAnalyticsExt = Object.assign(window.FirebaseAnalyticsExt || {}, {
 	/**
 	 * Helper function to check if analytics is initialized.
-	 * Logs an error if `analyticsInstance` is not ready.
-	 * @return {boolean} `true` if `analyticsInstance` is ready, `false` otherwise.
+	 * Logs an error if `instance` is not ready.
+	 * @return {boolean} `true` if `instance` is ready, `false` otherwise.
 	 */
 	isAnalyticsInitialized: function() {
 		const context = window.FirebaseAnalyticsExt;
-		if (!context.analyticsInstance || !context.analyticsModule) {
+		if (!context.instance || !context.module) {
 			console.warn("Firebase Analytics is not initialized. Please wait for initialization to complete.");
 			return false;
 		}
@@ -86,19 +84,7 @@ window.FirebaseAnalyticsExt = {
 		// Send the constructed event using the GMS API
 		GMS_API.send_async_event_social(eventObject);
 	},
-};
-
-// Dynamic import to initialize Firebase Analytics asynchronously
-import('https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js')
-    .then((module) => {
-        // Initialize Firebase Analytics and store it in the global variable
-        window.FirebaseAnalyticsExt.analyticsInstance = module.getAnalytics();
-		window.FirebaseAnalyticsExt.analyticsModule = module;
-        console.log("Firebase Analytics initialized successfully.");
-    })
-    .catch((err) => {
-        console.error("Failed to load Firebase Analytics module:", err);
-    });
+});
 
 const FIREBASE_ANALYTICS_SUCCESS = 0.0;
 const FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS = -1.0;
@@ -112,11 +98,11 @@ const FIREBASE_ANALYTICS_ERROR_UNSUPPORTED = -3.0;
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetAnalyticsCollectionEnabled(enabled) {
-	const { isAnalyticsInitialized, analyticsInstance, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, instance, module } = window.FirebaseAnalyticsExt;
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
 	}
-    analyticsModule.setAnalyticsCollectionEnabled(analyticsInstance, enabled >= 0.5);
+    module.setAnalyticsCollectionEnabled(instance, enabled >= 0.5);
 
 	return FIREBASE_ANALYTICS_SUCCESS;
 }
@@ -129,7 +115,7 @@ function FirebaseAnalytics_SetAnalyticsCollectionEnabled(enabled) {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` if successful, `FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS` if the event name is invalid, or an error code if not initialized.
  */
 function FirebaseAnalytics_LogEvent(event, jsonValues) {
-	const { isAnalyticsInitialized, isValidEventName, sendAsyncEvent, analyticsInstance, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, isValidEventName, sendAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
 	}
@@ -147,7 +133,7 @@ function FirebaseAnalytics_LogEvent(event, jsonValues) {
         const params = typeof jsonValues === 'string' ? JSON.parse(jsonValues) : jsonValues || {};
         
         // Log the event with the parsed or provided parameters
-        analyticsModule.logEvent(analyticsInstance, event, params);
+        module.logEvent(instance, event, params);
         data.success = true;  // Indicate success
     } catch (error) {
         data.error = String(error);  // Capture and store the error message
@@ -177,7 +163,7 @@ function FirebaseAnalytics_ResetAnalyticsData() {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetDefaultEventParameters(jsonValues) {
-	const { isAnalyticsInitialized, sendAsyncEvent, analyticsInstance, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, sendAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
@@ -190,7 +176,7 @@ function FirebaseAnalytics_SetDefaultEventParameters(jsonValues) {
         const params = typeof jsonValues === 'string' ? JSON.parse(jsonValues) : jsonValues || null;
         
         // Set default event parameters with the resolved params object
-        analyticsModule.setDefaultEventParameters(analyticsInstance, params);
+        module.setDefaultEventParameters(instance, params);
         data.success = true;  // Indicate success
     } catch (error) {
         data.error = String(error);  // Capture the error message
@@ -221,13 +207,13 @@ function FirebaseAnalytics_SetSessionTimeoutDuration(time) {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetUserId(userID) {
-	const { isAnalyticsInitialized, analyticsInstance, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, instance, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
 	}
 	
-	analyticsModule.setUserId(analyticsInstance, userID || null);  // If userID is empty, set to null to clear
+	module.setUserId(instance, userID || null);  // If userID is empty, set to null to clear
 	return FIREBASE_ANALYTICS_SUCCESS;
 }
 
@@ -239,7 +225,7 @@ function FirebaseAnalytics_SetUserId(userID) {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` if successful, `FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS` if the event name is invalid, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetUserProperty(name, value) {
-	const { isAnalyticsInitialized, isValidPropertyName, analyticsInstance, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, isValidPropertyName, instance, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
@@ -250,7 +236,7 @@ function FirebaseAnalytics_SetUserProperty(name, value) {
         return FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS;
     }
 
-    analyticsModule.setUserProperties(analyticsInstance, { [name]: value || null });  // If value is empty, set to null
+    module.setUserProperties(instance, { [name]: value || null });  // If value is empty, set to null
 	return FIREBASE_ANALYTICS_SUCCESS;
 }
 
@@ -262,7 +248,7 @@ function FirebaseAnalytics_SetUserProperty(name, value) {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetConsent(ads, analytics) {
-	const { isAnalyticsInitialized, analyticsModule } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
@@ -272,6 +258,7 @@ function FirebaseAnalytics_SetConsent(ads, analytics) {
         ad_storage: ads >= 0.5 ? 'granted' : 'denied',
         analytics_storage: analytics >= 0.5 ? 'granted' : 'denied'
     };
-    analyticsModule.setConsent(consentMap);
+    module.setConsent(consentMap);
 	return FIREBASE_ANALYTICS_SUCCESS;
 }
+

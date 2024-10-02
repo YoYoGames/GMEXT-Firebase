@@ -46,7 +46,7 @@
   "gradleinject":"\r\n       implementation 'com.google.firebase:firebase-analytics'\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
-  "HTML5CodeInjection":"",
+  "HTML5CodeInjection":"<GM_HTML5_PostBody>\r\n<script type=\"module\">\r\n    // Import the entire module only after Firebase is initialized\r\n    import * as FirebaseAnalyticsModule from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js';\r\n\r\n    try {\r\n        // Initialize or merge module into the global namespace\r\n        window.FirebaseAnalyticsExt = Object.assign(window.FirebaseAnalyticsExt || {}, {\r\n            analyticsModule: FirebaseAnalyticsModule,\r\n            analyticsInstance: FirebaseAnalyticsModule.getAnalytics(), // Uses the default Firebase app instance\r\n        });\r\n        console.log(\"Firebase Analytics initialized successfully\");\r\n    } catch (error) {\r\n        console.error(\"Failed to initialize Firebase Analytics. Ensure Firebase is initialized before loading Analytics.\", error.message);\r\n    }\r\n</script>\r\n</GM_HTML5_PostBody>",
   "html5Props":true,
   "IncludedResources":[],
   "installdir":"",

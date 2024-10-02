@@ -118,7 +118,6 @@ public class YYFirebasePerformance {
         Trace trace = traceMap.get(name);
         if (trace != null) {
             long metricValue = trace.getLongMetric(metric);
-            Log.d(LOG_TAG, "Metric value retrieved from trace '" + name + "': " + metric + " = " + metricValue);
             return (double) metricValue;
         } else {
             Log.e(LOG_TAG, "Trace not found: " + name);

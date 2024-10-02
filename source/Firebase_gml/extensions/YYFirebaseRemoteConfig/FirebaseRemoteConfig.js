@@ -1,20 +1,18 @@
 
 
 // Global namespace for Firebase Remote Config
-window.FirebaseRemoteConfigExt = {
-    remoteConfigInstance: null,
-    remoteConfigModule: null,
+window.FirebaseRemoteConfigExt = Object.assign(window.FirebaseRemoteConfigExt || {}, {
     configUpdateListeners: [], // Array to store listeners for configuration changes
     pollingIntervalId: null,   // Track the polling interval ID for stopping
 
 	/**
 	 * Helper function to check if Remote Config is initialized.
-	 * Logs an error if `remoteConfigInstance` is not ready.
-	 * @return {boolean} `true` if `remoteConfigInstance` is ready, `false` otherwise.
+	 * Logs an error if `instance` is not ready.
+	 * @return {boolean} `true` if `instance` is ready, `false` otherwise.
 	 */
 	isRemoteConfigInitialized: function() {
 		const context = window.FirebaseRemoteConfigExt;
-		if (!context.remoteConfigInstance || !context.remoteConfigModule) {
+		if (!context.instance || !context.module) {
 			console.warn("Firebase Remote Config is not initialized. Please wait for initialization to complete.");
 			return false;
 		}
@@ -139,7 +137,7 @@ window.FirebaseRemoteConfigExt = {
 
         context.pollingIntervalId = setInterval(async () => {
             try {
-                const result = await context.remoteConfigInstance.fetchAndActivate();
+                const result = await context.instance.fetchAndActivate();
                 if (result) {
                     const updatedValues = context.getAllConfigValues();
                     const updatedKeys = [];
@@ -179,32 +177,19 @@ window.FirebaseRemoteConfigExt = {
             console.log("Stopped polling for Remote Config updates.");
         }
     },
-};
+});
 
 // Firebase Remote Config error codes
 const FIREBASE_REMOTE_CONFIG_SUCCESS = 0.0;
 const FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED = -1.0;
 const FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED = -2.0;
-
-// Dynamic import to initialize Firebase Remote Config asynchronously
-import('https://www.gstatic.com/firebasejs/9.6.1/firebase-remote-config.js')
-    .then((module) => {
-        window.FirebaseRemoteConfigExt.remoteConfigInstance = module.getRemoteConfig();
-		window.FirebaseRemoteConfigExt.remoteConfigModule = module;
-        console.log("Firebase Remote Config initialized successfully.");
-    })
-    .catch((err) => {
-        console.error("Failed to load Firebase Remote Config module:", err);
-    });
-
-
 /**
  * Initializes Firebase Remote Config with a specified minimum fetch interval.
  * @param {number} milliseconds Minimum fetch interval in milliseconds.
  * @return {number} Returns `FIREBASE_REMOTE_CONFIG_SUCCESS` if successful, or an error code if not initialized.
  */
 function FirebaseRemoteConfig_Initialize(seconds) {
-	const { isRemoteConfigInitialized, remoteConfigInstance } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, instance } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		console.warn("Firebase Remote Config module is not yet loaded.");
@@ -215,7 +200,7 @@ function FirebaseRemoteConfig_Initialize(seconds) {
 	const minimumFetchIntervalSeconds = seconds;
 
 	// Set the configuration settings for the Remote Config instance
-	remoteConfigInstance.settings = {
+	instance.settings = {
 		minimumFetchIntervalMillis: minimumFetchIntervalSeconds,
 	};
 
@@ -227,13 +212,13 @@ function FirebaseRemoteConfig_Initialize(seconds) {
  * @return {number} A promise that resolves to `FIREBASE_REMOTE_CONFIG_SUCCESS` if successful.
  */
 function FirebaseRemoteConfig_FetchAndActivate() {
-	const { isRemoteConfigInitialized, remoteConfigModule, remoteConfigInstance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, module, instance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED;
 	}
 
-	remoteConfigModule.fetchAndActivate(remoteConfigInstance)
+	module.fetchAndActivate(instance)
 		.then((result) => {
 			sendAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", { success: 1.0 });
 		})
@@ -260,7 +245,7 @@ function FirebaseRemoteConfig_Reset() {
  * @return {number} Returns `FIREBASE_REMOTE_CONFIG_SUCCESS` after setting defaults, or an error code if not initialized.
  */
 function FirebaseRemoteConfig_SetDefaultsAsync(json) {
-	const { isRemoteConfigInitialized, remoteConfigInstance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, instance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED;
@@ -273,7 +258,7 @@ function FirebaseRemoteConfig_SetDefaultsAsync(json) {
 		const defaults = typeof json === 'string' ? JSON.parse(json) : json || {};
 
 		// Set the defaults in the Remote Config instance
-		remoteConfigInstance.defaultConfig = defaults;
+		instance.defaultConfig = defaults;
 		data.success = 1.0;
 
 	} catch (error) {
@@ -291,13 +276,13 @@ function FirebaseRemoteConfig_SetDefaultsAsync(json) {
  * @return {Array<string>} An array of keys, or an empty array if not initialized.
  */
 function FirebaseRemoteConfig_GetKeys() {
-	const { isRemoteConfigInitialized, remoteConfigModule, remoteConfigInstance } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, module, instance } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return [];
 	}
 
-	let keyValues = remoteConfigModule.getAll(remoteConfigInstance);
+	let keyValues = module.getAll(instance);
 
 	return JSON.stringify(Object.keys(keyValues));
 }
@@ -308,14 +293,14 @@ function FirebaseRemoteConfig_GetKeys() {
  * @return {string|null} The value of the specified key, or `null` if not found.
  */
 function FirebaseRemoteConfig_GetString(key) {
-	const { isRemoteConfigInitialized, remoteConfigModule, remoteConfigInstance } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, module, instance } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		console.warn("Remote Config is not initialized.");
 		return "";
 	}
 
-	return remoteConfigModule.getString(remoteConfigInstance, key);
+	return module.getString(instance, key);
 }
 
 /**
@@ -324,14 +309,14 @@ function FirebaseRemoteConfig_GetString(key) {
  * @return {number} The value of the specified key, or `0` if not found.
  */
 function FirebaseRemoteConfig_GetDouble(key) {
-	const { isRemoteConfigInitialized, remoteConfigModule, remoteConfigInstance } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, module, instance } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		console.warn("Remote Config is not initialized.");
 		return 0;
 	}
 
-	return remoteConfigModule.getNumber(remoteConfigInstance, key);
+	return module.getNumber(instance, key);
 }
 
 /**

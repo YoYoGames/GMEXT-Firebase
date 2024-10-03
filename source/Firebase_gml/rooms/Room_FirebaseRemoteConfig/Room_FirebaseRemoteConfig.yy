@@ -28,7 +28,7 @@
   "name":"Room_FirebaseRemoteConfig",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Remote Config/Rooms.yy",
+    "path":"folders/Firebase Remote Config/Demo/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

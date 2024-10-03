@@ -46,7 +46,7 @@
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
   "maccompilerflags":"-fobjc-arc",
-  "maclinkerflags":"",
+  "maclinkerflags":"-ObjC",
   "macsourcedir":"",
   "name":"YYFirebaseAuthentication_tools",
   "options":[],

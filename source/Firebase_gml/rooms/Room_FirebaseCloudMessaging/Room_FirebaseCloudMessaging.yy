@@ -32,7 +32,7 @@
   "name":"Room_FirebaseCloudMessaging",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Cloud Messaging/Rooms.yy",
+    "path":"folders/Firebase Cloud Messaging/Demo/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

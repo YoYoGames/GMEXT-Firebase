@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import <FirebaseCore/FirebaseCore.h>
-#import <FirebaseInstallations/FirebaseInstallations.h>
 #import <FirebaseRemoteConfig/FirebaseRemoteConfig.h>
 
 @interface YYFirebaseRemoteConfig : NSObject

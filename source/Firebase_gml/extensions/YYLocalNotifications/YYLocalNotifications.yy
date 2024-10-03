@@ -51,7 +51,7 @@
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
   "maccompilerflags":"-fobjc-arc",
-  "maclinkerflags":"",
+  "maclinkerflags":"-ObjC",
   "macsourcedir":"",
   "name":"YYLocalNotifications",
   "options":[],

@@ -1,399 +1,342 @@
-
 package ${YYAndroidPackageName};
-
 import ${YYAndroidPackageName}.R;
+
+import ${YYAndroidPackageName}.ListenerIDGenerator;
+
 import com.yoyogames.runner.RunnerJNILib;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
-//import com.google.firebase.storage.StorageTask.ProvideError;
-import com.google.firebase.storage.StreamDownloadTask.StreamProcessor;
-import com.google.firebase.storage.CancellableTask;
-import com.google.firebase.storage.ControllableTask;
-import com.google.firebase.storage.FileDownloadTask;
-//import com.google.firebase.storage.FileDownloadTask.TaskSnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-//import com.google.firebase.storage.StorageMetadata.Builder;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.StorageTask.SnapshotBase;
-import com.google.firebase.storage.StreamDownloadTask;
-//import com.google.firebase.storage.StreamDownloadTask.TaskSnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.UploadTask;
-//import com.google.firebase.storage.UploadTask.TaskSnapshot;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.ListResult;
 
-import java.util.HashMap;
-
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
-import org.json.JSONObject;
 import org.json.JSONArray;
 
-import android.util.Log;
-import java.io.File;
 import android.net.Uri;
-import java.net.URL;
+import java.io.File;
 import java.lang.Exception;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import androidx.annotation.NonNull;
 
-public class YYFirebaseStorage extends RunnerSocial
-{
-	private static final int EVENT_OTHER_SOCIAL = 70;
-	
-	public static Activity activity = RunnerActivity.CurrentActivity;	
-	
-	//Start point of index
-	//Autentication 5000
-	//storage 6000
-	//Firestore 7000
-	//RealTime 10000
-	private double listernerInd = 7000;
-	private HashMap<String,StorageTask> taskMap;
-	
-	public YYFirebaseStorage()
-	{
-		taskMap = new HashMap<String,StorageTask>();
-	}
-	
-	
-	private void Storage_addToTaskMap(StorageTask task,double ind)
-	{
-		taskMap.put(String.valueOf(ind),task);
-	}
-	
-	private double Firestore_getListenerInd()
-	{
-		listernerInd ++;
-		return(listernerInd);
-	}
-	
-	public void SDKFirebaseStorage_Cancel(double ind)
-	{
-		taskMap.remove(String.valueOf(ind)).cancel();
-	}
-	
-	public double SDKFirebaseStorage_Download(final String localPath,final String firebasePath,final String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		StorageReference islandRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+public class YYFirebaseStorage extends RunnerSocial {
+    private static final int EVENT_OTHER_SOCIAL = 70;
+    private static final String LOG_TAG = "YYFirebaseStorage";
+    private static final long MIN_PROGRESS_UPDATE_INTERVAL_MS = 500; // Minimum interval between progress updates
 
-		File localFile = new File(activity.getFilesDir()+"/"+localPath);
-		StorageTask task = islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() 
-		{
-			@Override
-			public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");	
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				
-				if(taskSnapshot.getError() != null)
-				{
-					RunnerJNILib.DsMapAddString(dsMapIndex,"error",taskSnapshot.getError().getMessage());
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-					return;
-				}
-				
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"transferred",taskSnapshot.getBytesTransferred());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"total",taskSnapshot.getTotalByteCount());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-			
-		}).addOnFailureListener(new OnFailureListener() 
-		{
-			@Override
-			public void onFailure(@NonNull Exception e) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		}).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() 
-		{
-			@Override
-			public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Download");	
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				
-				if(taskSnapshot.getError() != null)
-				{
-					RunnerJNILib.DsMapAddString(dsMapIndex,"error",taskSnapshot.getError().getMessage());
-					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-					return;
-				}
-				
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"transferred",taskSnapshot.getBytesTransferred());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"total",taskSnapshot.getTotalByteCount());
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+    // Error Codes
+    public static final double FIREBASE_STORAGE_SUCCESS = 0.0;
+    public static final double FIREBASE_STORAGE_ERROR_NOT_FOUND = -1.0;
+
+    private HashMap<Long, StorageTask<?>> taskMap;
+    private HashMap<Long, Long> lastProgressUpdateTime;
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
+
+    public YYFirebaseStorage() {
+        taskMap = new HashMap<>();
+        lastProgressUpdateTime = new HashMap<>();
+    }
+
+    // <editor-fold desc="General API">
+
+	public double SDKFirebaseStorage_Cancel(double ind) {
+		long listenerInd = (long) ind; // Convert double to long
+		StorageTask<?> task = taskMap.remove(listenerInd);
+		if (task != null) {
+			task.cancel();
+			return FIREBASE_STORAGE_SUCCESS;
+		} else {
+			return FIREBASE_STORAGE_ERROR_NOT_FOUND;
+		}
+	}
+
+    public double SDKFirebaseStorage_Download(final String localPath, final String firebasePath, final String bucket) {
+		final long listenerInd = getListenerInd();
+	
+		executorService.execute(() -> {
+			try {
+				Activity activity = RunnerActivity.CurrentActivity;
+				File localFile = new File(activity.getFilesDir(), localPath);
+				StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+	
+				StorageTask<FileDownloadTask.TaskSnapshot> task = storageRef.getFile(localFile)
+						.addOnSuccessListener(taskSnapshot -> {
+							taskMap.remove(listenerInd);
+                            lastProgressUpdateTime.remove(listenerInd);
+							sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, true, null);
+						})
+						.addOnFailureListener(e -> {
+							taskMap.remove(listenerInd);
+                            lastProgressUpdateTime.remove(listenerInd);
+							Map<String, Object> data = new HashMap<>();
+							data.put("error", e.getMessage());
+							sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, false, data);
+						})
+						.addOnProgressListener(taskSnapshot -> {
+							throttleProgressUpdate(listenerInd, "FirebaseStorage_Download", firebasePath, localPath,
+									taskSnapshot.getBytesTransferred(), taskSnapshot.getTotalByteCount());
+						});
+	
+				taskMap.put(listenerInd, task);
+			} catch (Exception e) {
+				Log.e(LOG_TAG, "Error in download: " + e.getMessage());
+				Map<String, Object> data = new HashMap<>();
+				data.put("error", e.getMessage());
+				sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, false, data);
 			}
 		});
-		
-		Storage_addToTaskMap(task,listenerInd);
-		
-		return listenerInd;
-	}
 	
-	public double SDKFirebaseStorage_Upload(final String localPath,final String firebasePath,final String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		File localFile = new File(activity.getFilesDir()+"/"+localPath);
-		Uri uriFile = Uri.fromFile(localFile);
-		StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-		UploadTask uploadTask = storageRef.child(firebasePath).putFile(uriFile);
-		StorageTask task = uploadTask.addOnFailureListener(new OnFailureListener() 
-		{
-			@Override
-			public void onFailure(@NonNull Exception exception) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");	
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		}).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() 
-		{
-			@Override
-			public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				
-				if(taskSnapshot.getError() != null)
-				{
-					RunnerJNILib.DsMapAddString(dsMapIndex,"error",taskSnapshot.getError().getMessage());
-					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-					return;
-				}
-				
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"transferred",taskSnapshot.getBytesTransferred());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"total",taskSnapshot.getTotalByteCount());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		}).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() 
-		{
-			@Override
-			public void onProgress(UploadTask.TaskSnapshot taskSnapshot) 
-			{
-				double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Upload");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"localPath",localPath);
-				
-				if(taskSnapshot.getError() != null)
-				{
-					RunnerJNILib.DsMapAddString(dsMapIndex,"error",taskSnapshot.getError().getMessage());
-					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-					return;
-				}
-				
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"transferred",taskSnapshot.getBytesTransferred());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"total",taskSnapshot.getTotalByteCount());
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		Storage_addToTaskMap(task,listenerInd);
-		return listenerInd;
+		return (double) listenerInd;
 	}
-	
-	public double SDKFirebaseStorage_Delete(final String firebasePath,final String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-		StorageReference desertRef = storageRef.child(firebasePath);
-		desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() 
-		{
-			@Override
-			public void onSuccess(Void aVoid) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Delete");	
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		}).addOnFailureListener(new OnFailureListener() 
-		{
-			@Override
-			public void onFailure(@NonNull Exception exception) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_Delete");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		
-		return listenerInd;
-	}
-		
-	public double SDKFirebaseStorage_GetURL(final String firebasePath,final String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		FirebaseStorage.getInstance().getReference().child(firebasePath).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() 
-		{
-			@Override
-			public void onSuccess(Uri uri) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_GetURL");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-				try
-				{RunnerJNILib.DsMapAddString(dsMapIndex,"value",uri.toString());}
-				catch(Exception e)
-				{RunnerJNILib.DsMapAddString(dsMapIndex,"value","");}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		}).addOnFailureListener(new OnFailureListener() 
-		{
-			@Override
-			public void onFailure(@NonNull Exception exception)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_GetURL");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	
-	public double SDKFirebaseStorage_List(final String firebasePath,double maxResults,String pageToken,String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		Task<ListResult> task;
-		
-		if(pageToken.equals(""))
-			task = FirebaseStorage.getInstance().getReference().child(firebasePath).list((int)maxResults);
-		else
-			task = FirebaseStorage.getInstance().getReference().child(firebasePath).list((int)maxResults,pageToken);
-		
-		task.addOnCompleteListener(new OnCompleteListener<ListResult>() 
-		{
-            @Override
-            public void onComplete(Task<ListResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_List");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"pageToken",task.getResult().getPageToken());
-					RunnerJNILib.DsMapAddString(dsMapIndex,"files",listOfReferencesToJSON(task.getResult().getItems()));
-					RunnerJNILib.DsMapAddString(dsMapIndex,"folders",listOfReferencesToJSON(task.getResult().getPrefixes()));
-				}
-				else
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+
+    public double SDKFirebaseStorage_Upload(final String localPath, final String firebasePath, final String bucket) {
+        final long listenerInd = getListenerInd();
+
+        executorService.execute(() -> {
+            try {
+				Activity activity = RunnerActivity.CurrentActivity;
+                File localFile = new File(activity.getFilesDir(), localPath);
+                if (!localFile.exists()) {
+                    throw new Exception("Local file does not exist: " + localPath);
+                }
+                Uri uriFile = Uri.fromFile(localFile);
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+
+                StorageTask<UploadTask.TaskSnapshot> task = storageRef.putFile(uriFile)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            taskMap.remove(listenerInd);
+                            lastProgressUpdateTime.remove(listenerInd);
+                            sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, true, null);
+                        })
+                        .addOnFailureListener(e -> {
+                            taskMap.remove(listenerInd);
+                            lastProgressUpdateTime.remove(listenerInd);
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("error", e.getMessage());
+                            sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, false, data);
+                        })
+                        .addOnProgressListener(taskSnapshot -> {
+                            throttleProgressUpdate(listenerInd, "FirebaseStorage_Upload", firebasePath, localPath,
+                                    taskSnapshot.getBytesTransferred(), taskSnapshot.getTotalByteCount());
+                        });
+
+                taskMap.put(listenerInd, task);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Error in upload: " + e.getMessage());
+                Map<String, Object> data = new HashMap<>();
+                data.put("error", e.getMessage());
+                sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, false, data);
             }
-        });	
-		
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseStorage_ListAll(final String firebasePath,String bucket)
-	{
-		final double listenerInd = Firestore_getListenerInd();
-		
-		FirebaseStorage.getInstance().getReference().child(firebasePath).listAll().addOnCompleteListener(new OnCompleteListener<ListResult>() 
-		{
-            @Override
-            public void onComplete(Task<ListResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseStorage_ListAll");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",firebasePath);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",1.0);
-					// RunnerJNILib.DsMapAddString(dsMapIndex,"pageToken",task.getResult().getPageToken());
-					RunnerJNILib.DsMapAddString(dsMapIndex,"files",listOfReferencesToJSON(task.getResult().getItems()));
-					RunnerJNILib.DsMapAddString(dsMapIndex,"folders",listOfReferencesToJSON(task.getResult().getPrefixes()));
-				}
-				else
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"success",0.0);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+        });
+
+        return (double) listenerInd;
+    }
+
+    public double SDKFirebaseStorage_Delete(final String firebasePath, final String bucket) {
+        final long listenerInd = getListenerInd();
+
+        executorService.execute(() -> {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+            storageRef.delete()
+                    .addOnSuccessListener(aVoid -> {
+                        sendStorageEvent("FirebaseStorage_Delete", listenerInd, firebasePath, null, true, null);
+                    })
+                    .addOnFailureListener(e -> {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("error", e.getMessage());
+                        sendStorageEvent("FirebaseStorage_Delete", listenerInd, firebasePath, null, false, data);
+                    });
+        });
+
+        return (long) listenerInd;
+    }
+
+    public double SDKFirebaseStorage_GetURL(final String firebasePath, final String bucket) {
+        final long listenerInd = getListenerInd();
+
+        executorService.execute(() -> {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+            storageRef.getDownloadUrl()
+                    .addOnSuccessListener(uri -> {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("value", uri.toString());
+                        sendStorageEvent("FirebaseStorage_GetURL", listenerInd, firebasePath, null, true, data);
+                    })
+                    .addOnFailureListener(e -> {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("error", e.getMessage());
+                        sendStorageEvent("FirebaseStorage_GetURL", listenerInd, firebasePath, null, false, data);
+                    });
+        });
+
+        return (double) listenerInd;
+    }
+
+    public double SDKFirebaseStorage_List(final String firebasePath, double maxResults, String pageToken, String bucket) {
+        final long listenerInd = getListenerInd();
+
+        executorService.execute(() -> {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+            Task<ListResult> task;
+            if (pageToken == null || pageToken.isEmpty()) {
+                task = storageRef.list((int) maxResults);
+            } else {
+                task = storageRef.list((int) maxResults, pageToken);
             }
-        });	
+
+            task.addOnCompleteListener(taskResult -> {
+                if (taskResult.isSuccessful()) {
+                    ListResult result = taskResult.getResult();
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("pageToken", result.getPageToken() != null ? result.getPageToken() : "");
+                    data.put("files", listOfReferencesToJSON(result.getItems()));
+                    data.put("folders", listOfReferencesToJSON(result.getPrefixes()));
+                    sendStorageEvent("FirebaseStorage_List", listenerInd, firebasePath, null, true, data);
+                } else {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("error", taskResult.getException().getMessage());
+                    sendStorageEvent("FirebaseStorage_List", listenerInd, firebasePath, null, false, data);
+                }
+            });
+        });
+
+        return (double) listenerInd;
+    }
+
+    public double SDKFirebaseStorage_ListAll(final String firebasePath, String bucket) {
+        final long listenerInd = getListenerInd();
+
+        executorService.execute(() -> {
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
+            storageRef.listAll()
+                    .addOnCompleteListener(taskResult -> {
+                        if (taskResult.isSuccessful()) {
+                            ListResult result = taskResult.getResult();
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("files", listOfReferencesToJSON(result.getItems()));
+                            data.put("folders", listOfReferencesToJSON(result.getPrefixes()));
+                            sendStorageEvent("FirebaseStorage_ListAll", listenerInd, firebasePath, null, true, data);
+                        } else {
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("error", taskResult.getException().getMessage());
+                            sendStorageEvent("FirebaseStorage_ListAll", listenerInd, firebasePath, null, false, data);
+                        }
+                    });
+        });
+
+        return (double) listenerInd;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Application Lifecycle">
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            executorService.shutdown();
+            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
+        }
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Helper Methods">
+
+    private long getListenerInd() {
+        return ListenerIDGenerator.getInstance().getNextListenerId();
+    }
+
+    private String listOfReferencesToJSON(List<StorageReference> list) {
+        try {
+            JSONArray array = new JSONArray();
+            for (StorageReference ref : list) {
+                array.put(ref.getPath());
+            }
+            return array.toString();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error converting list to JSON: " + e.getMessage());
+            return "[]";
+        }
+    }
+
+	private void sendStorageEvent(String eventType, long listenerInd, String path, String localPath, boolean success, Map<String, Object> additionalData) {
 		
-		return listenerInd;
+        // Initialize a new map with the contents of the source map
+        Map<String, Object> data = new HashMap<>();
+        data.put("listener", (double) listenerInd); // Convert to double here
+		data.put("path", path);
+		if (localPath != null) {
+			data.put("localPath", localPath);
+		}
+		data.put("success", success);
+        if (additionalData != null) {
+            data.putAll(additionalData);
+        }
+		sendAsyncEvent(eventType, data);
 	}
+
+	private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
+            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
+            if (data != null) {
+                for (Map.Entry<String, Object> entry : data.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
+                    if (value instanceof String) {
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
+                    } else if (value instanceof Double) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
+                    } else if (value instanceof Integer) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
+                    } else if (value instanceof Boolean) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
+                    } else if (value instanceof Long) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
+                    } else if (value instanceof Float) {
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
+                    } else {
+                        // Convert other types to String
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
+                    }
+                }
+            }
+            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+        });
+    }
+
+	private void throttleProgressUpdate(long listenerInd, String eventType, String path, String localPath, long bytesTransferred, long totalByteCount) {
+		long currentTime = System.currentTimeMillis();
+		Long lastUpdateTime = lastProgressUpdateTime.get(listenerInd);
+		if (lastUpdateTime == null || (currentTime - lastUpdateTime) >= MIN_PROGRESS_UPDATE_INTERVAL_MS) {
+			lastProgressUpdateTime.put(listenerInd, currentTime);
 	
-	public static String listOfReferencesToJSON(List<StorageReference> list)
-	{
-		try
-		{
-			JSONArray array = new JSONArray();
-			for (int i = 0 ; i < list.size(); i++)
-				array.put(list.get(i).getPath());
-			
-			return (array.toString());
-		}
-		catch(Exception e)
-		{
-			return "[]";
+			Map<String, Object> data = new HashMap<>();
+			data.put("transferred", (double) bytesTransferred);
+			data.put("total", (double) totalByteCount);
+	
+			sendStorageEvent(eventType, listenerInd, path, localPath, true, data);
 		}
 	}
-	
-	///////////////////// ESSENCIAL TOOLS
-	public static String MapToJSON(HashMap map)
-	{
-		try
-		{
-			return (new JSONObject(map).toString());
-		}
-		catch(Exception e)
-		{
-			return "{}";
-		}
-	}
-	
+
+    // </editor-fold>
 }
-

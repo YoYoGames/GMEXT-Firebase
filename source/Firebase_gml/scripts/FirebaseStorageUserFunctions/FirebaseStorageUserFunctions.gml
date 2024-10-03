@@ -13,7 +13,7 @@ function FirebaseStorage_Download(localfilename,firebasePath,bucket = "")
 	if(os_browser == browser_not_a_browser)
 		return SDKFirebaseStorage_Download(localfilename,firebasePath,bucket)
 	else
-		return SDKFirebaseStorage_Download(localfilename,firebasePath,game_display_name,bucket)
+		return SDKFirebaseStorage_Download(localfilename,firebasePath,bucket)
 }
 
 function FirebaseStorage_Upload(localPath,firebasePath,bucket = "")
@@ -22,7 +22,7 @@ function FirebaseStorage_Upload(localPath,firebasePath,bucket = "")
 	if(os_browser == browser_not_a_browser)
 		return SDKFirebaseStorage_Upload(localPath,firebasePath,bucket)
 	else
-		return SDKFirebaseStorage_Upload(localPath,firebasePath,game_display_name,bucket)
+		return SDKFirebaseStorage_Upload(localPath,firebasePath,bucket)
 }
 
 function FirebaseStorage_Delete(firebasePath,bucket = "")
@@ -37,7 +37,7 @@ function FirebaseStorage_GetURL(firebasePath,bucket = "")
 		return SDKFirebaseStorage_GetURL(firebasePath,bucket)
 }
 
-function FirebaseStorage_List(firebasePath,maxResults,pageToken = "",bucket = "")
+function FirebaseStorage_List(firebasePath,maxResults,pageToken = "", bucket = "")
 {
 	if(FirebaseStorage_Library_useSDK)
 		return SDKFirebaseStorage_List(firebasePath,maxResults,pageToken,bucket)

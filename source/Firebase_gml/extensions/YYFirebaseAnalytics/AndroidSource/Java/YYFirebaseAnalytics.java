@@ -144,7 +144,12 @@ public class YYFirebaseAnalytics extends RunnerSocial {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        shutdownExecutor();
+        try {
+            executorService.shutdown();
+            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
+        }
     }
 
     // </editor-fold>
@@ -275,15 +280,6 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         } else {
             Log.w(LOG_TAG, methodName + " :: Unsupported type " + value.getClass().getSimpleName() + " for key: " + key);
             bundle.putString(key, value.toString());
-        }
-    }
-
-    private void shutdownExecutor() {
-        try {
-            executorService.shutdown();
-            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
         }
     }
 

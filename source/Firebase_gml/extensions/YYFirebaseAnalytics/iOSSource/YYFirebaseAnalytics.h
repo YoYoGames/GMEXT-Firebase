@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <FirebaseCore/FirebaseCore.h>
-#import <FirebaseAnalytics/FirebaseAnalytics.h>
+#import <FirebaseCore/FirebaseCore.h>;
+#import <FirebaseAnalytics/FirebaseAnalytics.h>;
 
 @interface YYFirebaseAnalytics : NSObject
 

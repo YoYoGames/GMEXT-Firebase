@@ -266,7 +266,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
 }
 
 - (BOOL)isStringNullOrEmpty:(NSString *)string {
-    return string == nil || [string length] == 0
+    return string == nil || [string length] == 0;
 }
 
 @end

@@ -20,7 +20,7 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
 - (void)sendAsyncEventWithType:(NSString *)eventType data:(NSDictionary *)data;
 - (BOOL)isStringNullOrEmpty:(NSString *)string;
 - (BOOL)isValidEventName:(NSString *)eventName;
-- (BOOL)isValidPropertyName:(NSString *)propertyName
+- (BOOL)isValidPropertyName:(NSString *)propertyName;
 - (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName;
 - (NSDictionary *)processJsonObject:(id)jsonObject methodName:(NSString *)methodName;
 - (NSArray *)processJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName;
@@ -74,11 +74,10 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
             [data setObject:@(0) forKey:@"success"];
         }
 
-        [data setObject:jsonError.localizedDescription forKey:@"error"];
         [strongSelf sendAsyncEventWithType:@"FirebaseAnalytics_LogEvent" data:data];
     });
 
-    return kFirebaseAnalyticsAsync;
+    return kFirebaseAnalyticsSuccess;
 }
 
 - (double)FirebaseAnalytics_ResetAnalyticsData {
@@ -225,7 +224,7 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
 }
 
 - (BOOL)isStringNullOrEmpty:(NSString *)string {
-    return string == nil || [string length] == 0
+    return string == nil || [string length] == 0;
 }
 
 - (BOOL)isValidEventName:(NSString *)eventName {

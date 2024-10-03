@@ -1,22 +1,15 @@
 
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseStorage/FirebaseStorage-Swift.h>
 
-#if !defined(__has_include)
-  #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \import the headers individually."
-#else
+@interface YYFirebaseStorage : NSObject
 
-  #if __has_include(<FirebaseStorage/FirebaseStorage-Swift.h>)
-    #import <FirebaseStorage/FirebaseStorage-Swift.h>
-  #endif
-
-#endif  // defined(__has_include)
-
-@interface YYFirebaseStorage:NSObject
-{
-    NSMutableDictionary *ListenerMap;
-    int indMap;
-}
-
+- (double)SDKFirebaseStorage_Cancel:(double)ind;
+- (double)SDKFirebaseStorage_Download:(NSString *)localPath firebasePath:(NSString *)firebasePath bucket:(NSString *)bucket;
+- (double)SDKFirebaseStorage_Upload:(NSString *)localPath firebasePath:(NSString *)firebasePath bucket:(NSString *)bucket;
+- (double)SDKFirebaseStorage_Delete:(NSString *)firebasePath bucket:(NSString *)bucket;
+- (double)SDKFirebaseStorage_GetURL:(NSString *)firebasePath bucket:(NSString *)bucket;
+- (double)SDKFirebaseStorage_List:(NSString *)firebasePath maxResults:(double)maxResults pageToken:(NSString *)pageToken bucket:(NSString *)bucket;
+- (double)SDKFirebaseStorage_ListAll:(NSString *)firebasePath bucket:(NSString *)bucket;
 
 @end
-

@@ -24,7 +24,7 @@
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_PARAMETERS","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_PARAMETERS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-4",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_URL","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_URL","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-5",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_UNSUPPORTED","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_UNSUPPORTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-6",},
-      ],"copyToTargets":44,"filename":"FirebasePerformanceMonitoring.ext","final":"","functions":[
+      ],"copyToTargets":44,"filename":"FirebasePerformance.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_setPerformanceCollectionEnabled","argCount":0,"args":[2,],"documentation":"/// @desc Enables or disables Firebase Performance Monitoring data collection. No return value.\r\n/// @param {Real} value `1.0` to enable performance collection, `0.0` to disable it.\r\n/// @returns {void}","externalName":"FirebasePerformance_setPerformanceCollectionEnabled","help":"FirebasePerformance_setPerformanceCollectionEnabled(bool)","hidden":false,"kind":4,"name":"FirebasePerformance_setPerformanceCollectionEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_isPerformanceCollectionEnabled","argCount":0,"args":[],"documentation":"/// @desc Checks whether Firebase Performance Monitoring data collection is enabled. Returns `1.0` if enabled, `0.0` if disabled.\r\n/// @returns {Real}","externalName":"FirebasePerformance_isPerformanceCollectionEnabled","help":"FirebasePerformance_isPerformanceCollectionEnabled()","hidden":false,"kind":4,"name":"FirebasePerformance_isPerformanceCollectionEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_Trace_Create","argCount":0,"args":[1,],"documentation":"/// @desc Creates a new Firebase Performance Monitoring trace with a given name. Returns `FIREBASE_PERFORMANCE_SUCCESS` if the trace is created successfully, or an error code if the trace creation fails.\r\n/// @param {String} name The name of the trace to be created.\r\n/// @returns {Real}","externalName":"FirebasePerformance_Trace_Create","help":"FirebasePerformance_Trace_Create(name)","hidden":false,"kind":4,"name":"FirebasePerformance_Trace_Create","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
@@ -72,7 +72,7 @@
         {"name":"FirebasePerformance_HttpMetric_Attribute_Remove","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
         {"name":"FirebasePerformance_HttpMetric_Attribute_Get","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
       ],"origname":"","ProxyFiles":[
-        {"$GMProxyFile":"","%Name":"FirebasePerformanceMonitoring.js","name":"FirebasePerformanceMonitoring.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
+        {"$GMProxyFile":"","%Name":"FirebasePerformance.js","name":"FirebasePerformance.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
   ],
   "gradleinject":"\r\n        implementation 'com.google.firebase:firebase-perf'\r\n",
@@ -83,8 +83,8 @@
   "IncludedResources":[],
   "installdir":"",
   "iosCocoaPodDependencies":"",
-  "iosCocoaPods":"\r\npod 'FirebasePerformance','10.25'\r\n",
-  "ioscodeinjection":"\r\n<YYIosPlist>\r\n      <key>firebase_performance_collection_enabled</key>\r\n      <true/>\r\n</YYIosPlist>\r\n\r\n<YYIosCocoaPods>\r\npod 'FirebasePerformance','10.25'\r\n</YYIosCocoaPods>\r\n\r\n",
+  "iosCocoaPods":"\r\npod 'FirebasePerformance'\r\n",
+  "ioscodeinjection":"\r\n<YYIosPlist>\r\n      <key>firebase_performance_collection_enabled</key>\r\n      <true/>\r\n</YYIosPlist>\r\n\r\n<YYIosCocoaPods>\r\npod 'FirebasePerformance'\r\n</YYIosCocoaPods>\r\n\r\n",
   "iosdelegatename":"",
   "iosplistinject":"\r\n      <key>firebase_performance_collection_enabled</key>\r\n      <true></true>\r\n",
   "iosProps":true,
@@ -92,7 +92,7 @@
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
   "maccompilerflags":"-fobjc-arc",
-  "maclinkerflags":"",
+  "maclinkerflags":"-ObjC",
   "macsourcedir":"",
   "name":"YYFirebasePerformance",
   "options":[],

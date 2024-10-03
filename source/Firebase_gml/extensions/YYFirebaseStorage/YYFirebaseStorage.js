@@ -339,29 +339,19 @@ function SDKFirebaseStorage_Delete(firebasePath, bucket = '') {
     module.deleteObject(storageRef)
         .then(() => {
             // File deleted successfully
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                success: true,
-            };
-            sendAsyncEvent('FirebaseStorage_Delete', data);
+			sendStorageEvent('SDKFirebaseStorage_Delete', listener, firebasePath, null, true, null);
         })
         .catch((error) => {
             // Handle error
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                error: error.message,
-                success: false,
-            };
-            sendAsyncEvent('FirebaseStorage_Delete', data);
+            const data = { error: error.message };
+			sendStorageEvent('SDKFirebaseStorage_Delete', listener, firebasePath, null, false, data);
         });
 
     return listener;
 }
 
 function SDKFirebaseStorage_GetURL(firebasePath, bucket = '') {
-    const { isStorageInitialized, module, getListenerInd, sendAsyncEvent } = window.FirebaseStorageExt;
+    const { isStorageInitialized, module, getListenerInd, sendStorageEvent } = window.FirebaseStorageExt;
     if (!isStorageInitialized()) {
         return FIREBASE_STORAGE_ERROR_NOT_INITIALIZED;
     }
@@ -380,31 +370,21 @@ function SDKFirebaseStorage_GetURL(firebasePath, bucket = '') {
     // Get the download URL
     module.getDownloadURL(storageRef)
         .then((url) => {
-            // Send success event with the URL
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                url: url,
-                success: true,
-            };
-            sendAsyncEvent('FirebaseStorage_GetURL', data);
+			// Send success event
+            const data = { value: url };
+			sendStorageEvent('FirebaseStorage_GetURL', listener, firebasePath, null, true, data);
         })
         .catch((error) => {
             // Handle error
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                error: error.message,
-                success: false,
-            };
-            sendAsyncEvent('FirebaseStorage_GetURL', data);
+            const data = { error: error.message };
+			sendStorageEvent('FirebaseStorage_GetURL', listener, firebasePath, null, false, data);
         });
 
     return listener;
 }
 
 function SDKFirebaseStorage_List(firebasePath, maxResults, pageToken = '', bucket = '') {
-    const { isStorageInitialized, module, getListenerInd, sendAsyncEvent } = window.FirebaseStorageExt;
+    const { isStorageInitialized, module, getListenerInd, sendStorageEvent } = window.FirebaseStorageExt;
     if (!isStorageInitialized()) {
         return FIREBASE_STORAGE_ERROR_NOT_INITIALIZED;
     }
@@ -436,32 +416,22 @@ function SDKFirebaseStorage_List(firebasePath, maxResults, pageToken = '', bucke
             const items = result.items.map(itemRef => itemRef.fullPath);
             const prefixes = result.prefixes.map(prefixRef => prefixRef.fullPath);
 
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                items: items,
-                prefixes: prefixes,
-                nextPageToken: result.nextPageToken || "",
-                success: true,
-            };
-            sendAsyncEvent('FirebaseStorage_List', data);
+            const data = { files: items, folders: prefixes };
+
+			// Send success event
+			sendStorageEvent('FirebaseStorage_List', listener, firebasePath, null, true, data);
         })
         .catch((error) => {
             // Handle error
-            const data = {
-                listener: listener,
-                path: firebasePath,
-                error: error.message,
-                success: false,
-            };
-            sendAsyncEvent('FirebaseStorage_List', data);
+            const data = { error: error.message };
+            sendStorageEvent('FirebaseStorage_List', listener, firebasePath, null, false, data);
         });
 
     return listener;
 }
 
 function SDKFirebaseStorage_ListAll(firebasePath, bucket) {
-    const { isStorageInitialized, module, getListenerInd, sendAsyncEvent } = window.FirebaseStorageExt;
+    const { isStorageInitialized, module, getListenerInd, sendStorageEvent } = window.FirebaseStorageExt;
     if (!isStorageInitialized()) {
         return FIREBASE_STORAGE_ERROR_NOT_INITIALIZED;
     }
@@ -492,13 +462,8 @@ function SDKFirebaseStorage_ListAll(firebasePath, bucket) {
             })
             .catch((error) => {
                 // Handle error
-                const data = {
-                    listener: listener,
-                    path: firebasePath,
-                    error: error.message,
-                    success: false,
-                };
-                sendAsyncEvent('FirebaseStorage_ListAll', data);
+                const data = { error: error.message };
+				sendStorageEvent('FirebaseStorage_ListAll', listener, firebasePath, null, false, data);
             });
     }
 
@@ -507,13 +472,15 @@ function SDKFirebaseStorage_ListAll(firebasePath, bucket) {
         .then(() => {
             // Send success event
             const data = {
-                listener: listener,
-                path: firebasePath,
-                items: allItems,
-                prefixes: allPrefixes,
-                success: true,
+                files: allItems,
+                folders: allPrefixes,
             };
-            sendAsyncEvent('FirebaseStorage_ListAll', data);
+            sendStorageEvent('FirebaseStorage_ListAll', listener, firebasePath, null, true, data);
+        })
+        .catch((error) => {
+            // Handle error
+            const data = { error: error.message };
+            sendStorageEvent('FirebaseStorage_ListAll', listener, firebasePath, null, false, data);
         });
 
     return listener;

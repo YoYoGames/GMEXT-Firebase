@@ -172,7 +172,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 	 * @param asyncId The unique async ID.
      * @param fluentObj The JSON object containing parameters.
      */
-    private long listenValue(final long asyncId, final JSONObject fluentObj) {
+    private void listenValue(final long asyncId, final JSONObject fluentObj) {
 		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("_path", null));
 
 		DatabaseReference dataRef = buildReference(fluentObj);
@@ -272,7 +272,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private void removeListener(final long asyncId, JSONObject fluentObj) {
 		long listenerToRemove = fluentObj.optLong("_value", -1L);
-		long path = fluentObj.optString("_path", null);
+		String path = fluentObj.optString("_path", null);
 		if (listenerToRemove == -1L) {
 			Map<String, Object> extraData = Map.of("errorMessage", "Unable to extract listener id.");
 			sendDatabaseEvent("FirebaseRealTime_RemoveListener", -1L, path, 400, extraData);
@@ -283,9 +283,9 @@ public class YYFirebaseRealTime extends RunnerSocial {
 		ValueEventListener listener = listenerMap.remove(listenerToRemove);
 
 		if (dataRef != null && listener != null) {
-			dataRef.removeEventListener(listenerToRemove);
+			dataRef.removeEventListener(listener);
 			Map<String, Object> extraData = Map.of("value", listenerToRemove);
-			endDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, path, 200, extraData);
+			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, path, 200, extraData);
 		} else {
 			Map<String, Object> extraData = Map.of("errorMessage", "Listener or DatabaseReference not found for ID: " + listenerToRemove);
 			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, path, 400, extraData);
@@ -296,21 +296,21 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * Handles the "ListenerRemoveAll" action to remove all Firebase listeners.
      */
     private void removeAllListeners(final long asyncId) {
-		List<Object> removedListeners = new List<>();
+		List<Object> removedListeners = new ArrayList<>();
 
 		for (Long listenerToRemove : referenceMap.keySet()) {
 			DatabaseReference dataRef = referenceMap.get(listenerToRemove);
 			ValueEventListener listener = listenerMap.get(listenerToRemove);
 			if (dataRef != null && listener != null) {
-				dataRef.removeEventListener(listenerToRemove);
-				removedListeners.add(listener);
+				dataRef.removeEventListener(listener);
+				removedListeners.add(listenerToRemove);
 			}
 		}
 		listenerMap.clear();
 		referenceMap.clear();
 
 		Map<String, Object> extraData = Map.of("values", convertListToJsonString(removedListeners));
-		endDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 200, extraData);
+		sendDatabaseEvent("FirebaseRealTime_RemoveListeners", asyncId, null, 200, extraData);
     }
 
     /**

@@ -1,8 +1,7 @@
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import ${YYAndroidPackageName}.ListenerIDGenerator;
-import com.yoyogames.runner.RunnerJNILib;
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
@@ -23,42 +22,22 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.util.Log;
 import android.app.Activity;
 
 public class YYFirebaseRealTime extends RunnerSocial {
 
-    private static final int EVENT_SOCIAL = 70;
-    private static final long MAX_DOUBLE_SAFE = 9007199254740992L; // 2^53
-    public static Activity activity;
+    private static final String LOG_TAG = "YYFirebaseRealTime";
 
     private HashMap<Long, ValueEventListener> listenerMap;
     private HashMap<Long, DatabaseReference> referenceMap;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public YYFirebaseRealTime() {
         listenerMap = new HashMap<>();
         referenceMap = new HashMap<>();
-    }
-
-    /**
-     * Gracefully shuts down the ExecutorService.
-     * Should be called when the instance is no longer needed to prevent memory leaks.
-     */
-    public void shutdown() {
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-                executorService.shutdownNow();
-                if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
-                    Log.e("YYFirebaseRealTime", "ExecutorService did not terminate");
-                }
-            }
-        } catch (InterruptedException ie) {
-            executorService.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
     }
 
     /**
@@ -70,21 +49,21 @@ public class YYFirebaseRealTime extends RunnerSocial {
     public double FirebaseRealTime_SDK(String fluentJson) {
         final long asyncId = getNextAsyncId();
 
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             JSONObject fluentObj;
 
             try {
                 fluentObj = new JSONObject(fluentJson);
             } catch (JSONException e) {
-                Log.e("YYFirebaseRealTime", "Invalid JSON input", e);
-                sendDatabaseEvent("FirebaseRealTime_SDK_Error", asyncId, null, 400, Map.of("errorMessage", "Invalid JSON input"));
+                Log.e(LOG_TAG, "Invalid JSON input", e);
+                sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, Map.of("errorMessage", "Invalid JSON input"));
                 return;
             }
 
-            String action = fluentObj.optString("_action", null);
+            String action = fluentObj.optString("action", null);
             if (action == null) {
-                Log.e("YYFirebaseRealTime", "Action not specified in JSON");
-                sendDatabaseEvent("FirebaseRealTime_SDK_Error", asyncId, null, 400, Map.of("errorMessage", "Action not specified in JSON"));
+                Log.e(LOG_TAG, "Action not specified in JSON");
+                sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, Map.of("errorMessage", "Action not specified in JSON"));
                 return;
             }
 
@@ -126,21 +105,10 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void setValue(final long asyncId, final JSONObject fluentObj) {
-		Object value = fluentObj.opt("_value");
-		String path = fluentObj.optString("_path", null);
-		if (value instanceof String) {
-			try {
-				value = convertJsonObjectToMap(new JSONObject((String) value));
-			} catch (JSONException e) {
-				Map<String, Object> extraData = Map.of("errorMessage", "Invalid JSON in 'value'");
-				sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, 400, extraData);
-				return;
-			} catch (Exception e) {
-				Map<String, Object> extraData = Map.of("errorMessage", "Error parsing 'value' to Map");
-				sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, 500, extraData);
-				return;
-			}
-		}
+		Object value = fluentObj.opt("value");
+		String path = fluentObj.optString("path", null);
+		
+        value = FirebaseUtils.convertJSON(value);
 
 		DatabaseReference reference = buildReference(fluentObj);
 		reference.setValue(value, (error, ref) -> {
@@ -158,10 +126,12 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void readValue(final long asyncId, final JSONObject fluentObj) {
-		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Read", asyncId, fluentObj.optString("_path", null));
+		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Read", asyncId, fluentObj.optString("path", null));
 
 		DatabaseReference dataRef = buildReference(fluentObj);
-		Query query = buildQuery(fluentObj, dataRef);
+		Query query = buildQuery(asyncId, "FirebaseRealTime_Read", fluentObj, dataRef);
+
+        if (query == null) return;
 
 		query.addListenerForSingleValueEvent(eventListener);
     }
@@ -173,10 +143,12 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void listenValue(final long asyncId, final JSONObject fluentObj) {
-		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("_path", null));
+		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("path", null));
 
 		DatabaseReference dataRef = buildReference(fluentObj);
-		Query query = buildQuery(fluentObj, dataRef);
+		Query query = buildQuery(asyncId, "FirebaseRealTime_Listener", fluentObj, dataRef);
+
+        if (query == null) return;
 
 		listenerMap.put(asyncId, eventListener);
         referenceMap.put(asyncId, dataRef);
@@ -199,17 +171,16 @@ public class YYFirebaseRealTime extends RunnerSocial {
 
                 if (dataSnapshot.exists()) {
                     Object dataValue = dataSnapshot.getValue();
-                    if (dataValue instanceof Boolean || dataValue instanceof Number) {
-                        extraData.put("value", ((Number) dataValue).doubleValue());
-                    } else if (dataValue instanceof String) {
-                        extraData.put("value", dataValue);
-                    } else if (dataValue instanceof Map) {
-                        extraData.put("value", convertMapToJsonString((Map<String, Object>) dataValue));
-                    } else if (dataValue instanceof List) {
-                        extraData.put("value", convertListToJsonString((List<Object>) dataValue));
-                    } else {
-                        extraData.put("value", String.valueOf(dataValue));
+                    if (dataValue instanceof List) {
+                        if (dataSnapshot.hasChildren()) {
+                            List<Object> list = new ArrayList<>();
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                list.add(child.getValue());
+                            }
+                            dataValue = list;
+                        }
                     }
+                    extraData.put("value", dataValue);
                 }
 
                 sendDatabaseEvent(eventType, asyncId, path, 200, extraData);
@@ -218,8 +189,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
             @Override
             public void onCancelled(DatabaseError error) {
                 Map<String, Object> extraData = Map.of("errorMessage", error.getMessage());
-
-                sendDatabaseEvent("FirebaseRealTime_Listener", asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
+                sendDatabaseEvent(eventType, asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
             }
         };
 	}
@@ -236,7 +206,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 			int status = (error == null) ? 200 : mapDatabaseErrorToHttpStatus(error);
 			Map<String, Object> extraData = (error != null) ? Map.of("errorMessage", error.getMessage()) : null;
 
-			sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, fluentObj.optString("_path", null), status, extraData);
+			sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, fluentObj.optString("path", null), status, extraData);
 		});
     }
 
@@ -247,7 +217,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void existsValue(final long asyncId, final JSONObject fluentObj) {
-		String path = fluentObj.optString("_path", null);
+		String path = fluentObj.optString("path", null);
 		DatabaseReference ref = buildReference(fluentObj);
 		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
@@ -271,8 +241,8 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void removeListener(final long asyncId, JSONObject fluentObj) {
-		long listenerToRemove = fluentObj.optLong("_value", -1L);
-		String path = fluentObj.optString("_path", null);
+		long listenerToRemove = fluentObj.optLong("value", -1L);
+		String path = fluentObj.optString("path", null);
 		if (listenerToRemove == -1L) {
 			Map<String, Object> extraData = Map.of("errorMessage", "Unable to extract listener id.");
 			sendDatabaseEvent("FirebaseRealTime_RemoveListener", -1L, path, 400, extraData);
@@ -314,12 +284,12 @@ public class YYFirebaseRealTime extends RunnerSocial {
     }
 
     /**
-     * Generates the next unique async ID using ListenerIDGenerator.
+     * Generates the next unique async ID using FirebaseUtils.
      *
      * @return The next async ID as a long.
      */
     private long getNextAsyncId() {
-        return ListenerIDGenerator.getInstance().getNextListenerId();
+        return FirebaseUtils.getInstance().getNextAsyncId();
     }
 
     /**
@@ -330,10 +300,10 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private DatabaseReference buildReference(JSONObject fluentObj) {
         DatabaseReference dataRef;
-        if (fluentObj.isNull("_database")) {
+        if (fluentObj.isNull("database")) {
             dataRef = FirebaseDatabase.getInstance().getReference();
         } else {
-            String databaseUrl = fluentObj.optString("_database", null);
+            String databaseUrl = fluentObj.optString("database", null);
             if (databaseUrl != null) {
                 dataRef = FirebaseDatabase.getInstance(databaseUrl).getReference();
             } else {
@@ -341,12 +311,12 @@ public class YYFirebaseRealTime extends RunnerSocial {
             }
         }
 
-        String path = fluentObj.optString("_path", null);
+        String path = fluentObj.optString("path", null);
         if (path != null) {
             dataRef = dataRef.child(path);
         }
 
-        boolean push = fluentObj.optBoolean("_push", false);
+        boolean push = fluentObj.optBoolean("push", false);
         if (push) {
             dataRef = dataRef.push();
         }
@@ -361,53 +331,74 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param dataRef   The DatabaseReference to build the query from.
      * @return The constructed Query.
      */
-    private Query buildQuery(JSONObject fluentObj, DatabaseReference dataRef) {
+    private Query buildQuery(final long asyncId, final String eventType, JSONObject fluentObj, DatabaseReference dataRef) {
         Query query = dataRef;
 
-        String orderBy = fluentObj.optString("_OrderBy", null);
-        if (orderBy != null) {
-            switch (orderBy) {
+        JSONObject orderByObj = fluentObj.optJSONObject("order_by");
+        if (orderByObj != null) {
+            Iterator<String> keys = orderByObj.keys();
+            String orderByType = keys.next();
+            switch (orderByType) {
                 case "key":
                     query = query.orderByKey();
                     break;
                 case "value":
                     query = query.orderByValue();
                     break;
-                default:
-                    query = query.orderByChild(orderBy);
+                case "child":
+                    String childProp = orderByObj.optString("child", null);
+                    if (childProp != null && !childProp.isEmpty()) {
+                        query = query.orderByChild(childProp);
+                    } else {
+                        Log.w(LOG_TAG, "The 'child' key must have a non-empty value.");
+                        sendDatabaseEvent(eventType, asyncId, null, 400, Map.of("errorMessage", "The 'child' key must have a non-empty value."));
+                        return null;
+                    }
                     break;
+                default:
+                    Log.w(LOG_TAG, "Unsupported order_by type: " + orderByType);
+                    sendDatabaseEvent(eventType, asyncId, null, 400, Map.of("errorMessage", "Unsupported 'order_by' type."));
+                    return null;
             }
         }
 
-        Object startValue = fluentObj.opt("_StartValue");
-        if (startValue != null) {
-            if (startValue instanceof String) {
-                query = query.startAt((String) startValue);
-            } else if (startValue instanceof Number) {
-                query = query.startAt(((Number) startValue).doubleValue());
-            }
-        }
-
-        Object endValue = fluentObj.opt("_EndValue");
-        if (endValue != null) {
-            if (endValue instanceof String) {
-                query = query.endAt((String) endValue);
-            } else if (endValue instanceof Number) {
-                query = query.endAt(((Number) endValue).doubleValue());
-            }
-        }
-
-        Object equalTo = fluentObj.opt("_EqualTo");
-        if (equalTo != null) {
+        if (!fluentObj.isNull("equal_to")) {
+            Object equalTo = fluentObj.opt("equal_to");
             if (equalTo instanceof String) {
                 query = query.equalTo((String) equalTo);
+            } else if (equalTo instanceof Boolean) {
+                query = query.equalTo(((Boolean) equalTo));
             } else if (equalTo instanceof Number) {
                 query = query.equalTo(((Number) equalTo).doubleValue());
             }
-        }
+        } else {
+            // Check for range
+            Object startValue = fluentObj.opt("start_at");
+            if (startValue != null) {
+                if (startValue instanceof String) {
+                    query = query.startAt((String) startValue);
+                } else if (startValue instanceof Boolean) {
+                    query = query.startAt(((Boolean) startValue));
+                } else if (startValue instanceof Number) {
+                    query = query.startAt(((Number) startValue).doubleValue());
+                }
+            }
 
-        int limitKind = fluentObj.optInt("_LimitKind", -1);
-        int limitValue = fluentObj.optInt("_LimitValue", -1);
+            Object endValue = fluentObj.opt("end_at");
+            if (endValue != null) {
+                if (endValue instanceof String) {
+                    query = query.endAt((String) endValue);
+                } else if (startValue instanceof Boolean) {
+                    query = query.endAt(((Boolean) endValue));
+                } else if (endValue instanceof Number) {
+                    query = query.endAt(((Number) endValue).doubleValue());
+                }
+            }
+        }
+        
+
+        int limitKind = fluentObj.optInt("limit_kind", -1);
+        int limitValue = fluentObj.optInt("limit_value", -1);
         if (limitKind != -1 && limitValue != -1) {
             switch (limitKind) {
                 case 0:
@@ -456,52 +447,6 @@ public class YYFirebaseRealTime extends RunnerSocial {
     }
 
     /**
-     * Recursively converts a JSONObject to a Map.
-     *
-     * @param jsonObject The JSONObject to convert.
-     * @return The resulting Map.
-     * @throws Exception If an error occurs during conversion.
-     */
-    private static Map<String, Object> convertJsonObjectToMap(JSONObject jsonObject) throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        Iterator<String> keysItr = jsonObject.keys();
-        while (keysItr.hasNext()) {
-            String key = keysItr.next();
-            Object value = jsonObject.get(key);
-
-            if (value instanceof JSONArray) {
-                value = convertJsonArrayToList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = convertJsonObjectToMap((JSONObject) value);
-            }
-
-            map.put(key, value);
-        }
-        return map;
-    }
-
-    /**
-     * Recursively converts a JSONArray to a List.
-     *
-     * @param jsonArray The JSONArray to convert.
-     * @return The resulting List.
-     * @throws Exception If an error occurs during conversion.
-     */
-    private static List<Object> convertJsonArrayToList(JSONArray jsonArray) throws Exception {
-        List<Object> list = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Object value = jsonArray.get(i);
-            if (value instanceof JSONArray) {
-                value = convertJsonArrayToList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = convertJsonObjectToMap((JSONObject) value);
-            }
-            list.add(value);
-        }
-        return list;
-    }
-
-    /**
      * Maps a Firebase DatabaseError to an appropriate HTTP status code.
      *
      * @param error The DatabaseError to map.
@@ -531,53 +476,6 @@ public class YYFirebaseRealTime extends RunnerSocial {
     }
 
     /**
-     * Sends an asynchronous event to the game engine.
-     *
-     * @param eventType The type of event.
-     * @param data      The data map containing event details.
-     */
-    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-            if (data != null) {
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double || value instanceof Integer || value instanceof Float || value instanceof Boolean) {
-                        // Convert Boolean to double (1.0 or 0.0)
-                        double doubleValue;
-                        if (value instanceof Boolean) {
-                            doubleValue = (Boolean) value ? 1.0 : 0.0;
-                        } else if (value instanceof Integer) {
-                            doubleValue = ((Integer) value).doubleValue();
-                        } else if (value instanceof Float) {
-                            doubleValue = ((Float) value).doubleValue();
-                        } else { // Double
-                            doubleValue = (Double) value;
-                        }
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, doubleValue);
-                    } else if (value instanceof Long) {
-                        long longValue = (Long) value;
-                        if (Math.abs(longValue) <= MAX_DOUBLE_SAFE) {
-                            RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (double) longValue);
-                        } else {
-                            String formattedLong = String.format("@i64@%016x$i64$", longValue);
-                            RunnerJNILib.DsMapAddString(dsMapIndex, key, formattedLong);
-                        }
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                    }
-                }
-            }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_SOCIAL);
-        });
-    }
-
-    /**
      * Sends a database event by assembling common data and delegating to sendAsyncEvent.
      *
      * @param eventType The type of event.
@@ -598,6 +496,6 @@ public class YYFirebaseRealTime extends RunnerSocial {
             data.putAll(extraData);
         }
 
-        sendAsyncEvent(eventType, data);
+        FirebaseUtils.sendAsyncEvent(eventType, data);
     }
 }

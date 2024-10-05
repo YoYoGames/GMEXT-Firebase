@@ -1,7 +1,7 @@
 package ${YYAndroidPackageName};
 import ${YYAndroidPackageName}.R;
 
-import ${YYAndroidPackageName}.ListenerIDGenerator;
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import com.yoyogames.runner.RunnerJNILib;
 
@@ -262,7 +262,7 @@ public class YYFirebaseStorage extends RunnerSocial {
     // <editor-fold desc="Helper Methods">
 
     private long getListenerInd() {
-        return ListenerIDGenerator.getInstance().getNextListenerId();
+        return FirebaseUtils.getInstance().getNextAsyncId();
     }
 
     private String listOfReferencesToJSON(List<StorageReference> list) {

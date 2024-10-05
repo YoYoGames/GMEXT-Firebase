@@ -3,7 +3,7 @@ window.FirebaseBaseExt = Object.assign(window.FirebaseBaseExt || {}, {
 
 	currentId: 5000,
 
-	getNextListenerId: function() {
+	getNextAsyncId: function() {
 		const context = window.FirebaseBaseExt;
 		context.currentId++;
 		return context.currentId;
@@ -78,8 +78,8 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
      * @return {number} A unique listener ID.
      */
     getListenerInd: function() {
-		const { getNextListenerId } = window.FirebaseBaseExt;
-        return getNextListenerId();
+		const { getNextAsyncId } = window.FirebaseBaseExt;
+        return getNextAsyncId();
     },
 
 	/**

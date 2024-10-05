@@ -2,12 +2,8 @@
 #import <FirebaseDatabase/FirebaseDatabase.h>
 
 @interface YYFirebaseRealTime:NSObject
-{
-    NSMutableDictionary *RealTime_ListenerMap;
-    NSMutableDictionary *RealTime_ReferenceMap;
-    int RealTime_indMap;
-}
 
+- (double)FirebaseRealTime_SDK:(NSString *)fluentJson;
 
 @end
 

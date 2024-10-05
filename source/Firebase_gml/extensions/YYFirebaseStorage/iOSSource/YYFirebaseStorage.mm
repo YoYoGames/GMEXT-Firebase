@@ -1,5 +1,5 @@
 #import "YYFirebaseStorage.h"
-#import "ListenerIDGenerator.h"
+#import "FirebaseUtils.h"
 #import <UIKit/UIKit.h>
 
 const int EVENT_OTHER_SOCIAL = 70;
@@ -243,7 +243,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 #pragma mark - Helper Methods
 
 - (NSNumber *)getListenerInd {
-    return [[ListenerIDGenerator sharedInstance] getNextListenerId];
+    return [[FirebaseUtils sharedInstance] getNextAsyncId];
 }
 
 - (NSString *)listOfReferencesToJSON:(NSArray<FIRStorageReference *> *)list {

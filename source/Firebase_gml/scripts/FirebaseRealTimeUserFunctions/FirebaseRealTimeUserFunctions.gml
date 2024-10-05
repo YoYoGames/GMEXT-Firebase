@@ -10,207 +10,190 @@
 #macro Firebase_LimitTo_First 0
 #macro Firebase_LimitTo_Last 1
 
-function FirebaseRealTime(database = undefined)
+function FirebaseRealTime(_database = undefined)
 {
-	return new Firebase_RealTime_builder(database)
+	return new FirebaseRealTimeBuilder(_database)
 }
 
-function Firebase_RealTime_builder(database) constructor
+function FirebaseRealTimeBuilder(_database) constructor
 {
-	_push = undefined;
-	_path = ""
-	
-	_OrderBy = undefined
-	_EqualTo = undefined
-	_StartValue = undefined
-	_EndValue = undefined
-	_LimitKind = undefined
-	_LimitValue = undefined
-	_database = database
-
-	_action = ""
-	_value = undefined
+	__ = {
+		push: undefined,
+		path: "",
+		order_by: undefined,
+		
+		equal_to: undefined,
+		start_at: undefined,
+		start_after: undefined,
+		end_at: undefined,
+		end_before: undefined,
+		
+		limit: undefined,
+		
+		database: _database,
+		action: "",
+		value: undefined,
+	};
 	
 	static Path = function(path)
 	{
-		_path = path
+		__.path = path;
 		return self
 	}
 	
-	static Child = function(child_path)
+	static Child = function(_child_path)
 	{
-		_path = FirebaseRealTime_Path_Join(_path,child_path)
+		__.path = FirebaseRealTime_Path_Join(__.path, _child_path);
 		return self
 	}
 	
 	static Parent = function()
 	{
-		_path = FirebaseRealTime_Path_Back(_path,1)
+		__.path = FirebaseRealTime_Path_Back(_path, 1);
 		return self
 	}
 	
 	static Push = function()
 	{
-		_push = true
+		__.push = true;
 		return self
 	}
 	
 	static OrderByValue = function()
     {
-		_OrderBy = Firebase_OrderBy_Value
+		__.order_by = { value: pointer_null }
 		return self
     }
 	
 	static OrderByKey = function()
     {
-		_OrderBy = Firebase_OrderBy_Key
+		__.order_by = { key: pointer_null }
 		return self
     }
 	
-	static OrderByChild = function(path)
+	static OrderByChild = function(_path)
     {
-		_OrderBy = path//Firebase_OrderBy_Child
+		__.order_by = { child: _path };
 		return self
     }
 	
-	static EqualTo = function(EqualTo)
+	static EqualTo = function(_equal_to)
     {
-		_EqualTo = EqualTo
+		__.equal_to = _equal_to;
 		return self
     }
 	
-	static StartAt = function(StartValue)
+	static StartAt = function(_start_at)
     {
-		_StartValue = StartValue
+		__.start_at = _start_at
 		return self
     }
 	
-	static EndAt = function(EndValue)
+	static StartAfter = function(_start_after)
     {
-		_EndValue = EndValue
+		__.start_after = _start_after
 		return self
     }
 	
-	//static Limit = function(LimitKind,LimitValue)
-    //{
-	//	_LimitKind = LimitKind
-	//	_LimitValue = LimitValue
-	//	return self
-    //}
+	static EndAt = function(_end_at)
+    {
+		__.end_at = _end_at
+		return self
+    }
 	
-	static LimitToLast = function(LimitValue)
+	static EndBefore = function(_end_before)
+    {
+		__.end_before = _end_before
+		return self
+    }
+		
+	static LimitToLast = function(_count)
 	{
-		_LimitKind = Firebase_LimitTo_Last
-		_LimitValue = LimitValue
+		__.limit = { last: _count };
 		return self
 	}
 	
-	static LimitToFirst = function(LimitValue)
+	static LimitToFirst = function(_count)
 	{
-		_LimitKind = Firebase_LimitTo_First
-		_LimitValue = LimitValue
+		__.limit = { first: _count };
 		return self
 	}
 	
 	//Actions
 
-    static Set = function(value)
+    static Set = function(_value, _try_parse = true)
     {
-		_action = "Set"
-		_value = value
+		__.action = "Set"
 		
-		var ok = false
-		if(is_real(value))
+		if (is_string(_value) && _try_parse)
 		{
-			ok = true
-			value = string(value)
-		}
-		else
-		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
-		{
-			ok = true
-			value = json_encode(value)
-		}
-		else
-		if(is_struct(value) or is_array(value))
-		{
-			ok = true
-			value = json_stringify(value)
-		}
-		else
-		if(is_string(value))
-		{
-			var its_json_string = false
-			
-			
-			//This improve the performance
-			its_json_string = (string_char_at(value,1) == "{" and string_char_at(value,string_length(value)-1) == "}")
-			if(!its_json_string)
-				its_json_string = (string_char_at(value,1) == "[" and string_char_at(value,string_length(value)-1) == "]")
-			
-			
-			if(!its_json_string)//heavy verification...?
-			if(!((string_char_at(value,1) != "{" and string_char_at(value,1) != "[" and string_char_at(value,1) != " ")))
-			{
-				var map = json_decode(value)
-				var value_ = json_encode(map)
-				ds_map_destroy(map)
-				
-				its_json_string = !(!string_count("default",value) and string_count("default",value_))
+			try {
+				_value = json_parse(_value);
 			}
-			
-			if(its_json_string)
-			{
-				ok = true
+			catch (_e) {}
+		}
+		else if (is_handle(_value)) {
+			var _handle_type = string(_value);
+			if (string_starts_with(_handle_type, "ref ds_map")) {
+				_value = json_parse(json_encode(_value));
 			}
-			else
-			{
-				//Just a string....
-				ok = true
-				value = "\"" + value + "\""
+			else if (string_starts_with(_handle_type, "ref ds_list")) {
+				var _map = ds_map_create();
+				ds_map_add_list(_map, "list", _value);
+				var _struct = json_parse(json_encode(_map));
+				ds_map_delete(_map, "list");
+				ds_map_destroy(_map);
+				_value = _struct.list;
+			}
+			else {
+				_value = _handle_type;
 			}
 		}
-	
+		
+		__.value = _value;
+		
 		var listener = undefined
-		if(ok)
-		{
-			if(FirebaseRealTime_Library_useSDK)
-				return FirebaseRealTime_SDK(json_stringify(self))
-			var listener = FirebaseREST_asyncFunction_RealTime(
-							"FirebaseRealTime_Set",
-							Obj_FirebaseREST_Listener_Once_RealTime,
-							FirebaseREST_RealTime_getURL(_path,_database),
-							FirebaseREST_RealTime_getWriteHTTPMethod(_push),
-							"{}",
-							value
-						)
-			listener.path = _path
-		}
+
+		if(FirebaseRealTime_Library_useSDK)
+			return FirebaseRealTime_SDK(json_stringify(__));
+				
+		var listener = FirebaseREST_asyncFunction_RealTime(
+						"FirebaseRealTime_Set",
+						Obj_FirebaseREST_Listener_Once_RealTime,
+						FirebaseREST_RealTime_getURL(_path,_database),
+						FirebaseREST_RealTime_getWriteHTTPMethod(_push),
+						"{}",
+						value
+					)
+		listener.path = __.path
+		
 	
 		return listener
     }
 	
     static Read = function()
     {
-		_action = "Read"
+		__.action = "Read"
+		show_debug_message(json_stringify(__));
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		return FirebaseRealTime_List_Builder("FirebaseRealTime_Read",Obj_FirebaseREST_Listener_Once_RealTime,_path,_OrderBy,_EqualTo,_StartValue,_EndValue,_LimitKind,_LimitValue,_database)
     }
 	
     static Listener = function()
     {
-		_action = "Listener"
+		__.action = "Listener"
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		return FirebaseRealTime_List_Builder("FirebaseRealTime_Listener",Obj_FirebaseREST_Listener_On_RealTime,_path,_OrderBy,_EqualTo,_StartValue,_EndValue,_LimitKind,_LimitValue,_database)
     }
 
     static Exists = function()
     {
-		_action = "Exists"
+		__.action = "Exists"
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Exists",
 						Obj_FirebaseREST_Listener_Once_RealTime,
@@ -227,9 +210,9 @@ function Firebase_RealTime_builder(database) constructor
 	
 	static Delete = function()
     {
-		_action = "Delete"
+		__.action = "Delete"
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Delete",
 						Obj_FirebaseREST_Listener_Once_RealTime,
@@ -243,24 +226,25 @@ function Firebase_RealTime_builder(database) constructor
 		return listener;
     }
 	
-    static ListenerRemove = function(listener)
+    static ListenerRemove = function(_listener)
     {
-		_value = listener
-		_action = "ListenerRemove"
+		__.value = _listener
+		__.action = "ListenerRemove"
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
-		with(listener)
+			return FirebaseRealTime_SDK(json_stringify(__))
+		with(_listener)
 		    instance_destroy()
     }
 	
     static ListenerRemoveAll = function()
     {
-		_action = "ListenerRemoveAll"
+		__.action = "ListenerRemoveAll"
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
-		with(Obj_FirebaseREST_Listener_RealTime)
-		if(string_count("Listener",event))
-			instance_destroy()
+			return FirebaseRealTime_SDK(json_stringify(__))
+		with(Obj_FirebaseREST_Listener_RealTime) {
+			if(string_count("Listener", event))
+				instance_destroy()
+		}
     }
 }
 

@@ -201,12 +201,13 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void deleteValue(final long asyncId, final JSONObject fluentObj) {
-		DatabaseReference ref = buildReference(fluentObj);
+        final String path = fluentObj.optString("path", null);
+		final DatabaseReference ref = buildReference(fluentObj);
 		ref.removeValue((error, ref1) -> {
 			int status = (error == null) ? 200 : mapDatabaseErrorToHttpStatus(error);
 			Map<String, Object> extraData = (error != null) ? Map.of("errorMessage", error.getMessage()) : null;
 
-			sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, fluentObj.optString("path", null), status, extraData);
+			sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, status, extraData);
 		});
     }
 
@@ -217,8 +218,8 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void existsValue(final long asyncId, final JSONObject fluentObj) {
-		String path = fluentObj.optString("path", null);
-		DatabaseReference ref = buildReference(fluentObj);
+		final String path = fluentObj.optString("path", null);
+		final DatabaseReference ref = buildReference(fluentObj);
 		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
@@ -242,10 +243,9 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private void removeListener(final long asyncId, JSONObject fluentObj) {
 		long listenerToRemove = fluentObj.optLong("value", -1L);
-		String path = fluentObj.optString("path", null);
 		if (listenerToRemove == -1L) {
 			Map<String, Object> extraData = Map.of("errorMessage", "Unable to extract listener id.");
-			sendDatabaseEvent("FirebaseRealTime_RemoveListener", -1L, path, 400, extraData);
+			sendDatabaseEvent("FirebaseRealTime_RemoveListener", -1L, null, 400, extraData);
 			return;
 		}
 
@@ -255,10 +255,10 @@ public class YYFirebaseRealTime extends RunnerSocial {
 		if (dataRef != null && listener != null) {
 			dataRef.removeEventListener(listener);
 			Map<String, Object> extraData = Map.of("value", listenerToRemove);
-			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, path, 200, extraData);
+			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 200, extraData);
 		} else {
 			Map<String, Object> extraData = Map.of("errorMessage", "Listener or DatabaseReference not found for ID: " + listenerToRemove);
-			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, path, 400, extraData);
+			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, extraData);
 		}
     }
 
@@ -279,7 +279,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 		listenerMap.clear();
 		referenceMap.clear();
 
-		Map<String, Object> extraData = Map.of("values", convertListToJsonString(removedListeners));
+		Map<String, Object> extraData = Map.of("values", removedListeners);
 		sendDatabaseEvent("FirebaseRealTime_RemoveListeners", asyncId, null, 200, extraData);
     }
 
@@ -334,36 +334,27 @@ public class YYFirebaseRealTime extends RunnerSocial {
     private Query buildQuery(final long asyncId, final String eventType, JSONObject fluentObj, DatabaseReference dataRef) {
         Query query = dataRef;
 
-        JSONObject orderByObj = fluentObj.optJSONObject("order_by");
-        if (orderByObj != null) {
-            Iterator<String> keys = orderByObj.keys();
-            String orderByType = keys.next();
-            switch (orderByType) {
-                case "key":
+        String orderBy = fluentObj.optString("orderBy", null);
+        if (orderBy != null) {
+            switch (orderBy) {
+                case "$key":
                     query = query.orderByKey();
                     break;
-                case "value":
+                case "$value":
                     query = query.orderByValue();
                     break;
-                case "child":
-                    String childProp = orderByObj.optString("child", null);
-                    if (childProp != null && !childProp.isEmpty()) {
-                        query = query.orderByChild(childProp);
-                    } else {
-                        Log.w(LOG_TAG, "The 'child' key must have a non-empty value.");
-                        sendDatabaseEvent(eventType, asyncId, null, 400, Map.of("errorMessage", "The 'child' key must have a non-empty value."));
-                        return null;
-                    }
+                case "$priority":
+                    query = query.orderByPriority();
                     break;
                 default:
-                    Log.w(LOG_TAG, "Unsupported order_by type: " + orderByType);
-                    sendDatabaseEvent(eventType, asyncId, null, 400, Map.of("errorMessage", "Unsupported 'order_by' type."));
-                    return null;
+                    query = query.orderByChild(orderBy);
+                    break;
             }
         }
 
-        if (!fluentObj.isNull("equal_to")) {
-            Object equalTo = fluentObj.opt("equal_to");
+        // You can only use one of these (equalTo or <range>)
+        if (!fluentObj.isNull("equalTo")) {
+            Object equalTo = fluentObj.opt("equalTo");
             if (equalTo instanceof String) {
                 query = query.equalTo((String) equalTo);
             } else if (equalTo instanceof Boolean) {
@@ -372,9 +363,9 @@ public class YYFirebaseRealTime extends RunnerSocial {
                 query = query.equalTo(((Number) equalTo).doubleValue());
             }
         } else {
-            // Check for range
-            Object startValue = fluentObj.opt("start_at");
-            if (startValue != null) {
+            // You can only use one of these (startAt or startAfter)
+            if (!fluentObj.isNull("startAt")) {
+                Object startValue = fluentObj.opt("startAt");
                 if (startValue instanceof String) {
                     query = query.startAt((String) startValue);
                 } else if (startValue instanceof Boolean) {
@@ -383,67 +374,51 @@ public class YYFirebaseRealTime extends RunnerSocial {
                     query = query.startAt(((Number) startValue).doubleValue());
                 }
             }
+            else if (!fluentObj.isNull("startAfter")) {
+                Object startValue = fluentObj.opt("startAfter");
+                if (startValue instanceof String) {
+                    query = query.startAfter((String) startValue);
+                } else if (startValue instanceof Boolean) {
+                    query = query.startAfter(((Boolean) startValue));
+                } else if (startValue instanceof Number) {
+                    query = query.startAfter(((Number) startValue).doubleValue());
+                }
+            }
 
-            Object endValue = fluentObj.opt("end_at");
-            if (endValue != null) {
+            // You can only use one of these (endAt or endBefore)
+            if (!fluentObj.isNull("endAt")) {
+                Object endValue = fluentObj.opt("endAt");
                 if (endValue instanceof String) {
                     query = query.endAt((String) endValue);
-                } else if (startValue instanceof Boolean) {
+                } else if (endValue instanceof Boolean) {
                     query = query.endAt(((Boolean) endValue));
                 } else if (endValue instanceof Number) {
                     query = query.endAt(((Number) endValue).doubleValue());
                 }
             }
-        }
-        
-
-        int limitKind = fluentObj.optInt("limit_kind", -1);
-        int limitValue = fluentObj.optInt("limit_value", -1);
-        if (limitKind != -1 && limitValue != -1) {
-            switch (limitKind) {
-                case 0:
-                    query = query.limitToFirst(limitValue);
-                    break;
-                case 1:
-                    query = query.limitToLast(limitValue);
-                    break;
-                default:
-                    break;
+            else if (!fluentObj.isNull("endBefore")) {
+                Object endValue = fluentObj.opt("endBefore");
+                if (endValue instanceof String) {
+                    query = query.endBefore((String) endValue);
+                } else if (endValue instanceof Boolean) {
+                    query = query.endBefore(((Boolean) endValue));
+                } else if (endValue instanceof Number) {
+                    query = query.endBefore(((Number) endValue).doubleValue());
+                }
             }
         }
 
+        int limitToFirst = fluentObj.optInt("limitToFirst", -1);
+        if (limitToFirst != -1) {
+            query = query.limitToFirst(limitToFirst);
+        }
+
+        int limitToLast = fluentObj.optInt("limitToLast", -1);
+        if (limitToLast != -1) {
+            query = query.limitToLast(limitToLast);
+        }
+
         return query;
-    }
-
-    /**
-     * Converts a Map to a JSON string.
-     *
-     * @param map The Map to convert.
-     * @return The JSON string representation of the map.
-     */
-    private static String convertMapToJsonString(Map<String, Object> map) {
-        try {
-            return new JSONObject(map).toString();
-        } catch (Exception e) {
-            Log.e("YYFirebaseRealTime", "Error converting map to JSON", e);
-            return "{}";
-        }
-    }
-
-    /**
-     * Converts a List to a JSON string.
-     *
-     * @param list The List to convert.
-     * @return The JSON string representation of the list.
-     */
-    private static String convertListToJsonString(List<Object> list) {
-        try {
-            JSONArray jsonArray = new JSONArray(list);
-            return jsonArray.toString();
-        } catch (Exception e) {
-            Log.e("YYFirebaseRealTime", "Error converting list to JSON", e);
-            return "[]";
-        }
     }
 
     /**

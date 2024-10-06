@@ -20,15 +20,16 @@ function FirebaseRealTimeBuilder(_database) constructor
 	__ = {
 		push: undefined,
 		path: "",
-		order_by: undefined,
+		orderBy: undefined,
 		
-		equal_to: undefined,
-		start_at: undefined,
-		start_after: undefined,
-		end_at: undefined,
-		end_before: undefined,
+		equalTo: undefined,
+		startAt: undefined,
+		startAfter: undefined,
+		endAt: undefined,
+		endBefore: undefined,
 		
-		limit: undefined,
+		limitToFirst: undefined,
+		limitToLast: undefined,
 		
 		database: _database,
 		action: "",
@@ -58,64 +59,76 @@ function FirebaseRealTimeBuilder(_database) constructor
 		__.push = true;
 		return self
 	}
-	
-	static OrderByValue = function()
+
+	static OrderByKey = function()
     {
-		__.order_by = { value: pointer_null }
+		__.orderBy = "$key";
 		return self
     }
 	
-	static OrderByKey = function()
+	static OrderByValue = function()
     {
-		__.order_by = { key: pointer_null }
+		__.orderBy = "$value";
+		return self
+    }
+	
+	static OrderByPriority = function()
+    {
+		__.orderBy = "$priority";
 		return self
     }
 	
 	static OrderByChild = function(_path)
     {
-		__.order_by = { child: _path };
+		__.orderBy = _path;
 		return self
     }
 	
 	static EqualTo = function(_equal_to)
     {
-		__.equal_to = _equal_to;
+		__.equalTo = _equal_to;
 		return self
     }
 	
 	static StartAt = function(_start_at)
     {
-		__.start_at = _start_at
+		__.startAt = _start_at;
+		__.startAfter = undefined;
 		return self
     }
 	
 	static StartAfter = function(_start_after)
     {
-		__.start_after = _start_after
+		__.startAfter = _start_after;
+		__.startAt = undefined;
 		return self
     }
 	
 	static EndAt = function(_end_at)
     {
-		__.end_at = _end_at
+		__.endAt = _end_at
+		__.endBefore = undefined;
 		return self
     }
 	
 	static EndBefore = function(_end_before)
     {
-		__.end_before = _end_before
+		__.endBefore = _end_before
+		__.endAt = undefined;
 		return self
     }
 		
 	static LimitToLast = function(_count)
 	{
-		__.limit = { last: _count };
+		__.limitToLast = _count;
+		__.limitToFirst = undefined;
 		return self
 	}
 	
 	static LimitToFirst = function(_count)
 	{
-		__.limit = { first: _count };
+		__.limitToFirst = _count;
+		__.limitToLast = undefined;
 		return self
 	}
 	

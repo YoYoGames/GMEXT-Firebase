@@ -15,7 +15,11 @@
   "description":"",
   "exportToGame":true,
   "extensionVersion":"1.2.2",
-  "files":[],
+  "files":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"FirebaseSetup.js","name":"FirebaseSetup.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":6,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+  ],
   "gradleinject":"\r\n        implementation platform('com.google.firebase:firebase-bom:32.6.0')\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",

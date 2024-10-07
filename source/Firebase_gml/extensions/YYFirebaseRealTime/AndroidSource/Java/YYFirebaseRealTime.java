@@ -156,44 +156,6 @@ public class YYFirebaseRealTime extends RunnerSocial {
 		query.addValueEventListener(eventListener);
     }
 
-	/**
-     * Creates a new ValueEventListener for listening data changes in Firebase.
-     *
-     * @param eventType The type of event.
-     * @param asyncId The unique async ID.
-     * @param path The Firebase database path related to the event.
-     */
-	private ValueEventListener createValueEventListener(final String eventType, final long asyncId, final String path) {
-		return new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> extraData = new HashMap<>();
-
-                if (dataSnapshot.exists()) {
-                    Object dataValue = dataSnapshot.getValue();
-                    if (dataValue instanceof List) {
-                        if (dataSnapshot.hasChildren()) {
-                            List<Object> list = new ArrayList<>();
-                            for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                list.add(child.getValue());
-                            }
-                            dataValue = list;
-                        }
-                    }
-                    extraData.put("value", dataValue);
-                }
-
-                sendDatabaseEvent(eventType, asyncId, path, 200, extraData);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Map<String, Object> extraData = Map.of("errorMessage", error.getMessage());
-                sendDatabaseEvent(eventType, asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
-            }
-        };
-	}
-
     /**
      * Handles the "Delete" action to remove data from Firebase.
      *
@@ -291,6 +253,44 @@ public class YYFirebaseRealTime extends RunnerSocial {
     private long getNextAsyncId() {
         return FirebaseUtils.getInstance().getNextAsyncId();
     }
+
+	/**
+     * Creates a new ValueEventListener for listening data changes in Firebase.
+     *
+     * @param eventType The type of event.
+     * @param asyncId The unique async ID.
+     * @param path The Firebase database path related to the event.
+     */
+	private ValueEventListener createValueEventListener(final String eventType, final long asyncId, final String path) {
+		return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> extraData = new HashMap<>();
+
+                if (dataSnapshot.exists()) {
+                    Object dataValue = dataSnapshot.getValue();
+                    if (dataValue instanceof List) {
+                        if (dataSnapshot.hasChildren()) {
+                            List<Object> list = new ArrayList<>();
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                list.add(child.getValue());
+                            }
+                            dataValue = list;
+                        }
+                    }
+                    extraData.put("value", dataValue);
+                }
+
+                sendDatabaseEvent(eventType, asyncId, path, 200, extraData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Map<String, Object> extraData = Map.of("errorMessage", error.getMessage());
+                sendDatabaseEvent(eventType, asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
+            }
+        };
+	}
 
     /**
      * Creates a DatabaseReference based on the provided JSON parameters.

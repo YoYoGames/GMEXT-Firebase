@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseRealTime",
-  "copyToTargets":3035426170322551022,
+  "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.3.0",
@@ -20,14 +20,9 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseRealTime_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseRealTime_SDK","help":"FirebaseRealTime_SDK(json)","hidden":false,"kind":4,"name":"FirebaseRealTime_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
       ],"init":"","kind":4,"name":"FirebaseRealTime.ext","order":[
         {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
-    {"$GMExtensionFile":"","%Name":"FirebaseRealTime.js","constants":[],"copyToTargets":32,"filename":"FirebaseRealTime.js","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"FirebaseRealTime_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseRealTime_SDK","help":"FirebaseRealTime_SDK(fluent_obj)","hidden":false,"kind":5,"name":"FirebaseRealTime_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":5,"name":"FirebaseRealTime.js","order":[
-        {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
-        {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
-        {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"FirebaseRealTime.js","name":"FirebaseRealTime.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"\r\n        implementation 'com.google.firebase:firebase-database'\r\n",
   "hasConvertedCodeInjection":true,

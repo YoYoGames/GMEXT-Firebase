@@ -6,6 +6,7 @@ extern "C" int dsMapCreate();
 extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
 extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
 extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
 @interface FirebaseUtils ()
 
@@ -47,18 +48,18 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
 - (instancetype)initPrivate {
     self = [super init];
     if (self) {
-        _currentAsyncId = GENERATOR_STARTING_POINT;
-        _executorService = [[NSOperationQueue alloc] init];
+        self.currentAsyncId = GENERATOR_STARTING_POINT;
+        self.executorService = [[NSOperationQueue alloc] init];
         
         // Configure the operation queue with a bounded thread pool
-        _executorService.maxConcurrentOperationCount = 100; // Adjust based on your app's needs
-        _executorService.name = @"com.mycompany.myapp.FirebaseUtils.executorService";
+        self.executorService.maxConcurrentOperationCount = 100; // Adjust based on your app's needs
+        self.executorService.name = @"com.mycompany.myapp.FirebaseUtils.executorService";
         
-        _idLock = [[NSLock alloc] init];
+        self.idLock = [[NSLock alloc] init];
         
         // Initialize the regex for "@i64@%llx$i64$" pattern
         NSError *regexError = nil;
-        _i64Regex = [NSRegularExpression regularExpressionWithPattern:@"^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$"
+        self.i64Regex = [NSRegularExpression regularExpressionWithPattern:@"^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$"
                                                              options:0
                                                                error:&regexError];
         if (regexError) {
@@ -142,6 +143,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
     } else if ([json isKindOfClass:[NSString class]]) {
         NSNumber *convertedLong = [self convertStringToLongIfApplicable:(NSString *)json];
         return (convertedLong != nil) ? convertedLong : json;
+        //return json;
     } else if ([json isKindOfClass:[NSNumber class]]) {
         return json;
     } else {
@@ -200,7 +202,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
             NSScanner *scanner = [NSScanner scannerWithString:hexPart];
             if ([scanner scanHexLongLong:&longValue]) {
                 // Check if the longValue is within the safe range for double representation
-                if (llabs(longValue) <= (long)MAX_DOUBLE_SAFE) {
+                if (longValue <= (long)MAX_DOUBLE_SAFE) {
                     return @(longValue);
                 } else {
                     NSLog(@"FirebaseUtils: Long value exceeds safe double range.");
@@ -226,7 +228,21 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
             id value = data[key];
             const char *cKey = [key UTF8String];
 
-            if ([value isKindOfClass:[NSString class]]) {
+            // Check if value is NSDictionary or NSArray and serialize to JSON string
+            if ([value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]]) {
+                NSError *error = nil;
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:value
+                                                                   options:0 // NSJSONWritingPrettyPrinted can be used if formatting is desired
+                                                                     error:&error];
+                NSString *jsonString;
+                if (error == nil && jsonData) {
+                    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                } else {
+                    NSLog(@"FirebaseUtils: JSON serialization failed for key '%@' with error: %@", key, error.localizedDescription);
+                    jsonString = [value isKindOfClass:[NSDictionary class]] ? @"{}" : @"[]"; // Default to empty JSON container on failure
+                }
+                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[jsonString UTF8String]);
+            } else if ([value isKindOfClass:[NSString class]]) {
                 dsMapAddString(dsMapIndex, (char *)cKey, (char *)[value UTF8String]);
             } else if ([value isKindOfClass:[NSNumber class]]) {
                 NSNumber *numberValue = (NSNumber *)value;
@@ -312,6 +328,5 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
     
     NSLog(@"FirebaseUtils: ExecutorService has been shut down");
 }
-
 
 @end

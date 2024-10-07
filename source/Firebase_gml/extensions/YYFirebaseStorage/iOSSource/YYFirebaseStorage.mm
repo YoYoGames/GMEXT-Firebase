@@ -243,7 +243,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 #pragma mark - Helper Methods
 
 - (NSNumber *)getListenerInd {
-    return [[FirebaseUtils sharedInstance] getNextAsyncId];
+    return @([[FirebaseUtils sharedInstance] getNextAsyncId]);
 }
 
 - (NSString *)listOfReferencesToJSON:(NSArray<FIRStorageReference *> *)list {

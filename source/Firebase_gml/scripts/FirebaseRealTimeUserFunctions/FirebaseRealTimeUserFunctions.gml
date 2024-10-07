@@ -34,6 +34,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		database: _database,
 		action: "",
 		value: undefined,
+		priority: undefined,
 	};
 	
 	static Path = function(path)
@@ -134,7 +135,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
 	//Actions
 
-    static Set = function(_value, _try_parse = true)
+    static Set = function(_value, _priority = undefined, _try_parse = true)
     {
 		__.action = "Set"
 		
@@ -164,6 +165,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		}
 		
 		__.value = _value;
+		__.priority = _priority;
 		
 		var listener = undefined
 
@@ -176,7 +178,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 						FirebaseREST_RealTime_getURL(_path,_database),
 						FirebaseREST_RealTime_getWriteHTTPMethod(_push),
 						"{}",
-						value
+						__.value
 					)
 		listener.path = __.path
 		

@@ -6,7 +6,7 @@ if(!string_count("FirebaseRealTime",async_load[?"type"]))
 	exit
 
 var ins = instance_create_depth(0,0,0,Obj_Debug_FallText_RealTime)
-ins.text = string(async_load[?"listener"]) + " - " + async_load[?"type"]  + " - " + async_load[?"path"] + " - " + string(async_load[?"status"])
+ins.text = string(async_load[?"listener"]) + " - " + async_load[?"type"]  + " - " + string(async_load[?"path"]) + " - " + string(async_load[?"status"])
 
 if(ds_map_exists(async_load,"value"))
 	ins.text += " -> " + string(async_load[?"value"])

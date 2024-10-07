@@ -1,16 +1,4 @@
 
-window.FirebaseBaseExt = Object.assign(window.FirebaseBaseExt || {}, {
-
-	currentId: 5000,
-
-	getNextAsyncId: function() {
-		const context = window.FirebaseBaseExt;
-		context.currentId++;
-		return context.currentId;
-	}
-
-});
-
 // Global namespace for Firebase Storage
 // Merge the new methods and properties into the existing FirebaseStorageExt object
 window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
@@ -78,7 +66,7 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
      * @return {number} A unique listener ID.
      */
     getListenerInd: function() {
-		const { getNextAsyncId } = window.FirebaseBaseExt;
+		const { getNextAsyncId } = window.FirebaseSetup;
         return getNextAsyncId();
     },
 
@@ -119,7 +107,7 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
 	 * @param {Object} additionalData - Additional data to include in the event.
 	 */
 	sendStorageEvent: function(eventType, listenerInd, path, localPath, success, additionalData) {
-		const { sendAsyncEvent } = window.FirebaseStorageExt;
+		const { sendAsyncEvent } = window.FirebaseSetup;
 		
 		// Initialize a new data object
 		const data = {
@@ -139,41 +127,7 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
 
 		sendAsyncEvent(eventType, data);
 	},
-	
-	/**
-	 * Sends an async event with the specified type and data.
-	 * This function constructs an event object and sends it using the GMS API.
-	 * @param {string} eventType - The type of the event.
-	 * @param {Object} data - A dictionary containing key-value pairs for the event.
-	 */
-	sendAsyncEvent: function(eventType, data) {
-		// Create a new event object
-		const eventObject = { type: eventType };
 
-		// Add each key-value pair from the data object to the event object
-		for (const key in data) {
-			if (data.hasOwnProperty(key)) {
-				const value = data[key];
-
-				// Determine the type and add it to the event object
-				if (typeof value === 'string') {
-					eventObject[key] = value;
-				} else if (typeof value === 'number') {
-					eventObject[key] = value;
-				} else if (typeof value === 'boolean') {
-					eventObject[key] = value ? 1 : 0;  // Convert booleans to 1 or 0
-				} else if (typeof value === 'object' && value !== null) {
-					eventObject[key] = JSON.stringify(value);  // Convert objects to JSON strings
-				} else {
-					// For other types, convert to string
-					eventObject[key] = String(value);
-				}
-			}
-		}
-
-		// Send the constructed event using the GMS API
-		GMS_API.send_async_event_social(eventObject);
-	},
 });
 
 const FIREBASE_STORAGE_SUCCESS = 0.0;

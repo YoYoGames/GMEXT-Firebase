@@ -121,7 +121,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	/// @function WhereLessThanOrEqual(path, value)
 	static WhereLessThanOrEqual = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value }):
+		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value });
 		return self;
 	}
 	

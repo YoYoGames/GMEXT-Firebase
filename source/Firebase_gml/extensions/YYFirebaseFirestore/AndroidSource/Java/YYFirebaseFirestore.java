@@ -5,14 +5,50 @@ import ${YYAndroidPackageName}.FirebaseUtils; // Assuming FirebaseUtils is avail
 
 import com.yoyogames.runner.RunnerJNILib;
 
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Blob;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.FirebaseFirestoreSettings.Builder;
+import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.SnapshotMetadata;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
-import com.google.android.gms.tasks.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONException;
 
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.lang.NullPointerException;
+import java.lang.Exception;
+import java.lang.Double;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +57,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
 
 	private static final String LOG_TAG = "YYFirebaseFirestore";
 
-    private HashMap<long, ListenerRegistration> listenerMap;
+    private HashMap<Long, ListenerRegistration> listenerMap;
 
     public YYFirebaseFirestore() {
         listenerMap = new HashMap<>();
@@ -119,12 +155,12 @@ public class YYFirebaseFirestore extends RunnerSocial {
     private void firestoreCollectionAdd(final long asyncId, final JSONObject fluentObj) {
 		final String path = fluentObj.optString("path", null);
 
-		if (operationObj.isNull("value")) {
+		if (fluentObj.isNull("value")) {
 			sendErrorEvent("FirebaseFirestore_Collection_Add", asyncId, path, 400, "Value parameter is null.");
 			return;
 		}
 
-		Object value = operationObj.opt("value");
+		Object value = fluentObj.opt("value");
 		value = FirebaseUtils.convertJSON(value);
 
         FirebaseFirestore.getInstance()
@@ -195,7 +231,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
         Query query = FirebaseFirestore.getInstance().collection(path);
 
         // Build query based on operations
-		JSONArray operations = fluentJson.optJSONArray("operations");
+		JSONArray operations = fluentObj.optJSONArray("operations");
         if (operations != null) {
             for (int a = 0; a < operations.length(); a++) {
                 
@@ -328,7 +364,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
     private void firestoreDocumentSet(final long asyncId, final JSONObject fluentObj) {
 		final String path = fluentObj.optString("path", null);
 
-		if (operationObj.isNull("value")) {
+		if (fluentObj.isNull("value")) {
 			sendErrorEvent("FirebaseFirestore_Document_Set", asyncId, path, 400, "Value parameter is null.");
 			return;
 		}
@@ -359,18 +395,18 @@ public class YYFirebaseFirestore extends RunnerSocial {
     private void firestoreDocumentUpdate(final long asyncId, final JSONObject fluentObj) {
 		final String path = fluentObj.optString("path", null);
 
-		if (operationObj.isNull("value")) {
+		if (fluentObj.isNull("value")) {
 			sendErrorEvent("FirebaseFirestore_Document_Update", asyncId, path, 400, "Value parameter is null.");
 			return;
 		}
 
-		Object value = fluentObj.opt("value");
+		Object value = fluentObj.optJSONObject("value");
 
 		value = FirebaseUtils.convertJSON(value);
 
         FirebaseFirestore.getInstance()
             .document(path)
-            .update(value)
+            .update((Map<String, Object>)value)
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -488,7 +524,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
     private void firestoreListenerRemoveAll(final long asyncId) {
 		List<Object> removedListeners = new ArrayList<>();
 
-		for (Long listenerToRemove : referenceMap.keySet()) {
+		for (Long listenerToRemove : listenerMap.keySet()) {
 			ListenerRegistration listenerRegistration = listenerMap.get(listenerToRemove);
 			if (listenerRegistration != null) {
 				listenerRegistration.remove();
@@ -498,7 +534,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
 		listenerMap.clear();
 
 		Map<String, Object> extraData = Map.of("values", removedListeners);
-		sendDatabaseEvent("FirebaseFirestore_RemoveListeners", asyncId, null, 200, extraData);
+		sendFirestoreEvent("FirebaseFirestore_RemoveListeners", asyncId, null, 200, extraData);
 
         
     }

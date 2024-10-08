@@ -147,7 +147,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
         const { module, sendDatabaseEvent, buildReference, buildQuery, createValueEventListener, mapDatabaseErrorToHttpStatus } = window.FirebaseRealTimeExt;
         const path = fluentObj.path;
         const dataRef = buildReference(fluentObj);
-        const query = buildQuery(asyncId, "FirebaseRealTime_Read", fluentObj, dataRef);
+        const query = buildQuery(fluentObj, dataRef);
 
         if (!query) {
             console.error("FirebaseRealTimeExt: Failed to build query");
@@ -176,7 +176,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
 
         const path = fluentObj.path;
         const dataRef = buildReference(fluentObj);
-        const query = buildQuery(asyncId, "FirebaseRealTime_Listener", fluentObj, dataRef);
+        const query = buildQuery(fluentObj, dataRef);
 
         if (!query) {
             console.error("FirebaseRealTimeExt: Failed to build query");
@@ -338,8 +338,8 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
      * @param {object} dataRef - The DatabaseReference to build the query from.
      * @return {object|null} The constructed Query or null if failed.
      */
-    buildQuery: function(asyncId, eventType, fluentObj, dataRef) {
-        const { module, sendDatabaseEvent, queryMap, listenerMap } = window.FirebaseRealTimeExt;
+    buildQuery: function(fluentObj, dataRef) {
+        const { module } = window.FirebaseRealTimeExt;
 
         let query = module.query(dataRef);
 
@@ -420,8 +420,9 @@ function FirebaseRealTime_SDK(fluentJson) {
     const { getNextAsyncId } = window.FirebaseSetup;
     const { isRealtimeInitialized, sendDatabaseEvent, setValue, readValue, listenValue, existsValue, deleteValue, removeListener, removeAllListeners } = window.FirebaseRealTimeExt;
 
-    if (!isRealtimeInitialized())
+    if (!isRealtimeInitialized()) {
         return FIREBASE_DATABASE_ERROR_NOT_INITIALIZED;
+    }
 
     const asyncId = getNextAsyncId();
 
@@ -474,3 +475,4 @@ function FirebaseRealTime_SDK(fluentJson) {
 
     return asyncId;
 }
+

@@ -37,60 +37,70 @@ function FirebaseRealTimeBuilder(_database) constructor
 		priority: undefined,
 	};
 	
+	/// @function Path(child_path)
 	static Path = function(path)
 	{
 		__.path = path;
 		return self
 	}
 	
+	/// @function Child(child_path)
 	static Child = function(_child_path)
 	{
 		__.path = FirebaseRealTime_Path_Join(__.path, _child_path);
 		return self
 	}
 	
+	/// @function Parent(child_path)
 	static Parent = function()
 	{
 		__.path = FirebaseRealTime_Path_Back(_path, 1);
 		return self
 	}
 	
+	/// @function Push(child_path)
 	static Push = function()
 	{
 		__.push = true;
 		return self
 	}
 
+	/// @function OrderByKey(child_path)
 	static OrderByKey = function()
     {
 		__.orderBy = "$key";
 		return self
     }
 	
+	/// @function OrderByValue(child_path)
 	static OrderByValue = function()
     {
 		__.orderBy = "$value";
 		return self
     }
 	
+	/// @function OrderByPriority(child_path)
 	static OrderByPriority = function()
     {
 		__.orderBy = "$priority";
 		return self
     }
 	
+	/// @function OrderByChild(child_path)
 	static OrderByChild = function(_path)
     {
 		__.orderBy = _path;
 		return self
     }
 	
+	/// @function EqualTo(child_path)
 	static EqualTo = function(_equal_to)
     {
 		__.equalTo = _equal_to;
 		return self
     }
 	
+	/// @function StartAt(child_path)
 	static StartAt = function(_start_at)
     {
 		__.startAt = _start_at;
@@ -98,6 +108,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		return self
     }
 	
+	/// @function StartAfter(child_path)
 	static StartAfter = function(_start_after)
     {
 		__.startAfter = _start_after;
@@ -105,6 +116,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		return self
     }
 	
+	/// @function EndAt(child_path)
 	static EndAt = function(_end_at)
     {
 		__.endAt = _end_at
@@ -112,6 +124,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		return self
     }
 	
+	/// @function EndBefore(child_path)
 	static EndBefore = function(_end_before)
     {
 		__.endBefore = _end_before
@@ -119,6 +132,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		return self
     }
 		
+	/// @function LimitToLast(child_path)
 	static LimitToLast = function(_count)
 	{
 		__.limitToLast = _count;
@@ -126,6 +140,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 		return self
 	}
 	
+	/// @function LimitToFirst(child_path)
 	static LimitToFirst = function(_count)
 	{
 		__.limitToFirst = _count;

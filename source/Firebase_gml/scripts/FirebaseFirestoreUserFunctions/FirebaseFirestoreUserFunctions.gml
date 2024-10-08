@@ -11,73 +11,56 @@
 
 function FirebaseFirestore(path = undefined)
 {
-	return new Firebase_Firestore_builder(path)
+	return new FirebaseFirestoreBuilder(path)
 }
 
 function FirebaseFirestore_updatedPath(path)
 {
 	if(is_undefined(path))
 	{
-		_isDocument = 0.0//false
-		_isCollection = 0.0//false
+		__.isDocument = 0.0//false
+		__.isCollection = 0.0//false
 	}	
 	else if(FirebaseREST_Firestore_path_isDocument(path))
 	{
-		_isDocument = 1.0//true
-		_isCollection = 0.0//false
+		__.isDocument = 1.0//true
+		__.isCollection = 0.0//false
 	}
 	else
 	{
-		_isDocument = 0.0//false
-		_isCollection = 1.0//true
+		__.isDocument = 0.0//false
+		__.isCollection = 1.0//true
 	}
 }
 
-function Firebase_Firestore_builder(path) constructor
+function FirebaseFirestoreBuilder(_path) constructor
 {
-	_path = path
+	__ = {
+		path: _path,
 	
-	_operations = undefined//[] where_operation,where_ref,where_value,
+		operations: [],
 	
-	//_order = undefined
-	_orderBy_field = undefined
-	_orderBy_direction = undefined
+		orderBy: undefined,
+		orderDirection: undefined,
 	
-	_start = undefined
-	_end = undefined
-	_limit = undefined
+		startAt: undefined,
+		startAfter: undefined,
+		endAt: undefined,
+		endBefore: undefined,
+		limitToFirst: undefined,
+		limitToLast: undefined,
 	
-	_action = ""
-	_value = undefined
+		action: "",
+		value: undefined,
+	}
 	
 	FirebaseFirestore_updatedPath(_path)
-	//_isDocument = undefined
-	//_isCollection = undefined
-	
-	/*
-	/// @function Document(child_path)
-	static Document = function(child_path)
-	{
-		_path = FirebaseFirestore_Path_Join(_path,child_path)
-		FirebaseFirestore_updatedPath(_path)
-		return self
-	}
-	
-	/// @function Collection(child_path)
-	static Collection = function(child_path)
-	{
-		_path = FirebaseFirestore_Path_Join(_path,child_path)
-		FirebaseFirestore_updatedPath(_path)
-		
-		return self
-	}
-	*/
 	
 	/// @function Child(child_path)
-	static Child = function(child_path)
+	static Child = function(_child_path)
 	{
-		_path = FirebaseFirestore_Path_Join(_path,child_path)
-		FirebaseFirestore_updatedPath(_path)
+		__.path = FirebaseFirestore_Path_Join(__.path, _child_path)
+		FirebaseFirestore_updatedPath(__.path)
 		
 		return self
 	}
@@ -85,131 +68,139 @@ function Firebase_Firestore_builder(path) constructor
 	/// @function Parent()
 	static Parent = function()
 	{
-		_path = FirebaseFirestore_Path_Back(_path,1)
+		__.path = FirebaseFirestore_Path_Back(__.path, 1);
 		return self
 	}
 		
 	/// @function OrderBy(path)
-	static OrderBy = function(path)
+	static OrderBy = function(_path, _direction = 0)
 	{
-		if(argument_count == 2)
-		{
-			_orderBy_field = path
-			_orderBy_direction = argument[1]
-		}
-		else
-			_orderBy_field = path
-		
-		return self
+		__.orderBy = _path
+		__.orderDirection = _direction;
+
+		return self;
 	}
 	
 	/// @function Where(path, op, value)
-	static Where = function(path, op, value) 
-	{
-		if(is_undefined(_operations))
-			_operations = []
-		
-		op = FirebaseFirestore_operationFromSymbol(op);
+	static Where = function(_path, _op, _value) 
+	{	
+		_op = FirebaseFirestore_operationFromSymbol(_op);
 			
-		array_push(_operations, {operation: op, path: path, value: value})
+		array_push(__.operations, { operation: _op, path: _path, value: _value });
 		return self;
 	}
 
-	static WhereEqual = function(path,value)
+	/// @function WhereEqual(path, value)
+	static WhereEqual = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_equal,path: path,value: value})
-		return self
+		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value });
+		return self;
 	}
 	
-	static WhereGreaterThan = function(path,value)
+	/// @function WhereGreaterThan(path, value)
+	static WhereGreaterThan = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_greater_than,path: path,value: value})
-		return self
+		array_push(__.operations, { operation: Firestore_Query_greater_than, path: _path, value: _value });
+		return self;
 	}
 	
-	static WhereGreaterThanOrEqual = function(path,value)
+	/// @function WhereGreaterThanOrEqual(path, value)
+	static WhereGreaterThanOrEqual = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_greater_than_or_equal,path: path,value: value})
-		return self
+		array_push(__.operations,{ operation: Firestore_Query_greater_than_or_equal, path: _path, value: _value });
+		return self;
 	}
 	
-	static WhereLessThan = function(path,value)
+	/// @function WhereLessThan(path, value)
+	static WhereLessThan = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_less_than_or_equal,path: path,value: value})
-		return self
+		array_push(__.operations, { operation: Firestore_Query_less_than_or_equal, path: _path, value: _value });
+		return self;
 	}
 	
-	static WhereLessThanOrEqual = function(path,value)
+	/// @function WhereLessThanOrEqual(path, value)
+	static WhereLessThanOrEqual = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_equal,path: path,value: value})
-		return self
+		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value }):
+		return self;
 	}
 	
-	static WhereNotEqual = function(path,value)
+	/// @function WhereNotEqual(path, value)
+	static WhereNotEqual = function(_path, _value)
 	{
-		if(is_undefined(_operations))
-			_operations = []
-		array_push(_operations,{operation: Firestore_Query_not_equal,path: path,value: value})
-		return self
+		array_push(__.operations, { operation: Firestore_Query_not_equal, path: _path, value: _value });
+		return self;
 	}
 	
 	/// @function Start(value)
-	static StartAt = function(value)
+	static Start = function(_value)
     {
-		_start = value
-		return self
+		__.startAt = _value;
+		__.startAfter = undefined;
+		return self;
+    }
+	
+	/// @function StartAfter(value)
+	static StartAfter = function(_value)
+    {
+		__.startAfter = _value;
+		__.startAt = undefined;
+		return self;
     }
 	
 	/// @function End(value)
-	static EndAt = function(value)
+	static End = function(_value)
     {
-		_end = value
-		return self
+		__.endAt = _value;
+		__.endBefore = undefined;
+		return self;
+    }
+
+	/// @function EndBefore(value)
+	static EndBefore = function(_value)
+    {
+		__.endBefore = _value;
+		__.endAt = undefined;
+		return self;
     }
 	
 	/// @function Limit(value)
-	static Limit = function(value)
+	static Limit = function(_value)
     {
-		_limit = value
-		return self
+		__.limitToFirst = _value;
+		__.limitToLast = undefined;
+		return self;
+    }
+	
+	/// @function LimitToLast(value)
+	static LimitToLast = function(_value)
+    {
+		__.limitToLast = _value;
+		__.limitToFirst = undefined;
+		return self;
     }
 	
 	//Actions
 	
 	/// @function Set(value)
-    static Set = function(value)
+    static Set = function(_value)
     {
-		_action = "Set"
-		_value = value
+		__.action = "Set"
 		
-		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
+		if (is_handle(_value) && string_starts_with(string(_value),"ref ds_map"))
 		{
-			_value = json_encode(value)
+			_value = json_parse(json_encode(_value))
 		}
-		else
-		if(is_struct(value))
+		else if(!is_struct(_value) && !is_array(_value))
 		{
-			_value = json_stringify(value)
+			show_debug_message($"Firestore: type error Set({typeof(_value)})");
+			exit;
 		}
-		else
-		if(!is_string(value))
-		{
-			show_debug_message("Firestore: type error Set()")
-			exit
-		}
+		
+		__.value = _value;
 		
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
 			return RESTFirebaseFirestore_Document_Set(_path,_value)
 		else
@@ -217,29 +208,24 @@ function Firebase_Firestore_builder(path) constructor
     }
 	
 	/// @function Update(value)
-    static Update = function(value)
+    static Update = function(_value)
     {
-		_action = "Update"
-		_value = value
+		__.action = "Update"
 		
-		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
+		if (is_handle(_value) && string_starts_with(string(_value),"ref ds_map"))
 		{
-			_value = json_encode(value)
+			_value = json_parse(json_encode(_value))
 		}
-		else
-		if(is_struct(value) or is_array(value))
+		else if(!is_struct(_value) && !is_array(_value))
 		{
-			_value = json_stringify(value)
+			show_debug_message($"Firestore: type error Set({typeof(_value)})");
+			exit;
 		}
-		else
-		if(!is_string(value))
-		{
-			show_debug_message("Firestore: type error Update()")
-			exit
-		}
+		
+		__.value = _value;
 		
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
 			return RESTFirebaseFirestore_Document_Update(_path,_value)
 		else
@@ -252,9 +238,9 @@ function Firebase_Firestore_builder(path) constructor
 	/// @function Read()
     static Read = function()
     {
-		_action = "Read"
+		__.action = "Read"
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
 			return RESTFirebaseFirestore_Document_Read(_path)
 		else
@@ -264,10 +250,10 @@ function Firebase_Firestore_builder(path) constructor
 	/// @function Query()
 	static Query = function()
 	{
-		_action = "Query"
+		__.action = "Query"
 		if(FirebaseFirestore_Library_useSDK)
 		{
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		}
 		if(FirebaseREST_Firestore_path_isCollection(_path))
 			return RESTFirebaseFirestore_Collection_Query(self)
@@ -278,9 +264,9 @@ function Firebase_Firestore_builder(path) constructor
 	/// @function Listener()
     static Listener = function()
     {
-		_action = "Listener"
+		__.action = "Listener"
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
 			return RESTFirebaseFirestore_Document_Listener(_path)
 		else
@@ -290,9 +276,9 @@ function Firebase_Firestore_builder(path) constructor
 	/// @function Delete()
 	static Delete = function()
     {
-		_action = "Delete"
+		__.action = "Delete"
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		if(FirebaseREST_Firestore_path_isDocument(_path))
 			return RESTFirebaseFirestore_Document_Delete(_path)
 		else
@@ -304,19 +290,19 @@ function Firebase_Firestore_builder(path) constructor
 	
 	static ListenerRemove = function(listener)
 	{
-		_action = "ListenerRemove"
-		_value = listener
+		__.action = "ListenerRemove"
+		__.value = listener
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		with(listener)
 		    instance_destroy()
 	}
 	
 	static ListenerRemoveAll = function()
 	{
-		_action = "ListenerRemoveAll"
+		__.action = "ListenerRemoveAll"
 		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(self))
+			return FirebaseFirestore_SDK(json_stringify(__))
 		with(Obj_FirebaseREST_Listener_Firestore)
 		if(string_count("Listener",event))
 			instance_destroy()

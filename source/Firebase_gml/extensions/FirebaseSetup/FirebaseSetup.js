@@ -3,10 +3,27 @@ window.FirebaseSetup = Object.assign(window.FirebaseSetup || {}, {
 	currentId: 5000,
 
 	getNextAsyncId: function() {
-		const context = window.FirebaseUtils;
+		const context = window.FirebaseSetup;
 		context.currentId++;
 		return context.currentId;
 	},
+
+	/**
+     * Submits an asynchronous task.
+     *
+     * @param {function} task - The task to execute asynchronously.
+     */
+    submitAsyncTask: function(task) {
+        // Implement task submission logic, e.g., using Web Workers or simply executing the task.
+        // For simplicity, we'll execute the task asynchronously using setTimeout.
+        setTimeout(() => {
+            try {
+                task();
+            } catch (error) {
+                console.error("FirebaseSetup: Async task failed", error);
+            }
+        }, 0);
+    },
 
 	/**
 	 * Sends an async event with the specified type and data.

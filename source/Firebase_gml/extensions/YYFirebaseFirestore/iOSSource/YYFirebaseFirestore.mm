@@ -473,7 +473,7 @@ typedef NS_ENUM(NSInteger, QuerySort) {
     if (extraData) {
         [data addEntriesFromDictionary:extraData];
     }
-    [[FirebaseUtils sharedInstance] sendAsyncEvent:eventType data:data];
+    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage {

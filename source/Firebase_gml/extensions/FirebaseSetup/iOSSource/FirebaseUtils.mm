@@ -219,7 +219,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
 
 #pragma mark - Sending Asynchronous Events
 
-- (void)sendAsyncEvent:(NSString *)eventType data:(NSDictionary *)data {
+- (void)sendSocialAsyncEvent:(NSString *)eventType data:(NSDictionary *)data {
     dispatch_async(dispatch_get_main_queue(), ^{
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex, (char *)"type", (char *)[eventType UTF8String]);

@@ -31,7 +31,7 @@ window.FirebaseSetup = Object.assign(window.FirebaseSetup || {}, {
 	 * @param {string} eventType - The type of the event.
 	 * @param {Object} data - A dictionary containing key-value pairs for the event.
 	 */
-	sendAsyncEvent: function(eventType, data) {
+	sendSocialAsyncEvent: function(eventType, data) {
 		// Create a new event object
 		const eventObject = { type: eventType };
 

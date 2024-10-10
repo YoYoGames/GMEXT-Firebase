@@ -125,7 +125,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
             }
     
             // Send asynchronous event to indicate completion
-            sendAsyncEvent(methodName, data);
+            sendSocialAsyncEvent(methodName, data);
         });
 
         return FIREBASE_CRASHLYTICS_SUCCESS;
@@ -213,7 +213,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
                 data.put("value", 0.0);
                 Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: No unsent reports.");
             }
-            sendAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
+            sendSocialAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
         });
         return FIREBASE_CRASHLYTICS_SUCCESS;
     }
@@ -232,7 +232,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
 
     // <editor-fold desc="Helper Methods">
 
-    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
         RunnerActivity.CurrentActivity.runOnUiThread(() -> {
             int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
             RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);

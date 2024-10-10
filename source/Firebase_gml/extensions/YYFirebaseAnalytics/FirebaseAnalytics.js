@@ -56,7 +56,7 @@ window.FirebaseAnalyticsExt = Object.assign(window.FirebaseAnalyticsExt || {}, {
 	 * @param {string} eventType - The type of the event.
 	 * @param {Object} data - A dictionary containing key-value pairs for the event.
 	 */
-	sendAsyncEvent: function(eventType, data) {
+	sendSocialAsyncEvent: function(eventType, data) {
 		// Create a new event object
 		const eventObject = { type: eventType };
 
@@ -115,7 +115,7 @@ function FirebaseAnalytics_SetAnalyticsCollectionEnabled(enabled) {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` if successful, `FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS` if the event name is invalid, or an error code if not initialized.
  */
 function FirebaseAnalytics_LogEvent(event, jsonValues) {
-	const { isAnalyticsInitialized, isValidEventName, sendAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, isValidEventName, sendSocialAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
 	}
@@ -141,7 +141,7 @@ function FirebaseAnalytics_LogEvent(event, jsonValues) {
     }
 
     // Send the async event with the result data
-    sendAsyncEvent("FirebaseAnalytics_LogEvent", data);
+    sendSocialAsyncEvent("FirebaseAnalytics_LogEvent", data);
 
     return FIREBASE_ANALYTICS_SUCCESS;
 }
@@ -163,7 +163,7 @@ function FirebaseAnalytics_ResetAnalyticsData() {
  * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
  */
 function FirebaseAnalytics_SetDefaultEventParameters(jsonValues) {
-	const { isAnalyticsInitialized, sendAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
+	const { isAnalyticsInitialized, sendSocialAsyncEvent, instance, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
 		return FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED;
@@ -184,7 +184,7 @@ function FirebaseAnalytics_SetDefaultEventParameters(jsonValues) {
     }
 
     // Send the async event with the result data
-    sendAsyncEvent("FirebaseAnalytics_SetDefaultEventParameters", data);
+    sendSocialAsyncEvent("FirebaseAnalytics_SetDefaultEventParameters", data);
 
     return FIREBASE_ANALYTICS_SUCCESS;
 }

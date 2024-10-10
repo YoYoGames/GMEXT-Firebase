@@ -66,7 +66,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 data.put("error", e.toString());
                 data.put("success", 0.0);
             }
-            sendAsyncEvent(methodName, data);
+            sendSocialAsyncEvent(methodName, data);
         });
         return FIREBASE_ANALYTICS_SUCCESS;
     }
@@ -90,7 +90,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 data.put("success", 0.0);
             }
             
-            sendAsyncEvent(methodName, data);
+            sendSocialAsyncEvent(methodName, data);
         });
         return FIREBASE_ANALYTICS_SUCCESS;
     }
@@ -156,7 +156,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     // <editor-fold desc="Helper Methods">
 
-    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
         RunnerActivity.CurrentActivity.runOnUiThread(() -> {
             int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
             RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);

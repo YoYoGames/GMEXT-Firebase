@@ -291,10 +291,10 @@ public class YYFirebaseStorage extends RunnerSocial {
         if (additionalData != null) {
             data.putAll(additionalData);
         }
-		sendAsyncEvent(eventType, data);
+		sendSocialAsyncEvent(eventType, data);
 	}
 
-	private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+	private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
         RunnerActivity.CurrentActivity.runOnUiThread(() -> {
             int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
             RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);

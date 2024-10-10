@@ -81,7 +81,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                 data.put("error", "Failed with unknown error");
                             }
                         }
-                        sendAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", data);
+                        sendSocialAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", data);
                     }
                 });
         return FIREBASE_REMOTE_CONFIG_SUCCESS;
@@ -105,7 +105,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                 data.put("error", "Failed with unknown error");
                             }
                         }
-                        sendAsyncEvent("FirebaseRemoteConfig_Reset", data);
+                        sendSocialAsyncEvent("FirebaseRemoteConfig_Reset", data);
                     }
                 });
         return FIREBASE_REMOTE_CONFIG_SUCCESS;
@@ -125,7 +125,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                     Map<String, Object> data = new HashMap<>();
                     data.put("success", 0.0);
                     data.put("error", "Invalid JSON");
-                    sendAsyncEvent(methodName, data);
+                    sendSocialAsyncEvent(methodName, data);
                     return;
                 }
 
@@ -146,7 +146,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                         data.put("error", "Failed with unknown error");
                                     }
                                 }
-                                sendAsyncEvent(methodName, data);
+                                sendSocialAsyncEvent(methodName, data);
                             }
                         });
             }
@@ -207,7 +207,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
         } else {
             Log.e(LOG_TAG, "ConfigUpdateListener onError: Unknown error");
         }
-        sendAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
+        sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             data.put("success", 0.0);
             data.put("error", "ConfigUpdate is null");
         }
-        sendAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
+        sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
     }
 
     // </editor-fold>
@@ -288,7 +288,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
     }
 
     // Helper method to send asynchronous events
-    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
         int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
         RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
         if (data != null) {

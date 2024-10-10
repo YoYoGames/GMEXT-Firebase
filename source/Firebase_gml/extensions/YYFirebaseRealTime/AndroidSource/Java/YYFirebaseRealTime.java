@@ -191,7 +191,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private void existsValue(final long asyncId, final JSONObject fluentObj) {
 		final String path = fluentObj.optString("path", null);
-		final DatabaseReference rreferenceef = buildReference(fluentObj);
+		final DatabaseReference reference = buildReference(fluentObj);
 		reference.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
@@ -457,7 +457,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
     }
 
     /**
-     * Sends a database event by assembling common data and delegating to sendAsyncEvent.
+     * Sends a database event by assembling common data and delegating to sendSocialAsyncEvent.
      *
      * @param eventType The type of event.
      * @param asyncId The unique async ID.
@@ -477,7 +477,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
             data.putAll(extraData);
         }
 
-        FirebaseUtils.sendAsyncEvent(eventType, data);
+        FirebaseUtils.sendSocialAsyncEvent(eventType, data);
     }
 
 	private void sendErrorEvent(String eventType, long asyncId, String path, int status, String errorMessage) {

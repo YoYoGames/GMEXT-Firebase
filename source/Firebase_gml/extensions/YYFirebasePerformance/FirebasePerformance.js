@@ -25,7 +25,7 @@ window.FirebasePerformanceExt = Object.assign(window.FirebasePerformanceExt || {
 	 * @param {string} eventType - The type of the event.
 	 * @param {Object} data - A dictionary containing key-value pairs for the event.
 	 */
-	sendAsyncEvent: function(eventType, data) {
+	sendSocialAsyncEvent: function(eventType, data) {
 		const eventObject = { type: eventType };
 
 		for (const key in data) {

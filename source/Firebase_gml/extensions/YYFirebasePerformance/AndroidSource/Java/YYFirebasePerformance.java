@@ -314,7 +314,7 @@ public class YYFirebasePerformance {
 
     // <editor-fold desc="Helper Methods">
 
-    private void sendAsyncEvent(String eventType, Map<String, Object> data) {
+    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
         RunnerActivity.CurrentActivity.runOnUiThread(() -> {
             int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
             RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);

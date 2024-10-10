@@ -107,7 +107,7 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
 	 * @param {Object} additionalData - Additional data to include in the event.
 	 */
 	sendStorageEvent: function(eventType, listenerInd, path, localPath, success, additionalData) {
-		const { sendAsyncEvent } = window.FirebaseSetup;
+		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 		
 		// Initialize a new data object
 		const data = {
@@ -125,7 +125,7 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
 			Object.assign(data, additionalData);
 		}
 
-		sendAsyncEvent(eventType, data);
+		sendSocialAsyncEvent(eventType, data);
 	},
 
 });
@@ -273,7 +273,7 @@ function SDKFirebaseStorage_Download(localStorageKey, firebasePath, bucket = '')
 }
 
 function SDKFirebaseStorage_Delete(firebasePath, bucket = '') {
-    const { isStorageInitialized, module, getListenerInd, sendAsyncEvent } = window.FirebaseStorageExt;
+    const { isStorageInitialized, module, getListenerInd, sendSocialAsyncEvent } = window.FirebaseStorageExt;
     if (!isStorageInitialized()) {
         return FIREBASE_STORAGE_ERROR_NOT_INITIALIZED;
     }

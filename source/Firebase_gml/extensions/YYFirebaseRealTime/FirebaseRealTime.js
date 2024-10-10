@@ -29,7 +29,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
      * @param {object|null} extraData - Additional data to include in the event.
 	 */
 	sendDatabaseEvent: function(eventType, asyncId, path, status, additionalData) {
-		const { sendAsyncEvent } = window.FirebaseSetup;
+		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 		
 		// Initialize a new data object
 		const data = {
@@ -43,7 +43,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
 			Object.assign(data, additionalData);
 		}
 
-		sendAsyncEvent(eventType, data);
+		sendSocialAsyncEvent(eventType, data);
 	},
 
     /**

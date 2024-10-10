@@ -82,7 +82,7 @@ public class FirebaseUtils {
         }
     }
 
-    public static void sendAsyncEvent(String eventType, Map<String, Object> data) {
+    public static void sendAsyncEvent(int eventId, String eventType, Map<String, Object> data) {
         RunnerActivity.CurrentActivity.runOnUiThread(() -> {
             int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
             RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
@@ -127,6 +127,10 @@ public class FirebaseUtils {
             }
             RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_SOCIAL);
         });
+    }
+
+    public static void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
+        FirebaseUtils.sendAsyncEvent(EVENT_SOCIAL, eventType, data);
     }
 
     /**

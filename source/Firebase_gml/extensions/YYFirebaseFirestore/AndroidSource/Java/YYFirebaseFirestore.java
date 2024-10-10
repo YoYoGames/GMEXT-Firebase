@@ -586,7 +586,7 @@ public class YYFirebaseFirestore extends RunnerSocial {
     }
 
     /**
-     * Sends a Firestore event by assembling common data and delegating to FirebaseUtils.sendAsyncEvent.
+     * Sends a Firestore event by assembling common data and delegating to FirebaseUtils.sendSocialAsyncEvent.
      *
      * @param eventType The type of event.
      * @param listenerId The unique listener ID.
@@ -606,8 +606,8 @@ public class YYFirebaseFirestore extends RunnerSocial {
             data.putAll(extraData);
         }
 
-        // Assuming FirebaseUtils.sendAsyncEvent is available
-        FirebaseUtils.sendAsyncEvent(eventType, data);
+        // Assuming FirebaseUtils.sendSocialAsyncEvent is available
+        FirebaseUtils.sendSocialAsyncEvent(eventType, data);
     }
 
 	private void sendErrorEvent(String eventType, long asyncId, String path, int status, String errorMessage) {

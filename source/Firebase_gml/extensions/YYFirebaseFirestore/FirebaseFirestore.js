@@ -23,7 +23,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
     },
 
     sendFirestoreEvent: function(eventType, asyncId, path, status, additionalData) {
-		const { sendAsyncEvent } = window.FirebaseSetup;
+		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 	
 		const data = {
 			listener: asyncId,
@@ -35,7 +35,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			Object.assign(data, additionalData);
 		}
 	
-		sendAsyncEvent(eventType, data);
+		sendSocialAsyncEvent(eventType, data);
 	},
 
 	sendErrorEvent: function(eventType, asyncId, path, error) {

@@ -25,7 +25,7 @@ window.FirebaseRemoteConfigExt = Object.assign(window.FirebaseRemoteConfigExt ||
 	 * @param {string} eventType - The type of the event.
 	 * @param {Object} data - A dictionary containing key-value pairs for the event.
 	 */
-	sendAsyncEvent: function(eventType, data) {
+	sendSocialAsyncEvent: function(eventType, data) {
 		const eventObject = { type: eventType };
 
 		for (const key in data) {
@@ -212,7 +212,7 @@ function FirebaseRemoteConfig_Initialize(seconds) {
  * @return {number} A promise that resolves to `FIREBASE_REMOTE_CONFIG_SUCCESS` if successful.
  */
 function FirebaseRemoteConfig_FetchAndActivate() {
-	const { isRemoteConfigInitialized, module, instance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, module, instance, sendSocialAsyncEvent } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED;
@@ -220,10 +220,10 @@ function FirebaseRemoteConfig_FetchAndActivate() {
 
 	module.fetchAndActivate(instance)
 		.then((result) => {
-			sendAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", { success: 1.0 });
+			sendSocialAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", { success: 1.0 });
 		})
 		.catch((error) => {
-			sendAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", { success: 0.0, error: String(error) });
+			sendSocialAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", { success: 0.0, error: String(error) });
 		});
 	
 	return FIREBASE_REMOTE_CONFIG_SUCCESS;
@@ -245,7 +245,7 @@ function FirebaseRemoteConfig_Reset() {
  * @return {number} Returns `FIREBASE_REMOTE_CONFIG_SUCCESS` after setting defaults, or an error code if not initialized.
  */
 function FirebaseRemoteConfig_SetDefaultsAsync(json) {
-	const { isRemoteConfigInitialized, instance, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, instance, sendSocialAsyncEvent } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED;
@@ -266,7 +266,7 @@ function FirebaseRemoteConfig_SetDefaultsAsync(json) {
 		data.error = String(error);
 	}
 
-	sendAsyncEvent("FirebaseRemoteConfig_SetDefaultsAsync", data);
+	sendSocialAsyncEvent("FirebaseRemoteConfig_SetDefaultsAsync", data);
 
 	return FIREBASE_REMOTE_CONFIG_SUCCESS;
 }
@@ -339,7 +339,7 @@ function FirebaseRemoteConfig_GetDouble(key) {
  *                   or `FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED` if the Remote Config module is not initialized.
  */
 function FirebaseRemoteConfig_AddOnConfigUpdateListener() {
-	const { isRemoteConfigInitialized, configUpdateListeners, addConfigUpdateListener, sendAsyncEvent } = window.FirebaseRemoteConfigExt;
+	const { isRemoteConfigInitialized, configUpdateListeners, addConfigUpdateListener, sendSocialAsyncEvent } = window.FirebaseRemoteConfigExt;
 
 	if (!isRemoteConfigInitialized()) {
 		return FIREBASE_REMOTE_CONFIG_ERROR_NOT_INITIALIZED;
@@ -352,10 +352,10 @@ function FirebaseRemoteConfig_AddOnConfigUpdateListener() {
 
 	addConfigUpdateListener({
 		onUpdate: (updateData) => {
-			sendAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", updateData);
+			sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", updateData);
 		},
 		onFailure: (failureData) => {
-			sendAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", failureData);
+			sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", failureData);
 		},
 	});
 

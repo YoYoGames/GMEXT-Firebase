@@ -2,11 +2,14 @@
 
 #import "FirebaseUtils.h"
 
+#define EVENT_OTHER_SOCIAL 70
+
 extern "C" int dsMapCreate();
 extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
 extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
 extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
 
 @interface FirebaseUtils ()
 
@@ -220,6 +223,10 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
 #pragma mark - Sending Asynchronous Events
 
 - (void)sendSocialAsyncEvent:(NSString *)eventType data:(NSDictionary *)data {
+    [self sendAsyncEvent:EVENT_OTHER_SOCIAL eventType:eventType data: data];
+}
+
+- (void)sendAsyncEvent:(int)eventId eventType:(NSString *)eventType data:(NSDictionary *)data {
     dispatch_async(dispatch_get_main_queue(), ^{
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex, (char *)"type", (char *)[eventType UTF8String]);
@@ -309,8 +316,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
                 dsMapAddString(dsMapIndex, (char *)cKey, (char *)[stringValue UTF8String]);
             }
         }
-
-        createSocialAsyncEventWithDSMap(dsMapIndex);
+        CreateAsynEventWithDSMap(eventId, dsMapIndex);
     });
 }
 

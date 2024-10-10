@@ -1,4 +1,6 @@
 // @triggered when local notifications fire.
+show_debug_message(json_encode(async_load));
+
 if(async_load[? "type"] == "Notification_Local")
 {
 	// At this point a notification has been fired.

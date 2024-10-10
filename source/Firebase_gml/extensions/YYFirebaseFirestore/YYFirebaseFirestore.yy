@@ -32,7 +32,7 @@
   "gradleinject":"\r\n        implementation 'com.google.firebase:firebase-firestore'\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
-  "HTML5CodeInjection":"<GM_HTML5_PostBody>  \r\n<script src=\"https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js\"></script>\r\n</GM_HTML5_PostBody>",
+  "HTML5CodeInjection":"\r\n<GM_HTML5_PostBody>\r\n<script type=\"module\">\r\n    // Import the entire module only after Firebase is initialized\r\n    import * as FirebaseFirestoreModule from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js';\r\n\r\n    try {\r\n        // Initialize or merge module into the global namespace\r\n        window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {\r\n            module: FirebaseFirestoreModule\r\n        });\r\n        console.log(\"Firebase Firestore initialized successfully\");\r\n    } catch (error) {\r\n        console.error(\"Failed to initialize Firebase Firestore. Ensure Firebase is initialized before loading Firebase Firestore.\", error.message);\r\n    }\r\n</script>\r\n</GM_HTML5_PostBody>\r\n\r\n",
   "html5Props":true,
   "IncludedResources":[],
   "installdir":"",

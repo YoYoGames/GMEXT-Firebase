@@ -1,7 +1,9 @@
 
 //event_inherited();
 
-if(text == Firestore_Query_ASCENDING)
-	text = Firestore_Query_DESCENDING
+if(value == FIRESTORE_QUERY_SORT.ASCN)
+	value = FIRESTORE_QUERY_SORT.DESC
 else
-	text = Firestore_Query_ASCENDING
+	value = FIRESTORE_QUERY_SORT.ASCN
+
+text = strings[value];

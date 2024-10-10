@@ -11,8 +11,8 @@
   "name":"Obj_Debug_FallText_Firestore",
   "overriddenProperties":[],
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Firestore/Testing.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Firestore/Demo/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

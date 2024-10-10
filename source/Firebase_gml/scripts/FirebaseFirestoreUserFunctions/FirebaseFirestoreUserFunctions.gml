@@ -1,47 +1,46 @@
 
 #macro FirebaseFirestore_Library_useSDK ((extension_get_option_value("YYFirebaseFirestore","Config") == "SDKs_When_Available" and (os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)) or extension_get_option_value("YYFirebaseFirestore","Config") == "SDKs_Only")
-#macro Firestore_Query_less_than "LESS_THAN"
-#macro Firestore_Query_less_than_or_equal "LESS_THAN_OR_EQUAL"
-#macro Firestore_Query_greater_than "GREATER_THAN"
-#macro Firestore_Query_greater_than_or_equal "GREATER_THAN_OR_EQUAL"
-#macro Firestore_Query_equal "EQUAL"
-#macro Firestore_Query_not_equal "NOT_EQUAL"
-#macro Firestore_Query_ASCENDING "ASCENDING"
-#macro Firestore_Query_DESCENDING "DESCENDING"
 
-function FirebaseFirestore(path = undefined)
-{
-	return new FirebaseFirestoreBuilder(path)
+enum FIRESTORE_QUERY_FILTER {
+	LESS = 0,
+	LESS_EQ,
+	GREAT,
+	GREAT_EQ,
+	EQ,
+	NOT_EQ,
 }
 
-function FirebaseFirestore_updatedPath(path)
+enum FIRESTORE_QUERY_SORT {
+	ASCN = 0,
+	DESC
+}
+
+function FirebaseFirestore(_path = undefined)
 {
-	if(is_undefined(path))
-	{
-		__.isDocument = 0.0//false
-		__.isCollection = 0.0//false
-	}	
-	else if(FirebaseREST_Firestore_path_isDocument(path))
-	{
-		__.isDocument = 1.0//true
-		__.isCollection = 0.0//false
-	}
-	else
-	{
-		__.isDocument = 0.0//false
-		__.isCollection = 1.0//true
-	}
+	return new FirebaseFirestoreBuilder(_path)
 }
 
 function FirebaseFirestoreBuilder(_path) constructor
 {
-	__ = {
-		path: _path,
+	enum FIREBASE_FIRESTORE_ACTION {
+		ADD = 0,
+		SET = 1,
+		UPDATE = 2,
+		READ = 3,
+		LISTENER = 4,
+		DELETE = 5,
+		QUERY = 6,
+		LISTENER_REMOVE = 7,
+		LISTERER_REMOVE_ALL = 8,
+	}
 	
+	/// @ignore
+	__ = {
+		path: undefined,
 		operations: [],
 	
 		orderBy: undefined,
-		orderDirection: undefined,
+		sort: FIRESTORE_QUERY_SORT.ASCN,
 	
 		startAt: undefined,
 		startAfter: undefined,
@@ -50,90 +49,134 @@ function FirebaseFirestoreBuilder(_path) constructor
 		limitToFirst: undefined,
 		limitToLast: undefined,
 	
-		action: "",
+		action: undefined,
 		value: undefined,
+		
+		isDocument: false
 	}
 	
-	FirebaseFirestore_updatedPath(_path)
+	/// @ignore
+	pathArray = string_split(_path, "/", true)
+	
+	/// @function IsDocument()
+	/// @returns {Bool}
+	/// @ignore
+	static IsDocument = function() {
+		return (array_length(pathArray) mod 2) == 0;
+	}
+	
+	/// @function BuildPath()
+	/// @returns {String}
+	/// @ignore
+	static BuildPath = function() {
+		return string_join_ext("/", pathArray);
+	}
+	
+	/// @function ProcessValue(value)
+	/// @returns {Any}
+	/// @ignore
+	static ProcessValue = function(_value) {
+		if (is_string(_value)) {
+			try {
+				return json_parse(_value);
+			}
+			catch (_ex) {
+				show_debug_message($"Firestore: Illegal type collection add ({typeof(_value)})");
+			}
+		}
+		else if (is_handle(_value) && string_starts_with(string(_value),"ref ds_map"))
+		{
+			return json_parse(json_encode(_value));
+		}
+		
+		return _value;
+	}
 	
 	/// @function Child(child_path)
+	/// @param {string} _child_path
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static Child = function(_child_path)
 	{
-		__.path = FirebaseFirestore_Path_Join(__.path, _child_path)
-		FirebaseFirestore_updatedPath(__.path)
-		
-		return self
+		array_push(pathArray, _child_path);
+		return self;
 	}
 	
 	/// @function Parent()
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static Parent = function()
 	{
-		__.path = FirebaseFirestore_Path_Back(__.path, 1);
-		return self
+		array_pop(pathArray);
+		return self;
 	}
 		
 	/// @function OrderBy(path)
-	static OrderBy = function(_path, _direction = 0)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
+	static OrderBy = function(_path, _sort = FIRESTORE_QUERY_SORT.ASCN)
 	{
 		__.orderBy = _path
-		__.orderDirection = _direction;
-
+		__.sort = _sort;
 		return self;
 	}
 	
 	/// @function Where(path, op, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static Where = function(_path, _op, _value) 
-	{	
-		_op = FirebaseFirestore_operationFromSymbol(_op);
-			
+	{
 		array_push(__.operations, { operation: _op, path: _path, value: _value });
 		return self;
 	}
 
 	/// @function WhereEqual(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereEqual = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereGreaterThan(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereGreaterThan = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_greater_than, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.GREAT, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereGreaterThanOrEqual(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereGreaterThanOrEqual = function(_path, _value)
 	{
-		array_push(__.operations,{ operation: Firestore_Query_greater_than_or_equal, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.GREAT_EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereLessThan(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereLessThan = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_less_than_or_equal, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.LESS, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereLessThanOrEqual(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereLessThanOrEqual = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_equal, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.LESS_EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereNotEqual(path, value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static WhereNotEqual = function(_path, _value)
 	{
-		array_push(__.operations, { operation: Firestore_Query_not_equal, path: _path, value: _value });
+		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.NOT_EQ, path: _path, value: _value });
 		return self;
 	}
 	
-	/// @function Start(value)
-	static Start = function(_value)
+	/// @function StartAt(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
+	static StartAt = function(_value)
     {
 		__.startAt = _value;
 		__.startAfter = undefined;
@@ -141,6 +184,7 @@ function FirebaseFirestoreBuilder(_path) constructor
     }
 	
 	/// @function StartAfter(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static StartAfter = function(_value)
     {
 		__.startAfter = _value;
@@ -148,8 +192,9 @@ function FirebaseFirestoreBuilder(_path) constructor
 		return self;
     }
 	
-	/// @function End(value)
-	static End = function(_value)
+	/// @function EndAt(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
+	static EndAt = function(_value)
     {
 		__.endAt = _value;
 		__.endBefore = undefined;
@@ -157,6 +202,7 @@ function FirebaseFirestoreBuilder(_path) constructor
     }
 
 	/// @function EndBefore(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static EndBefore = function(_value)
     {
 		__.endBefore = _value;
@@ -165,6 +211,7 @@ function FirebaseFirestoreBuilder(_path) constructor
     }
 	
 	/// @function Limit(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static Limit = function(_value)
     {
 		__.limitToFirst = _value;
@@ -173,6 +220,7 @@ function FirebaseFirestoreBuilder(_path) constructor
     }
 	
 	/// @function LimitToLast(value)
+	/// @returns {Struct.FirebaseFirestoreBuilder}
 	static LimitToLast = function(_value)
     {
 		__.limitToLast = _value;
@@ -181,131 +229,203 @@ function FirebaseFirestoreBuilder(_path) constructor
     }
 	
 	//Actions
-	
+		
 	/// @function Set(value)
+	/// @returns {Real}
     static Set = function(_value)
     {
-		__.action = "Set"
-		
-		if (is_handle(_value) && string_starts_with(string(_value),"ref ds_map"))
-		{
-			_value = json_parse(json_encode(_value))
+		__.isDocument = IsDocument();
+		if (!__.isDocument) {
+			return Add(_value);
 		}
-		else if(!is_struct(_value) && !is_array(_value))
-		{
-			show_debug_message($"Firestore: type error Set({typeof(_value)})");
-			exit;
+		
+		__.action = FIREBASE_FIRESTORE_ACTION.SET;
+		
+		_value = ProcessValue(_value);
+		if (!is_struct(_value)) {
+			show_debug_message($"Firestore.Set :: Illegal value type: ({typeof(_value)})");
+			return -2;
 		}
 		
 		__.value = _value;
+		__.path = BuildPath();
 		
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Set(_path,_value)
-		else
-			return RESTFirebaseFirestore_Collection_Add(_path,_value)
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		
+		return RESTFirebaseFirestore_Document_Set(_path, _value)
+    }
+	
+	/// @function Add(value)
+	/// @returns {Real}
+    static Add = function(_value)
+    {
+		__.action = FIREBASE_FIRESTORE_ACTION.ADD;
+		__.isDocument = IsDocument();
+		if (__.isDocument) {
+			show_debug_message("Firestore: You can't add to a document");
+			return -1;
+		}
+		
+		_value = ProcessValue(_value);
+		if (!is_struct(_value)) {
+			show_debug_message($"Firestore.Add :: Illegal value type: ({typeof(_value)})");
+			return -2;
+		}
+		
+		__.value = _value;
+		__.path = BuildPath();
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		
+		return RESTFirebaseFirestore_Collection_Add(_path,_value)
     }
 	
 	/// @function Update(value)
+	/// @returns {Real}
     static Update = function(_value)
     {
-		__.action = "Update"
-		
-		if (is_handle(_value) && string_starts_with(string(_value),"ref ds_map"))
-		{
-			_value = json_parse(json_encode(_value))
+		__.isDocument = IsDocument();
+		if (!__.isDocument) {
+			show_debug_message("Firestore: You can't update a collection");
+			return -1;
 		}
-		else if(!is_struct(_value) && !is_array(_value))
-		{
-			show_debug_message($"Firestore: type error Set({typeof(_value)})");
-			exit;
+		
+		__.action = FIREBASE_FIRESTORE_ACTION.UPDATE;
+		
+		_value = ProcessValue(_value);
+		if (!is_struct(_value)) {
+			show_debug_message($"Firestore.Set :: Illegal value type: ({typeof(_value)})");
+			return -2;
 		}
 		
 		__.value = _value;
+		__.path = BuildPath();
 		
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Update(_path,_value)
-		else
-		{
-			show_debug_message("Firestore: You can't update a Collection")
-			exit
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
 		}
+		
+		return RESTFirebaseFirestore_Document_Update(_path,_value)
     }
 	
 	/// @function Read()
+	/// @returns {Real}
     static Read = function()
     {
-		__.action = "Read"
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		if(FirebaseREST_Firestore_path_isDocument(_path))
+		__.isDocument = IsDocument();
+		__.path = BuildPath();
+		__.action = FIREBASE_FIRESTORE_ACTION.READ;
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		if(__.isDocument) {
 			return RESTFirebaseFirestore_Document_Read(_path)
-		else
+		}
+		else {
 			return RESTFirebaseFirestore_Collection_Read(_path)
+		}
     }
 	
 	/// @function Query()
-	static Query = function()
-	{
-		__.action = "Query"
-		if(FirebaseFirestore_Library_useSDK)
-		{
-			return FirebaseFirestore_SDK(json_stringify(__))
+	/// @returns {Real}
+	static Query = function() {
+		
+		if (IsDocument()) {
+			show_debug_message("Firestore: You can't query documents");
+			return -1;
 		}
-		if(FirebaseREST_Firestore_path_isCollection(_path))
-			return RESTFirebaseFirestore_Collection_Query(self)
-		else
-			show_debug_message("Firestore: You can't query documents")
+		
+		__.path = BuildPath();
+		__.action = FIREBASE_FIRESTORE_ACTION.QUERY;
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+
+		return RESTFirebaseFirestore_Collection_Query(self)
 	}
 	
 	/// @function Listener()
+	/// @returns {Real}
     static Listener = function()
     {
-		__.action = "Listener"
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Listener(_path)
+		__.isDocument = IsDocument();
+		__.path = BuildPath();
+		__.action = FIREBASE_FIRESTORE_ACTION.LISTENER;		
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		
+		if(__.isDocument)
+			return RESTFirebaseFirestore_Document_Listener(__.path)
 		else
-			return RESTFirebaseFirestore_Collection_Listener(_path)
+			return RESTFirebaseFirestore_Collection_Listener(__.path)
     }
+	
+	/// @function Listen()
+	/// @returns {Real}
+	static Listen = function() {
+		return Listener();
+	};
 	
 	/// @function Delete()
+	/// @returns {Real}
 	static Delete = function()
     {
-		__.action = "Delete"
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		if(FirebaseREST_Firestore_path_isDocument(_path))
-			return RESTFirebaseFirestore_Document_Delete(_path)
-		else
-		{
-			show_debug_message("Firestore: You can't delete a Collection")
-			exit
+		__.isDocument = IsDocument();
+		if (!__.isDocument) {
+			show_debug_message("Firestore: You can't delete a collection");
+			return -1;
 		}
+		
+		__.action = FIREBASE_FIRESTORE_ACTION.DELETE;
+		__.path = BuildPath();
+		
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+
+		return RESTFirebaseFirestore_Document_Delete(__.path);
     }
 	
-	static ListenerRemove = function(listener)
+	/// @function ListenerRemove()
+	/// @returns {Real}
+	static ListenerRemove = function(_listener)
 	{
-		__.action = "ListenerRemove"
-		__.value = listener
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		with(listener)
+		__.action = FIREBASE_FIRESTORE_ACTION.LISTENER_REMOVE;
+				
+		__.value = _listener
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		
+		with(_listener)
 		    instance_destroy()
 	}
 	
+	/// @function ListenerRemoveAll()
+	/// @returns {Real}
 	static ListenerRemoveAll = function()
 	{
-		__.action = "ListenerRemoveAll"
-		if(FirebaseFirestore_Library_useSDK)
-			return FirebaseFirestore_SDK(json_stringify(__))
-		with(Obj_FirebaseREST_Listener_Firestore)
-		if(string_count("Listener",event))
-			instance_destroy()
+		__.action = FIREBASE_FIRESTORE_ACTION.LISTERER_REMOVE_ALL;
+		
+		if(FirebaseFirestore_Library_useSDK) {
+			return FirebaseFirestore_SDK(json_stringify(__));
+		}
+		
+		with(Obj_FirebaseREST_Listener_Firestore) {
+			if(string_count("Listener", event)) {
+				instance_destroy()
+			}
+		}
 	}
 }
 

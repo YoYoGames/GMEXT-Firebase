@@ -40,6 +40,15 @@ public class YYFirebaseRealTime extends RunnerSocial {
         referenceMap = new HashMap<>();
     }
 
+    // Action types
+    private static final int ACTION_SET = 0;
+    private static final int ACTION_READ = 1;
+    private static final int ACTION_LISTEN = 2;
+    private static final int ACTION_EXISTS = 3;
+    private static final int ACTION_DELETE = 4;
+    private static final int ACTION_LISTENER_REMOVE = 5;
+    private static final int ACTION_LISTENER_REMOVE_ALL = 6;
+
     /**
      * Main SDK method to handle Firebase Real-Time actions based on the input JSON.
      *
@@ -56,41 +65,41 @@ public class YYFirebaseRealTime extends RunnerSocial {
                 fluentObj = new JSONObject(fluentJson);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "Invalid JSON input", e);
-                sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, Map.of("errorMessage", "Invalid JSON input"));
+                sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Invalid JSON input");
                 return;
             }
 
-            String action = fluentObj.optString("action", null);
-            if (action == null) {
+            int action = fluentObj.optInt("action", -1);
+            if (action == -1) {
                 Log.e(LOG_TAG, "Action not specified in JSON");
-                sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, Map.of("errorMessage", "Action not specified in JSON"));
+                sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Action not specified in JSON.");
                 return;
             }
 
             switch (action) {
-                case "Set":
+                case ACTION_SET:
                     setValue(asyncId, fluentObj);
                     break;
-                case "Read":
+                case ACTION_READ:
 					readValue(asyncId, fluentObj);
 					break;
-                case "Listener":
+                case ACTION_LISTEN:
                     listenValue(asyncId, fluentObj);
                     break;
-                case "Exists":
+                case ACTION_EXISTS:
                     existsValue(asyncId, fluentObj);
                     break;
-                case "Delete":
+                case ACTION_DELETE:
                     deleteValue(asyncId, fluentObj);
                     break;
-                case "ListenerRemove":
+                case ACTION_LISTENER_REMOVE:
                     removeListener(asyncId, fluentObj);
                     break;
-                case "ListenerRemoveAll":
+                case ACTION_LISTENER_REMOVE_ALL:
                     removeAllListeners(asyncId);
                     break;
                 default:
-                    sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, Map.of("errorMessage", "Unknown action: " + action));
+                    sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Unknown action: " + action);
                     break;
             }
         });
@@ -112,10 +121,11 @@ public class YYFirebaseRealTime extends RunnerSocial {
 
 		DatabaseReference reference = buildReference(fluentObj);
 		reference.setValue(value, (error, ref) -> {
-			int status = (error == null) ? 200 : mapDatabaseErrorToHttpStatus(error);
-			Map<String, Object> extraData = (error != null) ? Map.of("errorMessage", error.getMessage()) : null;
-
-			sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, status, extraData);
+            if (error != null) {
+                sendErrorEvent("FirebaseRealTime_Set", asyncId, path, error);
+            } else {
+                sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, 200, null);
+            }
 		});
     }
 
@@ -126,13 +136,12 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void readValue(final long asyncId, final JSONObject fluentObj) {
-		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Read", asyncId, fluentObj.optString("path", null));
-
 		DatabaseReference dataRef = buildReference(fluentObj);
 		Query query = buildQuery(asyncId, "FirebaseRealTime_Read", fluentObj, dataRef);
 
         if (query == null) return;
 
+        ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Read", asyncId, fluentObj.optString("path", null));
 		query.addListenerForSingleValueEvent(eventListener);
     }
 
@@ -143,15 +152,15 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param fluentObj The JSON object containing parameters.
      */
     private void listenValue(final long asyncId, final JSONObject fluentObj) {
-		ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("path", null));
-
-		DatabaseReference dataRef = buildReference(fluentObj);
-		Query query = buildQuery(asyncId, "FirebaseRealTime_Listener", fluentObj, dataRef);
+		DatabaseReference reference = buildReference(fluentObj);
+		Query query = buildQuery(asyncId, "FirebaseRealTime_Listener", fluentObj, reference);
 
         if (query == null) return;
 
+        ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("path", null));
+
 		listenerMap.put(asyncId, eventListener);
-        referenceMap.put(asyncId, dataRef);
+        referenceMap.put(asyncId, reference);
 
 		query.addValueEventListener(eventListener);
     }
@@ -164,12 +173,13 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private void deleteValue(final long asyncId, final JSONObject fluentObj) {
         final String path = fluentObj.optString("path", null);
-		final DatabaseReference ref = buildReference(fluentObj);
-		ref.removeValue((error, ref1) -> {
-			int status = (error == null) ? 200 : mapDatabaseErrorToHttpStatus(error);
-			Map<String, Object> extraData = (error != null) ? Map.of("errorMessage", error.getMessage()) : null;
-
-			sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, status, extraData);
+		final DatabaseReference reference = buildReference(fluentObj);
+		reference.removeValue((error, ref) -> {
+            if (error != null) {
+                sendErrorEvent("FirebaseRealTime_Delete", asyncId, path, error);
+            } else {
+                sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, 200, null);
+            }
 		});
     }
 
@@ -181,8 +191,8 @@ public class YYFirebaseRealTime extends RunnerSocial {
      */
     private void existsValue(final long asyncId, final JSONObject fluentObj) {
 		final String path = fluentObj.optString("path", null);
-		final DatabaseReference ref = buildReference(fluentObj);
-		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+		final DatabaseReference rreferenceef = buildReference(fluentObj);
+		reference.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				Map<String, Object> extraData = Map.of("value", dataSnapshot.exists() ? 1.0 : 0.0);
@@ -191,8 +201,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 
 			@Override
 			public void onCancelled(DatabaseError error) {
-				Map<String, Object> extraData = Map.of("errorMessage", error.getMessage());
-				sendDatabaseEvent("FirebaseRealTime_Exists", asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
+                sendErrorEvent("FirebaseRealTime_Exists", asyncId, path, error);
 			}
 		});
     }
@@ -206,8 +215,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
     private void removeListener(final long asyncId, JSONObject fluentObj) {
 		long listenerToRemove = fluentObj.optLong("value", -1L);
 		if (listenerToRemove == -1L) {
-			Map<String, Object> extraData = Map.of("errorMessage", "Unable to extract listener id.");
-			sendDatabaseEvent("FirebaseRealTime_RemoveListener", -1L, null, 400, extraData);
+			sendErrorEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, "Unable to extract listener id.");
 			return;
 		}
 
@@ -219,8 +227,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 			Map<String, Object> extraData = Map.of("value", listenerToRemove);
 			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 200, extraData);
 		} else {
-			Map<String, Object> extraData = Map.of("errorMessage", "Listener or DatabaseReference not found for ID: " + listenerToRemove);
-			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, extraData);
+			sendErrorEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, "Listener or DatabaseReference not found for ID: " + listenerToRemove);
 		}
     }
 
@@ -286,8 +293,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Map<String, Object> extraData = Map.of("errorMessage", error.getMessage());
-                sendDatabaseEvent(eventType, asyncId, path, mapDatabaseErrorToHttpStatus(error), extraData);
+                sendErrorEvent(eventType, asyncId, path, error);
             }
         };
 	}
@@ -427,7 +433,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
      * @param error The DatabaseError to map.
      * @return The corresponding HTTP status code as an int.
      */
-    private int mapDatabaseErrorToHttpStatus(DatabaseError error) {
+    private int getStatusFromError(DatabaseError error) {
         switch (error.getCode()) {
             case DatabaseError.DISCONNECTED:
                 return 400;
@@ -473,4 +479,17 @@ public class YYFirebaseRealTime extends RunnerSocial {
 
         FirebaseUtils.sendAsyncEvent(eventType, data);
     }
+
+	private void sendErrorEvent(String eventType, long asyncId, String path, int status, String errorMessage) {
+		Map<String, Object> data = new HashMap<>();
+		data.put("errorMessage", errorMessage);
+		sendDatabaseEvent(eventType, asyncId, path, status, data);
+	}
+
+	private void sendErrorEvent(String eventType, long asyncId, String path, DatabaseError databaseError) {
+		Map<String, Object> data = new HashMap<>();
+        int status = getStatusFromError(databaseError);
+        sendErrorEvent(eventType, asyncId, path, status, databaseError.getMessage());
+	}
+
 }

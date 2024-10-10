@@ -17,6 +17,16 @@ function FirebaseRealTime(_database = undefined)
 
 function FirebaseRealTimeBuilder(_database) constructor
 {
+	enum FIREBASE_DATABASE_ACTION {
+		SET = 0,
+		READ = 1,
+		LISTENER = 2,
+		EXISTS = 3,
+		DELETE = 4,
+		LISTENER_REMOVE = 5,
+		LISTERER_REMOVE_ALL = 6,
+	}
+	
 	__ = {
 		push: undefined,
 		path: "",
@@ -152,7 +162,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 
     static Set = function(_value, _priority = undefined, _try_parse = true)
     {
-		__.action = "Set"
+		__.action = FIREBASE_DATABASE_ACTION.SET;
 		
 		if (is_string(_value) && _try_parse)
 		{
@@ -203,8 +213,7 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
     static Read = function()
     {
-		__.action = "Read"
-		show_debug_message(json_stringify(__));
+		__.action = FIREBASE_DATABASE_ACTION.READ;
 		
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
@@ -213,7 +222,8 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
     static Listener = function()
     {
-		__.action = "Listener"
+		__.action = FIREBASE_DATABASE_ACTION.LISTENER;
+		
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
 		return FirebaseRealTime_List_Builder("FirebaseRealTime_Listener",Obj_FirebaseREST_Listener_On_RealTime,_path,_OrderBy,_EqualTo,_StartValue,_EndValue,_LimitKind,_LimitValue,_database)
@@ -221,7 +231,8 @@ function FirebaseRealTimeBuilder(_database) constructor
 
     static Exists = function()
     {
-		__.action = "Exists"
+		__.action = FIREBASE_DATABASE_ACTION.EXISTS;
+		
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
@@ -240,7 +251,8 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
 	static Delete = function()
     {
-		__.action = "Delete"
+		__.action = FIREBASE_DATABASE_ACTION.DELETE;
+		
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
@@ -258,8 +270,9 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
     static ListenerRemove = function(_listener)
     {
-		__.value = _listener
-		__.action = "ListenerRemove"
+		__.action = FIREBASE_DATABASE_ACTION.LISTENER_REMOVE;
+		
+		__.value = _listener;
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
 		with(_listener)
@@ -268,7 +281,8 @@ function FirebaseRealTimeBuilder(_database) constructor
 	
     static ListenerRemoveAll = function()
     {
-		__.action = "ListenerRemoveAll"
+		__.action = FIREBASE_DATABASE_ACTION.LISTERER_REMOVE_ALL;
+		
 		if(FirebaseRealTime_Library_useSDK)
 			return FirebaseRealTime_SDK(json_stringify(__))
 		with(Obj_FirebaseREST_Listener_RealTime) {

@@ -8,6 +8,18 @@
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSNumber *> *listenerMap;
 @property (nonatomic, strong) NSMutableDictionary<NSNumber *, FIRDatabaseReference *> *referenceMap;
 
+// Define action constants
+typedef NS_ENUM(NSInteger, DatabaseAction) {
+    ACTION_SET = 0,
+    ACTION_READ,
+    ACTION_LISTENER,
+    ACTION_EXISTS,
+    ACTION_DELETE,
+    ACTION_LISTENER_REMOVE,
+    ACTION_LISTENER_REMOVE_ALL
+};
+
+// Methods
 - (void)setValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
 - (void)readValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
 - (void)listenValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
@@ -18,8 +30,10 @@
 - (NSDictionary<NSString *, void (^)(id)> *)createValueEventListener:(NSString *)eventType asyncId:(long)asyncId path:(NSString *)path;
 - (FIRDatabaseReference *)buildReference:(NSDictionary *)fluentObj;
 - (FIRDatabaseQuery *)buildQuery:(long)asyncId eventType:(NSString *)eventType fluentObj:(NSDictionary *)fluentObj dataRef:(FIRDatabaseReference *)dataRef;
-- (int)mapDatabaseErrorToHttpStatus:(NSError *)error;
+- (int)getStatusFromError:(NSError *)error;
 - (void)sendDatabaseEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status extraData:(nullable NSDictionary *)extraData;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception;
 
 @end
 
@@ -58,15 +72,13 @@
             return;
         }
         
-        NSString *action = fluentObj[@"action"];
-        if (!action || ![action isKindOfClass:[NSString class]]) {
-            [self sendDatabaseEvent:@"FirebaseRealTime_SDK"
-                           asyncId:asyncId
-                              path:nil
-                            status:400
-                        extraData:@{@"errorMessage": @"Action not specified in JSON"}];
+        NSNumber *actionNumber = fluentObj[@"action"];
+        if (!actionNumber || ![actionNumber isKindOfClass:[NSNumber class]]) {
+            [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"Action not specified in JSON."];
             return;
         }
+        FirestoreAction action = (FirestoreAction)[actionNumber integerValue];
+        
         
         if ([action isEqualToString:@"Set"]) {
             [self setValue:asyncId fluentObj:fluentObj];
@@ -83,19 +95,11 @@
         } else if ([action isEqualToString:@"ListenerRemoveAll"]) {
             [self removeAllListeners:asyncId];
         } else {
-            [self sendDatabaseEvent:@"FirebaseRealTime_SDK"
-                           asyncId:asyncId
-                              path:nil
-                            status:400
-                        extraData:@{@"errorMessage": [NSString stringWithFormat:@"Unknown action: %@", action]}];
+            [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Unknown action: %@", action]];
         }
     } completion:^(NSError * _Nullable error) {
         if (error != nil) {
-            [self sendDatabaseEvent:@"FirebaseRealTime_SDK"
-                        asyncId:asyncId
-                            path:nil
-                            status:400
-                        extraData:@{@"errorMessage": error.localizedFailureReason}];
+            [self sendErrorEvent: @"FirebaseRealTime_SDK" asyncId:asyncId path:nil exception:error];
         }
     }];
     
@@ -112,14 +116,11 @@
     
     FIRDatabaseReference *reference = [self buildReference:fluentObj];
     [reference setValue:convertedValue withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-        int status = (error == nil) ? 200 : [self mapDatabaseErrorToHttpStatus:error];
-        NSDictionary *extraData = (error != nil) ? @{@"errorMessage": error.localizedDescription} : nil;
-        
-        [self sendDatabaseEvent:@"FirebaseRealTime_Set"
-                       asyncId:asyncId
-                          path:path
-                        status:status
-                    extraData:extraData];
+        if (error != nil) {
+            [self sendErrorEvent:@"FirebaseRealTime_Set" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendDatabaseEvent:@"FirebaseRealTime_Set" asyncId:asyncId path:path status:200 extraData:nil];
+        }
     }];
 }
 
@@ -168,14 +169,11 @@
     FIRDatabaseReference *ref = [self buildReference:fluentObj];
     
     [ref removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-        int status = (error == nil) ? 200 : [self mapDatabaseErrorToHttpStatus:error];
-        NSDictionary *extraData = (error != nil) ? @{@"errorMessage": error.localizedDescription} : nil;
-        
-        [self sendDatabaseEvent:@"FirebaseRealTime_Delete"
-                       asyncId:asyncId
-                          path:path
-                        status:status
-                    extraData:extraData];
+        if (error != nil) {
+            [self sendErrorEvent:@"FirebaseRealTime_Delete" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendDatabaseEvent:@"FirebaseRealTime_Delete" asyncId:asyncId path:path status:200 extraData:nil];
+        }
     }];
 }
 
@@ -193,12 +191,7 @@
                         status:200
                     extraData:extraData];
     } withCancelBlock:^(NSError * _Nonnull error) {
-        NSDictionary *extraData = @{@"errorMessage": error.localizedDescription};
-        [self sendDatabaseEvent:@"FirebaseRealTime_Exists"
-                       asyncId:asyncId
-                          path:path
-                        status:[self mapDatabaseErrorToHttpStatus:error]
-                    extraData:extraData];
+        [self sendErrorEvent:@"FirebaseRealTime_Exists" asyncId:asyncId path:path exception:error];
     }];
 }
 
@@ -307,14 +300,7 @@
         __strong YYFirebaseRealTime *strongSelf = weakSelf;
         if (!strongSelf) return;
         
-        NSDictionary *extraData = @{@"errorMessage": error.localizedDescription};
-        int status = [strongSelf mapDatabaseErrorToHttpStatus:error];
-        
-        [strongSelf sendDatabaseEvent:eventType
-                           asyncId:asyncId
-                              path:path
-                            status:status
-                        extraData:extraData];
+        [strongSelf sendErrorEvent:eventType asyncId:asyncId path:path exception:error];
     };
     
     return @{@"onDataChange": onDataChange, @"onCancel": onCancel};
@@ -423,7 +409,7 @@
     return query;
 }
 
-- (int)mapDatabaseErrorToHttpStatus:(NSError *)error {
+- (int)getStatusFromError:(NSError *)error {
     //I found this error codes in FirebaseDatabase/Sources/Utilities/FUtilities.m
     if(error)
     {
@@ -464,5 +450,16 @@
     
     [[FirebaseUtils sharedInstance] sendAsyncEvent:eventType data:data];
 }
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage {
+    NSDictionary *extraData = @{@"errorMessage": errorMessage};
+    [self sendDatabaseEvent:eventType asyncId:asyncId path:path status:status extraData:extraData];
+}
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception {
+    int status = [self getStatusFromError:exception];
+    [self sendErrorEvent:eventType asyncId:asyncId path:path status:status errorMessage:exception.localizedDescription];
+}
+
 
 @end

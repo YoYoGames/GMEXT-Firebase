@@ -1,11 +1,12 @@
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseFirestore/FirebaseFirestore.h>
 
-@interface YYFirebaseFirestore:NSObject
-{
-    NSMutableDictionary *Firestore_ListenerMap;
-    int Firestore_indMap;
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface YYFirebaseFirestore : NSObject
+
+- (double)FirebaseFirestore_SDK:(NSString *)fluentJson;
 
 @end
 
+NS_ASSUME_NONNULL_END

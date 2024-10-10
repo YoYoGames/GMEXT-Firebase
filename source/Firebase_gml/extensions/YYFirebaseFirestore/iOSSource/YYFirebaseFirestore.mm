@@ -329,7 +329,7 @@ typedef NS_ENUM(NSInteger, QuerySort) {
             id value = operation[@"value"];
             if (!fieldPath || !operationType || !value) continue;
 
-            QueryFilter op = (QueryFilter)[actionNumber integerValue];
+            QueryFilter op = (QueryFilter)[operationType integerValue];
             
             switch(op) {
                 case QUERY_FILTER_EQ:

@@ -42,7 +42,7 @@
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"",
   "ioscodeinjection":"\r\n<YYIosEntitlements>\r\n<key>aps-environment</key>\r\n<string>development</string>\r\n</YYIosEntitlements>\r\n",
-  "iosdelegatename":"LocalNotifications_Delegate",
+  "iosdelegatename":"",
   "iosplistinject":"",
   "iosProps":true,
   "iosSystemFrameworkEntries":[

@@ -12,7 +12,7 @@
 typedef NS_ENUM(NSInteger, DatabaseAction) {
     ACTION_SET = 0,
     ACTION_READ,
-    ACTION_LISTENER,
+    ACTION_LISTEN,
     ACTION_EXISTS,
     ACTION_DELETE,
     ACTION_LISTENER_REMOVE,
@@ -77,25 +77,33 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
             [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"Action not specified in JSON."];
             return;
         }
-        FirestoreAction action = (FirestoreAction)[actionNumber integerValue];
+        DatabaseAction action = (DatabaseAction)[actionNumber integerValue];
         
-        
-        if ([action isEqualToString:@"Set"]) {
-            [self setValue:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"Read"]) {
-            [self readValue:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"Listener"]) {
-            [self listenValue:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"Exists"]) {
-            [self existsValue:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"Delete"]) {
-            [self deleteValue:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"ListenerRemove"]) {
-            [self removeListener:asyncId fluentObj:fluentObj];
-        } else if ([action isEqualToString:@"ListenerRemoveAll"]) {
-            [self removeAllListeners:asyncId];
-        } else {
-            [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Unknown action: %@", action]];
+        switch (action) {
+            case ACTION_SET:
+                [self setValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_READ:
+                [self readValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTEN:
+                [self listenValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_EXISTS:
+                [self existsValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_DELETE:
+                [self deleteValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTENER_REMOVE:
+                [self removeListener:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTENER_REMOVE_ALL:
+                [self removeAllListeners:asyncId];
+                break;
+            default:
+                [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Unknown action: %@", action]];
+                break;
         }
     } completion:^(NSError * _Nullable error) {
         if (error != nil) {

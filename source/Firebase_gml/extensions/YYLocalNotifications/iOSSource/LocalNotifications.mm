@@ -1,5 +1,13 @@
+#import "UNUserNotificationCenterMultiplexer.h"
 #import "LocalNotifications.h"
 #import <UIKit/UIKit.h>
+
+extern "C" int dsMapCreate();
+extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
+extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
+extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
 
 const int EVENT_OTHER_SOCIAL = 70;
 const int EVENT_OTHER_NOTIFICATION = 71;
@@ -52,22 +60,20 @@ const char*  YYNotification_data = "data";
         UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
         [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error)
          {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex, (char*)"type", (char*)"LocalPushNotification_iOS_Permission_Request");
-            dsMapAddDouble(dsMapIndex, (char*)"success", error == nil ? 1.0 : 0.0);
-            dsMapAddDouble(dsMapIndex, (char*)"value", granted ? 1.0 : 0.0);
-            CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+            NSMutableDictionary *data = [NSMutableDictionary dictionary];
+            data[@"value"] = @(granted);
+            data[@"success"] = @(error != nil);
+            [self sendAsyncEvent:EVENT_OTHER_SOCIAL eventType:@"LocalPushNotification_iOS_Permission_Request" data:data];
          }];
     } else {
         UIUserNotificationType allNotificationTypes = (UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge);
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:allNotificationTypes categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char*)"type", (char*)"LocalPushNotification_iOS_Permission_Request");
-        dsMapAddDouble(dsMapIndex, (char*)"success", 1.0);
-        dsMapAddDouble(dsMapIndex, (char*)"value", 1.0);
-        CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        data[@"value"] = @(YES);
+        data[@"success"] = @(YES);
+        [self sendAsyncEvent:EVENT_OTHER_SOCIAL eventType:@"LocalPushNotification_iOS_Permission_Request" data:data];
     }
 }
 
@@ -75,9 +81,6 @@ const char*  YYNotification_data = "data";
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings *settings)
     {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char*)"type", (char*)"LocalPushNotification_iOS_Permission_Status");
-        
         NSString *statusString = @"Unknown";
         switch (settings.authorizationStatus) 
         {
@@ -99,9 +102,11 @@ const char*  YYNotification_data = "data";
             default:
                 break;
         }
-        dsMapAddString(dsMapIndex, (char*)"value", (char*)[statusString UTF8String]);
-        dsMapAddDouble(dsMapIndex, (char*)"success", 1.0);
-        CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
+
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        data[@"value"] = statusString;
+        data[@"success"] = @(YES);
+        [self sendAsyncEvent:EVENT_OTHER_SOCIAL eventType:@"LocalPushNotification_iOS_Permission_Status" data:data];
     }];
 }
 
@@ -152,7 +157,7 @@ const char*  YYNotification_data = "data";
     data[@"message"] = notification.request.content.body;
     data[@"data"] = notification.request.content.userInfo;
     
-    [self sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:Notification_Local data:data];
+    [self sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Local" data:data];
 }
 
 #pragma mark - Helper Methods

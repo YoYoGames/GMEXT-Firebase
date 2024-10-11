@@ -2,29 +2,6 @@
 #import "FirebaseUtils.h"
 #import <UIKit/UIKit.h>
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap(int _num, ...);
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
-
-extern "C" void dsMapClear(int _dsMap);
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
-
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
-
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
-
 // Error Codes
 static const double kFirebaseStorageSuccess = 0.0;
 static const double kFirebaseStorageErrorNotFound = -1.0;
@@ -37,7 +14,6 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 - (NSNumber *)getListenerInd;
 - (NSString *)listOfReferencesToJSON:(NSArray<FIRStorageReference *> *)list; 
 - (void)sendStorageEvent:(NSString *)eventType listener:(NSNumber*)listener path:(NSString *)path localPath:(NSString *)localPath success:(BOOL)success additionalData:(NSDictionary *)additionalData;
-- (void)sendAsyncEventWithType:(NSString *)eventType data:(NSDictionary *)data;
 - (void)throttleProgressUpdate:(NSNumber*)listenerInd eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total;
 
 @end
@@ -46,9 +22,14 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 
 - (id)init {
     if (self = [super init]) {
-        if (![FIRApp defaultApp]) {
-            [FIRApp configure];
-        }
+        // Initialize Firebase if needed
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+                NSLog(@"Firebase initialized in YYFirebaseStorage");
+            }
+        });
         self.taskMap = [[NSMutableDictionary alloc] init];
         self.lastProgressUpdateTime = [[NSMutableDictionary alloc] init];
     }
@@ -272,88 +253,8 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     if (additionalData) {
         [data setValuesForKeysWithDictionary:additionalData];
     }
-    [self sendAsyncEventWithType:eventType data:data];
-}
 
-- (void)sendAsyncEventWithType:(NSString *)eventType data:(NSDictionary *)data {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char *)"type", (char *)[eventType UTF8String]);
-
-        for (NSString *key in data) {
-            id value = data[key];
-            const char *cKey = [key UTF8String];
-
-            if ([value isKindOfClass:[NSString class]]) {
-                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[value UTF8String]);
-            } else if ([value isKindOfClass:[NSNumber class]]) {
-                NSNumber *numberValue = (NSNumber *)value;
-                const char *type = [numberValue objCType];
-
-                // Handle BOOL
-                if (strcmp(type, @encode(BOOL)) == 0 || strcmp(type, @encode(bool)) == 0 || strcmp(type, @encode(char)) == 0) {
-                    int boolValue = [numberValue boolValue] ? 1 : 0;
-                    dsMapAddInt(dsMapIndex, (char *)cKey, boolValue);
-                }
-                // Handle integer types within int range
-                else if (strcmp(type, @encode(int)) == 0 ||
-                         strcmp(type, @encode(short)) == 0 ||
-                         strcmp(type, @encode(unsigned int)) == 0 ||
-                         strcmp(type, @encode(unsigned short)) == 0) {
-
-                    int intValue = [numberValue intValue];
-                    dsMapAddInt(dsMapIndex, (char *)cKey, intValue);
-                }
-                // Handle floating-point numbers
-                else if (strcmp(type, @encode(float)) == 0 ||
-                         strcmp(type, @encode(double)) == 0) {
-
-                    double doubleValue = [numberValue doubleValue];
-                    dsMapAddDouble(dsMapIndex, (char *)cKey, doubleValue);
-                }
-                // Handle signed long and long long
-                else if (strcmp(type, @encode(long)) == 0 ||
-                         strcmp(type, @encode(long long)) == 0) {
-
-                    long long longValue = [numberValue longLongValue];
-                    if (longValue >= INT_MIN && longValue <= INT_MAX) {
-                        dsMapAddInt(dsMapIndex, (char *)cKey, (int)longValue);
-                    } else if (llabs(longValue) <= (1LL << 53)) {
-                        dsMapAddDouble(dsMapIndex, (char *)cKey, (double)longValue);
-                    } else {
-                        // Represent as special string format
-                        NSString *formattedString = [NSString stringWithFormat:@"@i64@%llx$i64$", longValue];
-                        dsMapAddString(dsMapIndex, (char *)cKey, (char *)[formattedString UTF8String]);
-                    }
-                }
-                // Handle unsigned long and unsigned long long
-                else if (strcmp(type, @encode(unsigned long)) == 0 ||
-                         strcmp(type, @encode(unsigned long long)) == 0) {
-
-                    unsigned long long ulongValue = [numberValue unsignedLongLongValue];
-                    if (ulongValue <= (unsigned long long)INT_MAX) {
-                        dsMapAddInt(dsMapIndex, (char *)cKey, (int)ulongValue);
-                    } else if (ulongValue <= (1ULL << 53)) {
-                        dsMapAddDouble(dsMapIndex, (char *)cKey, (double)ulongValue);
-                    } else {
-                        // Represent as special string format
-                        NSString *formattedString = [NSString stringWithFormat:@"@i64@%llx$i64$", ulongValue];
-                        dsMapAddString(dsMapIndex, (char *)cKey, (char *)[formattedString UTF8String]);
-                    }
-                } else {
-                    // For other numeric types, default to adding as double
-                    double doubleValue = [numberValue doubleValue];
-                    dsMapAddDouble(dsMapIndex, (char *)cKey, doubleValue);
-                }
-            } else {
-                // For other types, convert to string
-                NSString *stringValue = [value description];
-                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[stringValue UTF8String]);
-            }
-        }
-
-        createSocialAsyncEventWithDSMap(dsMapIndex);
-    });
+    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)throttleProgressUpdate:(NSNumber*)listenerInd eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total {

@@ -1,8 +1,7 @@
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
-
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import android.util.Log;
 import android.content.Context;
@@ -20,19 +19,15 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class YYFirebaseCrashlytics extends RunnerSocial {
-    private static final int EVENT_OTHER_SOCIAL = 70;
+
     private static final String LOG_TAG = "YYFirebaseCrashlytics";
     private static final String CRASHLYTICS_PREFS = "YYFirebaseCrashlyticsPrefs";
 
     // Error Codes
     public static final double FIREBASE_CRASHLYTICS_SUCCESS = 0.0;
     public static final double FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS = -1.0;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     private FirebaseCrashlytics crashlytics;
     private Boolean isAutoDataCollectionEnabled = false;
@@ -41,7 +36,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
         // Initialize the cached instance
         crashlytics = FirebaseCrashlytics.getInstance();
 
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             // Obtain the application context
             Context appContext = RunnerActivity.CurrentActivity.getApplicationContext();
 
@@ -85,7 +80,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
 
         final String methodName = "FirebaseCrashlytics_SetCustomKeys";
 
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             Map<String, Object> data = new HashMap<>();
             try {
                 // Create a new builder instance for batch setting custom keys
@@ -125,7 +120,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
             }
     
             // Send asynchronous event to indicate completion
-            sendSocialAsyncEvent(methodName, data);
+            FirebaseUtils.sendSocialAsyncEvent(methodName, data);
         });
 
         return FIREBASE_CRASHLYTICS_SUCCESS;
@@ -160,7 +155,7 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
         isAutoDataCollectionEnabled = bool >= 0.5;
         crashlytics.setCrashlyticsCollectionEnabled(isAutoDataCollectionEnabled);
 
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             // Obtain the application context
             Context appContext = RunnerActivity.CurrentActivity.getApplicationContext();
 
@@ -190,14 +185,14 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
     // <editor-fold desc="Unsent Reports Management">
 
     public double FirebaseCrashlytics_UnsentReports_Delete() {
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             crashlytics.deleteUnsentReports();
         });
         return FIREBASE_CRASHLYTICS_SUCCESS;
     }
 
     public double FirebaseCrashlytics_UnsentReports_Send() {
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             crashlytics.sendUnsentReports();
         });
         return FIREBASE_CRASHLYTICS_SUCCESS;
@@ -213,66 +208,17 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
                 data.put("value", 0.0);
                 Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: No unsent reports.");
             }
-            sendSocialAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
+            FirebaseUtils.sendSocialAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
         });
         return FIREBASE_CRASHLYTICS_SUCCESS;
     }
 
     // </editor-fold>
 
-    // <editor-fold desc="Activity Lifecycle">
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        shutdownExecutor();
-    }
-
-    // </editor-fold>
-
     // <editor-fold desc="Helper Methods">
-
-    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-            if (data != null) {
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
-                    } else if (value instanceof Integer) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
-                    } else if (value instanceof Boolean) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
-                    } else if (value instanceof Long) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
-                    } else if (value instanceof Float) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                    }
-                }
-            }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-        });
-    }
 
     private boolean isStringNullOrEmpty(String string) {
         return string == null || string.isEmpty();
-    }
-
-    private void shutdownExecutor() {
-        try {
-            executorService.shutdown();
-            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
-        }
     }
 
     // </editor-fold>

@@ -1,9 +1,6 @@
 package ${YYAndroidPackageName};
 import ${YYAndroidPackageName}.R;
-
 import ${YYAndroidPackageName}.FirebaseUtils;
-
-import com.yoyogames.runner.RunnerJNILib;
 
 import android.app.Activity;
 import android.util.Log;
@@ -29,13 +26,11 @@ import java.lang.Exception;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 
 public class YYFirebaseStorage extends RunnerSocial {
-    private static final int EVENT_OTHER_SOCIAL = 70;
+
     private static final String LOG_TAG = "YYFirebaseStorage";
     private static final long MIN_PROGRESS_UPDATE_INTERVAL_MS = 500; // Minimum interval between progress updates
 
@@ -45,7 +40,6 @@ public class YYFirebaseStorage extends RunnerSocial {
 
     private HashMap<Long, StorageTask<?>> taskMap;
     private HashMap<Long, Long> lastProgressUpdateTime;
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public YYFirebaseStorage() {
         taskMap = new HashMap<>();
@@ -66,9 +60,9 @@ public class YYFirebaseStorage extends RunnerSocial {
 	}
 
     public double SDKFirebaseStorage_Download(final String localPath, final String firebasePath, final String bucket) {
-		final long listenerInd = getListenerInd();
+		final long listenerInd = getNextAsyncId();
 	
-		executorService.execute(() -> {
+		FirebaseUtils.getInstance().submitAsyncTask(() -> {
 			try {
 				Activity activity = RunnerActivity.CurrentActivity;
 				File localFile = new File(activity.getFilesDir(), localPath);
@@ -105,9 +99,9 @@ public class YYFirebaseStorage extends RunnerSocial {
 	}
 
     public double SDKFirebaseStorage_Upload(final String localPath, final String firebasePath, final String bucket) {
-        final long listenerInd = getListenerInd();
+        final long listenerInd = getNextAsyncId();
 
-        executorService.execute(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             try {
 				Activity activity = RunnerActivity.CurrentActivity;
                 File localFile = new File(activity.getFilesDir(), localPath);
@@ -148,9 +142,9 @@ public class YYFirebaseStorage extends RunnerSocial {
     }
 
     public double SDKFirebaseStorage_Delete(final String firebasePath, final String bucket) {
-        final long listenerInd = getListenerInd();
+        final long listenerInd = getNextAsyncId();
 
-        executorService.execute(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
             storageRef.delete()
                     .addOnSuccessListener(aVoid -> {
@@ -167,9 +161,9 @@ public class YYFirebaseStorage extends RunnerSocial {
     }
 
     public double SDKFirebaseStorage_GetURL(final String firebasePath, final String bucket) {
-        final long listenerInd = getListenerInd();
+        final long listenerInd = getNextAsyncId();
 
-        executorService.execute(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
             storageRef.getDownloadUrl()
                     .addOnSuccessListener(uri -> {
@@ -188,9 +182,9 @@ public class YYFirebaseStorage extends RunnerSocial {
     }
 
     public double SDKFirebaseStorage_List(final String firebasePath, double maxResults, String pageToken, String bucket) {
-        final long listenerInd = getListenerInd();
+        final long listenerInd = getNextAsyncId();
 
-        executorService.execute(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
             Task<ListResult> task;
             if (pageToken == null || pageToken.isEmpty()) {
@@ -219,9 +213,9 @@ public class YYFirebaseStorage extends RunnerSocial {
     }
 
     public double SDKFirebaseStorage_ListAll(final String firebasePath, String bucket) {
-        final long listenerInd = getListenerInd();
+        final long listenerInd = getNextAsyncId();
 
-        executorService.execute(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
             storageRef.listAll()
                     .addOnCompleteListener(taskResult -> {
@@ -244,24 +238,9 @@ public class YYFirebaseStorage extends RunnerSocial {
 
     // </editor-fold>
 
-    // <editor-fold desc="Application Lifecycle">
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            executorService.shutdown();
-            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
-        }
-    }
-
-    // </editor-fold>
-
     // <editor-fold desc="Helper Methods">
 
-    private long getListenerInd() {
+    private long getNextAsyncId() {
         return FirebaseUtils.getInstance().getNextAsyncId();
     }
 
@@ -291,38 +270,8 @@ public class YYFirebaseStorage extends RunnerSocial {
         if (additionalData != null) {
             data.putAll(additionalData);
         }
-		sendSocialAsyncEvent(eventType, data);
+		FirebaseUtils.sendSocialAsyncEvent(eventType, data);
 	}
-
-	private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-            if (data != null) {
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
-                    } else if (value instanceof Integer) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
-                    } else if (value instanceof Boolean) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
-                    } else if (value instanceof Long) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
-                    } else if (value instanceof Float) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                    }
-                }
-            }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-        });
-    }
 
 	private void throttleProgressUpdate(long listenerInd, String eventType, String path, String localPath, long bytesTransferred, long totalByteCount) {
 		long currentTime = System.currentTimeMillis();

@@ -316,7 +316,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
                 dsMapAddString(dsMapIndex, (char *)cKey, (char *)[stringValue UTF8String]);
             }
         }
-        CreateAsynEventWithDSMap(eventId, dsMapIndex);
+        CreateAsynEventWithDSMap(dsMapIndex, eventId);
     });
 }
 

@@ -24,8 +24,8 @@ public class YYFirebaseMessagingService extends FirebaseMessagingService {
 
         // Add notification title and body if available
         if (remoteMessage.getNotification() != null) {
-            extraData.put("Title", remoteMessage.getNotification().getTitle());
-        	extraData.put("Body", remoteMessage.getNotification().getBody());
+            extraData.put("title", remoteMessage.getNotification().getTitle());
+        	extraData.put("body", remoteMessage.getNotification().getBody());
         }
 
         // Add data payload
@@ -39,6 +39,8 @@ public class YYFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
-		FirebaseUtils.sendSocialAsyncEvent("FirebaseMessaging_OnNewToken", Map.of("value", token));
+		Map<String, Object> extraData = new HashMap<>();
+		extraData.put("value", token);
+		FirebaseUtils.sendSocialAsyncEvent("FirebaseMessaging_OnNewToken", extraData);
     }
 }

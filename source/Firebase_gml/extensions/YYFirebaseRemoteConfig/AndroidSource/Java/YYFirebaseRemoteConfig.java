@@ -1,7 +1,7 @@
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdateListener {
-    private static final int EVENT_OTHER_SOCIAL = 70;
+
     private static final String LOG_TAG = "YYFirebaseRemoteConfig";
 
     // Error Codes
@@ -40,7 +38,6 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
 
     private FirebaseRemoteConfig remoteConfig;
     private boolean updateListenerEnabled = false;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public YYFirebaseRemoteConfig() {
         // Get the application context
@@ -81,7 +78,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                 data.put("error", "Failed with unknown error");
                             }
                         }
-                        sendSocialAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", data);
+                        FirebaseUtils.sendSocialAsyncEvent("FirebaseRemoteConfig_FetchAndActivate", data);
                     }
                 });
         return FIREBASE_REMOTE_CONFIG_SUCCESS;
@@ -105,7 +102,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                 data.put("error", "Failed with unknown error");
                             }
                         }
-                        sendSocialAsyncEvent("FirebaseRemoteConfig_Reset", data);
+                        FirebaseUtils.sendSocialAsyncEvent("FirebaseRemoteConfig_Reset", data);
                     }
                 });
         return FIREBASE_REMOTE_CONFIG_SUCCESS;
@@ -116,7 +113,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
 
         final String methodName = "FirebaseRemoteConfig_SetDefaultsAsync";
 
-        executorService.execute(new Runnable() {
+        FirebaseUtils.getInstance().submitAsyncTask(new Runnable() {
             @Override
             public void run() {
                 final Map<String, Object> defaultsMap = jsonStringToMap(json, methodName);
@@ -125,7 +122,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                     Map<String, Object> data = new HashMap<>();
                     data.put("success", 0.0);
                     data.put("error", "Invalid JSON");
-                    sendSocialAsyncEvent(methodName, data);
+                    FirebaseUtils.sendSocialAsyncEvent(methodName, data);
                     return;
                 }
 
@@ -146,7 +143,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                                         data.put("error", "Failed with unknown error");
                                     }
                                 }
-                                sendSocialAsyncEvent(methodName, data);
+                                FirebaseUtils.sendSocialAsyncEvent(methodName, data);
                             }
                         });
             }
@@ -207,7 +204,7 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
         } else {
             Log.e(LOG_TAG, "ConfigUpdateListener onError: Unknown error");
         }
-        sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
+        FirebaseUtils.sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
     }
 
     @Override
@@ -229,20 +226,10 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             data.put("success", 0.0);
             data.put("error", "ConfigUpdate is null");
         }
-        sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
+        FirebaseUtils.sendSocialAsyncEvent("FirebaseRemoteConfig_AddOnConfigUpdateListener", data);
     }
 
     // </editor-fold>
-
-	// <editor-fold desc="Application Lifecycle">
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		shutdownExecutor();
-	}
-
-	// </editor-fold>
 
     // <editor-fold desc="Helper Methods">
 
@@ -285,44 +272,6 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
             list.add(value);
         }
         return list;
-    }
-
-    // Helper method to send asynchronous events
-    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-        RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-        if (data != null) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
-                if (value instanceof String) {
-                    RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                } else if (value instanceof Double) {
-                    RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
-                } else if (value instanceof Integer) {
-                    RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
-                } else if (value instanceof Boolean) {
-                    RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
-                } else if (value instanceof Long) {
-                    RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
-                } else if (value instanceof Float) {
-                    RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
-                } else {
-                    // Convert other types to String
-                    RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                }
-            }
-        }
-        RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-    }
-
-    public void shutdownExecutor() {
-		try {
-			executorService.shutdown();
-			Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
-		} catch (Exception e) {
-			Log.e(LOG_TAG, "Error shutting down ExecutorService: " + e.getMessage());
-		}
     }
 
     // </editor-fold>

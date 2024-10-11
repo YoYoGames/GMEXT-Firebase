@@ -41,9 +41,14 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
 
 - (instancetype)init {
     if (self = [super init]) {
-        if (![FIRApp defaultApp]) {
-            [FIRApp configure];
-        }
+        // Initialize Firebase if needed
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+                NSLog(@"Firebase initialized in YYFirebaseRealTime");
+            }
+        });
         self.listenerMap = [NSMutableDictionary dictionary];
         self.referenceMap = [NSMutableDictionary dictionary];
     }

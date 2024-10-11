@@ -1,4 +1,6 @@
 
+show_debug_message(json_encode(async_load));
+
 switch(async_load[? "type"])
 {
 	// @triggered by LocalPushNotification_iOS_Permission_Status()

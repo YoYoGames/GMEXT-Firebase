@@ -115,16 +115,19 @@ const char*  YYNotification_data = "data";
 - (void)onLaunch:(NSDictionary *)launchOptions {
 
     // Register with the UNUserNotificationCenter multiplexer
+    NSLog(@"LocalNotifications onLaunch:");
     UNUserNotificationCenterMultiplexer *multiplexer = [UNUserNotificationCenterMultiplexer sharedInstance];
     [multiplexer registerDelegate:self];
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-   didReceiveNotificationResponse:(UNNotificationResponse *)response 
-            withCompletionHandler:(void (^)(void))completionHandler {
+        didReceiveNotificationResponse:(UNNotificationResponse *)response 
+        withCompletionHandler:(void (^)(void))completionHandler {
     UNNotification *notification = response.notification;
     UNNotificationTrigger *trigger = notification.request.trigger;
     
+    NSLog(@"LocalNotifications: didReceiveNotificationResponse");
+
     // This is a remote notification? Ignore...
     if ([trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         return;
@@ -136,10 +139,12 @@ const char*  YYNotification_data = "data";
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-      willPresentNotification:(UNNotification *)notification 
-            withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+        willPresentNotification:(UNNotification *)notification 
+        withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
     UNNotificationTrigger *trigger = notification.request.trigger;
     
+    NSLog(@"LocalNotifications: willPresentNotification");
+
     // This is a remote notification? Ignore...
     if ([trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         return;
@@ -152,10 +157,14 @@ const char*  YYNotification_data = "data";
 }
 
 - (void)handleLocalNotification:(UNNotification*)notification {
+
+    NSString *identifier = notification.request.identifier;
+
     NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    data[@"id"] = [identifier substringFromIndex: [[LocalNotifications prefix]length]];
     data[@"title"] = notification.request.content.title;
     data[@"message"] = notification.request.content.body;
-    data[@"data"] = notification.request.content.userInfo;
+    data[@"data"] = notification.request.content.userInfo[@"data_key"];
     
     [self sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Local" data:data];
 }
@@ -252,7 +261,7 @@ const char*  YYNotification_data = "data";
                 dsMapAddString(dsMapIndex, (char *)cKey, (char *)[stringValue UTF8String]);
             }
         }
-        CreateAsynEventWithDSMap(eventId, dsMapIndex);
+        CreateAsynEventWithDSMap(dsMapIndex, eventId);
     });
 }
 

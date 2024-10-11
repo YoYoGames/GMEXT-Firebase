@@ -20,7 +20,6 @@
 
 - (void)FirebaseCloudMessaging_RequestPermission {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = self; // Ensure delegate is set
 
     [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
         if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
@@ -97,6 +96,9 @@
 #pragma mark - Selectors
 
 - (void)onLaunch:(NSDictionary *)launchOptions {
+
+	NSLog(@"YYFirebaseCloudMessaging onLaunch:");
+
     // Set delegates
     [FIRMessaging messaging].delegate = self;
 
@@ -131,6 +133,8 @@
 
     UNNotificationTrigger *trigger = notification.request.trigger;
     
+	NSLog(@"YYFirebaseCloudMessaging: willPresentNotification");
+
     // This is NOT a remote notification? Ignore...
     if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         return;
@@ -151,6 +155,8 @@
     UNNotification *notification = response.notification;
     UNNotificationTrigger *trigger = notification.request.trigger;
     
+	NSLog(@"YYFirebaseCloudMessaging: didReceiveNotificationResponse");
+
     // This is NOT a remote notification? Ignore...
     if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         return;
@@ -163,7 +169,7 @@
 }
 
 - (void)handleIncomingMessage:(NSDictionary *)userInfo {
-	[[FirebaseUtils sharedInstance] sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:data];
+	[[FirebaseUtils sharedInstance] sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:userInfo];
 }
 
 @end

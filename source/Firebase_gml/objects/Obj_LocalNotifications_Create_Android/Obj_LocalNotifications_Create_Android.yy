@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Local Notifications/Objects.yy",
+    "path":"folders/Local Notifications/Demo/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

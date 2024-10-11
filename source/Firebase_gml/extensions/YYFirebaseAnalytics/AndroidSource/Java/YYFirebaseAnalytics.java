@@ -1,8 +1,7 @@
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
-
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,19 +16,15 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class YYFirebaseAnalytics extends RunnerSocial {
-    private static final int EVENT_OTHER_SOCIAL = 70;
+
     private static final String LOG_TAG = "YYFirebaseAnalytics";
 
     // Error Codes
     public static final double FIREBASE_ANALYTICS_SUCCESS = 0.0;
     public static final double FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS = -1.0;
-
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     
     private FirebaseAnalytics analytics;
 
@@ -56,7 +51,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         }
 
         final String methodName = "FirebaseAnalytics_LogEvent";
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             Map<String, Object> data = new HashMap<>();
             try {
                 Bundle params = parseJsonStringToBundle(jsonValues, methodName);
@@ -66,7 +61,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 data.put("error", e.toString());
                 data.put("success", 0.0);
             }
-            sendSocialAsyncEvent(methodName, data);
+            FirebaseUtils.sendSocialAsyncEvent(methodName, data);
         });
         return FIREBASE_ANALYTICS_SUCCESS;
     }
@@ -78,7 +73,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     public double FirebaseAnalytics_SetDefaultEventParameters(String jsonValues) {
         final String methodName = "FirebaseAnalytics_SetDefaultEventParameters";
-        executorService.submit(() -> {
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
             Map<String, Object> data = new HashMap<>();
             
             try {
@@ -90,7 +85,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
                 data.put("success", 0.0);
             }
             
-            sendSocialAsyncEvent(methodName, data);
+            FirebaseUtils.sendSocialAsyncEvent(methodName, data);
         });
         return FIREBASE_ANALYTICS_SUCCESS;
     }
@@ -139,52 +134,7 @@ public class YYFirebaseAnalytics extends RunnerSocial {
 
     // </editor-fold>
 
-    // <editor-fold desc="Application Lifecycle">
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            executorService.shutdown();
-            Log.d(LOG_TAG, "ExecutorService shutdown initiated.");
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Error shutting down ExecutorService", e);
-        }
-    }
-
-    // </editor-fold>
-
     // <editor-fold desc="Helper Methods">
-
-    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-            if (data != null) {
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
-                    } else if (value instanceof Integer) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
-                    } else if (value instanceof Boolean) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
-                    } else if (value instanceof Long) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
-                    } else if (value instanceof Float) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                    }
-                }
-            }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-        });
-    }
 
     private boolean isStringNullOrEmpty(String string) {
         return string == null || string.isEmpty();

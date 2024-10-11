@@ -26,15 +26,20 @@ public class YYFirebaseCloudMessaging extends RunnerSocial {
 	public void FirebaseCloudMessaging_GetToken() {
 		FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
-            public void onComplete(@NonNull Task<String> task) {   	
+			public void onComplete(@NonNull Task<String> task) {
 				Map<String, Object> extraData = new HashMap<>();
-                boolean success = task.isSuccessful();
+				boolean success = task.isSuccessful();
 				extraData.put("success", success);
 				if (success) {
 					extraData.put("value", task.getResult());
+				} else {
+					Exception e = task.getException();
+					if (e != null) {
+						extraData.put("errorMessage", e.getMessage());
+					}
 				}
 				FirebaseUtils.sendSocialAsyncEvent("FirebaseCloudMessaging_GetToken", extraData);
-            }
+			}
         });
 	}
 	

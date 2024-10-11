@@ -1,220 +1,238 @@
-
 package ${YYAndroidPackageName};
+
 import com.yoyogames.runner.RunnerJNILib;
 
-import android.util.Log;
-import android.os.Build;
-import android.os.Bundle;
-import android.content.Context;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-
-import android.content.Intent;
-
-import java.security.MessageDigest;
-import java.math.BigInteger;
-
-import java.lang.Exception;
-
-import android.app.NotificationManager;
 import android.app.NotificationChannel;
-import android.graphics.Color;
+import android.app.NotificationManager;
 
-import androidx.annotation.RequiresApi;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import java.io.File;
 
-public class LocalNotifications extends RunnerSocial
-{
-	// On the GML side we are inside a push notification event and we have already identified the
-	// type as being "Notification_Local" so the prefix "YYNotification_" should not be needed
-	// and would only amek the GML code more verbose.
-	public static final String KEY_NTF_TITLE = "title";
-	public static final String KEY_NTF_MESSAGE = "message";
-	public static final String KEY_NTF_DATA = "data";
-	public static final String KEY_NTF_TYPE = "type";
-	public static final String KEY_NTF_ID = "id";
-	public static final String KEY_NTF_PATH_ICON = "icon_path";
-	
-	public static final String DEFAULT_CHANNEL_ID = "GMS2DefaultChannel";
-	
-	//private static final int EVENT_OTHER_SOCIAL = 70;
-	private static final int EVENT_OTHER_NOTIFICATION = 71;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 
-	Activity activity = RunnerActivity.CurrentActivity;
-	
-	public LocalNotifications()
-	{
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-			setupChannels();
-	}
+import androidx.annotation.RequiresApi;
 
-	public void onResume()
-	{
-		int ms = 500;
-		if(Build.VERSION.SDK_INT <= 8)
-			ms = 3000;// 3 seconds
-			
-		new java.util.Timer().schedule( new java.util.TimerTask()
-		{
-			@Override
-			public void run() 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
+
+public class LocalNotifications extends RunnerSocial {
+
+    private static final long MAX_DOUBLE_SAFE = 9007199254740992L; // 2^53
+
+    public static final String KEY_NTF_TITLE = "title";
+    public static final String KEY_NTF_MESSAGE = "message";
+    public static final String KEY_NTF_DATA = "data";
+    public static final String KEY_NTF_TYPE = "type";
+    public static final String KEY_NTF_ID = "id";
+    public static final String KEY_NTF_PATH_ICON = "icon_path";
+
+    public static final String DEFAULT_CHANNEL_ID = "GMS2DefaultChannel";
+
+    private static final int EVENT_OTHER_NOTIFICATION = 71;
+
+    public LocalNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            setupChannels();
+    }
+
+    public void onResume() {
+        int delayMs = 500;
+        if (Build.VERSION.SDK_INT <= 8)
+            delayMs = 3000; // 3 seconds
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            handleIntentAsync(RunnerActivity.CurrentActivity.getIntent());
+        }, delayMs);
+    }
+
+    public void onNewIntent(Intent intent) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            handleIntentAsync(intent);
+        }, 500);
+    }
+
+    public void LocalPushNotification_Create(String ID, double fireTime, String title, String message, String data) {
+        LocalPushNotification_Create_Ext(ID, fireTime, title, message, data, null);
+    }
+
+    public void LocalPushNotification_Create_Ext(String ID, double fireTime, String title, String message, String data, String imagePath) {
+        if (fireTime <= 0)
+            return;
+
+        long fireTimeMs = System.currentTimeMillis() + (long) (fireTime * 1000.0);
+
+		Activity activity = RunnerActivity.CurrentActivity;
+
+        Intent intent = new Intent(activity, LocalNotifications_BroadcastReceiver.class);
+        intent.putExtra(KEY_NTF_TITLE, title);
+        intent.putExtra(KEY_NTF_MESSAGE, message);
+        intent.putExtra(KEY_NTF_ID, ID);
+        intent.putExtra(KEY_NTF_DATA, data);
+
+		if (imagePath != null) {
+			File localFile = new File(activity.getFilesDir(), imagePath);
+			if (localFile.exists())
 			{
-				HandleIntent_AsyncCall(RunnerActivity.CurrentActivity.getIntent());
+				intent.putExtra(KEY_NTF_PATH_ICON, imagePath);
 			}
-		},ms);
-	}
-	
-	public void onNewIntent(Intent intent)
-	{
-		new java.util.Timer().schedule( new java.util.TimerTask()
-		{
-			@Override
-			public void run() 
-			{
-				HandleIntent_AsyncCall(intent);
-			}
-		},5000);
-	}
-	
-	public void LocalPushNotification_Create(String ID ,double fireTime, String title, String message, String data)
-	{
-		if(fireTime <= 0)
-			return;
-		
-		long fireTimeMs = System.currentTimeMillis() + (long)(fireTime*1000.0);
+		}
 
-		Intent intent = new Intent(activity, LocalNotifications_BroadcastReceiver.class);
-		intent.putExtra(KEY_NTF_TITLE,title);
-		intent.putExtra(KEY_NTF_MESSAGE,message);
-		intent.putExtra(KEY_NTF_ID,ID);
-		intent.putExtra(KEY_NTF_DATA,data);
-		
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, getUniqueInteger(ID), intent, PendingIntent.FLAG_IMMUTABLE);
-		AlarmManager am = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, fireTimeMs, pendingIntent);
-	}
-	
-	public void LocalPushNotification_Create_Ext(String ID ,double fireTime, String title, String message, String data,String imagePath)
-	{
-		if(fireTime <= 0)
-			return;
-		
-		long fireTimeMs = System.currentTimeMillis() + (long)(fireTime*1000.0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                activity,
+                getUniqueInteger(ID),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+        AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, fireTimeMs, pendingIntent);
+    }
 
-		Intent intent = new Intent(activity, LocalNotifications_BroadcastReceiver.class);
-		intent.putExtra(KEY_NTF_TITLE,title);
-		intent.putExtra(KEY_NTF_MESSAGE,message);
-		intent.putExtra(KEY_NTF_ID,ID);
-		intent.putExtra(KEY_NTF_DATA,data);
-		
-		File localFile = new File(activity.getFilesDir() + "/" + imagePath);
-		if(localFile.exists())
-		{
-			intent.putExtra(KEY_NTF_PATH_ICON,imagePath);
-		}
-		// else
-			// Log.i("yoyo","[LocalPushNotification_Create_Android] NO Icon Attached");
-		
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, getUniqueInteger(ID), intent, PendingIntent.FLAG_IMMUTABLE);
-		AlarmManager am = (AlarmManager)activity.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, fireTimeMs, pendingIntent);
-	}
-	
-	public void LocalPushNotification_Cancel(String ID)
-	{
-		Context appContext = activity.getApplicationContext();
-		Intent intent = new Intent(appContext,LocalNotifications_BroadcastReceiver.class);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(appContext,getUniqueInteger(ID),intent,PendingIntent.FLAG_IMMUTABLE);
-		pendingIntent.cancel();
-		
-		AlarmManager am = (AlarmManager)appContext.getSystemService(Context.ALARM_SERVICE);
-		am.cancel(pendingIntent);
-	}
-	
-	public static int getUniqueInteger(String name)// Code from //https://stackoverflow.com/questions/17583565/get-unique-integer-value-from-string
-	{
-		String plaintext = name;
-		int hash = name.hashCode();
-		MessageDigest m;
-		try 
-		{
-			m = MessageDigest.getInstance("MD5");
-			m.reset();
-			m.update(plaintext.getBytes());
-			byte[] digest = m.digest();
-			BigInteger bigInt = new BigInteger(1,digest);
-			String hashtext = bigInt.toString(10);
-			while(hashtext.length() < 32)
-			  hashtext = "0"+hashtext;
-			
-			int temp = 0;
-			for(int i =0; i<hashtext.length();i++)
-			{
-				char c = hashtext.charAt(i);
-				temp += (int)c;
-			}
-			return hash+temp;
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return hash;
-	}
-	
-///////////////////////////////////////////////////////////////////// HANDLE INTENTS
+    public void LocalPushNotification_Cancel(String ID) {
+		Activity activity = RunnerActivity.CurrentActivity;
 
-	public void HandleIntent_AsyncCall(Intent intent)
-	{
-		Bundle bundle = intent.getExtras();
-		if(bundle == null)
-			return;
-		
-		if(!bundle.containsKey(KEY_NTF_ID))
-		if(!bundle.containsKey("google.message_id"))		
-		{
-			Log.i("yoyo","Not a local notification and not from Firebase");
-			return;
-		}
-		
-		int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-		
-		if(bundle.containsKey(KEY_NTF_ID))
-			RunnerJNILib.DsMapAddString(dsMapIndex,"type","Notification_Local");
-		else
-		if(bundle.containsKey("google.message_id")) // This value shouldn't probably be hard coded
-			RunnerJNILib.DsMapAddString(dsMapIndex,"type","Notification_Remote");
-		
-		for (String key : bundle.keySet())
-		{
-			if(bundle.get(key) instanceof String)
-				RunnerJNILib.DsMapAddString(dsMapIndex,key,(String)bundle.getString(key));
-			// else
-				// RunnerJNILib.DsMapAddDouble(dsMapIndex,key,(double)bundle.getDouble(key));
-			intent.removeExtra(key);
-		}
-		
-		RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_NOTIFICATION);
-	}
-	
-	@RequiresApi(api = Build.VERSION_CODES.O)
-	private void setupChannels()
-	{
-        CharSequence adminChannelName = RunnerActivity.CurrentActivity.getString(R.string.default_notification_channel_name);
-        String adminChannelDescription = RunnerActivity.CurrentActivity.getString(R.string.default_notification_channel_description);
+        Context appContext = activity.getApplicationContext();
+        Intent intent = new Intent(appContext, LocalNotifications_BroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                appContext,
+                getUniqueInteger(ID),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+        pendingIntent.cancel();
+
+        AlarmManager am = (AlarmManager) appContext.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pendingIntent);
+    }
+
+    public static int getUniqueInteger(String name) {
+        String plaintext = name;
+        int hash = name.hashCode();
+        MessageDigest m;
+        try
+        {
+            m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(plaintext.getBytes());
+            byte[] digest = m.digest();
+            BigInteger bigInt = new BigInteger(1, digest);
+            String hashtext = bigInt.toString(10);
+            while (hashtext.length() < 32)
+                hashtext = "0" + hashtext;
+
+            int temp = 0;
+            for (int i = 0; i < hashtext.length(); i++)
+            {
+                char c = hashtext.charAt(i);
+                temp += (int) c;
+            }
+            return hash + temp;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return hash;
+    }
+
+    public void handleIntentAsync(Intent intent) {
+        Bundle bundle = intent.getExtras();
+        if (bundle == null)
+            return;
+
+        if (!bundle.containsKey(KEY_NTF_ID))
+        {
+            Log.i("LocalNotifications", "Intent does not contain local notification ID.");
+            return;
+        }
+
+		RunnerActivity.CurrentActivity.runOnUiThread(() -> {
+            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+            RunnerJNILib.DsMapAddString(dsMapIndex, "type", "Notification_Local");
+            if (bundle != null) {
+                for (String key : bundle.keySet()) {
+                    Object value = bundle.get(key);
+                    if (value instanceof String) {
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
+                    } else if (value instanceof Double || value instanceof Integer || value instanceof Float || value instanceof Boolean) {
+                        // Convert Boolean to double (1.0 or 0.0)
+                        double doubleValue;
+                        if (value instanceof Boolean) {
+                            doubleValue = (Boolean) value ? 1.0 : 0.0;
+                        } else if (value instanceof Integer) {
+                            doubleValue = ((Integer) value).doubleValue();
+                        } else if (value instanceof Float) {
+                            doubleValue = ((Float) value).doubleValue();
+                        } else { // Double
+                            doubleValue = (Double) value;
+                        }
+                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, doubleValue);
+                    } else if (value instanceof Long) {
+                        long longValue = (Long) value;
+                        if (Math.abs(longValue) <= MAX_DOUBLE_SAFE) {
+                            RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (double) longValue);
+                        } else {
+                            String formattedLong = String.format("@i64@%016x$i64$", longValue);
+                            RunnerJNILib.DsMapAddString(dsMapIndex, key, formattedLong);
+                        }
+                    } else if (value instanceof Map) {
+                        String jsonString = new JSONObject((Map) value).toString();
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, jsonString);
+                    } else if (value instanceof List) {
+                        String jsonString = new JSONArray((List) value).toString();
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, jsonString);
+                    } else {
+                        // Convert other types to String
+                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
+                    }
+                }
+            }
+            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_NOTIFICATION);
+        });
+
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setupChannels() {
+		Activity activity = RunnerActivity.CurrentActivity;
+
+        CharSequence adminChannelName = activity.getString(R.string.default_notification_channel_name);
+        String adminChannelDescription = activity.getString(R.string.default_notification_channel_description);
 
         NotificationChannel adminChannel;
         adminChannel = new NotificationChannel(DEFAULT_CHANNEL_ID, adminChannelName, NotificationManager.IMPORTANCE_HIGH);
         adminChannel.setDescription(adminChannelDescription);
         adminChannel.enableLights(true);
         adminChannel.setLightColor(Color.RED);
-		adminChannel.enableVibration(true);
-		
-		NotificationManager notificationManager = (NotificationManager) RunnerActivity.CurrentActivity.getSystemService(RunnerActivity.CurrentActivity.NOTIFICATION_SERVICE);
-		if(notificationManager != null) 
-            notificationManager.createNotificationChannel(adminChannel);
-	}
-}
+        adminChannel.enableVibration(true);
 
+        NotificationManager notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null)
+            notificationManager.createNotificationChannel(adminChannel);
+    }
+}

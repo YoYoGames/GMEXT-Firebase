@@ -37,7 +37,7 @@
             // If there's an existing delegate that's not the multiplexer, store it
             self.previousDelegate = center.delegate;
         }
-        center.delegate = self;
+        [center setDelegate:self];
     }
 }
 
@@ -50,8 +50,8 @@
 #pragma mark - UNUserNotificationCenterDelegate Methods
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-       willPresentNotification:(UNNotification *)notification 
-         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+        willPresentNotification:(UNNotification *)notification 
+        withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
 
     __block BOOL handled = NO;
     __block UNNotificationPresentationOptions options = UNNotificationPresentationOptionNone;
@@ -79,8 +79,8 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-didReceiveNotificationResponse:(UNNotificationResponse *)response 
-         withCompletionHandler:(void (^)(void))completionHandler {
+        didReceiveNotificationResponse:(UNNotificationResponse *)response 
+        withCompletionHandler:(void (^)(void))completionHandler {
 
     dispatch_group_t group = dispatch_group_create();
     __block BOOL handled = NO;

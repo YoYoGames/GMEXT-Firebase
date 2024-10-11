@@ -62,9 +62,13 @@ typedef NS_ENUM(NSInteger, QuerySort) {
 - (instancetype)init {
     self = [super init];
     if (self) {
-        if (![FIRApp defaultApp]) {
-            [FIRApp configure];
-        }
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            if (![FIRApp defaultApp]) {
+                [FIRApp configure];
+                NSLog(@"Firebase initialized in YYFirebaseFirestore");
+            }
+        });
         self.listenerMap = [NSMutableDictionary dictionary];
         self.pathMap = [NSMutableDictionary dictionary];
     }

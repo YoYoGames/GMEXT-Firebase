@@ -1,5 +1,12 @@
 /// @description Initialize variables
 
+if (instance_number(object_index) > 1) {
+	// Destroy if there is more than one created
+	instance_destroy();
+	return;
+}
+
+
 var _info = os_get_info()
 
 // On iOS before we can use local notifications we need to request for permission

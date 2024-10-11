@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"Local Notifications",
-    "path":"folders/Local Notifications.yy",
+    "name":"Sprites",
+    "path":"folders/Local Notifications/Demo/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

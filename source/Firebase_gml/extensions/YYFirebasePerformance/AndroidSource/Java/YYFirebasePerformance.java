@@ -15,7 +15,7 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class YYFirebasePerformance {
-    private static final int EVENT_OTHER_SOCIAL = 70;
+
     private static final String LOG_TAG = "YYFirebasePerformance";
 
     // Error Codes
@@ -313,36 +313,6 @@ public class YYFirebasePerformance {
     // </editor-fold>
 
     // <editor-fold desc="Helper Methods">
-
-    private void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
-            if (data != null) {
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Double) value);
-                    } else if (value instanceof Integer) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Integer) value).doubleValue());
-                    } else if (value instanceof Boolean) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (Boolean) value ? 1.0 : 0.0);
-                    } else if (value instanceof Long) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Long) value).doubleValue());
-                    } else if (value instanceof Float) {
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, ((Float) value).doubleValue());
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
-                    }
-                }
-            }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_OTHER_SOCIAL);
-        });
-    }
 
     public static String convertMapToJson(Map map, String methodName) {
         String json = "{}";

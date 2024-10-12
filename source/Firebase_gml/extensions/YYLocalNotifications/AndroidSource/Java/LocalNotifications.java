@@ -31,6 +31,21 @@ public class LocalNotifications extends RunnerSocial implements NotificationCall
             setupChannels();
     }
 
+    public void onStart() {
+        Activity activity = RunnerActivity.CurrentActivity;
+        Intent intent = activity.getIntent();
+
+        final NotificationData notificationData = NotificationData.fromIntent(intent);
+        if (notificationData == null) {
+            return;
+        }
+        
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            onNotificationReceived(notificationData);
+        }, 500);
+    }
+
     public void onResume() {
         LocalNotificationReceiver.registerCallback(this);
     }
@@ -56,7 +71,7 @@ public class LocalNotifications extends RunnerSocial implements NotificationCall
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             onNotificationReceived(notificationData);
-        }, 1000);
+        }, 500);
     }
 
     public void LocalPushNotification_Create(String id, double fireTime, String title, String message, String data) {

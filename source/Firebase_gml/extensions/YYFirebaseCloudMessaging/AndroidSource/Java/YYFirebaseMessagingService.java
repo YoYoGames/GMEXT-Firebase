@@ -16,7 +16,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class YYFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final int EVENT_OTHER_NOTIFICATION = 71;
+private static final int EVENT_OTHER_NOTIFICATION = 71;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

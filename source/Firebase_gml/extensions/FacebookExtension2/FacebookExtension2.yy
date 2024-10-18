@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"FacebookExtension2",
-  "copyToTargets":44,
+  "copyToTargets":0,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.0.5",

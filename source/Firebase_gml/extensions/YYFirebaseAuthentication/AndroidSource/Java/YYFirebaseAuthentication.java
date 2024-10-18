@@ -418,6 +418,26 @@ public class YYFirebaseAuthentication extends RunnerSocial {
         }
     }
 
+    public double SDKFirebaseAuthentication_ReauthenticateWithEmail(String email, String password) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
+            return (double) asyncId;
+        }
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        currentUser.reauthenticate(credential)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Helper Methods">

@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YY_AppleSignIn",
-  "copyToTargets":9007199254740996,
+  "copyToTargets":9007199254740992,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.0.2",

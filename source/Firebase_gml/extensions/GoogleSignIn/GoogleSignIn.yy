@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYGoogleSignIn",
-  "copyToTargets":9007199254741036,
+  "copyToTargets":0,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.0.1",

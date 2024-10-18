@@ -61,13 +61,13 @@ function SDKFirebaseAuthentication_GetUserData_From(user)
 
 function SDKFirebaseAuthentication_SignInWithCustomToken(token)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().signInWithCustomToken(token).then(function(userCredential)
 	{
 		if(user == null)
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignInWithCustomToken",
 				status:400,
 			});
@@ -75,7 +75,7 @@ function SDKFirebaseAuthentication_SignInWithCustomToken(token)
 		else
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignInWithCustomToken",
 				status:200,
 				value:SDKFirebaseAuthentication_GetUserData_From(userCredential.user)
@@ -84,23 +84,23 @@ function SDKFirebaseAuthentication_SignInWithCustomToken(token)
 	}).catch(function(error)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignInWithCustomToken",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SignIn_Email(email,password)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().signInWithEmailAndPassword(email,password).then(function(userCredential)
 	{
 		if(userCredential.user === null)
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignIn_Email",
 				status:400,
 			});
@@ -108,7 +108,7 @@ function SDKFirebaseAuthentication_SignIn_Email(email,password)
 		else
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignIn_Email",
 				status:200,
 				value:SDKFirebaseAuthentication_GetUserData_From(userCredential.user)
@@ -117,23 +117,23 @@ function SDKFirebaseAuthentication_SignIn_Email(email,password)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_SignIn_Email",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SignUp_Email(email,password)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().createUserWithEmailAndPassword(email,password).then(function(userCredential) 
 	{
 		if(userCredential.user === null)
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignUp_Email",
 				status:400,
 			});
@@ -141,7 +141,7 @@ function SDKFirebaseAuthentication_SignUp_Email(email,password)
 		else
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignUp_Email",
 				status:200,
 				value:SDKFirebaseAuthentication_GetUserData_From(userCredential.user)
@@ -150,23 +150,23 @@ function SDKFirebaseAuthentication_SignUp_Email(email,password)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignUp_Email",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SignIn_Anonymously()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().signInAnonymously().then(function(userCredential) 
 	{
 		if(userCredential.user === null)
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignIn_Anonymously",
 				status:400,
 			});
@@ -174,7 +174,7 @@ function SDKFirebaseAuthentication_SignIn_Anonymously()
 		else
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignIn_Anonymously",
 				status:200,
 				value:SDKFirebaseAuthentication_GetUserData_From(userCredential.user)
@@ -183,159 +183,159 @@ function SDKFirebaseAuthentication_SignIn_Anonymously()
 	}).catch(function(error) 
 	{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_SignIn_Anonymously",
 				status:400,errorMessage:error.message
 			});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SendPasswordResetEmail(email)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().sendPasswordResetEmail(email).then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SendPasswordResetEmail",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SendPasswordResetEmail",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ChangeEmail(email)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.updateEmail(email).then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangeEmail",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangeEmail",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ChangePassword(password)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.updatePassword(password).then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangePassword",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangePassword",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ChangeDisplayName(name)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.updateProfile({displayName:name}).then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangeDisplayName",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangeDisplayName",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ChangePhotoURL(photoURL)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.updateProfile({photoURL: photoURL}).then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangePhotoURL",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ChangePhotoURL",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SendEmailVerification()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.sendEmailVerification().then(function() 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SendEmailVerification",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SendEmailVerification",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_DeleteAccount()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.delete().then(function()
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_DeleteAccount",
 			status:200,
 		});
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_DeleteAccount",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SignOut()
@@ -348,13 +348,13 @@ function SDKFirebaseAuthentication_SignOut()
 
 function SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.linkWithCredential(EmailAuthProvider.credential(email,password)).then(function(userCredential)
 	{
 		if(userCredential.user === null)
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_LinkWithEmailPassword",
 				status:400,
 			});
@@ -362,7 +362,7 @@ function SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)
 		else
 		{
 			GMS_API.send_async_event_social({
-				listener:listenerInd,
+				listener:asyncId,
 				type:"FirebaseAuthentication_LinkWithEmailPassword",
 				status:200,
 				value:SDKFirebaseAuthentication_GetUserData_From(userCredential.user)
@@ -371,22 +371,22 @@ function SDKFirebaseAuthentication_LinkWithEmailPassword(email,password)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_LinkWithEmailPassword",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let credential = getAuthCredentialFromProvider(token,token_kind,provider);
 	firebase.auth().signInWithCredential(credential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignIn_OAuth",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -394,22 +394,22 @@ function SDKFirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,reques
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignIn_OAuth",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let credential = getAuthCredentialFromProvider(token,token_kind,provider);
 	firebase.auth().currentUser.linkWithCredential(credential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_LinkWithOAuthCredential",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -417,12 +417,12 @@ function SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,prov
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_LinkWithOAuthCredential",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 	function getAuthCredentialFromProvider(token,token_kind,provider)
@@ -449,11 +449,11 @@ function SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,prov
 
 function SDKFirebaseAuthentication_UnlinkProvider(provider)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.unlink(provider).then(function(user)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_UnlinkProvider",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(user)
@@ -461,21 +461,21 @@ function SDKFirebaseAuthentication_UnlinkProvider(provider)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_UnlinkProvider",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_RefreshUserData()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.reload().then(function()
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_RefreshUserData",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(user)
@@ -483,21 +483,21 @@ function SDKFirebaseAuthentication_RefreshUserData()
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_RefreshUserData",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_GetIdToken()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	firebase.auth().currentUser.getIdToken(true).then(function(token)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_GetIdToken",
 			status:200,
 			value:token
@@ -505,23 +505,23 @@ function SDKFirebaseAuthentication_GetIdToken()
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_GetIdToken",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 
 function SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessionInfo)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let authCredential = firebase.auth.PhoneAuthProvider.credential(sessionInfo,code);
 	firebase.auth().signInWithCredential(authCredential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignInWithPhoneNumber",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -529,22 +529,22 @@ function SDKFirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessionInfo)
 	}).catch(function(error)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_SignInWithPhoneNumber",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_LinkWithPhoneNumber(phone,code,sessionInfo)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let authCredential = firebase.auth.PhoneAuthProvider.credential(sessionInfo,code);
 	firebase.auth().currentUser.linkWithCredential(authCredential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_LinkWithPhoneNumber",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -552,23 +552,23 @@ function SDKFirebaseAuthentication_LinkWithPhoneNumber(phone,code,sessionInfo)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_LinkWithPhoneNumber",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	
 	let credential = firebase.auth.EmailAuthProvider.credential(email,password);
 	firebase.auth().currentUser.reauthenticateWithCredential(credential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithOAuth",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -576,24 +576,24 @@ function SDKFirebaseAuthentication_ReauthenticateWithEmail(email,password)
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithOAuth",
 			status:400,errorMessage:error.message
 		});
 	});	
 	
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	
 	let credential = getAuthCredentialFromProvider(token,token_kind,provider);
 	firebase.auth().currentUser.reauthenticateWithCredential(credential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithOAuth",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -601,24 +601,24 @@ function SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,prov
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithOAuth",
 			status:400,errorMessage:error.message
 		});
 	});
 	
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,code,sessionInfo)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	
 	let credential = firebase.auth.PhoneAuthProvider.credential(sessionInfo,code);
 	firebase.auth().currentUser.reauthenticateWithCredential(credential).then(function(authCredential)
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithPhoneNumber",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(authCredential.user)
@@ -626,19 +626,19 @@ function SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(phoneNumber,cod
 	}).catch(function(error) 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"FirebaseAuthentication_ReauthenticateWithPhoneNumber",
 			status:400,errorMessage:error.message
 		});
 	});
 	
-	return(listenerInd);
+	return(asyncId);
 }
 
 
 function SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let auth_provider = new firebase.auth.OAuthProvider(provider);
 	let array = JSON.parse(jsonArray_scopes);
 	array.forEach((entry) => 
@@ -650,7 +650,7 @@ function SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)
 	{
 		let user = result.user;
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_SignInWithProvider",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(user)
@@ -659,17 +659,17 @@ function SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)
 	}).catch((error) => 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_SignInWithProvider",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let auth_provider = new firebase.auth.OAuthProvider(provider);
 	let array = JSON.parse(jsonArray_scopes);
 	array.forEach((entry) => 
@@ -681,7 +681,7 @@ function SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)
 	{
 		let user = result.user;
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_LinkWithProvider",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(user)
@@ -690,17 +690,17 @@ function SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)
 	}).catch((error) => 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_LinkWithProvider",
 			status:400,errorMessage:error.message
 		});
 	});	
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	let auth_provider = new firebase.auth.OAuthProvider(provider);
 	let array = JSON.parse(jsonArray_scopes);
 	array.forEach((entry) => 
@@ -712,7 +712,7 @@ function SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray
 	{
 		let user = result.user;
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_ReauthenticateWithProvider",
 			status:200,
 			value:SDKFirebaseAuthentication_GetUserData_From(user)
@@ -720,26 +720,26 @@ function SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray
 	}).catch((error) => 
 	{
 		GMS_API.send_async_event_social({
-			listener:listenerInd,
+			listener:asyncId,
 			type:"SDKFirebaseAuthentication_ReauthenticateWithProvider",
 			status:400,errorMessage:error.message
 		});
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 
 let mIdTokenListener = null;
 function SDKFirebaseAuthentication_IdTokenListener()
 {
-	let listenerInd = auth_getListenerInd();
+	let asyncId = auth_getListenerInd();
 	mIdTokenListener = firebase.auth().onIdTokenChanged(function(user) 
 	{
 		if(!user)
 		{
 			GMS_API.send_async_event_social({
 					type:"FirebaseAuthentication_IdTokenListener",
-					listener:listenerInd,
+					listener:asyncId,
 					status:200,
 					value:""
 				});
@@ -751,7 +751,7 @@ function SDKFirebaseAuthentication_IdTokenListener()
 		{
 			GMS_API.send_async_event_social({
 					type:"FirebaseAuthentication_IdTokenListener",
-					listener:listenerInd,
+					listener:asyncId,
 					status:200,
 					value:token
 				});
@@ -761,7 +761,7 @@ function SDKFirebaseAuthentication_IdTokenListener()
 			//ignore
 		});	
 	});
-	return(listenerInd);
+	return(asyncId);
 }
 
 function SDKFirebaseAuthentication_IdTokenListener_Remove()

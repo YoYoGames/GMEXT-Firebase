@@ -49,8 +49,8 @@ public class YYFirebaseStorage extends RunnerSocial {
     // <editor-fold desc="General API">
 
 	public double SDKFirebaseStorage_Cancel(double ind) {
-		long listenerInd = (long) ind; // Convert double to long
-		StorageTask<?> task = taskMap.remove(listenerInd);
+		long asyncId = (long) ind; // Convert double to long
+		StorageTask<?> task = taskMap.remove(asyncId);
 		if (task != null) {
 			task.cancel();
 			return FIREBASE_STORAGE_SUCCESS;
@@ -60,7 +60,7 @@ public class YYFirebaseStorage extends RunnerSocial {
 	}
 
     public double SDKFirebaseStorage_Download(final String localPath, final String firebasePath, final String bucket) {
-		final long listenerInd = getNextAsyncId();
+		final long asyncId = getNextAsyncId();
 	
 		FirebaseUtils.getInstance().submitAsyncTask(() -> {
 			try {
@@ -70,36 +70,36 @@ public class YYFirebaseStorage extends RunnerSocial {
 	
 				StorageTask<FileDownloadTask.TaskSnapshot> task = storageRef.getFile(localFile)
 						.addOnSuccessListener(taskSnapshot -> {
-							taskMap.remove(listenerInd);
-                            lastProgressUpdateTime.remove(listenerInd);
-							sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, true, null);
+							taskMap.remove(asyncId);
+                            lastProgressUpdateTime.remove(asyncId);
+							sendStorageEvent("FirebaseStorage_Download", asyncId, firebasePath, localPath, true, null);
 						})
 						.addOnFailureListener(e -> {
-							taskMap.remove(listenerInd);
-                            lastProgressUpdateTime.remove(listenerInd);
+							taskMap.remove(asyncId);
+                            lastProgressUpdateTime.remove(asyncId);
 							Map<String, Object> data = new HashMap<>();
 							data.put("error", e.getMessage());
-							sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, false, data);
+							sendStorageEvent("FirebaseStorage_Download", asyncId, firebasePath, localPath, false, data);
 						})
 						.addOnProgressListener(taskSnapshot -> {
-							throttleProgressUpdate(listenerInd, "FirebaseStorage_Download", firebasePath, localPath,
+							throttleProgressUpdate(asyncId, "FirebaseStorage_Download", firebasePath, localPath,
 									taskSnapshot.getBytesTransferred(), taskSnapshot.getTotalByteCount());
 						});
 	
-				taskMap.put(listenerInd, task);
+				taskMap.put(asyncId, task);
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Error in download: " + e.getMessage());
 				Map<String, Object> data = new HashMap<>();
 				data.put("error", e.getMessage());
-				sendStorageEvent("FirebaseStorage_Download", listenerInd, firebasePath, localPath, false, data);
+				sendStorageEvent("FirebaseStorage_Download", asyncId, firebasePath, localPath, false, data);
 			}
 		});
 	
-		return (double) listenerInd;
+		return (double) asyncId;
 	}
 
     public double SDKFirebaseStorage_Upload(final String localPath, final String firebasePath, final String bucket) {
-        final long listenerInd = getNextAsyncId();
+        final long asyncId = getNextAsyncId();
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             try {
@@ -113,55 +113,55 @@ public class YYFirebaseStorage extends RunnerSocial {
 
                 StorageTask<UploadTask.TaskSnapshot> task = storageRef.putFile(uriFile)
                         .addOnSuccessListener(taskSnapshot -> {
-                            taskMap.remove(listenerInd);
-                            lastProgressUpdateTime.remove(listenerInd);
-                            sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, true, null);
+                            taskMap.remove(asyncId);
+                            lastProgressUpdateTime.remove(asyncId);
+                            sendStorageEvent("FirebaseStorage_Upload", asyncId, firebasePath, localPath, true, null);
                         })
                         .addOnFailureListener(e -> {
-                            taskMap.remove(listenerInd);
-                            lastProgressUpdateTime.remove(listenerInd);
+                            taskMap.remove(asyncId);
+                            lastProgressUpdateTime.remove(asyncId);
                             Map<String, Object> data = new HashMap<>();
                             data.put("error", e.getMessage());
-                            sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, false, data);
+                            sendStorageEvent("FirebaseStorage_Upload", asyncId, firebasePath, localPath, false, data);
                         })
                         .addOnProgressListener(taskSnapshot -> {
-                            throttleProgressUpdate(listenerInd, "FirebaseStorage_Upload", firebasePath, localPath,
+                            throttleProgressUpdate(asyncId, "FirebaseStorage_Upload", firebasePath, localPath,
                                     taskSnapshot.getBytesTransferred(), taskSnapshot.getTotalByteCount());
                         });
 
-                taskMap.put(listenerInd, task);
+                taskMap.put(asyncId, task);
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Error in upload: " + e.getMessage());
                 Map<String, Object> data = new HashMap<>();
                 data.put("error", e.getMessage());
-                sendStorageEvent("FirebaseStorage_Upload", listenerInd, firebasePath, localPath, false, data);
+                sendStorageEvent("FirebaseStorage_Upload", asyncId, firebasePath, localPath, false, data);
             }
         });
 
-        return (double) listenerInd;
+        return (double) asyncId;
     }
 
     public double SDKFirebaseStorage_Delete(final String firebasePath, final String bucket) {
-        final long listenerInd = getNextAsyncId();
+        final long asyncId = getNextAsyncId();
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
             storageRef.delete()
                     .addOnSuccessListener(aVoid -> {
-                        sendStorageEvent("FirebaseStorage_Delete", listenerInd, firebasePath, null, true, null);
+                        sendStorageEvent("FirebaseStorage_Delete", asyncId, firebasePath, null, true, null);
                     })
                     .addOnFailureListener(e -> {
                         Map<String, Object> data = new HashMap<>();
                         data.put("error", e.getMessage());
-                        sendStorageEvent("FirebaseStorage_Delete", listenerInd, firebasePath, null, false, data);
+                        sendStorageEvent("FirebaseStorage_Delete", asyncId, firebasePath, null, false, data);
                     });
         });
 
-        return (long) listenerInd;
+        return (long) asyncId;
     }
 
     public double SDKFirebaseStorage_GetURL(final String firebasePath, final String bucket) {
-        final long listenerInd = getNextAsyncId();
+        final long asyncId = getNextAsyncId();
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
@@ -169,20 +169,20 @@ public class YYFirebaseStorage extends RunnerSocial {
                     .addOnSuccessListener(uri -> {
                         Map<String, Object> data = new HashMap<>();
                         data.put("value", uri.toString());
-                        sendStorageEvent("FirebaseStorage_GetURL", listenerInd, firebasePath, null, true, data);
+                        sendStorageEvent("FirebaseStorage_GetURL", asyncId, firebasePath, null, true, data);
                     })
                     .addOnFailureListener(e -> {
                         Map<String, Object> data = new HashMap<>();
                         data.put("error", e.getMessage());
-                        sendStorageEvent("FirebaseStorage_GetURL", listenerInd, firebasePath, null, false, data);
+                        sendStorageEvent("FirebaseStorage_GetURL", asyncId, firebasePath, null, false, data);
                     });
         });
 
-        return (double) listenerInd;
+        return (double) asyncId;
     }
 
     public double SDKFirebaseStorage_List(final String firebasePath, double maxResults, String pageToken, String bucket) {
-        final long listenerInd = getNextAsyncId();
+        final long asyncId = getNextAsyncId();
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
@@ -200,20 +200,20 @@ public class YYFirebaseStorage extends RunnerSocial {
                     data.put("pageToken", result.getPageToken() != null ? result.getPageToken() : "");
                     data.put("files", listOfReferencesToJSON(result.getItems()));
                     data.put("folders", listOfReferencesToJSON(result.getPrefixes()));
-                    sendStorageEvent("FirebaseStorage_List", listenerInd, firebasePath, null, true, data);
+                    sendStorageEvent("FirebaseStorage_List", asyncId, firebasePath, null, true, data);
                 } else {
                     Map<String, Object> data = new HashMap<>();
                     data.put("error", taskResult.getException().getMessage());
-                    sendStorageEvent("FirebaseStorage_List", listenerInd, firebasePath, null, false, data);
+                    sendStorageEvent("FirebaseStorage_List", asyncId, firebasePath, null, false, data);
                 }
             });
         });
 
-        return (double) listenerInd;
+        return (double) asyncId;
     }
 
     public double SDKFirebaseStorage_ListAll(final String firebasePath, String bucket) {
-        final long listenerInd = getNextAsyncId();
+        final long asyncId = getNextAsyncId();
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(firebasePath);
@@ -224,16 +224,16 @@ public class YYFirebaseStorage extends RunnerSocial {
                             Map<String, Object> data = new HashMap<>();
                             data.put("files", listOfReferencesToJSON(result.getItems()));
                             data.put("folders", listOfReferencesToJSON(result.getPrefixes()));
-                            sendStorageEvent("FirebaseStorage_ListAll", listenerInd, firebasePath, null, true, data);
+                            sendStorageEvent("FirebaseStorage_ListAll", asyncId, firebasePath, null, true, data);
                         } else {
                             Map<String, Object> data = new HashMap<>();
                             data.put("error", taskResult.getException().getMessage());
-                            sendStorageEvent("FirebaseStorage_ListAll", listenerInd, firebasePath, null, false, data);
+                            sendStorageEvent("FirebaseStorage_ListAll", asyncId, firebasePath, null, false, data);
                         }
                     });
         });
 
-        return (double) listenerInd;
+        return (double) asyncId;
     }
 
     // </editor-fold>
@@ -257,11 +257,11 @@ public class YYFirebaseStorage extends RunnerSocial {
         }
     }
 
-	private void sendStorageEvent(String eventType, long listenerInd, String path, String localPath, boolean success, Map<String, Object> additionalData) {
+	private void sendStorageEvent(String eventType, long asyncId, String path, String localPath, boolean success, Map<String, Object> additionalData) {
 		
         // Initialize a new map with the contents of the source map
         Map<String, Object> data = new HashMap<>();
-        data.put("listener", (double) listenerInd); // Convert to double here
+        data.put("listener", (double) asyncId); // Convert to double here
 		data.put("path", path);
 		if (localPath != null) {
 			data.put("localPath", localPath);
@@ -273,17 +273,17 @@ public class YYFirebaseStorage extends RunnerSocial {
 		FirebaseUtils.sendSocialAsyncEvent(eventType, data);
 	}
 
-	private void throttleProgressUpdate(long listenerInd, String eventType, String path, String localPath, long bytesTransferred, long totalByteCount) {
+	private void throttleProgressUpdate(long asyncId, String eventType, String path, String localPath, long bytesTransferred, long totalByteCount) {
 		long currentTime = System.currentTimeMillis();
-		Long lastUpdateTime = lastProgressUpdateTime.get(listenerInd);
+		Long lastUpdateTime = lastProgressUpdateTime.get(asyncId);
 		if (lastUpdateTime == null || (currentTime - lastUpdateTime) >= MIN_PROGRESS_UPDATE_INTERVAL_MS) {
-			lastProgressUpdateTime.put(listenerInd, currentTime);
+			lastProgressUpdateTime.put(asyncId, currentTime);
 	
 			Map<String, Object> data = new HashMap<>();
 			data.put("transferred", (double) bytesTransferred);
 			data.put("total", (double) totalByteCount);
 	
-			sendStorageEvent(eventType, listenerInd, path, localPath, true, data);
+			sendStorageEvent(eventType, asyncId, path, localPath, true, data);
 		}
 	}
 

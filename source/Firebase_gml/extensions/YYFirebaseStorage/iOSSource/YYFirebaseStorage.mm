@@ -14,7 +14,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 - (NSNumber *)getListenerInd;
 - (NSString *)listOfReferencesToJSON:(NSArray<FIRStorageReference *> *)list; 
 - (void)sendStorageEvent:(NSString *)eventType listener:(NSNumber*)listener path:(NSString *)path localPath:(NSString *)localPath success:(BOOL)success additionalData:(NSDictionary *)additionalData;
-- (void)throttleProgressUpdate:(NSNumber*)listenerInd eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total;
+- (void)throttleProgressUpdate:(NSNumber*)asyncId eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total;
 
 @end
 
@@ -37,20 +37,20 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 }
 
 - (double)SDKFirebaseStorage_Cancel:(double)ind {
-    NSNumber *listenerInd = @((long)ind); // Convert double to long
-    FIRStorageObservableTask<FIRStorageTaskManagement> * task = self.taskMap[listenerInd];
+    NSNumber *asyncId = @((long)ind); // Convert double to long
+    FIRStorageObservableTask<FIRStorageTaskManagement> * task = self.taskMap[asyncId];
     if (task) {
         [task cancel];
         [task removeAllObservers];
-        [self.taskMap removeObjectForKey:listenerInd];
-        [self.lastProgressUpdateTime removeObjectForKey:listenerInd];
+        [self.taskMap removeObjectForKey:asyncId];
+        [self.lastProgressUpdateTime removeObjectForKey:asyncId];
         return kFirebaseStorageSuccess;
     }
     return kFirebaseStorageErrorNotFound;
 }
 
 - (double)SDKFirebaseStorage_Download:(NSString *)localPath firebasePath:(NSString *)firebasePath bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     
     // Get the Application Support directory path
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -62,8 +62,8 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     if (error) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error creating Application Support directory: %@", error.localizedDescription];
         NSDictionary *data = @{@"error": errorMessage};
-        [self sendStorageEvent:@"FirebaseStorage_Download" listener:listenerInd path:firebasePath localPath:localPath success:NO additionalData:data];
-        return [listenerInd doubleValue];
+        [self sendStorageEvent:@"FirebaseStorage_Download" listener:asyncId path:firebasePath localPath:localPath success:NO additionalData:data];
+        return [asyncId doubleValue];
     }
     
     NSString *localFilePath = [appSupportDirectory stringByAppendingPathComponent:localPath];
@@ -73,31 +73,31 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     FIRStorageDownloadTask *downloadTask = [ref writeToFile:localURL];
     
     // Store the task in taskMap
-    self.taskMap[listenerInd] = downloadTask;
-    self.lastProgressUpdateTime[listenerInd] = @(0);
+    self.taskMap[asyncId] = downloadTask;
+    self.lastProgressUpdateTime[asyncId] = @(0);
     
     [downloadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self.taskMap removeObjectForKey:listenerInd];
-        [self.lastProgressUpdateTime removeObjectForKey:listenerInd];
-        [self sendStorageEvent:@"FirebaseStorage_Download" listener:listenerInd path:firebasePath localPath:localPath success:YES additionalData:nil];
+        [self.taskMap removeObjectForKey:asyncId];
+        [self.lastProgressUpdateTime removeObjectForKey:asyncId];
+        [self sendStorageEvent:@"FirebaseStorage_Download" listener:asyncId path:firebasePath localPath:localPath success:YES additionalData:nil];
     }];
     
     [downloadTask observeStatus:FIRStorageTaskStatusFailure handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self.taskMap removeObjectForKey:listenerInd];
-        [self.lastProgressUpdateTime removeObjectForKey:listenerInd];
+        [self.taskMap removeObjectForKey:asyncId];
+        [self.lastProgressUpdateTime removeObjectForKey:asyncId];
         NSDictionary *data = snapshot.error ? @{@"error": snapshot.error.localizedDescription} : nil;
-        [self sendStorageEvent:@"FirebaseStorage_Download" listener:listenerInd path:firebasePath localPath:localPath success:NO additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_Download" listener:asyncId path:firebasePath localPath:localPath success:NO additionalData:data];
     }];
     
     [downloadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self throttleProgressUpdate:listenerInd eventType:@"FirebaseStorage_Download" path:firebasePath localPath:localPath transferred:snapshot.progress.completedUnitCount total:snapshot.progress.totalUnitCount];
+        [self throttleProgressUpdate:asyncId eventType:@"FirebaseStorage_Download" path:firebasePath localPath:localPath transferred:snapshot.progress.completedUnitCount total:snapshot.progress.totalUnitCount];
     }];
     
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 - (double)SDKFirebaseStorage_Upload:(NSString *)localPath firebasePath:(NSString *)firebasePath bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     
     // Get the Application Support directory path
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
@@ -109,8 +109,8 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     if (error) {
         NSString *errorMessage = [NSString stringWithFormat:@"Error creating Application Support directory: %@", error.localizedDescription];
         NSDictionary *data = @{@"error": errorMessage};
-        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:listenerInd path:firebasePath localPath:localPath success:NO additionalData:data];
-        return [listenerInd doubleValue];
+        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:asyncId path:firebasePath localPath:localPath success:NO additionalData:data];
+        return [asyncId doubleValue];
     }
     
     NSString *localFilePath = [appSupportDirectory stringByAppendingPathComponent:localPath];
@@ -118,8 +118,8 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     // Check if the local file exists
     if (![[NSFileManager defaultManager] fileExistsAtPath:localFilePath]) {
         NSDictionary *data = @{@"error": @"Local file does not exist"};
-        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:listenerInd path:firebasePath localPath:localPath success:NO additionalData:data];
-        return [listenerInd doubleValue];
+        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:asyncId path:firebasePath localPath:localPath success:NO additionalData:data];
+        return [asyncId doubleValue];
     }
     
     NSURL *localFile = [NSURL fileURLWithPath:localFilePath];
@@ -127,42 +127,42 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     FIRStorageUploadTask *uploadTask = [ref putFile:localFile metadata:nil];
     
     // Store the task in taskMap
-    self.taskMap[listenerInd] = uploadTask;
-    self.lastProgressUpdateTime[listenerInd] = @(0);
+    self.taskMap[asyncId] = uploadTask;
+    self.lastProgressUpdateTime[asyncId] = @(0);
     
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self.taskMap removeObjectForKey:listenerInd];
-        [self.lastProgressUpdateTime removeObjectForKey:listenerInd];
-        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:listenerInd path:firebasePath localPath:localPath success:YES additionalData:nil];
+        [self.taskMap removeObjectForKey:asyncId];
+        [self.lastProgressUpdateTime removeObjectForKey:asyncId];
+        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:asyncId path:firebasePath localPath:localPath success:YES additionalData:nil];
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusFailure handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self.taskMap removeObjectForKey:listenerInd];
-        [self.lastProgressUpdateTime removeObjectForKey:listenerInd];
+        [self.taskMap removeObjectForKey:asyncId];
+        [self.lastProgressUpdateTime removeObjectForKey:asyncId];
         NSDictionary *data = snapshot.error ? @{@"error": snapshot.error.localizedDescription} : nil;
-        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:listenerInd path:firebasePath localPath:localPath success:NO additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_Upload" listener:asyncId path:firebasePath localPath:localPath success:NO additionalData:data];
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot *snapshot) {
-        [self throttleProgressUpdate:listenerInd eventType:@"FirebaseStorage_Upload" path:firebasePath localPath:localPath transferred:snapshot.progress.completedUnitCount total:snapshot.progress.totalUnitCount];
+        [self throttleProgressUpdate:asyncId eventType:@"FirebaseStorage_Upload" path:firebasePath localPath:localPath transferred:snapshot.progress.completedUnitCount total:snapshot.progress.totalUnitCount];
     }];
     
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 - (double)SDKFirebaseStorage_Delete:(NSString *)firebasePath bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     FIRStorageReference *ref = [[[FIRStorage storage] reference] child:firebasePath];
     [ref deleteWithCompletion:^(NSError *error) {
         NSDictionary *data = error ? @{@"error": error.localizedDescription} : nil;
         BOOL success = (error == nil);
-        [self sendStorageEvent:@"FirebaseStorage_Delete" listener:listenerInd path:firebasePath localPath:nil success:success additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_Delete" listener:asyncId path:firebasePath localPath:nil success:success additionalData:data];
     }];
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 - (double)SDKFirebaseStorage_GetURL:(NSString *)firebasePath bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     FIRStorageReference *ref = [[[FIRStorage storage] reference] child:firebasePath];
     [ref downloadURLWithCompletion:^(NSURL *URL, NSError *error) {
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
@@ -172,13 +172,13 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
         } else {
             data[@"error"] = error.localizedDescription;
         }
-        [self sendStorageEvent:@"FirebaseStorage_GetURL" listener:listenerInd path:firebasePath localPath:nil success:success additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_GetURL" listener:asyncId path:firebasePath localPath:nil success:success additionalData:data];
     }];
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 - (double)SDKFirebaseStorage_List:(NSString *)firebasePath maxResults:(double)maxResults pageToken:(NSString *)pageToken bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     FIRStorageReference *ref = [[[FIRStorage storage] reference] child:firebasePath];
     
     void (^completion)(FIRStorageListResult *result, NSError *error) = ^(FIRStorageListResult *result, NSError *error) {
@@ -191,7 +191,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
         } else {
             data[@"error"] = error.localizedDescription;
         }
-        [self sendStorageEvent:@"FirebaseStorage_List" listener:listenerInd path:firebasePath localPath:nil success:success additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_List" listener:asyncId path:firebasePath localPath:nil success:success additionalData:data];
     };
     
     int64_t maxResultsInt64 = (int64_t)maxResults;
@@ -201,11 +201,11 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
         [ref listWithMaxResults:maxResultsInt64 pageToken:pageToken completion:completion];
     }
     
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 - (double)SDKFirebaseStorage_ListAll:(NSString *)firebasePath bucket:(NSString *)bucket {
-    NSNumber *listenerInd = [self getListenerInd];
+    NSNumber *asyncId = [self getListenerInd];
     FIRStorageReference *ref = [[[FIRStorage storage] reference] child:firebasePath];
     [ref listAllWithCompletion:^(FIRStorageListResult *result, NSError *error) {
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
@@ -216,9 +216,9 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
         } else {
             data[@"error"] = error.localizedDescription;
         }
-        [self sendStorageEvent:@"FirebaseStorage_ListAll" listener:listenerInd path:firebasePath localPath:nil success:success additionalData:data];
+        [self sendStorageEvent:@"FirebaseStorage_ListAll" listener:asyncId path:firebasePath localPath:nil success:success additionalData:data];
     }];
-    return [listenerInd doubleValue];
+    return [asyncId doubleValue];
 }
 
 #pragma mark - Helper Methods
@@ -257,17 +257,17 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
     [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
 }
 
-- (void)throttleProgressUpdate:(NSNumber*)listenerInd eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total {
+- (void)throttleProgressUpdate:(NSNumber*)asyncId eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total {
     static const NSTimeInterval MIN_PROGRESS_UPDATE_INTERVAL = 0.5; // 500ms
     NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970];
-    NSTimeInterval lastUpdateTime = [self.lastProgressUpdateTime[listenerInd] doubleValue];
+    NSTimeInterval lastUpdateTime = [self.lastProgressUpdateTime[asyncId] doubleValue];
     if (currentTime - lastUpdateTime >= MIN_PROGRESS_UPDATE_INTERVAL) {
-        self.lastProgressUpdateTime[listenerInd] = @(currentTime);
+        self.lastProgressUpdateTime[asyncId] = @(currentTime);
         NSDictionary *data = @{
             @"transferred": @(transferred),
             @"total": @(total)
         };
-        [self sendStorageEvent:eventType listener:listenerInd path:path localPath:localPath success:YES additionalData:data];
+        [self sendStorageEvent:eventType listener:asyncId path:path localPath:localPath success:YES additionalData:data];
     }
 }
 

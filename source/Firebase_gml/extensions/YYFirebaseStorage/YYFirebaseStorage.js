@@ -72,46 +72,46 @@ window.FirebaseStorageExt = Object.assign(window.FirebaseStorageExt || {}, {
 
 	/**
 	 * Throttles progress updates to avoid sending too many events.
-	 * @param {number} listenerInd - The listener ID.
+	 * @param {number} asyncId - The listener ID.
 	 * @param {string} eventType - The type of the event.
 	 * @param {string} path - The storage path.
 	 * @param {string|null} localPath - The local path.
 	 * @param {number} bytesTransferred - The number of bytes transferred.
 	 * @param {number} totalByteCount - The total number of bytes.
 	 */
-	throttleProgressUpdate: function(listenerInd, eventType, path, localPath, bytesTransferred, totalByteCount) {
+	throttleProgressUpdate: function(asyncId, eventType, path, localPath, bytesTransferred, totalByteCount) {
 		const { sendStorageEvent, lastProgressUpdateTime, min_progress_update_interval_ms } = window.FirebaseStorageExt;
 
 		const currentTime = Date.now();
-		const lastUpdateTime = lastProgressUpdateTime[listenerInd];
+		const lastUpdateTime = lastProgressUpdateTime[asyncId];
 
 		if (lastUpdateTime === undefined || (currentTime - lastUpdateTime) >= min_progress_update_interval_ms) {
-			lastProgressUpdateTime[listenerInd] = currentTime;
+			lastProgressUpdateTime[asyncId] = currentTime;
 
 			const data = {
 				transferred: bytesTransferred,
 				total: totalByteCount,
 			};
 
-			sendStorageEvent(eventType, listenerInd, path, localPath, true, data);
+			sendStorageEvent(eventType, asyncId, path, localPath, true, data);
 		}
 	},
 
 	/**
 	 * Sends a storage event with the specified parameters.
 	 * @param {string} eventType - The type of the event.
-	 * @param {number} listenerInd - The listener ID.
+	 * @param {number} asyncId - The listener ID.
 	 * @param {string} path - The storage path.
 	 * @param {string|null} localPath - The local path.
 	 * @param {boolean} success - Indicates if the operation was successful.
 	 * @param {Object} additionalData - Additional data to include in the event.
 	 */
-	sendStorageEvent: function(eventType, listenerInd, path, localPath, success, additionalData) {
+	sendStorageEvent: function(eventType, asyncId, path, localPath, success, additionalData) {
 		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 		
 		// Initialize a new data object
 		const data = {
-			listener: listenerInd,
+			listener: asyncId,
 			path: path,
 			success: success,
 		};

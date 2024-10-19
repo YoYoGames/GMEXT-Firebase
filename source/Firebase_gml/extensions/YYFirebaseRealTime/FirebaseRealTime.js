@@ -13,7 +13,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
      */
     isRealtimeInitialized: function() {
         const context = window.FirebaseRealTimeExt;
-        if (!context.module) {
+        if (!context.instance || !context.module) {
             console.warn("Firebase Realtime Database is not initialized. Please wait for initialization to complete.");
             return false;
         }
@@ -306,24 +306,23 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
      * @return {object} The constructed DatabaseReference.
      */
     buildReference: function(fluentObj) {
-        const { module } = window.FirebaseRealTimeExt;
+        const { module, instance } = window.FirebaseRealTimeExt;
         
-        const database = module.getDatabase();
         let dataRef;
         if (!fluentObj.database) {
-            dataRef = module.ref(database);
+            dataRef = module.ref(instance);
         } else {
             const databaseUrl = fluentObj.database;
             if (databaseUrl) {
-                dataRef = module.ref(database, databaseUrl);
+                dataRef = module.ref(instance, databaseUrl);
             } else {
-                dataRef = module.ref(database);
+                dataRef = module.ref(instance);
             }
         }
 
         const path = fluentObj.path;
         if (path) {
-            dataRef = module.ref(database, path);
+            dataRef = module.ref(instance, path);
         }
 
         const push = fluentObj.push;

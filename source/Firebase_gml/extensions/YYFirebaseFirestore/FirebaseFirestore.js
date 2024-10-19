@@ -15,7 +15,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
      */
     isFirestoreInitialized: function() {
         const context = window.FirebaseFirestoreExt;
-        if (!context.module) {
+        if (!context.instance || !context.module) {
             console.warn("Firebase Firestore is not initialized. Please wait for initialization to complete.");
             return false;
         }
@@ -49,6 +49,16 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 		sendFirestoreEvent(eventType, asyncId, path, 400, { "errorMessage": message });
 	},
 
+	getCollectionRef: function(path) {
+		const { module, instance } = window.FirebaseFirestoreExt;
+		return module.collection(instance, path);
+	},
+
+	getDocumentRef: function(path) {
+		const { module, instance } = window.FirebaseFirestoreExt;
+		return module.doc(instance, path);
+	},
+
 	getStatusFromError: function(error) {
 		switch (error.code) {
 			case 'aborted':
@@ -80,7 +90,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	// Collection API
 
 	collectionAdd: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 		const value = fluentObj.value;
 
@@ -88,9 +98,8 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			sendErrorEventWithMessage("FirebaseFirestore_Collection_Add", asyncId, path, "Path or value is missing.");
 			return;
 		}
-	
-		const firestore = module.getFirestore();
-		const collectionRef = module.collection(firestore, path);
+
+		const collectionRef = getCollectionRef(path);
 
 		module.addDoc(collectionRef, value)
 			.then(() => {
@@ -103,7 +112,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	collectionGet: function(asyncId, fluentObj) {
-		const { module, sendErrorEvent, sendErrorEventWithMessage, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getCollectionRef, sendErrorEvent, sendErrorEventWithMessage, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 	
 		if (!path) {
@@ -111,8 +120,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		const collectionRef = module.collection(firestore, path);
+		const collectionRef = getCollectionRef(path);
 		module.getDocs(collectionRef)
 			.then((querySnapshot) => {
 				const data = {};
@@ -128,7 +136,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 	
 	collectionQuery: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 	
 		if (!path) {
@@ -136,8 +144,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		let query = module.collection(firestore, path);
+		let query = getCollectionRef(path);
 	
 		// Apply filter operations
 		const operations = fluentObj.operations;
@@ -206,7 +213,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	collectionListen: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 
 		if (!path) {
@@ -219,8 +226,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
             return;
 		}
 
-		const firestore = module.getFirestore();
-		const collectionRef = module.collection(firestore, path);
+		const collectionRef = getCollectionRef(path);
 
 		const unsubscribe = module.onSnapshot(collectionRef, (querySnapshot) => {
 			const data = {};
@@ -243,7 +249,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	// Document API
 
 	documentSet: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 		const value = fluentObj.value;
 
@@ -252,8 +258,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		const docRef = module.doc(firestore, path);
+		const docRef = getDocumentRef(path);
 
 		module.setDoc(docRef, value)
 			.then(() => {
@@ -266,7 +271,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	documentUpdate: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 		const value = fluentObj.value;
 	
@@ -275,8 +280,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		const docRef = module.doc(firestore, path);
+		const docRef = getDocumentRef(path);
 	
 		module.updateDoc(docRef, value)
 			.then(() => {
@@ -288,7 +292,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	documentGet: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 
 		if (!path) {
@@ -296,8 +300,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		const docRef = module.doc(firestore, path);
+		const docRef = getDocumentRef(path);
 		module.getDoc(docRef)
 			.then((docSnapshot) => {
 				if (docSnapshot.exists()) {
@@ -313,7 +316,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	documentDelete: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 	
 		if (!path) {
@@ -321,8 +324,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 			return;
 		}
 	
-		const firestore = module.getFirestore();
-		const docRef = module.doc(firestore, path);
+		const docRef = getDocumentRef(path);
 	
 		module.deleteDoc(docRef)
 			.then(() => {
@@ -334,7 +336,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 	},
 
 	documentListen: function(asyncId, fluentObj) {
-		const { module, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
 		const path = fluentObj.path;
 
 		if (!path) {
@@ -347,8 +349,7 @@ window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
             return;
 		}
 
-		const firestore = module.getFirestore();
-		const docRef = module.doc(firestore, path);
+		const docRef = getDocumentRef(path);
 
 		const unsubscribe = module.onSnapshot(docRef, (docSnapshot) => {
 			if (docSnapshot.exists()) {

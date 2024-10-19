@@ -254,7 +254,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
         return (double) asyncId;
     }
 
-    public double SDKFirebaseAuthentication_SignIn_OAuth(String token, String tokenKind, String provider, String _) {
+    public double SDKFirebaseAuthentication_SignIn_OAuth(String token, String tokenKind, String provider, String __) {
         final long asyncId = getNextAsyncId();
 
         AuthCredential authCredential = getAuthCredentialFromProvider(token, tokenKind, provider);
@@ -392,7 +392,6 @@ public class YYFirebaseAuthentication extends RunnerSocial {
                                 String idToken = task.getResult().getToken();
                                 data.put("status", 200);
                                 data.put("value", idToken != null ? idToken : "");
-                                FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_IdTokenListener", data);
                             } else {
                                 data.put("status", 400);
                                 if (task.getException() != null) {
@@ -401,6 +400,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
                                     data.put("errorMessage", "Unknown error");
                                 }
                             }
+                            FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_IdTokenListener", data);
                         }
                     });
                 }

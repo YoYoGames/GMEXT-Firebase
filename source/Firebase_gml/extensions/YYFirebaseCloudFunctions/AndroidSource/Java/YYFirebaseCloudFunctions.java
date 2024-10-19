@@ -25,14 +25,20 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
 
     private static final String LOG_TAG = "YYFirebaseCloudFunctions";
 
-    private HashMap<Long, HttpsCallableReference> referenceMap;
+    FirebaseFunctions functions;
 
-    public YYFirebaseCloudFunctions() {
-        referenceMap = new HashMap<>();
+    public YYFirebasePerformance() {
+        functions = FirebaseFunctions.getInstance();
     }
 
     public void SDKFirebaseCloudFunctions_Init() {
         // use emulator??
+        if (false) {
+            String host = "";
+            int port = 5001;
+            FirebaseFunctions.useEmulator(host, port);
+
+        }
     }
 
     // <editor-fold desc="General API">
@@ -57,9 +63,7 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
                 Log.e(LOG_TAG, "Invalid JSON input", e);
                 sendErrorEvent("FirebaseCloudFunctions_Call", asyncId, 400, "Invalid JSON input");
             }
-
-            FirebaseFunctions functions = FirebaseFunctions.getInstance();
-
+            
             functions
                 .getHttpsCallable(functionName)
                 .call(dataMap)

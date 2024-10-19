@@ -2,6 +2,9 @@
 
 #import <Foundation/Foundation.h>
 #import <FirebaseAuth/FirebaseAuth.h>
+#import <FirebaseAuthInterop/FirebaseAuthInterop-umbrella.h>
+#import <FirebaseAuth/FirebaseAuth-Swift.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 

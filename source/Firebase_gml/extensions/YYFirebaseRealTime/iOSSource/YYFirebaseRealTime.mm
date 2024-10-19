@@ -107,7 +107,8 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
                 [self removeAllListeners:asyncId];
                 break;
             default:
-                [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Unknown action: %@", action]];
+                [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 
+                    errorMessage:[NSString stringWithFormat:@"Unknown action: %ld", static_cast<long>(action)]];
                 break;
         }
     } completion:^(NSError * _Nullable error) {

@@ -32,70 +32,78 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
     }
 
     public void SDKFirebaseCloudFunctions_Init() {
-        // use emulator??
-        if (false) {
-            String host = "";
-            int port = 5001;
+        boolean useEmulator = FirebaseUtils.GetBoolExtOption("YYFirebaseCloudFunctions", "useEmulator");
+        if (useEmulator) {
+            String host = FirebaseUtils.extOptionGetString("YYFirebaseCloudFunctions", "emulatorHost");
+            int port = FirebaseUtils.extOptionGetInt("YYFirebaseCloudFunctions", "emulatorPort");
             FirebaseFunctions.useEmulator(host, port);
-
         }
     }
 
     // <editor-fold desc="General API">
 
     /**
-     * Calls a Firebase Cloud Function with the specified name and JSON data.
+     * Calls a Firebase Cloud Function with the specified name, data, and timeout.
      *
-     * @param functionName The name of the Cloud Function to call.
-     * @param jsonData     The JSON string representing the data to send.
+     * @param functionName   The name of the Cloud Function to call.
+     * @param data           The data to send to the Cloud Function, represented as a string.
+     * @param timeoutSeconds The timeout in seconds. If negative, timeout is not set.
      * @return The async ID as a double.
      */
-    public double SDKFirebaseCloudFunctions_Call(String functionName, String jsonData) {
+    public double SDKFirebaseCloudFunctions_Call(String functionName, String data, double timeoutSeconds) {
         final long asyncId = getNextAsyncId();
 
         // Submit the task to a background thread
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
-            // Parse the JSON data
-            Map<String, Object> dataMap = null;
+            Object parsedData = null;
+
+            // Parse the data
             try {
-                dataMap = FirebaseUtils.convertJSONToMap(new JSONObject(jsonData));
+                parsedData = parseDataString(data);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "Invalid JSON input", e);
                 sendErrorEvent("FirebaseCloudFunctions_Call", asyncId, 400, "Invalid JSON input");
+                return;
             }
-            
-            functions
-                .getHttpsCallable(functionName)
-                .call(dataMap)
-                .addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<HttpsCallableResult> task) {
-                        if (!task.isSuccessful()) {
-                            // Handle error
-                            Exception e = task.getException();
-                            String errorMessage = "Unknown error";
-                            int statusCode = 400;
 
-                            if (e instanceof FirebaseFunctionsException) {
-                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                                FirebaseFunctionsException.Code code = ffe.getCode();
-                                errorMessage = ffe.getMessage();
-                                statusCode = getStatusCodeFromFunctionsExceptionCode(code);
-                            } else if (e != null) {
-                                errorMessage = e.getMessage();
-                            }
+            FirebaseFunctions functions = FirebaseFunctions.getInstance();
 
-                            sendErrorEvent("FirebaseCloudFunctions_Call", asyncId, statusCode, errorMessage);
-                        } else {
-                            // Get the result
-                            HttpsCallableResult result = task.getResult();
-                            Object data = result.getData();
+            // Get the callable reference
+            com.google.firebase.functions.HttpsCallableReference callable = functions.getHttpsCallable(functionName);
 
-                            Map<String, Object> extraData = new HashMap<>();
-                            extraData.put("value", data);
+            // Set timeout if specified
+            if (timeoutSeconds > 0) {
+                callable = callable.setTimeout((long) (timeoutSeconds * 1000)); // Convert seconds to milliseconds
+            }
 
-                            sendFunctionsEvent("FirebaseCloudFunctions_Call", asyncId, 200, extraData);
+            callable
+                .call(parsedData)
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        // Handle error
+                        Exception e = task.getException();
+                        String errorMessage = "Unknown error";
+                        int statusCode = 400;
+
+                        if (e instanceof FirebaseFunctionsException) {
+                            FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                            FirebaseFunctionsException.Code code = ffe.getCode();
+                            errorMessage = ffe.getMessage();
+                            statusCode = getStatusCodeFromFunctionsExceptionCode(code);
+                        } else if (e != null) {
+                            errorMessage = e.getMessage();
                         }
+
+                        sendErrorEvent("FirebaseCloudFunctions_Call", asyncId, statusCode, errorMessage);
+                    } else {
+                        // Get the result
+                        HttpsCallableResult result = task.getResult();
+                        Object responseData = result.getData();
+
+                        Map<String, Object> extraData = new HashMap<>();
+                        extraData.put("value", responseData);
+
+                        sendFunctionsEvent("FirebaseCloudFunctions_Call", asyncId, 200, extraData);
                     }
                 });
         });
@@ -106,6 +114,65 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
     // </editor-fold>
 
     // <editor-fold desc="Helper Methods">
+
+    /**
+     * Parses a string representation of data and converts it into the appropriate Java object type.
+     * This method attempts to interpret the input string {@code data} as one of several possible data types.
+     *
+     * @param data The string representation of the data to be parsed. It can be a special keyword, JSON string, numeric value, or plain text.
+     * @return The parsed data as an appropriate Java object.
+     * @throws JSONException If an error occurs while parsing {@code data} as a JSON object or array.
+     *                       Note that in this implementation, {@code JSONException} is caught internally, so this method
+     *                       does not actually throw it. You may consider removing {@code throws JSONException} from the method signature.
+     */
+    private Object parseDataString(String data) throws JSONException {
+
+        if (data.isEmpty()) {
+            return data;
+        }
+
+        switch (data.toLowerCase()) {
+            case "@@null$$":
+                return null;
+            case "@@true$$":
+                return true;
+            case "@@false$$":
+                return false;
+            default:
+                // Not special types
+                break;
+        }
+
+        // Try parsing as JSON object
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            return jsonObject;
+        } catch (JSONException e) {
+            // Not a JSON object
+        }
+
+        // Try parsing as JSON array
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            return jsonArray;
+        } catch (JSONException e) {
+            // Not a JSON array
+        }
+
+        // Try parsing as number
+        try {
+            if (data.contains(".")) {
+                return Double.parseDouble(data);
+            } else {
+                return Long.parseLong(data);
+            }
+        } catch (NumberFormatException e) {
+            // Not a number
+        }
+
+        // Treat as string
+        return data;
+    }
 
     /**
      * Generates the next unique async ID using FirebaseUtils.

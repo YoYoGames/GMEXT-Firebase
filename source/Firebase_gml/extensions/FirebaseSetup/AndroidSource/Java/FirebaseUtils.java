@@ -220,6 +220,22 @@ public class FirebaseUtils {
         return null;
     }
 
+    public static double extOptionGetReal(String extension, String option) {
+        return RunnerJNILib.extOptGetReal(extension, option);
+    }
+
+    public static int extOptionGetInt(String extension, String option) {
+        return (int) extOptionGetReal(extension, option);
+    }
+
+    public static String extOptionGetString(String extension, String option) {
+        return RunnerJNILib.extOptGetString(extension, option);
+    }
+
+    public static boolean extOptionGetBool(String extension, String option) {
+        return extOptGetString(extension, option).toLowerCase().equals("true");
+    }
+
     public void shutdown() {
         executorService.shutdown();
         try {

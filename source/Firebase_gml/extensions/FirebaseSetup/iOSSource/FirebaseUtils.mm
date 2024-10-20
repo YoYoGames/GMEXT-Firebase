@@ -11,12 +11,14 @@ extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
 
+extern "C" const char* extOptGetString(const char* _ext, const  char* _opt);
+extern "C" double extOptGetReal(const char* _ext, const  char* _opt);
+
 @interface FirebaseUtils ()
 
 @property (nonatomic, strong) NSOperationQueue *executorService;
 @property (nonatomic, assign) long currentAsyncId;
 @property (nonatomic, strong) NSLock *idLock;
-@property (nonatomic, strong) NSRegularExpression *i64Regex;
 
 @end
 
@@ -27,6 +29,21 @@ static const long GENERATOR_STARTING_POINT = 5000;
 
 // Maximum safe double value for integer conversion (2^53)
 static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
+
+// Regex for detecting encoded int64 numbers
+static NSRegularExpression *I64_REGEX = nil;
+
+// In the class's load method, initialize the regex
++ (void)load {
+    NSError *regexError = nil;
+    I64_REGEX = [NSRegularExpression regularExpressionWithPattern:@"^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$"
+                                                         options:0
+                                                           error:&regexError];
+    if (regexError) {
+        NSLog(@"FirebaseUtils: Failed to create regex - %@", regexError.localizedDescription);
+        // Handle regex initialization failure if necessary
+    }
+}
 
 #pragma mark - Singleton Initialization
 
@@ -56,19 +73,9 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
         
         // Configure the operation queue with a bounded thread pool
         self.executorService.maxConcurrentOperationCount = 100; // Adjust based on your app's needs
-        self.executorService.name = @"com.mycompany.myapp.FirebaseUtils.executorService";
+        self.executorService.name = @"${YYBundleIdentifier}.FirebaseUtils.executorService";
         
         self.idLock = [[NSLock alloc] init];
-        
-        // Initialize the regex for "@i64@%llx$i64$" pattern
-        NSError *regexError = nil;
-        self.i64Regex = [NSRegularExpression regularExpressionWithPattern:@"^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$"
-                                                             options:0
-                                                               error:&regexError];
-        if (regexError) {
-            NSLog(@"FirebaseUtils: Failed to create regex - %@", regexError.localizedDescription);
-            // Handle regex initialization failure if necessary
-        }
     }
     return self;
 }
@@ -134,7 +141,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
 
 #pragma mark - JSON Conversion
 
-- (id)convertJSON:(id)json {
++ (id)convertJSON:(id)json {
     if (json == nil || json == [NSNull null]) {
         return nil;
     }
@@ -155,7 +162,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
     }
 }
 
-- (NSDictionary<NSString *, id> *)convertNSDictionary:(NSDictionary<NSString *, id> *)dict {
++ (NSDictionary<NSString *, id> *)convertNSDictionary:(NSDictionary<NSString *, id> *)dict {
     NSMutableDictionary<NSString *, id> *result = [NSMutableDictionary dictionaryWithCapacity:dict.count];
     
     for (NSString *key in dict) {
@@ -172,7 +179,7 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
     return [result copy]; // Return immutable copy
 }
 
-- (NSArray<id> *)convertNSArray:(NSArray<id> *)array {
++ (NSArray<id> *)convertNSArray:(NSArray<id> *)array {
     NSMutableArray<id> *result = [NSMutableArray arrayWithCapacity:array.count];
     
     for (id value in array) {
@@ -188,14 +195,14 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
     return [result copy]; // Return immutable copy
 }
 
-- (NSNumber *)convertStringToLongIfApplicable:(NSString *)str {
-    if (!self.i64Regex) {
++ (NSNumber *)convertStringToLongIfApplicable:(NSString *)str {
+    if (!I64_REGEX) {
         NSLog(@"FirebaseUtils: Regex not initialized.");
         return nil;
     }
     
     NSRange range = NSMakeRange(0, str.length);
-    NSTextCheckingResult *match = [self.i64Regex firstMatchInString:str options:0 range:range];
+    NSTextCheckingResult *match = [I64_REGEX firstMatchInString:str options:0 range:range];
     
     if (match && match.numberOfRanges == 2) { // Full match + capture group
         NSRange hexRange = [match rangeAtIndex:1];
@@ -222,11 +229,11 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
 
 #pragma mark - Sending Asynchronous Events
 
-- (void)sendSocialAsyncEvent:(NSString *)eventType data:(NSDictionary *)data {
++ (void)sendSocialAsyncEvent:(NSString *)eventType data:(NSDictionary *)data {
     [self sendAsyncEvent:EVENT_OTHER_SOCIAL eventType:eventType data: data];
 }
 
-- (void)sendAsyncEvent:(int)eventId eventType:(NSString *)eventType data:(NSDictionary *)data {
++ (void)sendAsyncEvent:(int)eventId eventType:(NSString *)eventType data:(NSDictionary *)data {
     dispatch_async(dispatch_get_main_queue(), ^{
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex, (char *)"type", (char *)[eventType UTF8String]);
@@ -318,6 +325,48 @@ static const double MAX_DOUBLE_SAFE = 9007199254740992.0; // 2^53
         }
         CreateAsynEventWithDSMap(dsMapIndex, eventId);
     });
+}
+
+#pragma mark - Extension Options
+
++ (double)extOptionGetReal:(NSString *)extension option:(NSString *)option {
+    // Convert NSString to C string
+    const char* extCStr = [extension UTF8String];
+    const char* optCStr = [option UTF8String];
+
+    // Call the C function
+    double result = extOptGetReal(extCStr, optCStr);
+
+    return result;
+}
+
++ (int)extOptionGetInt:(NSString *)extension option:(NSString *)option {
+    // Call extOptionGetReal and cast to int
+    return (int)[self extOptionGetReal:extension option:option];
+}
+
++ (NSString *)extOptionGetString:(NSString *)extension option:(NSString *)option {
+    // Convert NSString to C string
+    const char* extCStr = [extension UTF8String];
+    const char* optCStr = [option UTF8String];
+
+    // Call the C function
+    const char* resultCStr = extOptGetString(extCStr, optCStr);
+
+    // Check for NULL
+    if (resultCStr == NULL) {
+        return nil;
+    }
+
+    // Convert C string back to NSString
+    NSString* result = [NSString stringWithUTF8String:resultCStr];
+
+    return result;
+}
+
++ (BOOL)extOptionGetBool:(NSString *)extension option:(NSString *)option {
+    NSString* value = [[self extOptionGetString:extension option:option] lowercaseString];
+    return [value isEqualToString:@"true"];
 }
 
 #pragma mark - Shutdown

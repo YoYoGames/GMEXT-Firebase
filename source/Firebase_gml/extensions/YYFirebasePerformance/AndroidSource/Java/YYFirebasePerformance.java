@@ -35,7 +35,6 @@ public class YYFirebasePerformance {
         traceMap = new HashMap<>();
         httpMetricMap = new HashMap<>();
         performance = FirebasePerformance.getInstance();
-        Log.d(LOG_TAG, "YYFirebasePerformance initialized.");
     }
 
     // <editor-fold desc="Performance Collection Methods">
@@ -289,7 +288,6 @@ public class YYFirebasePerformance {
         HttpMetric httpMetric = httpMetricMap.get(name);
         if (httpMetric != null) {
             String value = httpMetric.getAttribute(attribute);
-            Log.d(LOG_TAG, "Attribute retrieved from HTTP Metric: " + attribute + " = " + value);
             return value;
         } else {
             Log.e(LOG_TAG, "HTTP Metric not found: " + name);

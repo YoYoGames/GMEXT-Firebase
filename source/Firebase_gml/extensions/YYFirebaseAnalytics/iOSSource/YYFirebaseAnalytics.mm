@@ -68,7 +68,7 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
             [data setObject:@(0) forKey:@"success"];
         }
 
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAnalytics_LogEvent" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAnalytics_LogEvent" data:data];
     }];
 
     return kFirebaseAnalyticsSuccess;

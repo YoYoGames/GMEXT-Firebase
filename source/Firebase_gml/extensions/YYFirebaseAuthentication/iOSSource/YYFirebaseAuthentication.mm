@@ -238,7 +238,7 @@
                 @"status": @(200),
                 @"value": userData
             };
-            [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAuthentication_UnlinkProvider" data:data];
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_UnlinkProvider" data:data];
         }
     }];
     return (double)asyncId;
@@ -274,7 +274,7 @@
             data[@"status"] = @(200);
             data[@"value"] = token ?: @"";
         }
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAuthentication_GetIdToken" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_GetIdToken" data:data];
     }];
     return (double)asyncId;
 }
@@ -287,7 +287,7 @@
             @"status": @(400),
             @"errorMessage": @"Already registered"
         };
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
         return (double)asyncId;
     }
     self.idTokenListenerHandle = [[FIRAuth auth] addIDTokenDidChangeListener:^(FIRAuth * _Nonnull auth, FIRUser * _Nullable user) {
@@ -297,7 +297,7 @@
                 @"status": @(200),
                 @"value": @""
             };
-            [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
             return;
         }
         [user getIDTokenForcingRefresh:NO completion:^(NSString * _Nullable token, NSError * _Nullable error) {
@@ -310,7 +310,7 @@
                 data[@"status"] = @(200);
                 data[@"value"] = token ?: @"";
             }
-            [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
         }];
     }];
     return (double)asyncId;
@@ -350,7 +350,7 @@
                 @"status": @(200),
                 @"value": userData
             };
-            [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+            [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
         }];
     }
 }
@@ -364,7 +364,7 @@
     } else {
         data[@"status"] = @(200);
     }
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)handleUserNotSignedInWithEventType:(NSString *)eventType asyncId:(long)asyncId {
@@ -373,7 +373,7 @@
         @"status": @(400),
         @"errorMessage": @"No user is currently signed in."
     };
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)handleError:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId {
@@ -382,7 +382,7 @@
         @"status": @(400),
         @"errorMessage": error.localizedDescription ?: @"Unknown error"
     };
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)handleErrorWithMessage:(NSString *)message eventType:(NSString *)eventType asyncId:(long)asyncId {
@@ -391,7 +391,7 @@
         @"status": @(400),
         @"errorMessage": message ?: @"Unknown error"
     };
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (FIRAuthCredential *)getAuthCredentialFromProvider:(NSString *)token kind:(NSString *)tokenKind provider:(NSString *)provider {

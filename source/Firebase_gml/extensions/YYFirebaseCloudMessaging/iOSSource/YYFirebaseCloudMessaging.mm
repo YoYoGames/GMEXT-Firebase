@@ -55,7 +55,7 @@
 		if (error == nil) {
 			data[@"value"] = token;
 		}
-		[[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCloudMessaging_GetToken" data:data];
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_GetToken" data:data];
     }];
 }
 
@@ -64,7 +64,7 @@
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
 		data[@"success"] = @(error == nil);
 		data[@"topic"] = topic;
-		[[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCloudMessaging_SubscribeToTopic" data:data];
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_SubscribeToTopic" data:data];
     }];
 }
 
@@ -73,7 +73,7 @@
 		NSMutableDictionary *data = [NSMutableDictionary dictionary];
 		data[@"success"] = @(error == nil);
 		data[@"topic"] = topic;
-		[[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCloudMessaging_UnsubscribeFromTopic" data:data];
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_UnsubscribeFromTopic" data:data];
     }];
 }
 
@@ -89,7 +89,7 @@
     [[FIRMessaging messaging] deleteTokenWithCompletion:^(NSError * _Nullable error) {
 		NSMutableDictionary *data = [NSMutableDictionary dictionary];
 		data[@"success"] = @(error == nil);
-		[[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCloudMessaging_DeleteToken" data:data];
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_DeleteToken" data:data];
     }];
 }
 
@@ -121,7 +121,7 @@
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
 	NSMutableDictionary *data = [NSMutableDictionary dictionary];
 	data[@"value"] = fcmToken;
-	[[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseMessaging_OnNewToken" data:data];
+	[FirebaseUtils sendSocialAsyncEvent:@"FirebaseMessaging_OnNewToken" data:data];
 }
 
 #pragma mark - UNUserNotificationCenterDelegate

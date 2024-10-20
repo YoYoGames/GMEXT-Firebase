@@ -60,7 +60,7 @@ static const double kFirebaseRemoteConfigErrorUnsupported = -1.0;
             }
         }
 
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseRemoteConfig_FetchAndActivate" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_FetchAndActivate" data:data];
     }];
     return kFirebaseRemoteConfigSuccess;
 }
@@ -91,7 +91,7 @@ static const double kFirebaseRemoteConfigErrorUnsupported = -1.0;
             [data setObject:@(1.0) forKey:@"success"];
         }
 
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseRemoteConfig_SetDefaultsAsync" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_SetDefaultsAsync" data:data];
     }];
 
     return kFirebaseRemoteConfigSuccess;
@@ -139,7 +139,7 @@ static const double kFirebaseRemoteConfigErrorUnsupported = -1.0;
             [data setObject:keysString forKey:@"keys"];
         }
 
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseRemoteConfig_AddOnConfigUpdateListener" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_AddOnConfigUpdateListener" data:data];
     }];
 
     return kFirebaseRemoteConfigSuccess;

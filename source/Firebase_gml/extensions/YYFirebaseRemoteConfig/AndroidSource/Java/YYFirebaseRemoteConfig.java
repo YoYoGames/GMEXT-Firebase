@@ -67,7 +67,6 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                         if (task.isSuccessful()) {
                             boolean updated = task.getResult();
                             data.put("success", updated ? 1.0 : 0.0);
-                            Log.d(LOG_TAG, "Fetch and activate succeeded: " + updated);
                         } else {
                             data.put("success", 0.0);
                             Exception e = task.getException();
@@ -218,7 +217,6 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
                 jsonArray.put(key);
             }
             String keysString = jsonArray.toString();
-            Log.d(LOG_TAG, "ConfigUpdateListener onUpdate: Keys=" + keysString);
             data.put("keys", keysString);
             data.put("success", 1.0);
         } else {

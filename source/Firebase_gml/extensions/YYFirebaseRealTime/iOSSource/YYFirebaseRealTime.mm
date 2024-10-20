@@ -126,7 +126,7 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
     id value = fluentObj[@"value"];
     NSString *path = fluentObj[@"path"];
     
-    id convertedValue = [[FirebaseUtils sharedInstance] convertJSON:value];
+    id convertedValue = [FirebaseUtils convertJSON:value];
     
     FIRDatabaseReference *reference = [self buildReference:fluentObj];
     [reference setValue:convertedValue withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
@@ -462,7 +462,7 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
         [data addEntriesFromDictionary:extraData];
     }
     
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage {

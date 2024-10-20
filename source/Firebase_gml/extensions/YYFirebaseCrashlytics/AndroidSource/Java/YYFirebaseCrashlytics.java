@@ -203,10 +203,8 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
             Map<String, Object> data = new HashMap<>();
             if (task.isSuccessful() && task.getResult() != null) {
                 data.put("value", 1.0);
-                Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: Unsent reports available.");
             } else {
                 data.put("value", 0.0);
-                Log.d(LOG_TAG, "FirebaseCrashlytics_UnsentReports_Check: No unsent reports.");
             }
             FirebaseUtils.sendSocialAsyncEvent("FirebaseCrashlytics_UnsentReports_Check", data);
         });

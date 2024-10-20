@@ -254,7 +254,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
         [data setValuesForKeysWithDictionary:additionalData];
     }
 
-    [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:eventType data:data];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
 }
 
 - (void)throttleProgressUpdate:(NSNumber*)asyncId eventType:(NSString *)eventType path:(NSString *)path localPath:(NSString *)localPath transferred:(int64_t)transferred total:(int64_t)total {

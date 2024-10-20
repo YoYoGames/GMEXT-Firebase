@@ -95,7 +95,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
             NSMutableDictionary *data = [NSMutableDictionary dictionary];
             [data setObject:@(0) forKey:@"success"];
             [data setObject:jsonError.localizedDescription forKey:@"error"];
-            [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCrashlytics_SetCustomKeys" data:data];
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseCrashlytics_SetCustomKeys" data:data];
             return;
         }
 
@@ -104,7 +104,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
         // Send event back indicating success
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
         [data setObject:@(1) forKey:@"success"];
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCrashlytics_SetCustomKeys" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseCrashlytics_SetCustomKeys" data:data];
     }];
 
     return kFirebaseCrashlyticsSuccess;
@@ -183,7 +183,7 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
 
         NSMutableDictionary *data = [NSMutableDictionary dictionary];
 		[data setObject:@(report == nil ? 0 : 1) forKey:@"value"];
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseCrashlytics_UnsentReports_Check" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseCrashlytics_UnsentReports_Check" data:data];
     }];
     return kFirebaseCrashlyticsSuccess;
 }

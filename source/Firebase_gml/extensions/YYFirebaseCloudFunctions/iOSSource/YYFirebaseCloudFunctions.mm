@@ -1,263 +1,246 @@
-#import "YYFirebaseAnalytics.h"
+#import "YYFirebaseCloudFunctions.h"
 #import "FirebaseUtils.h"
-#import <UIKit/UIKit.h>
 
-// Error Codes
-static const double kFirebaseAnalyticsSuccess = 0.0;
-static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
+@interface YYFirebaseCloudFunctions ()
 
-@interface YYFirebaseAnalytics ()
+@property (nonatomic, strong) FIRFunctions *functions;
 
-// Private methods and properties can be declared here if needed.
-
-#pragma mark - Helper Methods
-
-- (BOOL)isStringNullOrEmpty:(NSString *)string;
-- (BOOL)isValidEventName:(NSString *)eventName;
-- (BOOL)isValidPropertyName:(NSString *)propertyName;
-- (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName;
-- (NSDictionary *)processJsonObject:(id)jsonObject methodName:(NSString *)methodName;
-- (NSArray *)processJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName;
+- (id)parseDataString:(NSString *)data error:(NSError **)error;
+- (long)getNextAsyncId;
+- (int)getStatusCodeFromFunctionsErrorCode:(FIRFunctionsErrorCode)code;
+- (void)sendFunctionsEvent:(NSString *)eventType asyncId:(long)asyncId status:(int)status extraData:(NSDictionary *)extraData;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId statusCode:(int)statusCode errorMessage:(NSString *)errorMessage;
 
 @end
 
-@implementation YYFirebaseAnalytics
+@implementation YYFirebaseCloudFunctions
 
 #pragma mark - Initialization
 
 - (instancetype)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
+        // Configure Firebase with the default settings
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             if (![FIRApp defaultApp]) {
                 [FIRApp configure];
-                NSLog(@"Firebase initialized in YYFirebaseAnalytics");
             }
         });
+
+        self.functions = [FIRFunctions functions];
     }
     return self;
 }
 
-#pragma mark - Public API Methods
+#pragma mark - SDK Initialization
 
-- (double)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {
-    BOOL isEnabled = enabled >= 0.5;
-    [FIRAnalytics setAnalyticsCollectionEnabled:isEnabled];
-
-    return kFirebaseAnalyticsSuccess;
+- (void)SDKFirebaseCloudFunctions_Init {
+    BOOL useEmulator = [FirebaseUtils getBoolExtOption:@"YYFirebaseCloudFunctions" key:@"useEmulator"];
+    if (useEmulator) {
+        NSString *host = [FirebaseUtils extOptionGetString:@"YYFirebaseCloudFunctions" key:@"emulatorHost"];
+        NSInteger port = [FirebaseUtils extOptionGetInt:@"YYFirebaseCloudFunctions" key:@"emulatorPort"];
+        [self.functions useFunctionsEmulatorOrigin:[NSString stringWithFormat:@"http://%@:%ld", host, (long)port]];
+    }
 }
 
-- (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json {
-    if (![self isValidEventName:event]) {
-        return kFirebaseAnalyticsErrorInvalidParameters;
-    }
+#pragma mark - Main API Method
 
-    __weak YYFirebaseAnalytics *weakSelf = self;
+- (double)SDKFirebaseCloudFunctions_Call:(NSString *)functionName data:(NSString *)data timeoutSeconds:(double)timeoutSeconds {
+    long asyncId = [self getNextAsyncId];
+
+    // Submit task to background thread
     [[FirebaseUtils sharedInstance] submitAsyncTask:^{
-        __strong YYFirebaseAnalytics *strongSelf = weakSelf;
-        if (!strongSelf) return;
+        NSError *parseError = nil;
+        id parsedData = [self parseDataString:data error:&parseError];
 
-        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_LogEvent"];
-        NSMutableDictionary *data = [NSMutableDictionary dictionary];
-        if (params) {
-            [FIRAnalytics logEventWithName:event parameters:params];
-            [data setObject:@(1) forKey:@"success"];
-        } else {
-            NSString *errorMessage = [NSString stringWithFormat:@"Failed to parse JSON for event %@", event];
-            [data setObject:errorMessage forKey:@"error"];
-            [data setObject:@(0) forKey:@"success"];
+        if (parseError) {
+            NSLog(@"Invalid data input: %@", parseError.localizedDescription);
+            [self sendErrorEvent:@"FirebaseCloudFunctions_Call" asyncId:asyncId statusCode:400 errorMessage:@"Invalid data input"];
+            return;
         }
 
-        [[FirebaseUtils sharedInstance] sendSocialAsyncEvent:@"FirebaseAnalytics_LogEvent" data:data];
-    }];
+        // Get callable reference
+        FIRHTTPSCallable *callable = [self.functions HTTPSCallableWithName:functionName];
 
-    return kFirebaseAnalyticsSuccess;
-}
-
-- (double)FirebaseAnalytics_ResetAnalyticsData {
-    [FIRAnalytics resetAnalyticsData];
-
-    return kFirebaseAnalyticsSuccess;
-}
-
-- (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json {
-    if ([self isStringNullOrEmpty:json]) {
-        NSLog(@"FirebaseAnalytics_SetDefaultEventParameters :: json is empty, clearing default parameters");
-        [FIRAnalytics setDefaultEventParameters:nil];
-        return kFirebaseAnalyticsSuccess;
-    }
-
-    __weak YYFirebaseAnalytics *weakSelf = self;
-    [[FirebaseUtils sharedInstance] submitAsyncTask:^{
-        __strong YYFirebaseAnalytics *strongSelf = weakSelf;
-        if (!strongSelf) return;
-
-        NSDictionary *params = [strongSelf parseJsonStringToDictionary:json methodName:@"FirebaseAnalytics_SetDefaultEventParameters"];
-        NSMutableDictionary *data = [NSMutableDictionary dictionary];
-        if (params) {
-            [FIRAnalytics setDefaultEventParameters:params];
-            [data setObject:@(1) forKey:@"success"];
-        } else {
-            [data setObject:@"Failed to parse JSON for default parameters" forKey:@"error"];
-            [data setObject:@(0) forKey:@"success"];
+        // Set timeout if specified
+        if (timeoutSeconds > 0) {
+            callable.timeoutInterval = timeoutSeconds;
         }
+
+        // Call the Cloud Function
+        [callable callWithObject:parsedData completion:^(FIRHTTPSCallableResult * _Nullable result, NSError * _Nullable error) {
+            if (error) {
+                NSString *errorMessage = @"Unknown error";
+                int statusCode = 400;
+
+                FIRFunctionsErrorCode code = error.code;
+                errorMessage = error.localizedDescription;
+                statusCode = [self getStatusCodeFromFunctionsErrorCode:code];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self sendErrorEvent:@"FirebaseCloudFunctions_Call" asyncId:asyncId statusCode:statusCode errorMessage:errorMessage];
+                });
+            } else {
+                id responseData = result.data;
+
+                NSMutableDictionary *extraData = [NSMutableDictionary dictionary];
+
+                // Serialize complex data types to JSON strings
+                if ([NSJSONSerialization isValidJSONObject:responseData]) {
+                    NSError *jsonError = nil;
+                    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:responseData options:0 error:&jsonError];
+                    if (!jsonError) {
+                        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        extraData[@"value"] = jsonString;
+                    } else {
+                        extraData[@"value"] = [responseData description];
+                    }
+                } else {
+                    extraData[@"value"] = [responseData description];
+                }
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self sendFunctionsEvent:@"FirebaseCloudFunctions_Call" asyncId:asyncId status:200 extraData:extraData];
+                });
+            }
+        }];
     }];
-    
-    return kFirebaseAnalyticsSuccess;
-}
 
-- (double)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time {
-    [FIRAnalytics setSessionTimeoutInterval:time];
-
-    return kFirebaseAnalyticsSuccess;
-}
-
-- (double)FirebaseAnalytics_SetUserID:(NSString *)userID {
-    if ([self isStringNullOrEmpty:userID]) {
-        NSLog(@"FirebaseAnalytics_SetUserId :: userID is empty, clearing user ID");
-        userID = nil;
-    }
-    
-    [FIRAnalytics setUserID:userID];
-
-    return kFirebaseAnalyticsSuccess;
-}
-
-- (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
-    if (![self isValidPropertyName:propertyName]) {
-        return kFirebaseAnalyticsErrorInvalidParameters;
-    }
-
-    if ([self isStringNullOrEmpty:value]) {
-        NSLog(@"FirebaseAnalytics_SetUserPropertyString :: property value is empty, clearing property");
-        value = nil;
-    }
-    [FIRAnalytics setUserPropertyString:value forName:propertyName];
-
-    return kFirebaseAnalyticsSuccess;
-}
-
-- (double)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
-    NSMutableDictionary<NSString *, NSString *> *consentSettings = [NSMutableDictionary dictionary];
-
-    consentSettings[FIRConsentTypeAdStorage] = (ads >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
-    consentSettings[FIRConsentTypeAnalyticsStorage] = (analytics >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
-
-    [FIRAnalytics setConsent:consentSettings];
-
-    return kFirebaseAnalyticsSuccess;
+    return (double)asyncId;
 }
 
 #pragma mark - Helper Methods
 
-- (BOOL)isStringNullOrEmpty:(NSString *)string {
-    return string == nil || [string length] == 0;
+/**
+ * Parses a string representation of data and converts it into the appropriate Objective-C object type.
+ *
+ * @param data The string representation of the data to be parsed.
+ * @param error An error object that is set if parsing fails.
+ * @return The parsed data as an appropriate Objective-C object.
+ */
+- (id)parseDataString:(NSString *)data error:(NSError **)error {
+    if (!data || data.length == 0) {
+        return data;
+    }
+
+    NSString *lowercaseData = [data lowercaseString];
+
+    if ([lowercaseData isEqualToString:@"@@null$$"]) {
+        return [NSNull null];
+    } else if ([lowercaseData isEqualToString:@"@@true$$"]) {
+        return @YES;
+    } else if ([lowercaseData isEqualToString:@"@@false$$"]) {
+        return @NO;
+    }
+
+    // Try parsing as JSON object or array
+    NSData *jsonData = [data dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *jsonError = nil;
+    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&jsonError];
+    if (jsonObject && !jsonError) {
+        return jsonObject;
+    }
+
+    // Try parsing as number
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *number = [formatter numberFromString:data];
+    if (number) {
+        return number;
+    }
+
+    // Treat as string
+    return data;
 }
 
-- (BOOL)isValidEventName:(NSString *)eventName {
-    if (eventName == nil) {
-        return NO;  // Null strings are not valid
-    }
-    
-    // Define the regex pattern
-    NSString *pattern = @"^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,39}$";
-    
-    // Create an NSPredicate with the regex pattern
-    NSPredicate *regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
-    
-    // Evaluate the string against the regex
-    return [regex evaluateWithObject:eventName];
+/**
+ * Generates the next unique async ID using FirebaseUtils.
+ *
+ * @return The next async ID as a long.
+ */
+- (long)getNextAsyncId {
+    return [[FirebaseUtils sharedInstance] getNextAsyncId];
 }
 
-- (BOOL)isValidPropertyName:(NSString *)propertyName {
-    if (propertyName == nil) {
-        return NO;  // Null strings are not valid
-    }
-    
-    // Define the regex pattern
-    NSString *pattern = @"^(?!firebase_|google_|ga_)[a-zA-Z][a-zA-Z0-9_]{0,23}$";
-    
-    // Create an NSPredicate with the regex pattern
-    NSPredicate *regex = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
-    
-    // Evaluate the string against the regex
-    return [regex evaluateWithObject:propertyName];
-}
-
-- (NSDictionary *)parseJsonStringToDictionary:(NSString *)jsonString methodName:(NSString *)methodName {
-    if (jsonString == nil || jsonString.length == 0) {
-        NSLog(@"%@: JSON string is nil or empty", methodName);
-        return nil;
-    }
-
-    NSError *error = nil;
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-
-    if (error) {
-        NSLog(@"%@: Failed to parse JSON string: %@", methodName, error.localizedDescription);
-        return nil;
-    }
-
-    NSDictionary *resultDict = [self processJsonObject:jsonObject methodName:methodName];
-
-    if (!resultDict) {
-        NSLog(@"%@: Failed to process JSON object", methodName);
-    }
-
-    return resultDict;
-}
-
-- (NSDictionary *)processJsonObject:(id)jsonObject methodName:(NSString *)methodName {
-    if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-        NSMutableDictionary *resultDict = [NSMutableDictionary dictionary];
-        NSDictionary *jsonDict = (NSDictionary *)jsonObject;
-
-        for (NSString *key in jsonDict) {
-            id value = jsonDict[key];
-
-            if ([value isKindOfClass:[NSDictionary class]]) {
-                NSLog(@"%@: Nested dictionaries are not supported for key: %@", methodName, key);
-                // Skip nested dictionaries
-            } else if ([value isKindOfClass:[NSArray class]]) {
-                NSArray *arrayValue = [self processJsonArray:value methodName:methodName];
-                if (arrayValue) {
-                    resultDict[key] = arrayValue;
-                } else {
-                    NSLog(@"%@: Failed to process array for key: %@", methodName, key);
-                }
-            } else if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
-                resultDict[key] = value;
-            } else {
-                NSLog(@"%@: Unsupported type %@ for key: %@", methodName, NSStringFromClass([value class]), key);
-            }
-        }
-
-        return [resultDict copy];
-    } else {
-        NSLog(@"%@: Expected a dictionary but received %@", methodName, NSStringFromClass([jsonObject class]));
-        return nil;
+/**
+ * Maps a FIRFunctionsErrorCode to an appropriate HTTP status code.
+ *
+ * @param code The FIRFunctionsErrorCode to map.
+ * @return The corresponding HTTP status code as an int.
+ */
+- (int)getStatusCodeFromFunctionsErrorCode:(FIRFunctionsErrorCode)code {
+    switch (code) {
+        case FIRFunctionsErrorCodeOK:
+            return 200;
+        case FIRFunctionsErrorCodeCancelled:
+            return 499;
+        case FIRFunctionsErrorCodeUnknown:
+            return 500;
+        case FIRFunctionsErrorCodeInvalidArgument:
+            return 400;
+        case FIRFunctionsErrorCodeDeadlineExceeded:
+            return 504;
+        case FIRFunctionsErrorCodeNotFound:
+            return 404;
+        case FIRFunctionsErrorCodeAlreadyExists:
+            return 409;
+        case FIRFunctionsErrorCodePermissionDenied:
+            return 403;
+        case FIRFunctionsErrorCodeResourceExhausted:
+            return 429;
+        case FIRFunctionsErrorCodeFailedPrecondition:
+            return 412;
+        case FIRFunctionsErrorCodeAborted:
+            return 409;
+        case FIRFunctionsErrorCodeOutOfRange:
+            return 400;
+        case FIRFunctionsErrorCodeUnimplemented:
+            return 501;
+        case FIRFunctionsErrorCodeInternal:
+            return 500;
+        case FIRFunctionsErrorCodeUnavailable:
+            return 503;
+        case FIRFunctionsErrorCodeDataLoss:
+            return 500;
+        case FIRFunctionsErrorCodeUnauthenticated:
+            return 401;
+        default:
+            return 500;
     }
 }
 
-- (NSArray *)processJsonArray:(NSArray *)jsonArray methodName:(NSString *)methodName {
-    NSMutableArray *resultArray = [NSMutableArray arrayWithCapacity:jsonArray.count];
+/**
+ * Sends an event by assembling common data and delegating to sendSocialAsyncEvent.
+ *
+ * @param eventType The type of event.
+ * @param asyncId The unique async ID.
+ * @param status The HTTP status code representing the result.
+ * @param extraData Additional data to include in the event.
+ */
+- (void)sendFunctionsEvent:(NSString *)eventType asyncId:(long)asyncId status:(int)status extraData:(NSDictionary *)extraData {
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    data[@"listener"] = @(asyncId);
+    data[@"status"] = @(status);
 
-    for (id value in jsonArray) {
-        if ([value isKindOfClass:[NSDictionary class]]) {
-            NSLog(@"%@: Nested dictionaries inside arrays are not supported", methodName);
-            // Skip nested dictionaries inside arrays
-        } else if ([value isKindOfClass:[NSArray class]]) {
-            NSLog(@"%@: Nested arrays are not supported", methodName);
-            // Skip nested arrays
-        } else if ([value isKindOfClass:[NSString class]] || [value isKindOfClass:[NSNumber class]]) {
-            [resultArray addObject:value];
-        } else {
-            NSLog(@"%@: Unsupported type %@ in array", methodName, NSStringFromClass([value class]));
-        }
+    if (extraData) {
+        [data addEntriesFromDictionary:extraData];
     }
 
-    return [resultArray copy];
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+/**
+ * Sends an error event with the specified parameters.
+ *
+ * @param eventType The type of event.
+ * @param asyncId The unique async ID.
+ * @param statusCode The HTTP status code representing the error.
+ * @param errorMessage The error message to include.
+ */
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId statusCode:(int)statusCode errorMessage:(NSString *)errorMessage {
+    NSDictionary *extraData = @{@"errorMessage": errorMessage};
+    [self sendFunctionsEvent:eventType asyncId:asyncId status:statusCode extraData:extraData];
 }
 
 @end

@@ -29,14 +29,6 @@ static const double kFirebasePerformanceErrorUnsupported = -6.0;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Initialize Firebase if needed
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-                NSLog(@"Firebase initialized in YYFirebasePerformance");
-            }
-        });
         // Initialize dictionaries
         self.traceDictionary = [[NSMutableDictionary alloc] init];
         self.httpMetricsDictionary = [[NSMutableDictionary alloc] init];

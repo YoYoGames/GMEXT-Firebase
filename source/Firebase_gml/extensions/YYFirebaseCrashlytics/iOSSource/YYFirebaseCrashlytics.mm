@@ -21,14 +21,6 @@ static const double kFirebaseCrashlyticsErrorInvalidParameters = -1.0;
 - (instancetype)init {
     self = [super init];
     if (self) {      
-        // Configure Firebase with the default settings
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-            }
-        });
-
         __weak YYFirebaseCrashlytics *weakSelf = self;
         [[FirebaseUtils sharedInstance] submitAsyncTask:^{
             __strong YYFirebaseCrashlytics *strongSelf = weakSelf;

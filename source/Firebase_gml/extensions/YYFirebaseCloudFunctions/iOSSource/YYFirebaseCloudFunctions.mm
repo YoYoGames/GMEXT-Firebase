@@ -20,14 +20,6 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Configure Firebase with the default settings
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-            }
-        });
-
         self.functions = [FIRFunctions functions];
     }
     return self;

@@ -21,15 +21,9 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 @implementation YYFirebaseStorage
 
 - (id)init {
-    if (self = [super init]) {
-        // Initialize Firebase if needed
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-                NSLog(@"Firebase initialized in YYFirebaseStorage");
-            }
-        });
+    self = [super init]
+    if (self) {
+        // Initialize dictionaries
         self.taskMap = [[NSMutableDictionary alloc] init];
         self.lastProgressUpdateTime = [[NSMutableDictionary alloc] init];
     }

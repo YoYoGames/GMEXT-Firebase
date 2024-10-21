@@ -24,37 +24,44 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 public class FirebaseUtils {
-    private static final int EVENT_SOCIAL = 70;
-    private static final long GENERATOR_STARTING_POINT = 5000;
-    private static final long MAX_DOUBLE_SAFE = 9007199254740992L; // 2^53
-    
-    // Define the regex pattern to match "@i64@%llx$i64$"
-    private static final Pattern I64_PATTERN = Pattern.compile("^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$");
 
+    // Event handling variables
+    private static final int EVENT_SOCIAL = 70;
+    private static final long MAX_DOUBLE_SAFE = 9007199254740992L; // 2^53
+    private static final Pattern I64_PATTERN = Pattern.compile("^@i64@([0-9a-fA-F]{1,16})\\$i64\\$$"); // match "@i64@%llx$i64$"
+
+    // UID generator variables
+    private AtomicLong currentAsyncId;
+
+    private static final long GENERATOR_STARTING_POINT = 5000;
+
+    // Executor variables
     private ExecutorService executorService;
 
+    private static int CORE_POOL_SIZE = 0;
+    private static int MAX_POOL_SIZE = 100;
+    private static int KEEP_ALIVE_TIME = 60L;
+    private static TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
+
     private static FirebaseUtils instance;
-    private AtomicLong currentAsyncId;
 
     private FirebaseUtils() {
         currentAsyncId = new AtomicLong(GENERATOR_STARTING_POINT); // Starting point
         
         // Custom ThreadPoolExecutor with bounded maximum threads
-        int corePoolSize = 0;
-        int maximumPoolSize = 100; // Adjust based on your app's needs
-        long keepAliveTime = 60L;
-        TimeUnit unit = TimeUnit.SECONDS;
         BlockingQueue<Runnable> workQueue = new SynchronousQueue<>();
         
         executorService = new ThreadPoolExecutor(
-            corePoolSize,
-            maximumPoolSize,
-            keepAliveTime,
-            unit,
+            CORE_POOL_SIZE,
+            MAX_POOL_SIZE,
+            KEEP_ALIVE_TIME,
+            KEEP_ALIVE_TIME_UNIT,
             workQueue,
             Executors.defaultThreadFactory(),
             new ThreadPoolExecutor.AbortPolicy()
         );
+
+        instance = this;
     }
 
     public static synchronized FirebaseUtils getInstance() {

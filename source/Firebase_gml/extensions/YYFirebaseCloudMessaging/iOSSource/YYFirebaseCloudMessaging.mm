@@ -9,12 +9,6 @@
 
 - (instancetype)init {
     self = [super init];
-    if (self) {
-        // Initialize Firebase if not already initialized
-        if (![FIRApp defaultApp]) {
-            [FIRApp configure];
-        }
-    }
     return self;
 }
 

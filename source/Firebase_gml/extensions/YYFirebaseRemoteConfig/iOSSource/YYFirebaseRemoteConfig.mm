@@ -20,14 +20,6 @@ static const double kFirebaseRemoteConfigErrorUnsupported = -1.0;
 
 - (id)init {
     if (self = [super init]) {
-        // Initialize Firebase if needed
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-                NSLog(@"Firebase initialized in YYFirebaseRemoteConfig");
-            }
-        });
     }
     return self;
 }

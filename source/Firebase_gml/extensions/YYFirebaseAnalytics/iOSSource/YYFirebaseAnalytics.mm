@@ -23,21 +23,6 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
 
 @implementation YYFirebaseAnalytics
 
-#pragma mark - Initialization
-
-- (instancetype)init {
-    if (self = [super init]) {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            if (![FIRApp defaultApp]) {
-                [FIRApp configure];
-                NSLog(@"Firebase initialized in YYFirebaseAnalytics");
-            }
-        });
-    }
-    return self;
-}
-
 #pragma mark - Public API Methods
 
 - (double)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled {

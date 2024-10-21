@@ -7,7 +7,7 @@ window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
     queryMap: {},
 
 	/**
-     * Helper function to check if storage is initialized.
+     * Helper function to check if database is initialized.
      * Logs an error if `module` is not ready.
      * @return {boolean} `true` if `module` is ready, `false` otherwise.
      */

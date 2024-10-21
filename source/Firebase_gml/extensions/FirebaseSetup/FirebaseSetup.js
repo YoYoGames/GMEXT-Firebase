@@ -60,4 +60,71 @@ window.FirebaseSetup = Object.assign(window.FirebaseSetup || {}, {
 		GMS_API.send_async_event_social(eventObject);
 	},
 
+	/**
+     * Retrieves a boolean extension option.
+     *
+     * @param {string} extension - The extension name.
+     * @param {string} key - The option key.
+     * @return {boolean} The option value.
+     */
+	extOptionGetBool: function(extension, key) {
+		const value = GMS_API.extension_get_option_value(extension, key);
+
+		if (typeof value === 'string') {
+            return value.toLowerCase() === 'true';
+        } else if (typeof value === 'number') {
+            return value > 0.5;
+        } else if (typeof value === 'boolean') {
+            return value;
+        } else {
+            // Default to false if the value is of an unexpected type
+            return false;
+        }
+	},
+	
+	/**
+	 * Retrieves a string extension option.
+	 *
+	 * @param {string} extension - The extension name.
+	 * @param {string} key - The option key.
+	 * @return {string} The option value.
+	 */
+	extOptionGetString: function(extension, key) {
+		const value = GMS_API.extension_get_option_value(extension, key);
+
+		if (typeof value === 'string') {
+            return value;
+        } else {
+            // Default to string version of value if the value is of an unexpected type
+            return String(value);
+        }
+	},
+	
+	/**
+	 * Retrieves an integer extension option.
+	 *
+	 * @param {string} extension - The extension name.
+	 * @param {string} key - The option key.
+	 * @return {number} The option value.
+	 */
+	extOptionGetInt: function(extension, key) {
+		const value = GMS_API.extension_get_option_value(extension, key);
+
+        if (typeof value === 'number') {
+            return Math.floor(value);
+        } else if (typeof value === 'string') {
+            const parsedValue = parseInt(value, 10);
+            if (!isNaN(parsedValue)) {
+                return parsedValue;
+            } else {
+                return 0;
+            }
+        } else if (typeof value === 'boolean') {
+            return value ? 1 : 0;
+        } else {
+            // Default to 0 if the value is of an unexpected type
+            return 0;
+        }
+	},
+
 });

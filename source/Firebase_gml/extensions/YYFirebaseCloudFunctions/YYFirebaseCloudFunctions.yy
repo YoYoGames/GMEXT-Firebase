@@ -15,11 +15,18 @@
   "description":"",
   "exportToGame":true,
   "extensionVersion":"1.1.0",
-  "files":[],
+  "files":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":9007199254741036,"filename":"FirebaseCloudFunctions.ext","final":"","functions":[
+        {"$GMExtensionFunction":"","%Name":"SDKFirebaseCloudFunctions_Init","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseCloudFunctions_Init","help":"SDKFirebaseCloudFunctions_Init()","hidden":true,"kind":4,"name":"SDKFirebaseCloudFunctions_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"SDKFirebaseCloudFunctions_Call","argCount":0,"args":[1,1,2,],"documentation":"","externalName":"SDKFirebaseCloudFunctions_Call","help":"SDKFirebaseCloudFunctions_Call(name, args, timeout)","hidden":false,"kind":4,"name":"SDKFirebaseCloudFunctions_Call","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
+      ],"init":"SDKFirebaseCloudFunctions_Init","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"YYFirebaseCloudFunctions.js","name":"YYFirebaseCloudFunctions.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+  ],
   "gradleinject":"\r\n        implementation 'com.google.firebase:firebase-functions'\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
-  "HTML5CodeInjection":"",
+  "HTML5CodeInjection":"\r\n\r\n<GM_HTML5_PostBody>\r\n<script type=\"module\">\r\n    // Import the entire module only after Firebase is initialized\r\n    import * as FirebaseFunctionsModule from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-functions.js';\r\n\r\n    try {\r\n        // Initialize or merge module into the global namespace\r\n        window.FirebaseFunctionsExt = Object.assign(window.FirebaseFunctionsExt || {}, {\r\n            module: FirebaseFunctionsModule,\r\n            instance: FirebaseFunctionsModule.getFunctions()\r\n        });\r\n        console.log(\"Firebase Functions initialized successfully\");\r\n    } catch (error) {\r\n        console.error(\"Failed to initialize Firebase Functions. Ensure Firebase is initialized before loading Firebase Functions.\", error.message);\r\n    }\r\n</script>\r\n</GM_HTML5_PostBody>\r\n",
   "html5Props":true,
   "IncludedResources":[],
   "installdir":"",

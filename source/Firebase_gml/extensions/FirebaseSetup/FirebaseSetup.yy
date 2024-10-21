@@ -10,7 +10,7 @@
   "androidProps":true,
   "androidsourcedir":"",
   "author":"",
-  "classname":"FirebaseSetup",
+  "classname":"YYFirebaseSetup",
   "copyToTargets":44,
   "description":"",
   "exportToGame":true,

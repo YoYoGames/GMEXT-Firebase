@@ -429,10 +429,10 @@ public class YYFirebaseAuthentication extends RunnerSocial {
 
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         currentUser.reauthenticate(credential)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    handleAuthResult(task, "FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
                 }
             });
         return (double) asyncId;

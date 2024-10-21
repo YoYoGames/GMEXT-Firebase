@@ -6,9 +6,11 @@ import com.google.firebase.FirebaseApp;
 
 public class YYFirebaseSetup extends RunnerSocial
 {
-	FirebaseUtils.getInstance().submitAsyncTask(() -> {
-		Activity activity = RunnerActivity.CurrentActivity;
-		FirebaseApp.initializeApp(activity);
-	});
+	public YYFirebaseSetup() {
+		FirebaseUtils.getInstance().submitAsyncTask(() -> {
+			Activity activity = RunnerActivity.CurrentActivity;
+			FirebaseApp.initializeApp(activity);
+		});
+	}
 }
 

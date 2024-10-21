@@ -14,11 +14,32 @@ extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
 extern "C" const char* extOptGetString(const char* _ext, const  char* _opt);
 extern "C" double extOptGetReal(const char* _ext, const  char* _opt);
 
+typedef NS_ENUM(NSUInteger, DSMapAddFunction) {
+    DSMapAddFunctionInt,
+    DSMapAddFunctionDouble,
+    DSMapAddFunctionString,
+};
+
+@interface ProcessedDataItem : NSObject
+
+@property (nonatomic, strong) NSString *key;
+@property (nonatomic, strong) id value;
+@property (nonatomic, assign) DSMapAddFunction function;
+
+@end
+
+@implementation ProcessedDataItem
+
+@end
+
+
 @interface FirebaseUtils ()
 
 @property (nonatomic, strong) NSOperationQueue *executorService;
 @property (nonatomic, assign) long currentAsyncId;
 @property (nonatomic, strong) NSLock *idLock;
+
++ (ProcessedDataItem *)processValue:(id)value forKey:(NSString*)key;
 
 @end
 
@@ -73,7 +94,7 @@ static NSRegularExpression *I64_REGEX = nil;
         
         // Configure the operation queue with a bounded thread pool
         self.executorService.maxConcurrentOperationCount = 100; // Adjust based on your app's needs
-        self.executorService.name = @"${YYBundleIdentifier}.FirebaseUtils.executorService";
+        self.executorService.name = @"com.yoyogames.yygfirebase.FirebaseUtils.executorService";
         
         self.idLock = [[NSLock alloc] init];
     }
@@ -234,97 +255,145 @@ static NSRegularExpression *I64_REGEX = nil;
 }
 
 + (void)sendAsyncEvent:(int)eventId eventType:(NSString *)eventType data:(NSDictionary *)data {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char *)"type", (char *)[eventType UTF8String]);
 
+    // Process data on a background thread
+    [[FirebaseUtils sharedInstance] submitAsyncTask:^{
+        NSMutableArray<ProcessedDataItem *> *processedItems = [NSMutableArray array];
+        
+        // Add the event type as a ProcessedDataItem
+        ProcessedDataItem *eventTypeItem = [[ProcessedDataItem alloc] init];
+        eventTypeItem.key = @"type";
+        eventTypeItem.value = eventType;
+        eventTypeItem.function = DSMapAddFunctionString;
+        [processedItems addObject:eventTypeItem];
+        
         for (NSString *key in data) {
             id value = data[key];
-            const char *cKey = [key UTF8String];
-
-            // Check if value is NSDictionary or NSArray and serialize to JSON string
-            if ([value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]]) {
-                NSError *error = nil;
-                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:value
-                                                                   options:0 // NSJSONWritingPrettyPrinted can be used if formatting is desired
-                                                                     error:&error];
-                NSString *jsonString;
-                if (error == nil && jsonData) {
-                    jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-                } else {
-                    NSLog(@"FirebaseUtils: JSON serialization failed for key '%@' with error: %@", key, error.localizedDescription);
-                    jsonString = [value isKindOfClass:[NSDictionary class]] ? @"{}" : @"[]"; // Default to empty JSON container on failure
-                }
-                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[jsonString UTF8String]);
-            } else if ([value isKindOfClass:[NSString class]]) {
-                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[value UTF8String]);
-            } else if ([value isKindOfClass:[NSNumber class]]) {
-                NSNumber *numberValue = (NSNumber *)value;
-                const char *type = [numberValue objCType];
-
-                // Handle BOOL
-                if (strcmp(type, @encode(BOOL)) == 0 || strcmp(type, @encode(bool)) == 0 || strcmp(type, @encode(char)) == 0) {
-                    int boolValue = [numberValue boolValue] ? 1 : 0;
-                    dsMapAddInt(dsMapIndex, (char *)cKey, boolValue);
-                }
-                // Handle integer types within int range
-                else if (strcmp(type, @encode(int)) == 0 ||
-                         strcmp(type, @encode(short)) == 0 ||
-                         strcmp(type, @encode(unsigned int)) == 0 ||
-                         strcmp(type, @encode(unsigned short)) == 0) {
-
-                    int intValue = [numberValue intValue];
-                    dsMapAddInt(dsMapIndex, (char *)cKey, intValue);
-                }
-                // Handle floating-point numbers
-                else if (strcmp(type, @encode(float)) == 0 ||
-                         strcmp(type, @encode(double)) == 0) {
-
-                    double doubleValue = [numberValue doubleValue];
-                    dsMapAddDouble(dsMapIndex, (char *)cKey, doubleValue);
-                }
-                // Handle signed long and long long
-                else if (strcmp(type, @encode(long)) == 0 ||
-                         strcmp(type, @encode(long long)) == 0) {
-
-                    long long longValue = [numberValue longLongValue];
-                    if (longValue >= INT_MIN && longValue <= INT_MAX) {
-                        dsMapAddInt(dsMapIndex, (char *)cKey, (int)longValue);
-                    } else if (llabs(longValue) <= (1LL << 53)) {
-                        dsMapAddDouble(dsMapIndex, (char *)cKey, (double)longValue);
-                    } else {
-                        // Represent as special string format
-                        NSString *formattedString = [NSString stringWithFormat:@"@i64@%llx$i64$", longValue];
-                        dsMapAddString(dsMapIndex, (char *)cKey, (char *)[formattedString UTF8String]);
-                    }
-                }
-                // Handle unsigned long and unsigned long long
-                else if (strcmp(type, @encode(unsigned long)) == 0 ||
-                         strcmp(type, @encode(unsigned long long)) == 0) {
-
-                    unsigned long long ulongValue = [numberValue unsignedLongLongValue];
-                    if (ulongValue <= (unsigned long long)INT_MAX) {
-                        dsMapAddInt(dsMapIndex, (char *)cKey, (int)ulongValue);
-                    } else if (ulongValue <= (1ULL << 53)) {
-                        dsMapAddDouble(dsMapIndex, (char *)cKey, (double)ulongValue);
-                    } else {
-                        // Represent as special string format
-                        NSString *formattedString = [NSString stringWithFormat:@"@i64@%llx$i64$", ulongValue];
-                        dsMapAddString(dsMapIndex, (char *)cKey, (char *)[formattedString UTF8String]);
-                    }
-                } else {
-                    // For other numeric types, default to adding as double
-                    double doubleValue = [numberValue doubleValue];
-                    dsMapAddDouble(dsMapIndex, (char *)cKey, doubleValue);
-                }
-            } else {
-                // For other types, convert to string
-                NSString *stringValue = [value description];
-                dsMapAddString(dsMapIndex, (char *)cKey, (char *)[stringValue UTF8String]);
+            ProcessedDataItem *item = [self processValue:value forKey:key];
+            if (item) {
+                [processedItems addObject:item];
             }
         }
-        CreateAsynEventWithDSMap(dsMapIndex, eventId);
-    });
+        
+        // Dispatch to main thread to create the event
+        dispatch_async(dispatch_get_main_queue(), ^{
+            int dsMapIndex = dsMapCreate();
+            
+            for (ProcessedDataItem *item in processedItems) {
+                const char *cKey = [item.key UTF8String];
+                
+                switch (item.function) {
+                    case DSMapAddFunctionInt:
+                        dsMapAddInt(dsMapIndex, (char *)cKey, [item.value intValue]);
+                        break;
+                    case DSMapAddFunctionDouble:
+                        dsMapAddDouble(dsMapIndex, (char *)cKey, [item.value doubleValue]);
+                        break;
+                    case DSMapAddFunctionString:
+                        dsMapAddString(dsMapIndex, (char *)cKey, (char *)[item.value UTF8String]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            CreateAsynEventWithDSMap(dsMapIndex, eventId);
+        });
+    }];
+}
+
++ (ProcessedDataItem *)processValue:(id)value forKey:(NSString*)key {
+
+    ProcessedDataItem *item = [[ProcessedDataItem alloc] init];
+    item.key = key;
+
+    // Check if value is NSDictionary or NSArray and serialize to JSON string
+    if ([value isKindOfClass:[NSDictionary class]] || [value isKindOfClass:[NSArray class]]) {
+        NSError *error = nil;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:value
+                                                            options:0 // NSJSONWritingPrettyPrinted can be used if formatting is desired
+                                                                error:&error];
+        NSString *jsonString;
+        if (error == nil && jsonData) {
+            item.value = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        } else {
+            NSLog(@"FirebaseUtils: JSON serialization failed for key '%@' with error: %@", key, error.localizedDescription);
+            item.value = [value isKindOfClass:[NSDictionary class]] ? @"{}" : @"[]"; // Default to empty JSON container on failure
+        }
+        item.function = DSMapAddFunctionString;
+    } else if ([value isKindOfClass:[NSString class]]) {
+        item.value = value;
+        item.function = DSMapAddFunctionString;
+    } else if ([value isKindOfClass:[NSNumber class]]) {
+        NSNumber *numberValue = (NSNumber *)value;
+        const char *type = [numberValue objCType];
+
+        // Handle BOOL
+        if (strcmp(type, @encode(BOOL)) == 0 || strcmp(type, @encode(bool)) == 0 || strcmp(type, @encode(char)) == 0) {
+            int boolValue = [numberValue boolValue] ? 1 : 0;
+            item.value = @(boolValue);
+            item.function = DSMapAddFunctionInt;
+        }
+        // Handle integer types within int range
+        else if (strcmp(type, @encode(int)) == 0 ||
+                    strcmp(type, @encode(short)) == 0 ||
+                    strcmp(type, @encode(unsigned int)) == 0 ||
+                    strcmp(type, @encode(unsigned short)) == 0) {
+
+            item.value = @([numberValue intValue]);
+            item.function = DSMapAddFunctionInt;
+        }
+        // Handle floating-point numbers
+        else if (strcmp(type, @encode(float)) == 0 ||
+                    strcmp(type, @encode(double)) == 0) {
+
+            item.value = @([numberValue doubleValue]);
+            item.function = DSMapAddFunctionDouble;
+        }
+        // Handle signed long and long long
+        else if (strcmp(type, @encode(long)) == 0 ||
+                    strcmp(type, @encode(long long)) == 0) {
+
+            long long longValue = [numberValue longLongValue];
+            if (longValue >= INT_MIN && longValue <= INT_MAX) {
+                item.value = @((int)longValue);
+                item.function = DSMapAddFunctionInt;
+            } else if (llabs(longValue) <= (1LL << 53)) {
+                item.value = @((double)longValue);
+                item.function = DSMapAddFunctionDouble;
+            } else {
+                // Represent as special string format
+                item.value = [NSString stringWithFormat:@"@i64@%llx$i64$", longValue];
+                item.function = DSMapAddFunctionString;
+            }
+        }
+        // Handle unsigned long and unsigned long long
+        else if (strcmp(type, @encode(unsigned long)) == 0 ||
+                    strcmp(type, @encode(unsigned long long)) == 0) {
+
+            unsigned long long ulongValue = [numberValue unsignedLongLongValue];
+            if (ulongValue <= (unsigned long long)INT_MAX) {
+                item.value = @((int)ulongValue);
+                item.function = DSMapAddFunctionInt;
+            } else if (ulongValue <= (1ULL << 53)) {
+                item.value = @((double)ulongValue);
+                item.function = DSMapAddFunctionDouble;
+            } else {
+                // Represent as special string format
+                item.value = [NSString stringWithFormat:@"@i64@%llx$i64$", ulongValue];
+                item.function = DSMapAddFunctionString;
+            }
+        } else {
+            // For other numeric types, default to adding as double
+            item.value = @([numberValue doubleValue]);
+            item.function = DSMapAddFunctionDouble;
+        }
+    } else {
+        // For other types, convert to string
+        item.value = [value description];
+        item.function = DSMapAddFunctionString;
+    }
+    
+    return item;
 }
 
 #pragma mark - Extension Options

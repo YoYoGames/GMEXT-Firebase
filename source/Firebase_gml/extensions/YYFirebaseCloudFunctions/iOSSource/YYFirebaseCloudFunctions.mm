@@ -28,11 +28,12 @@
 #pragma mark - SDK Initialization
 
 - (void)SDKFirebaseCloudFunctions_Init {
-    BOOL useEmulator = [FirebaseUtils getBoolExtOption:@"YYFirebaseCloudFunctions" key:@"useEmulator"];
+    BOOL useEmulator = [FirebaseUtils extOptionGetBool:@"YYFirebaseCloudFunctions" option:@"useEmulator"];
     if (useEmulator) {
-        NSString *host = [FirebaseUtils extOptionGetString:@"YYFirebaseCloudFunctions" key:@"emulatorHost"];
-        NSInteger port = [FirebaseUtils extOptionGetInt:@"YYFirebaseCloudFunctions" key:@"emulatorPort"];
-        [self.functions useFunctionsEmulatorOrigin:[NSString stringWithFormat:@"http://%@:%ld", host, (long)port]];
+        NSString *host = [FirebaseUtils extOptionGetString:@"YYFirebaseCloudFunctions" option:@"emulatorHost"];
+        int port = [FirebaseUtils extOptionGetInt:@"YYFirebaseCloudFunctions" option:@"emulatorPort"];
+        
+        [self.functions useEmulatorWithHost:host port:port];
     }
 }
 
@@ -66,7 +67,7 @@
                 NSString *errorMessage = @"Unknown error";
                 int statusCode = 400;
 
-                FIRFunctionsErrorCode code = error.code;
+                FIRFunctionsErrorCode code = (FIRFunctionsErrorCode)error.code;
                 errorMessage = error.localizedDescription;
                 statusCode = [self getStatusCodeFromFunctionsErrorCode:code];
 
@@ -92,9 +93,7 @@
                     extraData[@"value"] = [responseData description];
                 }
 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self sendFunctionsEvent:@"FirebaseCloudFunctions_Call" asyncId:asyncId status:200 extraData:extraData];
-                });
+                [self sendFunctionsEvent:@"FirebaseCloudFunctions_Call" asyncId:asyncId status:200 extraData:extraData];
             }
         }];
     }];

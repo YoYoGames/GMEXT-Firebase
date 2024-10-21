@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <FirebaseFunctions>
+#import <FirebaseFunctions/FirebaseFunctions-Swift.h>
 
 @interface YYFirebaseCloudFunctions : NSObject
 

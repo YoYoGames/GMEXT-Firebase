@@ -21,7 +21,7 @@ static const double kFirebaseStorageErrorNotFound = -1.0;
 @implementation YYFirebaseStorage
 
 - (id)init {
-    self = [super init]
+    self = [super init];
     if (self) {
         // Initialize dictionaries
         self.taskMap = [[NSMutableDictionary alloc] init];

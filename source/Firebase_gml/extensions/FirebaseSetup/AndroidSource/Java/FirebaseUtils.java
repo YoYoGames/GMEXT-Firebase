@@ -1,5 +1,7 @@
 package ${YYAndroidPackageName};
 
+import ${YYAndroidPackageName}.ProcessedDataItem;
+
 import com.yoyogames.runner.RunnerJNILib;
 
 import java.util.concurrent.ExecutorService;
@@ -40,7 +42,7 @@ public class FirebaseUtils {
 
     private static int CORE_POOL_SIZE = 0;
     private static int MAX_POOL_SIZE = 100;
-    private static int KEEP_ALIVE_TIME = 60L;
+    private static long KEEP_ALIVE_TIME = 60L;
     private static TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 
     private static FirebaseUtils instance;
@@ -89,55 +91,89 @@ public class FirebaseUtils {
         }
     }
 
+    public static void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
+        FirebaseUtils.sendAsyncEvent(EVENT_SOCIAL, eventType, data);
+    }
+
     public static void sendAsyncEvent(int eventId, String eventType, Map<String, Object> data) {
-        RunnerActivity.CurrentActivity.runOnUiThread(() -> {
-            int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-            RunnerJNILib.DsMapAddString(dsMapIndex, "type", eventType);
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
+            List<ProcessedDataItem> processedItems = new ArrayList<>();
+
+            // Add the event type
+            processedItems.add(new ProcessedDataItem("type", eventType, ProcessedDataItem.FunctionType.ADD_STRING));
+
             if (data != null) {
                 for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    String key = entry.getKey();
-                    Object value = entry.getValue();
-                    if (value instanceof String) {
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, (String) value);
-                    } else if (value instanceof Double || value instanceof Integer || value instanceof Float || value instanceof Boolean) {
-                        // Convert Boolean to double (1.0 or 0.0)
-                        double doubleValue;
-                        if (value instanceof Boolean) {
-                            doubleValue = (Boolean) value ? 1.0 : 0.0;
-                        } else if (value instanceof Integer) {
-                            doubleValue = ((Integer) value).doubleValue();
-                        } else if (value instanceof Float) {
-                            doubleValue = ((Float) value).doubleValue();
-                        } else { // Double
-                            doubleValue = (Double) value;
-                        }
-                        RunnerJNILib.DsMapAddDouble(dsMapIndex, key, doubleValue);
-                    } else if (value instanceof Long) {
-                        long longValue = (Long) value;
-                        if (Math.abs(longValue) <= MAX_DOUBLE_SAFE) {
-                            RunnerJNILib.DsMapAddDouble(dsMapIndex, key, (double) longValue);
-                        } else {
-                            String formattedLong = String.format("@i64@%016x$i64$", longValue);
-                            RunnerJNILib.DsMapAddString(dsMapIndex, key, formattedLong);
-                        }
-                    } else if (value instanceof Map) {
-                        String jsonString = new JSONObject((Map) value).toString();
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, jsonString);
-                    } else if (value instanceof List) {
-                        String jsonString = new JSONArray((List) value).toString();
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, jsonString);
-                    } else {
-                        // Convert other types to String
-                        RunnerJNILib.DsMapAddString(dsMapIndex, key, value.toString());
+                    ProcessedDataItem item = processValue(entry.getKey(), entry.getValue());
+                    if (item != null) {
+                        processedItems.add(item);
                     }
                 }
             }
-            RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, EVENT_SOCIAL);
+
+            // Dispatch to UI thread
+            RunnerActivity.CurrentActivity.runOnUiThread(() -> {
+                int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
+
+                for (ProcessedDataItem item : processedItems) {
+                    switch (item.functionType) {
+                        case ADD_STRING:
+                            RunnerJNILib.DsMapAddString(dsMapIndex, item.key, (String) item.value);
+                            break;
+                        case ADD_DOUBLE:
+                            RunnerJNILib.DsMapAddDouble(dsMapIndex, item.key, (Double) item.value);
+                            break;
+                        case ADD_INT:
+                            RunnerJNILib.DsMapAddDouble(dsMapIndex, item.key, ((Integer) item.value).doubleValue()); // Use DsMapAddInt if available
+                            break;
+                    }
+                }
+
+                RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex, eventId);
+            });
         });
     }
 
-    public static void sendSocialAsyncEvent(String eventType, Map<String, Object> data) {
-        FirebaseUtils.sendAsyncEvent(EVENT_SOCIAL, eventType, data);
+    private static ProcessedDataItem processValue(String key, Object value) {
+        if (value instanceof String) {
+            return new ProcessedDataItem(key, value, ProcessedDataItem.FunctionType.ADD_STRING);
+        } else if (value instanceof Boolean) {
+            double doubleValue = (Boolean) value ? 1.0 : 0.0;
+            return new ProcessedDataItem(key, doubleValue, ProcessedDataItem.FunctionType.ADD_DOUBLE);
+        } else if (value instanceof Integer || value instanceof Short || value instanceof Byte) {
+            int intValue = ((Number) value).intValue();
+            return new ProcessedDataItem(key, intValue, ProcessedDataItem.FunctionType.ADD_INT);
+        } else if (value instanceof Double || value instanceof Float) {
+            double doubleValue = ((Number) value).doubleValue();
+            return new ProcessedDataItem(key, doubleValue, ProcessedDataItem.FunctionType.ADD_DOUBLE);
+        } else if (value instanceof Long) {
+            long longValue = (Long) value;
+            if (Math.abs(longValue) <= MAX_DOUBLE_SAFE) {
+                return new ProcessedDataItem(key, (double) longValue, ProcessedDataItem.FunctionType.ADD_DOUBLE);
+            } else {
+                String formattedLong = String.format("@i64@%016x$i64$", longValue);
+                return new ProcessedDataItem(key, formattedLong, ProcessedDataItem.FunctionType.ADD_STRING);
+            }
+        } else if (value instanceof Map) {
+            try {
+                String jsonString = new JSONObject((Map<?, ?>) value).toString();
+                return new ProcessedDataItem(key, jsonString, ProcessedDataItem.FunctionType.ADD_STRING);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else if (value instanceof List) {
+            try {
+                String jsonString = new JSONArray((List<?>) value).toString();
+                return new ProcessedDataItem(key, jsonString, ProcessedDataItem.FunctionType.ADD_STRING);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            // Convert other types to String
+            return new ProcessedDataItem(key, value.toString(), ProcessedDataItem.FunctionType.ADD_STRING);
+        }
     }
 
     /**
@@ -240,7 +276,7 @@ public class FirebaseUtils {
     }
 
     public static boolean extOptionGetBool(String extension, String option) {
-        return extOptGetString(extension, option).toLowerCase().equals("true");
+        return extOptionGetString(extension, option).toLowerCase().equals("true");
     }
 
     public void shutdown() {

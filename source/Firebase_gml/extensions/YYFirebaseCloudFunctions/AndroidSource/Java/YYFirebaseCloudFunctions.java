@@ -15,11 +15,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class YYFirebaseCloudFunctions extends RunnerSocial {
 
@@ -27,16 +29,16 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
 
     FirebaseFunctions functions;
 
-    public YYFirebasePerformance() {
+    public YYFirebaseCloudFunctions() {
         functions = FirebaseFunctions.getInstance();
     }
 
     public void SDKFirebaseCloudFunctions_Init() {
-        boolean useEmulator = FirebaseUtils.GetBoolExtOption("YYFirebaseCloudFunctions", "useEmulator");
+        boolean useEmulator = FirebaseUtils.extOptionGetBool("YYFirebaseCloudFunctions", "useEmulator");
         if (useEmulator) {
             String host = FirebaseUtils.extOptionGetString("YYFirebaseCloudFunctions", "emulatorHost");
             int port = FirebaseUtils.extOptionGetInt("YYFirebaseCloudFunctions", "emulatorPort");
-            FirebaseFunctions.useEmulator(host, port);
+            functions.useEmulator(host, port);
         }
     }
 
@@ -73,7 +75,7 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
 
             // Set timeout if specified
             if (timeoutSeconds > 0) {
-                callable = callable.setTimeout((long) (timeoutSeconds * 1000)); // Convert seconds to milliseconds
+                callable = callable.withTimeout((long) (timeoutSeconds * 1000), TimeUnit.MILLISECONDS); // Convert seconds to milliseconds
             }
 
             callable

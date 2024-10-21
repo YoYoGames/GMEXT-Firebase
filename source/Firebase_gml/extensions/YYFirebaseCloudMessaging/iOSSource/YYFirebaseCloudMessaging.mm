@@ -163,7 +163,7 @@
 }
 
 - (void)handleIncomingMessage:(NSDictionary *)userInfo {
-	[[FirebaseUtils sharedInstance] sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:userInfo];
+	[FirebaseUtils sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:userInfo];
 }
 
 @end

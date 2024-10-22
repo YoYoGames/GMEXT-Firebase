@@ -16,7 +16,9 @@
   "exportToGame":true,
   "extensionVersion":"1.2.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[
+        {"$GMExtensionFunction":"","%Name":"FirebaseSetup_Init","argCount":0,"args":[],"documentation":"","externalName":"FirebaseSetup_Init","help":"FirebaseSetup_Init()","hidden":false,"kind":4,"name":"FirebaseSetup_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+      ],"init":"FirebaseSetup_Init","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebaseSetup.js","name":"FirebaseSetup.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
@@ -61,8 +63,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Firebase",
-    "path":"Firebase.yyp",
+    "name":"Firebase_Checkapp",
+    "path":"Firebase_Checkapp.yyp",
   },
   "productId":"",
   "resourceType":"GMExtension",

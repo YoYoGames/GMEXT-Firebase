@@ -1,6 +1,6 @@
 {
   "$GMProject":"",
-  "%Name":"Firebase",
+  "%Name":"Firebase_Checkapp",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
@@ -16,6 +16,7 @@
     {"$GMFolder":"","%Name":"Demo","folderPath":"folders/Firebase Analytics/Demo.yy","name":"Demo","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Analytics/Demo/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Firebase Analytics/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Firebase App Check","folderPath":"folders/Firebase App Check.yy","name":"Firebase App Check","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Authentication Extras Logins","folderPath":"folders/Firebase Authentication Extras Logins.yy","name":"Firebase Authentication Extras Logins","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Apple","folderPath":"folders/Firebase Authentication Extras Logins/Apple.yy","name":"Apple","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Firebase Authentication Extras Logins/Apple/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -112,9 +113,9 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1100.0.634",
+    "IDEVersion":"9.9.1.826",
   },
-  "name":"Firebase",
+  "name":"Firebase_Checkapp",
   "resources":[
     {"id":{"name":"AppleSignIn","path":"extensions/AppleSignIn/AppleSignIn.yy",},},
     {"id":{"name":"AppleSignInMac","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},},
@@ -124,6 +125,7 @@
     {"id":{"name":"GooglePlayServices","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},},
     {"id":{"name":"GoogleSignIn","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},},
     {"id":{"name":"YYFirebaseAnalytics","path":"extensions/YYFirebaseAnalytics/YYFirebaseAnalytics.yy",},},
+    {"id":{"name":"YYFirebaseAppCheck","path":"extensions/YYFirebaseAppCheck/YYFirebaseAppCheck.yy",},},
     {"id":{"name":"YYFirebaseAuthentication_tools","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},},
     {"id":{"name":"YYFirebaseAuthentication","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},},
     {"id":{"name":"YYFirebaseCloudFunctions","path":"extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.yy",},},

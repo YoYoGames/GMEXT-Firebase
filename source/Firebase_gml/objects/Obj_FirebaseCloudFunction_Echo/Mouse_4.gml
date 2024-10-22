@@ -6,7 +6,5 @@ body = {
 	data2: 12345
 };
 
-var headerMap = ds_map_create()
-ds_map_add(headerMap,"Content-Type","application/json")//Heads
-request = http_request(url,"POST",headerMap,json_stringify(body))
-ds_map_destroy(headerMap)
+
+request = SDKFirebaseCloudFunctions_Call("echo", json_stringify(body), 10);

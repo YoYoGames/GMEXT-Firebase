@@ -1,335 +1,482 @@
+// Global namespace for Firebase Realtime
+// Merge the new methods and properties into the existing FirebaseRealTimeExt object
+window.FirebaseRealTimeExt = Object.assign(window.FirebaseRealTimeExt || {}, {
 
-let listenerRefMap = {};
-let listenerIdMap = {};
+    // Map to store tasks by listener ID for cancellation
+    pathMap: {},
+    queryMap: {},
 
-//Start point of index
-//Autentication 5000
-//storage 6000
-//Firestore 7000
-//RealTime 10000
-let indMap = 10000;
+	/**
+     * Helper function to check if database is initialized.
+     * Logs an error if `module` is not ready.
+     * @return {boolean} `true` if `module` is ready, `false` otherwise.
+     */
+    isRealtimeInitialized: function() {
+        const context = window.FirebaseRealTimeExt;
+        if (!context.instance || !context.module) {
+            console.warn("Firebase Realtime Database is not initialized. Please wait for initialization to complete.");
+            return false;
+        }
+        return true;
+    },
 
-function FirebaseRealTime_SDK(json,callback)
-{
-	let fluent_obj = JSON.parse(json);
-	let action = fluent_obj._action;
-	
-	if(action == "Set")
-		return YYRealTime_Set(fluent_obj,callback);
-	else if(action == "Read" || action == "Listener")
-		return  YYRealTime_Read(fluent_obj,callback);
-	else if(action == "Exists")
-		return  YYRealTime_Exists(fluent_obj,callback);
-	else if(action == "Delete")
-		return YYRealTime_SetDelete(fluent_obj,callback);
-	else if(action == "ListenerRemove")
-		YYRealTime_SetListenerRemove(fluent_obj);
-	else if(action == "ListenerRemoveAll")
-		YYRealTime_SetListenerRemoveAll();
-	return 0.0;
-}
-
-let app_list = [];
-function RealTime_makeRef(fluent_obj)
-{
-	let ref;
-	console.log(fluent_obj);
-	console.log(fluent_obj._database);
-	if(fluent_obj._database == null)
-		ref = firebase.database().ref();
-	else
-	{
-		let database = fluent_obj._database;
+	/**
+	 * Sends a database event with the specified parameters.
+     * @param {string} eventType - The type of event.
+     * @param {number} asyncId - The unique async ID.
+     * @param {string|null} path - The Firebase database path related to the event.
+     * @param {number} status - The HTTP status code representing the result.
+     * @param {object|null} extraData - Additional data to include in the event.
+	 */
+	sendDatabaseEvent: function(eventType, asyncId, path, status, additionalData) {
+		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 		
-		let current_app = null;
-		for(let a = 0 ; a < app_list.length ; a ++)
-		if(app_list[a].options.databaseURL == database)
-		{
-			current_app = app_list[a];
-			break;
-		}
-		
-		if(current_app == null)
-		{
-			current_app = firebase.initializeApp({databaseURL: database},"app" + app_list.length.toString());
-			app_list[app_list.length] = current_app;
-		}
-		ref = firebase.database(current_app).ref();
-	}
-	
-	ref = ref.child(fluent_obj._path);
-
-	return ref;
-}
-
-function YYRealTime_Set(fluent_obj,callback)
-{
-	let listenerInd = getListenerInd();
-	let ref = RealTime_makeRef(fluent_obj);
-	
-	if(fluent_obj._push != null)
-		ref = ref.push();
-	
-	if(typeof fluent_obj._value == "string")
-	{
-		//If value is json string convert to object
-		try{fluent_obj._value = JSON.parse(fluent_obj._value);}catch(e){}
-	}
-	
-	ref.set(fluent_obj._value, function(error)
-	{
-		let data = {
-			type:"FirebaseRealTime_Set",
-			listener:listenerInd,
-			path:fluent_obj._path,
+		// Initialize a new data object
+		const data = {
+			listener: asyncId,
+			path: path,
+			status: status,
 		};
-		
-		data = InsertStatusData(data,error);
-		
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
 
-function YYRealTime_Read(fluent_obj,callback)
-{
-	const listenerInd = getListenerInd();
-	let ref = RealTime_makeRef(fluent_obj);
-	
-	let query = ref;
-	
-	if(fluent_obj._OrderBy != null)
-	if(typeof fluent_obj._OrderBy == "string")
-		 query = query.orderByChild(fluent_obj._OrderBy);
-	else
-	switch(fluent_obj._OrderBy)
-	{
-		// case 0: query = query.orderByChild(OrderKey); break;
-		case 1: query = query.orderByKey(); break;
-		case 2: query = query.orderByValue(); break;
-	}
-	
-	if(fluent_obj._StartValue != null)
-		query = query.startAt(fluent_obj._StartValue);
-	
-	if(fluent_obj._EndValue != null)
-		query = query.endAt(fluent_obj._EndValue);
-		
-	if(fluent_obj._EqualTo != null)
-		query = query.equalTo(fluent_obj._EqualTo);
-		
-	if(fluent_obj._LimitKind != null)
-	if(fluent_obj._LimitValue != null)
-	{
-		switch(fluent_obj._LimitKind)
-		{
-			case 0: query = query.limitToFirst(fluent_obj._LimitValue); break;
-			case 1: query = query.limitToLast(fluent_obj._LimitValue); break;
-		}			
-	}
-	
-	let callback_type;
-	if(fluent_obj._action == "Read")
-		callback_type = "FirebaseRealTime_Read";
-	else if(fluent_obj._action == "Listener")
-		callback_type = "FirebaseRealTime_Listener";
-	
-	let myCallback = function(snapshot) 
-	{
-		let value = snapshot.val();
-		if(!snapshot.exists())
-		{
-			GMS_API.send_async_event_social({
-				type:callback_type,
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				//value:
-			});
-			return;
+		if (additionalData !== null && additionalData !== undefined) {
+			// Merge additionalData into data
+			Object.assign(data, additionalData);
 		}
 
-		let ret_value;
-		switch(typeof  value)
-		{
-			case "number":
-			case "string":
-				ret_value = snapshot.val();
-			break
-			
-			case "object":
-				ret_value = JSON.stringify(snapshot.val());
-			break
+		sendSocialAsyncEvent(eventType, data);
+	},
+
+    /**
+     * Creates a new ValueEventListener for listening to data changes in Firebase.
+     *
+     * @param {string} eventType - The type of the event.
+     * @param {number} asyncId - The unique async ID.
+     * @param {string} path - The Firebase database path related to the event.
+     * @return {function} The ValueEventListener callback.
+     */
+    createValueEventListener: function(eventType, asyncId, path) {
+        const { sendDatabaseEvent, getStatusFromError } = window.FirebaseRealTimeExt;
+
+        const onDataChange = function(snapshot) {
+            const extraData = {};
+
+            if (snapshot.exists()) {
+                let dataValue = snapshot.val();
+                if (Array.isArray(dataValue)) {
+                    if (snapshot.hasChildren()) {
+                        const list = [];
+                        snapshot.forEach(child => {
+                            list.push(child.val());
+                        })
+                        dataValue = list;
+                    }
+                }
+                extraData["value"] = dataValue;
+            }
+
+            sendDatabaseEvent(eventType, asyncId, path, 200, extraData);
+        };
+
+        const onError = (error) => {
+            const status = getStatusFromError(error);
+            sendDatabaseEvent(eventType, asyncId, path, status, { "errorMessage": error.message });
+        };
+
+        return { onDataChange: onDataChange, onError: onError };
+    },
+
+    /**
+     * Maps a Firebase DatabaseError to an appropriate HTTP status code.
+     *
+     * @param {object} error - The Firebase DatabaseError object.
+     * @return {number} The corresponding HTTP status code.
+     */
+    getStatusFromError: function(error) {
+        switch (error.code) {
+            case 'disconnected':
+                return 400;
+            case 'expired-token':
+            case 'invalid-token':
+            case 'permission-denied':
+                return 401;
+            case 'max-retries':
+            case 'network-error':
+            case 'operation-failed':
+            case 'overridden-by-set':
+            case 'unknown':
+            case 'user-code-exception':
+            case 'write-canceled':
+                return 400;
+            case 'unavailable':
+                return 503;
+            default:
+                return 400;
+        }
+    },
+
+    /**
+     * Handles the "Set" action to write data to Firebase.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    setValue: function(asyncId, fluentObj) {
+        const { module, buildReference, sendDatabaseEvent, getStatusFromError } = window.FirebaseRealTimeExt;
+        const value = fluentObj.value;
+        const path = fluentObj.path;
+
+        const dataRef = buildReference(fluentObj);
+
+        module.set(dataRef, value)
+            .then(() => {
+                sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, 200, null);
+            })
+            .catch((error) => {
+                const status = getStatusFromError(error);
+                sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, status, { "errorMessage": error.message });
+            });
+    },
+
+    /**
+     * Handles the "Read" action to read data from Firebase.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    readValue: function(asyncId, fluentObj) {
+        const { module, sendDatabaseEvent, buildReference, buildQuery, createValueEventListener, getStatusFromError } = window.FirebaseRealTimeExt;
+        const path = fluentObj.path;
+        const dataRef = buildReference(fluentObj);
+        const query = buildQuery(fluentObj, dataRef);
+
+        if (!query) {
+            console.error("FirebaseRealTimeExt: Failed to build query");
+            sendDatabaseEvent("FirebaseRealTime_Read", asyncId, path, 400, { "errorMessage": "Failed to build query" });
+            return;
+        }
+
+        const { onDataChange, onError } = createValueEventListener("FirebaseRealTime_Read", asyncId, path);
+
+        module.get(query)
+            .then((snapshot) => {
+                onDataChange(snapshot);
+            }).catch((error) => {
+                onError(error);
+            });
+    },
+
+    /**
+     * Handles the "Listener" action to listen for data changes in Firebase.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    listenValue: function(asyncId, fluentObj) {
+        const { module, sendDatabaseEvent, buildReference, buildQuery, createValueEventListener, pathMap, queryMap } = window.FirebaseRealTimeExt;
+
+        const path = fluentObj.path;
+        const dataRef = buildReference(fluentObj);
+        const query = buildQuery(fluentObj, dataRef);
+
+        if (Object.values(pathMap).indexOf(path) >= 0) {
+			sendFirestoreEvent("FirebaseRealTime_Listener", asyncId, path, 400, { "errorMessage": "Duplicate listener for specified path." });
+            return;
 		}
-		
-		GMS_API.send_async_event_social({
-			type:callback_type,
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-			value:ret_value
-		});
-	};
-	
-	let myErrorCallback = function(error)
-	{
-		let data = {
-			type:callback_type,
-			listener:listenerInd,
-			path:fluent_obj._path
-		};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	};
-	
-	if(fluent_obj._action == "Read")
-		query.once('value',myCallback,myErrorCallback).catch(myErrorCallback);
-	else
-	if(fluent_obj._action == "Listener")
-	{
-		let id = query.on('value',myCallback,myErrorCallback);
-		listenerToMaps(query,id,listenerInd);
-	}
-	return(listenerInd);
-}
 
-function YYRealTime_Exists(fluent_obj,callback)
-{
-	const listenerInd = getListenerInd();
-	let ref = RealTime_makeRef(fluent_obj);
-	ref.once('value',
-		function(snapshot) 
-		{
-			let ret_value = 0;
-			if(snapshot.exists())
-				ret_value = 1;
-			
-			GMS_API.send_async_event_social({
-				type:"FirebaseRealTime_Exists",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				value:ret_value
-			});
-		},
-		function(error)
-		{
-			let data = {
-				type:"FirebaseRealTime_Exists",
-				listener:listenerInd,
-				path:fluent_obj._path
-			};
-			data = InsertStatusData(data,error);
-			GMS_API.send_async_event_social(data);
-		}).catch(function(error)
-		{
-			console.log("Exists catch");
-			let data = {
-				type:"FirebaseRealTime_Exists",
-				listener:listenerInd,
-				path:fluent_obj._path
-			};
-			data = InsertStatusData(data,error);
-			GMS_API.send_async_event_social(data);
-		});
-	return(listenerInd);
-}
+        if (!query) {
+            console.error("FirebaseRealTimeExt: Failed to build query");
+            sendDatabaseEvent("FirebaseRealTime_Listener", asyncId, path, 400, { "errorMessage": "Failed to build query" });
+            return;
+        }
 
-function YYRealTime_SetDelete(fluent_obj,callback)
-{
-	let ref = RealTime_makeRef(fluent_obj);
-	const listenerInd = getListenerInd();
-	ref.remove(function(error) 
-	{
-		let data = {
-			type:"FirebaseRealTime_Delete",
-			listener:listenerInd,
-			path:fluent_obj._path
-		};
-		
-		data = InsertStatusData(data,error);
-		
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
+        const { onDataChange, onError } = createValueEventListener("FirebaseRealTime_Listener", asyncId, path);
 
-function YYRealTime_SetListenerRemove(fluent_obj)
-{
-	let ind = fluent_obj._value;
-	let ref = listenerRefMap[ind.toString()]
-	if(ref != undefined)
-		ref.off("value",listenerIdMap[ind.toString()]);
-	delete listenerRefMap[ind.toString()];
-	delete listenerIdMap[ind.toString()];
-}
+        module.onValue(query, onDataChange, onError);
 
-function YYRealTime_SetListenerRemoveAll()
-{
-	for (let key in listenerRefMap) 
-	{
-		let ref = listenerRefMap[key]
-		if(ref != undefined)
-		ref.off("value",listenerIdMap[key]);
-	}
-	listenerRefMap = {};
-	listenerIdMap = {};
-}
+        // Store listener and reference for future removal
+        pathMap[asyncId] = path;
+        queryMap[asyncId] = query;
+    },
 
-function getListenerInd()
-{
-	indMap ++;
-	return(indMap);
-}
+    /**
+     * Handles the "Exists" action to check data existence in Firebase.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    existsValue: function(asyncId, fluentObj) {
+        const { module, sendDatabaseEvent, buildReference, getStatusFromError } = window.FirebaseRealTimeExt;
 
-function listenerToMaps(reference,listenerId,ind)
-{
-	listenerRefMap[ind.toString()] = reference;
-	listenerIdMap[ind.toString()] = listenerId;
-}
+        const path = fluentObj.path;
+        const dataRef = buildReference(fluentObj);
 
-//https://firebase.google.com/docs/reference/js/v8/firebase.functions.HttpsError#error
-function InsertStatusData(obj,error)
-{
-	if(error == null)
-	{
-		obj.status = 200;
-		return obj;
-	}
+        module.get(dataRef)
+            .then((snapshot) => {
+                const exists = snapshot.exists() ? 1.0 : 0.0;
+                sendDatabaseEvent("FirebaseRealTime_Exists", asyncId, path, 200, { "value": exists });
+            })
+            .catch((error) => {
+                const status = getStatusFromError(error);
+                sendDatabaseEvent("FirebaseRealTime_Exists", asyncId, path, status, { "errorMessage": error.message });
+            });
+    },
 
-	let http_status = 400;
-	if(error.hasOwnProperty("message"))//if(error instanceof firebase.functions.HttpsError)
-	{
-		console.log(error.message);
-		if(error.message.includes("EXPIRED_TOKEN"))
-			http_status = 401;
-		if(error.message.includes("INVALID_TOKEN"))
-			http_status = 401;
-		if(error.message.includes("PERMISSION_DENIED"))
-			http_status = 401;
-		if(error.message.includes("UNAVAILABLE"))
-			http_status = 503;
-		
-		// switch(error.message)
-		// {
-			// case "DISCONNECTED": http_status = 400; break;
-			// case "EXPIRED_TOKEN":http_status = 401; break;
-			// case "INVALID_TOKEN": http_status = 401; break;
-			// case "MAX_RETRIES": http_status = 400; break;
-			// case "NETWORK_ERROR": http_status = 400; break;
-			// case "OPERATION_FAILED": http_status = 400; break;
-			// case "OVERRIDDEN_BY_SET": http_status = 400; break;
-			// case "PERMISSION_DENIED": http_status = 401; break;
-			// case "UNAVAILABLE": http_status = 503; break;
-			// case "UNKNOWN_ERROR": http_status = 400; break;
-			// case "USER_CODE_EXCEPTION": http_status = 400; break;
-			// case "WRITE_CANCELED": http_status = 400; break;
-		// }
-	}
+    /**
+     * Handles the "Delete" action to remove data from Firebase.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    deleteValue: function(asyncId, fluentObj) {
+        const { module, sendDatabaseEvent, buildReference, getStatusFromError } = window.FirebaseRealTimeExt;
 
-	obj.status = http_status;
-	obj.errorMessage = error.message;
-	
-	return obj;
+        const path = fluentObj.path;
+        const dataRef = buildReference(fluentObj);
+
+        module.remove(dataRef)
+            .then(() => {
+                sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, 200, null);
+            })
+            .catch((error) => {
+                const status = getStatusFromError(error);
+                sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, status, { "errorMessage": error.message });
+            });
+    },
+
+    /**
+     * Handles the "ListenerRemove" action to remove a specific Firebase listener.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {object} fluentObj - The JSON object containing parameters.
+     */
+    removeListener: function(asyncId, fluentObj) {
+        const { module, sendDatabaseEvent, queryMap, pathMap } = window.FirebaseRealTimeExt;
+
+        const listenerToRemove = fluentObj.value;
+        if (typeof listenerToRemove !== 'number') {
+            console.error("FirebaseRealTimeExt: Unable to extract listener id.");
+            sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, { "errorMessage": "Unable to extract listener id." });
+            return;
+        }
+
+        const query = queryMap[listenerToRemove];
+        const path = pathMap[listenerToRemove];
+
+        if (query && path) {
+            module.off(query);
+            delete pathMap[listenerToRemove];
+            delete queryMap[listenerToRemove];
+            sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 200, { "value": listenerToRemove });
+        } else {
+            console.error(`FirebaseRealTimeExt: Listener or DatabaseReference not found for ID: ${listenerToRemove}`);
+            sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, { "errorMessage": `Listener or DatabaseReference not found for ID: ${listenerToRemove}` });
+        }
+    },
+
+    /**
+     * Handles the "ListenerRemoveAll" action to remove all Firebase listeners.
+     *
+     * @param {number} asyncId - The unique async ID.
+     */
+    removeAllListeners: function(asyncId) {
+        const { module, sendDatabaseEvent, queryMap, pathMap } = window.FirebaseRealTimeExt;
+
+        const removedListeners = [];
+
+        for (const listenerId in pathMap) {
+            if (pathMap.hasOwnProperty(listenerId)) {
+                const query = queryMap[listenerId];
+                const listener = pathMap[listenerId];
+                if (dataRef && listener) {
+                    module.off(query);
+                    removedListeners.push(Number(listenerId));
+                    delete pathMap[listenerId];
+                    delete queryMap[listenerId];
+                }
+            }
+        }
+
+        sendDatabaseEvent("FirebaseRealTime_RemoveListeners", asyncId, null, 200, { "values": removedListeners });
+    },
+
+    /**
+     * Generates a Firebase DatabaseReference based on the provided JSON parameters.
+     *
+     * @param {object} fluentObj - The JSON object containing parameters.
+     * @return {object} The constructed DatabaseReference.
+     */
+    buildReference: function(fluentObj) {
+        const { module, instance } = window.FirebaseRealTimeExt;
+        
+        let dataRef;
+        if (!fluentObj.database) {
+            dataRef = module.ref(instance);
+        } else {
+            const databaseUrl = fluentObj.database;
+            if (databaseUrl) {
+                dataRef = module.ref(instance, databaseUrl);
+            } else {
+                dataRef = module.ref(instance);
+            }
+        }
+
+        const path = fluentObj.path;
+        if (path) {
+            dataRef = module.ref(instance, path);
+        }
+
+        const push = fluentObj.push;
+        if (push) {
+            dataRef = module.push(dataRef);
+        }
+
+        return dataRef;
+    },
+
+    /**
+     * Constructs a Firebase Query based on the provided JSON parameters and DatabaseReference.
+     *
+     * @param {number} asyncId - The unique async ID.
+     * @param {string} eventType - The type of event.
+     * @param {object} fluentObj - The JSON object containing query parameters.
+     * @param {object} dataRef - The DatabaseReference to build the query from.
+     * @return {object|null} The constructed Query or null if failed.
+     */
+    buildQuery: function(fluentObj, dataRef) {
+        const { module } = window.FirebaseRealTimeExt;
+
+        let query = module.query(dataRef);
+
+        const orderBy = fluentObj.orderBy;
+        if (orderBy) {
+            switch (orderBy) {
+                case "$key":
+                    query = module.query(query, module.orderByKey());
+                    break;
+                case "$value":
+                    query = module.query(query, module.orderByValue());
+                    break;
+                case "$priority":
+                    query = module.query(query, module.orderByPriority());
+                    break;
+                default:
+                    query = module.query(query, module.orderByChild(orderBy));
+                    break;
+            }
+        }
+
+        // You can only use one of these (equalTo or <range>)
+        const equalToVal = fluentObj.equalTo;
+        if (equalToVal) {
+            query = module.query(query, module.equalTo(equalToVal));
+        } else {
+            // You can only use one of these (startAt or startAfter)
+            const startAtVal = fluentObj.startAt;
+            if (startAtVal) {
+                query = module.query(query, module.startAt(startAtVal));
+            } else {
+                const startAfterVal = fluentObj.startAfter;
+                if (startAfterVal) {
+                    query = module.query(query, module.startAfter(startAfterVal));
+                }
+            }
+        
+            // You can only use one of these (endAt or endBefore)
+            const endAtVal = fluentObj.endAt;
+            if (endAtVal) {
+                query = module.query(query, module.endAt(endAtVal));
+            } else {
+                const endBeforeVal = fluentObj.endBefore;
+                if (endBeforeVal) {
+                    query = module.query(query, module.endBefore(endBeforeVal));
+                }
+            }
+        }
+        
+
+        const limitToFirstVal = fluentObj.limitToFirst;
+        if (Number.isInteger(limitToFirstVal)) {
+            query = module.query(query, module.limitToFirst(limitToFirstVal));
+        }
+
+        const limitToLastVal = fluentObj.limitToLast;
+        if (Number.isInteger(limitToLastVal)) {
+            query = module.query(query, module.limitToLast(limitToLastVal));
+        }
+
+        return query;
+    },
+});
+
+const FIREBASE_DATABASE_SUCCESS = 0.0;
+const FIREBASE_DATABASE_ERROR_NOT_FOUND = -1.0;
+const FIREBASE_DATABASE_ERROR_INVALID_PARAMETERS = -2.0;
+const FIREBASE_DATABASE_ERROR_NOT_INITIALIZED = -3.0;
+const FIREBASE_DATABASE_ERROR_UNSUPPORTED = -4.0;
+
+/**
+ * Main SDK method to handle Firebase Realtime actions based on the input JSON.
+ *
+ * @param {string} fluentJson - The JSON string containing the action and parameters.
+ * @return {number} The async ID.
+ */
+function FirebaseRealTime_SDK(fluentJson) {
+    const { getNextAsyncId } = window.FirebaseSetup;
+    const { isRealtimeInitialized, sendDatabaseEvent, setValue, readValue, listenValue, existsValue, deleteValue, removeListener, removeAllListeners } = window.FirebaseRealTimeExt;
+
+    if (!isRealtimeInitialized()) {
+        return FIREBASE_DATABASE_ERROR_NOT_INITIALIZED;
+    }
+
+    const asyncId = getNextAsyncId();
+
+    // Submit async task
+    FirebaseSetup.submitAsyncTask(() => {
+        let fluentObj;
+        try {
+            fluentObj = JSON.parse(fluentJson);
+        } catch (e) {
+            console.error("FirebaseRealTimeExt: Invalid JSON input", e);
+            sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, { "errorMessage": "Invalid JSON input" });
+            return;
+        }
+
+        const action = fluentObj.action;
+        if (!action) {
+            console.error("FirebaseRealTimeExt: Action not specified in JSON");
+            sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, { "errorMessage": "Action not specified in JSON" });
+            return;
+        }
+
+        switch (action) {
+            case 0: // Set
+                setValue(asyncId, fluentObj);
+                break;
+            case 1: // Read
+                readValue(asyncId, fluentObj);
+                break;
+            case 2: // Listener
+                listenValue(asyncId, fluentObj);
+                break;
+            case 3: // Exists
+                existsValue(asyncId, fluentObj);
+                break;
+            case 4: // Delete
+                deleteValue(asyncId, fluentObj);
+                break;
+            case 5: // ListenerRemove
+                removeListener(asyncId, fluentObj);
+                break;
+            case 6: // ListenerRemoveAll
+                removeAllListeners(asyncId);
+                break;
+            default:
+                console.error(`FirebaseRealTimeExt: Unknown action: ${action}`);
+                sendDatabaseEvent("FirebaseRealTime_SDK", asyncId, null, 400, { "errorMessage": `Unknown action: ${action}` });
+                break;
+        }
+    });
+
+    return asyncId;
 }
 

@@ -6,15 +6,17 @@ if(async_load[?"listener"] == token_request)
 		var idToken = async_load[?"value"]
 		show_debug_message(idToken)
 		
-		body = {
+		var _body = {
 			idToken: idToken,
 		};
 
-		var headerMap = ds_map_create()
-		ds_map_add(headerMap,"Content-Type","application/json")//Heads
-		request = http_request(url,"POST",headerMap,json_stringify(body))
-		ds_map_destroy(headerMap)
-
+		request = SDKFirebaseCloudFunctions_Call("tokenDecoder", json_stringify(_body), 10);
     }
+}
+
+if(async_load[?"listener"] == request)
+{
+	var _value = async_load[?"value"]
+	show_debug_message(_value);
 }
 

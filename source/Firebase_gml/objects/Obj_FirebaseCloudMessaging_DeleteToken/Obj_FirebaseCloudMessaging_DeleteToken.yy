@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Cloud Messaging/Objects.yy",
+    "path":"folders/Firebase Cloud Messaging/Demo/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

@@ -1,9 +1,6 @@
 
 function RESTFirebaseFirestore_Collection_Add(path,json)
 {
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
-	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Collection_Add",
 				Obj_FirebaseREST_Listener_Once_Firestore,
@@ -17,9 +14,6 @@ function RESTFirebaseFirestore_Collection_Add(path,json)
 
 function RESTFirebaseFirestore_Collection_Read(path)
 {
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
-	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Collection_Read",
 				Obj_FirebaseREST_Listener_Once_Firestore,
@@ -32,10 +26,7 @@ function RESTFirebaseFirestore_Collection_Read(path)
 }
 
 function RESTFirebaseFirestore_Collection_Listener(path)
-{
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
-	
+{	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Collection_Listener",
 				Obj_FirebaseREST_Listener_On_firestore_collection,
@@ -60,13 +51,13 @@ function RESTFirebaseFirestore_Collection_Query(
 				
 				)
 {
-	Firestore_Query_ASCENDING
-	Firestore_Query_DESCENDING
-	Firestore_Query_equal
-	Firestore_Query_greater_than
-	Firestore_Query_greater_than_or_equal
-	Firestore_Query_less_than
-	Firestore_Query_less_than_or_equal
+	FIRESTORE_QUERY_SORT.ASCN
+	FIRESTORE_QUERY_SORT.DESC
+	FIRESTORE_QUERY_FILTER.EQ
+	FIRESTORE_QUERY_FILTER.GREAT
+	FIRESTORE_QUERY_FILTER.GREAT_EQ
+	FIRESTORE_QUERY_FILTER.LESS
+	FIRESTORE_QUERY_FILTER.LESS_EQ
 }
 */
 
@@ -77,10 +68,7 @@ function RESTFirebaseFirestore_Collection_Query(struct)
 	var start = struct._start
 	var end_ = struct._end
 	var limit = struct._limit
-	
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
-	
+		
 	var original_ref = path
 	//https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
 
@@ -211,10 +199,7 @@ function RESTFirebaseFirestore_Collection_Query(struct)
 
 
 function RESTFirebaseFirestore_Document_Delete(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
+{	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 			"FirebaseFirestore_Document_Delete",
 			Obj_FirebaseREST_Listener_Once_Firestore,
@@ -229,10 +214,7 @@ function RESTFirebaseFirestore_Document_Delete(path)
 
 
 function RESTFirebaseFirestore_Document_Read(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
+{	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Document_Read",
 				Obj_FirebaseREST_Listener_Once_Firestore,
@@ -246,10 +228,7 @@ function RESTFirebaseFirestore_Document_Read(path)
 }
 
 function RESTFirebaseFirestore_Document_Listener(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
+{	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Document_Listener",
 				Obj_FirebaseREST_Listener_On_firestore_document,
@@ -286,10 +265,7 @@ function RESTFirebaseFirestore_Document_Set(path,json)
 */
 
 function RESTFirebaseFirestore_Document_Set(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
+{	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 					"RESTFirebaseFirestore_Document_Set",
 					Obj_FirebaseREST_Listener_Once_Firestore,
@@ -303,9 +279,6 @@ function RESTFirebaseFirestore_Document_Set(path,json)
 
 function RESTFirebaseFirestore_Document_Update(path,json)
 {
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
 	var listener = FirebaseREST_asyncFunction_Firestore(
 					"RESTFirebaseFirestore_Document_Update",
 					Obj_FirebaseREST_Listener_Once_Firestore,

@@ -1,23 +1,16 @@
-
+#import <Foundation/Foundation.h>
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseAnalytics/FirebaseAnalytics.h>
 
-#if !defined(__has_include)
-  #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \
-          import the headers individually."
-#else
-    
-  #if __has_include(<FirebaseAnalytics/FirebaseAnalytics.h>)
-    #import <FirebaseAnalytics/FirebaseAnalytics.h>
-  #endif
+@interface YYFirebaseAnalytics : NSObject
 
-#endif  // defined(__has_include)
-
-#import<UserNotifications/UserNotifications.h>
-@interface YYFirebaseAnalytics:NSObject
-{
-}
-
-+(NSMutableDictionary*) makeDic:(NSString*) json;
+- (double)FirebaseAnalytics_SetAnalyticsCollectionEnabled:(double)enabled;
+- (double)FirebaseAnalytics_LogEvent:(NSString *)event value:(NSString *)json;
+- (double)FirebaseAnalytics_ResetAnalyticsData;
+- (double)FirebaseAnalytics_SetDefaultEventParameters:(NSString *)json;
+- (double)FirebaseAnalytics_SetSessionTimeoutDuration:(double)time;
+- (double)FirebaseAnalytics_SetUserID:(NSString *)userID;
+- (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value;
+- (double)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics;
 
 @end
-

@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Query",
-    "path":"folders/Firebase RealTime/Testing/Query.yy",
+    "path":"folders/Firebase RealTime/Demo/Testing/Query.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

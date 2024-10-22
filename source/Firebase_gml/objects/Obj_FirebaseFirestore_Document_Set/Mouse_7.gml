@@ -2,7 +2,7 @@
 randomize()
 
 //Example Struct:
-FirebaseFirestore("Collection/Document").Set({points: irandom(999999), value:"Opera"})
+FirebaseFirestore("Collection/Document").Set({points: irandom(999999), value:"Test"});
 
 //Example JSON String
 //var map = ds_map_create()

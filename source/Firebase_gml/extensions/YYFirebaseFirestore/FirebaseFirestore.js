@@ -1,434 +1,521 @@
 
-let Firestore_Firestore_listenerIdMap = {};
+// Global namespace for Firebase Firestore
+window.FirebaseFirestoreExt = Object.assign(window.FirebaseFirestoreExt || {}, {
 
-//Start point of index
-//Autentication 5000
-//storage 6000
-//Firestore 7000
-//RealTime 10000
-let Firestore_indMap = 7000;
+    // Map to store listeners by async ID for removal
+    listenerMap: {},
+	pathMap: {},
 
-function FirebaseFirestore_SDK(json,callback)
-{
-	let fluent_obj = JSON.parse(json);
-	let action = fluent_obj._action;
-	let isDocument = fluent_obj._isDocument;
+	// Help Methods
+
+    /**
+     * Helper function to check if Firestore is initialized.
+     * Logs an error if `module` is not ready.
+     * @return {boolean} `true` if `module` is ready, `false` otherwise.
+     */
+    isFirestoreInitialized: function() {
+        const context = window.FirebaseFirestoreExt;
+        if (!context.instance || !context.module) {
+            console.warn("Firebase Firestore is not initialized. Please wait for initialization to complete.");
+            return false;
+        }
+        return true;
+    },
+
+    sendFirestoreEvent: function(eventType, asyncId, path, status, additionalData) {
+		const { sendSocialAsyncEvent } = window.FirebaseSetup;
 	
-	if(action == "Set")
-	{
-		if(isDocument >= 0.5)
-			return YYFirebasetore_Document_Set(fluent_obj);
-		else
-			return YYFirebasetore_collection_add_(fluent_obj);
-	}
-	else if(action == "Update")
-	{
-		if(isDocument >= 0.5)
-			return YYFirebasetore_document_update_(fluent_obj);
-		else
-			console.log("Firestore: You can't update a Collection");
-	}
-	else if(action == "Read")
-	{
-		if(isDocument >= 0.5)
-			return YYFirebasetore_document_get_(fluent_obj);
-		else
-			return YYFirebasetore_collection_get_(fluent_obj);
-	}
-	else if(action == "Listener")
-	{
-		if(isDocument >= 0.5)
-			return YYFirebasetore_document_listener_(fluent_obj);
-		else
-			return YYFirebasetore_collection_listener_(fluent_obj);			
-	}
-	else if(action == "Delete")
-	{
-		if(isDocument >= 0.5)
-			return YYFirebasetore_document_delete_(fluent_obj);
-		else
-			console.log("Firestore: You can't delete a Collection");
-	}
-	else if(action == "Query")
-	{
-		if(isDocument < 0.5)
-			return YYFirebasetore_collection_query_(fluent_obj);
-		else
-			console.log("Firebase: You can't Query documents");
-	}
-	else if(action == "ListenerRemove")
-		YYFirebasetore_listener_remove_(fluent_obj);
-	else if(action == "ListenerRemoveAll")
-		YYFirebasetore_listener_removeAll();
+		const data = {
+			listener: asyncId,
+			path: path,
+			status: status,
+		};
 	
-	return 0.0;
-}
-
-function YYFirebasetore_Document_Set(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	let ref = firebase.firestore().doc(fluent_obj._path).set(JSON.parse(fluent_obj._value)).then(() => 
-	{
-		GMS_API.send_async_event_social({
-			type:"FirebaseFirestore_Document_Set",
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-		});
-	}).catch((error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Document_Set",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
-
-function YYFirebasetore_collection_add_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	firebase.firestore().collection(fluent_obj._path).add(JSON.parse(fluent_obj._value)).then((docRef) => 
-	{
-		GMS_API.send_async_event_social({
-			type:"FirebaseFirestore_Collection_Add",
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-			//value:
-			});
-	}).catch((error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Collection_Add",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
-
-function YYFirebasetore_document_update_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	firebase.firestore().doc(fluent_obj._path).update(JSON.parse(fluent_obj._value)).then(() => 
-	{
-		GMS_API.send_async_event_social({
-			type:"FirebaseFirestore_Document_Update",
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-			//value:
-			});
-	}).catch((error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Document_Update",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
-
-function YYFirebasetore_document_get_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	firebase.firestore().doc(fluent_obj._path).get().then((doc) => 
-	{
-		if(doc.exists)
-		{
-			GMS_API.send_async_event_social({
-				type:"FirebaseFirestore_Document_Read",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				value: JSON.stringify(doc.data())
-				});
-		} 
-		else
-		{
-			GMS_API.send_async_event_social({
-				type:"FirebaseFirestore_Document_Read",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:404,
-				errorMessage:"DOCUMENT NOT FOUND"
-				});
+		if (additionalData !== null && additionalData !== undefined) {
+			Object.assign(data, additionalData);
 		}
-				
-	}).catch((error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Document_Read",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
+	
+		sendSocialAsyncEvent(eventType, data);
+	},
 
-function YYFirebasetore_collection_get_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	firebase.firestore().collection(fluent_obj._path).get().then((querySnapshot) => 
-		{
-			let array = querysnap2array(querySnapshot);
-			GMS_API.send_async_event_social({
-				type:"FirebaseFirestore_Collection_Read",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				value: JSON.stringify(array)
-				});
-		}).catch((error) => 
-		{
-			let data = {
-					type:"FirebaseFirestore_Collection_Read",
-					listener:listenerInd,
-					path:fluent_obj._path,
-				};
-			data = InsertStatusData(data,error);
-			GMS_API.send_async_event_social(data);
-		});
-	return(listenerInd);
-}
+	sendErrorEvent: function(eventType, asyncId, path, error) {
+		const { getStatusFromError, sendErrorEventWithMessage } = window.FirebaseFirestoreExt;
+		const status = getStatusFromError(error);
+		sendErrorEventWithMessage(eventType, asyncId, path, status, error.message);
+	},
 
-function YYFirebasetore_document_listener_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	let listener = firebase.firestore().doc(fluent_obj._path).onSnapshot((docSnap) => 
-	{
-		GMS_API.send_async_event_social({
-			type:"FirebaseFirestore_Document_Listener",
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-			value: JSON.stringify(docSnap.data())
+	sendErrorEventWithMessage: function(eventType, asyncId, path, message) {
+		const { sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		sendFirestoreEvent(eventType, asyncId, path, 400, { "errorMessage": message });
+	},
+
+	getCollectionRef: function(path) {
+		const { module, instance } = window.FirebaseFirestoreExt;
+		return module.collection(instance, path);
+	},
+
+	getDocumentRef: function(path) {
+		const { module, instance } = window.FirebaseFirestoreExt;
+		return module.doc(instance, path);
+	},
+
+	getStatusFromError: function(error) {
+		switch (error.code) {
+			case 'aborted':
+			case 'cancelled':
+			case 'data-loss':
+			case 'deadline-exceeded':
+			case 'failed-precondition':
+			case 'internal':
+			case 'out-of-range':
+			case 'resource-exhausted':
+			case 'unimplemented':
+			case 'unknown':
+				return 400;
+			case 'already-exists':
+				return 409;
+			case 'permission-denied':
+				return 403;
+			case 'not-found':
+				return 404;
+			case 'unauthenticated':
+				return 401;
+			case 'unavailable':
+				return 503;
+			default:
+				return 400;
+		}
+	},
+
+	// Collection API
+
+	collectionAdd: function(asyncId, fluentObj) {
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+		const value = fluentObj.value;
+
+		if (!path || !value) {
+			sendErrorEventWithMessage("FirebaseFirestore_Collection_Add", asyncId, path, "Path or value is missing.");
+			return;
+		}
+
+		const collectionRef = getCollectionRef(path);
+
+		module.addDoc(collectionRef, value)
+			.then(() => {
+				sendFirestoreEvent("FirebaseFirestore_Collection_Add", asyncId, path, 200, null);
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Collection_Add", asyncId, path, error);
 			});
-	},(error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Document_Listener",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
+		
+	},
 
-	listenerToMaps(listener,listenerInd);
-	return(listenerInd);
-}
-
-function YYFirebasetore_collection_listener_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	let listener = firebase.firestore().collection(fluent_obj._path).onSnapshot((querySnapshot) => 
-		{
-			let array = querysnap2array(querySnapshot);
-			GMS_API.send_async_event_social({
-				type:"FirebaseFirestore_Collection_Listener",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				value: JSON.stringify(array)
+	collectionGet: function(asyncId, fluentObj) {
+		const { module, getCollectionRef, sendErrorEvent, sendErrorEventWithMessage, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+	
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Collection_Read", asyncId, path, "Path is missing.");
+			return;
+		}
+	
+		const collectionRef = getCollectionRef(path);
+		module.getDocs(collectionRef)
+			.then((querySnapshot) => {
+				const data = {};
+				querySnapshot.forEach((doc) => {
+					data[doc.id] = doc.data();
 				});
-		},(error) => 
-		{
-			let data = {
-					type:"FirebaseFirestore_Collection_Listener",
-					listener:listenerInd,
-					path:fluent_obj._path,
-				};
-			data = InsertStatusData(data,error);
-			GMS_API.send_async_event_social(data);
-		});
-	
-	listenerToMaps(listener,listenerInd);
-	return(listenerInd);
-}
-
-function YYFirebasetore_document_delete_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	firebase.firestore().doc(fluent_obj._path).delete().then(() => 
-	{
-		GMS_API.send_async_event_social({
-			type:"FirebaseFirestore_Document_Delete",
-			listener:listenerInd,
-			path:fluent_obj._path,
-			status:200,
-			// value: 
+				sendFirestoreEvent("FirebaseFirestore_Collection_Read", asyncId, path, 200, { "value": data });
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Collection_Read", asyncId, path, error);
 			});
-	}).catch((error) => 
-	{
-		let data = {
-				type:"FirebaseFirestore_Document_Delete",
-				listener:listenerInd,
-				path:fluent_obj._path,
-			};
-		data = InsertStatusData(data,error);
-		GMS_API.send_async_event_social(data);
-	});
-	return(listenerInd);
-}
+		
+	},
+	
+	collectionQuery: function(asyncId, fluentObj) {
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+	
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Collection_Query", asyncId, path, "Path is missing.");
+			return;
+		}
+	
+		let query = getCollectionRef(path);
+	
+		// Apply filter operations
+		const operations = fluentObj.operations;
+		if (Array.isArray(operations)) {
+			operations.forEach((operation) => {
+				const fieldPath = operation.path;
+				const op = operation.operation;
+				const value = operation.value;
+	
+				if (!fieldPath || !op || value === undefined) {
+					return;
+				}
+	
+				switch (op) {
+					case 0: // FIRESTORE_QUERY_FILTER_LT
+						query = module.query(query, module.where(fieldPath, "<", value));
+						break;
+					case 1: // FIRESTORE_QUERY_FILTER_LT_EQ
+						query = module.query(query, module.where(fieldPath, "<=", value));
+						break;
+					case 2: // FIRESTORE_QUERY_FILTER_GT
+						query = module.query(query, module.where(fieldPath, ">", value));
+						break;
+					case 3: // FIRESTORE_QUERY_FILTER_GT_EQ
+						query = module.query(query, module.where(fieldPath, ">=", value));
+						break;
+					case 4: // FIRESTORE_QUERY_FILTER_EQ
+						query = module.query(query, module.where(fieldPath, "==", value));
+						break;
+					case 5: // FIRESTORE_QUERY_FILTER_NEQ
+						query = module.query(query, module.where(fieldPath, "!=", value));
+						break;
+				}
+			});
+		}
+	
+		// Apply orderBy and sort
+		const orderByField = fluentObj.orderBy;
+		if (orderByField) {
+			const direction = fluentObj.sort === 1 ? "desc" : "asc";
+			query = module.query(query, module.orderBy(orderByField, direction));
+		}
+	
+		// Apply limits
+		const limitToFirst = fluentObj.limitToFirst;
+		if (limitToFirst) {
+			query = module.query(query, module.limit(limitToFirst));
+		}
+	
+		const limitToLast = fluentObj.limitToLast;
+		if (limitToLast) {
+			query = module.query(query, module.limitToLast(limitToLast));
+		}
 
-function YYFirebasetore_collection_query_(fluent_obj)
-{
-	const listenerInd = Firestore_getListenerInd();
-	let query = firebase.firestore().collection(fluent_obj._path);
+		module.getDocs(query)
+			.then((querySnapshot) => {
+				const data = {};
+				querySnapshot.forEach((doc) => {
+					data[doc.id] = doc.data();
+				});
+				sendFirestoreEvent("FirebaseFirestore_Collection_Query", asyncId, path, 200, { "value": data });
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Collection_Query", asyncId, path, error);
+			});
+	},
+
+	collectionListen: function(asyncId, fluentObj) {
+		const { module, getCollectionRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Collection_Listener", asyncId, path, "Path is missing.");
+			return;
+		}
+
+		if (Object.values(pathMap).indexOf(path) >= 0) {
+			sendErrorEventWithMessage("FirebaseFirestore_Collection_Listener", asyncId, path, "Duplicate listener for specified path.");
+            return;
+		}
+
+		const collectionRef = getCollectionRef(path);
+
+		const unsubscribe = module.onSnapshot(collectionRef, (querySnapshot) => {
+			const data = {};
+			querySnapshot.forEach((doc) => {
+				data[doc.id] = doc.data();
+			});
+			sendFirestoreEvent("FirebaseFirestore_Collection_Listener", asyncId, path, 200, { "value": data });
+		}, (error) => {
+			sendErrorEvent("FirebaseFirestore_Collection_Listener", asyncId, path, error);
+		});
+		
 	
-	if(fluent_obj._orderBy_direction !== null && fluent_obj._orderBy_field !== null)
-	{
-		if(fluent_obj._orderBy_direction == "ASCENDING")
-			query = query.orderBy(fluent_obj._orderBy_field,"asc");
-		if(fluent_obj._orderBy_direction == "DESCENDING")
-			query = query.orderBy(fluent_obj._orderBy_field,"desc");
-	} else if(fluent_obj._orderBy_field !== null)
-		query = query.orderBy(fluent_obj._orderBy_field);
+		// Store the unsubscribe function for later removal
+		if (unsubscribe) {
+			pathMap[asyncId] = path;
+			listenerMap[asyncId] = unsubscribe;
+		}
+	},
+
+	// Document API
+
+	documentSet: function(asyncId, fluentObj) {
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+		const value = fluentObj.value;
+
+		if (!path || !value) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Set", asyncId, path, "Path or value is missing.");
+			return;
+		}
 	
-	if(fluent_obj._operations !== null)
-	{
-		let array = fluent_obj._operations;
-		for(let a = 0 ; a < array.length ; a ++)
-		{
-			let map = array[a];
-			let path = map.path;
-			switch(map.operation)
-			{
-				case "EQUAL": query = query.where(path, "==", map.value); break;
-				case "GREATER_THAN_OR_EQUAL": query = query.where(path, ">=", map.value); break;
-				case "GREATER_THAN": query = query = query.where(path, ">", map.value); break;
-				case "LESS_THAN_OR_EQUAL": query = query.where(path, "<=", map.value); break;
-				case "LESS_THAN": query = query.where(path, "<", map.value); break;
+		const docRef = getDocumentRef(path);
+
+		module.setDoc(docRef, value)
+			.then(() => {
+				sendFirestoreEvent("FirebaseFirestore_Document_Set", asyncId, path, 200, null);
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Document_Set", asyncId, path, error);
+			});
+		
+	},
+
+	documentUpdate: function(asyncId, fluentObj) {
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+		const value = fluentObj.value;
+	
+		if (!path || !value) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Update", asyncId, path, "Path or value is missing.");
+			return;
+		}
+	
+		const docRef = getDocumentRef(path);
+	
+		module.updateDoc(docRef, value)
+			.then(() => {
+				sendFirestoreEvent("FirebaseFirestore_Document_Update", asyncId, path, 200, null);
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Document_Update", asyncId, path, error);
+			});
+	},
+
+	documentGet: function(asyncId, fluentObj) {
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Read", asyncId, path, "Path is missing.");
+			return;
+		}
+	
+		const docRef = getDocumentRef(path);
+		module.getDoc(docRef)
+			.then((docSnapshot) => {
+				if (docSnapshot.exists()) {
+					sendFirestoreEvent("FirebaseFirestore_Document_Read", asyncId, path, 200, { "value": docSnapshot.data() });
+				} else {
+					sendFirestoreEvent("FirebaseFirestore_Document_Read", asyncId, path, 404, { "errorMessage": "Document not found" });
+				}
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Document_Read", asyncId, path, error);
+			});
+
+	},
+
+	documentDelete: function(asyncId, fluentObj) {
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+	
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Delete", asyncId, path, "Path is missing.");
+			return;
+		}
+	
+		const docRef = getDocumentRef(path);
+	
+		module.deleteDoc(docRef)
+			.then(() => {
+				sendFirestoreEvent("FirebaseFirestore_Document_Delete", asyncId, path, 200, null);
+			})
+			.catch((error) => {
+				sendErrorEvent("FirebaseFirestore_Document_Delete", asyncId, path, error);
+			});
+	},
+
+	documentListen: function(asyncId, fluentObj) {
+		const { module, getDocumentRef, sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap, pathMap } = window.FirebaseFirestoreExt;
+		const path = fluentObj.path;
+
+		if (!path) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Listener", asyncId, path, "Path is missing.");
+			return;
+		}
+
+		if (Object.values(pathMap).indexOf(path) >= 0) {
+			sendErrorEventWithMessage("FirebaseFirestore_Document_Listener", asyncId, path, "Duplicate listener for specified path.");
+            return;
+		}
+
+		const docRef = getDocumentRef(path);
+
+		const unsubscribe = module.onSnapshot(docRef, (docSnapshot) => {
+			if (docSnapshot.exists()) {
+				sendFirestoreEvent("FirebaseFirestore_Document_Listener", asyncId, path, 200, { "value": docSnapshot.data() });
+			} else {
+				sendFirestoreEvent("FirebaseFirestore_Document_Listener", asyncId, path, 404, { "errorMessage": "Document not found" });
+			}
+		}, (error) => {
+			sendErrorEvent("FirebaseFirestore_Document_Listener", asyncId, path, error);
+		});
+		
+	
+		// Store the unsubscribe function for later removal
+		if (unsubscribe) {
+			pathMap[asyncId] = path;
+			listenerMap[asyncId] = unsubscribe;
+		}
+	},
+
+	// Listener API
+
+	listenerRemove: function(asyncId, fluentObj) {
+		const { sendErrorEventWithMessage, sendErrorEvent, sendFirestoreEvent, listenerMap } = window.FirebaseFirestoreExt;
+	
+		const listenerId = fluentObj.value;
+		if (typeof listenerId !== 'number') {
+			sendErrorEventWithMessage("FirebaseFirestore_RemoveListener", asyncId, null, "Invalid listener ID.");
+			return;
+		}
+	
+		const unsubscribe = listenerMap[listenerId];
+	
+		if (unsubscribe) {
+			unsubscribe();
+			delete listenerMap[listenerId];
+			sendFirestoreEvent("FirebaseFirestore_RemoveListener", asyncId, null, 200, { "value": listenerId });
+		} else {
+			sendErrorEventWithMessage("FirebaseFirestore_RemoveListener", asyncId, null, "Listener not found for ID: '" + listenerId + "'");
+		}
+	},
+
+	listenerRemoveAll: function(asyncId) {
+		const { sendFirestoreEvent, listenerMap } = window.FirebaseFirestoreExt;
+	
+		const removedListeners = [];
+	
+		for (const listenerId in listenerMap) {
+			if (listenerMap.hasOwnProperty(listenerId)) {
+				const unsubscribe = listenerMap[listenerId];
+				unsubscribe();
+				removedListeners.push(Number(listenerId));
+				delete listenerMap[listenerId];
 			}
 		}
-	}
 	
-	if(fluent_obj._start !== null)
-		query = query.startAt(fluent_obj._start);
-	
-	if(fluent_obj._end !== null)
-		query = query.endAt(fluent_obj._end);
-	
-	if(fluent_obj._limit !== null)
-		query = query.limit(fluent_obj._limit);
-		
-		
-	query.get().then((querySnapshot) => 
-		{
-			let array = querysnap2array(querySnapshot);
-			GMS_API.send_async_event_social({
-				type:"FirebaseFirestore_Collection_Query",
-				listener:listenerInd,
-				path:fluent_obj._path,
-				status:200,
-				value: JSON.stringify(array)
-				});
-		}).catch((error) => 
-		{
-			let data = {
-					type:"FirebaseFirestore_Collection_Query",
-					listener:listenerInd,
-					path:fluent_obj._path,
-				};
-			data = InsertStatusData(data,error);
-			GMS_API.send_async_event_social(data);
-		});
-	return(listenerInd);
+		sendFirestoreEvent("FirebaseFirestore_RemoveListeners", asyncId, null, 200, { "values": removedListeners });
+	},
+});
+
+const FIREBASE_FIRESTORE_SUCCESS = 0.0;
+const FIREBASE_FIRESTORE_ERROR_NOT_FOUND = -1.0;
+const FIREBASE_FIRESTORE_ERROR_INVALID_PARAMETERS = -2.0;
+const FIREBASE_FIRESTORE_ERROR_NOT_INITIALIZED = -3.0;
+const FIREBASE_FIRESTORE_ERROR_UNSUPPORTED = -4.0;
+
+/**
+ * Main SDK method to handle Firebase Firestore actions based on the input JSON.
+ *
+ * @param {string} fluentJson - The JSON string containing the action and parameters.
+ * @return {number} The async ID.
+ */
+function FirebaseFirestore_SDK(fluentJson) {
+    const { getNextAsyncId, submitAsyncTask } = window.FirebaseSetup;
+    const { isFirestoreInitialized, sendErrorEventWithMessage } = window.FirebaseFirestoreExt;
+
+    if (!isFirestoreInitialized()) {
+        return FIREBASE_FIRESTORE_ERROR_NOT_INITIALIZED;
+    }
+
+    const asyncId = getNextAsyncId();
+
+    submitAsyncTask(() => {
+        let fluentObj;
+        try {
+            fluentObj = JSON.parse(fluentJson);
+        } catch (e) {
+            console.error("FirebaseFirestoreExt: Invalid JSON input", e);
+            sendErrorEvent("FirebaseFirestore_SDK", asyncId, null, e);
+            return;
+        }
+
+        const action = fluentObj.action;
+        if (action === undefined || action === null) {
+            console.error("FirebaseFirestoreExt: Action not specified in JSON");
+            sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "Action not specified in JSON");
+            return;
+        }
+
+        const { documentSet, documentUpdate, documentGet, documentListen, documentDelete, 
+			collectionAdd, collectionGet, collectionListen, collectionQuery, 
+			listenerRemove, listenerRemoveAll } = window.FirebaseFirestoreExt;
+
+        const isDocument = fluentObj.isDocument;
+
+        switch (action) {
+            case 0: // ACTION_ADD
+				if (isDocument) {
+					sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "You can't add to a document.");
+				} else {
+					collectionAdd(asyncId, fluentObj);
+				}
+                break;
+			case 1: // ACTION_SET
+				if (isDocument) {
+					documentSet(asyncId, fluentObj);
+				} else {
+					sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "You can't set a collection.");
+				}
+                break;
+            case 2: // ACTION_UPDATE
+                if (isDocument) {
+                    documentUpdate(asyncId, fluentObj);
+                } else {
+                    sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "You can't update a collection.");
+                }
+                break;
+            case 3: // ACTION_READ
+				if (isDocument) {
+					documentGet(asyncId, fluentObj);
+				} else {
+					collectionGet(asyncId, fluentObj);
+				}
+                break;
+            case 4: // ACTION_LISTEN
+				if (isDocument) {
+					documentListen(asyncId, fluentObj);
+				} else {
+					collectionListen(asyncId, fluentObj);
+				}
+                break;
+            case 5: // ACTION_DELETE
+                if (isDocument) {
+                    documentDelete(asyncId, fluentObj);
+                } else {
+                    sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "You can't delete a collection.");
+                }
+                break;
+            case 6: // ACTION_QUERY
+                if (isDocument) {
+                    sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "You can't Query a document.");
+                } else {
+                    collectionQuery(asyncId, fluentObj);
+                }
+                break;
+            case 7: // ACTION_LISTENER_REMOVE
+                listenerRemove(asyncId, fluentObj);
+                break;
+            case 8: // ACTION_LISTENER_REMOVE_ALL
+                listenerRemoveAll(asyncId);
+                break;
+            default:
+                console.error("FirebaseFirestoreExt: Unknown action: '" + action + "'");
+                sendErrorEventWithMessage("FirebaseFirestore_SDK", asyncId, null, "Unknown action: '" + action + "'");
+                break;
+        }
+    });
+
+    return asyncId;
 }
-
-function listenerToMaps(listenerId,ind)
-{
-	Firestore_Firestore_listenerIdMap[ind.toString()] = listenerId;
-}
-
-function Firestore_getListenerInd()
-{
-	Firestore_indMap ++;
-	return(Firestore_indMap);
-}
-
-function querysnap2array(querySnap)
-{
-	let array = [];
-	var docs = querySnap.docs;
-	for(let a = 0 ; a < docs.length ; a ++)
-		array.push(docs[a].data());
-	
-	return array
-}
-
-function YYFirebasetore_listener_remove_(fluent_obj)
-{
-	let ind = fluent_obj._value;
-	let func = Firestore_Firestore_listenerIdMap[ind.toString()];
-	func();
-	delete Firestore_Firestore_listenerIdMap[ind.toString()];
-}
-
-function YYFirebasetore_listener_removeAll()
-{
-	for (let key in Firestore_Firestore_listenerIdMap) 
-	{
-		let ind = key;
-		let func = Firestore_Firestore_listenerIdMap[ind];
-		func();
-		delete Firestore_Firestore_listenerIdMap[ind];
-	}
-}
-
-
-//https://firebase.google.com/docs/reference/js/v8/firebase.firestore.FirestoreError
-//https://firebase.google.com/docs/reference/js/v8/firebase.firestore#firestoreerrorcode
-//https://firebase.google.com/docs/reference/js/v8/firebase.functions.HttpsError#error
-function InsertStatusData(obj,error)
-{
-	if(error == null)
-	{
-		obj.status = 200;
-		return obj;
-	}
-	
-	let http_status = 400;
-	if("code" in error)//if(error instanceof firebase.functions.HttpsError)
-	switch(error.code)
-	{
-		case "ok": http_status = 200; break;
-		case "cancelled": http_status = 400; break;
-		case "unknown": http_status = 400; break;
-		case "invalid-argument": http_status = 400; break;
-		case "deadline-exceeded": http_status = 400; break;
-		case "not-found": http_status = 400; break;
-		case "already-exists": http_status = 409; break;
-		case "permission-denied": http_status = 403; break;
-		case "resource-exhausted": http_status = 400; break;
-		case "failed-precondition": http_status = 400; break;
-		case "aborted": http_status = 400; break;
-		case "out-of-range": http_status = 400; break;
-		case "unimplemented": http_status = 400; break;
-		case "internal": http_status = 400; break;
-		case "unavailable": http_status = 503; break;
-		case "data-loss": http_status = 400; break;
-		case "unauthenticated": http_status = 401; break;
-	}
-	
-	obj.status = http_status;
-	obj.errorMessage = error.message;
-	
-	return obj;
-}
-
-
-
-

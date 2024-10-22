@@ -13,7 +13,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Storage/Objects.yy",
+    "path":"folders/Firebase Storage/Demo/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseStorage_parent",

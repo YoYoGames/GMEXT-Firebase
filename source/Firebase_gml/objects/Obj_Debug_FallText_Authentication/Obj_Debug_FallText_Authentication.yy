@@ -11,8 +11,8 @@
   "name":"Obj_Debug_FallText_Authentication",
   "overriddenProperties":[],
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Authentication/Testing.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Authentication/Demo/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

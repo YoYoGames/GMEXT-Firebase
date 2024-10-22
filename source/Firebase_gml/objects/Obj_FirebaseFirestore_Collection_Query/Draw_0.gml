@@ -1,44 +1,89 @@
 
 event_inherited();
 
-var string_function = "FirebaseFirestore(\""+collection_path+"\")"
+var _string_function = "FirebaseFirestore(" + json_stringify(collection_path) + ")"
 
-if(!Obj_FirebaseFirestore_Collection_Query_OrderBy.locked)
-	string_function += ".OrderBy(\""+Obj_FirebaseFirestore_Collection_Query_OrderBy.value+"\",\""+Obj_FirebaseFirestore_Collection_Query_AscendingDescending.text+"\")"
+with (Obj_FirebaseFirestore_Collection_Query_OrderBy) {
+	if (locked) break;
 
-if(!Obj_FirebaseFirestore_Collection_Query_LessThan.locked)
-	string_function += ".WhereLessThan(\""+Obj_FirebaseFirestore_Collection_Query_LessThan.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_LessThan.value)+")"
+	var _order_by = value;
+	with (Obj_FirebaseFirestore_Collection_Query_AscendingDescending) {
+		if (locked) break;
+		_string_function += ".OrderBy(" + json_stringify(_order_by) + "," + json_stringify(value) + ")";
+		
+		break;
+	}
+	break;
+}
+
+with (Obj_FirebaseFirestore_Collection_Query_LessThan) {
+	if (locked) break;
 	
-if(!Obj_FirebaseFirestore_Collection_Query_LessEqualThan.locked)
-	string_function += ".WhereLessThanOrEqual(\""+Obj_FirebaseFirestore_Collection_Query_LessEqualThan.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_LessEqualThan.value)+")"
+	_string_function += ".WhereLessThan(" + json_stringify(path) + "," + json_stringify(value) + ")";
+	break;
+}
+	
+with (Obj_FirebaseFirestore_Collection_Query_LessEqualThan) {
+	if (locked) break;
+	
+	_string_function += ".WhereLessThanOrEqual(" + json_stringify(path) + "," + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_Greater.locked)
-	string_function += ".WhereGreaterThan(\""+Obj_FirebaseFirestore_Collection_Query_Greater.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_Greater.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_Greater) {
+	if (locked) break;
+	
+	_string_function += ".WhereGreaterThan(" + json_stringify(path) + "," + json_stringify(value)+ ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_GreaterEqual.locked)
-	string_function += ".WhereGreaterThanOrEqual(\""+Obj_FirebaseFirestore_Collection_Query_GreaterEqual.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_GreaterEqual.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_GreaterEqual) {
+	if (locked) break;
+	
+	_string_function += ".WhereGreaterThanOrEqual(" + json_stringify(path) + "," + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_Equal.locked)
-	string_function += ".WhereEqual(\""+Obj_FirebaseFirestore_Collection_Query_Equal.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_Equal.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_Equal) {
+	if (locked) break;
+	
+	_string_function += ".WhereEqual(" + json_stringify(path) + "," + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_NotEqual.locked)
-	string_function += ".WhereNotEqual(\""+Obj_FirebaseFirestore_Collection_Query_NotEqual.path+"\","+string(Obj_FirebaseFirestore_Collection_Query_NotEqual.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_NotEqual) {
+	if (locked) break;
+	
+	_string_function += ".WhereNotEqual(" + json_stringify(path) + "," + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_StartAt.locked)
-	string_function += ".StartAt("+string(Obj_FirebaseFirestore_Collection_Query_StartAt.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_StartAt) {
+	if (locked) break;
+	
+	_string_function += ".StartAt(" + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_EndAt.locked)
-	string_function += ".EndAt("+string(Obj_FirebaseFirestore_Collection_Query_EndAt.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_EndAt) {
+	if (locked) break;
+	
+	_string_function += ".EndAt(" + json_stringify(value) + ")";
+	break;
+}
 
-if(!Obj_FirebaseFirestore_Collection_Query_Limit.locked)
-	string_function += ".Limit("+string(Obj_FirebaseFirestore_Collection_Query_Limit.value)+")"
+with (Obj_FirebaseFirestore_Collection_Query_Limit) {
+	if (locked) break;
+	
+	_string_function += ".Limit(" + json_stringify(value) + ")";
+	break;
+}
 
+_string_function += ".Query()"
 
-string_function += ".Query()"
+draw_set_font(Font_YoYo_15);
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
 
-draw_set_font(Font_YoYo_15)
-draw_set_halign(fa_center)
-draw_set_valign(fa_center)
-
-draw_text(room_width/2,120,string_function)
+draw_text(room_width/2, 120, _string_function);
 

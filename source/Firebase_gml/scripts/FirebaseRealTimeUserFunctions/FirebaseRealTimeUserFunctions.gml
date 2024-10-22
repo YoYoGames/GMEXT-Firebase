@@ -10,207 +10,231 @@
 #macro Firebase_LimitTo_First 0
 #macro Firebase_LimitTo_Last 1
 
-function FirebaseRealTime(database = undefined)
+function FirebaseRealTime(_database = undefined)
 {
-	return new Firebase_RealTime_builder(database)
+	return new FirebaseRealTimeBuilder(_database)
 }
 
-function Firebase_RealTime_builder(database) constructor
+function FirebaseRealTimeBuilder(_database) constructor
 {
-	_push = undefined;
-	_path = ""
+	enum FIREBASE_DATABASE_ACTION {
+		SET = 0,
+		READ = 1,
+		LISTENER = 2,
+		EXISTS = 3,
+		DELETE = 4,
+		LISTENER_REMOVE = 5,
+		LISTERER_REMOVE_ALL = 6,
+	}
 	
-	_OrderBy = undefined
-	_EqualTo = undefined
-	_StartValue = undefined
-	_EndValue = undefined
-	_LimitKind = undefined
-	_LimitValue = undefined
-	_database = database
-
-	_action = ""
-	_value = undefined
+	__ = {
+		push: undefined,
+		path: "",
+		orderBy: undefined,
+		
+		equalTo: undefined,
+		startAt: undefined,
+		startAfter: undefined,
+		endAt: undefined,
+		endBefore: undefined,
+		
+		limitToFirst: undefined,
+		limitToLast: undefined,
+		
+		database: _database,
+		action: "",
+		value: undefined,
+		priority: undefined,
+	};
 	
+	/// @function Path(child_path)
 	static Path = function(path)
 	{
-		_path = path
+		__.path = path;
 		return self
 	}
 	
-	static Child = function(child_path)
+	/// @function Child(child_path)
+	static Child = function(_child_path)
 	{
-		_path = FirebaseRealTime_Path_Join(_path,child_path)
+		__.path = FirebaseRealTime_Path_Join(__.path, _child_path);
 		return self
 	}
 	
+	/// @function Parent(child_path)
 	static Parent = function()
 	{
-		_path = FirebaseRealTime_Path_Back(_path,1)
+		__.path = FirebaseRealTime_Path_Back(_path, 1);
 		return self
 	}
 	
+	/// @function Push(child_path)
 	static Push = function()
 	{
-		_push = true
+		__.push = true;
 		return self
 	}
-	
-	static OrderByValue = function()
-    {
-		_OrderBy = Firebase_OrderBy_Value
-		return self
-    }
-	
+
+	/// @function OrderByKey(child_path)
 	static OrderByKey = function()
     {
-		_OrderBy = Firebase_OrderBy_Key
+		__.orderBy = "$key";
 		return self
     }
 	
-	static OrderByChild = function(path)
+	/// @function OrderByValue(child_path)
+	static OrderByValue = function()
     {
-		_OrderBy = path//Firebase_OrderBy_Child
+		__.orderBy = "$value";
 		return self
     }
 	
-	static EqualTo = function(EqualTo)
+	/// @function OrderByPriority(child_path)
+	static OrderByPriority = function()
     {
-		_EqualTo = EqualTo
+		__.orderBy = "$priority";
 		return self
     }
 	
-	static StartAt = function(StartValue)
+	/// @function OrderByChild(child_path)
+	static OrderByChild = function(_path)
     {
-		_StartValue = StartValue
+		__.orderBy = _path;
 		return self
     }
 	
-	static EndAt = function(EndValue)
+	/// @function EqualTo(child_path)
+	static EqualTo = function(_equal_to)
     {
-		_EndValue = EndValue
+		__.equalTo = _equal_to;
 		return self
     }
 	
-	//static Limit = function(LimitKind,LimitValue)
-    //{
-	//	_LimitKind = LimitKind
-	//	_LimitValue = LimitValue
-	//	return self
-    //}
+	/// @function StartAt(child_path)
+	static StartAt = function(_start_at)
+    {
+		__.startAt = _start_at;
+		__.startAfter = undefined;
+		return self
+    }
 	
-	static LimitToLast = function(LimitValue)
+	/// @function StartAfter(child_path)
+	static StartAfter = function(_start_after)
+    {
+		__.startAfter = _start_after;
+		__.startAt = undefined;
+		return self
+    }
+	
+	/// @function EndAt(child_path)
+	static EndAt = function(_end_at)
+    {
+		__.endAt = _end_at
+		__.endBefore = undefined;
+		return self
+    }
+	
+	/// @function EndBefore(child_path)
+	static EndBefore = function(_end_before)
+    {
+		__.endBefore = _end_before
+		__.endAt = undefined;
+		return self
+    }
+		
+	/// @function LimitToLast(child_path)
+	static LimitToLast = function(_count)
 	{
-		_LimitKind = Firebase_LimitTo_Last
-		_LimitValue = LimitValue
+		__.limitToLast = _count;
+		__.limitToFirst = undefined;
 		return self
 	}
 	
-	static LimitToFirst = function(LimitValue)
+	/// @function LimitToFirst(child_path)
+	static LimitToFirst = function(_count)
 	{
-		_LimitKind = Firebase_LimitTo_First
-		_LimitValue = LimitValue
+		__.limitToFirst = _count;
+		__.limitToLast = undefined;
 		return self
 	}
 	
 	//Actions
 
-    static Set = function(value)
+    static Set = function(_value, _priority = undefined, _try_parse = true)
     {
-		_action = "Set"
-		_value = value
+		__.action = FIREBASE_DATABASE_ACTION.SET;
 		
-		var ok = false
-		if(is_real(value))
+		if (is_string(_value) && _try_parse)
 		{
-			ok = true
-			value = string(value)
-		}
-		else
-		if(string_starts_with(string(value),"ref ds_map"))//if(is_ds(value))
-		{
-			ok = true
-			value = json_encode(value)
-		}
-		else
-		if(is_struct(value) or is_array(value))
-		{
-			ok = true
-			value = json_stringify(value)
-		}
-		else
-		if(is_string(value))
-		{
-			var its_json_string = false
-			
-			
-			//This improve the performance
-			its_json_string = (string_char_at(value,1) == "{" and string_char_at(value,string_length(value)-1) == "}")
-			if(!its_json_string)
-				its_json_string = (string_char_at(value,1) == "[" and string_char_at(value,string_length(value)-1) == "]")
-			
-			
-			if(!its_json_string)//heavy verification...?
-			if(!((string_char_at(value,1) != "{" and string_char_at(value,1) != "[" and string_char_at(value,1) != " ")))
-			{
-				var map = json_decode(value)
-				var value_ = json_encode(map)
-				ds_map_destroy(map)
-				
-				its_json_string = !(!string_count("default",value) and string_count("default",value_))
+			try {
+				_value = json_parse(_value);
 			}
-			
-			if(its_json_string)
-			{
-				ok = true
+			catch (_e) {}
+		}
+		else if (is_handle(_value)) {
+			var _handle_type = string(_value);
+			if (string_starts_with(_handle_type, "ref ds_map")) {
+				_value = json_parse(json_encode(_value));
 			}
-			else
-			{
-				//Just a string....
-				ok = true
-				value = "\"" + value + "\""
+			else if (string_starts_with(_handle_type, "ref ds_list")) {
+				var _map = ds_map_create();
+				ds_map_add_list(_map, "list", _value);
+				var _struct = json_parse(json_encode(_map));
+				ds_map_delete(_map, "list");
+				ds_map_destroy(_map);
+				_value = _struct.list;
+			}
+			else {
+				_value = _handle_type;
 			}
 		}
-	
+		
+		__.value = _value;
+		__.priority = _priority;
+		
 		var listener = undefined
-		if(ok)
-		{
-			if(FirebaseRealTime_Library_useSDK)
-				return FirebaseRealTime_SDK(json_stringify(self))
-			var listener = FirebaseREST_asyncFunction_RealTime(
-							"FirebaseRealTime_Set",
-							Obj_FirebaseREST_Listener_Once_RealTime,
-							FirebaseREST_RealTime_getURL(_path,_database),
-							FirebaseREST_RealTime_getWriteHTTPMethod(_push),
-							"{}",
-							value
-						)
-			listener.path = _path
-		}
+
+		if(FirebaseRealTime_Library_useSDK)
+			return FirebaseRealTime_SDK(json_stringify(__));
+				
+		var listener = FirebaseREST_asyncFunction_RealTime(
+						"FirebaseRealTime_Set",
+						Obj_FirebaseREST_Listener_Once_RealTime,
+						FirebaseREST_RealTime_getURL(_path,_database),
+						FirebaseREST_RealTime_getWriteHTTPMethod(_push),
+						"{}",
+						__.value
+					)
+		listener.path = __.path
+		
 	
 		return listener
     }
 	
     static Read = function()
     {
-		_action = "Read"
+		__.action = FIREBASE_DATABASE_ACTION.READ;
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		return FirebaseRealTime_List_Builder("FirebaseRealTime_Read",Obj_FirebaseREST_Listener_Once_RealTime,_path,_OrderBy,_EqualTo,_StartValue,_EndValue,_LimitKind,_LimitValue,_database)
     }
 	
     static Listener = function()
     {
-		_action = "Listener"
+		__.action = FIREBASE_DATABASE_ACTION.LISTENER;
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		return FirebaseRealTime_List_Builder("FirebaseRealTime_Listener",Obj_FirebaseREST_Listener_On_RealTime,_path,_OrderBy,_EqualTo,_StartValue,_EndValue,_LimitKind,_LimitValue,_database)
     }
 
     static Exists = function()
     {
-		_action = "Exists"
+		__.action = FIREBASE_DATABASE_ACTION.EXISTS;
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Exists",
 						Obj_FirebaseREST_Listener_Once_RealTime,
@@ -227,9 +251,10 @@ function Firebase_RealTime_builder(database) constructor
 	
 	static Delete = function()
     {
-		_action = "Delete"
+		__.action = FIREBASE_DATABASE_ACTION.DELETE;
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
+			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Delete",
 						Obj_FirebaseREST_Listener_Once_RealTime,
@@ -243,24 +268,27 @@ function Firebase_RealTime_builder(database) constructor
 		return listener;
     }
 	
-    static ListenerRemove = function(listener)
+    static ListenerRemove = function(_listener)
     {
-		_value = listener
-		_action = "ListenerRemove"
+		__.action = FIREBASE_DATABASE_ACTION.LISTENER_REMOVE;
+		
+		__.value = _listener;
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
-		with(listener)
+			return FirebaseRealTime_SDK(json_stringify(__))
+		with(_listener)
 		    instance_destroy()
     }
 	
     static ListenerRemoveAll = function()
     {
-		_action = "ListenerRemoveAll"
+		__.action = FIREBASE_DATABASE_ACTION.LISTERER_REMOVE_ALL;
+		
 		if(FirebaseRealTime_Library_useSDK)
-			return FirebaseRealTime_SDK(json_stringify(self))
-		with(Obj_FirebaseREST_Listener_RealTime)
-		if(string_count("Listener",event))
-			instance_destroy()
+			return FirebaseRealTime_SDK(json_stringify(__))
+		with(Obj_FirebaseREST_Listener_RealTime) {
+			if(string_count("Listener", event))
+				instance_destroy()
+		}
     }
 }
 

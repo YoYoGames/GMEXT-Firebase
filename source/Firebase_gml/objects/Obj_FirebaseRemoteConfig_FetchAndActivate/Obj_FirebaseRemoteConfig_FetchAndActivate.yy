@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Remote Config/Objects.yy",
+    "path":"folders/Firebase Remote Config/Demo/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

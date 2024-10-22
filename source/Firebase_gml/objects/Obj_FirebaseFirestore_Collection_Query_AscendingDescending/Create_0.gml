@@ -1,5 +1,9 @@
 
 event_inherited();
 
-text = Firestore_Query_ASCENDING
+strings = [ "Ascending", "Descending" ];
+
+text = strings[FIRESTORE_QUERY_SORT.ASCN];
+
+value = FIRESTORE_QUERY_SORT.ASCN;
 //locked = true

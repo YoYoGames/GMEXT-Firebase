@@ -1,455 +1,495 @@
-
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.DatabaseReference.CompletionListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.json.JSONArray;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Objects;
-import java.lang.Exception;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.util.Log;
-import android.content.Context;
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+public class YYFirebaseRealTime extends RunnerSocial {
 
-public class YYFirebaseRealTime extends RunnerSocial
-{
-	private static final int EVENT_OTHER_SOCIAL = 70;
-	
-	public static Activity activity;
-	
-	private HashMap<String,ValueEventListener> RealTime_valueListernerMap;
-	private HashMap<String,DatabaseReference> RealTime_valueListernerRefMap;
-	
-	//Start point of index
-	//Autentication 5000
-	//storage 6000
-	//Firestore 7000
-	//RealTime 10000
-	private double RealTime_valueListernerInd = 10000;
-	
-	private HashMap<String,ValueEventListener> crashMap;
-	
-	public YYFirebaseRealTime()
-	{
-		RealTime_valueListernerMap = new HashMap<String,ValueEventListener>();
-		RealTime_valueListernerRefMap = new HashMap<String,DatabaseReference>();
-	}
-	
-	public double FirebaseRealTime_SDK(String fluent_json)
-	{
-		JSONObject fluent_obj;
+    private static final String LOG_TAG = "YYFirebaseRealTime";
+
+    private HashMap<Long, ValueEventListener> listenerMap;
+    private HashMap<Long, DatabaseReference> referenceMap;
+
+    public YYFirebaseRealTime() {
+        listenerMap = new HashMap<>();
+        referenceMap = new HashMap<>();
+    }
+
+    // Action types
+    private static final int ACTION_SET = 0;
+    private static final int ACTION_READ = 1;
+    private static final int ACTION_LISTEN = 2;
+    private static final int ACTION_EXISTS = 3;
+    private static final int ACTION_DELETE = 4;
+    private static final int ACTION_LISTENER_REMOVE = 5;
+    private static final int ACTION_LISTENER_REMOVE_ALL = 6;
+
+    /**
+     * Main SDK method to handle Firebase Real-Time actions based on the input JSON.
+     *
+     * @param fluentJson The JSON string containing the action and parameters.
+     * @return The async ID as a double.
+     */
+    public double FirebaseRealTime_SDK(String fluentJson) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUtils.getInstance().submitAsyncTask(() -> {
+            JSONObject fluentObj;
+
+            try {
+                fluentObj = new JSONObject(fluentJson);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "Invalid JSON input", e);
+                sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Invalid JSON input");
+                return;
+            }
+
+            int action = fluentObj.optInt("action", -1);
+            if (action == -1) {
+                Log.e(LOG_TAG, "Action not specified in JSON");
+                sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Action not specified in JSON.");
+                return;
+            }
+
+            switch (action) {
+                case ACTION_SET:
+                    setValue(asyncId, fluentObj);
+                    break;
+                case ACTION_READ:
+					readValue(asyncId, fluentObj);
+					break;
+                case ACTION_LISTEN:
+                    listenValue(asyncId, fluentObj);
+                    break;
+                case ACTION_EXISTS:
+                    existsValue(asyncId, fluentObj);
+                    break;
+                case ACTION_DELETE:
+                    deleteValue(asyncId, fluentObj);
+                    break;
+                case ACTION_LISTENER_REMOVE:
+                    removeListener(asyncId, fluentObj);
+                    break;
+                case ACTION_LISTENER_REMOVE_ALL:
+                    removeAllListeners(asyncId);
+                    break;
+                default:
+                    sendErrorEvent("FirebaseRealTime_SDK", asyncId, null, 400, "Unknown action: " + action);
+                    break;
+            }
+        });
+
+        return (double) asyncId;
+    }
+
+    /**
+     * Handles the "Set" action to write data to Firebase.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void setValue(final long asyncId, final JSONObject fluentObj) {
+		Object value = fluentObj.opt("value");
+		String path = fluentObj.optString("path", null);
 		
-		try 
-		{fluent_obj = new JSONObject(fluent_json);}
-		catch (Exception e) 
-		{return(0.0);}
-		
-		String action = (String) JSONObjectGet(fluent_obj,"_action");
-		if(action.equals("Set"))
-			return FirebaseRealTime_Set(fluent_obj);
-		else if(action.equals("Read") || action.equals("Listener"))
-			return  FirebaseRealTime_Read(fluent_obj);
-		else if(action.equals("Exists"))
-			return  FirebaseRealTime_Exists(fluent_obj);
-		else if(action.equals("Delete"))
-			return FirebaseRealTime_Delete(fluent_obj);
-		else if(action.equals("ListenerRemove"))
-			FirebaseRealTime_ListenerRemove(fluent_obj);
-		else if(action.equals("ListenerRemoveAll"))
-			FirebaseRealTime_ListenerRemoveAll();
-		return 0.0;
-	}
-	
-	private double FirebaseRealTime_Set(final JSONObject fluent_obj)
-	{
-		final double listenerInd = RealTime_getListenerInd();
-		
-		Object obj = JSONObjectGet(fluent_obj,"_value");
-		
-		if(obj instanceof String)
-		{
-			try 
-			{obj = toMap(new JSONObject((String)obj));}
-			catch (Exception e) 
-			{}
-		}
-		
-		BuildReference(fluent_obj).setValue(obj,new DatabaseReference.CompletionListener() 
-		{
+        value = FirebaseUtils.convertJSON(value);
+
+		DatabaseReference reference = buildReference(fluentObj);
+		reference.setValue(value, (error, ref) -> {
+            if (error != null) {
+                sendErrorEvent("FirebaseRealTime_Set", asyncId, path, error);
+            } else {
+                sendDatabaseEvent("FirebaseRealTime_Set", asyncId, path, 200, null);
+            }
+		});
+    }
+
+    /**
+     * Handles the "Read" action to read data from Firebase.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void readValue(final long asyncId, final JSONObject fluentObj) {
+		DatabaseReference dataRef = buildReference(fluentObj);
+		Query query = buildQuery(asyncId, "FirebaseRealTime_Read", fluentObj, dataRef);
+
+        if (query == null) return;
+
+        ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Read", asyncId, fluentObj.optString("path", null));
+		query.addListenerForSingleValueEvent(eventListener);
+    }
+
+    /**
+     * Handles the "Listener" action to listen for data changes in Firebase.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void listenValue(final long asyncId, final JSONObject fluentObj) {
+		DatabaseReference reference = buildReference(fluentObj);
+		Query query = buildQuery(asyncId, "FirebaseRealTime_Listener", fluentObj, reference);
+
+        if (query == null) return;
+
+        ValueEventListener eventListener = createValueEventListener("FirebaseRealTime_Listener", asyncId, fluentObj.optString("path", null));
+
+		listenerMap.put(asyncId, eventListener);
+        referenceMap.put(asyncId, reference);
+
+		query.addValueEventListener(eventListener);
+    }
+
+    /**
+     * Handles the "Delete" action to remove data from Firebase.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void deleteValue(final long asyncId, final JSONObject fluentObj) {
+        final String path = fluentObj.optString("path", null);
+		final DatabaseReference reference = buildReference(fluentObj);
+		reference.removeValue((error, ref) -> {
+            if (error != null) {
+                sendErrorEvent("FirebaseRealTime_Delete", asyncId, path, error);
+            } else {
+                sendDatabaseEvent("FirebaseRealTime_Delete", asyncId, path, 200, null);
+            }
+		});
+    }
+
+    /**
+     * Handles the "Exists" action to check data existence in Firebase.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void existsValue(final long asyncId, final JSONObject fluentObj) {
+		final String path = fluentObj.optString("path", null);
+		final DatabaseReference reference = buildReference(fluentObj);
+		reference.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
-			public void onComplete(DatabaseError error, DatabaseReference ref) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Set");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if (error == null) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",getErrorCodeHTTP(error)); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",error.getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);		
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				Map<String, Object> extraData = Map.of("value", dataSnapshot.exists() ? 1.0 : 0.0);
+				sendDatabaseEvent("FirebaseRealTime_Exists", asyncId, path, 200, extraData);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError error) {
+                sendErrorEvent("FirebaseRealTime_Exists", asyncId, path, error);
 			}
 		});
-		
-		return listenerInd;
-	}
-	
-	private double FirebaseRealTime_Read(final JSONObject fluent_obj)
-	{
-		final double listenerInd = RealTime_getListenerInd();
-		
-		ValueEventListener valueEventListener = new ValueEventListener() 
-		{
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				String action = (String) JSONObjectGet(fluent_obj,"_action");
-				if(action.equals("Read"))
-					RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Read");
-				else if(action.equals("Listener"))
-					RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Listener");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
+    }
 
-				if(dataSnapshot.exists())
-				{					
-					if((dataSnapshot.getValue() instanceof Boolean) || (dataSnapshot.getValue() instanceof Double) || (dataSnapshot.getValue() instanceof Long))
-						RunnerJNILib.DsMapAddDouble(dsMapIndex,"value",(double) dataSnapshot.getValue(Double.class));
-					
-					if(dataSnapshot.getValue() instanceof String)
-						RunnerJNILib.DsMapAddString(dsMapIndex,"value",(String) dataSnapshot.getValue(String.class));
-					
-					if(dataSnapshot.getValue() instanceof Map)
-						RunnerJNILib.DsMapAddString(dsMapIndex,"value",MapToJSON((Map<String, Object>)dataSnapshot.getValue()));
-						
-					
-					if(dataSnapshot.getValue() instanceof List)//MAPTOJSON() Correctly??
-						RunnerJNILib.DsMapAddString(dsMapIndex,"value",MapToJSON((Map<String, Object>)dataSnapshot.getValue()));
-				}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-			
-			@Override
-			public void onCancelled(DatabaseError error) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Read");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",getErrorCodeHTTP(error)); 
-				RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",error.getMessage());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		};
-		
-		if(((String) JSONObjectGet(fluent_obj,"_action")).equals("Read"))
-			BuildQuery(fluent_obj,BuildReference(fluent_obj)).addListenerForSingleValueEvent(valueEventListener);
-		else
-		if(((String) JSONObjectGet(fluent_obj,"_action")).equals("Listener"))
-		{
-			DatabaseReference dataRef = BuildReference(fluent_obj);
-			RealTime_listenerToMaps(dataRef,valueEventListener,listenerInd);
-			BuildQuery(fluent_obj,dataRef).addValueEventListener(valueEventListener);
+    /**
+     * Handles the "ListenerRemove" action to remove a specific Firebase listener.
+     *
+	 * @param asyncId The unique async ID.
+     * @param fluentObj The JSON object containing parameters.
+     */
+    private void removeListener(final long asyncId, JSONObject fluentObj) {
+		long listenerToRemove = fluentObj.optLong("value", -1L);
+		if (listenerToRemove == -1L) {
+			sendErrorEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, "Unable to extract listener id.");
+			return;
 		}
-		
-		return listenerInd;
-	}
-	
-	private double FirebaseRealTime_Delete(final JSONObject fluent_obj)
-	{
-		final double listenerInd = RealTime_getListenerInd();
-		BuildReference(fluent_obj).removeValue(new DatabaseReference.CompletionListener() 
-		{
-			@Override
-			public void onComplete(DatabaseError error, DatabaseReference ref) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Delete");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(error == null)
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",getErrorCodeHTTP(error)); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",error.getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);		
-			}
-		});
-		return listenerInd;
-	}
-	
-	private double FirebaseRealTime_Exists(final JSONObject fluent_obj)
-	{
-		final double listenerInd = RealTime_getListenerInd();
-		BuildReference(fluent_obj).addListenerForSingleValueEvent(new ValueEventListener() 
-		{
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Exists");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				if(dataSnapshot.exists())
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"value",1.0);
-				else
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"value",0.0);
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-			@Override
-			public void onCancelled(DatabaseError error) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseRealTime_Exists");
-				RunnerJNILib.DsMapAddString(dsMapIndex,"path",(String)JSONObjectGet(fluent_obj,"_path"));
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",getErrorCodeHTTP(error)); 
-				RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",error.getMessage());
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public void FirebaseRealTime_ListenerRemove(JSONObject fluent_obj)
-	{
-		double ind = ((Double)JSONObjectGet(fluent_obj,"_value")).doubleValue();
-		DatabaseReference dataRef = RealTime_valueListernerRefMap.remove(String.valueOf(ind));
-		dataRef.getRef().removeEventListener(RealTime_valueListernerMap.remove(String.valueOf(ind)));
-	}
-	
-	public void FirebaseRealTime_ListenerRemoveAll()
-	{
-		for(String key : RealTime_valueListernerRefMap.keySet())
-		{
-			DatabaseReference dataRef = RealTime_valueListernerRefMap.get(key);
-			dataRef.removeEventListener(RealTime_valueListernerMap.get(key));
+
+		DatabaseReference dataRef = referenceMap.remove(listenerToRemove);
+		ValueEventListener listener = listenerMap.remove(listenerToRemove);
+
+		if (dataRef != null && listener != null) {
+			dataRef.removeEventListener(listener);
+			Map<String, Object> extraData = Map.of("value", listenerToRemove);
+			sendDatabaseEvent("FirebaseRealTime_RemoveListener", asyncId, null, 200, extraData);
+		} else {
+			sendErrorEvent("FirebaseRealTime_RemoveListener", asyncId, null, 400, "Listener or DatabaseReference not found for ID: " + listenerToRemove);
 		}
-		RealTime_valueListernerMap.clear();
-		RealTime_valueListernerRefMap.clear();		
-	}
-	
-	///////////////////////// Firease RealTime TOOLS
-	
-	private double RealTime_getListenerInd()
-	{
-		RealTime_valueListernerInd ++;
-		return(RealTime_valueListernerInd);
+    }
+
+    /**
+     * Handles the "ListenerRemoveAll" action to remove all Firebase listeners.
+     */
+    private void removeAllListeners(final long asyncId) {
+		List<Object> removedListeners = new ArrayList<>();
+
+		for (Long listenerToRemove : referenceMap.keySet()) {
+			DatabaseReference dataRef = referenceMap.get(listenerToRemove);
+			ValueEventListener listener = listenerMap.get(listenerToRemove);
+			if (dataRef != null && listener != null) {
+				dataRef.removeEventListener(listener);
+				removedListeners.add(listenerToRemove);
+			}
+		}
+		listenerMap.clear();
+		referenceMap.clear();
+
+		Map<String, Object> extraData = Map.of("values", removedListeners);
+		sendDatabaseEvent("FirebaseRealTime_RemoveListeners", asyncId, null, 200, extraData);
+    }
+
+    /**
+     * Generates the next unique async ID using FirebaseUtils.
+     *
+     * @return The next async ID as a long.
+     */
+    private long getNextAsyncId() {
+        return FirebaseUtils.getInstance().getNextAsyncId();
+    }
+
+	/**
+     * Creates a new ValueEventListener for listening data changes in Firebase.
+     *
+     * @param eventType The type of event.
+     * @param asyncId The unique async ID.
+     * @param path The Firebase database path related to the event.
+     */
+	private ValueEventListener createValueEventListener(final String eventType, final long asyncId, final String path) {
+		return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Map<String, Object> extraData = new HashMap<>();
+
+                if (dataSnapshot.exists()) {
+                    Object dataValue = dataSnapshot.getValue();
+                    if (dataValue instanceof List) {
+                        if (dataSnapshot.hasChildren()) {
+                            List<Object> list = new ArrayList<>();
+                            for (DataSnapshot child : dataSnapshot.getChildren()) {
+                                list.add(child.getValue());
+                            }
+                            dataValue = list;
+                        }
+                    }
+                    extraData.put("value", dataValue);
+                }
+
+                sendDatabaseEvent(eventType, asyncId, path, 200, extraData);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                sendErrorEvent(eventType, asyncId, path, error);
+            }
+        };
 	}
 
-	private void RealTime_listenerToMaps(DatabaseReference dataRef,ValueEventListener valueEventListener,double ind)
-	{
-		RealTime_valueListernerMap.put(String.valueOf(ind),valueEventListener);
-		RealTime_valueListernerRefMap.put(String.valueOf(ind),dataRef);
-	}
-	
-	public DatabaseReference BuildReference(JSONObject fluent_obj)
-	{
-		DatabaseReference dataRef;
-		if(fluent_obj.isNull("_database"))
-			dataRef = FirebaseDatabase.getInstance().getReference();
-		else
-			dataRef = FirebaseDatabase.getInstance((String)JSONObjectGet(fluent_obj,"_database")).getReference();
-		
-		if(!fluent_obj.isNull("_path"))
-			dataRef = dataRef.child((String) JSONObjectGet(fluent_obj,"_path"));
-		
-		if(!fluent_obj.isNull("_push"))
-			dataRef = dataRef.push();
-		
-		return dataRef;
-	}
-	
-	public Query BuildQuery(JSONObject fluent_obj,DatabaseReference dataRef)
-	{
-		Query mQuery = (Query)dataRef;
-		
-		if(!fluent_obj.isNull("_OrderBy"))
-		if(JSONObjectGet(fluent_obj,"_OrderBy") instanceof String)
-		{
-			mQuery = mQuery.orderByChild((String)JSONObjectGet(fluent_obj,"_OrderBy"));
-		}
-		else
-		switch(((Double)JSONObjectGet(fluent_obj,"_OrderBy")).intValue())
-		{
-			// case 0: dataRef = dataRef.orderByChild(JSONObjectGet(fluent_obj,"_OrderBy")); break;
-			case 1: mQuery = mQuery.orderByKey(); break;
-			case 2: mQuery = mQuery.orderByValue(); break;
-		}
-		
-		if(!fluent_obj.isNull("_StartValue"))
-		if(JSONObjectGet(fluent_obj,"_StartValue") instanceof String)
-			mQuery = mQuery.startAt((String)JSONObjectGet(fluent_obj,"_StartValue"));
-		else
-			mQuery = mQuery.startAt((double)JSONObjectGet(fluent_obj,"_StartValue"));
-		
-		if(!fluent_obj.isNull("_EndValue"))
-		if(JSONObjectGet(fluent_obj,"_EndValue") instanceof String)
-			mQuery = mQuery.endAt((String)JSONObjectGet(fluent_obj,"_EndValue"));
-		else
-			mQuery = mQuery.endAt((double)JSONObjectGet(fluent_obj,"_EndValue"));
-			
-		if(!fluent_obj.isNull("_EqualTo"))
-		if(JSONObjectGet(fluent_obj,"_EqualTo") instanceof String)
-			mQuery = mQuery.equalTo((String)JSONObjectGet(fluent_obj,"_EqualTo"));
-		else
-			mQuery = mQuery.equalTo((double)JSONObjectGet(fluent_obj,"_EqualTo"));
-			
-		if(!fluent_obj.isNull("_LimitKind"))
-		if(!fluent_obj.isNull("_LimitValue"))
-		{
-			switch(((Double)JSONObjectGet(fluent_obj,"_LimitKind")).intValue())
-			{
-				case 0: mQuery = mQuery.limitToFirst(((Double)JSONObjectGet(fluent_obj,"_LimitValue")).intValue()); break;
-				case 1: mQuery = mQuery.limitToLast(((Double)JSONObjectGet(fluent_obj,"_LimitValue")).intValue()); break;
-			}			
-		}
-		return mQuery;
-	}
-	
-	private Object JSONObjectGet(JSONObject jsonObj,String key)
-	{
-		try 
-		{
-			if(jsonObj.isNull(key)) 
-				return null;
-			return jsonObj.get(key);
-		}
-		catch(Exception e)
-		{return null;}
+    /**
+     * Creates a DatabaseReference based on the provided JSON parameters.
+     *
+     * @param fluentObj The JSON object containing parameters.
+     * @return The constructed DatabaseReference.
+     */
+    private DatabaseReference buildReference(JSONObject fluentObj) {
+        DatabaseReference dataRef;
+        if (fluentObj.isNull("database")) {
+            dataRef = FirebaseDatabase.getInstance().getReference();
+        } else {
+            String databaseUrl = fluentObj.optString("database", null);
+            if (databaseUrl != null) {
+                dataRef = FirebaseDatabase.getInstance(databaseUrl).getReference();
+            } else {
+                dataRef = FirebaseDatabase.getInstance().getReference();
+            }
+        }
+
+        String path = fluentObj.optString("path", null);
+        if (path != null) {
+            dataRef = dataRef.child(path);
+        }
+
+        boolean push = fluentObj.optBoolean("push", false);
+        if (push) {
+            dataRef = dataRef.push();
+        }
+
+        return dataRef;
+    }
+
+    /**
+     * Constructs a Firebase Query based on the provided JSON parameters and DatabaseReference.
+     *
+     * @param fluentObj The JSON object containing query parameters.
+     * @param dataRef   The DatabaseReference to build the query from.
+     * @return The constructed Query.
+     */
+    private Query buildQuery(final long asyncId, final String eventType, JSONObject fluentObj, DatabaseReference dataRef) {
+        Query query = dataRef;
+
+        String orderBy = fluentObj.optString("orderBy", null);
+        if (orderBy != null) {
+            switch (orderBy) {
+                case "$key":
+                    query = query.orderByKey();
+                    break;
+                case "$value":
+                    query = query.orderByValue();
+                    break;
+                case "$priority":
+                    query = query.orderByPriority();
+                    break;
+                default:
+                    query = query.orderByChild(orderBy);
+                    break;
+            }
+        }
+
+        // You can only use one of these (equalTo or <range>)
+        if (!fluentObj.isNull("equalTo")) {
+            Object equalTo = fluentObj.opt("equalTo");
+            if (equalTo instanceof String) {
+                query = query.equalTo((String) equalTo);
+            } else if (equalTo instanceof Boolean) {
+                query = query.equalTo(((Boolean) equalTo));
+            } else if (equalTo instanceof Number) {
+                query = query.equalTo(((Number) equalTo).doubleValue());
+            }
+        } else {
+            // You can only use one of these (startAt or startAfter)
+            if (!fluentObj.isNull("startAt")) {
+                Object startValue = fluentObj.opt("startAt");
+                if (startValue instanceof String) {
+                    query = query.startAt((String) startValue);
+                } else if (startValue instanceof Boolean) {
+                    query = query.startAt(((Boolean) startValue));
+                } else if (startValue instanceof Number) {
+                    query = query.startAt(((Number) startValue).doubleValue());
+                }
+            }
+            else if (!fluentObj.isNull("startAfter")) {
+                Object startValue = fluentObj.opt("startAfter");
+                if (startValue instanceof String) {
+                    query = query.startAfter((String) startValue);
+                } else if (startValue instanceof Boolean) {
+                    query = query.startAfter(((Boolean) startValue));
+                } else if (startValue instanceof Number) {
+                    query = query.startAfter(((Number) startValue).doubleValue());
+                }
+            }
+
+            // You can only use one of these (endAt or endBefore)
+            if (!fluentObj.isNull("endAt")) {
+                Object endValue = fluentObj.opt("endAt");
+                if (endValue instanceof String) {
+                    query = query.endAt((String) endValue);
+                } else if (endValue instanceof Boolean) {
+                    query = query.endAt(((Boolean) endValue));
+                } else if (endValue instanceof Number) {
+                    query = query.endAt(((Number) endValue).doubleValue());
+                }
+            }
+            else if (!fluentObj.isNull("endBefore")) {
+                Object endValue = fluentObj.opt("endBefore");
+                if (endValue instanceof String) {
+                    query = query.endBefore((String) endValue);
+                } else if (endValue instanceof Boolean) {
+                    query = query.endBefore(((Boolean) endValue));
+                } else if (endValue instanceof Number) {
+                    query = query.endBefore(((Number) endValue).doubleValue());
+                }
+            }
+        }
+
+        int limitToFirst = fluentObj.optInt("limitToFirst", -1);
+        if (limitToFirst != -1) {
+            query = query.limitToFirst(limitToFirst);
+        }
+
+        int limitToLast = fluentObj.optInt("limitToLast", -1);
+        if (limitToLast != -1) {
+            query = query.limitToLast(limitToLast);
+        }
+
+        return query;
+    }
+
+    /**
+     * Maps a Firebase DatabaseError to an appropriate HTTP status code.
+     *
+     * @param error The DatabaseError to map.
+     * @return The corresponding HTTP status code as an int.
+     */
+    private int getStatusFromError(DatabaseError error) {
+        switch (error.getCode()) {
+            case DatabaseError.DISCONNECTED:
+                return 400;
+            case DatabaseError.EXPIRED_TOKEN:
+            case DatabaseError.INVALID_TOKEN:
+            case DatabaseError.PERMISSION_DENIED:
+                return 401;
+            case DatabaseError.MAX_RETRIES:
+            case DatabaseError.NETWORK_ERROR:
+            case DatabaseError.OPERATION_FAILED:
+            case DatabaseError.OVERRIDDEN_BY_SET:
+            case DatabaseError.UNKNOWN_ERROR:
+            case DatabaseError.USER_CODE_EXCEPTION:
+            case DatabaseError.WRITE_CANCELED:
+                return 400;
+            case DatabaseError.UNAVAILABLE:
+                return 503;
+            default:
+                return 400;
+        }
+    }
+
+    /**
+     * Sends a database event by assembling common data and delegating to sendSocialAsyncEvent.
+     *
+     * @param eventType The type of event.
+     * @param asyncId The unique async ID.
+     * @param path The Firebase database path related to the event.
+     * @param status The HTTP status code representing the result.
+     * @param extraData Additional data to include in the event.
+     */
+    private void sendDatabaseEvent(String eventType, long asyncId, String path, int status, Map<String, Object> extraData) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("listener", asyncId);
+        if (path != null) {
+            data.put("path", path);
+        }
+        data.put("status", status);
+
+        if (extraData != null) {
+            data.putAll(extraData);
+        }
+
+        FirebaseUtils.sendSocialAsyncEvent(eventType, data);
+    }
+
+	private void sendErrorEvent(String eventType, long asyncId, String path, int status, String errorMessage) {
+		Map<String, Object> data = new HashMap<>();
+		data.put("errorMessage", errorMessage);
+		sendDatabaseEvent(eventType, asyncId, path, status, data);
 	}
 
-	
-	
-	///////////////////// LIST/MAP TOOLS
-	
-	public static String MapToJSON(Map map)
-	{
-		try
-		{
-			return (new JSONObject(map).toString());
-		}
-		catch(Exception e)
-		{
-			return "{}";
-		}
-	}
-	
-	public static String ListToJSON(Map map)
-	{
-		try
-		{
-			return (new JSONObject(map).toString());
-		}
-		catch(Exception e)
-		{
-			return "{}";
-		}
+	private void sendErrorEvent(String eventType, long asyncId, String path, DatabaseError databaseError) {
+		Map<String, Object> data = new HashMap<>();
+        int status = getStatusFromError(databaseError);
+        sendErrorEvent(eventType, asyncId, path, status, databaseError.getMessage());
 	}
 
-	public static Map<String,Object> jsonToMap(String jsonStr)
-	{
-		try
-		{
-			JSONObject json = new JSONObject(jsonStr);
-			Map<String,Object> retMap = new HashMap<String,Object>();
-			if(json != JSONObject.NULL) 
-				retMap = toMap(json);
-			return retMap;
-		}
-		catch(Exception e)
-		{
-			return new HashMap<String,Object>();
-		}	
-	}
-
-	public static Map<String,Object> toMap(JSONObject object) throws Exception
-	{
-		Map<String,Object> map = new HashMap<String,Object>();
-		Iterator<String> keysItr = object.keys();
-		while(keysItr.hasNext()) 
-		{
-			String key = keysItr.next();
-			Object value = object.get(key);
-
-			if(value instanceof JSONArray) 
-			{
-				value = toList((JSONArray) value);
-			}
-			else 
-				if(value instanceof JSONObject) 
-				{
-					value = toMap((JSONObject) value);
-				}
-				
-			map.put(key,value);
-		}
-		return map;
-	}
-
-	public static List<Object> toList(JSONArray array) throws Exception
-	{
-		List<Object> list = new ArrayList<Object>();
-		for(int i = 0; i < array.length(); i++) 
-		{
-			Object value = array.get(i);
-			if(value instanceof JSONArray) 
-			{
-				value = toList((JSONArray) value);
-			}
-			else 
-				if(value instanceof JSONObject) 
-				{
-					value = toMap((JSONObject) value);
-				}
-			list.add(value);
-		}
-		return list;
-	}
-	
-	public double getErrorCodeHTTP(DatabaseError error)
-	{
-		//SDK https://firebase.google.com/docs/reference/android/com/google/firebase/database/DatabaseError
-		//REST API https://firebase.google.com/docs/reference/rest/database
-		switch(error.getCode())
-		{
-			case DatabaseError.DISCONNECTED: return 400;
-			case DatabaseError.EXPIRED_TOKEN: return 401;
-			case DatabaseError.INVALID_TOKEN: return 401;
-			case DatabaseError.MAX_RETRIES: return 400;
-			case DatabaseError.NETWORK_ERROR: return 400;
-			case DatabaseError.OPERATION_FAILED: return 400;
-			case DatabaseError.OVERRIDDEN_BY_SET: return 400;
-			case DatabaseError.PERMISSION_DENIED: return 401;
-			case DatabaseError.UNAVAILABLE: return 503;
-			case DatabaseError.UNKNOWN_ERROR: return 400;
-			case DatabaseError.USER_CODE_EXCEPTION: return 400;
-			case DatabaseError.WRITE_CANCELED: return 400;
-		}
-		return 400;
-	}
 }
-

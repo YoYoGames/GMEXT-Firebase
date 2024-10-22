@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Performance/Objects.yy",
+    "path":"folders/Firebase Performance/Demo/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

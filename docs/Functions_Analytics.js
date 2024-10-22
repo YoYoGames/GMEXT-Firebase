@@ -5,6 +5,13 @@
  * 
  * @param {string} event The event data (available [events](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Event) reference)
  * @param {string} params The data as a **JSON formatted** string (available [params](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.Param) reference)
+ * @returns {constant.FirebaseAnalyticsResult}
+ * 
+ * @event social
+ * @member {string} type The string `"FirebaseAnalytics_LogEvent"`
+ * @member {boolean} success Whether or not the operation succeeded.
+ * @member {string} error The error message if the operation fails.
+ * @event_end
  * 
  * @example
  * ```gml
@@ -23,6 +30,8 @@
  * 
  * [[Note: This will not clear analytics previously collected by the app that have already been pushed to the server.]]
  * 
+ * @returns {constant.FirebaseAnalyticsResult}
+ * 
  * @example
  * ```gml
  * if (global.stopDataCollection)
@@ -40,6 +49,7 @@
  * @desc This function is used to enable or disable analytics collection for the app on the current device. This setting is persisted across app sessions. By default it is enabled.
  * 
  * @param {boolean} enable Whether or not analytics collection should be enabled.
+ * @returns {constant.FirebaseAnalyticsResult}
  * 
  * @example
  * ```gml
@@ -55,9 +65,15 @@
 
 /**
  * @func FirebaseAnalytics_SetDefaultEventParameters
- * @desc This function sets &quot;default&quot; parameters that will be provided with every event logged from the SDK, including automatic ones. The values passed in the parameters bundle will be added to the map of default event parameters. These parameters persist across app runs. They are of lower precedence than event parameters, so if an event parameter and a parameter set using this function have the same name, the value of the event parameter will be used. The same limitations on event parameters apply to default event parameters.
+ * @desc This function sets "default" parameters that will be provided with every event logged from the SDK, including automatic ones. The values passed in the parameters bundle will be added to the map of default event parameters. These parameters persist across app runs. They are of lower precedence than event parameters, so if an event parameter and a parameter set using this function have the same name, the value of the event parameter will be used. The same limitations on event parameters apply to default event parameters.
+ * @param {string} parameters A **JSON formatted** string of a struct to be added to **every** event. These parameters will be added to the default event parameters, replacing any existing parameter with the same name. Valid parameter values are **string** and **double** . Setting a key's value to `pointer_null` will clear that parameter.
+ * @returns {constant.FirebaseAnalyticsResult}
  * 
- * @param {string} parameters A **JSON** **formatted** string of a struct to be added to **every** event. These parameters will be added to the default event parameters, replacing any existing parameter with the same name. Valid parameter values are **string** and **double** . Setting a key's value to `pointer_null` will clear that parameter.
+ * @event social
+ * @member {string} type The string `"FirebaseAnalytics_SetDefaultEventParameters"`
+ * @member {boolean} success Whether or not the operation succeeded.
+ * @member {string} error The error message if the operation fails.
+ * @event_end
  * 
  * @example
  * ```gml
@@ -77,6 +93,7 @@
  * @desc This function sets the duration of inactivity (in milliseconds) that terminates the current session. The default value is 1800000 (30 minutes).
  * 
  * @param {real} milliseconds Session timeout duration in milliseconds.
+ * @returns {constant.FirebaseAnalyticsResult}
  * 
  * @example
  * ```gml
@@ -91,6 +108,7 @@
  * @desc This function sets the user ID property. This feature must be used in accordance with [Google's Privacy Policy](https://www.google.com/policies/privacy).
  * 
  * @param {string} userID The user ID string  to assign to the user of this app on this device, which must be non-empty and no more than 256 characters long. Setting the ID to `pointer_null` removes the user ID.
+ * @returns {constant.FirebaseAnalyticsResult}
  * 
  * @example
  * ```gml
@@ -106,6 +124,7 @@
  * 
  * @param {string} key The name of the user property to set. Should contain 1 to 24 **alphanumeric**  characters or underscores and must start with an **alphabetic** character.<br> <br> [[Warning: The `"firebase_"`, `"google_"` and `"ga_"` prefixes are reserved and should not be used for user property names]].
  * @param {string} value The value of the user property. Values can be up to 36 characters long. Setting the value to `pointer_null` removes the user property.
+ * @returns {constant.FirebaseAnalyticsResult}
  * 
  * @example
  * ```gml
@@ -113,4 +132,11 @@
  * ```
  * The code above will set a user property `"location"` to the value `"UK"`.
  * @function_end
+ */
+
+/**
+ * @const FirebaseAnalyticsResult
+ * @desc Represents the possible results for operations in the Analytics module.
+ * @member FIREBASE_ANALYTICS_SUCCESS Indicates the operation was completed successfully.
+ * @member FIREBASE_ANALYTICS_ERROR_INVALID_PARAMETERS Indicates the operation failed due to invalid input parameters.
  */

@@ -1,184 +1,154 @@
-
 #import "YYFirebaseRemoteConfig.h"
+#import "FirebaseUtils.h"
 #import <UIKit/UIKit.h>
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
+// Error Codes
+static const double kFirebaseRemoteConfigSuccess = 0.0;
+static const double kFirebaseRemoteConfigErrorUnsupported = -1.0;
 
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+@interface YYFirebaseRemoteConfig ()
 
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
+// Private methods and properties can be declared here if needed.
 
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+#pragma mark - Helper Methods
 
-@implementation YYFirebaseRemoteConfig
-
--(id) init
-{
-    if (self = [super init]) {
-        if (![FIRApp defaultApp]) {
-            [FIRApp configure];
-        }
-    }
-    return self; // Always return self at the end.
-}
-
-//https://firebase.google.com/docs/reference/ios/firebaseremoteconfig/api/reference/Classes/FIRRemoteConfig
--(void) FirebaseRemoteConfig_Initialize:(double) seconds
-{
-    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] init];
-    remoteConfigSettings.minimumFetchInterval = seconds;
-    [FIRRemoteConfig remoteConfig].configSettings = remoteConfigSettings;
-    
-    //[[FIRRemoteConfig remoteConfig] setDefaultsFromPlistFileName:@"GoogleService-Info.plist"];
-}
-    
--(void) FirebaseRemoteConfig_FetchAndActivate
-{
-    [[FIRRemoteConfig remoteConfig] fetchAndActivateWithCompletionHandler:^(FIRRemoteConfigFetchAndActivateStatus status, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_FetchAndActivate");
-        
-        if(status == FIRRemoteConfigFetchAndActivateStatusSuccessFetchedFromRemote)
-            dsMapAddDouble(dsMapIndex,(char*)"success",1.0);
-        else
-        {
-            dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
-			if(error)
-                NSLog(@"%@", [error localizedDescription]);
-        }
-        
-        createSocialAsyncEventWithDSMap(dsMapIndex);
-    }];
-}
-
--(void) FirebaseRemoteConfig_Reset
-{
-	NSLog(@"FirebaseRemoteConfig_Reset: This function is not compatible with iOS");
-    // // A whole pod for only this function...... :)
-    // [[FIRInstallations installations] deleteWithCompletion:^(NSError * _Nullable error)
-    // {
-        // int dsMapIndex = dsMapCreate();
-        // dsMapAddString(dsMapIndex, "type","FirebaseRemoteConfig_Reset");
-        
-        // if(error == nil)
-            // dsMapAddDouble(dsMapIndex, "success",1.0);
-        // else
-        // {
-            // dsMapAddDouble(dsMapIndex, "success",0.0);
-            // NSLog([error localizedDescription]);
-        // }
-        
-        // createSocialAsyncEventWithDSMap(dsMapIndex);
-    // }];
-}
-
--(void) FirebaseRemoteConfig_SetDefaultsAsync:(NSString*) json
-{
-	
-    NSError *jsonError;
-    NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *jsonMap = [NSJSONSerialization JSONObjectWithData:objectData
-                                                            options:NSJSONReadingMutableContainers
-                                                              error:&jsonError];
-	
-    [[FIRRemoteConfig remoteConfig] setDefaults:jsonMap];
-	
-	int dsMapIndex = dsMapCreate();
-	dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_SetDefaultsAsync");
-	dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-	createSocialAsyncEventWithDSMap(dsMapIndex);
-}
-
--(NSString*) FirebaseRemoteConfig_GetKeys
-{
-    NSArray<NSString *> *remoteKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceRemote];
-    
-    NSMutableArray<NSString*> *array = [remoteKeys mutableCopy];
-    
-    NSArray<NSString *> *defaultKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceDefault];
-    
-    for(int a = 0 ; a < [defaultKeys count] ; a++)
-    if(![array containsObject:defaultKeys[a]])
-        [array addObject:defaultKeys[a]];
-    
-    return [YYFirebaseRemoteConfig toJSON: array];
-}
-
--(NSString*) FirebaseRemoteConfig_GetString:(NSString*) key
-{
-   return [[[FIRRemoteConfig remoteConfig] configValueForKey:key] stringValue];
-}
-
--(double) FirebaseRemoteConfig_GetDouble:(NSString*) key
-{
-    return [[[[FIRRemoteConfig remoteConfig] configValueForKey:key] numberValue] doubleValue];
-}
-
-
--(void) FirebaseRemoteConfig_AddOnConfigUpdateListener
-{
-	[[FIRRemoteConfig remoteConfig] addOnConfigUpdateListener:^(FIRRemoteConfigUpdate * _Nonnull configUpdate, NSError * _Nullable error)
-	{
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseRemoteConfig_AddOnConfigUpdateListener");
-        
-		if (error != nil)
-		{
-            dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
-		}
-		else 
-		{
-            dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-            
-            bool first = true;
-            NSString *_str_stirng = @"[";
-            for(NSString *_str in configUpdate.updatedKeys)
-            {
-                if (first) {
-                    first = false;
-                }
-                else
-                {
-                    _str_stirng = [NSString stringWithFormat:@"%@,",_str_stirng];
-                }
-                _str_stirng = [NSString stringWithFormat:@"%@\"%@\"", _str_stirng, _str];
-            }
-            _str_stirng = [NSString stringWithFormat:@"%@]",_str_stirng];
-            
-            dsMapAddString(dsMapIndex, (char*)"keys",(char*)[_str_stirng UTF8String]);
-
-            createSocialAsyncEventWithDSMap(dsMapIndex);
-		}
-	}];
-}
-
-+(NSString*) toJSON:(id) obj
-{
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj
-                                                           options:0//NSJSONWritingPrettyPrinted
-                                                             error:&error];
-    if(error == nil)
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    else
-        return @"{}";
-}
+- (NSString *)convertObjectToJsonString:(id)obj;
 
 @end
 
+@implementation YYFirebaseRemoteConfig
+
+- (id)init {
+    if (self = [super init]) {
+    }
+    return self;
+}
+
+#pragma mark - Firebase Remote Config Methods
+
+- (double)FirebaseRemoteConfig_Initialize:(double)seconds {
+    FIRRemoteConfigSettings *remoteConfigSettings = [[FIRRemoteConfigSettings alloc] init];
+    remoteConfigSettings.minimumFetchInterval = seconds;
+    [FIRRemoteConfig remoteConfig].configSettings = remoteConfigSettings;
+    return kFirebaseRemoteConfigSuccess;
+}
+
+- (double)FirebaseRemoteConfig_FetchAndActivate {
+    __weak YYFirebaseRemoteConfig *weakSelf = self;
+    [[FIRRemoteConfig remoteConfig] fetchAndActivateWithCompletionHandler:^(FIRRemoteConfigFetchAndActivateStatus status, NSError *_Nullable error) {
+        __strong YYFirebaseRemoteConfig *strongSelf = weakSelf;
+        if (!strongSelf) return;
+
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        if (status == FIRRemoteConfigFetchAndActivateStatusSuccessFetchedFromRemote || status == FIRRemoteConfigFetchAndActivateStatusSuccessUsingPreFetchedData) {
+            [data setObject:@(1.0) forKey:@"success"];
+        } else {
+            [data setObject:@(0.0) forKey:@"success"];
+            if (error) {
+                NSString *errorMessage = [error localizedDescription];
+                [data setObject:errorMessage forKey:@"error"];
+            } else {
+                [data setObject:@"Failed with unknown error" forKey:@"error"];
+            }
+        }
+
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_FetchAndActivate" data:data];
+    }];
+    return kFirebaseRemoteConfigSuccess;
+}
+
+- (double)FirebaseRemoteConfig_Reset {
+    NSLog(@"FirebaseRemoteConfig_Reset :: This function is not supported on iOS");
+    return kFirebaseRemoteConfigErrorUnsupported;
+}
+
+- (double)FirebaseRemoteConfig_SetDefaultsAsync:(NSString *)json {
+    // Offload JSON parsing to a background thread
+    __weak YYFirebaseRemoteConfig *weakSelf = self;
+    [[FirebaseUtils sharedInstance] submitAsyncTask:^{
+        __strong YYFirebaseRemoteConfig *strongSelf = weakSelf;
+        if (!strongSelf) return;
+
+        NSError *jsonError = nil;
+        NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *jsonMap = [NSJSONSerialization JSONObjectWithData:objectData options:NSJSONReadingMutableContainers error:&jsonError];
+
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+
+        if (jsonError) {
+            [data setObject:@(0.0) forKey:@"success"];
+            [data setObject:[jsonError localizedDescription] forKey:@"error"];
+        } else {
+            [[FIRRemoteConfig remoteConfig] setDefaults:jsonMap];
+            [data setObject:@(1.0) forKey:@"success"];
+        }
+
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_SetDefaultsAsync" data:data];
+    }];
+
+    return kFirebaseRemoteConfigSuccess;
+}
+
+- (NSString *)FirebaseRemoteConfig_GetKeys {
+    NSArray<NSString *> *remoteKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceRemote];
+    NSArray<NSString *> *defaultKeys = [[FIRRemoteConfig remoteConfig] allKeysFromSource:FIRRemoteConfigSourceDefault];
+
+    NSMutableSet<NSString *> *keySet = [NSMutableSet setWithArray:remoteKeys];
+    [keySet addObjectsFromArray:defaultKeys];
+
+    NSArray<NSString *> *allKeys = [keySet allObjects];
+
+    NSString *keysJson = [self convertObjectToJsonString:allKeys];
+
+    return keysJson;
+}
+
+- (NSString *)FirebaseRemoteConfig_GetString:(NSString *)key {
+    NSString *value = [[[FIRRemoteConfig remoteConfig] configValueForKey:key] stringValue];
+    return value;
+}
+
+- (double)FirebaseRemoteConfig_GetDouble:(NSString *)key {
+    double value = [[[[FIRRemoteConfig remoteConfig] configValueForKey:key] numberValue] doubleValue];
+    return value;
+}
+
+- (double)FirebaseRemoteConfig_AddOnConfigUpdateListener {
+    __weak YYFirebaseRemoteConfig *weakSelf = self;
+    [[FIRRemoteConfig remoteConfig] addOnConfigUpdateListener:^(FIRRemoteConfigUpdate *_Nonnull configUpdate, NSError *_Nullable error) {
+        __strong YYFirebaseRemoteConfig *strongSelf = weakSelf;
+        if (!strongSelf) return;
+
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        if (error != nil) {
+            [data setObject:@(0.0) forKey:@"success"];
+            [data setObject:[error localizedDescription] forKey:@"error"];
+        } else {
+            [data setObject:@(1.0) forKey:@"success"];
+
+            NSArray<NSString *> *updatedKeys = [configUpdate.updatedKeys allObjects];
+            NSString *keysString = [strongSelf convertObjectToJsonString:updatedKeys];
+            [data setObject:keysString forKey:@"keys"];
+        }
+
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseRemoteConfig_AddOnConfigUpdateListener" data:data];
+    }];
+
+    return kFirebaseRemoteConfigSuccess;
+}
+
+#pragma mark - Helper Methods
+
+- (NSString *)convertObjectToJsonString:(id)obj {
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj options:0 error:&error];
+    if (error == nil) {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        return jsonString;
+    } else {
+        NSLog(@"Error converting object to JSON: %@", [error localizedDescription]);
+        return @"[]";
+    }
+}
+
+@end

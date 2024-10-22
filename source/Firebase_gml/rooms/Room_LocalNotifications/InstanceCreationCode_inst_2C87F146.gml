@@ -5,4 +5,4 @@ uid = "10s"
 seconds = 10
 title = "This is the title";
 msg = "This is the message";
-data = ""
+data = json_stringify({ something: uid });

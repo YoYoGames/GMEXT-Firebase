@@ -124,6 +124,7 @@
     {"id":{"name":"GooglePlayServices","path":"extensions/GooglePlayServices/GooglePlayServices.yy",},},
     {"id":{"name":"GoogleSignIn","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},},
     {"id":{"name":"YYFirebaseAnalytics","path":"extensions/YYFirebaseAnalytics/YYFirebaseAnalytics.yy",},},
+    {"id":{"name":"YYFirebaseAppCheck","path":"extensions/YYFirebaseAppCheck/YYFirebaseAppCheck.yy",},},
     {"id":{"name":"YYFirebaseAuthentication_tools","path":"extensions/YYFirebaseAuthentication_tools/YYFirebaseAuthentication_tools.yy",},},
     {"id":{"name":"YYFirebaseAuthentication","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},},
     {"id":{"name":"YYFirebaseCloudFunctions","path":"extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.yy",},},

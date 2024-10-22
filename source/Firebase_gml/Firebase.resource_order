@@ -1,6 +1,6 @@
 {
   "FolderOrderSettings":[
-    {"name":"__ReleaseThings__","order":15,"path":"folders/__ReleaseThings__.yy",},
+    {"name":"__ReleaseThings__","order":18,"path":"folders/__ReleaseThings__.yy",},
     {"name":"Firebase Authentication Extras Logins (Extensions)","order":2,"path":"folders/__ReleaseThings__/Firebase Authentication Extras Logins (Extensions).yy",},
     {"name":"Firebase Analytics","order":2,"path":"folders/Firebase Analytics.yy",},
     {"name":"Demo","order":1,"path":"folders/Firebase Analytics/Demo.yy",},
@@ -80,7 +80,7 @@
   "ResourceOrderSettings":[
     {"name":"AppleSignInMac","order":1,"path":"extensions/AppleSignInMac/AppleSignInMac.yy",},
     {"name":"FacebookExtension2","order":5,"path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-    {"name":"FirebaseSetup","order":16,"path":"extensions/FirebaseSetup/FirebaseSetup.yy",},
+    {"name":"FirebaseSetup","order":19,"path":"extensions/FirebaseSetup/FirebaseSetup.yy",},
     {"name":"GameCenter","order":2,"path":"extensions/GameCenter/GameCenter.yy",},
     {"name":"GooglePlayServices","order":4,"path":"extensions/GooglePlayServices/GooglePlayServices.yy",},
     {"name":"GoogleSignIn","order":3,"path":"extensions/GoogleSignIn/GoogleSignIn.yy",},

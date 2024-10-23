@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseCloudFunctions",
-  "copyToTargets":9007199254741036,
+  "copyToTargets":9007199254741100,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"1.1.0",

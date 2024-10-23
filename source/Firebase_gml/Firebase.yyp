@@ -1,6 +1,6 @@
 {
   "$GMProject":"",
-  "%Name":"Firebase_Checkapp",
+  "%Name":"Firebase",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
@@ -113,9 +113,9 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1100.0.650",
+    "IDEVersion":"2024.8.1.171",
   },
-  "name":"Firebase_Checkapp",
+  "name":"Firebase",
   "resources":[
     {"id":{"name":"AppleSignIn","path":"extensions/AppleSignIn/AppleSignIn.yy",},},
     {"id":{"name":"AppleSignInMac","path":"extensions/AppleSignInMac/AppleSignInMac.yy",},},

@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseRealTime",
-  "copyToTargets":9007199254741036,
+  "copyToTargets":9007199254741100,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.3.0",

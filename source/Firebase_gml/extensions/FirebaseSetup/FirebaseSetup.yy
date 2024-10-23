@@ -63,8 +63,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Firebase_Checkapp",
-    "path":"Firebase_Checkapp.yyp",
+    "name":"Firebase",
+    "path":"Firebase.yyp",
   },
   "productId":"",
   "resourceType":"GMExtension",

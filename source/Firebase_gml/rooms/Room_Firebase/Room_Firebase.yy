@@ -53,8 +53,8 @@
   ],
   "name":"Room_Firebase",
   "parent":{
-    "name":"Firebase_Checkapp",
-    "path":"Firebase_Checkapp.yyp",
+    "name":"Firebase",
+    "path":"Firebase.yyp",
   },
   "parentRoom":null,
   "physicsSettings":{

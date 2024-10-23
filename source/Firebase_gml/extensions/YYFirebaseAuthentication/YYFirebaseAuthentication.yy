@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseAuthentication",
-  "copyToTargets":44,
+  "copyToTargets":108,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.2.0",

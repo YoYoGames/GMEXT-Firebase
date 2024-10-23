@@ -2,9 +2,6 @@ package ${YYAndroidPackageName};
 import ${YYAndroidPackageName}.FirebaseUtils;
 import android.app.Activity;
 
-import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
-
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;

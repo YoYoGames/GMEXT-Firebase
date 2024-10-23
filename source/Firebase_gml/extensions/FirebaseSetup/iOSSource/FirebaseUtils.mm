@@ -38,6 +38,7 @@ typedef NS_ENUM(NSUInteger, DSMapAddFunction) {
 @property (nonatomic, strong) NSOperationQueue *executorService;
 @property (nonatomic, assign) long currentAsyncId;
 @property (nonatomic, strong) NSLock *idLock;
+@property (nonatomic, strong) NSMutableArray<NSDictionary *> *initializationFunctions;
 
 + (ProcessedDataItem *)processValue:(id)value forKey:(NSString*)key;
 
@@ -97,8 +98,39 @@ static NSRegularExpression *I64_REGEX = nil;
         self.executorService.name = @"com.yoyogames.yygfirebase.FirebaseUtils.executorService";
         
         self.idLock = [[NSLock alloc] init];
+        self.initializationFunctions = [NSMutableArray array];
     }
     return self;
+}
+
+#pragma mark - Handle Initializers
+
+- (void)registerInitFunction:(TaskBlock)block withPriority:(NSInteger)priority {
+    if (!block) {
+        return;
+    }
+    NSDictionary *functionInfo = @{
+        @"block": [block copy],
+        @"priority": @(priority)
+    };
+    [self.initializationFunctions addObject:functionInfo];
+}
+
+- (void)initializeAll {
+    NSArray *sortedFunctions = [self.initializationFunctions sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *obj1, NSDictionary *obj2) {
+        NSNumber *priority1 = obj1[@"priority"];
+        NSNumber *priority2 = obj2[@"priority"];
+        return [priority1 compare:priority2];
+    }];
+
+    for (NSDictionary *functionInfo in sortedFunctions) {
+        TaskBlock block = functionInfo[@"block"];
+        if (block) {
+            block();
+        }
+    }
+
+    [self.initializationFunctions removeAllObjects];
 }
 
 #pragma mark - Async ID Generation
@@ -122,11 +154,11 @@ static NSRegularExpression *I64_REGEX = nil;
 
 #pragma mark - Task Submission
 
-- (void)submitAsyncTask:(void (^)(void))task {
+- (void)submitAsyncTask:(TaskBlock)task {
     [self submitAsyncTask:task completion:nil];
 }
 
-- (void)submitAsyncTask:(void (^)(void))task completion:(nullable void (^)(NSError * _Nullable error))completion {
+- (void)submitAsyncTask:(TaskBlock)task completion:(nullable void (^)(NSError * _Nullable error))completion {
     if (!task) {
         NSLog(@"FirebaseUtils: Task is nil");
         if (completion) {

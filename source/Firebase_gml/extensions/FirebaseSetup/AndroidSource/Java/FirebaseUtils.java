@@ -1,5 +1,4 @@
 package ${YYAndroidPackageName};
-
 import ${YYAndroidPackageName}.ProcessedDataItem;
 
 import com.yoyogames.runner.RunnerJNILib;
@@ -26,6 +25,26 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 public class FirebaseUtils {
+
+    // A list to store initialization functions and their priorities
+    private List<InitFunction> initFunctions;
+
+    // Define the InitFunction class
+    private static class InitFunction implements Comparable<InitFunction> {
+        Runnable function;
+        int priority;
+
+        InitFunction(Runnable function, int priority) {
+            this.function = function;
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(InitFunction other) {
+            // Lower priority value means higher priority
+            return Integer.compare(this.priority, other.priority);
+        }
+    }
 
     // Event handling variables
     private static final int EVENT_SOCIAL = 70;
@@ -63,7 +82,8 @@ public class FirebaseUtils {
             new ThreadPoolExecutor.AbortPolicy()
         );
 
-        instance = this;
+        // Initialize the initFunctions list
+        initFunctions = new ArrayList<>();
     }
 
     public static synchronized FirebaseUtils getInstance() {
@@ -71,6 +91,35 @@ public class FirebaseUtils {
             instance = new FirebaseUtils();
         }
         return instance;
+    }
+
+    public void registerInitFunction(Runnable function, int priority) {
+        if (function == null) {
+            return;
+        }
+        synchronized (initFunctions) {
+            initFunctions.add(new InitFunction(function, priority));
+        }
+    }
+
+    public void initializeAll() {
+        synchronized (initFunctions) {
+            // Sort the functions based on priority
+            Collections.sort(initFunctions);
+    
+            // Execute each function
+            for (InitFunction initFunction : initFunctions) {
+                try {
+                    initFunction.function.run();
+                } catch (Exception e) {
+                    System.err.println("FirebaseUtils: Initialization function failed - " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+    
+            // Clear the list after initialization
+            initFunctions.clear();
+        }
     }
 
     public long getNextAsyncId() {

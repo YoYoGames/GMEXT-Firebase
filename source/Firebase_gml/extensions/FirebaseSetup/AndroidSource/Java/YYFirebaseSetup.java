@@ -12,19 +12,15 @@ import com.google.firebase.FirebaseApp;
 public class YYFirebaseSetup extends RunnerSocial
 {
 	public YYFirebaseSetup() {
-	}
-	
-	public void FirebaseSetup_Init()
-	{
-		if(RunnerJNILib.extGetVersion("YYFirebaseAppCheck") != null)
-			return;
-		
-		Log.i("yoyo","Firebase init by: YYFirebaseSetup");
-		
-		FirebaseUtils.getInstance().submitAsyncTask(() -> {
+		// Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
 			Activity activity = RunnerActivity.CurrentActivity;
 			FirebaseApp.initializeApp(activity);
-		});
+        }, 1);
+	}
+	
+	public void SDKFirebaseSetup_Init() {
+		FirebaseUtils.getInstance().initializeAll();
 	}
 }
 

@@ -3,7 +3,7 @@
   "%Name":"FirebaseSetup",
   "androidactivityinject":"",
   "androidclassname":"YYFirebaseSetup",
-  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n        implementation platform('com.google.firebase:firebase-bom:32.6.0')\r\n</YYAndroidGradleDependencies>\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n        classpath 'com.google.gms:google-services:4.3.14'  // Google Services plugin\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n<YYAndroidGradleEnd>\r\n       apply plugin: 'com.google.gms.google-services'\r\n</YYAndroidGradleEnd>\r\n\r\n<YYAndroidGradleAndroid>\r\n    compileOptions {\r\n        sourceCompatibility 1.8\r\n        targetCompatibility 1.8}\r\n</YYAndroidGradleAndroid>\r\n\r\n\r\n<YYAndroidManifestApplicationInject>\r\n<provider\r\n    android:name=\"com.google.firebase.provider.FirebaseInitProvider\"\r\n    android:authorities=\"${applicationId}.firebaseinitprovider\"\r\n    tools:node=\"remove\"/>\r\n</YYAndroidManifestApplicationInject>\r\n",
+  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n        implementation platform('com.google.firebase:firebase-bom:33.4.0')\r\n</YYAndroidGradleDependencies>\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n        classpath 'com.google.gms:google-services:4.3.14'  // Google Services plugin\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n<YYAndroidGradleEnd>\r\n       apply plugin: 'com.google.gms.google-services'\r\n</YYAndroidGradleEnd>\r\n\r\n<YYAndroidGradleAndroid>\r\n    compileOptions {\r\n        sourceCompatibility 1.8\r\n        targetCompatibility 1.8}\r\n</YYAndroidGradleAndroid>\r\n\r\n\r\n<YYAndroidManifestApplicationInject>\r\n<provider\r\n    android:name=\"com.google.firebase.provider.FirebaseInitProvider\"\r\n    android:authorities=\"${applicationId}.firebaseinitprovider\"\r\n    tools:node=\"remove\"/>\r\n</YYAndroidManifestApplicationInject>\r\n",
   "androidinject":"\r\n<provider android:name=\"com.google.firebase.provider.FirebaseInitProvider\" android:authorities=\"${applicationId}.firebaseinitprovider\" tools:node=\"remove\"></provider>\r\n",
   "androidmanifestinject":"",
   "androidPermissions":[],
@@ -17,12 +17,12 @@
   "extensionVersion":"1.2.2",
   "files":[
     {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"FirebaseSetup_Init","argCount":0,"args":[],"documentation":"","externalName":"FirebaseSetup_Init","help":"FirebaseSetup_Init()","hidden":false,"kind":4,"name":"FirebaseSetup_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"FirebaseSetup_Init","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
+        {"$GMExtensionFunction":"","%Name":"SDKFirebaseSetup_Init","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseSetup_Init","help":"SDKFirebaseSetup_Init()","hidden":true,"kind":4,"name":"SDKFirebaseSetup_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+      ],"init":"SDKFirebaseSetup_Init","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebaseSetup.js","name":"FirebaseSetup.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
-  "gradleinject":"\r\n        implementation platform('com.google.firebase:firebase-bom:32.6.0')\r\n",
+  "gradleinject":"\r\n        implementation platform('com.google.firebase:firebase-bom:33.4.0')\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
   "HTML5CodeInjection":"\r\n<GM_HTML5_PostHead>\r\n<script type=\"module\">\r\n    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';\r\n\r\n    // Create a configuration object for Firebase\r\n    const firebaseConfig = ${YYEXTOPT_FirebaseSetup_html5Config};\r\n\r\n    initializeApp(firebaseConfig);\r\n    console.log(\"Firebase app initialized successfully.\");\r\n</script>\r\n</GM_HTML5_PostHead>",

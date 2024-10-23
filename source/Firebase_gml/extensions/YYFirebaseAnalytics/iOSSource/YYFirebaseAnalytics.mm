@@ -1,6 +1,5 @@
 #import "YYFirebaseAnalytics.h"
 #import "FirebaseUtils.h"
-#import <UIKit/UIKit.h>
 
 // Error Codes
 static const double kFirebaseAnalyticsSuccess = 0.0;

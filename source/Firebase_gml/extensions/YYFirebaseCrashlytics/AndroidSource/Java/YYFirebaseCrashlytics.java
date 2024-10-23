@@ -34,7 +34,10 @@ public class YYFirebaseCrashlytics extends RunnerSocial {
 
     public YYFirebaseCrashlytics() {
         // Initialize the cached instance
-        crashlytics = FirebaseCrashlytics.getInstance();
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            crashlytics = FirebaseCrashlytics.getInstance();
+        }, 10);
+
 
         FirebaseUtils.getInstance().submitAsyncTask(() -> {
             // Obtain the application context

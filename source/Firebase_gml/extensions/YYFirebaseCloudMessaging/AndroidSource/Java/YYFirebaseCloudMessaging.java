@@ -23,8 +23,17 @@ import androidx.annotation.NonNull;
 
 public class YYFirebaseCloudMessaging extends RunnerSocial {
 
+	private FirebaseMessaging messaging;
+
+	public YYFirebaseCloudMessaging() {
+		// Initialize the cached instance
+		FirebaseUtils.getInstance().registerInitFunction(()-> {
+			messaging = FirebaseMessaging.getInstance();
+		}, 10);
+	}
+
 	public void FirebaseCloudMessaging_GetToken() {
-		FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+		messaging.getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
 			public void onComplete(@NonNull Task<String> task) {
 				Map<String, Object> extraData = new HashMap<>();
@@ -44,7 +53,7 @@ public class YYFirebaseCloudMessaging extends RunnerSocial {
 	}
 	
 	public void FirebaseCloudMessaging_SubscribeToTopic(final String topic) {
-		FirebaseMessaging.getInstance().subscribeToTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+		messaging.subscribeToTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {   	
 				Map<String, Object> extraData = new HashMap<>();
@@ -56,7 +65,7 @@ public class YYFirebaseCloudMessaging extends RunnerSocial {
 	}
 	
 	public void FirebaseCloudMessaging_UnsubscribeFromTopic(final String topic) {	
-		FirebaseMessaging.getInstance().unsubscribeFromTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+		messaging.unsubscribeFromTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 				Map<String, Object> extraData = new HashMap<>();
@@ -68,15 +77,15 @@ public class YYFirebaseCloudMessaging extends RunnerSocial {
 	}
 
 	public double FirebaseCloudMessaging_IsAutoInitEnabled() {
-		return FirebaseMessaging.getInstance().isAutoInitEnabled() ? 1.0 : 0.0;
+		return messaging.isAutoInitEnabled() ? 1.0 : 0.0;
 	}
 
 	public void FirebaseCloudMessaging_SetAutoInitEnabled(double enable) {
-		FirebaseMessaging.getInstance().setAutoInitEnabled(enable > 0.5);
+		messaging.setAutoInitEnabled(enable > 0.5);
 	}
 	
 	public void FirebaseCloudMessaging_DeleteToken() {
-		FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
+		messaging.deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {  
 				Map<String, Object> extraData = new HashMap<>();

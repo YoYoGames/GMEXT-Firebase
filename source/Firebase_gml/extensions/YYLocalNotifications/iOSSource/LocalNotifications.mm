@@ -1,6 +1,5 @@
 #import "UNUserNotificationCenterMultiplexer.h"
 #import "LocalNotifications.h"
-#import <UIKit/UIKit.h>
 
 extern "C" int dsMapCreate();
 extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);

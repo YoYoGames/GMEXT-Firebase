@@ -1,19 +1,12 @@
+// YYFirebaseAppTest.h
 
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseAppCheck/FirebaseAppCheck.h>
 
-#if !defined(__has_include)
-  #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \
-          import the headers individually."
-#else
-  #if __has_include(<FirebaseAppCheck/FirebaseAppCheck.h>)
-    #import<FirebaseAppCheck/FirebaseAppCheck.h>
-  #endif
+NS_ASSUME_NONNULL_BEGIN
 
-#endif  // defined(__has_include)
-
-@interface YYFirebaseAppCheck:NSObject <FIRAppCheckProviderFactory>
-{
-}
+@interface YYFirebaseAppCheck : NSObject <FIRAppCheckProviderFactory>
 
 @end
 
+NS_ASSUME_NONNULL_END

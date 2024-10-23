@@ -30,16 +30,17 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
     FirebaseFunctions functions;
 
     public YYFirebaseCloudFunctions() {
-        functions = FirebaseFunctions.getInstance();
-    }
+        // Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            functions = FirebaseFunctions.getInstance();
 
-    public void SDKFirebaseCloudFunctions_Init() {
-        boolean useEmulator = FirebaseUtils.extOptionGetBool("YYFirebaseCloudFunctions", "useEmulator");
-        if (useEmulator) {
-            String host = FirebaseUtils.extOptionGetString("YYFirebaseCloudFunctions", "emulatorHost");
-            int port = FirebaseUtils.extOptionGetInt("YYFirebaseCloudFunctions", "emulatorPort");
-            functions.useEmulator(host, port);
-        }
+            boolean useEmulator = FirebaseUtils.extOptionGetBool("YYFirebaseCloudFunctions", "useEmulator");
+            if (useEmulator) {
+                String host = FirebaseUtils.extOptionGetString("YYFirebaseCloudFunctions", "emulatorHost");
+                int port = FirebaseUtils.extOptionGetInt("YYFirebaseCloudFunctions", "emulatorPort");
+                functions.useEmulator(host, port);
+            }
+        }, 10);
     }
 
     // <editor-fold desc="General API">

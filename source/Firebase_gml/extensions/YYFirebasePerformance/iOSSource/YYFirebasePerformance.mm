@@ -1,5 +1,4 @@
 #import "YYFirebasePerformance.h"
-#import <UIKit/UIKit.h>
 
 // Error Codes
 static const double kFirebasePerformanceSuccess = 0.0;

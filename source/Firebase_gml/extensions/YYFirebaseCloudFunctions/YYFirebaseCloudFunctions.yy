@@ -17,7 +17,6 @@
   "extensionVersion":"1.1.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":9007199254741036,"filename":"FirebaseCloudFunctions.ext","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"SDKFirebaseCloudFunctions_Init","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseCloudFunctions_Init","help":"SDKFirebaseCloudFunctions_Init()","hidden":true,"kind":4,"name":"SDKFirebaseCloudFunctions_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseCloudFunctions_Call","argCount":0,"args":[1,1,2,],"documentation":"","externalName":"SDKFirebaseCloudFunctions_Call","help":"SDKFirebaseCloudFunctions_Call(name, args, timeout)","hidden":false,"kind":4,"name":"SDKFirebaseCloudFunctions_Call","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
       ],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"YYFirebaseCloudFunctions.js","name":"YYFirebaseCloudFunctions.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},

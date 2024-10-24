@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Leaderboards - GMEXT-GooglePlayServices</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Leaderboards";
+        var mkdocs_page_input_path = "leaderboards.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-GooglePlayServices
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Google Play Services</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="google_setup.html">Google Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="extension_setup.html">Extension Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="general.html">General</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="player.html">Player</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="achievements.html">Achievements</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="leaderboards.html">Leaderboards</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#structs">Structs</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="savedgames.html">SavedGames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-GooglePlayServices</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Leaderboards</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-GooglePlayServices/edit/master/docs/leaderboards.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="leaderboards"><strong>Leaderboards</strong></h1>
+<p>Leaderboards can be a fun way to drive competition among your players, both for your most hardcore fans (who will be fighting for the top spot in a public leaderboard) and for your more casual players (who will be interested in comparing their progress to their friends').</p>
+<h2 id="functions">Functions</h2>
+<p>The following functions are provided for working with leaderboards:</p>
+<ul>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadplayercenteredscores">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadtopscores">GooglePlayServices_Leaderboard_LoadTopScores</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_show">GooglePlayServices_Leaderboard_Show</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_showall">GooglePlayServices_Leaderboard_ShowAll</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_submitscore">GooglePlayServices_Leaderboard_SubmitScore</a></li>
+</ul>
+<h2 id="constants">Constants</h2>
+<p>The following constants are provided to be used as input arguments or output values:</p>
+<ul>
+<li><a href="leaderboards.html#leaderboardcollection">LeaderboardCollection</a></li>
+<li><a href="leaderboards.html#leaderboardtimespan">LeaderboardTimeSpan</a></li>
+</ul>
+<h2 id="structs">Structs</h2>
+<p>The following structures are used as output values from the function calls to the GooglePlayServices API:</p>
+<ul>
+<li><a href="leaderboards.html#leaderboardentryjson">LeaderboardEntryJSON</a></li>
+<li><a href="leaderboards.html#leaderboardreportjson">LeaderboardReportJSON</a></li>
+<li><a href="leaderboards.html#leaderboardreportentryjson">LeaderboardReportEntryJSON</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_leaderboard_loadplayercenteredscores">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores</h1>
+<p>Asynchronously load the player-centered page of scores for a given leaderboard. If the player does not have a score on this leaderboard, this call will return the first page instead.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores(leaderboardId, span, collection, maxResults, forceReload)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>leaderboardId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the leaderboard.</td>
+</tr>
+<tr>
+<td>span</td>
+<td><a href="leaderboards.html#leaderboardtimespan">LeaderboardTimeSpan</a></td>
+<td>The time span to retrieve data for.</td>
+</tr>
+<tr>
+<td>collection</td>
+<td><a href="leaderboards.html#leaderboardcollection">LeaderboardCollection</a></td>
+<td>he collection to retrieve scores for</td>
+</tr>
+<tr>
+<td>maxResults</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The maximum number of scores to fetch per page. Must be between 1 and 25.</td>
+</tr>
+<tr>
+<td>forceReload</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>If true, this call will clear any locally cached data and attempt to fetch the latest data from the server. This would commonly be used for something like a user-initiated refresh. Normally, this should be set to false to gain advantages of data caching.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_Leaderboard_LoadPlayerCenteredScores"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of an array of <a href="leaderboards.html#leaderboardentryjson">LeaderboardEntryJSON</a>. This string can be parsed into an array with the function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores(Leaderboard1, Leaderboard_TIME_SPAN_ALL_TIME, Leaderboard_COLLECTION_PUBLIC, 5, true)</code></pre>
+The code sample above will start a query for player centered leaderboard entries. The results can be caught inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "GooglePlayServices_Leaderboard_LoadPlayerCenteredScores")
+{
+    var array = json_parse(async_load[?"data"])
+    for(var a = 0 ; a &lt; array_length(array) ; a ++)
+    {
+        var struct = array[a]
+        var ins = instance_create_depth(800,200+a*75,00,Obj_GooglePlayServices_Leaderboard_Entry)
+        ins.displayRank = struct.displayRank;
+        ins.displayScore = struct.displayScore;
+        ins.rank = struct.rank;
+        ins.rawScore = struct.rawScore;
+        ins.scoreHolder = struct.scoreHolder;
+        ins.scoreHolderDisplayName = struct.scoreHolderDisplayName;
+        ins.scoreHolderHiResImageUri = struct.scoreHolderHiResImageUri;
+        ins.scoreHolderIconImageUri = struct.scoreHolderIconImageUri;
+
+        // This is an options parameter and is only present if a scoreTag was provided.
+        ins.scoreTag = struct[$ "scoreTag"];
+
+        ins.timestampMillis = struct.timestampMillis;
+    }
+}</code></pre>
+The code above shows a way of reading the returned data using the function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a>. This sample is taken from the demo project check the project for more context.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_leaderboard_loadtopscores">GooglePlayServices_Leaderboard_LoadTopScores</h1>
+<p>Asynchronously load the top page of scores for a given leaderboard.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_LoadTopScores(leaderboardId, span, collection, maxResults, forceReload)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>leaderboardId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the leaderboard.</td>
+</tr>
+<tr>
+<td>span</td>
+<td><a href="leaderboards.html#leaderboardtimespan">LeaderboardTimeSpan</a></td>
+<td>The time span to retrieve data for.</td>
+</tr>
+<tr>
+<td>collection</td>
+<td><a href="leaderboards.html#leaderboardcollection">LeaderboardCollection</a></td>
+<td>he collection to retrieve scores for</td>
+</tr>
+<tr>
+<td>maxResults</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The maximum number of scores to fetch per page. Must be between 1 and 25.</td>
+</tr>
+<tr>
+<td>forceReload</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>If true, this call will clear any locally cached data and attempt to fetch the latest data from the server. This would commonly be used for something like a user-initiated refresh. Normally, this should be set to false to gain advantages of data caching.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_Leaderboard_LoadTopScores"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of an array of <a href="leaderboards.html#leaderboardentryjson">LeaderboardEntryJSON</a>. This string can be parsed into an array with the function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_LoadTopScores(Leaderboard1, Leaderboard_TIME_SPAN_ALL_TIME, Leaderboard_COLLECTION_PUBLIC, 5, true)</code></pre>
+The code sample above will start a query for top scores leaderboard entries. The results can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "GooglePlayServices_Leaderboard_LoadTopScores")
+{
+    var array = json_parse(async_load[?"data"])
+    for(var a = 0 ; a &lt; array_length(array) ; a ++)
+    {
+        var struct = array[a]
+        var ins = instance_create_depth(800,200+a*75,00,Obj_GooglePlayServices_Leaderboard_Entry)
+        ins.displayRank = struct.displayRank;
+        ins.displayScore = struct.displayScore;
+        ins.rank = struct.rank;
+        ins.rawScore = struct.rawScore;
+        ins.scoreHolder = struct.scoreHolder;
+        ins.scoreHolderDisplayName = struct.scoreHolderDisplayName;
+        ins.scoreHolderHiResImageUri = struct.scoreHolderHiResImageUri;
+        ins.scoreHolderIconImageUri = struct.scoreHolderIconImageUri;
+
+        // This is an options parameter and is only present if a scoreTag was provided.
+        ins.scoreTag = struct[$ "scoreTag"];
+
+        ins.timestampMillis = struct.timestampMillis;
+    }
+}</code></pre>
+The code above shows a way of reading the returned data using the function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a>. This sample is taken from the demo project check the project for more context.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_leaderboard_show">GooglePlayServices_Leaderboard_Show</h1>
+<p>This function will call the Google Play Services overlay for a specific leaderboard.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_Show(leaderboardId)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>leaderboardId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the leaderboard.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_Show(leaderboardId);</code></pre>
+The code above will trigger the leaderboard overlay of the given leaderboard.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_leaderboard_showall">GooglePlayServices_Leaderboard_ShowAll</h1>
+<p>This function will call the general Google Play Services leaderboards overlay. Here the user will have access to all the existing leaderboards of the current application.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_ShowAll()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_ShowAll()</code></pre>
+The code above will trigger the leaderboard overlay of all the available leaderboards for this game.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_leaderboard_submitscore">GooglePlayServices_Leaderboard_SubmitScore</h1>
+<p>This function requests the Google Play Services API to submit a score to the given leaderboard.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_SubmitScore(leaderboardId, score, scoreTag)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>leaderboardId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the leaderboard.</td>
+</tr>
+<tr>
+<td>score</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The value to be submitted to the leaderboard (remember that only the highest score value is displayed in the leaderboard).</td>
+</tr>
+<tr>
+<td>scoreTag</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A tag that will be added to the value being submitted to the leaderboard (note that this value is required, if you don't want to set a tag use an empty string).</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_Leaderboard_SubmitScore"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+<tr>
+<td>leaderboardId</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique name of the leaderboard.</td>
+</tr>
+<tr>
+<td>score</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The submitted score.</td>
+</tr>
+<tr>
+<td>scoreTag</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The tag for the current submission.</td>
+</tr>
+<tr>
+<td>report</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of <a href="leaderboards.html#leaderboardreportjson">LeaderboardReportJSON</a>. This string can be parsed into a struct with the function <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a>. Only available if the task succeeds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_Leaderboard_SubmitScore(leaderId, 100, "archer");</code></pre>
+The code sample above will submit a new score to the leaderboard with a specific tag (&quot;archer&quot;). The result can be caught inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a> as follows:
+<pre class="highlight"><code class="language-gml">if(async_load[?"type"] == "GooglePlayServices_Leaderboard_SubmitScore")
+if(async_load[?"success")
+{
+    //Done, let's continue
+}</code></pre>
+The code above checks if the task was successful. This sample is taken from the demo project check the project for more context.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="leaderboardcollection">LeaderboardCollection</h1>
+<p>These constants represent kinds of leaderboard collections.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadplayercenteredscores">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadtopscores">GooglePlayServices_Leaderboard_LoadTopScores</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Leaderboard_COLLECTION_SOCIAL</code></td>
+<td>These leaderboards contain the scores of players in the viewing player's friends list.</td>
+</tr>
+<tr>
+<td><code>Leaderboard_COLLECTION_PUBLIC</code></td>
+<td>Public leaderboards contain the scores of players who are sharing their gameplay activity publicly.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="leaderboardtimespan">LeaderboardTimeSpan</h1>
+<p>These constants represent the various types of time span that can be used.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadplayercenteredscores">GooglePlayServices_Leaderboard_LoadPlayerCenteredScores</a></li>
+<li><a href="leaderboards.html#googleplayservices_leaderboard_loadtopscores">GooglePlayServices_Leaderboard_LoadTopScores</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Leaderboard_TIME_SPAN_DAILY</code></td>
+<td>Refers to the scores of the day. Scores are reset every day. The reset occurs at 11:59PM PST.</td>
+</tr>
+<tr>
+<td><code>Leaderboard_TIME_SPAN_WEEKLY</code></td>
+<td>Refers to the scores of the week. Scores are reset once per week. The reset occurs at 11:59PM PST on Sunday.</td>
+</tr>
+<tr>
+<td><code>Leaderboard_TIME_SPAN_ALL_TIME</code></td>
+<td>Refers to all the scores. Scores are never reset.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="leaderboardentryjson">LeaderboardEntryJSON</h1>
+<p>Represents a score and its associated metadata.</p>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>displayRank</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A formatted string to display for this rank. This handles appropriate localization and formatting.</td>
+</tr>
+<tr>
+<td>displayScore</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A formatted string to display for this score. The details of the formatting are specified by the developer in their dev console.</td>
+</tr>
+<tr>
+<td>rank</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The rank returned from the server for this score. Note that this may not be exact and that multiple scores can have identical ranks. Lower ranks indicate a better score, with rank 1 being the best score on the board.</td>
+</tr>
+<tr>
+<td>rawScore</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The raw score value.</td>
+</tr>
+<tr>
+<td>scoreHolder</td>
+<td><a href="player.html#playerjson">PlayerJSON</a></td>
+<td>A struct of PlayerJSON.</td>
+</tr>
+<tr>
+<td>scoreHolderDisplayName</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The display name of the player that scored this particular score.</td>
+</tr>
+<tr>
+<td>scoreHolderHiResImageUri</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The URI of the hi-res image to display for the player who scored this score (you can later convert the uri to a local path using the <a href="utilities.html#googleplayservices_uritopath">GooglePlayServices_UriToPath</a>).</td>
+</tr>
+<tr>
+<td>scoreHolderIconImageUri</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The URI of the icon image to display for the player who scored this score (you can later convert the uri to a local path using the <a href="utilities.html#googleplayservices_uritopath">GooglePlayServices_UriToPath</a>).</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="leaderboardreportjson">LeaderboardReportJSON</h1>
+<p>Represents a leaderboard report and its associated metadata.</p>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>allTime</td>
+<td><a href="leaderboards.html#leaderboardreportentryjson">LeaderboardReportEntryJSON</a></td>
+<td>The all time result report.</td>
+</tr>
+<tr>
+<td>weekly</td>
+<td><a href="leaderboards.html#leaderboardreportentryjson">LeaderboardReportEntryJSON</a></td>
+<td>The weekly result report.</td>
+</tr>
+<tr>
+<td>daily</td>
+<td><a href="leaderboards.html#leaderboardreportentryjson">LeaderboardReportEntryJSON</a></td>
+<td>The daily result report</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="leaderboardreportentryjson">LeaderboardReportEntryJSON</h1>
+<p>Represents a leaderboard report entry.</p>
+<p>This struct is referenced by the following structs:</p>
+<ul>
+<li><a href="leaderboards.html#leaderboardreportjson">LeaderboardReportJSON</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isNewBest</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not this score is a new best.</td>
+</tr>
+<tr>
+<td>score</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The score submitted to the server.</td>
+</tr>
+<tr>
+<td>scoreTag</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The tag used the submittion of the achievement.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="achievements.html" class="btn btn-neutral float-left" title="Achievements"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="savedgames.html" class="btn btn-neutral float-right" title="SavedGames">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-GooglePlayServices" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="achievements.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="savedgames.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

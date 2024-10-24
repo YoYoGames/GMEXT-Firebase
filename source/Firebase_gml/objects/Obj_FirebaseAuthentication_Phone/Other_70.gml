@@ -2,12 +2,15 @@
 switch(async_load[?"type"])
 {
 	
-	case "FirebaseAuthentication_Tools_WebView_onUserClose":
+	case "onButtonPressed":
 		if(os_type == os_android or os_type == os_ios)
-			FirebaseAuthentication_Tools_WebView_Delete()
+		{
+			WebView_Button_Destroy()
+			WebView_Destroy()
+		}
 	break
 	
-	case "FirebaseAuthentication_Tools_WebView_onCloseWindow":
+	case "onCloseWindow":
 	break
 	
 	case "FirebaseRealTime_Delete":
@@ -30,13 +33,14 @@ switch(async_load[?"type"])
 			url = url + "?recaptchaSiteKey=" + recaptchaSiteKey + "&uid="+request_reCaptcha_web
 			
 			if(os_browser != browser_not_a_browser)
-				FirebaseAuthentication_Tools_UrlOpen(url)//On Web
+				url_open(url)
 			else
 			switch(os_type)
 			{
 				case os_android: 
 				case os_ios:
-						FirebaseAuthentication_Tools_WebView_Create(url)
+					WebView_Create(url)
+					WebView_Button_Add("img_close.png");
 				break
 				
 				default:
@@ -62,7 +66,10 @@ switch(async_load[?"type"])
 			listener_reCaptcha = noone
 			
 			if(os_type == os_android or os_type == os_ios)
-				FirebaseAuthentication_Tools_WebView_Delete()
+			{
+				WebView_Button_Destroy()
+				WebView_Destroy()
+			}
 		}
 		
 	break;

@@ -19,6 +19,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import java.lang.Exception;
 
 import java.lang.NullPointerException;
 import java.lang.reflect.Field;
@@ -53,9 +54,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
 import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.ShareOpenGraphObject;
-import com.facebook.share.model.ShareOpenGraphAction;
-import com.facebook.share.model.ShareOpenGraphContent;
+// import com.facebook.share.model.ShareOpenGraphObject;
+// import com.facebook.share.model.ShareOpenGraphAction;
+// import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.widget.ShareDialog;
 import com.facebook.share.Sharer;
 import com.facebook.appevents.AppEventsLogger;
@@ -261,12 +262,18 @@ public class FacebookExtension2  extends RunnerSocial
 	public void fb_init() 
 	{
 		msInitialized = 1;
-		
-		Log.i("yoyo", "Facebook SDK version: " + getFacebookSDKVersion() + " using graph API"+ ServerProtocol.getDefaultAPIVersion());
-
-		FacebookSdk.sdkInitialize(RunnerActivity.CurrentActivity.getApplicationContext());
-		// AppEventsLogger.activateApp(RunnerActivity.CurrentActivity);
-		callbackManager = CallbackManager.Factory.create();
+try
+{
+	Log.i("yoyo", "Facebook SDK version: " + getFacebookSDKVersion() + " using graph API"+ ServerProtocol.getDefaultAPIVersion());
+	
+	FacebookSdk.sdkInitialize(RunnerActivity.CurrentActivity.getApplicationContext());
+	// AppEventsLogger.activateApp(RunnerActivity.CurrentActivity);
+	callbackManager = CallbackManager.Factory.create();
+}
+catch(Exception e)
+{
+	Log.i("yoyo","fb_init Exception:" + e.getMessage());
+}
 	}
 	
 	public double fb_send_event(double _eventId, double _eventValue, double _eventParamsDsList)
@@ -354,10 +361,17 @@ public class FacebookExtension2  extends RunnerSocial
 	
 	public String fb_user_id()
 	{
-		if(Profile.getCurrentProfile()!=null)
+		try
 		{
-			Profile profile = Profile.getCurrentProfile();
-			return profile.getId();
+			if(Profile.getCurrentProfile()!=null)
+			{
+				Profile profile = Profile.getCurrentProfile();
+				return profile.getId();
+			}
+		}
+		catch (Exception e) 
+		{
+			return "";
 		}
 
 		return "";
@@ -483,13 +497,20 @@ public class FacebookExtension2  extends RunnerSocial
     
     public String fb_accesstoken()
     {
-		AccessToken token = AccessToken.getCurrentAccessToken();
-		if(token!=null)
+		try
 		{
-			if(!token.isExpired())
+			AccessToken token = AccessToken.getCurrentAccessToken();
+			if(token!=null)
 			{
-				return token.getToken();
+				if(!token.isExpired())
+				{
+					return token.getToken();
+				}
 			}
+		}
+		catch (Exception e) 
+		{
+			return "";
 		}
 		
 		return "";

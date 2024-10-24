@@ -45,12 +45,12 @@
   "macsourcedir":"",
   "name":"YYFirebaseRealTime",
   "options":[
-    {"$GMExtensionOption":"","%Name":"DatabaseURL","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"Database URL","exportToINI":false,"extensionId":null,"guid":"13d5c484-3fd0-4686-b12a-8a55c146343e","hidden":false,"listItems":[],"name":"DatabaseURL","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-    {"$GMExtensionOption":"","%Name":"Config","defaultValue":"SDKs_When_Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"46eaed75-d17c-40ba-8878-4d9319d09378","hidden":false,"listItems":[
-        "SDKs_Only",
-        "SDKs_When_Available",
-        "REST_API_Only",
-      ],"name":"Config","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"databaseUrl","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"Database URL","exportToINI":false,"extensionId":null,"guid":"13d5c484-3fd0-4686-b12a-8a55c146343e","hidden":false,"listItems":[],"name":"databaseUrl","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"workMode","defaultValue":"SDKs When Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"46eaed75-d17c-40ba-8878-4d9319d09378","hidden":false,"listItems":[
+        "SDKs Only",
+        "SDKs When Available",
+        "REST API Only",
+      ],"name":"workMode","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",

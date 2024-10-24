@@ -1,5 +1,16 @@
 
-#macro FirebaseRealTime_Library_useSDK ((extension_get_option_value("YYFirebaseRealTime","Config") == "SDKs_When_Available" and (os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)) or extension_get_option_value("YYFirebaseRealTime","Config") == "SDKs_Only")
+// feather ignore GM2017
+
+/// @description Cache the SDK usage option
+function __firebase_realtime_should_use_sdk() {
+
+	static _is_sdk_platform = function() { return os_type == os_android || os_type == os_ios || os_browser != browser_not_a_browser; }
+	static _work_mode = extension_get_option_value("YYFirebaseRealTime","workMode");
+	
+	static _use_sdk = _work_mode == "SDKs Only" || (_work_mode == "SDKs When Available" && _is_sdk_platform());
+						
+	return _use_sdk;
+}
 
 /// @description URL-encodes a string according to RFC 3986
 /// @param {String} _orig
@@ -41,11 +52,11 @@ function __firebase_realtime_url_encode(_orig) {
 }
 
 /// @param {Struct.FirebaseRealTimeBuilder} _builder
-/// @param {Array<String>} _selected_params
+/// @param {Array<String>} _selected_params These are the parameters that we want to add from the builder to the url
 /// @returns {String}
 function __firebase_realtime_build_url(_builder, _selected_params = undefined) {
 
-	static _default_url = extension_get_option_value("YYFirebaseRealTime", "DatabaseURL");
+	static _default_url = extension_get_option_value("YYFirebaseRealTime", "databaseUrl");
 
 	with (_builder) {
 		var _private = __;
@@ -304,7 +315,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		
 		show_debug_message(self);
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__));
 				
 		var _listener = FirebaseREST_asyncFunction_RealTime(
@@ -325,7 +336,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		__.action = FIREBASE_DATABASE_ACTION.READ;
 		__.path = BuildPath();
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 			
 		var _listener = FirebaseREST_asyncFunction_RealTime(
@@ -347,7 +358,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		__.action = FIREBASE_DATABASE_ACTION.LISTENER;
 		__.path = BuildPath();
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 		
 		
@@ -370,7 +381,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		__.action = FIREBASE_DATABASE_ACTION.EXISTS;
 		__.path = BuildPath();
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Exists",
@@ -391,7 +402,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		__.action = FIREBASE_DATABASE_ACTION.DELETE;
 		__.path = BuildPath();
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 		var listener = FirebaseREST_asyncFunction_RealTime(
 						"FirebaseRealTime_Delete",
@@ -413,7 +424,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 		__.path = BuildPath();
 		
 		__.value = _listener;
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 		with(_listener)
 		    instance_destroy()
@@ -423,7 +434,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
     static ListenerRemoveAll = function() {
 		__.action = FIREBASE_DATABASE_ACTION.LISTERER_REMOVE_ALL;
 		
-		if(FirebaseRealTime_Library_useSDK)
+		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
 		with(Obj_FirebaseREST_Listener_RealTime) {
 			if(string_count("Listener", event))

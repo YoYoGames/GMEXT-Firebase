@@ -1,27 +1,26 @@
 
 #macro FirebaseFirestore_Library_useSDK ((extension_get_option_value("YYFirebaseFirestore","Config") == "SDKs_When_Available" and (os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)) or extension_get_option_value("YYFirebaseFirestore","Config") == "SDKs_Only")
 
-enum FIRESTORE_QUERY_FILTER {
-	LESS = 0,
-	LESS_EQ,
-	GREAT,
-	GREAT_EQ,
-	EQ,
-	NOT_EQ,
-}
-
-enum FIRESTORE_QUERY_SORT {
-	ASCN = 0,
-	DESC
-}
-
-function FirebaseFirestore(_path = undefined)
-{
+function FirebaseFirestore(_path = undefined) {
 	return new FirebaseFirestoreBuilder(_path)
 }
 
-function FirebaseFirestoreBuilder(_path) constructor
-{
+function FirebaseFirestoreBuilder(_path) constructor {
+	
+	enum FIREBASE_FIRESTORE_QUERY_FILTER {
+		LESS = 0,
+		LESS_EQ,
+		GREAT,
+		GREAT_EQ,
+		EQ,
+		NOT_EQ,
+	}
+	
+	enum FIREBASE_FIRESTORE_QUERY_SORT {
+		ASCN = 0,
+		DESC
+	}
+	
 	enum FIREBASE_FIRESTORE_ACTION {
 		ADD = 0,
 		SET = 1,
@@ -34,13 +33,15 @@ function FirebaseFirestoreBuilder(_path) constructor
 		LISTERER_REMOVE_ALL = 8,
 	}
 	
+	#region PRIVATE
+	
 	/// @ignore
 	__ = {
 		path: undefined,
 		operations: [],
 	
 		orderBy: undefined,
-		sort: FIRESTORE_QUERY_SORT.ASCN,
+		sort: FIREBASE_FIRESTORE_QUERY_SORT.ASCN,
 	
 		startAt: undefined,
 		startAfter: undefined,
@@ -55,8 +56,9 @@ function FirebaseFirestoreBuilder(_path) constructor
 		isDocument: false
 	}
 	
+	
 	/// @ignore
-	pathArray = string_split(_path, "/", true)
+	pathArray = string_split(_path, "/", true);
 	
 	/// @function IsDocument()
 	/// @returns {Bool}
@@ -92,27 +94,28 @@ function FirebaseFirestoreBuilder(_path) constructor
 		return _value;
 	}
 	
+	#endregion
+	
+	#region BUILDER
+	
 	/// @function Child(child_path)
 	/// @param {string} _child_path
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static Child = function(_child_path)
-	{
+	static Child = function(_child_path) {
 		array_push(pathArray, _child_path);
 		return self;
 	}
 	
 	/// @function Parent()
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static Parent = function()
-	{
+	static Parent = function() {
 		array_pop(pathArray);
 		return self;
 	}
 		
 	/// @function OrderBy(path)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static OrderBy = function(_path, _sort = FIRESTORE_QUERY_SORT.ASCN)
-	{
+	static OrderBy = function(_path, _sort = FIREBASE_FIRESTORE_QUERY_SORT.ASCN) {
 		__.orderBy = _path
 		__.sort = _sort;
 		return self;
@@ -120,64 +123,56 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function Where(path, op, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static Where = function(_path, _op, _value) 
-	{
+	static Where = function(_path, _op, _value) {
 		array_push(__.operations, { operation: _op, path: _path, value: _value });
 		return self;
 	}
 
 	/// @function WhereEqual(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereEqual = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.EQ, path: _path, value: _value });
+	static WhereEqual = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereGreaterThan(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereGreaterThan = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.GREAT, path: _path, value: _value });
+	static WhereGreaterThan = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.GREAT, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereGreaterThanOrEqual(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereGreaterThanOrEqual = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.GREAT_EQ, path: _path, value: _value });
+	static WhereGreaterThanOrEqual = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.GREAT_EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereLessThan(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereLessThan = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.LESS, path: _path, value: _value });
+	static WhereLessThan = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.LESS, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereLessThanOrEqual(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereLessThanOrEqual = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.LESS_EQ, path: _path, value: _value });
+	static WhereLessThanOrEqual = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.LESS_EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function WhereNotEqual(path, value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static WhereNotEqual = function(_path, _value)
-	{
-		array_push(__.operations, { operation: FIRESTORE_QUERY_FILTER.NOT_EQ, path: _path, value: _value });
+	static WhereNotEqual = function(_path, _value) {
+		array_push(__.operations, { operation: FIREBASE_FIRESTORE_QUERY_FILTER.NOT_EQ, path: _path, value: _value });
 		return self;
 	}
 	
 	/// @function StartAt(value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static StartAt = function(_value)
-    {
+	static StartAt = function(_value) {
 		__.startAt = _value;
 		__.startAfter = undefined;
 		return self;
@@ -185,8 +180,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function StartAfter(value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static StartAfter = function(_value)
-    {
+	static StartAfter = function(_value) {
 		__.startAfter = _value;
 		__.startAt = undefined;
 		return self;
@@ -194,8 +188,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function EndAt(value)
 	/// @returns {Struct.FirebaseFirestoreBuilder}
-	static EndAt = function(_value)
-    {
+	static EndAt = function(_value) {
 		__.endAt = _value;
 		__.endBefore = undefined;
 		return self;
@@ -228,12 +221,14 @@ function FirebaseFirestoreBuilder(_path) constructor
 		return self;
     }
 	
-	//Actions
+	#endregion
+	
+	#region ACTIONS
 		
 	/// @function Set(value)
+	/// @param {String|Id.DsMap} value
 	/// @returns {Real}
-    static Set = function(_value)
-    {
+    static Set = function(_value) {
 		__.isDocument = IsDocument();
 		if (!__.isDocument) {
 			return Add(_value);
@@ -254,13 +249,13 @@ function FirebaseFirestoreBuilder(_path) constructor
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 		
-		return RESTFirebaseFirestore_Document_Set(_path, _value)
+		return RESTFirebaseFirestore_Document_Set(__.path, _value)
     }
 	
 	/// @function Add(value)
+	/// @param {String|Id.DsMap} value
 	/// @returns {Real}
-    static Add = function(_value)
-    {
+    static Add = function(_value) {
 		__.action = FIREBASE_FIRESTORE_ACTION.ADD;
 		__.isDocument = IsDocument();
 		if (__.isDocument) {
@@ -281,13 +276,13 @@ function FirebaseFirestoreBuilder(_path) constructor
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 		
-		return RESTFirebaseFirestore_Collection_Add(_path,_value)
+		return RESTFirebaseFirestore_Collection_Add(__.path,_value)
     }
 	
 	/// @function Update(value)
+	/// @param {String|Id.DsMap} value
 	/// @returns {Real}
-    static Update = function(_value)
-    {
+    static Update = function(_value) {
 		__.isDocument = IsDocument();
 		if (!__.isDocument) {
 			show_debug_message("Firestore: You can't update a collection");
@@ -309,13 +304,12 @@ function FirebaseFirestoreBuilder(_path) constructor
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 		
-		return RESTFirebaseFirestore_Document_Update(_path,_value)
+		return RESTFirebaseFirestore_Document_Update(__.path,_value)
     }
 	
 	/// @function Read()
 	/// @returns {Real}
-    static Read = function()
-    {
+    static Read = function() {
 		__.isDocument = IsDocument();
 		__.path = BuildPath();
 		__.action = FIREBASE_FIRESTORE_ACTION.READ;
@@ -324,10 +318,10 @@ function FirebaseFirestoreBuilder(_path) constructor
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 		if(__.isDocument) {
-			return RESTFirebaseFirestore_Document_Read(_path)
+			return RESTFirebaseFirestore_Document_Read(__.path)
 		}
 		else {
-			return RESTFirebaseFirestore_Collection_Read(_path)
+			return RESTFirebaseFirestore_Collection_Read(__.path)
 		}
     }
 	
@@ -347,13 +341,12 @@ function FirebaseFirestoreBuilder(_path) constructor
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 
-		return RESTFirebaseFirestore_Collection_Query(self)
+		return RESTFirebaseFirestore_Collection_Query(self);
 	}
 	
 	/// @function Listener()
 	/// @returns {Real}
-    static Listener = function()
-    {
+    static Listener = function() {
 		__.isDocument = IsDocument();
 		__.path = BuildPath();
 		__.action = FIREBASE_FIRESTORE_ACTION.LISTENER;		
@@ -376,8 +369,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function Delete()
 	/// @returns {Real}
-	static Delete = function()
-    {
+	static Delete = function() {
 		__.isDocument = IsDocument();
 		if (!__.isDocument) {
 			show_debug_message("Firestore: You can't delete a collection");
@@ -397,8 +389,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function ListenerRemove()
 	/// @returns {Real}
-	static ListenerRemove = function(_listener)
-	{
+	static ListenerRemove = function(_listener) {
 		__.action = FIREBASE_FIRESTORE_ACTION.LISTENER_REMOVE;
 				
 		__.value = _listener
@@ -413,8 +404,7 @@ function FirebaseFirestoreBuilder(_path) constructor
 	
 	/// @function ListenerRemoveAll()
 	/// @returns {Real}
-	static ListenerRemoveAll = function()
-	{
+	static ListenerRemoveAll = function() {
 		__.action = FIREBASE_FIRESTORE_ACTION.LISTERER_REMOVE_ALL;
 		
 		if(FirebaseFirestore_Library_useSDK) {
@@ -427,5 +417,8 @@ function FirebaseFirestoreBuilder(_path) constructor
 			}
 		}
 	}
+		
+	#endregion
+
 }
 

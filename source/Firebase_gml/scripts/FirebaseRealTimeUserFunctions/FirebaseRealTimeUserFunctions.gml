@@ -6,18 +6,21 @@
 /// @returns {String}
 function __firebase_realtime_url_encode(_orig) {
     
-	static _input_buffer = buffer_create(1, buffer_grow, 1);
+	//static _input_buffer = buffer_create(1, buffer_grow, 1);
 	static _output_buffer = buffer_create(1, buffer_grow, 1);
 	
     static _hex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
 
-	buffer_seek(_input_buffer, buffer_seek_start, 0);
+	//buffer_seek(_input_buffer, buffer_seek_start, 0);
 	buffer_seek(_output_buffer, buffer_seek_start, 0);
 	
-	buffer_write(_input_buffer, buffer_string, _orig);
+	//buffer_poke(_input_buffer, 0, buffer_string, _orig);
 
+	var _i = 1;
     repeat (string_length(_orig)) {
-        var _code = buffer_read(_input_buffer, buffer_u8);
+        //var _code = buffer_read(_input_buffer, buffer_u8);
+		var _char = string_char_at(_orig, _i++);
+		var _code = ord(_char);
 
         // Check if character is unreserved (ALPHA / DIGIT / "-" / "." / "_" / "~")
         if ((_code >= 65 && _code <= 90) ||    // A-Z
@@ -154,7 +157,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 			try {
 				_value = json_parse(_value);
 			}
-			catch (_ex) {}
+			catch (_ex) { }
 		}
 		else if (is_handle(_value)) {
 			var _handle_type = string(_value);
@@ -314,7 +317,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 						__firebase_realtime_build_url(self),
 						__.push ? "POST" : "PUT",
 						"{}",
-						__.value
+						json_stringify(__.value)
 					)
 		_listener.path = __.path
 		

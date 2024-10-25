@@ -6,26 +6,15 @@
 //  Copyright © 2019 YoYo Games Ltd. All rights reserved.
 //
 
-#import "YY_AppleSignInDelegate.h"
-#include "YY_AppleSignInEnums.h"
-
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
-
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
-
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+#import "YY_AppleSignIn.h"
 
 @implementation YY_AppleSignInDelegate
 
+#if TARGET_OS_OSX
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization API_AVAILABLE(macos(10.15))
+#else
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithAuthorization:(ASAuthorization *)authorization API_AVAILABLE(ios(13.0))
+#endif
 {
     NSMutableDictionary* results = [[NSMutableDictionary alloc] init];
     
@@ -86,16 +75,21 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     char jResponse[20];
     sprintf(jResponse, "response_json");
     
-    int dsMapIndex = dsMapCreate();
-    dsMapAddInt(dsMapIndex, jId, applesignin_signin_response);
-    dsMapAddString(dsMapIndex, jResponse, const_cast<char*>([jsonStr UTF8String]));
-    createSocialAsyncEventWithDSMap(dsMapIndex);
+    int dsMapIndex = CreateDsMap_comaptibility_();
+    DsMapAddDouble_comaptibility_(dsMapIndex, jId, applesignin_signin_response);
+    DsMapAddString_comaptibility_(dsMapIndex, jResponse, const_cast<char*>([jsonStr UTF8String]));
+    CreateAsyncEventWithDSMap_comaptibility_(dsMapIndex);
     
     [results release];
     [jsonStr release];
 }
 
+
+#if TARGET_OS_OSX
+- (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error API_AVAILABLE(macos(10.15))
+#else
 - (void)authorizationController:(ASAuthorizationController *)controller didCompleteWithError:(NSError *)error API_AVAILABLE(ios(13.0))
+#endif
 {
     NSLog(@"%s", __FUNCTION__);
     
@@ -114,10 +108,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     char jResponse[20];
     sprintf(jResponse, "response_json");
     
-    int dsMapIndex = dsMapCreate();
-    dsMapAddInt(dsMapIndex, jId, applesignin_signin_response);
-    dsMapAddString(dsMapIndex, jResponse, const_cast<char*>([jsonStr UTF8String]));
-    createSocialAsyncEventWithDSMap(dsMapIndex);
+    int dsMapIndex = CreateDsMap_comaptibility_();
+    DsMapAddDouble_comaptibility_(dsMapIndex, jId, applesignin_signin_response);
+    DsMapAddString_comaptibility_(dsMapIndex, jResponse, const_cast<char*>([jsonStr UTF8String]));
+    CreateAsyncEventWithDSMap_comaptibility_(dsMapIndex);
     
     [results release];
     [jsonStr release];

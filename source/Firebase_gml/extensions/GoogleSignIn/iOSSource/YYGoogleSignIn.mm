@@ -30,6 +30,7 @@ extern "C" const char* extOptGetString(char* _ext, char* _opt);
 
 -(void) GoogleSignIn_Show
 {
+    /*
 	const char *clientIDCString = extOptGetString("GoogleSignIn", "iosClientID");
 	NSString *clientID = [NSString stringWithCString:clientIDCString encoding:NSUTF8StringEncoding];
 
@@ -37,29 +38,30 @@ extern "C" const char* extOptGetString(char* _ext, char* _opt);
 	NSString *fullClientID = [clientID stringByAppendingString:@".apps.googleusercontent.com"];
 
 	GIDConfiguration *signInConfig = [[GIDConfiguration alloc] initWithClientID:fullClientID];
+    [[GIDSignIn.sharedInstance] clie]*/
+    [GIDSignIn.sharedInstance signInWithPresentingViewController:g_controller completion:^(GIDSignInResult * _Nullable signInResult, NSError * _Nullable error) {
     
-    [GIDSignIn.sharedInstance signInWithConfiguration:signInConfig presentingViewController:g_controller callback:^(GIDGoogleUser * _Nullable user,NSError * _Nullable error) 
-	{
-		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex, "type","GoogleSignIn_Show");
+        int dsMapIndex = dsMapCreate();
+        dsMapAddString(dsMapIndex, "type","GoogleSignIn_Show");
 
-		if (error) 
-		{
-			dsMapAddDouble(dsMapIndex, "success", 0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-			return;
-		}
-		else
-		{
-			dsMapAddDouble(dsMapIndex, "success",1.0);
-			if(user.authentication.idToken != nil) 
-			{
-				dsMapAddString(dsMapIndex,"idToken",(char*)[user.authentication.idToken UTF8String]);
-			}
-		}
-		
-		createSocialAsyncEventWithDSMap(dsMapIndex);
-	}];
+        if (error)
+        {
+            dsMapAddDouble(dsMapIndex, "success", 0.0);
+            createSocialAsyncEventWithDSMap(dsMapIndex);
+            return;
+        }
+        else
+        {
+            dsMapAddDouble(dsMapIndex, "success",1.0);
+            if([[signInResult user] idToken] != nil)
+            {
+                dsMapAddString(dsMapIndex,"idToken",(char*)[[[ [signInResult user] idToken] tokenString] UTF8String] );
+            }
+        }
+        
+        createSocialAsyncEventWithDSMap(dsMapIndex);
+    }];
+    
 }
 
 -(void) GoogleSignIn_SignOut

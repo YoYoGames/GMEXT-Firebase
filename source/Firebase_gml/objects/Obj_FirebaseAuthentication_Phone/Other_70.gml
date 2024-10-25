@@ -1,16 +1,20 @@
 
 switch(async_load[?"type"])
 {
-	
-	case "onButtonPressed":
+	case "WebView":
 		if(os_type == os_android or os_type == os_ios)
+		switch(async_load[?"event"])
 		{
-			WebView_Button_Destroy()
-			WebView_Destroy()
-		}
-	break
+			case "onButtonPressed":
+				WebView_Button_Destroy()
+				WebView_Destroy()
+			break
 	
-	case "onCloseWindow":
+			case "onCloseWindow":
+				WebView_Button_Destroy()
+				WebView_Destroy()
+			break
+		}
 	break
 	
 	case "FirebaseRealTime_Delete":

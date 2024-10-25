@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>GameCenter Ext - GMEXT-GameCenter</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "GameCenter Ext";
+        var mkdocs_page_input_path = "home.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-GameCenter
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="home.html">GameCenter Ext</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#extensions-features">Extension's Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#guides">Guides</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="quick_start_guide.html">Quick Start Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="presentview.html">PresentView</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="localplayer.html">LocalPlayer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="savedgames.html">SavedGames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="leaderboard.html">Leaderboard</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="achievement.html">Achievement</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="accesspoint.html">AccessPoint</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-GameCenter</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">GameCenter Ext</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter/edit/master/docs/home.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="gamecenter"><strong>GameCenter</strong></h1>
+<h2 id="extensions-features">Extension's Features</h2>
+<ul>
+<li>Sign in to Apple GameCenter</li>
+<li>Submit to and show specific leaderboards</li>
+<li>Show multiple leaderboards</li>
+<li>Report and show achievements</li>
+<li>Create save slots</li>
+<li>Save/Delete save slots</li>
+<li>Query all save slots</li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>Game Center lets players build an identity across Apple platforms and enables features like the Game Center leaderboards, achievements, multiplayer functionality, dashboard, and more. Add features within your custom user interface or take advantage of the updated Game Center user interface (<a href="https://developer.apple.com/game-center/">Game Center website</a>)</p>
+<p>Leaderboards let players participate in new competitions within your game and challenge other players to beat their score. Players see how they rank among global players, as well as their Game Center friends. You can even create a friends-only leaderboard in your custom UI. Classic leaderboards are ongoing and maintain a player's score forever. Use these to showcase scoring for overall or lifetime events, such as all-time number of matches won or the shortest time taken to complete a level. Recurring leaderboards are short lived and expire, then repeat after a set time, such as daily, monthly, or weekly. Use recurring leaderboards for timed live events — for example, to show the most matches won in a week. You can use one or both leaderboard types in your game.</p>
+<p>Achievements are special milestones that indicate when a player has successfully reached a particular goal in your game. You decide which achievements are relevant to your game and worth offering to your players. Players see achievements as locked, in progress, or completed. You can also create hidden achievements, which only appear once completed. Consider using hidden achievements to prevent spoilers in your game and to surprise and delight players. You can provide up to 100 achievements, each of which can award up to 100 points, and your game can award up to 1,000 points in total. Keep these limits in mind when releasing the initial version of your game, as you may want to add new achievements in future updates. For variety, consider creating a set of achievements that require dedication and a range of skills to complete.</p>
+<h2 id="guides">Guides</h2>
+<p>Guides for the GameCenter extension.</p>
+<ul>
+<li><a href="setup.html">Setup</a></li>
+<li><a href="quick_start_guide.html">Quick Start Guide</a></li>
+</ul>
+<h2 id="modules">Modules</h2>
+<p>The following are the available modules for the GameCenter extension:</p>
+<ul>
+<li><a href="presentview.html">PresentView</a></li>
+<li><a href="localplayer.html">LocalPlayer</a></li>
+<li><a href="savedgames.html">SavedGames</a></li>
+<li><a href="leaderboard.html">Leaderboard</a></li>
+<li><a href="achievement.html">Achievement</a></li>
+<li><a href="accesspoint.html">AccessPoint</a></li>
+</ul>
+<p><br></p>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="setup.html" class="btn btn-neutral float-right" title="Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="setup.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

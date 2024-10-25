@@ -149,17 +149,17 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @ignore
 	pathArray = string_split(_path, "/", true);
 	
-	/// @function BuildPath()
+	/// @function build_path()
 	/// @returns {String}
 	/// @ignore
-	static BuildPath = function() {
+	static build_path = function() {
 		return string_join_ext("/", pathArray);
 	}
 	
-	/// @function ProcessValue(value)
+	/// @function process_value(value)
 	/// @returns {Any}
 	/// @ignore
-	static ProcessValue = function(_value) {
+	static process_value = function(_value) {
 		if (is_string(_value)) {
 			try {
 				_value = json_parse(_value);
@@ -309,9 +309,9 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
     static Set = function(_value, _priority = undefined) {
 		__.action = FIREBASE_DATABASE_ACTION.SET;
 		
-		__.value = ProcessValue(_value);
+		__.value = process_value(_value);
 		__.priority = _priority;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		show_debug_message(self);
 		
@@ -334,7 +334,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @function Read(_path)
     static Read = function() {
 		__.action = FIREBASE_DATABASE_ACTION.READ;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
@@ -356,7 +356,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @function Listener()
     static Listener = function() {
 		__.action = FIREBASE_DATABASE_ACTION.LISTENER;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
@@ -379,7 +379,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @function Exists()
     static Exists = function() {
 		__.action = FIREBASE_DATABASE_ACTION.EXISTS;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
@@ -389,8 +389,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 						__firebase_realtime_build_url(self),
 						"GET",
 						"{}",
-						""
-					)
+						"");
 	
 		listener.path = __.path
 
@@ -400,7 +399,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @function Delete()
 	static Delete = function() {
 		__.action = FIREBASE_DATABASE_ACTION.DELETE;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		if(__firebase_realtime_should_use_sdk())
 			return FirebaseRealTime_SDK(json_stringify(__))
@@ -410,8 +409,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 						__firebase_realtime_build_url(self),
 						"DELETE",
 						"{}",
-						""
-					)
+						"");
 	
 		listener.path = __.path
 		return listener;
@@ -421,7 +419,7 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @param {Any} _listener
     static ListenerRemove = function(_listener) {
 		__.action = FIREBASE_DATABASE_ACTION.LISTENER_REMOVE;
-		__.path = BuildPath();
+		__.path = build_path();
 		
 		__.value = _listener;
 		if(__firebase_realtime_should_use_sdk())
@@ -444,5 +442,24 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 
 	#endregion
 	
+}
+
+function FirebaseRealTime_Listener_Refresh(_id) {
+	with(_id) {
+		_id.alarm[0] = -1
+		event_perform(ev_alarm, 0);
+	}
+}
+
+function FirebaseRealTime_Listener_Retry_Limit(_id, _value) {
+	_id.errorCountLimit = _value
+}
+
+function FirebaseRealTime_Listener_Retry_Interval(_id, _value) {
+	_id.errorResetAlarm = _value
+}
+
+function FirebaseRealTime_Listener_Refresh_Interval(_id, _value) {
+	_id.refreshCall = _value
 }
 

@@ -1,4 +1,6 @@
 
+fb_init();
+
 event_inherited()
 
 provider = "facebook.com"

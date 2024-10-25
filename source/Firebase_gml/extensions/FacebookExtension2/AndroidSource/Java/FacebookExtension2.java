@@ -261,19 +261,39 @@ public class FacebookExtension2  extends RunnerSocial
     
 	public void fb_init() 
 	{
-		msInitialized = 1;
-try
-{
-	Log.i("yoyo", "Facebook SDK version: " + getFacebookSDKVersion() + " using graph API"+ ServerProtocol.getDefaultAPIVersion());
-	
-	FacebookSdk.sdkInitialize(RunnerActivity.CurrentActivity.getApplicationContext());
-	// AppEventsLogger.activateApp(RunnerActivity.CurrentActivity);
-	callbackManager = CallbackManager.Factory.create();
-}
-catch(Exception e)
-{
-	Log.i("yoyo","fb_init Exception:" + e.getMessage());
-}
+		if (msInitialized == 1) return;
+
+		final Activity activity = RunnerActivity.CurrentActivity;
+
+		// Disable automatic Facebook SDK initialization
+		FacebookSdk.setAutoInitEnabled(false);
+
+		try {
+			// Set Facebook App ID and Client Token
+			FacebookSdk.setApplicationId(activity.getResources().getString(R.string.facebook_app_id));
+			FacebookSdk.setClientToken(activity.getResources().getString(R.string.facebook_client_token));
+
+			// Initialize Facebook SDK
+			FacebookSdk.sdkInitialize(activity.getApplicationContext(), new FacebookSdk.InitializeCallback() {
+				@Override
+				public void onInitialized() {
+					// SDK initialized, proceed with other setup
+					// Since this is a background thread, switch to main thread avoid ANR
+					activity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// Optionally, activate App Events
+							// AppEventsLogger.activateApp(activity);
+							callbackManager = CallbackManager.Factory.create();
+							msInitialized = 1;
+							Log.i("yoyo", "Facebook SDK initialized successfully.");
+						}
+					});
+				}
+			});
+		} catch (Exception e) {
+			Log.i("yoyo", "Error initializing Facebook SDK: " + e.getMessage());
+		}
 	}
 	
 	public double fb_send_event(double _eventId, double _eventValue, double _eventParamsDsList)

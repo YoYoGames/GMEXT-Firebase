@@ -50,18 +50,18 @@
   "macsourcedir":"",
   "name":"YYFirebaseFirestore",
   "options":[
-    {"$GMExtensionOption":"","%Name":"ProjectID","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"Project ID","exportToINI":false,"extensionId":null,"guid":"58df55cc-27e3-4b18-9fac-8c00f6af6d38","hidden":false,"listItems":[],"name":"ProjectID","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-    {"$GMExtensionOption":"","%Name":"Config","defaultValue":"SDKs_When_Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"d0bc7dea-7df6-4506-8c8a-78f04b930a4e","hidden":false,"listItems":[
-        "SDKs_Only",
-        "SDKs_When_Available",
-        "REST_API_Only",
-      ],"name":"Config","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"projectId","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"Project ID","exportToINI":false,"extensionId":null,"guid":"58df55cc-27e3-4b18-9fac-8c00f6af6d38","hidden":false,"listItems":[],"name":"projectId","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"mode","defaultValue":"SDKs When Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"d0bc7dea-7df6-4506-8c8a-78f04b930a4e","hidden":false,"listItems":[
+        "SDKs Only",
+        "SDKs When Available",
+        "REST API Only",
+      ],"name":"mode","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Firestore/Extensions.yy",
+    "path":"folders/Firebase/Firebase Firestore/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

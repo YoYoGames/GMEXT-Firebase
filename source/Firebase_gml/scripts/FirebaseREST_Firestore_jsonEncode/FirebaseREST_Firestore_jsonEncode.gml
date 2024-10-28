@@ -6,7 +6,7 @@ function FirebaseREST_Firestore_jsonEncode(json)
 	var key = ds_map_find_first(map)
 	while(!is_undefined(key))
 	{	
-		ds_map_add_map(map_keys,key,FirebaseREST_firestore_value(map[?key]))
+		ds_map_add_map(map_keys,key,__firebase_firestore_process_value(map[?key]))
 		key = ds_map_find_next(map,key)
 	}
 	

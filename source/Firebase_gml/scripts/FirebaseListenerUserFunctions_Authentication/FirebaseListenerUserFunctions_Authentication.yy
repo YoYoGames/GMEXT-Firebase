@@ -6,7 +6,7 @@
   "name":"FirebaseListenerUserFunctions_Authentication",
   "parent":{
     "name":"Listeners Authentication",
-    "path":"folders/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch)/Listeners Authentication.yy",
+    "path":"folders/Firebase/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch)/Listeners Authentication.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

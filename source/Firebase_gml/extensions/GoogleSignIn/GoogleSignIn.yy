@@ -59,7 +59,7 @@
   "packageId":"",
   "parent":{
     "name":"GoogleSignIn",
-    "path":"folders/GoogleSignIn.yy",
+    "path":"folders/Authentication Providers/Extensions/GoogleSignIn.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

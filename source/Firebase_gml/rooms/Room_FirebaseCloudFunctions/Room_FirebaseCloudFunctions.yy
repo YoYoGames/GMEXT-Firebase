@@ -32,7 +32,7 @@
   "name":"Room_FirebaseCloudFunctions",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Cloud Functions/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase Cloud Functions/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

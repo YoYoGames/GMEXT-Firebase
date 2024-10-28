@@ -34,7 +34,7 @@
   "name":"Room_FirebaseStorage",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Storage/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase Storage/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

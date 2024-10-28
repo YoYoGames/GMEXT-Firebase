@@ -1,68 +1,38 @@
 
-function RESTFirebaseFirestore_Collection_Add(path,json)
-{
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Add",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"POST",
-				FirebaseREST_Firestore_headerToken(),
-				FirebaseREST_Firestore_jsonEncode(json));
-	listener.path = path
-	return listener
+function RESTFirebaseFirestore_Collection_Add(_builder, _json) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Add", Obj_FirebaseREST_Listener_Once_Firestore, _url, "POST", _header, _body);
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-function RESTFirebaseFirestore_Collection_Read(path)
-{
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Read",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"");
-	listener.path = path
-	return listener
+function RESTFirebaseFirestore_Collection_Read(_builder) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Read", Obj_FirebaseREST_Listener_Once_Firestore, _url, "GET", _header);
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-function RESTFirebaseFirestore_Collection_Listener(path)
-{	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Listener",
-				Obj_FirebaseREST_Listener_On_firestore_collection,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"");
+function RESTFirebaseFirestore_Collection_Listener(_builder) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Listener", Obj_FirebaseREST_Listener_On_firestore_collection, _url, "GET", _header);
 			
-	listener.path = path
-	return listener
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-/*
-function RESTFirebaseFirestore_Collection_Query(
-				path,
-				where_operation,where_ref,where_value,
-				where_operation2,where_ref2,where_value2,
-				orderBy_direction,orderBy_field,
-				start,
-				end_,
-				limit,
-				
-				)
-{
-	FIREBASE_FIRESTORE_QUERY_SORT.ASCN
-	FIREBASE_FIRESTORE_QUERY_SORT.DESC
-	FIREBASE_FIRESTORE_QUERY_FILTER.EQ
-	FIREBASE_FIRESTORE_QUERY_FILTER.GREAT
-	FIREBASE_FIRESTORE_QUERY_FILTER.GREAT_EQ
-	FIREBASE_FIRESTORE_QUERY_FILTER.LESS
-	FIREBASE_FIRESTORE_QUERY_FILTER.LESS_EQ
-}
-*/
-
-function RESTFirebaseFirestore_Collection_Query(struct)
-{
+function RESTFirebaseFirestore_Collection_Query(struct) {
+	
 	var path = struct._path
 
 	var start = struct._start
@@ -103,7 +73,7 @@ function RESTFirebaseFirestore_Collection_Query(struct)
 		var map_FieldFilter = ds_map_create()
 		ds_map_add_map(map_FieldFilter,"field",FirebaseREST_firestore_fieldReference(struct._operations[a].path))
 		ds_map_add(map_FieldFilter,"op",struct._operations[a].operation)
-		ds_map_add_map(map_FieldFilter,"value",FirebaseREST_firestore_value(struct._operations[a].value))
+		ds_map_add_map(map_FieldFilter,"value",__firebase_firestore_process_value(struct._operations[a].value))
 		var map_toList = ds_map_create()
 		ds_map_add_map(map_toList,"fieldFilter",map_FieldFilter)
 		ds_list_add(list_filters,map_toList)
@@ -186,9 +156,9 @@ function RESTFirebaseFirestore_Collection_Query(struct)
 	var listener = FirebaseREST_asyncFunction_Firestore(
 				"FirebaseFirestore_Collection_Query",
 				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
+				__firebase_firestore_build_url(path),
 				"POST",
-				FirebaseREST_Firestore_headerToken(),
+				__firebase_firestore_build_header(),
 				json)
 
 	listener.url += ":runQuery"
@@ -197,98 +167,58 @@ function RESTFirebaseFirestore_Collection_Query(struct)
 	return listener
 }
 
-
-function RESTFirebaseFirestore_Document_Delete(path)
-{	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-			"FirebaseFirestore_Document_Delete",
-			Obj_FirebaseREST_Listener_Once_Firestore,
-			FirebaseREST_Firestore_getURL(path),
-			"DELETE",
-			FirebaseREST_Firestore_headerToken(),
-			"")
-	listener.path = path
+function RESTFirebaseFirestore_Document_Delete(_builder) {
 	
-	return listener
-}
-
-
-function RESTFirebaseFirestore_Document_Read(path)
-{	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Read",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"")
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Delete", Obj_FirebaseREST_Listener_Once_Firestore, _url, "DELETE", _header);
+	listener.path = _builder.build_path();
 	
-	listener.path = path
-	return listener
+	return listener;
 }
 
-function RESTFirebaseFirestore_Document_Listener(path)
-{	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Listener",
-				Obj_FirebaseREST_Listener_On_firestore_document,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"")
+function RESTFirebaseFirestore_Document_Read(_builder) {
 	
-	listener.path = path
-	return listener
-}
-
-/*Deprecated due if exists not override the document, and SDKs do it.....
-function RESTFirebaseFirestore_Document_Set(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Read", Obj_FirebaseREST_Listener_Once_Firestore, _url, "GET", _header);
 	
-	var original_ref = path
-	var doc_name = FirebaseFirestore_Path_GetName(path,0)
-	var ref_ = FirebaseFirestore_Path_Back(path,1)
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Set",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(ref_),
-				"POST",
-				FirebaseREST_Firestore_headerToken(),
-				FirebaseREST_Firestore_jsonEncode(json),
-				)
-	listener.url += "?documentId=" + doc_name
-	listener.path = original_ref
-	return listener
-}
-*/
-
-function RESTFirebaseFirestore_Document_Set(path,json)
-{	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-					"RESTFirebaseFirestore_Document_Set",
-					Obj_FirebaseREST_Listener_Once_Firestore,
-					FirebaseREST_Firestore_getURL(path),
-					"PATCH",
-					FirebaseREST_Firestore_headerToken(),
-					FirebaseREST_Firestore_jsonEncode(json))
-	listener.path = path
-	return listener
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-function RESTFirebaseFirestore_Document_Update(path,json)
-{
-	var listener = FirebaseREST_asyncFunction_Firestore(
-					"RESTFirebaseFirestore_Document_Update",
-					Obj_FirebaseREST_Listener_Once_Firestore,
-					FirebaseREST_Firestore_getURL(path),
-					"PATCH",
-					FirebaseREST_Firestore_headerToken(),
-					FirebaseREST_Firestore_jsonEncode(json)
-				)
-	listener.url += FriebaseREST_Firestore_urlUpdateMask(json)
-	show_debug_message(listener.url)
-	listener.path = path
-	return listener
+function RESTFirebaseFirestore_Document_Listener(_builder) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Listener", Obj_FirebaseREST_Listener_On_firestore_document, _url, "GET", _header);
+	
+	listener.path = _builder.build_path();
+	return listener;
+}
+
+function RESTFirebaseFirestore_Document_Set(_builder, _json) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("RESTFirebaseFirestore_Document_Set", Obj_FirebaseREST_Listener_Once_Firestore, _url, "PATCH", _header, _body);
+	
+	listener.path = _builder.build_path();
+	return listener;
+}
+
+function RESTFirebaseFirestore_Document_Update(_builder, _json) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("RESTFirebaseFirestore_Document_Update", Obj_FirebaseREST_Listener_Once_Firestore, _url, "PATCH", _header, _body);
+
+	listener.url += FriebaseREST_Firestore_urlUpdateMask(_json)
+	show_debug_message(listener.url);
+	listener.path = path;
+	return listener;
 }

@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Authentication/Demo/Objects.yy",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

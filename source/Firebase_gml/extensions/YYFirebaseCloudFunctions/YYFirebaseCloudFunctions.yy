@@ -51,7 +51,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Cloud Functions/Extensions.yy",
+    "path":"folders/Firebase/Firebase Cloud Functions/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

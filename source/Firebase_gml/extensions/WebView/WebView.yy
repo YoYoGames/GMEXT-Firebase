@@ -57,7 +57,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/WebView/Extensions.yy",
+    "path":"folders/Authentication Providers/Extensions/WebView/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

@@ -120,7 +120,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Authentication/Extensions.yy",
+    "path":"folders/Firebase/Firebase Authentication/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

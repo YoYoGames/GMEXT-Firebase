@@ -109,7 +109,7 @@
   "packageId":"com.yoyogames.facebookextension2",
   "parent":{
     "name":"FacebookAPI",
-    "path":"folders/FacebookAPI.yy",
+    "path":"folders/Authentication Providers/Extensions/FacebookAPI.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

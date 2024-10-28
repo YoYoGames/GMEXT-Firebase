@@ -10,8 +10,8 @@
   "name":"Obj_FirebaseAuthentication_Facebook",
   "overriddenProperties":[],
   "parent":{
-    "name":"Facebook",
-    "path":"folders/Firebase Authentication Extras Logins/Facebook.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseAuthentication_byOAuth_parent",

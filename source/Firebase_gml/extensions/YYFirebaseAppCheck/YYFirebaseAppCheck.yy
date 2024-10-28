@@ -46,7 +46,7 @@
   "packageId":"",
   "parent":{
     "name":"Firebase App Check",
-    "path":"folders/Firebase App Check.yy",
+    "path":"folders/Firebase/Firebase App Check.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

@@ -13,7 +13,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Sprites",
-    "path":"folders/Firebase Authentication/Demo/Sprites.yy",
+    "path":"folders/Firebase Demo/Firebase Authentication/Sprites.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

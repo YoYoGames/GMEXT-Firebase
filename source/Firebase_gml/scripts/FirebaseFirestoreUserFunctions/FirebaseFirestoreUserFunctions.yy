@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"FirebaseFirestoreUserFunctions",
   "parent":{
-    "name":"Firebase Firestore",
-    "path":"folders/Firebase Firestore/Extensions/Firebase REST API Library (Don't Touch)/Firebase Firestore.yy",
+    "name":"Extensions",
+    "path":"folders/Firebase/Firebase Firestore/Extensions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

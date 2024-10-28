@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Firestore/Demo/Objects.yy",
+    "path":"folders/Firebase Demo/Firebase Firestore/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

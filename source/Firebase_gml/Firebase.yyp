@@ -168,6 +168,7 @@
     {"id":{"name":"Obj_FirebaseAnalytics_SetUserId","path":"objects/Obj_FirebaseAnalytics_SetUserId/Obj_FirebaseAnalytics_SetUserId.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_SetUserProperty","path":"objects/Obj_FirebaseAnalytics_SetUserProperty/Obj_FirebaseAnalytics_SetUserProperty.yy",},},
     {"id":{"name":"Obj_FirebaseAppCheck_GetToken","path":"objects/Obj_FirebaseAppCheck_GetToken/Obj_FirebaseAppCheck_GetToken.yy",},},
+    {"id":{"name":"Obj_FirebaseAppCheck_LimitedUseToken","path":"objects/Obj_FirebaseAppCheck_LimitedUseToken/Obj_FirebaseAppCheck_LimitedUseToken.yy",},},
     {"id":{"name":"Obj_FirebaseAuthentication_allCallbacks","path":"objects/Obj_FirebaseAuthentication_allCallbacks/Obj_FirebaseAuthentication_allCallbacks.yy",},},
     {"id":{"name":"Obj_FirebaseAuthentication_AppleSignIn","path":"objects/Obj_FirebaseAuthentication_AppleSignIn/Obj_FirebaseAuthentication_AppleSignIn.yy",},},
     {"id":{"name":"Obj_FirebaseAuthentication_button_parent_auth_login","path":"objects/Obj_FirebaseAuthentication_button_parent_auth_login/Obj_FirebaseAuthentication_button_parent_auth_login.yy",},},

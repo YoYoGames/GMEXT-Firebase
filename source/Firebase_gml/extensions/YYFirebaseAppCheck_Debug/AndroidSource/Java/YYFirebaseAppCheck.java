@@ -23,19 +23,14 @@ public class YYFirebaseAppCheck
 	public YYFirebaseAppCheck() {
         // Initialize the cached instance
         FirebaseUtils.getInstance().registerInitFunction(()-> {
-			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck DEBUG");
-            // appCheck = FirebaseAppCheck.getInstance();
-			// appCheck.installAppCheckProviderFactory(/*PlayIntegrityAppCheckProviderFactory*/DebugAppCheckProviderFactory.getInstance());
-			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck DEBUG END");
+            appCheck = FirebaseAppCheck.getInstance();
+			appCheck.installAppCheckProviderFactory(/*PlayIntegrityAppCheckProviderFactory*/DebugAppCheckProviderFactory.getInstance());
         }, 6);
 	}
 	
 	
 	public void FirebaseAppCheck_GetToket(double _force_refresh)
 	{
-		appCheck = FirebaseAppCheck.getInstance();
-		appCheck.installAppCheckProviderFactory(/*PlayIntegrityAppCheckProviderFactory*/DebugAppCheckProviderFactory.getInstance());
-
 		FirebaseAppCheck.getInstance().getAppCheckToken(_force_refresh > 0.5).addOnCompleteListener(new OnCompleteListener<AppCheckToken>() 
 		{
 			@Override
@@ -55,6 +50,31 @@ public class YYFirebaseAppCheck
 				}
 
 				FirebaseUtils.sendSocialAsyncEvent("FirebaseAppCheck_GetToket",data);
+			}
+		});
+	}
+	
+	public void FirebaseAppCheck_LimitedUseToken()
+	{
+		FirebaseAppCheck.getInstance().getLimitedUseAppCheckToken().addOnCompleteListener(new OnCompleteListener<AppCheckToken>() 
+		{
+			@Override
+			public void onComplete(@NonNull Task<AppCheckToken> task) 
+			{
+				Map<String, Object> data = new HashMap<>();
+				if (task.isSuccessful()) 
+				{
+					String token = task.getResult().getToken();
+					data.put("token", token);
+					data.put("success", 1.0);
+				}
+				else
+				{
+					// data.put("error", errorMessage);
+					data.put("success", 0.0);
+				}
+
+				FirebaseUtils.sendSocialAsyncEvent("FirebaseAppCheck_LimitedUseToken",data);
 			}
 		});
 	}

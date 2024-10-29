@@ -16,15 +16,6 @@
 	return self;
 }
 
-//- (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app {
-	// if (@available(iOS 14.0, *)) {
-		// return [[FIRAppAttestProvider alloc] initWithApp:app];
-	// } else {
-		// return [[FIRDeviceCheckProvider alloc] initWithApp:app];
-	// }
-//}
-
-
 -(void) FirebaseAppCheck_GetToket:(double)_force_refresh
 {
 
@@ -49,8 +40,25 @@
 }
 
 
-- (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app { 
-  
+-(void) FirebaseAppCheck_LimitedUseToken
+{
+	[[FIRAppCheck appCheck] limitedUseTokenWithCompletion:^(FIRAppCheckToken * _Nullable token, NSError * _Nullable error) {
+        
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        
+		if(error)
+		{
+			data[@"success"] = @(0.0);
+			//data[@"error"] = [error message];
+		}
+		else
+		{
+			data[@"token"] = [token token];
+			data[@"success"] = @(1.0);
+		}
+        
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAppCheck_LimitedUseToken" data:data];
+    }];
 }
 
 @end

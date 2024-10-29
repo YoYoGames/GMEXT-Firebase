@@ -10,7 +10,7 @@ if(async_load[?"listener"] == token_request)
 			idToken: idToken,
 		};
 
-		request = FirebaseCloudFunctions_Call("tokenDecoder", json_stringify(_body), 10);
+		request = FirebaseCloudFunctions_Call("tokenDecoder", _body, 10);
     }
 }
 

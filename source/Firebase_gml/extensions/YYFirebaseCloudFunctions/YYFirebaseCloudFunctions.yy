@@ -43,6 +43,7 @@
   "macsourcedir":"",
   "name":"YYFirebaseCloudFunctions",
   "options":[
+    {"$GMExtensionOption":"","%Name":"serverUrl","defaultValue":"","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"67df2c08-8702-41bb-a741-dbb18048b30a","hidden":false,"listItems":[],"name":"serverUrl","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"useEmulator","defaultValue":"False","description":"Modifies this FirebaseFunctions instance to communicate with the Cloud Functions emulator.","displayName":"Use Emulator","exportToINI":false,"extensionId":null,"guid":"7a3af432-a1d9-4b8a-9f1f-a140f9de33e6","hidden":false,"listItems":[],"name":"useEmulator","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"emulatorHost","defaultValue":"127.0.0.1","description":"","displayName":"Host Address","exportToINI":false,"extensionId":null,"guid":"fe4d1a44-01e7-4c0d-ab14-a16a09701b26","hidden":false,"listItems":[],"name":"emulatorHost","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"emulatorPort","defaultValue":"8080","description":"","displayName":"Port","exportToINI":false,"extensionId":null,"guid":"383434e2-12a6-4526-8e56-9457ed0288ce","hidden":false,"listItems":[],"name":"emulatorPort","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},

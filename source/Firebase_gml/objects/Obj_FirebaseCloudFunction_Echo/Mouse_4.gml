@@ -7,4 +7,4 @@ body = {
 };
 
 
-request = FirebaseCloudFunctions_Call("echo", json_stringify(body), 10);
+request = FirebaseCloudFunctions_Call("echo", body, 10);

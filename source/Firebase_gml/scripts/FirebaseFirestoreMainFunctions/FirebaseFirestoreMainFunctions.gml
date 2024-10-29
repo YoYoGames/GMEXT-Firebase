@@ -38,8 +38,9 @@ function RESTFirebaseFirestore_Collection_Listener(_builder) {
 /// @params {Struct.FirebaseFirestoreBuilder} _builder
 function RESTFirebaseFirestore_Collection_Query(_builder) {
 	
+	/// @function _direction_enum_to_string(_direction)
 	/// @returns {String}
-	static _direction_to_string = function(_direction) {
+	static _direction_enum_to_string = function(_direction) {
 		switch (_direction) {
 			case FIREBASE_FIRESTORE_QUERY_SORT.ASCN:
 				return "ASCENDING";
@@ -48,6 +49,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 		}
 	}
 	
+	/// @function _filter_enum_to_string(_filter)
 	/// @returns {String}
 	static _filter_enum_to_string = function(_filter) {
 		switch (_filter) {
@@ -69,7 +71,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 	with (_builder) {
 		var _private = __;
 		
-		//https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
+		// https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
 
 		var _structured_query = {};
 
@@ -92,7 +94,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 			{
 				var _operation =  _operations[_i];
 				var fieldFilter = {
-					field: { fieldPath: _operation.path },
+					field: __firebase_firestore_build_field_reference(_operation.path) },
 					op: _filter_enum_to_string(_operation.operation),
 					value: __firebase_firestore_process_value(_operation.value)
 				}
@@ -109,8 +111,8 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 		{
 			_structured_query.orderBy = [ 
 				{ 
-					field: { fieldPath: _private.orderBy }, 
-					direction: _direction_to_string(_private.sort) 
+					field: __firebase_firestore_build_field_reference(_private.orderBy), 
+					direction: _direction_enum_to_string(_private.sort) 
 				}
 			];
 		}
@@ -118,17 +120,17 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 		// startAt
 
 		if (!is_undefined(_private.startAt)) {
-			_structured_query.startAt = FirebaseREST_firestore_cursor(_private.startAt, true);
+			_structured_query.startAt = __firebase_firestore_build_cursor(_private.startAt, true);
 		} else if (!is_undefined(_private.startAfter)) {
-			_structured_query.startAt = FirebaseREST_firestore_cursor(_private.startAfter, false);
+			_structured_query.startAt = __firebase_firestore_build_cursor(_private.startAfter, false);
 		}
 
 		// endAt
 		
 		if (!is_undefined(_private.endAt)) {
-			_structured_query.endAt = FirebaseREST_firestore_cursor(_private.endAt, false);
+			_structured_query.endAt = __firebase_firestore_build_cursor(_private.endAt, false);
 		} else if (!is_undefined(_private.endBefore)) {
-			_structured_query.endAt = FirebaseREST_firestore_cursor(_private.endBefore, true);
+			_structured_query.endAt = __firebase_firestore_build_cursor(_private.endBefore, true);
 		}
 
 		// limit 

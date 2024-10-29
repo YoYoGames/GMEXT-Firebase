@@ -55,6 +55,15 @@ function __firebase_firestore_build_body(_struct) {
 
 /// @returns {Struct}
 /// @pure
+function __firebase_firestore_build_cursor(_value, _before) {
+	// https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery#Cursor
+	var _cursor = __firebase_firestore_process_value([ _value ]);
+	_cursor.before = _before ? "true" : "false"; 
+	return _cursor;
+}
+
+/// @returns {Struct}
+/// @pure
 function __firebase_firestore_process_value(_value) {
 	// https://firebase.google.com/docs/firestore/reference/rest/v1/Value
 	switch (typeof(_value)) {
@@ -126,6 +135,14 @@ function __firebase_firestore_flatten_struct_paths(_struct, _parent_key = "") {
 	
     return _paths;
 }
+
+
+function __firebase_firestore_build_field_reference(_field) 
+{
+	// https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery#fieldreference
+	return { fieldPath: _field }
+}
+
 
 /// @param {String} _url
 /// @param {Struct} _json

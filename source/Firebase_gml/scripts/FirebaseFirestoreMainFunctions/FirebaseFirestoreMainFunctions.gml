@@ -38,6 +38,34 @@ function RESTFirebaseFirestore_Collection_Listener(_builder) {
 /// @params {Struct.FirebaseFirestoreBuilder} _builder
 function RESTFirebaseFirestore_Collection_Query(_builder) {
 	
+	/// @returns {String}
+	static _direction_to_string = function(_direction) {
+		switch (_direction) {
+			case FIREBASE_FIRESTORE_QUERY_SORT.ASCN:
+				return "ASCENDING";
+			case FIREBASE_FIRESTORE_QUERY_SORT.DESC:
+				return "DESCENDING";
+		}
+	}
+	
+	/// @returns {String}
+	static _filter_enum_to_string = function(_filter) {
+		switch (_filter) {
+			case FIREBASE_FIRESTORE_QUERY_FILTER.LESS:
+				return "LESS_THAN";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.LESS_EQ:
+				return "LESS_THAN_OR_EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.GREAT:
+				return "GREATER_THAN";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.GREAT_EQ:
+				return "GREATER_THAN_OR_EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.EQ:
+				return "EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.NOT_EQ:
+				return "NOT_EQUAL";
+		}
+	}
+	
 	with (_builder) {
 		var _private = __;
 		
@@ -65,7 +93,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 				var _operation =  _operations[_i];
 				var fieldFilter = {
 					field: { fieldPath: _operation.path },
-					op: _operation.operation,
+					op: _filter_enum_to_string(_operation.operation),
 					value: __firebase_firestore_process_value(_operation.value)
 				}
 				_filters[_i] = { fieldFilter: fieldFilter };
@@ -82,7 +110,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 			_structured_query.orderBy = [ 
 				{ 
 					field: { fieldPath: _private.orderBy }, 
-					direction: _private.sort 
+					direction: _direction_to_string(_private.sort) 
 				}
 			];
 		}

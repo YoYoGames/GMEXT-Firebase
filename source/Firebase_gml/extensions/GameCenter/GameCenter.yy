@@ -153,7 +153,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/GameCenter/Extensions.yy",
+    "path":"folders/Authentication Providers/Extensions/GameCenter/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

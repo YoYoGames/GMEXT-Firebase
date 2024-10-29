@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Testing",
-    "path":"folders/Firebase RealTime/Demo/Testing.yy",
+    "path":"folders/Firebase Demo/Firebase RealTime/Testing.yy",
   },
   "parentObjectId":null,
   "persistent":false,

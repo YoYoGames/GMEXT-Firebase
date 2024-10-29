@@ -120,7 +120,7 @@
   "packageId":"",
   "parent":{
     "name":"GooglePlayServices",
-    "path":"folders/GooglePlayServices.yy",
+    "path":"folders/Authentication Providers/Extensions/GooglePlayServices.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

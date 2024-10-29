@@ -70,7 +70,7 @@
   "packageId":"",
   "parent":{
     "name":"Apple SignIn",
-    "path":"folders/Apple SignIn.yy",
+    "path":"folders/Authentication Providers/Extensions/Apple SignIn.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

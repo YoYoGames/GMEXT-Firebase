@@ -5,9 +5,9 @@
 function __firebase_realtime_should_use_sdk() {
 
 	static _is_sdk_platform = function() { return os_type == os_android || os_type == os_ios || os_browser != browser_not_a_browser; }
-	static _work_mode = extension_get_option_value("YYFirebaseRealTime","workMode");
+	static _mode = extension_get_option_value("YYFirebaseRealTime", "mode");
 	
-	static _use_sdk = _work_mode == "SDKs Only" || (_work_mode == "SDKs When Available" && _is_sdk_platform());
+	static _use_sdk = _mode == "SDKs Only" || (_mode == "SDKs When Available" && _is_sdk_platform());
 						
 	return _use_sdk;
 }
@@ -147,13 +147,13 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	};
 	
 	/// @ignore
-	pathArray = string_split(_path, "/", true);
+	path_array = string_split(_path, "/", true);
 	
 	/// @function build_path()
 	/// @returns {String}
 	/// @ignore
 	static build_path = function() {
-		return string_join_ext("/", pathArray);
+		return string_join_ext("/", path_array);
 	}
 	
 	/// @function process_value(value)
@@ -196,20 +196,20 @@ function FirebaseRealTimeBuilder(_database, _path) constructor {
 	/// @function Path(_path)
 	/// @param {String} _path
 	static Path = function(_path) {
-		pathArray = string_split(_path, "/", true);
+		path_array = string_split(_path, "/", true);
 		return self;
 	}
 	
 	/// @function Child(child_path)
 	/// @param {String} _child_path
 	static Child = function(_child_path) {
-		array_push(pathArray, _child_path);
+		array_push(path_array, _child_path);
 		return self;
 	}
 	
 	/// @function Parent()
 	static Parent = function() {
-		array_pop(pathArray);
+		array_pop(path_array);
 		return self;
 	}
 	

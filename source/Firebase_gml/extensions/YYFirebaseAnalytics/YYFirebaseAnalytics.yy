@@ -68,7 +68,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Analytics/Extensions.yy",
+    "path":"folders/Firebase/Firebase Analytics/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

@@ -27,8 +27,8 @@ function FirebaseREST_HTTP_Failed_RealTime()
 				}
 				else
 				if(ds_map_exists(map,"error"))
-				if(is_string(map[?"error"]))
-					errorMessage = map[?"error"]
+				if(is_string(map[? "error"]))
+					errorMessage = map[? "error"]
 				else
 				if(ds_exists(map[?"error"],ds_type_map))
 				if(ds_map_exists(map[?"error"],"message"))

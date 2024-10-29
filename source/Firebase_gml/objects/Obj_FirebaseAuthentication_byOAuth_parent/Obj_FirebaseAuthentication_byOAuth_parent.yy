@@ -10,8 +10,8 @@
   "name":"Obj_FirebaseAuthentication_byOAuth_parent",
   "overriddenProperties":[],
   "parent":{
-    "name":"Firebase Authentication Extras Logins",
-    "path":"folders/Firebase Authentication Extras Logins.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

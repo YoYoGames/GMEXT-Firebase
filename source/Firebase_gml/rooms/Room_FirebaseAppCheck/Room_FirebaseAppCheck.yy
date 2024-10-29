@@ -22,7 +22,7 @@
   "name":"Room_FirebaseAppCheck",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase App Check/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase App Check/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

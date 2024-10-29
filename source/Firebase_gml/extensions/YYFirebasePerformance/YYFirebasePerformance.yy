@@ -100,7 +100,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Performance/Extensions.yy",
+    "path":"folders/Firebase/Firebase Performance/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

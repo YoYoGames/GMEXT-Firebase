@@ -11,8 +11,8 @@
   "name":"Obj_FirebaseAuthentication_AppleSignIn",
   "overriddenProperties":[],
   "parent":{
-    "name":"Apple",
-    "path":"folders/Firebase Authentication Extras Logins/Apple.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseAuthentication_byOAuth_parent",

@@ -35,8 +35,8 @@
   ],
   "name":"Room_FirebaseAnalytics",
   "parent":{
-    "name":"Demo",
-    "path":"folders/Firebase Analytics/Demo.yy",
+    "name":"Rooms",
+    "path":"folders/Firebase Demo/Firebase Analytics/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

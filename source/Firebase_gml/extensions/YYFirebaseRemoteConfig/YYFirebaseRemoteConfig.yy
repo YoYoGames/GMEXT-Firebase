@@ -65,7 +65,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Remote Config/Extensions.yy",
+    "path":"folders/Firebase/Firebase Remote Config/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

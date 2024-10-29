@@ -50,7 +50,7 @@
   "name":"Room_FirebaseRealTime_Query",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase RealTime/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase RealTime/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

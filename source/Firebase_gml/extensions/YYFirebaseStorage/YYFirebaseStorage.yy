@@ -61,7 +61,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Storage/Extensions.yy",
+    "path":"folders/Firebase/Firebase Storage/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

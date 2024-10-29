@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Crashlytics/Demo/Objects.yy",
+    "path":"folders/Firebase Demo/Firebase Crashlytics/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

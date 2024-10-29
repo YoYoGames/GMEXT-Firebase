@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Query",
-    "path":"folders/Firebase Firestore/Demo/Objects/Query.yy",
+    "path":"folders/Firebase Demo/Firebase Firestore/Objects/Query.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseRealTime_Query_options_value",

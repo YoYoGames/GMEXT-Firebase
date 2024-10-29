@@ -309,6 +309,7 @@
     {"id":{"name":"Room_LocalNotifications","path":"rooms/Room_LocalNotifications/Room_LocalNotifications.yy",},},
     {"id":{"name":"FirebaseAuthentication_controllerVerification","path":"scripts/FirebaseAuthentication_controllerVerification/FirebaseAuthentication_controllerVerification.yy",},},
     {"id":{"name":"FirebaseAuthenticationUserFunctions","path":"scripts/FirebaseAuthenticationUserFunctions/FirebaseAuthenticationUserFunctions.yy",},},
+    {"id":{"name":"FirebaseCloudFunctionsUserFunctions","path":"scripts/FirebaseCloudFunctionsUserFunctions/FirebaseCloudFunctionsUserFunctions.yy",},},
     {"id":{"name":"FirebaseCrashlyticsReportGML","path":"scripts/FirebaseCrashlyticsReportGML/FirebaseCrashlyticsReportGML.yy",},},
     {"id":{"name":"FirebaseFirestoreMainFunctions","path":"scripts/FirebaseFirestoreMainFunctions/FirebaseFirestoreMainFunctions.yy",},},
     {"id":{"name":"FirebaseFirestorePaths","path":"scripts/FirebaseFirestorePaths/FirebaseFirestorePaths.yy",},},

@@ -94,7 +94,7 @@ function RESTFirebaseFirestore_Collection_Query(_builder) {
 			{
 				var _operation =  _operations[_i];
 				var fieldFilter = {
-					field: __firebase_firestore_build_field_reference(_operation.path) },
+					field: __firebase_firestore_build_field_reference(_operation.path) ,
 					op: _filter_enum_to_string(_operation.operation),
 					value: __firebase_firestore_process_value(_operation.value)
 				}

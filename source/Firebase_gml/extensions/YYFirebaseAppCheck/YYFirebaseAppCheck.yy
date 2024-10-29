@@ -40,9 +40,7 @@
   "maclinkerflags":"-ObjC",
   "macsourcedir":"",
   "name":"YYFirebaseAppCheck",
-  "options":[
-    {"$GMExtensionOption":"","%Name":"Enabled","defaultValue":"True","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"db5814f4-ed0c-4d94-8f74-24a30fdfa2c8","hidden":false,"listItems":[],"name":"Enabled","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-  ],
+  "options":[],
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{

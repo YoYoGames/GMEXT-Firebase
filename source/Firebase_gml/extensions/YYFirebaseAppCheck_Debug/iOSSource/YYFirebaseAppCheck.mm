@@ -2,40 +2,32 @@
 #import "YYFirebaseAppCheck.h"
 #import "FirebaseUtils.h"
 
-
-
-@interface YourAppCheckProviderFactory : NSObject <FIRAppCheckProviderFactory>
-@end
-
-@implementation YourAppCheckProviderFactory
-
-- (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app {
-  if (@available(iOS 14.0, *)) {
-    return [[FIRAppAttestProvider alloc] initWithApp:app];
-  } else {
-    return [[FIRDeviceCheckProvider alloc] initWithApp:app];
-  }
-}
-
-@end
-
 @implementation YYFirebaseAppCheck
 
 - (id)init {
 	self = [super init];
 	if (self) {
-		
 		[[FirebaseUtils sharedInstance] registerInitFunction:^{
-			YourAppCheckProviderFactory *providerFactory = [[YourAppCheckProviderFactory alloc] init];
-			[FIRAppCheck setAppCheckProviderFactory:providerFactory];
-			
+            
+			[FIRAppCheck setAppCheckProviderFactory:[[FIRAppCheckDebugProviderFactory alloc] init]];
+            
 		} withPriority:1];
 	}
 	return self;
 }
 
+//- (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app {
+	// if (@available(iOS 14.0, *)) {
+		// return [[FIRAppAttestProvider alloc] initWithApp:app];
+	// } else {
+		// return [[FIRDeviceCheckProvider alloc] initWithApp:app];
+	// }
+//}
+
+
 -(void) FirebaseAppCheck_GetToket:(double)_force_refresh
 {
+
     [[FIRAppCheck appCheck] tokenForcingRefresh:_force_refresh>0.5 completion:^(FIRAppCheckToken * _Nullable token, NSError * _Nullable error) {
         [token token];
         
@@ -56,6 +48,10 @@
     }];
 }
 
+
+- (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app { 
+  
+}
 
 @end
 

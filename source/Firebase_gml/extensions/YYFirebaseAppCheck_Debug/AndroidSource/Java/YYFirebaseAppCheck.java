@@ -2,7 +2,8 @@ package ${YYAndroidPackageName};
 
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.AppCheckToken;
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+//import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -22,15 +23,19 @@ public class YYFirebaseAppCheck
 	public YYFirebaseAppCheck() {
         // Initialize the cached instance
         FirebaseUtils.getInstance().registerInitFunction(()-> {
-			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck");
-            appCheck = FirebaseAppCheck.getInstance();
-			appCheck.installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance());
-        }, 5);
+			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck DEBUG");
+            // appCheck = FirebaseAppCheck.getInstance();
+			// appCheck.installAppCheckProviderFactory(/*PlayIntegrityAppCheckProviderFactory*/DebugAppCheckProviderFactory.getInstance());
+			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck DEBUG END");
+        }, 6);
 	}
 	
 	
 	public void FirebaseAppCheck_GetToket(double _force_refresh)
 	{
+		appCheck = FirebaseAppCheck.getInstance();
+		appCheck.installAppCheckProviderFactory(/*PlayIntegrityAppCheckProviderFactory*/DebugAppCheckProviderFactory.getInstance());
+
 		FirebaseAppCheck.getInstance().getAppCheckToken(_force_refresh > 0.5).addOnCompleteListener(new OnCompleteListener<AppCheckToken>() 
 		{
 			@Override

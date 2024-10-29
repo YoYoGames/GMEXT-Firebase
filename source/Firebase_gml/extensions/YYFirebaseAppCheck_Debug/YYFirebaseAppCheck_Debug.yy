@@ -1,9 +1,9 @@
 {
   "$GMExtension":"",
-  "%Name":"YYFirebaseAppCheck",
+  "%Name":"YYFirebaseAppCheck_Debug",
   "androidactivityinject":"",
   "androidclassname":"YYFirebaseAppCheck",
-  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n    implementation(\"com.google.firebase:firebase-appcheck-playintegrity\")\r\n</YYAndroidGradleDependencies>\r\n",
+  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n    implementation(\"com.google.firebase:firebase-appcheck-debug\")\r\n</YYAndroidGradleDependencies>\r\n",
   "androidinject":"",
   "androidmanifestinject":"",
   "androidPermissions":[],
@@ -11,16 +11,16 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseAppCheck",
-  "copyToTargets":3035426170322551022,
+  "copyToTargets":3035426170322551010,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.0.1",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":3035426170322551022,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToket","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToket","help":"FirebaseAppCheck_GetToket(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToket","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
       ],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
-  "gradleinject":"\r\n    implementation(\"com.google.firebase:firebase-appcheck-playintegrity\")\r\n",
+  "gradleinject":"\r\n    implementation(\"com.google.firebase:firebase-appcheck-debug\")\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
   "HTML5CodeInjection":"",
@@ -39,7 +39,7 @@
   "maccompilerflags":"-fobjc-arc",
   "maclinkerflags":"-ObjC",
   "macsourcedir":"",
-  "name":"YYFirebaseAppCheck",
+  "name":"YYFirebaseAppCheck_Debug",
   "options":[
     {"$GMExtensionOption":"","%Name":"Enabled","defaultValue":"True","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"db5814f4-ed0c-4d94-8f74-24a30fdfa2c8","hidden":false,"listItems":[],"name":"Enabled","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],

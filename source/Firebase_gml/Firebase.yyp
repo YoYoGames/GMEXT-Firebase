@@ -22,9 +22,11 @@
     {"$GMFolder":"","%Name":"Extensions","folderPath":"folders/Authentication Providers/Extensions/WebView/Extensions.yy","name":"Extensions","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Demo","folderPath":"folders/Firebase Demo.yy","name":"Firebase Demo","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Analytics","folderPath":"folders/Firebase Demo/Firebase Analytics.yy","name":"Firebase Analytics","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Demo/Firebase Analytics/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Demo/Firebase Analytics/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Demo/Firebase Analytics/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase App Check","folderPath":"folders/Firebase Demo/Firebase App Check.yy","name":"Firebase App Check","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Demo/Firebase App Check/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Demo/Firebase App Check/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase Authentication","folderPath":"folders/Firebase Demo/Firebase Authentication.yy","name":"Firebase Authentication","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Firebase Demo/Firebase Authentication/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Firebase Demo/Firebase Authentication/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -116,7 +118,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.1100.0.650",
+    "IDEVersion":"2024.1100.0.654",
   },
   "name":"Firebase",
   "resources":[

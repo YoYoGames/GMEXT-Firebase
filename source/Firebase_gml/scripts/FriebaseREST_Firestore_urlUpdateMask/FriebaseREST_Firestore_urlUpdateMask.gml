@@ -3,6 +3,10 @@
 //"?updateMask.fieldPaths=key1&updateMask.fieldPaths=key2"
 function FriebaseREST_Firestore_urlUpdateMask(json)
 {
+	show_debug_message("#########")
+	show_debug_message(json);
+	show_debug_message("#########")
+	
 	var map = json_decode(json)
 	if(!ds_exists(map,ds_type_map))
 		return ""
@@ -23,3 +27,5 @@ function FriebaseREST_Firestore_urlUpdateMask(json)
 	ds_map_destroy(map)
 	return str
 }
+
+

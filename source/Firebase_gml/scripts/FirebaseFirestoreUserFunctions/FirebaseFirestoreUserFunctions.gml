@@ -25,7 +25,6 @@ function __firebase_firestore_build_url(_builder) {
 		var _private = __;
 		var _database = _private.database;
 		var _path = _private.path;
-		show_message(_path);
 		
 		return string_concat(FIREBASE_FIRESTORE_END_POINT, _default_url, "/databases/", _database, "/documents/", _path);
 	}
@@ -58,9 +57,12 @@ function __firebase_firestore_build_body(_struct) {
 /// @pure
 function __firebase_firestore_process_value(_value) {
 	// https://firebase.google.com/docs/firestore/reference/rest/v1/Value
-	var _output;
 	switch (typeof(_value)) {
 		case "number":
+			// Store integer if number is integer
+			if (frac(_value) == 0) {
+				return { integerValue: string(int64(_value)) };
+			}
 			return { doubleValue: _value };
 		case "string":
 			return { stringValue: _value };
@@ -75,26 +77,63 @@ function __firebase_firestore_process_value(_value) {
 			return { nullValue: pointer_null };
 		case "array":
 			var _length = array_length(_value);
-			_output = array_create(_length);
+			var _output_array = array_create(_length);
 			for (var _i = 0; _i < _length; _i++) {
-				_output[_i] = __firebase_firestore_process_value(_value[_i]);
+				_output_array[_i] = __firebase_firestore_process_value(_value[_i]);
 			}
-			return { values: _output };
+			return { values: _output_array };
 		case "struct":
 			var _names = struct_get_names(_value);
 			var _count = array_length(_names);
-			_output = { };
+			var _output_struct = { };
 			for (var _i = 0; _i < _count; _i++) {
 				var _name = _names[_i];
-				_output[$ _name] = __firebase_firestore_process_value(_value[$ _name]);
+				_output_struct[$ _name] = __firebase_firestore_process_value(_value[$ _name]);
 			}
-			return { fields: _output };
+			return { fields: _output_struct };
 		case "method":
 		case "ref":
-			return { referenceValue: string(_value) };
+			return { stringValue: string(_value) };
 		default:
 			return { stringValue: string(_value) };
 	}
+}
+
+/// @returns {Array<String>}
+/// @pure
+function __firebase_firestore_flatten_struct_paths(_struct, _parent_key = "") {
+    var _paths = [];
+	var _paths_count = 0;
+	
+	var _keys = variable_struct_get_names(_struct);
+	var _count = array_length(_keys);
+	for (var _i = 0; _i < _count; _i++) {
+		var _key = _keys[_i];
+		var _new_key = (_parent_key != "") ? string_concat(_parent_key, ".", _key) : _key;
+		
+		var _value = _struct[$ _key];
+		if (is_struct(_value)) {
+			var _nested_keys = __firebase_firestore_flatten_struct_paths(_value, _new_key);
+			var _nested_keys_count = array_length(_nested_keys);
+			array_copy(_paths, _paths_count, _nested_keys, 0, _nested_keys_count);
+			_paths_count += _nested_keys_count;
+		}
+		else {
+			_paths[_paths_count] = _new_key;
+			_paths_count++;
+		}
+	}
+	
+    return _paths;
+}
+
+/// @param {String} _url
+/// @param {Struct} _json
+/// @returns {String}
+function __firebase_firestore_build_update_mask_url(_url, _json) {
+	var _paths_array = __firebase_firestore_flatten_struct_paths(_json);
+	var _update_mask = string_join_ext("&updateMask.fieldPaths=", _paths_array);
+	return string_concat(_url, "?updateMask.fieldPaths=", _update_mask);
 }
 
 function FirebaseFirestore(_path = undefined, _database = "(default)") {

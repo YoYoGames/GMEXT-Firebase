@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseAppCheck",
-  "copyToTargets":3035426170322551010,
+  "copyToTargets":3035426170322551022,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.0.1",

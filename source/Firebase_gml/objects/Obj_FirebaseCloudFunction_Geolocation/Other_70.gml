@@ -16,6 +16,6 @@ if(async_load[?"listener"] == token_request)
 else if (async_load[?"listener"] == request) {
 	
 	var _data = async_load[?"value"]
-	show_debug_message(_data);
+	show_debug_message("geolocation: " + _data);
 }
 

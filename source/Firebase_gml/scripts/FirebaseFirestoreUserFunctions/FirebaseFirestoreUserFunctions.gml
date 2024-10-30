@@ -391,6 +391,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 		__.action = FIREBASE_FIRESTORE_ACTION.SET;
 		__.value = _value;
 		__.path = build_path();
+		__.isDocument = is_document();
 		
 		if(__firebase_firestore_should_use_sdk()) {
 			return FirebaseFirestore_SDK(json_stringify(__));
@@ -418,6 +419,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 		__.action = FIREBASE_FIRESTORE_ACTION.ADD;
 		__.value = _value;
 		__.path = build_path();
+		__.isDocument = is_document();
 		
 		if(__firebase_firestore_should_use_sdk()) {
 			return FirebaseFirestore_SDK(json_stringify(__));
@@ -444,6 +446,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 		
 		__.action = FIREBASE_FIRESTORE_ACTION.UPDATE;
 		__.path = build_path();
+		__.isDocument = is_document();
 		
 		__.value = _value;
 		
@@ -461,6 +464,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 
 		__.action = FIREBASE_FIRESTORE_ACTION.READ;
 		__.path = build_path();
+		__.isDocument = is_document();
 		
 		if(__firebase_firestore_should_use_sdk()) {
 			return FirebaseFirestore_SDK(json_stringify(__));

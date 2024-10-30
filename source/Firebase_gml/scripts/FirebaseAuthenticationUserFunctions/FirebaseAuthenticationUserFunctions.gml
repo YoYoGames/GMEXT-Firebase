@@ -1,6 +1,6 @@
 
 #macro FirebaseAuthentication_endpoint "https://identitytoolkit.googleapis.com/v1/accounts:"
-#macro FirebaseAuthentication_Library_useSDK ((extension_get_option_value("YYFirebaseAuthentication","Config") == "SDKs_When_Available" and (os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)) or extension_get_option_value("YYFirebaseAuthentication","Config") == "SDKs_Only")
+#macro FirebaseAuthentication_Library_useSDK ((extension_get_option_value("YYFirebaseAuthentication","mode") == "SDKs When Available" and (os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)) or extension_get_option_value("YYFirebaseAuthentication","mode") == "SDKs Only")
 
 //Exchange custom token for an ID and refresh token
 function FirebaseAuthentication_SignInWithCustomToken(token)

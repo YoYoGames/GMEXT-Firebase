@@ -17,7 +17,6 @@ function __firebase_functions_should_use_sdk() {
 function __firebase_function_build_url(_func_name) {
 	static _base_url = extension_get_option_value("YYFirebaseCloudFunctions", "serverUrl");
 	return string(_base_url, _func_name);
-	//return string_concat(_base_url, "/", _func_name);
 }
 
 /// @params {String} _func_name
@@ -35,6 +34,7 @@ function FirebaseCloudFunctions_Call(_func_name, _params, _timeout = 0) {
 	_header_map[? "Content-Type"] = "application/json";
 	
 	var _id = http_request(_url, "POST", _header_map, json_stringify(_params));
+	ds_map_destroy(_header_map);
 		
 	return instance_create_depth(0, 0, 0, FirebaseREST_asyncCall_Functions, {
 		type: "FirebaseCloudFunctions_Call",

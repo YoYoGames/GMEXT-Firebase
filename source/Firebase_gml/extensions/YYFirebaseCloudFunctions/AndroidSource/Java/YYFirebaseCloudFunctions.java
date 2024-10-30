@@ -53,7 +53,7 @@ public class YYFirebaseCloudFunctions extends RunnerSocial {
      * @param timeoutSeconds The timeout in seconds. If negative, timeout is not set.
      * @return The async ID as a double.
      */
-    public double SDKFirebaseCloudFunctions_Call(String functionName, String data, double timeoutSeconds) {
+    public double SDKFirebaseCloudFunctions_Call(final String functionName, final String data, final double timeoutSeconds) {
         final long asyncId = getNextAsyncId();
 
         // Submit the task to a background thread

@@ -110,6 +110,13 @@ function SDKFirebaseCloudFunctions_Init() {
     const { extOptionGetBool, extOptionGetString, extOptionGetInt } = window.FirebaseSetup;
     const { module, instance, isFunctionsInitialized } = window.FirebaseFunctionsExt;
 
+    var mode = extOptionGetString("YYFirebaseCloudFunctions", "mode");
+    if (mode !== "SDKs Only" || mode !== "SDKs When Available") {
+        return true;
+    }
+
+    console.warn(mode);
+
     if (!isFunctionsInitialized()) {
         return FIREBASE_FUNCTIONS_ERROR_NOT_INITIALIZED;
     }

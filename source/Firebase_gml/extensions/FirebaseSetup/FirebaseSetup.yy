@@ -25,7 +25,7 @@
   "gradleinject":"\r\n        implementation platform('com.google.firebase:firebase-bom:33.4.0')\r\n",
   "hasConvertedCodeInjection":true,
   "helpfile":"",
-  "HTML5CodeInjection":"\r\n<GM_HTML5_PostHead>\r\n<script type=\"module\">\r\n    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';\r\n\r\n    // Create a configuration object for Firebase\r\n    const firebaseConfig = ${YYEXTOPT_FirebaseSetup_html5Config};\r\n\r\n    initializeApp(firebaseConfig);\r\n    console.log(\"Firebase app initialized successfully.\");\r\n</script>\r\n</GM_HTML5_PostHead>",
+  "HTML5CodeInjection":"\r\n<GM_HTML5_PostHead>\r\n<script type=\"module\">\r\n    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';\r\n\r\n    // Create a configuration object for Firebase\r\n    const firebaseConfig = ${YYEXTOPT_FirebaseSetup_html5Config};\r\n\r\n    initializeApp(firebaseConfig);\r\n    console.log(\"Firebase app initialized successfully.\");\r\n\r\n    window.FirebaseSetupExt = true;\r\n</script>\r\n</GM_HTML5_PostHead>",
   "html5Props":true,
   "IncludedResources":[],
   "installdir":"",

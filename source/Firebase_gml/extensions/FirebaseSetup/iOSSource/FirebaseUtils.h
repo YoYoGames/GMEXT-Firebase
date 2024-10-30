@@ -4,16 +4,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^TaskBlock)(void);
+
 @interface FirebaseUtils : NSObject
 
 + (instancetype)sharedInstance;
+
+// Register Initializers
+- (void)registerInitFunction:(TaskBlock)block withPriority:(NSInteger)priority;
+- (void)initializeAll;
 
 // Async ID Generation
 - (long)getNextAsyncId;
 
 // Task Submission
-- (void)submitAsyncTask:(void (^)(void))task;
-- (void)submitAsyncTask:(void (^)(void))task completion:(nullable void (^)(NSError * _Nullable error))completion;
+- (void)submitAsyncTask:(TaskBlock)task;
+- (void)submitAsyncTask:(TaskBlock)task completion:(nullable void (^)(NSError * _Nullable error))completion;
 
 // JSON Conversion
 + (id)convertJSON:(id)json;

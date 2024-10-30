@@ -8,7 +8,7 @@ if(async_load[?"success"])
 	show_debug_message(json_encode(async_load))
 	if(FirebaseAuthentication_Library_useSDK)
 	{
-		token = async_load[?"accessToken"]
+		token = async_load[?"authCode"]
 		event_user(0)
 		exit
 	}

@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch)/Listeners Authentication/Objects.yy",
+    "path":"folders/Firebase/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch)/Listeners Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseREST_Listener_Authentication",

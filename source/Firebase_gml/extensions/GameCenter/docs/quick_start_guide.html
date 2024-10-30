@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Quick Start Guide - GMEXT-GameCenter</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Quick Start Guide";
+        var mkdocs_page_input_path = "quick_start_guide.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-GameCenter
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">GameCenter Ext</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="quick_start_guide.html">Quick Start Guide</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#signing-inout">Signing In/Out</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#function-mappings">Function Mappings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#old-version">Old Version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-version">New Version</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#leaderboards">Leaderboards</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#function-mappings_1">Function Mappings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#old-version_1">Old Version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-version_1">New Version</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#achievements">Achievements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#function-mappings_2">Function Mappings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#old-version_2">Old Version</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#new-version_2">New Version</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#save-games-new">Save Games [NEW]</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#objects">Objects</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#demo-workflow">Demo Workflow</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="presentview.html">PresentView</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="localplayer.html">LocalPlayer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="savedgames.html">SavedGames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="leaderboard.html">Leaderboard</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="achievement.html">Achievement</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="accesspoint.html">AccessPoint</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-GameCenter</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Quick Start Guide</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter/edit/master/docs/quick_start_guide.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="quick-start-guide">Quick Start Guide</h1>
+<p>This section aims to deliver an easy and simple set of examples that should help you migrate your project from a previous version of the GameCenter extension to its latest version. The first thing to notice is that GameCenter functionality used to be part of the runtime and all the included functions were named "<strong>achievement_*</strong>"; these were renamed to "<strong>GameCenter_*</strong>" and also separated into categories to better organize them and provide a cleaner look to the code.</p>
+<h2 id="signing-inout">Signing In/Out</h2>
+<p>The first thing to look for when creating an Apple GameCenter GameMaker project is signing in to a GameCenter account.</p>
+<h3 id="function-mappings">Function Mappings</h3>
+<p>Even though not all old functions map perfectly into the new API, the following list should get you started with some of the changes (check the section below for more details):</p>
+<ul>
+<li><a href="localplayer.html#gamecenter_localplayer_isauthenticated">GameCenter_LocalPlayer_IsAuthenticated</a> ⇔ achievement_login_status()</li>
+<li><a href="localplayer.html#gamecenter_localplayer_authenticate">GameCenter_LocalPlayer_Authenticate</a> ⇔ achievement_login()</li>
+<li><a href="localplayer.html#gamecenter_localplayer_getinfo">GameCenter_LocalPlayer_GetInfo</a> gets information on the local player.</li>
+</ul>
+<h3 id="old-version">Old Version</h3>
+<pre class="highlight"><code class="language-gml">// In the previous version you would check the achievement status and if not
+// signed in, you were required to log in.
+if (!achievement_login_status()) {
+    achievement_login();
+}</code></pre>
+<p>This function would then trigger a callback <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>, where the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> map would contain an "id" key of <code>achievement_our_info</code> and also some account information under "name" and "playerId".</p>
+<h3 id="new-version">New Version</h3>
+<pre class="highlight"><code class="language-gml">// In the new version you can use the following code to check connection and
+// connect to the GameCenter account.
+if (!GameCenter_LocalPlayer_IsAuthenticated()) {
+    GameCenter_LocalPlayer_Authenticate();
+}</code></pre>
+<p>This function will then trigger a callback <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>, where the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> map would contain a "type" key with the value <code>GameCenter_Authenticate</code> and a "success" key that can have a value of <code>true</code> or <code>false</code> (depending on whether or not the function was successful).</p>
+<pre class="highlight"><code class="language-gml">// After signing in if you need to query player information, you can do so
+// by using the method 'GameCenter_LocalPlayer_GetInfo'.
+var playerInfoJSON = GameCenter_LocalPlayer_GetInfo();
+var playerInfo = json_parse(playerInfoJSON);</code></pre>
+<p>The player information after being parsed into a struct contains a lot of details about the account (see <a href="achievement.html#playerjson">PlayerJSON</a>).</p>
+<h2 id="leaderboards">Leaderboards</h2>
+<p>One of the features provided by Apple GameCenter API is the creation of and the interaction with leaderboards. Leaderboards can be created using the Apple Developer Dashboard (see <a href="setup.html">Setup</a>) and you can view them and submit values to them during runtime.</p>
+<h3 id="function-mappings_1">Function Mappings</h3>
+<p>Even though not all old functions map perfectly into the new API, the following list should get you started with some of the changes (check the section below for more details):</p>
+<ul>
+<li><a href="leaderboard.html#gamecenter_leaderboard_submit">GameCenter_Leaderboard_Submit</a> ⇔ achievement_post_score()</li>
+<li><a href="presentview.html#gamecenter_presentview_leaderboards">GameCenter_PresentView_Leaderboards</a> ⇔ achievement_show_leaderboards()</li>
+<li><a href="presentview.html#gamecenter_presentview_leaderboard">GameCenter_PresentView_Leaderboard</a> shows a specific leaderboard.</li>
+</ul>
+<h3 id="old-version_1">Old Version</h3>
+<pre class="highlight"><code class="language-gml">// In the previous version you would use the leaderboards as follows.
+// To submit a value to a leaderboard you would do:
+achievement_post_score(global.leaderboardId, score);</code></pre>
+<p>This function would then trigger a callback <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>, where the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Variables/Builtin_Global_Variables/async_load.htm">async_load</a> map would contain an "id" key of <code>achievement_post_score_result</code> with some other keys with information regarding your current post to the leaderboard.</p>
+<pre class="highlight"><code class="language-gml">// Then if you wanted to see the leaderboards you could just use the following
+// line of code.
+achievement_show_leaderboards();</code></pre>
+<h3 id="new-version_1">New Version</h3>
+<pre class="highlight"><code class="language-gml">// In the new version you can submit to a leaderboard using the code sample:
+GameCenter_Leaderboard_Submit(global.leaderboardId, score);</code></pre>
+<p>This function works asynchronously and triggers a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a> callback upon completion with submission result information (<a href="leaderboard.html#gamecenter_leaderboard_submit">GameCenter_Leaderboard_Submit</a>).</p>
+<pre class="highlight"><code class="language-gml">// If you need to show the leaderboard to the user you can now do so with the
+// help of one of two functions:
+
+// Show a single leaderboard (GameCenter_PresentView_Leaderboard)
+GameCenter_PresentView_Leaderboard(leaderboardId, timeScope, playerScope);
+
+// Show all the leaderboards
+GameCenter_PresentView_Leaderboards();</code></pre>
+<h2 id="achievements">Achievements</h2>
+<p>One of the features provided by Apple GameCenter API is creation of and the interaction with achievements. Achievements can be created using the Apple Developer Dashboard (see <a href="setup.html">Setup</a>) and you can view them and submit values to them during runtime.</p>
+<h3 id="function-mappings_2">Function Mappings</h3>
+<p>Even though not all old functions map perfectly into the new API, the following list should get you started with some of the changes (check the section below for more details):</p>
+<ul>
+<li><a href="achievement.html#gamecenter_achievement_report">GameCenter_Achievement_Report</a> ⇔ achievement_post()</li>
+<li><a href="achievement.html#gamecenter_achievement_resetall">GameCenter_Achievement_ResetAll</a> ⇔ achievement_reset()</li>
+<li><a href="presentview.html#gamecenter_presentview_achievements">GameCenter_PresentView_Achievements</a> ⇔ achievement_show_achievements()</li>
+<li><a href="presentview.html#gamecenter_presentview_achievement">GameCenter_PresentView_Achievement</a> shows a specific leaderboard.</li>
+</ul>
+<h3 id="old-version_2">Old Version</h3>
+<p>In previous versions you could reveal, increment, post and show in-game achievements using the functions given below:</p>
+<pre class="highlight"><code class="language-gml">// After successfully connecting to the Google Play account you could perform
+// the following operations:
+achievement_reveal(achievementId);
+achievement_post(achievementId, percent);
+
+achievement_increment(incrementalAchievementId, amount);
+achievement_show_achievements();</code></pre>
+<p>The code above would first reveal the achievement to the user (if it was a hidden achievement), then you could post a value to an achievement which would be a percentage value (0 - incomplete, 100 - complete); you could also increment the achievement value (if it was an incremental achievement) and finally you could show the achievements to the user.</p>
+<h3 id="new-version_2">New Version</h3>
+<p>In the new version you can report achievement completion using the following code:</p>
+<pre class="highlight"><code class="language-gml">GameCenter_Achievement_Report(achievementId, percent);
+GameCenter_PresentView_Achievement(achievementId); // Show single
+GameCenter_PresentView_Achievements(); // Show all</code></pre>
+<p>The migration in the example above is very simple and straightforward. Please take into consideration that the code above will produce <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a> callbacks with additional information regarding the task completion (<a href="achievement.html">Achievement</a>).</p>
+<h2 id="save-games-new">Save Games [NEW]</h2>
+<p>This functionality is completely new and as such there is no migration guide, however you can experiment with it using the provided demo sample. This section aims to deliver a clean explanation of the code layout used for the demo.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This feature will only work if the end user's iOS device iCloud Drive is turned on. This feature also requires the developer's project to have a dedicated container defined for the app (defined on the Apple's <a href="https://icloud.developer.apple.com/dashboard/home">CloudKit Dashboard</a>).</p>
+</div>
+<h3 id="objects">Objects</h3>
+<ol>
+<li>Each component used in the sample is represented by an object (stored inside the folder: <code>GameCenter</code> → <code>Objects</code> → <code>SavedGames</code>)</li>
+<li>The object <code>Obj_GameCenter_SavedGames</code> is where the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a> callbacks are handled.</li>
+<li>The object <code>Obj_GameCenter_Point</code> is used as a placeholder representation of game data to be saved.</li>
+<li>The object <code>Obj_GameCenter_Slot</code> represents a saved slot that can be clicked to enter slot edit mode.</li>
+<li>The remaining objects inside the folder are buttons that the user can interact with.</li>
+</ol>
+<h3 id="demo-workflow">Demo Workflow</h3>
+<ol>
+<li>When you create a new slot (<strong>New Save Slot</strong> button) a prompt dialog to name the slot is displayed. The callback to handle the returned value and entering slot edit mode is inside the <code>Obj_GameCenter_SavedGames</code> dialog async event.</li>
+<li>In the edit mode we can move objects around and tap the icon to change it. After editing we can close edit mode ignoring new changes to the data or <strong>save</strong> the changes <a href="savedgames.html#gamecenter_savedgames_save">GameCenter_SavedGames_Save</a>, optionally we can also <strong>delete</strong> the slot (<a href="savedgames.html#gamecenter_savedgames_delete">GameCenter_SavedGames_Delete</a>).</li>
+<li>After saving the new slot we <strong>fetch</strong> (<a href="savedgames.html#gamecenter_savedgames_fetch">GameCenter_SavedGames_Fetch</a>) the slot data from Apple GameCenter servers.</li>
+<li>The newly created slot will now appear on screen. If you click it, we will request to <strong>get</strong> its data (<a href="savedgames.html#gamecenter_savedgames_getdata">GameCenter_SavedGames_GetData</a>) and enter its edit mode.</li>
+</ol>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="setup.html" class="btn btn-neutral float-left" title="Setup"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="presentview.html" class="btn btn-neutral float-right" title="PresentView">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="setup.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="presentview.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

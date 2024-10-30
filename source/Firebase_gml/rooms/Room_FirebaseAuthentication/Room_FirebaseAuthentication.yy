@@ -68,7 +68,7 @@
   "name":"Room_FirebaseAuthentication",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Authentication/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase Authentication/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

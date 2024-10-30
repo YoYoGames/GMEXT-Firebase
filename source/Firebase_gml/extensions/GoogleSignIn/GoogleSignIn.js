@@ -1,9 +1,10 @@
 
-function GoogleSignIn_Show_(token)
+function GoogleSignIn_Show()
 {
-	console.log("GoogleSignIn_Show CALLED");
+    const CLIENT_ID = GMS_API.extension_get_option_value("GoogleSignIn", "html5ClientID");
+
     google.accounts.id.initialize({
-      client_id: '20722703459-v53e1l6aeist3nrupt3oc0casrf1jsa0.apps.googleusercontent.com',
+      client_id: CLIENT_ID + '.apps.googleusercontent.com',
       callback: handleCredentialResponse
     });
 	
@@ -20,9 +21,13 @@ function GoogleSignIn_Show_(token)
     });
 }
 
+function GoogleSignIn_SignOut()
+{
+    console.log("GoogleSignIn_SignOut :: not available in this platform.")
+}
+
 function handleCredentialResponse(credentialResponse)
 {
-	
 	GMS_API.send_async_event_social({
 		type:"GoogleSignIn_Show",
 		success:1.0,

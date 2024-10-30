@@ -40,8 +40,10 @@ public class YYFirebaseRemoteConfig extends RunnerSocial implements ConfigUpdate
     private boolean updateListenerEnabled = false;
 
     public YYFirebaseRemoteConfig() {
-        // Get the application context
-        remoteConfig = FirebaseRemoteConfig.getInstance();
+        // Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            remoteConfig = FirebaseRemoteConfig.getInstance();
+        }, 10);
     }
 
     // <editor-fold desc="Setup">

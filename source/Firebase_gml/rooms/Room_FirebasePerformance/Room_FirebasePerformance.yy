@@ -26,7 +26,7 @@
   "name":"Room_FirebasePerformance",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Performance/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase Performance/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

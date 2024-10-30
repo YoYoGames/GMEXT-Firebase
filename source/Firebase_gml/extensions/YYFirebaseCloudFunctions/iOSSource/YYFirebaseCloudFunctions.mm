@@ -15,31 +15,34 @@
 
 @implementation YYFirebaseCloudFunctions
 
-#pragma mark - Initialization
-
-- (instancetype)init {
+- (id)init {
     self = [super init];
-    if (self) {
-        self.functions = [FIRFunctions functions];
+	if (self) {
+        [[FirebaseUtils sharedInstance] registerInitFunction:^{
+
+            self.functions = [FIRFunctions functions];
+
+            // Avoid spam calls
+            static dispatch_once_t onceToken;
+            dispatch_once(&onceToken, ^{
+                BOOL useEmulator = [FirebaseUtils extOptionGetBool:@"YYFirebaseCloudFunctions" option:@"useEmulator"];
+                if (useEmulator) {
+                    NSString *host = [FirebaseUtils extOptionGetString:@"YYFirebaseCloudFunctions" option:@"emulatorHost"];
+                    int port = [FirebaseUtils extOptionGetInt:@"YYFirebaseCloudFunctions" option:@"emulatorPort"];
+                    
+                    [self.functions useEmulatorWithHost:host port:port];
+                }
+            });
+
+        } withPriority:10];
     }
     return self;
-}
-
-#pragma mark - SDK Initialization
-
-- (void)SDKFirebaseCloudFunctions_Init {
-    BOOL useEmulator = [FirebaseUtils extOptionGetBool:@"YYFirebaseCloudFunctions" option:@"useEmulator"];
-    if (useEmulator) {
-        NSString *host = [FirebaseUtils extOptionGetString:@"YYFirebaseCloudFunctions" option:@"emulatorHost"];
-        int port = [FirebaseUtils extOptionGetInt:@"YYFirebaseCloudFunctions" option:@"emulatorPort"];
-        
-        [self.functions useEmulatorWithHost:host port:port];
-    }
 }
 
 #pragma mark - Main API Method
 
 - (double)SDKFirebaseCloudFunctions_Call:(NSString *)functionName data:(NSString *)data timeoutSeconds:(double)timeoutSeconds {
+        
     long asyncId = [self getNextAsyncId];
 
     // Submit task to background thread

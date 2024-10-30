@@ -46,7 +46,7 @@
   "name":"Room_FirebaseCrashlytics",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase Crashlytics/Demo/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase Crashlytics/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

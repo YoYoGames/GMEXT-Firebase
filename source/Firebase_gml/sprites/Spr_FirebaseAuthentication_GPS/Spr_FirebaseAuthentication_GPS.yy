@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"GooglePlaySevices",
-    "path":"folders/Firebase Authentication Extras Logins/GooglePlaySevices.yy",
+    "name":"Sprites",
+    "path":"folders/Firebase Demo/Firebase Authentication/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

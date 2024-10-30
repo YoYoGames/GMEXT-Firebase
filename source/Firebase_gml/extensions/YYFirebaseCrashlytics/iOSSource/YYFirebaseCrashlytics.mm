@@ -1,6 +1,5 @@
 #import "YYFirebaseCrashlytics.h"
 #import "FirebaseUtils.h"
-#import <UIKit/UIKit.h>
 
 // Error Codes
 static const double kFirebaseCrashlyticsSuccess = 0.0;

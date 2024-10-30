@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseCrashlytics",
-  "copyToTargets":9007199254741004,
+  "copyToTargets":9007199254741068,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.2.0",
@@ -61,7 +61,7 @@
   "packageId":"",
   "parent":{
     "name":"Extensions",
-    "path":"folders/Firebase Crashlytics/Extensions.yy",
+    "path":"folders/Firebase/Firebase Crashlytics/Extensions.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

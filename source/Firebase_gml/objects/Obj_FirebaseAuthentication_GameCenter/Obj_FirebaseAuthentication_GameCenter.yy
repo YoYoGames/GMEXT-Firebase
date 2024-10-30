@@ -10,8 +10,8 @@
   "name":"Obj_FirebaseAuthentication_GameCenter",
   "overriddenProperties":[],
   "parent":{
-    "name":"GameCenter",
-    "path":"folders/Firebase Authentication Extras Logins/GameCenter.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

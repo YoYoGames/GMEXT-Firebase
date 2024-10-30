@@ -1,43 +1,15 @@
-//
-//  
-//  Copyright YoYo Games Ltd., 2015.
-//  For support please submit a ticket at help.yoyogames.com
-//
-//
 
 #import <Foundation/Foundation.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <FBSDKShareKit/FBSDKShareKit.h>
+#import <UIKit/UIKit.h>
 
-///////////////////////////////////////
-// Share dialog
-///////////////////////////////////////
-@interface FacebookExtension2ShareDialog : FBSDKShareDialog<FBSDKSharingDelegate>
+@interface FacebookExtension2:NSObject
 {
-@private
-	int mRequestId;
+    
 }
 
-@end
-
-///////////////////////////////////////
-// Facebook extension
-///////////////////////////////////////
-@interface FacebookExtension2:NSObject <FBSDKGameRequestDialogDelegate>
-{
-@private
-	// The FB login state
-	NSString* mLoginStatus;
-	NSString* mUserId;
-	
-	int mRequestIdCounter;
-	int mIsReady;
-	
-	FBSDKLoginManager *mLoginManager;
-}
-
--(id) getHandlerForLoginRequest:(int)_requestId;
-- (void)fb_set_status:(NSString*)_status;
++(int) objc_dsMapCreate;
++(void) objc_dsMapAddInt:(int) _dsMap _key: (NSString*)_key _value: (int) _value;
++(void) objc_dsMapAddString:(int) _dsMap _key: (NSString*)_key _value: (NSString*) _value;
++(void) objc_createSocialAsyncEventWithDSMap:(int) dsmapindex;
 
 @end

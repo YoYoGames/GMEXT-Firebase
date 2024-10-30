@@ -128,3 +128,7 @@ window.FirebaseSetup = Object.assign(window.FirebaseSetup || {}, {
 	},
 
 });
+
+function SDKFirebaseSetup_Init() {
+	return true;
+}

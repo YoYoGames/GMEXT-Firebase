@@ -34,19 +34,27 @@ import java.util.HashMap;
 
 public class YYFirebaseAuthentication extends RunnerSocial {
 
+    private FirebaseAuth authentication;
     private FirebaseAuth.IdTokenListener idTokenListener = null;
+
+    public YYFirebaseAuthentication() {
+        // Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            authentication = FirebaseAuth.getInstance();
+        }, 10);
+    }
 
     // <editor-fold desc="General API">
 
     public String SDKFirebaseAuthentication_GetUserData() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = authentication.getCurrentUser();
         return getUserDataFromFirebaseUser(user);
     }
 
     public double SDKFirebaseAuthentication_SignInWithCustomToken(String token) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseAuth.getInstance().signInWithCustomToken(token)
+        authentication.signInWithCustomToken(token)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -59,7 +67,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_SignIn_Email(String email, String password) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+        authentication.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -72,7 +80,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_SignUp_Email(String email, String password) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+        authentication.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -85,7 +93,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_SignIn_Anonymously() {
         final long asyncId = getNextAsyncId();
 
-        FirebaseAuth.getInstance().signInAnonymously()
+        authentication.signInAnonymously()
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -98,7 +106,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_SendPasswordResetEmail(String email) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+        authentication.sendPasswordResetEmail(email)
             .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -111,7 +119,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_ChangeEmail(String email) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_ChangeEmail", asyncId);
             return (double) asyncId;
@@ -130,7 +138,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_ChangePassword(String password) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_ChangePassword", asyncId);
             return (double) asyncId;
@@ -149,7 +157,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_ChangeDisplayName(String name) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_ChangeDisplayName", asyncId);
             return (double) asyncId;
@@ -172,7 +180,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_ChangePhotoURL(String photoURL) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_ChangePhotoURL", asyncId);
             return (double) asyncId;
@@ -195,7 +203,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_SendEmailVerification() {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_SendEmailVerification", asyncId);
             return (double) asyncId;
@@ -214,7 +222,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_DeleteAccount() {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_DeleteAccount", asyncId);
             return (double) asyncId;
@@ -231,13 +239,13 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     }
 
     public void SDKFirebaseAuthentication_SignOut() {
-        FirebaseAuth.getInstance().signOut();
+        authentication.signOut();
     }
 
     public double SDKFirebaseAuthentication_LinkWithEmailPassword(String email, String password) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_LinkWithEmailPassword", asyncId);
             return (double) asyncId;
@@ -258,7 +266,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
         final long asyncId = getNextAsyncId();
 
         AuthCredential authCredential = getAuthCredentialFromProvider(token, tokenKind, provider);
-        FirebaseAuth.getInstance().signInWithCredential(authCredential)
+        authentication.signInWithCredential(authCredential)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -273,7 +281,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
 
         AuthCredential authCredential = getAuthCredentialFromProvider(token, tokenKind, provider);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_LinkWithOAuthCredential", asyncId);
             return (double) asyncId;
@@ -292,7 +300,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_UnlinkProvider(String provider) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_UnlinkProvider", asyncId);
             return (double) asyncId;
@@ -311,7 +319,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_RefreshUserData() {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_RefreshUserData", asyncId);
             return (double) asyncId;
@@ -330,7 +338,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_GetIdToken() {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_GetIdToken", asyncId);
             return (double) asyncId;
@@ -405,7 +413,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
                     });
                 }
             };
-            FirebaseAuth.getInstance().addIdTokenListener(idTokenListener);
+            authentication.addIdTokenListener(idTokenListener);
         }
 
         return (double) asyncId;
@@ -413,7 +421,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
 
     public void SDKFirebaseAuthentication_IdTokenListener_Remove() {
         if (idTokenListener != null) {
-            FirebaseAuth.getInstance().removeIdTokenListener(idTokenListener);
+            authentication.removeIdTokenListener(idTokenListener);
             idTokenListener = null;
         }
     }
@@ -421,7 +429,7 @@ public class YYFirebaseAuthentication extends RunnerSocial {
     public double SDKFirebaseAuthentication_ReauthenticateWithEmail(String email, String password) {
         final long asyncId = getNextAsyncId();
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = authentication.getCurrentUser();
         if (currentUser == null) {
             handleUserNotSignedIn("FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
             return (double) asyncId;

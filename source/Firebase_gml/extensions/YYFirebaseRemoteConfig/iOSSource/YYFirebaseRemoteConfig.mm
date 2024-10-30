@@ -1,6 +1,5 @@
 #import "YYFirebaseRemoteConfig.h"
 #import "FirebaseUtils.h"
-#import <UIKit/UIKit.h>
 
 // Error Codes
 static const double kFirebaseRemoteConfigSuccess = 0.0;

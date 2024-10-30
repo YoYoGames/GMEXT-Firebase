@@ -34,7 +34,11 @@ public class YYFirebasePerformance {
     public YYFirebasePerformance() {
         traceMap = new HashMap<>();
         httpMetricMap = new HashMap<>();
-        performance = FirebasePerformance.getInstance();
+
+        // Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            performance = FirebasePerformance.getInstance();
+        }, 10);
     }
 
     // <editor-fold desc="Performance Collection Methods">

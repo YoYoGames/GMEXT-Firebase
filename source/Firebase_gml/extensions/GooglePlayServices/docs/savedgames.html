@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>SavedGames - GMEXT-GooglePlayServices</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "SavedGames";
+        var mkdocs_page_input_path = "savedgames.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-GooglePlayServices
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">Google Play Services</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="google_setup.html">Google Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="extension_setup.html">Extension Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="general.html">General</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="player.html">Player</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="achievements.html">Achievements</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="leaderboards.html">Leaderboards</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="savedgames.html">SavedGames</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#structs">Structs</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-GooglePlayServices</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">SavedGames</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-GooglePlayServices/edit/master/docs/savedgames.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p><a id="top"></a></p>
+<h1 id="savedgames"><strong>SavedGames</strong></h1>
+<p>The Saved Games service gives you a convenient way to save your players' game progression to Google's servers. Your game can retrieve the saved game data to allow returning players to continue a game at their last save point from any device.</p>
+<p>The Saved Games service makes it possible to synchronize a player's game data across multiple devices. For example, if you have a game that runs on Android, you can use the Saved Games service to allow a player to start a game on their Android phone, and then continue playing on a tablet without losing any of their progress. This service can also be used to ensure that a player's game play continues from where it left off even if their device is lost, destroyed, or traded in for a newer model.</p>
+<h2 id="functions">Functions</h2>
+<p>The following functions are provided for working with saved games:</p>
+<ul>
+<li><a href="savedgames.html#googleplayservices_savedgames_commitandclose">GooglePlayServices_SavedGames_CommitAndClose</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_commitnew">GooglePlayServices_SavedGames_CommitNew</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_delete">GooglePlayServices_SavedGames_Delete</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_discardandclose">GooglePlayServices_SavedGames_DiscardAndClose</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_load">GooglePlayServices_SavedGames_Load</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_open">GooglePlayServices_SavedGames_Open</a></li>
+<li><a href="savedgames.html#googleplayservices_savedgames_showsavedgamesui">GooglePlayServices_SavedGames_ShowSavedGamesUI</a></li>
+</ul>
+<h2 id="structs">Structs</h2>
+<p>The following structurs are used as output values from the function calls to the GooglePlayServices API:</p>
+<ul>
+<li><a href="savedgames.html#snapshotmetadatajson">SnapshotMetadataJSON</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_commitandclose">GooglePlayServices_SavedGames_CommitAndClose</h1>
+<p>This function requests the Google Play Services API to commit data to a given save slot. The unique identifier of the slot needs to exist meaning that this function will only update already existing files (see <a href="savedgames.html#googleplayservices_savedgames_commitnew">GooglePlayServices_SavedGames_CommitNew</a> for creating new ones) but the <code>description</code>, <code>data</code> and <code>coverPath</code> can be changed if needed.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_CommitAndClose(name, description, data, coverPath)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the save game slot.</td>
+</tr>
+<tr>
+<td>description</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The description of the current save slot.</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A string containing the data you want to save (note you can use json formatted string to store data).</td>
+</tr>
+<tr>
+<td>coverPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to the image to be used as a save slot cover image.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_CommitAndClose"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_CommitAndClose("slot_1", "Random Description....", json_stringify(struct), coverPath);</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_CommitAndClose")
+{
+    if(async_load[? "success"])
+      show_debug_message("Saved")
+    else
+      show_debug_message("Not saved :(")
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_commitnew">GooglePlayServices_SavedGames_CommitNew</h1>
+<p>This function requests the Google Play Services API to commit data to a given save slot. This function will create a new slot, if you want to update an already existing slot use the <a href="savedgames.html#googleplayservices_savedgames_commitandclose">GooglePlayServices_SavedGames_CommitAndClose</a> function.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_CommitNew(name, description, data, coverPath)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the save game slot.</td>
+</tr>
+<tr>
+<td>description</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The description of the current save slot.</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A string containing the data you want to save (note you can use json formatted string to store data).</td>
+</tr>
+<tr>
+<td>coverPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The path to the image to be used as a save slot cover image.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_CommitAndClose"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+<tr>
+<td>snapshotMetadata</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of <a href="savedgames.html#snapshotmetadatajson">SnapshotMetadataJSON</a>. This string can be parsed into a struct with the function json_parse. Only available if the task succeeds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_CommitNew("slot_1", "Random Description....", json_stringify(struct), coverPath);</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_CommitNew")
+{
+    if(async_load[? "success"])
+      show_debug_message("Created");
+
+      var snapshots = json_parse(async_load[?"snapshotMetadata"]);
+      // Do something with the snapshots
+    else
+      show_debug_message("Not created :(")
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_delete">GooglePlayServices_SavedGames_Delete</h1>
+<p>This function requests the Google Play Services API to delete a given save slot given its unique identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Delete(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the save game slot.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string "GooglePlayServices_SavedGames_Delete"</td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Delete("slot_1");</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_Delete")
+{
+    if(async_load[? "success"])
+      show_debug_message("Deleted")
+    else
+      show_debug_message("Not Deleted :(")
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_discardandclose">GooglePlayServices_SavedGames_DiscardAndClose</h1>
+<p>This function requests the Google Play Services API to discard changes and close the currently opened save slot.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_DiscardAndClose(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the save game slot.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_DiscardAndClose"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_DiscardAndClose("slot_1")</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_DiscardAndClose")
+{
+    if(async_load[? "success"])
+      show_debug_message("Closed (discarding)")
+    else
+      show_debug_message("Not closed :(")
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_load">GooglePlayServices_SavedGames_Load</h1>
+<p>This function requests the Google Play Services API to query all the save slot metadata of the currently signed-in user.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Load(forceReload)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>forceReload</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the current local cache should be cleared and a new fetch should be performed from the server.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_Load"</code></td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+<tr>
+<td>snapshots</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of an array of <a href="savedgames.html#snapshotmetadatajson">SnapshotMetadataJSON</a>. This string can be parsed into a struct with the function json_parse. Only available if the task succeeds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Load(true)</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_Load")
+{
+    if(!async_load[?"success"])
+       exit
+
+    var snapshots = json_parse(async_load[?"snapshots"]);
+    //do something with snapshots
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_open">GooglePlayServices_SavedGames_Open</h1>
+<p>This function requests the Google Play Services API to open a given save slot given its unique name identifier.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Open(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of the save game slot.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string "GooglePlayServices_SavedGames_Open"</td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the function request succeeded.</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string previously saved to the Google Play Services. Only available if the task succeeds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_Open("slot_1")</code></pre>
+The code sample above save the identifier that can be used inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>
+<pre class="highlight"><code class="language-gml">if(async_load[? "type"] == "GooglePlayServices_SavedGames_Open")
+if (!async_load[? "success"])
+{
+    GooglePlayServices_SavedGames_Load(true);
+
+    var data = async_load[? "data"];
+    // do something with the data
+    return;
+}</code></pre>
+The code above matches the response against the correct event type and logs the success of the task. For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="googleplayservices_savedgames_showsavedgamesui">GooglePlayServices_SavedGames_ShowSavedGamesUI</h1>
+<p>This function requests Google Play Services API to open the saved games UI overlay, giving you the ability to see, add (optional) and delete (optional) the save slots.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function will open an overlay the user can interact with, during this time there are some Async Social events that can be trigger depending on the actions performed by the user. Theses events are showed in the tables below.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_ShowSavedGamesUI(title, add, delete, max)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>title</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The text to be used as the title of the overlay.</td>
+</tr>
+<tr>
+<td>add</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the <strong>Add</strong> slot button should be displayed.</td>
+</tr>
+<tr>
+<td>delete</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the <strong>Delete</strong> slot button should be displayed.</td>
+</tr>
+<tr>
+<td>max</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Sets the maximum amount of slots allowed. This can be useful to limit the number of saves you want the player to be able to create.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<p>Triggered whenever an existing slot is selected</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_ShowSavedGamesUI_OnOpen"</code>.</td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+<tr>
+<td>snapshotMetadata</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string of <a href="savedgames.html#snapshotmetadatajson">SnapshotMetadataJSON</a>. This string can be parsed into a struct with the function json_parse.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>Triggered whenever a new slot is created.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_ShowSavedGamesUI_OnNew"</code>.</td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>Triggered when the dialog is closed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"GooglePlayServices_SavedGames_ShowSavedGamesUI_OnExit"</code>.</td>
+</tr>
+<tr>
+<td>ind</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The id of the request this callback refers to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">GooglePlayServices_SavedGames_ShowSavedGamesUI("Save Point", true, true, 3)</code></pre>
+The code above will trigger the save games overlay with options to create/delete save slots and with a maximum number of 3 slots. From now on the triggered events can be caught inside an <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>, as follows:
+<pre class="highlight"><code class="language-gml">switch(async_load[? "type"])
+{
+    case "GooglePlayServices_SavedGames_ShowSavedGamesUI_OnNew":
+        dialog_ind = get_string_async("Description: ","Slot #0");
+        break;
+
+    case "GooglePlayServices_SavedGames_ShowSavedGamesUI_OnOpen":
+        var snapshotMeta = json_parse(async_load[? "snapshotMetadata"]);
+        var uniqueName = snapshotMeta.uniqueName;
+        GooglePlayServices_SavedGames_Open(uniqueName);
+        break;
+
+    case "GooglePlayServices_SavedGames_ShowSavedGamesUI_OnExit":
+        GooglePlayServices_SavedGames_Load(true);
+        break;
+}</code></pre>
+The code above matches the response against the correct event type and acts accordingly by requesting the user a description for the new slot (if a new slot was created), opens a existinf slot (using <a href="savedgames.html#googleplayservices_savedgames_open">GooglePlayServices_SavedGames_Open</a>, if the user selects an existing one) or reloads the slot data (using <a href="savedgames.html#googleplayservices_savedgames_load">GooglePlayServices_SavedGames_Load</a>, if the user closes the overaly). For a full usage sample check the provided demo.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="snapshotmetadatajson">SnapshotMetadataJSON</h1>
+<p>Is a json formatted string that represents a snapshot and its associated metadata.</p>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>coverImageAspectRatio</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The aspect ratio of the cover image for this snapshot, if any.</td>
+</tr>
+<tr>
+<td>coverImageUri</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>An image URI that can be used to load the snapshot's cover image (see GooglePlayServices_UriToPath). Not present if the metadata has no cover image.</td>
+</tr>
+<tr>
+<td>description</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The description of this snapshot.</td>
+</tr>
+<tr>
+<td>deviceName</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The name of the device that wrote this snapshot, if known.</td>
+</tr>
+<tr>
+<td>game</td>
+<td><a href="general.html#gamejson">GameJSON</a></td>
+<td>A struct of GameJSON.</td>
+</tr>
+<tr>
+<td>lastModifiedTimestamp</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The last time this snapshot was modified, in millis since epoch.</td>
+</tr>
+<tr>
+<td>owner</td>
+<td><a href="player.html#playerjson">PlayerJSON</a></td>
+<td>A struct of PlayerJSON.</td>
+</tr>
+<tr>
+<td>playedTime</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The played time of this snapshot in milliseconds.</td>
+</tr>
+<tr>
+<td>progressValue</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The progress value for this snapshot.</td>
+</tr>
+<tr>
+<td>uniqueName</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The unique identifier of this snapshot.</td>
+</tr>
+<tr>
+<td>hasChangePending</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Indicates whether or not this snapshot has any changes pending that have not been uploaded to the server.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="leaderboards.html" class="btn btn-neutral float-left" title="Leaderboards"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-GooglePlayServices" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="leaderboards.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="utilities.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

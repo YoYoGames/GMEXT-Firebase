@@ -337,6 +337,64 @@
     return (double)asyncId;
 }
 
+
+-(double) SDKFirebaseAuthentication_SignIn_GameCenter
+{
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
+	{
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignIn_GameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
+}
+
+-(double) SDKFirebaseAuthentication_ReauthenticateWithGameCenter
+{
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	FIRUser *currentUser = [FIRAuth auth].currentUser;
+	if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ReauthenticateWithGameCenter" asyncId:asyncId];
+        return (double)asyncId;
+    }
+	
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
+	{
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_ReauthenticateWithGameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
+}
+
+-(double) SDKFirebaseAuthentication_LinkWithGameCenter
+{
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	FIRUser *currentUser = [FIRAuth auth].currentUser;
+	if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_LinkWithGameCenter" asyncId:asyncId];
+        return (double)asyncId;
+    }
+	
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
+	{
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_LinkWithGameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
+}
+
 #pragma mark - Helper Methods
 
 - (void)handleAuthResultWithAuthResult:(FIRAuthDataResult *)authResult error:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId {

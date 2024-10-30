@@ -39,20 +39,25 @@ public class YYGoogleSignIn extends RunnerSocial
 	
 	private SignInClient oneTapClient;
 	
-	public void GoogleSignIn_Show(String token)
+	public void GoogleSignIn_Show()
 	{
+		Log.i("yoyo","GoogleSignIn_Show: " + String.valueOf(RunnerJNILib.extOptGetReal("GoogleSignIn", "FilterByAuthorizedAccounts") > 0.5));
 		oneTapClient = Identity.getSignInClient(activity);
-		
+				
+		// Retrieve the client ID and append ".apps.googleusercontent.com" to it
+		String fullClientID = RunnerJNILib.extOptGetString("GoogleSignIn", "androidClientID") + ".apps.googleusercontent.com";
+
+		// Build the sign-in request with the modified client ID
 		BeginSignInRequest signInRequest = BeginSignInRequest.builder()
-					//.setPasswordRequestOptions(PasswordRequestOptions.builder().setSupported(true).build())
-					.setGoogleIdTokenRequestOptions(GoogleIdTokenRequestOptions.builder()
-						.setSupported(true)
-						.setServerClientId(token)
-						.setFilterByAuthorizedAccounts(true)
-						.build()
-					)
-			  .setAutoSelectEnabled(true)
-			  .build();
+			//.setPasswordRequestOptions(PasswordRequestOptions.builder().setSupported(true).build())
+			.setGoogleIdTokenRequestOptions(GoogleIdTokenRequestOptions.builder()
+				.setSupported(true)
+				.setServerClientId(fullClientID)  // Use the appended client ID
+				.setFilterByAuthorizedAccounts(RunnerJNILib.extOptGetReal("GoogleSignIn", "FilterByAuthorizedAccounts") > 0.5)
+				.build()
+			)
+			.setAutoSelectEnabled(true)
+			.build();
 			  
 		oneTapClient.beginSignIn(signInRequest).addOnSuccessListener(activity, new OnSuccessListener<BeginSignInResult>() 
 		{
@@ -88,7 +93,6 @@ public class YYGoogleSignIn extends RunnerSocial
 		});
 	}
 
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
 		switch(requestCode)
@@ -105,18 +109,19 @@ public class YYGoogleSignIn extends RunnerSocial
 					RunnerJNILib.DsMapAddString(dsMapIndex, "type", "GoogleSignIn_Show");
 					RunnerJNILib.DsMapAddDouble(dsMapIndex, "success", 1.0);
 					
-					if(credential.getDisplayName() != null)
-						RunnerJNILib.DsMapAddString(dsMapIndex,"displayName",credential.getDisplayName());
-					if(credential.getFamilyName() != null)
-						RunnerJNILib.DsMapAddString(dsMapIndex, "familyName",credential.getFamilyName());
-					if(credential.getGivenName() != null)
-						RunnerJNILib.DsMapAddString(dsMapIndex, "givenName",credential.getGivenName());
 					if(credential.getGoogleIdToken() != null)
 						RunnerJNILib.DsMapAddString(dsMapIndex, "idToken",credential.getGoogleIdToken());
-					if(credential.getId() != null)
-						RunnerJNILib.DsMapAddString(dsMapIndex, "email",credential.getId());
-					if(credential.getPassword() != null)
-						RunnerJNILib.DsMapAddString(dsMapIndex, "password",credential.getPassword());
+					
+					// if(credential.getDisplayName() != null)
+						// RunnerJNILib.DsMapAddString(dsMapIndex,"displayName",credential.getDisplayName());
+					// if(credential.getFamilyName() != null)
+						// RunnerJNILib.DsMapAddString(dsMapIndex, "familyName",credential.getFamilyName());
+					// if(credential.getGivenName() != null)
+						// RunnerJNILib.DsMapAddString(dsMapIndex, "givenName",credential.getGivenName());
+					// if(credential.getId() != null)
+						// RunnerJNILib.DsMapAddString(dsMapIndex, "email",credential.getId());
+					// if(credential.getPassword() != null)
+						// RunnerJNILib.DsMapAddString(dsMapIndex, "password",credential.getPassword());
 					// if(credential.getProfilePictureUri() != null)
 						// RunnerJNILib.DsMapAddString(dsMapIndex, "pictureUri",credential.getProfilePictureUri());
 					
@@ -149,22 +154,8 @@ public class YYGoogleSignIn extends RunnerSocial
 		}
 	}
 	
-	// public void GoogleSignIn_SignOut()//This isn't a possible?
-	// {
-		// Auth.GoogleSignInApi.signOut().setResultCallback(new ResultCallback<Status>() 
-		// {
-			// @Override
-			// public void onResult(@NonNull Status status) 
-			// {
-				// int dsMapIndex = RunnerJNILib.jCreateDsMap(null, null, null);
-				// RunnerJNILib.DsMapAddString(dsMapIndex, "type", "GoogleSignIn_SignOut");
-				// if(status.isSuccess())
-					// RunnerJNILib.DsMapAddDouble(dsMapIndex, "success", 1.0);
-				// else
-					// RunnerJNILib.DsMapAddDouble(dsMapIndex, "success", 0.0);
-				// RunnerJNILib.CreateAsynEventWithDSMap( dsMapIndex, EVENT_OTHER_SOCIAL);
-			// }
-		// });
-	// }
+	public void GoogleSignIn_SignOut()
+	{
+		oneTapClient.signOut();
+	}
 }
-

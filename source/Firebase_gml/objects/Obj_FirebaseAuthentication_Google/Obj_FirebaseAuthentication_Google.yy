@@ -10,8 +10,8 @@
   "name":"Obj_FirebaseAuthentication_Google",
   "overriddenProperties":[],
   "parent":{
-    "name":"Google",
-    "path":"folders/Firebase Authentication Extras Logins/Google.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseAuthentication_byOAuth_parent",

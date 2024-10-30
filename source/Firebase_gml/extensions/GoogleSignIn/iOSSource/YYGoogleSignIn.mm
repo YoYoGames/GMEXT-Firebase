@@ -24,45 +24,44 @@ extern "C" int dsListGetSize(int _dsList);
 
 extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
 
+extern "C" const char* extOptGetString(char* _ext, char* _opt);
+
 @implementation YYGoogleSignIn
 
--(void) GoogleSignIn_Show:(NSString*) clientID
+-(void) GoogleSignIn_Show
 {
-    GIDConfiguration *signInConfig = [[GIDConfiguration alloc] initWithClientID:clientID];
+    /*
+	const char *clientIDCString = extOptGetString("GoogleSignIn", "iosClientID");
+	NSString *clientID = [NSString stringWithCString:clientIDCString encoding:NSUTF8StringEncoding];
+
+	// Append ".apps.googleusercontent.com" to the clientID
+	NSString *fullClientID = [clientID stringByAppendingString:@".apps.googleusercontent.com"];
+
+	GIDConfiguration *signInConfig = [[GIDConfiguration alloc] initWithClientID:fullClientID];
+    [[GIDSignIn.sharedInstance] clie]*/
+    [GIDSignIn.sharedInstance signInWithPresentingViewController:g_controller completion:^(GIDSignInResult * _Nullable signInResult, NSError * _Nullable error) {
     
-    [GIDSignIn.sharedInstance signInWithConfiguration:signInConfig presentingViewController:g_controller callback:^(GIDGoogleUser * _Nullable user,NSError * _Nullable error) 
-	{
-		if (error) 
-		{
-			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, "type","GoogleSignIn_Show");
-			dsMapAddDouble(dsMapIndex, "success",0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-			return;
-		}
+        int dsMapIndex = dsMapCreate();
+        dsMapAddString(dsMapIndex, "type","GoogleSignIn_Show");
 
-		int dsMapIndex = dsMapCreate();
-
-		dsMapAddString(dsMapIndex, "type","GoogleSignIn_Show");
-		dsMapAddDouble(dsMapIndex, "success",1.0);
-
-		if(user.authentication.idToken != nil)
-			dsMapAddString(dsMapIndex,"idToken",(char*)[user.authentication.idToken UTF8String]);
-		if(user.profile.name != nil)
-			dsMapAddString(dsMapIndex,"displayName",(char*)[user.profile.name UTF8String]);
-		if(user.profile.familyName != nil)
-			dsMapAddString(dsMapIndex,"familyName",(char*)[user.profile.familyName UTF8String]);
-		if(user.profile.givenName != nil)
-			dsMapAddString(dsMapIndex,"givenName",(char*)[user.profile.givenName UTF8String]);
-		if(user.profile.familyName != nil)
-			dsMapAddString(dsMapIndex,"familyName",(char*)[user.profile.familyName UTF8String]);
-		if(user.profile.email != nil)
-			dsMapAddString(dsMapIndex,"email",(char*)[user.profile.email UTF8String]);
-		if(user.userID != nil)
-			dsMapAddString(dsMapIndex,"userId",(char*)[user.userID UTF8String]);
-
-		createSocialAsyncEventWithDSMap(dsMapIndex);
-	}];
+        if (error)
+        {
+            dsMapAddDouble(dsMapIndex, "success", 0.0);
+            createSocialAsyncEventWithDSMap(dsMapIndex);
+            return;
+        }
+        else
+        {
+            dsMapAddDouble(dsMapIndex, "success",1.0);
+            if([[signInResult user] idToken] != nil)
+            {
+                dsMapAddString(dsMapIndex,"idToken",(char*)[[[ [signInResult user] idToken] tokenString] UTF8String] );
+            }
+        }
+        
+        createSocialAsyncEventWithDSMap(dsMapIndex);
+    }];
+    
 }
 
 -(void) GoogleSignIn_SignOut
@@ -71,12 +70,10 @@ extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
     {
         int dsMapIndex = dsMapCreate();
         dsMapAddString(dsMapIndex, "type","GoogleSignIn_SignOut");
-        if(error == nil)
-            dsMapAddDouble(dsMapIndex, "success",1.0);
-        else
-            dsMapAddDouble(dsMapIndex, "success",0.0);
+        dsMapAddDouble(dsMapIndex, "success", error == nil ? 1.0 : 0.0);
         createSocialAsyncEventWithDSMap(dsMapIndex);
     }];
 }
+
 @end
 

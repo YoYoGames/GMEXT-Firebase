@@ -10,12 +10,12 @@ if(async_load[?"listener"] == token_request)
 			idToken: idToken,
 		};
 
-		request = SDKFirebaseCloudFunctions_Call("geolocation", json_stringify(_body), 10);
+		request = FirebaseCloudFunctions_Call("geolocation", _body, 10);
     }
 }
 else if (async_load[?"listener"] == request) {
 	
 	var _data = async_load[?"value"]
-	show_debug_message(_data);
+	show_debug_message("geolocation: " + _data);
 }
 

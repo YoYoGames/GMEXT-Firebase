@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"FirebaseCrashlyticsReportGML",
   "parent":{
-    "name":"Demo",
-    "path":"folders/Firebase Crashlytics/Demo.yy",
+    "name":"Firebase Crashlytics",
+    "path":"folders/Firebase Demo/Firebase Crashlytics.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

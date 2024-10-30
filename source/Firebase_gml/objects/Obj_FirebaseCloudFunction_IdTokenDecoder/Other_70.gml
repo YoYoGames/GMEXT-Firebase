@@ -1,22 +1,27 @@
 if(ds_map_exists(async_load,"listener"))
-if(async_load[?"listener"] == token_request)
 {
-    if(async_load[?"status"] == 200)
-    {
-		var idToken = async_load[?"value"]
-		show_debug_message(idToken)
+	if(async_load[?"listener"] == token_request)
+	{
+	    if(async_load[?"status"] == 200)
+	    {
+			var _idToken = async_load[?"value"]
+			show_debug_message(_idToken)
 		
-		var _body = {
-			idToken: idToken,
-		};
+			var body = {
+				idToken: _idToken,
+			};
 
-		request = SDKFirebaseCloudFunctions_Call("tokenDecoder", json_stringify(_body), 10);
-    }
+			request = FirebaseCloudFunctions_Call("tokenDecoder", body, 10);
+
+	    }
+	}
+
+	if(async_load[?"listener"] == request)
+	{
+		var _result = async_load[?"value"]
+		
+		show_debug_message(_result)
+	}
+
+
 }
-
-if(async_load[?"listener"] == request)
-{
-	var _value = async_load[?"value"]
-	show_debug_message(_value);
-}
-

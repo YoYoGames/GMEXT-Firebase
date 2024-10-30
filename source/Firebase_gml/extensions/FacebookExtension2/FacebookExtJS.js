@@ -61,21 +61,23 @@ function fb_init()
 {
 	if(!g_fbExtInitCalled)
 	{
-		if( typeof( GMS_API ) == "undefined" )
-		{
-			//TODO::ideally output minimum runtime version required
-			alert("Facebook extension is not supported in current Runtime\nUpdate your Runtime to use this extension");
-			return;
-		}
+		// if( typeof( GMS_API ) == "undefined" )
+		// {
+			// //TODO::ideally output minimum runtime version required
+			// alert("Facebook extension is not supported in current Runtime\nUpdate your Runtime to use this extension");
+			// return;
+		// }
 		
-		var appId = GMS_API.get_facebook_app_id();
-		if( appId == undefined || appId == "" )
-		{
-			alert("Facebook AppID has not been defined\nEnsure 'Use Facebook' is checked in HTML5 Game Options");
-			return;
-		}
+		// var appId = GMS_API.get_facebook_app_id();
+		// if( appId == undefined || appId == "" )
+		// {
+			// alert("Facebook AppID has not been defined\nEnsure 'Use Facebook' is checked in HTML5 Game Options");
+			// return;
+		// }
 		
-		FBExt_FBInit( appId );
+		// FBExt_FBInit( appId );
+		
+		FBExt_FBInit(GMS_API.extension_get_option_value("FacebookExtension2","AppId"));
 		g_fbExtInitCalled = true;
 	}
 }

@@ -48,7 +48,7 @@
     {"$GMExtensionOption":"","%Name":"useEmulator","defaultValue":"False","description":"Modifies this FirebaseFunctions instance to communicate with the Cloud Functions emulator.","displayName":"Use Emulator","exportToINI":false,"extensionId":null,"guid":"7a3af432-a1d9-4b8a-9f1f-a140f9de33e6","hidden":true,"listItems":[],"name":"useEmulator","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"emulatorHost","defaultValue":"127.0.0.1","description":"","displayName":"Host Address","exportToINI":false,"extensionId":null,"guid":"fe4d1a44-01e7-4c0d-ab14-a16a09701b26","hidden":true,"listItems":[],"name":"emulatorHost","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"emulatorPort","defaultValue":"8080","description":"","displayName":"Port","exportToINI":false,"extensionId":null,"guid":"383434e2-12a6-4526-8e56-9457ed0288ce","hidden":true,"listItems":[],"name":"emulatorPort","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-    {"$GMExtensionOption":"","%Name":"mode","defaultValue":"SDKs When Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"2819c54b-73ac-4b8c-8a88-4ac475cc7275","hidden":true,"listItems":[
+    {"$GMExtensionOption":"","%Name":"mode","defaultValue":"REST API Only","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"2819c54b-73ac-4b8c-8a88-4ac475cc7275","hidden":true,"listItems":[
         "SDKs Only",
         "SDKs When Available",
         "REST API Only",

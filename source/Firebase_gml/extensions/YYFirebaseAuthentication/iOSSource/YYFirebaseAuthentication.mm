@@ -1,5 +1,7 @@
 // YYFirebaseAuthentication.m
 
+${YYIos_FirebaseAuthentication_Skip_Start}
+
 #import "YYFirebaseAuthentication.h"
 #import "FirebaseUtils.h"
 
@@ -539,3 +541,5 @@
 }
 
 @end
+
+${YYIos_FirebaseAuthentication_Skip_End}

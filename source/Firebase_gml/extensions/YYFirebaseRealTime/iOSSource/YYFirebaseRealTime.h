@@ -1,3 +1,5 @@
+${YYIos_FirebaseDatabase_Skip_Start}
+
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseDatabase/FirebaseDatabase.h>
 
@@ -7,3 +9,4 @@
 
 @end
 
+${YYIos_FirebaseDatabase_Skip_End}

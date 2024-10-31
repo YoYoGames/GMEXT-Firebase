@@ -1,3 +1,5 @@
+${YYIos_FirebaseFirestore_Skip_Start}
+
 #import "YYFirebaseFirestore.h"
 #import "FirebaseUtils.h"
 
@@ -526,3 +528,5 @@ typedef NS_ENUM(NSInteger, QuerySort) {
 }
 
 @end
+
+${YYIos_FirebaseFirestore_Skip_End}

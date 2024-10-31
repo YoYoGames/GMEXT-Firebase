@@ -1,5 +1,7 @@
 // YYFirebaseRealTime.m
 
+${YYIos_FirebaseDatabase_Skip_Start}
+
 #import "YYFirebaseRealTime.h"
 #import "FirebaseUtils.h"
 
@@ -469,3 +471,5 @@ typedef NS_ENUM(NSInteger, DatabaseAction) {
 
 
 @end
+
+${YYIos_FirebaseDatabase_Skip_End}

@@ -1,5 +1,7 @@
 // YYFirebaseAuthentication.h
 
+${YYIos_FirebaseAuthentication_Skip_Start}
+
 #import <Foundation/Foundation.h>
 #import <FirebaseAuth/FirebaseAuth.h>
 #import <FirebaseAuthInterop/FirebaseAuthInterop-umbrella.h>
@@ -38,3 +40,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+${YYIos_FirebaseAuthentication_Skip_End}

@@ -61,4 +61,16 @@ public class NotificationData {
         String imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH);
         return new NotificationData(id, title, message, data, imagePath);
     }
+
+    // Method to clear notification data from an Intent
+    public static void clearFromIntent(Intent intent) {
+        if (intent == null) return;
+
+        intent.removeExtra(EXTRA_KEY);
+        intent.removeExtra(EXTRA_ID);
+        intent.removeExtra(EXTRA_TITLE);
+        intent.removeExtra(EXTRA_MESSAGE);
+        intent.removeExtra(EXTRA_DATA);
+        intent.removeExtra(EXTRA_IMAGE_PATH);
+    }
 }

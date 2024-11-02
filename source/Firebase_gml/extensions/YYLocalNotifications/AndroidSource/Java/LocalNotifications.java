@@ -43,7 +43,10 @@ public class LocalNotifications extends RunnerSocial implements NotificationCall
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             onNotificationReceived(notificationData);
-        }, 500);
+
+            // Clear the notification data from the Intent so it's not processed again
+            NotificationData.clearFromIntent(intent);
+        }, 1000);
     }
 
     public void onResume() {

@@ -184,6 +184,10 @@ public class FirebaseUtils {
     }
 
     private static ProcessedDataItem processValue(String key, Object value) {
+        if (value == null) {
+            return null;
+        }
+        
         if (value instanceof String) {
             return new ProcessedDataItem(key, value, ProcessedDataItem.FunctionType.ADD_STRING);
         } else if (value instanceof Boolean) {

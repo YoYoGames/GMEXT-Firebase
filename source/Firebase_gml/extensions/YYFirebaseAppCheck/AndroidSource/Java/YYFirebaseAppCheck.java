@@ -53,5 +53,30 @@ public class YYFirebaseAppCheck
 			}
 		});
 	}
+	
+	public void FirebaseAppCheck_LimitedUseToken()
+	{
+		FirebaseAppCheck.getInstance().getLimitedUseAppCheckToken().addOnCompleteListener(new OnCompleteListener<AppCheckToken>() 
+		{
+			@Override
+			public void onComplete(@NonNull Task<AppCheckToken> task) 
+			{
+				Map<String, Object> data = new HashMap<>();
+				if (task.isSuccessful()) 
+				{
+					String token = task.getResult().getToken();
+					data.put("token", token);
+					data.put("success", 1.0);
+				}
+				else
+				{
+					// data.put("error", errorMessage);
+					data.put("success", 0.0);
+				}
+
+				FirebaseUtils.sendSocialAsyncEvent("FirebaseAppCheck_LimitedUseToken",data);
+			}
+		});
+	}
 }
 

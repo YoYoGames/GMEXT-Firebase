@@ -21,10 +21,6 @@ public class YYFirebaseMessagingService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 
-		Log.d("yoyo", "#############################################");
-		Log.d("yoyo", "onMessageReceived");
-		Log.d("yoyo", "#############################################");
-
 		Map<String, Object> extraData = new HashMap<>();
 
 		// Add notification title and body if available
@@ -64,19 +60,13 @@ public class YYFirebaseMessagingService extends FirebaseMessagingService {
 		extraData.put("CollapseKey", collapseKey);
 		extraData.put("Ttl", ttl);
 
-		Log.d("yoyo", "compat");
-
 		// Add data payload
 		Map<String, String> messageData = remoteMessage.getData();
 		if (messageData != null) {
 			extraData.putAll(messageData);
 		}
 
-		Log.d("yoyo", "extra");
-
 		FirebaseUtils.sendAsyncEvent(EVENT_OTHER_NOTIFICATION, "Notification_Remote", extraData);
-
-		Log.d("yoyo", "sent");
 	}
 
 	public String getPriorityString(int priorityValue) {

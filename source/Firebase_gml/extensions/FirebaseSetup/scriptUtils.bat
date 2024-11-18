@@ -7,6 +7,8 @@ shift & goto :%~1
     set "LOG_LABEL=UNSET"
     set "LOG_LEVEL=-1"
 
+    call :assertPowerShellExecutionPolicy
+
     :: Get extension data
     call :pathExtractBase %SCRIPT_PATH% EXTENSION_NAME
     call :extensionGetVersion EXTENSION_VERSION
@@ -22,6 +24,19 @@ shift & goto :%~1
         call :log "INIT" "Script initialization failed (v%EXTENSION_VERSION% :: %LOG_LEVEL%)."
     ) else (
         call :log "INIT" "Script initialization succeeded (v%EXTENSION_VERSION% :: %LOG_LEVEL%)."
+    )
+exit /b 0
+
+:assertPowerShellExecutionPolicy
+    :: Check the execution policy of the powershell
+    for /f "delims=" %%i in ('powershell -Command "Get-ExecutionPolicy"') do set ExecutionPolicy=%%i
+
+    :: If the execution policy is set to 'Restricted' echo the appropriate message.
+    IF "!ExecutionPolicy!"=="Restricted" (
+        echo The execution of our extensions requires changing the PowerShell Execution Policy.
+        echo To do so, please run the following command in your PowerShell terminal:
+        echo     Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+        exit 1
     )
 exit /b 0
 
@@ -43,7 +58,7 @@ exit /b 0
 
     set "result=!YYEXTOPT_%EXTENSION_NAME%_%~1!"
     call :logInformation "Accessed extension option '%~1' with value '%result%'."
-    
+
     :: Need to end local (to push into main scope)
     endlocal & set "%~2=%result%"
 exit /b 0
@@ -105,37 +120,42 @@ exit /b 0
     endlocal
 exit /b 0
 
-:: Copies a file, folder, or files based on a pattern to a specified destination folder
-:itemCopyTo srcPathOrPattern destFolder
-    if not exist "%~1" (
-        call :logError "Failed to copy '%~1' to '%~2' (source doesn't exist)."
-        exit /b 1
-    )
+:: Copies a file or folder to the specified destination folder (displays log messages)
+:itemCopyTo srcPath destFolder
 
     call :pathResolve "%cd%" "%~2" destination
 
-    :: Create destination folder if it doesn't exist
-    if not exist "%~2" (
-        mkdir "%destination%"
-    )
-
-    :: Determine if source is a directory, file, or pattern and copy accordingly
-    if exist "%~1\" (
-        xcopy /E /Y "%~1" "%destination%\"
-    ) else (
-        for %%f in (%~1) do (
-            copy /Y "%%f" "%destination%\"
-        )
-    )
-
-    :: Check if the copy operation succeeded
-    if %errorlevel% neq 0 (
-        call :logError "Failed to copy '%~1' to '%destination%'."
+    if not exist "%~1" (
+        call :logError "Failed to copy "%~1" to "%destination%" (source doesn't exist)."
         exit /b 1
     )
 
-    call :logInformation "Copied '%~1' to '%destination%'."
+    if exist "%~1\*" (
+        xcopy "%~1" "%destination%" /E /I /H /Y
+    ) else (
+        for %%I in ("%destination%") do set "destDir=%%~dpI"
+
+        if not exist "%destDir%" (
+            call :logInformation "Destination directory "%destDir%" does not exist. Creating it."
+            mkdir "%destDir%"
+            if %errorlevel% neq 0 (
+                call :logError "Failed to create destination directory ""%destDir%""."
+                exit /b 1
+            )
+        )
+
+        echo Copying file "%source%" to "%destination%"
+        copy /Y "%source%" "%destination%"
+    )
+
+    if %errorlevel% neq 0 (
+        call :logError "Failed to copy "%~1" to "%destination%"."
+        exit /b 1
+    )
+
+    call :logInformation "Copied "%~1" to "%destination%"."
 exit /b 0
+
 
 :: Deletes a file or folder at the specified path (displays log messages)
 :itemDelete targetPath
@@ -147,13 +167,23 @@ exit /b 0
         exit /b 0
     )
 
-    IF exist "%target%\" (
-        rd /s /q "%target%"
-        call :logInformation "Folder '%target%' deleted."
-    ) ELSE (
-        del /f /q "%target%"
-        call :logInformation "File '%target%' deleted."
+    :: Set environment variables for target
+    set "PS_TARGET=%target%"
+
+    for /f "delims=" %%a in ('dir /b /a:d "%~1" 2^>nul') do (
+        if "%%~a" == "%~nx1" (
+            powershell -NoLogo -NoProfile -Command "Remove-Item -Path $env:PS_TARGET -Recurse -Force"
+        )
     )
+
+    for /f "delims=" %%a in ('dir /b /a:-d "%~1" 2^>nul') do (
+        if "%%~a" == "%~nx1" (
+            powershell -NoLogo -NoProfile -Command "Remove-Item -Path $env:PS_TARGET -Force"
+        )
+    )
+
+    :: Clean up environment variables
+    set "PS_TARGET="
     
     :: Check if the deletion operation succeeded
     if %errorlevel% neq 0 (
@@ -209,6 +239,28 @@ exit /b 0
     set "PS_DESTFILE=%~2"
 
     powershell -Command "Compress-Archive -Path $env:PS_SRCFOLDER\* -DestinationPath $env:PS_DESTFILE -Force"
+
+    :: Check if the compression operation succeeded
+    if %errorlevel% neq 0 (
+        call :logError "Failed to compress contents of '%~1' into '%~2'."
+        exit /b 1
+    )
+
+    :: Clean up environment variables
+    set "PS_SRCFOLDER="
+    set "PS_DESTFILE="
+
+    call :logInformation "Compressed contents of '%~1' into '%~2'."
+exit /b 0
+
+:: Adds the contents of a folder into a zip file (displays log messages)
+:zipUpdate srcFolder destFile
+
+    :: Set environment variables for target
+    set "PS_SRCFOLDER=%~1"
+    set "PS_DESTFILE=%~2"
+
+    powershell -Command "Compress-Archive -Path $env:PS_SRCFOLDER\* -DestinationPath $env:PS_DESTFILE -Update"
 
     :: Check if the compression operation succeeded
     if %errorlevel% neq 0 (

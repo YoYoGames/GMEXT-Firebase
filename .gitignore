@@ -4,3 +4,15 @@ output/
 *.sh-e
 
 source/Firebase_gml/extensions/FirebaseSetup/iOSProjectFiles/GoogleService-Info.plist
+
+source/Firebase_gml/extensions/FirebaseSetup/scriptUtils.bat.bak
+
+source/Firebase_gml/extensions/FirebaseSetup/scriptUtils.sh.bak
+
+source/Firebase_gml/extensions/GameCenter/scriptUtils.bat.bak
+
+source/Firebase_gml/extensions/GameCenter/scriptUtils.sh.bak
+
+source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.bat.bak
+
+source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.sh.bak

@@ -161,26 +161,27 @@ itemCopyTo() {
     # Resolve the destination folder to an absolute path
     pathResolve "$PWD" "$destination" resolved_destination
 
-    # Check if source exists
-    if [[ ! -e "$source" ]]; then
-        logError "Failed to copy '$source' to '$resolved_destination' (source doesn't exist)."
+    # If 'resolved_destination' ends with a "/", ensure the path exists
+    if [[ "${resolved_destination: -1}" == "/" ]]; then
+        mkdir -p "$resolved_destination"
+    else
+        # Create all parent directories up until the destination path
+        parent_directory=$(dirname "$resolved_destination")
+        mkdir -p "$parent_directory"
+    fi
+
+    if [ -d "$source" ]; then
+        # Source is a folder
+        cp -rf "$source" "$resolved_destination"
+    elif [ -f "$source" ]; then
+        # Source is a file
+        cp -f "$source" "$resolved_destination"
+    else
+        logError "Failed to copy '$source' does not exist or is not accessible."
         exit 1
     fi
 
-    # Create the destination folder if it doesn't exist
-    mkdir -p "$resolved_destination"
-
-    # Copy the source to the destination
-    if [[ -d "$source" ]]; then
-        # Source is a directory
-        cp -r "$source"/* "$resolved_destination"
-    else
-        # Source is a file or pattern
-        cp "$source" "$resolved_destination"
-    fi
-
-    # Check if the copy operation succeeded
-    if [[ $? -ne 0 ]]; then
+    if [ $? -ne 0 ]; then
         logError "Failed to copy '$source' to '$resolved_destination'."
         exit 1
     fi
@@ -260,16 +261,57 @@ fileExtract() {
 # Compresses the contents of a folder into a zip file
 # Usage: folderCompress srcFolder destFile
 folderCompress() {
-    local source="$1"
-    local destination="$2"
+    local source=$1
+    local destination=$2
+    
+    # Make sure destination exists
+    touch "$destination"
 
-    # Compress the contents of the folder to the destination file
-    zip -j -r -q "$destination" "$source"
-
+    # Get the absolute path of the destination zip
+    local abs_destination=$(readlink -f "$destination")
+    
+    # Change directory to the folder
+    cd "$source" || logError "Source folder doesn't exist ''"
+    
+    # Compress the contents of the folder into the destination zip
+    zip -r -q "$abs_destination" *
+    
     if [ $? -ne 0 ]; then
         logError "Failed to compress contents of '$source' into '$destination'."
         exit 1
     fi
+
+    # Change back to the original directory
+    cd - >/dev/null 2>&1
+
+    logInformation "Compressed contents of '$source' into '$destination'."
+}
+
+# Adds the contents of a folder into a zip file
+# Usage: zipUpdate srcFolder destFile
+zipUpdate() {
+    local source=$1
+    local destination=$2
+    
+    # Make sure destination exists
+    touch "$destination"
+
+    # Get the absolute path of the destination zip
+    local abs_destination=$(readlink -f "$destination")
+    
+    # Change directory to the folder
+    cd "$source" || logError "Source folder doesn't exist ''"
+    
+    # Update the contents of the folder into the destination zip
+    zip -ur -q "$abs_destination" *
+    
+    if [ $? -ne 0 ]; then
+        logError "Failed to compress contents of '$source' into '$destination'."
+        exit 1
+    fi
+
+    # Change back to the original directory
+    cd - >/dev/null 2>&1
 
     logInformation "Compressed contents of '$source' into '$destination'."
 }
@@ -424,6 +466,23 @@ assertVersionEquals() {
     # Log a message
     logInformation "Asserted that version '$version' equals version '$expected'."
 }
+
+# Asserts that Command Line Tools are installed, logs an error message and throws an error if not
+# Usage: assertXcodeToolsInstalled
+assertXcodeToolsInstalled() {
+    # Check for Command Line Tools by querying the location of 'xcode-select'
+    xcode-select -p &> /dev/null
+
+    # Check the exit code of the previous command
+    if [ $? -ne 0 ]; then
+        logWarning "Xcode Command Line Tools are not installed."
+        logWarning "Please run 'xcode-select --install' to install them."
+        logError "Unable to find Xcode Command Line Tools."
+    else
+        logInformation "Xcode Command Line Tools are installed."
+    fi
+}
+
 
 # Logging
 

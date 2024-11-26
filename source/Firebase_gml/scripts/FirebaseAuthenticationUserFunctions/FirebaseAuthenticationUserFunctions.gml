@@ -173,7 +173,14 @@ function FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUr
 		FirebaseAuthentication_endpoint + "signInWithIdp?key=" + extension_get_option_value("YYFirebaseAuthentication","WebAPIKey"),
 		"POST",
 		FirebaseREST_KeyValue("Content-Type","application/json"),
-		FirebaseREST_KeyValue("returnSecureToken","true","returnIdpCredential","true","requestUri",requestUri,"postBody",token_kind+"="+token+"&providerId="+provider));
+		FirebaseREST_KeyValue("returnSecureToken","true",
+								"returnIdpCredential","true",
+								"requestUri",requestUri,
+								"postBody",$"{token_kind}={token}&providerId={provider}&state:AB321",
+								"state", "AB321"
+								)
+							);
+							
 	listener.dropListenerFromArgs = true
 	Firebase_Listener_SetErrorCountLimit_Authentication(listener,0)
 	return listener;

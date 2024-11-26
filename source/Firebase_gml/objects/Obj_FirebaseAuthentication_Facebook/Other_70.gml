@@ -25,4 +25,9 @@ if(string(type) == "facebook_login_result")
     }
 }
 
+if(string(type) == "facebook_redirection_login")
+{
+	token = async_load[?"token"]
+	event_user(0)
+}
 

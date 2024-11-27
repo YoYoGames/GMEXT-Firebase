@@ -3,7 +3,7 @@
 
 client_id = extension_get_option_value("AppleSignIn", "REDIRECTION ClientID");
 redirect_uri = extension_get_option_value("AppleSignIn", "REDIRECTION Uri");
-//state = create_code();
+
 scope = "name email";
 response_type = "code";
 response_mode = "form_post";

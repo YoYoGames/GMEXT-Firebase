@@ -5,7 +5,8 @@ function GoogleSignIn_Show()
 
     google.accounts.id.initialize({
       client_id: CLIENT_ID + '.apps.googleusercontent.com',
-      callback: handleCredentialResponse
+      callback: handleCredentialResponse,
+	  //use_fedcm_for_prompt: false// https://stackoverflow.com/a/78310284
     });
 	
     google.accounts.id.prompt((notification) => 

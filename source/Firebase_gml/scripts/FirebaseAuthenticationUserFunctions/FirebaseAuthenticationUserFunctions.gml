@@ -161,11 +161,11 @@ function FirebaseAuthentication_SignIn_GameCenter(bundle_id,playerId,publicKeyUr
 }
 
 //Sign in with OAuth credential
-function FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri = "")
+function FirebaseAuthentication_SignIn_OAuth(token, token_kind, provider, requestUri = "", extra_params = "")
 {
 	if(FirebaseAuthentication_Library_useSDK)
 		return SDKFirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri)
-	
+		
 	FirebaseAuthentication_controllerVerification()
 	var listener = FirebaseREST_asyncFunction_Authentication(
 		"FirebaseAuthentication_SignIn_OAuth"+FirebaseREST_MiddleCallbackTAG,
@@ -173,7 +173,13 @@ function FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUr
 		FirebaseAuthentication_endpoint + "signInWithIdp?key=" + extension_get_option_value("YYFirebaseAuthentication","WebAPIKey"),
 		"POST",
 		FirebaseREST_KeyValue("Content-Type","application/json"),
-		FirebaseREST_KeyValue("returnSecureToken","true","returnIdpCredential","true","requestUri",requestUri,"postBody",token_kind+"="+token+"&providerId="+provider));
+		FirebaseREST_KeyValue("returnSecureToken","true",
+								"returnIdpCredential","true",
+								"requestUri",requestUri,
+								"postBody",$"{token_kind}={token}&providerId={provider}{extra_params}",
+								)
+							);
+							
 	listener.dropListenerFromArgs = true
 	Firebase_Listener_SetErrorCountLimit_Authentication(listener,0)
 	return listener;
@@ -388,7 +394,7 @@ function FirebaseAuthentication_LinkWithEmailPassword(email,password)
 }
 
 //Link with OAuth credential
-function FirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri = "")
+function FirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri = "", extra_params= "")
 {
 	if(FirebaseAuthentication_Library_useSDK)
 		return SDKFirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,requestUri);
@@ -400,7 +406,7 @@ function FirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provide
 		FirebaseAuthentication_endpoint + "signInWithIdp?key=" + extension_get_option_value("YYFirebaseAuthentication","WebAPIKey"),
 		"POST",
 		FirebaseREST_KeyValue("Content-Type","application/json"),
-		FirebaseREST_KeyValue("idToken",RESTFirebaseAuthentication_GetIdToken(),"returnSecureToken","true","returnIdpCredential","true","requestUri",requestUri,"postBody",token_kind+"="+token+"&providerId="+provider));
+		FirebaseREST_KeyValue("idToken",RESTFirebaseAuthentication_GetIdToken(),"returnSecureToken","true","returnIdpCredential","true","requestUri",requestUri,"postBody",token_kind+"="+token+"&providerId="+provider+extra_params));
 	listener.dropListenerFromArgs = true
 	Firebase_Listener_SetErrorCountLimit_Authentication(listener,0)
 	return listener;
@@ -848,12 +854,12 @@ function FirebaseAuthentication_ReauthenticateWithEmail(email,password)
 	return listener
 }
 
-function FirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri = "")
+function FirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri = "", extra_params = "")
 {
 	if(FirebaseAuthentication_Library_useSDK)
 		return SDKFirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,requestUri)
 	
-	var listener = FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri)
+	var listener = FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,requestUri,extra_params)
 	listener.event = "FirebaseAuthentication_ReauthenticateWithOAuth"+FirebaseREST_MiddleCallbackTAG
 	return listener
 }

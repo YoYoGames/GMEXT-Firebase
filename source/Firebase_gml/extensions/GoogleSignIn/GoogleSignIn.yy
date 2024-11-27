@@ -11,17 +11,17 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYGoogleSignIn",
-  "copyToTargets":9007199254741036,
+  "copyToTargets":3035426170322551022,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"2.0.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":44,"filename":"GoogleSignIn.ext","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"GoogleSignIn_Show","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_Show","help":"GoogleSignIn_Show()","hidden":false,"kind":4,"name":"GoogleSignIn_Show","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-        {"$GMExtensionFunction":"","%Name":"GoogleSignIn_SignOut","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_SignOut","help":"GoogleSignIn_SignOut()","hidden":false,"kind":4,"name":"GoogleSignIn_SignOut","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":3026418953887940846,"filename":"GoogleSignIn.ext","final":"","functions":[
+        {"$GMExtensionFunction":"","%Name":"__GoogleSignIn_Show","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_Show","help":"GoogleSignIn_Show()","hidden":true,"kind":4,"name":"__GoogleSignIn_Show","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"__GoogleSignIn_SignOut","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_SignOut","help":"GoogleSignIn_SignOut()","hidden":true,"kind":4,"name":"__GoogleSignIn_SignOut","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
       ],"init":"","kind":4,"name":"","order":[
-        {"name":"GoogleSignIn_Show","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
-        {"name":"GoogleSignIn_SignOut","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
+        {"name":"__GoogleSignIn_Show","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
+        {"name":"__GoogleSignIn_SignOut","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
       ],"origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"GoogleSignIn.js","name":"GoogleSignIn.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
@@ -54,12 +54,16 @@
     {"$GMExtensionOption":"","%Name":"FilterByAuthorizedAccounts","defaultValue":"True","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"474d3975-2be1-48ff-9423-17ec70691d76","hidden":false,"listItems":[],"name":"FilterByAuthorizedAccounts","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"__extOptLabel2","defaultValue":"IOS CONFIG:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"486019da-b312-488c-bd69-7540325de158","hidden":false,"listItems":[],"name":"__extOptLabel2","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"iosClientID","defaultValue":"","description":"Can be accessed in-game by the name 'iosClientID'","displayName":"iOS Client ID","exportToINI":false,"extensionId":null,"guid":"c25a7650-d2fb-4e2b-8495-e56fbe1d36b4","hidden":false,"listItems":[],"name":"iosClientID","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"__extOptLabel3","defaultValue":"REDIRECTION CONFIG:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"7554551d-e3ed-44a7-85c5-d3cd3652d0f7","hidden":false,"listItems":[],"name":"__extOptLabel3","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"redirectClientID","defaultValue":"","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"18da80f6-73be-4f3c-bd78-acebc8474c99","hidden":false,"listItems":[],"name":"redirectClientID","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"redirectURL","defaultValue":"","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"4120ed8f-fba5-4725-9a61-9854756d79b9","hidden":false,"listItems":[],"name":"redirectURL","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"searchURL","defaultValue":"","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"9a625be9-7948-4884-b996-60af2abb50f0","hidden":false,"listItems":[],"name":"searchURL","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"GoogleSignIn",
-    "path":"folders/Authentication Providers/Extensions/GoogleSignIn.yy",
+    "name":"Core System (Don't Edit)",
+    "path":"folders/Authentication Providers/Extensions/GoogleSignIn/Core System (Don't Edit).yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

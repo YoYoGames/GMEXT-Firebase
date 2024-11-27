@@ -7,10 +7,8 @@ if(os_browser != browser_not_a_browser)
 
 if(os_type == os_android)
 	GoogleSignIn_Show()
-//secret: 8JWQbXEiHH31W7Z0KM0ggE0j
-
-
+else
 if(os_type == os_ios)
 	GoogleSignIn_Show()
-//inverted client id
-//com.googleusercontent.apps.20722703459-bb8lnfpgj83fuao2sn48ugv7jr7urpol
+else
+	instance_create_depth(0,0,0,Obj_GoogleSignIn_Redirection_Listener)

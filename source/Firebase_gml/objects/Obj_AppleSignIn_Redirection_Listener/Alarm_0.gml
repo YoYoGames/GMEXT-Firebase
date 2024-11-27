@@ -1,5 +1,5 @@
 
-var post_data = json_stringify({state: state})
+var post_data = json_stringify({ state: state })
 
 var headers = ds_map_create();
 ds_map_add(headers, "Content-Type", "application/json");

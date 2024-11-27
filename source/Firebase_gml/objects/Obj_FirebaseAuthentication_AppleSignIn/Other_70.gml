@@ -20,6 +20,7 @@ switch(async_load[?"id"])
 		var identityToken = jsonMap[? "identityToken"];
 		
 		token = identityToken
+		nonce = jsonMap[? "nonce"];
 		event_user(0)
 	}
 	else

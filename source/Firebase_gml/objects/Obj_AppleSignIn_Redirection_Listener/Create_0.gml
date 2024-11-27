@@ -13,8 +13,9 @@ function create_code(digits = 14,characters = "0123456789")
 }
 
 state = create_code()
-var oauth_ins = instance_create_depth(0,0,0,Obj_AppleSignIn_Oauth_Http,{state: state})
+var oauth_ins = instance_create_depth(0,0,0,Obj_AppleSignIn_Oauth_Http, { state: state });
 
+nonce = oauth_ins.nonce;
 client_id = oauth_ins.client_id
 redirect_uri = oauth_ins.redirect_uri
 

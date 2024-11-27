@@ -259,24 +259,6 @@ function __google_signin_generate_code_challenge(_verifier) {
 	return _base64_url_encode;
 }
 
-///// @ignore
-//function __google_signin_exchange_code(_client_id, _redirect_url, _client_secret, _verifier, _code) {
-//    static _GOOGLE_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
-	
-//    _client_id = $"{_client_id}.apps.googleusercontent.com";
-//    var post_data = "grant_type=authorization_code" +
-//                    "&code=" + _code +
-//                    "&redirect_uri=" + __google_signin_url_encode(_redirect_url) +
-//					"&client_secret=" + __google_signin_url_encode(_client_secret) + 
-//                    "&client_id=" + __google_signin_url_encode(_client_id) + 
-//                    "&code_verifier=" + _verifier;
-    
-//    var headers = ds_map_create();
-//    ds_map_add(headers, "Content-Type", "application/x-www-form-urlencoded");
-    
-//    return http_request(_GOOGLE_TOKEN_ENDPOINT, "POST", headers, post_data);
-//}
-
 function GoogleSignIn_Show() {
 	if(os_type == os_android or os_type == os_ios or os_browser != browser_not_a_browser)
 	{

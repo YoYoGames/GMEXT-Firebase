@@ -18,7 +18,8 @@ if(search_request == async_load[?"id"])
 	
 	var _struct = {
 		success: true,
-		identityToken: _data.id_token//access_token
+		identityToken: _data.id_token,
+		nonce: nonce
 	}
 	
 	var _map = ds_map_create();

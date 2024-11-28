@@ -266,7 +266,7 @@ function GoogleSignIn_Show() {
 	}
 	else
 	{
-		instance_create_depth(0, 0, 0, Obj_GoogleSignIn_Redirection_Listener);
+		instance_create_depth(0, 0, 0, Obj_GoogleSignIn_OAuth);
 	}
 }
 

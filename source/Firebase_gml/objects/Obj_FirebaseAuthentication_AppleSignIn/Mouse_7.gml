@@ -34,5 +34,5 @@ if(os_type == os_ios)
 }
 else
 {
-	instance_create_depth(0,0,0,Obj_AppleSignIn_Redirection_Listener)
+	instance_create_depth(0,0,0,Obj_AppleSignIn_OAuth)
 }

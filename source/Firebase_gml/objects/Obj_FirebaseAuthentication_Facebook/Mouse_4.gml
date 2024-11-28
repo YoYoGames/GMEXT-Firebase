@@ -11,5 +11,5 @@ if(os_type == os_android or os_type == os_ios)
 }
 else
 {
-	instance_create_depth(0,0,0,Obj_FacebookSignIn_Redirection_Listener)
+	instance_create_depth(0,0,0,Obj_FacebookSignIn_OAuth)
 }

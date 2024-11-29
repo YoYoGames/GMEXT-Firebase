@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"__facebook_signin_url_encode",
   "parent":{
-    "name":"Extensions",
-    "path":"folders/Authentication Providers/Extensions/FacebookAPI/Extensions.yy",
+    "name":"FacebookAPI",
+    "path":"folders/Authentication Providers/Extensions/FacebookAPI.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

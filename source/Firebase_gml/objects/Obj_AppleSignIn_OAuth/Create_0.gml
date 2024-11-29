@@ -1,5 +1,5 @@
 
-search_url = extension_get_option_value("AppleSignIn", "REDIRECTION Search Url");
+search_url = extension_get_option_value("AppleSignIn", "OAuth Search Url");
 
 function create_code(digits = 14,characters = "0123456789")
 {

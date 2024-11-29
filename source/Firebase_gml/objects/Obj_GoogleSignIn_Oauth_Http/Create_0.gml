@@ -4,8 +4,8 @@
 
 scope = "openid email profile";
 
-client_id = extension_get_option_value("GoogleSignIn", "redirectClientID");
-redirect_url = extension_get_option_value("GoogleSignIn", "redirectURL");
+client_id = extension_get_option_value("GoogleSignIn", "OAuth ClientID");
+redirect_url = extension_get_option_value("GoogleSignIn", "OAuth URL");
 
 auth_url = GOOGLE_OAUTH_ENDPOINT + "?response_type=code" +
            "&scope=" + __google_signin_url_encode(scope) +

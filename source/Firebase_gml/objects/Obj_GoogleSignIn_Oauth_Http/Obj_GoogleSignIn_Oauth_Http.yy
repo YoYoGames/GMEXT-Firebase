@@ -8,8 +8,8 @@
   "name":"Obj_GoogleSignIn_Oauth_Http",
   "overriddenProperties":[],
   "parent":{
-    "name":"Core System (Don't Edit)",
-    "path":"folders/Authentication Providers/Extensions/GoogleSignIn/Core System (Don't Edit).yy",
+    "name":"GoogleSignIn",
+    "path":"folders/Authentication Providers/Extensions/GoogleSignIn.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,12 +1,11 @@
 
-show_debug_message("Hey?")
 show_debug_message(__google_signin_url_encode("https://googlesignin-tclduhxwfq-uc.a.run.app/"))
 show_debug_message(__google_signin_url_encode("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"))
 show_debug_message(__google_signin_url_encode("20722703459-2lblr1ppet3454b102121vn0s8gkqls2"))
 
 randomize()
 
-search_url = extension_get_option_value("GoogleSignIn", "searchURL");
+search_uri = extension_get_option_value("GoogleSignIn", "OAuth Search URL");
 
 function create_code(digits = 4,characters = "0123456789")
 {

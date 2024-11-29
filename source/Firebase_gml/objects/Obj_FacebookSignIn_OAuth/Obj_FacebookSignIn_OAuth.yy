@@ -10,8 +10,8 @@
   "name":"Obj_FacebookSignIn_OAuth",
   "overriddenProperties":[],
   "parent":{
-    "name":"Extensions",
-    "path":"folders/Authentication Providers/Extensions/FacebookAPI/Extensions.yy",
+    "name":"FacebookAPI",
+    "path":"folders/Authentication Providers/Extensions/FacebookAPI.yy",
   },
   "parentObjectId":null,
   "persistent":false,

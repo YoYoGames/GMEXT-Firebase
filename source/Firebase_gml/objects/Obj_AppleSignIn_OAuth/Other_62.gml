@@ -1,5 +1,4 @@
 
-//show_debug_message(json_encode(async_load))
 if(async_load[?"status"] != 0)
 	exit
 

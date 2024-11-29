@@ -1,8 +1,8 @@
 
 #macro APPLESIGNIN_OAUTH_ENDPOINT "https://accounts.google.com/o/oauth2/v2/auth"
 
-client_id = extension_get_option_value("AppleSignIn", "REDIRECTION ClientID");
-redirect_uri = extension_get_option_value("AppleSignIn", "REDIRECTION Uri");
+client_id = extension_get_option_value("AppleSignIn", "OAuth ClientID");
+redirect_uri = extension_get_option_value("AppleSignIn", "OAuth Url");
 
 scope = "name email";
 response_type = "code";

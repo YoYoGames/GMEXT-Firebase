@@ -13,7 +13,7 @@
  * // After some time
  * FirebaseStorage_Cancel(listener);
  * ```
-  The code above will start a file upload to the given `path` (using the ${function.FirebaseStorage_Upload} function) and after a while cancel it.
+ * The code above will start a file upload to the given `path` (using the ${function.FirebaseStorage_Upload} function) and after a while cancel it.
  * @function_end
  */
 
@@ -30,7 +30,7 @@
  * @member {string} type The string `"FirebaseStorage_Delete"`
  * @member {real} listener The asynchronous listener ID.
  * @member {string} path The remote path.
- * @member {bool} [success] Whether or not the download succeeded
+ * @member {bool} [success] Whether or not the delete succeeded
  * @event_end
  * 
  * @example
@@ -38,7 +38,7 @@
  * var _uid = FirebaseAuthentication_GetUID();
  * listenerId = FirebaseStorage_Delete("UserProfiles/" + _uid + "/img.png");
  * ```
- * The code above uses the user identifier (provided by the function `FirebaseAuthentication_GetUID()` from the Firebase Authentication extension) to create a remote path and then deletes a file in that path. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * The code above uses the user identifier (provided by the function ${function.FirebaseAuthentication_GetUID} from the Firebase Authentication extension) to create a remote path and then deletes a file in that path. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * ```gml
  * if (async_load[? "type"] == "FirebaseStorage_Delete")
  * {
@@ -75,6 +75,7 @@
  * @member {string} path The remote file path.
  * @member {string} localPath The local file path.
  * @member {bool} [success] Whether or not the download succeeded (if finished)
+ * @member {string} [error] A string describing the error that occurred (if any)
  * @member {real} [transferred] Number of transferred bytes (if NOT finished)
  * @member {real} [total] Total number of bytes (if NOT finished)
  * @event_end
@@ -84,7 +85,7 @@
  * var _uid = FirebaseAuthentication_GetUID();
  * listenerId = FirebaseStorage_Download("profilePic.png", "UserProfiles/" + _uid + "/img.png");
  * ```
- * The code above uses the user identifier (provided by the function `FirebaseAuthentication_GetUID()` from the Firebase Authentication extension) to create a remote path string, then downloads a file from the server to a local path. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
+ * The code above uses the user identifier (provided by the function ${function.FirebaseAuthentication_GetUID} from the Firebase Authentication extension) to create a remote path string, then downloads a file from the server to a local path. The function call will then return a listener ID (`listenerId`) that can be used inside a ${event.social}.
  * 
  * ```gml
  * if (async_load[? "type"] == "FirebaseStorage_Download")
@@ -229,5 +230,32 @@ if (async_load[? "type"] == "FirebaseStorage_ListAll")
 }
  * ```
  * The code above matches the response against the correct event **type** and if the task was successful it stores the files and folders paths parsed as arrays (using the ${function.json_parse} function) inside global variables (`global.arrayOfFiles` and `global.arrayOfFolders`).
+ * @function_end
+ */
+
+/**
+ * @func FirebaseStorage_Upload
+ * @desc This function is used to upload files to a remote path. It returns a listener identifier that can be used for tracking progress.
+ * 
+ * A ${event.social} is triggered at various points during the upload providing information on upload progress, completion or any errors that occurred.
+ * 
+ * @param {string} localPath The local path
+ * @param {string} firebasePath The remote path on the Firebase Cloud Storage server
+ * @param {string} [bucket] Other Firebase Storage bucket
+ * 
+ * @returns {real}
+ * 
+ * @event social
+ * @desc 
+ * @member {string} type The string `"FirebaseStorage_Upload"`
+ * @member {real} listener The listener for which this event is triggered
+ * @member {string} path The remote file path
+ * @member {string} localPath The local file path
+ * @member {boolean} [success] Whether the upload succeeded
+ * @member {string} [error] An error message describing the error that occurred
+ * @member {real} [transferred] The number of bytes transferred
+ * @member {real} [total] The total number of bytes
+ * @event_end
+ * 
  * @function_end
  */

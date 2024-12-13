@@ -1,747 +1,545 @@
+// YYFirebaseAuthentication.m
+
+${YYIos_FirebaseAuthentication_Skip_Start}
 
 #import "YYFirebaseAuthentication.h"
-#import <UIKit/UIKit.h>
+#import "FirebaseUtils.h"
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
+@interface YYFirebaseAuthentication ()
 
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+@property (nonatomic, strong, nullable) FIRIDTokenDidChangeListenerHandle idTokenListenerHandle;
 
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
+- (void)handleAuthResultWithAuthResult:(FIRAuthDataResult *)authResult error:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId;
+- (void)handleTaskResultWithError:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId;
+- (void)handleUserNotSignedInWithEventType:(NSString *)eventType asyncId:(long)asyncId;
+- (void)handleError:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId;
+- (void)handleErrorWithMessage:(NSString *)message eventType:(NSString *)eventType asyncId:(long)asyncId;
+- (FIRAuthCredential *)getAuthCredentialFromProvider:(NSString *)token kind:(NSString *)tokenKind provider:(NSString *)provider;
+- (NSString *)getUserDataFromFirebaseUser:(FIRUser *)user;
+- (void)putIfNotNullInDictionary:(NSMutableDictionary *)dictionary key:(NSString *)key value:(id)value;
+- (NSString *)randomNonce:(NSInteger)length;
 
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+@end
 
 @implementation YYFirebaseAuthentication
 
--(id) init
-{
-	if(self = [super init])
-	{
-		if(![FIRApp defaultApp])
-			[FIRApp configure];
-			
-		return self;
-	}
-}
-	
--(int)getListenerInd
-{
-    listener_id++;
-    return(listener_id);
+#pragma mark - General API
+
+- (NSString *)SDKFirebaseAuthentication_GetUserData {
+    FIRUser *user = [FIRAuth auth].currentUser;
+    return [self getUserDataFromFirebaseUser:user];
 }
 
--(void) Init
-{
-	//Start point of index
-	//Autentication 5000
-	//storage 6000
-	//Firestore 7000
-	//RealTime 10000
-	listener_id = 5000;
-    _listener_idToken = nil;
+- (double)SDKFirebaseAuthentication_SignInWithCustomToken:(NSString *)token {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    [[FIRAuth auth] signInWithCustomToken:token completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignInWithCustomToken" asyncId:asyncId];
+    }];
+    return (double)asyncId;
 }
 
-
--(NSString*) SDKFirebaseAuthentication_GetUserData
-{
-    return [YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:[FIRAuth auth].currentUser];
+- (double)SDKFirebaseAuthentication_SignIn_Email:(NSString *)email pass:(NSString *)password {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    [[FIRAuth auth] signInWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignIn_Email" asyncId:asyncId];
+    }];
+    return (double)asyncId;
 }
 
-+(NSString*) SDKFirebaseAuthentication_GetUserData_From:(FIRUser*) user
-{
-    if(user == NULL)
-        return(@"{}");
+- (double)SDKFirebaseAuthentication_SignUp_Email:(NSString *)email pass:(NSString *)password {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    [[FIRAuth auth] createUserWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignUp_Email" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
 
-    NSMutableDictionary *userMap = [[NSMutableDictionary alloc]init];
-    [userMap setValue:user.displayName forKey:@"displayName"];
-    [userMap setValue:user.email forKey:@"email"];
-    [userMap setValue:user.phoneNumber forKey:@"phoneNumber"];
-    [userMap setValue:user.uid forKey:@"localId"];
-//    [userMap setValue:providerID forKey:@"Provider"];
-    [userMap setValue:[NSNumber numberWithBool: user.emailVerified] forKey:@"emailVerified"];
-    if([user photoURL] != nil)
-        [userMap setValue:[user photoURL].absoluteString forKey:@"photoUrl"];
-    [userMap setValue:[NSNumber numberWithDouble: [user.metadata.lastSignInDate timeIntervalSince1970]] forKey:@"lastLoginAt"];
-    [userMap setValue:[NSNumber numberWithDouble: [user.metadata.creationDate timeIntervalSince1970]] forKey:@"createdAt"];
-    
-    NSMutableArray *array = [NSMutableArray new];
-    NSArray *providerArray = [user providerData];
-    for(int a = 0 ; a < [providerArray count] ; a++)
-    {
-        id userInfo = providerArray[a];
-        NSMutableDictionary *providerObj = [NSMutableDictionary new];
-        [providerObj setValue:[userInfo displayName] forKey:@"displayName"];
-        [providerObj setValue:[userInfo email] forKey:@"email"];
-        [providerObj setValue:[userInfo phoneNumber] forKey:@"phoneNumber"];
-        if([userInfo photoURL] != nil)
-            [providerObj setValue:[userInfo photoURL].absoluteString forKey:@"photoUrl"];
-        [providerObj setValue:(NSString*)[userInfo providerID] forKey:@"providerId"];
-        [providerObj setValue:[userInfo uid] forKey:@"rawId"];
-        [providerObj setValue:[userInfo uid] forKey:@"federatedId"];
-        
-        [array addObject:providerObj];
+- (double)SDKFirebaseAuthentication_SignIn_Anonymously {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    [[FIRAuth auth] signInAnonymouslyWithCompletion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignIn_Anonymously" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_SendPasswordResetEmail:(NSString *)email {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    [[FIRAuth auth] sendPasswordResetWithEmail:email completion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_SendPasswordResetEmail" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_ChangeEmail:(NSString *)email {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ChangeEmail" asyncId:asyncId];
+        return (double)asyncId;
     }
-    [userMap setObject:array forKey:@"providerUserInfo"];
-    
-    NSMutableArray *arrayUsers = [NSMutableArray new];
-    [arrayUsers addObject:userMap];
-    
-    NSMutableDictionary *root = [[NSMutableDictionary alloc]init];
-    [root setValue:@"identitytoolkit#GetAccountInfoResponse" forKey:@"kind"];
-    [root setObject:arrayUsers forKey:@"users"];
-    
-    NSError *err;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:root options:0 error:&err];
-    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    return(jsonStr);
-}
-
--(double) SDKFirebaseAuthentication_SignInWithCustomToken:(NSString*) token
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth] signInWithCustomToken:token completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignInWithCustomToken");
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+    [currentUser sendEmailVerificationBeforeUpdatingEmail:email completion:^(NSError * _Nullable error) {
+        if (error) {
+            if (error.code == FIRAuthErrorCodeRequiresRecentLogin) {
+                // Handle re-authentication required
+                [self handleErrorWithMessage:@"Re-authentication required. Please re-authenticate and try again." eventType:@"FirebaseAuthentication_ChangeEmail" asyncId:asyncId];
+            } else {
+                [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_ChangeEmail" asyncId:asyncId];
+            }
+        } else {
+            [self handleTaskResultWithError:nil eventType:@"FirebaseAuthentication_ChangeEmail" asyncId:asyncId];
         }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_SignIn_Email:(NSString*)email pass:(NSString*)password
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth] signInWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError *error) 
-	{
-		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Email");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-		if(error)
-        {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-		else
-        {
-			dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
+- (double)SDKFirebaseAuthentication_ChangePassword:(NSString *)password {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ChangePassword" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser updatePassword:password completion:^(NSError * _Nullable error) {
+        if (error) {
+            if (error.code == FIRAuthErrorCodeRequiresRecentLogin) {
+                // Handle re-authentication required
+                [self handleErrorWithMessage:@"Re-authentication required. Please re-authenticate and try again." eventType:@"FirebaseAuthentication_ChangePassword" asyncId:asyncId];
+            } else {
+                [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_ChangePassword" asyncId:asyncId];
+            }
+        } else {
+           [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_ChangePassword" asyncId:asyncId];
         }
-		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-	}];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SignUp_Email:(NSString*)email pass:(NSString*)password
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth] createUserWithEmail:email password:password completion:^(FIRAuthDataResult * _Nullable authResult, NSError *_Nullable error)
-	{
-		int dsMapIndex = dsMapCreate();
-		dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Email");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-		if(error)
-			{dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-		else
-        {
-			dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-		CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-	}];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SignIn_Anonymously
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth] signInAnonymouslyWithCompletion:^(FIRAuthDataResult * _Nullable authResult, NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_Anonymously");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-     }];
-	 return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SendPasswordResetEmail:(NSString*) email
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth] sendPasswordResetWithEmail:email completion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SendPasswordResetEmail");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_ChangeEmail: (NSString*) email
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser updateEmail:email completion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ChangeEmail");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_ChangePassword:(NSString*) password
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser updatePassword:password completion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ChangePassword");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_ChangeDisplayName:(NSString*) name
-{
-	const int Id = [self getListenerInd];
-    FIRUserProfileChangeRequest *changeRequest = [[FIRAuth auth].currentUser profileChangeRequest];
+- (double)SDKFirebaseAuthentication_ChangeDisplayName:(NSString *)name {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ChangeDisplayName" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    FIRUserProfileChangeRequest *changeRequest = [currentUser profileChangeRequest];
     changeRequest.displayName = name;
-    [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ChangeDisplayName");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+    [changeRequest commitChangesWithCompletion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_ChangeDisplayName" asyncId:asyncId];
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_ChangePhotoURL:(NSString*) photoURL
-{
-	const int Id = [self getListenerInd];
-    FIRUserProfileChangeRequest *changeRequest = [[FIRAuth auth].currentUser profileChangeRequest];
-    changeRequest.photoURL = [NSURL URLWithString: photoURL];
-    [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ChangePhotoURL");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SendEmailVerification
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser sendEmailVerificationWithCompletion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SendEmailVerification");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_DeleteAccount
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser deleteWithCompletion:^(NSError *_Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_DeleteAccount");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SignOut
-{
-    [[FIRAuth auth] signOut:NULL];
-}
-
--(double) SDKFirebaseAuthentication_LinkWithEmailPassword:(NSString*) email pass:(NSString*) password
-{
-	const int Id = [self getListenerInd];
-    FIRAuthCredential *credential = [FIREmailAuthProvider credentialWithEmail:email password:password];
-    [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithEmailPassword");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);   dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SignIn_OAuth:(NSString*) token kind:(NSString*) token_kind provider:(NSString*)provider uri:(NSString*) requestUri
-{
-	const int Id = [self getListenerInd];
-    FIRAuthCredential *authCredential = [YYFirebaseAuthentication getAuthCredentialFromProvider:token kind:token_kind provider:provider];
-    [[FIRAuth auth] signInWithCredential:authCredential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_OAuth");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-	}];
-	return (double)Id;
- }
-
--(double) SDKFirebaseAuthentication_LinkWithOAuthCredential:(NSString*) token kind:(NSString*) token_kind provider:(NSString*)provider uri:(NSString*) requestUri
-{
-	const int Id = [self getListenerInd];
-    FIRAuthCredential *credential = [YYFirebaseAuthentication getAuthCredentialFromProvider:token kind:token_kind provider:provider];
-    [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithOAuthCredential");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
-+(FIRAuthCredential*) getAuthCredentialFromProvider:(NSString*) token kind:(NSString*) token_kind provider:(NSString*)provider
-{
-	FIRAuthCredential *authCredential = nil;
-    if([provider isEqualToString:@"facebook.com"])
-        authCredential = [FIRFacebookAuthProvider credentialWithAccessToken:token];
-    
-    if([provider isEqualToString:@"google.com"])
-    if([token_kind isEqualToString:@"id_token"])
-        authCredential = [FIRGoogleAuthProvider credentialWithIDToken:token accessToken:@""];
-    else
-    if([token_kind isEqualToString:@"access_token"])
-        authCredential = [FIRGoogleAuthProvider credentialWithIDToken:@"" accessToken:token];
-    
-    if([provider isEqualToString:@"apple.com"])
-    {
-        authCredential = [FIROAuthProvider credentialWithProviderID:@"apple.com" IDToken:token rawNonce:[YYFirebaseAuthentication randomNonce:32]];
+- (double)SDKFirebaseAuthentication_ChangePhotoURL:(NSString *)photoURL {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ChangePhotoURL" asyncId:asyncId];
+        return (double)asyncId;
     }
-    
-	return authCredential;
+    FIRUserProfileChangeRequest *changeRequest = [currentUser profileChangeRequest];
+    changeRequest.photoURL = [NSURL URLWithString:photoURL];
+    [changeRequest commitChangesWithCompletion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_ChangePhotoURL" asyncId:asyncId];
+    }];
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_UnlinkProvider:(NSString*) provider
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser unlinkFromProvider:provider completion:^(FIRUser * _Nullable user, NSError * _Nullable error)
-     {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_UnlinkProvider");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:user]UTF8String]);
+- (double)SDKFirebaseAuthentication_SendEmailVerification {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_SendEmailVerification" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser sendEmailVerificationWithCompletion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_SendEmailVerification" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_DeleteAccount {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_DeleteAccount" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser deleteWithCompletion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_DeleteAccount" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (void)SDKFirebaseAuthentication_SignOut {
+    NSError *error = nil;
+    BOOL signOutSuccess = [[FIRAuth auth] signOut:&error];
+    if (!signOutSuccess) {
+        NSLog(@"Error signing out: %@", error.localizedDescription);
+    }
+}
+
+- (double)SDKFirebaseAuthentication_LinkWithEmailPassword:(NSString *)email pass:(NSString *)password {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_LinkWithEmailPassword" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    FIRAuthCredential *credential = [FIREmailAuthProvider credentialWithEmail:email password:password];
+    [currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_LinkWithEmailPassword" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_SignIn_OAuth:(NSString *)token kind:(NSString *)tokenKind provider:(NSString *)provider extra:(NSString *)_unused {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRAuthCredential *authCredential = [self getAuthCredentialFromProvider:token kind:tokenKind provider:provider];
+    if (authCredential == nil) {
+        [self handleErrorWithMessage:@"Invalid provider or token kind" eventType:@"FirebaseAuthentication_SignIn_OAuth" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [[FIRAuth auth] signInWithCredential:authCredential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignIn_OAuth" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_LinkWithOAuthCredential:(NSString *)token kind:(NSString *)tokenKind provider:(NSString *)provider {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_LinkWithOAuthCredential" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    FIRAuthCredential *authCredential = [self getAuthCredentialFromProvider:token kind:tokenKind provider:provider];
+    if (authCredential == nil) {
+        [self handleErrorWithMessage:@"Invalid provider or token kind" eventType:@"FirebaseAuthentication_LinkWithOAuthCredential" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser linkWithCredential:authCredential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_LinkWithOAuthCredential" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
+- (double)SDKFirebaseAuthentication_UnlinkProvider:(NSString *)provider {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_UnlinkProvider" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser unlinkFromProvider:provider completion:^(FIRUser * _Nullable user, NSError * _Nullable error) {
+        if (error) {
+            [self handleError:error eventType:@"FirebaseAuthentication_UnlinkProvider" asyncId:asyncId];
+        } else {
+            NSString *userData = [self getUserDataFromFirebaseUser:user];
+            NSDictionary *data = @{
+                @"listener": @(asyncId),
+                @"status": @(200),
+                @"value": userData
+            };
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_UnlinkProvider" data:data];
         }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_RefreshUserData
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser reloadWithCompletion:^(NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_RefreshUserData");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+- (double)SDKFirebaseAuthentication_RefreshUserData {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_RefreshUserData" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser reloadWithCompletion:^(NSError * _Nullable error) {
+        [self handleTaskResultWithError:error eventType:@"FirebaseAuthentication_RefreshUserData" asyncId:asyncId];
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
 
--(double) SDKFirebaseAuthentication_GetIdToken
-{
-	const int Id = [self getListenerInd];
-    [[FIRAuth auth].currentUser getIDTokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_GetIdToken");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[token UTF8String]);
+- (double)SDKFirebaseAuthentication_GetIdToken {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_GetIdToken" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    [currentUser getIDTokenForcingRefresh:YES completion:^(NSString * _Nullable token, NSError * _Nullable error) {
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+        data[@"listener"] = @(asyncId);
+        if (error) {
+            data[@"status"] = @(400);
+            data[@"errorMessage"] = error.localizedDescription ?: @"Unknown error";
+        } else {
+            data[@"status"] = @(200);
+            data[@"value"] = token ?: @"";
         }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_GetIdToken" data:data];
     }];
-	return (double)Id;
+    return (double)asyncId;
 }
+
+- (double)SDKFirebaseAuthentication_IdTokenListener {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    if (self.idTokenListenerHandle != nil) {
+        NSDictionary *data = @{
+            @"listener": @(asyncId),
+            @"status": @(400),
+            @"errorMessage": @"Already registered"
+        };
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+        return (double)asyncId;
+    }
+    self.idTokenListenerHandle = [[FIRAuth auth] addIDTokenDidChangeListener:^(FIRAuth * _Nonnull auth, FIRUser * _Nullable user) {
+        if (user == nil) {
+            NSDictionary *data = @{
+                @"listener": @(asyncId),
+                @"status": @(200),
+                @"value": @""
+            };
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+            return;
+        }
+        [user getIDTokenForcingRefresh:NO completion:^(NSString * _Nullable token, NSError * _Nullable error) {
+            NSMutableDictionary *data = [NSMutableDictionary dictionary];
+            data[@"listener"] = @(asyncId);
+            if (error) {
+                data[@"status"] = @(400);
+                data[@"errorMessage"] = error.localizedDescription ?: @"Unknown error";
+            } else {
+                data[@"status"] = @(200);
+                data[@"value"] = token ?: @"";
+            }
+            [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAuthentication_IdTokenListener" data:data];
+        }];
+    }];
+    return (double)asyncId;
+}
+
+- (void)SDKFirebaseAuthentication_IdTokenListener_Remove {
+    if (self.idTokenListenerHandle != nil) {
+        [[FIRAuth auth] removeIDTokenDidChangeListener:self.idTokenListenerHandle];
+        self.idTokenListenerHandle = nil;
+    }
+}
+
+- (double)SDKFirebaseAuthentication_ReauthenticateWithEmail:(NSString *)email pass:(NSString *)password {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    FIRUser *currentUser = [FIRAuth auth].currentUser;
+    if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ReauthenticateWithEmail" asyncId:asyncId];
+        return (double)asyncId;
+    }
+    FIRAuthCredential *credential = [FIREmailAuthProvider credentialWithEmail:email password:password];
+    [currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error) {
+        [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_ReauthenticateWithEmail" asyncId:asyncId];
+    }];
+    return (double)asyncId;
+}
+
 
 -(double) SDKFirebaseAuthentication_SignIn_GameCenter
 {
-	const int Id = [self getListenerInd];
-    [FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential, NSError *error)
-    {
-        if(error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_GameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }
-        
-        [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignIn_GameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            if(error)
-                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            else
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-            }
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }];
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_LinkWithGameCenter
-{
-	const int Id = [self getListenerInd];
-    [FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential, NSError *error)
-    {
-        if(error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_LinkWithGameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }
-        
-        [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type","FirebaseAuthentication_LinkWithGameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            if(error)
-                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            else
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-            }
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }];
-    }];
-	return (double)Id;
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
+	{
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_SignIn_GameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
 }
 
 -(double) SDKFirebaseAuthentication_ReauthenticateWithGameCenter
 {
-	const int Id = [self getListenerInd];
-    [FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential, NSError *error)
-    {
-        if(error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }
-        
-        [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-        {
-            int dsMapIndex = dsMapCreate();
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_ReauthenticateWithGameCenter");
-			dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-            if(error)
-                {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-            else
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-            }
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-        }];
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_SignInWithPhoneNumber:(NSString*) phoneNumber code:(NSString*) code sessionInfo:(NSString*) sessionInfo
-{
-	const int Id = [self getListenerInd];
-    FIRPhoneAuthCredential* credential = [[FIRPhoneAuthProvider providerWithAuth:[FIRAuth auth]] credentialWithVerificationID:sessionInfo verificationCode:code];
-    
-    [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_SignInWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_LinkWithPhoneNumber:(NSString*) phoneNumber code:(NSString*) code sessionInfo:(NSString*) sessionInfo
-{
-	const int Id = [self getListenerInd];
-    FIRPhoneAuthCredential* credential = [[FIRPhoneAuthProvider providerWithAuth:[FIRAuth auth]] credentialWithVerificationID:sessionInfo verificationCode:code];
-    
-    [[FIRAuth auth].currentUser linkWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"SDKFirebaseAuthentication_LinkWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_ReauthenticateWithEmail:(NSString*)email pass:(NSString*) password
-{
-	const int Id = [self getListenerInd];
-    FIRAuthCredential *credential = [FIREmailAuthProvider credentialWithEmail:email password:password];
-    [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithEmail");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_ReauthenticateWithOAuth:(NSString*)token tokenKind: (NSString*) token_kind provider:(NSString*) provider uri:(NSString*) requestUri
-{
-	const int Id = [self getListenerInd];
-    FIRAuthCredential *credential = [YYFirebaseAuthentication getAuthCredentialFromProvider:token kind:token_kind provider:provider];
-    [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithOAuth");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	
-	return (double)Id;
-}
-
--(double) SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber: (NSString*) phoneNumber code:(NSString*) code sessioninfo:(NSString*) sessionInfo
-{
-	const int Id = [self getListenerInd];
-    FIRPhoneAuthCredential* credential = [[FIRPhoneAuthProvider providerWithAuth:[FIRAuth auth]] credentialWithVerificationID:sessionInfo verificationCode:code];
-    [[FIRAuth auth].currentUser reauthenticateWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_ReauthenticateWithPhoneNumber");
-		dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        if(error)
-            {dsMapAddDouble(dsMapIndex,(char*)"status",400);  dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[error localizedDescription] UTF8String]);}
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex, (char*)"value", (char*)[[YYFirebaseAuthentication SDKFirebaseAuthentication_GetUserData_From:authResult.user]UTF8String]);
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-	
-	return (double)Id;
-}
-
-+ (NSString *)randomNonce:(NSInteger)length//used only for Apple Login
-{
-  NSAssert(length > 0, @"Expected nonce to have positive length");
-  NSString *characterSet = @"0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._";
-  NSMutableString *result = [NSMutableString string];
-  NSInteger remainingLength = length;
-
-  while (remainingLength > 0) {
-    NSMutableArray *randoms = [NSMutableArray arrayWithCapacity:16];
-    for (NSInteger i = 0; i < 16; i++) {
-      uint8_t random = 0;
-      int errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random);
-      NSAssert(errorCode == errSecSuccess, @"Unable to generate nonce: OSStatus %i", errorCode);
-
-      [randoms addObject:@(random)];
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	FIRUser *currentUser = [FIRAuth auth].currentUser;
+	if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_ReauthenticateWithGameCenter" asyncId:asyncId];
+        return (double)asyncId;
     }
-
-    for (NSNumber *random in randoms) {
-      if (remainingLength == 0) {
-        break;
-      }
-
-      if (random.unsignedIntValue < characterSet.length) {
-        unichar character = [characterSet characterAtIndex:random.unsignedIntValue];
-        [result appendFormat:@"%C", character];
-        remainingLength--;
-      }
-    }
-  }
-  return result;
-}
-
--(double) SDKFirebaseAuthentication_IdTokenListener
-{
-    const int Id = [self getListenerInd];
-    
-    _listener_idToken = [[FIRAuth auth] addIDTokenDidChangeListener: ^(FIRAuth * _Nonnull auth, FIRUser * _Nullable user)
-     {
-         if(user == nil)
-         {
-             int dsMapIndex = dsMapCreate();
-             dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_IdTokenListener");
-             dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-                 dsMapAddDouble(dsMapIndex,(char*)"status",400);
-                 dsMapAddString(dsMapIndex, (char*)"value", (char*)"");
-             CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-         }
-         
-         [user getIDTokenForcingRefresh:false completion:^(NSString * _Nullable token, NSError * _Nullable error)
-          {
-              if(error == nil)
-              {
-                  int dsMapIndex = dsMapCreate();
-                  dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseAuthentication_IdTokenListener");
-                  dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-                  dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                  dsMapAddString(dsMapIndex, (char*)"value", (char*)[token UTF8String]);
-                  CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-              }
-          }];
-     }];
-	return(Id);
-}
-
--(void) SDKFirebaseAuthentication_IdTokenListener_Remove
-{
-    if(_listener_idToken != nil)
+	
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
 	{
-        [[FIRAuth auth] removeIDTokenDidChangeListener: _listener_idToken];
-        _listener_idToken = nil;
-	}
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_ReauthenticateWithGameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
 }
 
+-(double) SDKFirebaseAuthentication_LinkWithGameCenter
+{
+	long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+	FIRUser *currentUser = [FIRAuth auth].currentUser;
+	if (currentUser == nil) {
+        [self handleUserNotSignedInWithEventType:@"FirebaseAuthentication_LinkWithGameCenter" asyncId:asyncId];
+        return (double)asyncId;
+    }
+	
+	[FIRGameCenterAuthProvider getCredentialWithCompletion:^(FIRAuthCredential *credential,NSError *error)
+	{
+		if (error == nil)
+		{
+		  [[FIRAuth auth] signInWithCredential:credential completion:^(FIRAuthDataResult * _Nullable authResult, NSError * _Nullable) {
+			  [self handleAuthResultWithAuthResult:authResult error:error eventType:@"FirebaseAuthentication_LinkWithGameCenter" asyncId:asyncId];
+		  }];
+		}
+	}];
+	return (double)asyncId;
+}
 
-// function SDKFirebaseAuthentication_SignInWithProvider(provider,jsonArray_scopes)
-// function SDKFirebaseAuthentication_LinkWithProvider(provider,jsonArray_scopes)
-// function SDKFirebaseAuthentication_ReauthenticateWithProvider(provider,jsonArray_scopes)
+#pragma mark - Helper Methods
 
+- (void)handleAuthResultWithAuthResult:(FIRAuthDataResult *)authResult error:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId {
+    if (error) {
+        [self handleError:error eventType:eventType asyncId:asyncId];
+    } else {
+        [[FirebaseUtils sharedInstance] submitAsyncTask:^{
+            NSString *userData = [self getUserDataFromFirebaseUser:authResult.user];
+            NSDictionary *data = @{
+                @"listener": @(asyncId),
+                @"status": @(200),
+                @"value": userData
+            };
+            [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+        }];
+    }
+}
+
+- (void)handleTaskResultWithError:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId {
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    data[@"listener"] = @(asyncId);
+    if (error) {
+        data[@"status"] = @(400);
+        data[@"errorMessage"] = error.localizedDescription ?: @"Unknown error";
+    } else {
+        data[@"status"] = @(200);
+    }
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (void)handleUserNotSignedInWithEventType:(NSString *)eventType asyncId:(long)asyncId {
+    NSDictionary *data = @{
+        @"listener": @(asyncId),
+        @"status": @(400),
+        @"errorMessage": @"No user is currently signed in."
+    };
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (void)handleError:(NSError *)error eventType:(NSString *)eventType asyncId:(long)asyncId {
+    NSDictionary *data = @{
+        @"listener": @(asyncId),
+        @"status": @(400),
+        @"errorMessage": error.localizedDescription ?: @"Unknown error"
+    };
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (void)handleErrorWithMessage:(NSString *)message eventType:(NSString *)eventType asyncId:(long)asyncId {
+    NSDictionary *data = @{
+        @"listener": @(asyncId),
+        @"status": @(400),
+        @"errorMessage": message ?: @"Unknown error"
+    };
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (FIRAuthCredential *)getAuthCredentialFromProvider:(NSString *)token kind:(NSString *)tokenKind provider:(NSString *)provider {
+    FIRAuthCredential *authCredential = nil;
+    if ([provider isEqualToString:@"facebook.com"]) {
+        authCredential = [FIRFacebookAuthProvider credentialWithAccessToken:token];
+    } else if ([provider isEqualToString:@"google.com"]) {
+        if ([tokenKind isEqualToString:@"id_token"]) {
+            authCredential = [FIRGoogleAuthProvider credentialWithIDToken:token accessToken:@""];
+        } else if ([tokenKind isEqualToString:@"access_token"]) {
+            authCredential = [FIRGoogleAuthProvider credentialWithIDToken:@"" accessToken:token];
+        }
+    } else if ([provider isEqualToString:@"apple.com"]) {
+        NSString *rawNonce = [self randomNonce:32];
+        authCredential = [FIROAuthProvider credentialWithProviderID:@"apple.com" IDToken:token rawNonce:rawNonce];
+    }
+    // Handle other providers if needed
+    return authCredential;
+}
+
+- (NSString *)getUserDataFromFirebaseUser:(FIRUser *)user {
+    if (user == nil) {
+        return @"{}";
+    }
+    NSMutableDictionary *userDict = [NSMutableDictionary dictionary];
+    [self putIfNotNullInDictionary:userDict key:@"displayName" value:user.displayName];
+    [self putIfNotNullInDictionary:userDict key:@"email" value:user.email];
+    userDict[@"localId"] = user.uid ?: @"";
+    userDict[@"emailVerified"] = @(user.isEmailVerified);
+    [self putIfNotNullInDictionary:userDict key:@"phoneNumber" value:user.phoneNumber];
+    if (user.photoURL) {
+        userDict[@"photoUrl"] = user.photoURL.absoluteString;
+    }
+    if (user.metadata) {
+        userDict[@"lastLoginAt"] = @([user.metadata.lastSignInDate timeIntervalSince1970]);
+        userDict[@"createdAt"] = @([user.metadata.creationDate timeIntervalSince1970]);
+    }
+    NSMutableArray *providerArray = [NSMutableArray array];
+    for (id<FIRUserInfo> userInfo in user.providerData) {
+        if ([userInfo.providerID isEqualToString:@"firebase"]) {
+            continue;
+        }
+        NSMutableDictionary *providerDict = [NSMutableDictionary dictionary];
+        [self putIfNotNullInDictionary:providerDict key:@"displayName" value:userInfo.displayName];
+        [self putIfNotNullInDictionary:providerDict key:@"email" value:userInfo.email];
+        [self putIfNotNullInDictionary:providerDict key:@"phoneNumber" value:userInfo.phoneNumber];
+        if (userInfo.photoURL) {
+            providerDict[@"photoUrl"] = userInfo.photoURL.absoluteString;
+        }
+        [self putIfNotNullInDictionary:providerDict key:@"providerId" value:userInfo.providerID];
+        if (userInfo.uid) {
+            providerDict[@"rawId"] = userInfo.uid;
+            providerDict[@"federatedId"] = userInfo.uid;
+        }
+        [providerArray addObject:providerDict];
+    }
+    userDict[@"providerUserInfo"] = providerArray;
+    NSDictionary *root = @{
+        @"kind": @"identitytoolkit#GetAccountInfoResponse",
+        @"users": @[userDict]
+    };
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:root options:0 error:&error];
+    if (error) {
+        NSLog(@"Error serializing user data: %@", error.localizedDescription);
+        return @"{}";
+    }
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+- (void)putIfNotNullInDictionary:(NSMutableDictionary *)dictionary key:(NSString *)key value:(id)value {
+    if (value != nil) {
+        dictionary[key] = value;
+    }
+}
+
+- (NSString *)randomNonce:(NSInteger)length {
+    NSAssert(length > 0, @"Expected nonce to have positive length");
+    NSString *charset = @"0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._";
+    NSMutableString *result = [NSMutableString stringWithCapacity:length];
+    for (NSInteger i = 0; i < length; i++) {
+        uint32_t randomIndex = arc4random_uniform((uint32_t)charset.length);
+        unichar character = [charset characterAtIndex:randomIndex];
+        [result appendFormat:@"%C", character];
+    }
+    return result;
+}
 
 @end
 
+${YYIos_FirebaseAuthentication_Skip_End}

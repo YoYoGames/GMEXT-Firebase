@@ -1,3 +1,5 @@
+
+
 function FirebaseREST_asyncFunction_RealTime(event,obj,url,method_,header_json,body)
 {
 	var ins = instance_create_depth(0,0,0,obj);

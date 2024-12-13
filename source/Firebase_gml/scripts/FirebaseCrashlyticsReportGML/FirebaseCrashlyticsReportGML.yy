@@ -6,7 +6,7 @@
   "name":"FirebaseCrashlyticsReportGML",
   "parent":{
     "name":"Firebase Crashlytics",
-    "path":"folders/Firebase Crashlytics.yy",
+    "path":"folders/Firebase Demo/Firebase Crashlytics.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,130 +1,169 @@
-
+#import "UNUserNotificationCenterMultiplexer.h"
 #import "YYFirebaseCloudMessaging.h"
-#import <UIKit/UIKit.h>
+#import "FirebaseUtils.h"
 
-const int EVENT_OTHER_SOCIAL = 70;
-const int EVENT_OTHER_NOTIFICATION = 71;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
-
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
-
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
-
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+#define EVENT_OTHER_SOCIAL 70
+#define EVENT_OTHER_NOTIFICATION 71
 
 @implementation YYFirebaseCloudMessaging
-   
-	-(id) init
-	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-			
-			[FIRMessaging messaging].delegate = self;
-			
-			return self;
+
+- (instancetype)init {
+    self = [super init];
+    return self;
+}
+
+- (void)FirebaseCloudMessaging_RequestPermission {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+
+    [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined) {
+            // Request authorization
+            [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge)
+                                  completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                if (granted) {
+                    // Register for remote notifications
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[UIApplication sharedApplication] registerForRemoteNotifications];
+                    });
+                } else {
+                    // Handle error or inform the user
+                    NSLog(@"Notification permission not granted: %@", error.localizedDescription);
+                }
+            }];
+        } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
+            // Already authorized, register for remote notifications
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication] registerForRemoteNotifications];
+            });
+        } else {
+            // Authorization denied, handle accordingly
+            NSLog(@"Notification permission denied");
+        }
+    }];
+}
+
+- (void)FirebaseCloudMessaging_GetToken {
+    [[FIRMessaging messaging] tokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error) {
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+		data[@"success"] = @(error == nil);
+		if (error == nil) {
+			data[@"value"] = token;
 		}
-	}
-	
-	- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken
-	{
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseMessaging_OnNewToken");
-		if(fcmToken != nil)
-			dsMapAddString(dsMapIndex, (char*)"value",(char*)[fcmToken UTF8String]);
-		createSocialAsyncEventWithDSMap(dsMapIndex);
-	}
-	
-	-(void) FirebaseCloudMessaging_GetToken
-	{
-		[[FIRMessaging messaging] tokenWithCompletion:^(NSString * _Nullable token, NSError * _Nullable error) 
-		{
-			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_GetToken");
-			if(error == nil)
-			{
-				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-				dsMapAddString(dsMapIndex, (char*)"value",(char*)[token UTF8String]);
-			}
-			else
-				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-		}];
-	}
-		
-	-(void) FirebaseCloudMessaging_SubscribeToTopic:(NSString*) Topic
-	{
-		[[FIRMessaging messaging] subscribeToTopic:Topic completion:^(NSError * _Nullable error)
-		{
-			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_SubscribeToTopic");
-            dsMapAddString(dsMapIndex, (char*)"topic",(char*)[Topic UTF8String]);
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_GetToken" data:data];
+    }];
+}
 
-			if(error == nil)
-				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-			else
-				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-		}];		
-	}
-	
-	-(void) FirebaseCloudMessaging_UnsubscribeFromTopic:(NSString*) Topic
-	{
-		[[FIRMessaging messaging] unsubscribeFromTopic: Topic completion:^(NSError * _Nullable error) 
-		{
-			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex, (char*)"type",(char*)"FirebaseCloudMessaging_UnsubscribeFromTopic");
-            dsMapAddString(dsMapIndex, (char*)"topic",(char*)[Topic UTF8String]);
+- (void)FirebaseCloudMessaging_SubscribeToTopic:(NSString *)topic {
+    [[FIRMessaging messaging] subscribeToTopic:topic completion:^(NSError * _Nullable error) {
+        NSMutableDictionary *data = [NSMutableDictionary dictionary];
+		data[@"success"] = @(error == nil);
+		data[@"topic"] = topic;
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_SubscribeToTopic" data:data];
+    }];
+}
 
-			if(error == nil)
-				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-			else
-				dsMapAddDouble(dsMapIndex,(char*) "success",0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-		}];
-	}
+- (void)FirebaseCloudMessaging_UnsubscribeFromTopic:(NSString *)topic {
+    [[FIRMessaging messaging] unsubscribeFromTopic:topic completion:^(NSError * _Nullable error) {
+		NSMutableDictionary *data = [NSMutableDictionary dictionary];
+		data[@"success"] = @(error == nil);
+		data[@"topic"] = topic;
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_UnsubscribeFromTopic" data:data];
+    }];
+}
 
-	-(double) FirebaseCloudMessaging_IsAutoInitEnabled
-	{
-		if([FIRMessaging messaging].autoInitEnabled)
-			return 1.0;
-		else
-			return 0.0;
-	}
-	
-	-(void) FirebaseCloudMessaging_SetAutoInitEnabled:(double) eneable
-	{
-		[FIRMessaging messaging].autoInitEnabled = eneable >= 0.5;
-	}
-	
-	-(void) FirebaseCloudMessaging_DeleteToken
-	{
-		[[FIRMessaging messaging] deleteTokenWithCompletion:^(NSError * _Nullable error) 
-		{
-			int dsMapIndex = dsMapCreate();
-			dsMapAddString(dsMapIndex,(char*) "type",(char*)"FirebaseCloudMessaging_DeleteToken");
-			if(error == nil)
-				dsMapAddDouble(dsMapIndex, (char*)"success",1.0);
-			else
-				dsMapAddDouble(dsMapIndex, (char*)"success",0.0);
-			createSocialAsyncEventWithDSMap(dsMapIndex);
-		}];
-	}
-	
+- (double)FirebaseCloudMessaging_IsAutoInitEnabled {
+    return [FIRMessaging messaging].autoInitEnabled ? 1.0 : 0.0;
+}
+
+- (void)FirebaseCloudMessaging_SetAutoInitEnabled:(double)enable {
+    [FIRMessaging messaging].autoInitEnabled = enable > 0.5 ? YES : NO;
+}
+
+- (void)FirebaseCloudMessaging_DeleteToken {
+    [[FIRMessaging messaging] deleteTokenWithCompletion:^(NSError * _Nullable error) {
+		NSMutableDictionary *data = [NSMutableDictionary dictionary];
+		data[@"success"] = @(error == nil);
+		[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_DeleteToken" data:data];
+    }];
+}
+
+#pragma mark - Selectors
+
+- (void)onLaunch:(NSDictionary *)launchOptions {
+
+	NSLog(@"YYFirebaseCloudMessaging onLaunch:");
+
+    // Set delegates
+    [FIRMessaging messaging].delegate = self;
+
+	// Register with the UNUserNotificationCenter multiplexer
+	UNUserNotificationCenterMultiplexer *multiplexer = [UNUserNotificationCenterMultiplexer sharedInstance];
+    [multiplexer registerDelegate:self];
+
+    // Request notification permissions
+    [self FirebaseCloudMessaging_RequestPermission];
+
+    // Handle any pending notifications using launchOptions
+    if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
+        NSDictionary *notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        [self handleIncomingMessage:notification];
+    }
+}
+
+#pragma mark - FIRMessagingDelegate
+
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+	NSMutableDictionary *data = [NSMutableDictionary dictionary];
+	data[@"value"] = fcmToken;
+	[FirebaseUtils sendSocialAsyncEvent:@"FirebaseMessaging_OnNewToken" data:data];
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+
+// Handle notifications when the app is in the foreground
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center 
+		willPresentNotification:(UNNotification *)notification 
+        withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+
+    UNNotificationTrigger *trigger = notification.request.trigger;
+    
+	NSLog(@"YYFirebaseCloudMessaging: willPresentNotification");
+
+    // This is NOT a remote notification? Ignore...
+    if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        return;
+    }
+
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    [self handleIncomingMessage:userInfo];
+
+    // Decide whether to show the notification when the app is in foreground
+    completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionBadge);
+}
+
+// Handle notifications when the user interacts with them (background or terminated state)
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center 
+		didReceiveNotificationResponse:(UNNotificationResponse *)response 
+        withCompletionHandler:(void (^)(void))completionHandler {
+
+    UNNotification *notification = response.notification;
+    UNNotificationTrigger *trigger = notification.request.trigger;
+    
+	NSLog(@"YYFirebaseCloudMessaging: didReceiveNotificationResponse");
+
+    // This is NOT a remote notification? Ignore...
+    if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        return;
+    }
+
+    NSDictionary *userInfo = response.notification.request.content.userInfo;
+    [self handleIncomingMessage:userInfo];
+
+    completionHandler();
+}
+
+- (void)handleIncomingMessage:(NSDictionary *)userInfo {
+	[FirebaseUtils sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:userInfo];
+}
+
 @end
-

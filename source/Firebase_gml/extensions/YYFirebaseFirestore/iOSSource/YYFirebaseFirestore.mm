@@ -1,532 +1,532 @@
+${YYIos_FirebaseFirestore_Skip_Start}
 
 #import "YYFirebaseFirestore.h"
-#import <UIKit/UIKit.h>
+#import "FirebaseUtils.h"
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
+@interface YYFirebaseFirestore ()
 
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, id<FIRListenerRegistration>> *listenerMap;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSString *> *pathMap;
 
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
+// Define action constants
+typedef NS_ENUM(NSInteger, FirestoreAction) {
+    ACTION_ADD = 0,
+    ACTION_SET,
+    ACTION_UPDATE,
+    ACTION_READ,
+    ACTION_LISTENER,
+    ACTION_DELETE,
+    ACTION_QUERY,
+    ACTION_LISTENER_REMOVE,
+    ACTION_LISTENER_REMOVE_ALL
+};
 
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+typedef NS_ENUM(NSInteger, QueryFilter) {
+    QUERY_FILTER_LT = 0,
+    QUERY_FILTER_LT_EQ,
+    QUERY_FILTER_GT,
+    QUERY_FILTER_GT_EQ,
+    QUERY_FILTER_EQ,
+    QUERY_FILTER_NEQ
+};
+
+typedef NS_ENUM(NSInteger, QuerySort) {
+    QUERY_SORT_ASCN = 0,
+    QUERY_SORT_DESC
+};
+
+// Methods
+- (void)documentSet:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)documentUpdate:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)documentGet:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)documentDelete:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)documentListen:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+
+- (void)collectionAdd:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)collectionGet:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)collectionQuery:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)collectionListen:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+
+- (void)listenerRemove:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)listenerRemoveAll:(long)asyncId;
+
+- (BOOL)validatePath:(NSString *)path eventType:(NSString *)eventType asyncId:(long)asyncId;
+- (void)sendFirestoreEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status extraData:(nullable NSDictionary *)extraData;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception;
+- (int)getStatusFromError:(NSError *)error;
+- (NSDictionary *)convertQuerySnapshotToDictionary:(FIRQuerySnapshot *)querySnapshot;
+
+@end
 
 @implementation YYFirebaseFirestore
 
-	-(id) init
-	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-				
-			return self;
-		}
-	}
-
-    -(void) Init
-    {
-		//Start point of index
-		//Autentication 5000
-		//storage 6000
-		//Firestore 7000
-		//RealTime 10000
-		Firestore_indMap = 7000;
-	
-        Firestore_ListenerMap = [[NSMutableDictionary alloc]init];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        // Initialize dictionaries
+        self.listenerMap = [NSMutableDictionary dictionary];
+        self.pathMap = [NSMutableDictionary dictionary];
     }
+    return self;
+}
 
-	-(double) FirebaseFirestore_SDK:(NSString*) fluent_json
-	{
-        NSDictionary *fluent_obj = [YYFirebaseFirestore json2dic:fluent_json];
+#pragma mark - Public API Method
+
+- (double)FirebaseFirestore_SDK:(NSString *)fluentJson {
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
+    
+    [[FirebaseUtils sharedInstance] submitAsyncTask:^{
+        NSError *jsonError;
+        NSDictionary *fluentObj = [NSJSONSerialization JSONObjectWithData:[fluentJson dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&jsonError];
         
-        NSString *action = [fluent_obj valueForKey:@"_action"];
-        double isDocument = [[fluent_obj valueForKey:@"_isDocument"] doubleValue];
-
-		if([action isEqualToString:@"Set"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_set_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_add_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Update"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_update_:fluent_obj];
-			else
-				NSLog(@"Firestore: You can't update a Collection");
-		}
-		else if([action isEqualToString:@"Read"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_get_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_get_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Listener"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_listener_:fluent_obj];
-			else
-				return [self Firebase_Firestore_collection_listener_:fluent_obj];
-		}
-		else if([action isEqualToString:@"Delete"])
-		{
-			if(isDocument >= 0.5)
-				return [self Firebase_Firestore_document_delete_:fluent_obj];
-			else
-				NSLog(@"Firestore: You can't delete a Collection");
-		}
-		else if([action isEqualToString:@"Query"])
-		{
-			if(isDocument < 0.5)
-				return [self Firebase_Firestore_collection_query_:fluent_obj];
-			else
-				NSLog(@"Firestore:You can Query collecctions");
-		}
-		else if([action isEqualToString:@"ListenerRemove"])
-            [self Firebase_Firestore_listener_remove_:fluent_obj];
-        else if([action isEqualToString:@"ListenerRemoveAll"])
-            [self Firebase_Firestore_listener_removeAll];
-		
-		return 0.0;
-	}
-
--(double) Firestore_getListenerInd
-{
-    Firestore_indMap ++;
-    return Firestore_indMap;
-}
-
--(void) Firestore_listenerToMaps:(id<FIRListenerRegistration>) listener ind: (int) ind
-{
-    [Firestore_ListenerMap setValue:listener forKey:[NSString stringWithFormat:@"%d",ind]];
-}
-
--(NSDictionary*) jsonToDic:(NSString*) json
-{
-    NSError *jsonError;
-    NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dicValues = [NSJSONSerialization JSONObjectWithData:objectData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&jsonError];
-    return dicValues;
-}
-
--(NSString*) dicToJSON:(NSDictionary*) dic
-{
-    NSError *err;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:0 error:&err];
-    NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    return jsonStr;
-}
-
--(double) Firebase_Firestore_collection_add_:(NSDictionary*)fluent_obj
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]] addDocumentWithData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Add");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self AddStatusToCallback:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_collection_get_:(NSDictionary*)fluent_obj
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]] getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot,
-                                 NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Read");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        if(error)
-            [self AddStatusToCallback:dsMapIndex error:error];
-        else
-        {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
+        if (jsonError || ![fluentObj isKindOfClass:[NSDictionary class]]) {
+            [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"Invalid JSON input."];
+            return;
         }
-
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+        
+        NSNumber *actionNumber = fluentObj[@"action"];
+        if (!actionNumber || ![actionNumber isKindOfClass:[NSNumber class]]) {
+            [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"Action not specified in JSON."];
+            return;
+        }
+        FirestoreAction action = (FirestoreAction)[actionNumber integerValue];
+        
+        BOOL isDocument = [fluentObj[@"isDocument"] boolValue];
+        
+        switch (action) {
+            case ACTION_ADD:
+                if (isDocument) {
+                    [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"You can't add to a Document."];
+                } else {
+                    [self collectionAdd:asyncId fluentObj:fluentObj];
+                }
+                break;
+            case ACTION_SET:
+                if (isDocument) {
+                    [self documentSet:asyncId fluentObj:fluentObj];
+                } else {
+                    [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"You can't set a Collection."];
+                }
+                break;
+            case ACTION_UPDATE:
+                if (isDocument) {
+                    [self documentUpdate:asyncId fluentObj:fluentObj];
+                } else {
+                    [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"You can't update a Collection."];
+                }
+                break;
+            case ACTION_READ:
+                if (isDocument) {
+                    [self documentGet:asyncId fluentObj:fluentObj];
+                } else {
+                    [self collectionGet:asyncId fluentObj:fluentObj];
+                }
+                break;
+            case ACTION_LISTENER:
+                if (isDocument) {
+                    [self documentListen:asyncId fluentObj:fluentObj];
+                } else {
+                    [self collectionListen:asyncId fluentObj:fluentObj];
+                }
+                break;
+            case ACTION_DELETE:
+                if (isDocument) {
+                    [self documentDelete:asyncId fluentObj:fluentObj];
+                } else {
+                    [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"You can't delete a Collection."];
+                }
+                break;
+            case ACTION_QUERY:
+                if (isDocument) {
+                    [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"You can't Query documents."];
+                } else {
+                    [self collectionQuery:asyncId fluentObj:fluentObj];
+                }
+                break;
+            case ACTION_LISTENER_REMOVE:
+                [self listenerRemove:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTENER_REMOVE_ALL:
+                [self listenerRemoveAll:asyncId];
+                break;
+            default:
+                [self sendErrorEvent:@"FirebaseFirestore_SDK" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Unknown action with code: %ld", (long)action]];
+                break;
+        }
+    } completion:^(NSError * _Nullable error) {
+        if (error != nil) {
+            [self sendErrorEvent: @"FirebaseFirestore_SDK" asyncId:asyncId path:nil exception:error];
+        }
     }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_collection_listener_:(NSDictionary*)fluent_obj
-{
-    int listenerInd = [self Firestore_getListenerInd];
     
-    id<FIRListenerRegistration> ID = [[[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]]
-    addSnapshotListener:^(FIRQuerySnapshot *snapshot, NSError *error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Listener");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        if(error)
-            [self AddStatusToCallback:dsMapIndex error:error];
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
-        }
-
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    [self Firestore_listenerToMaps:ID ind:listenerInd];
-    return listenerInd;
+    return (double)asyncId;
 }
 
--(double) Firebase_Firestore_collection_query_:(NSDictionary*)fluent_obj
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    FIRQuery *query = [[FIRFirestore firestore] collectionWithPath:[fluent_obj valueForKey:@"_path"]];
-    
-    if([fluent_obj valueForKey:@"_operations"] != [NSNull null])
-    {
-        NSArray *array = [fluent_obj valueForKey:@"_operations"];
-        for(int a = 0 ; a < [array count] ; a ++)
-        {
-            NSDictionary *dic = array[a];
-            NSString* path = [dic valueForKey:@"path"];
-            NSString* where_op = [dic valueForKey:@"operation"];
-            id value = [dic valueForKey:@"value"];
-            if([where_op isEqualToString:@"EQUAL"])
-                    query = [query queryWhereField:path isEqualTo:value];
-            if([where_op isEqualToString:@"GREATER_THAN_OR_EQUAL"])
-                    query = [query queryWhereField:path isGreaterThanOrEqualTo:value];
-            if([where_op isEqualToString:@"GREATER_THAN"])
-                    query = [query queryWhereField:path isGreaterThan:value];
-            if([where_op isEqualToString:@"LESS_THAN_OR_EQUAL"])
-                    query = [query queryWhereField:path isLessThanOrEqualTo:value];
-            if([where_op isEqualToString:@"LESS_THAN"])
-                    query = [query queryWhereField:path isLessThan:value];
-        }
+#pragma mark - Document Methods
+
+- (void)documentSet:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Document_Set" asyncId:asyncId]) {
+        return;
     }
     
-    if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null])
-    if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null] && [fluent_obj valueForKey:@"_orderBy_field"] != [NSNull null])
-    {
-		if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"ASCENDING"])
-			query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:FALSE];
-		if([[fluent_obj valueForKey:@"_orderBy_direction"] isEqualToString:@"DESCENDING"])
-			query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"] descending:TRUE];
+    NSDictionary *value = fluentObj[@"value"];
+    if (!value || ![value isKindOfClass:[NSDictionary class]]) {
+        [self sendErrorEvent:@"FirebaseFirestore_Document_Set" asyncId:asyncId path:path status:400 errorMessage:@"Invalid value parameter."];
+        return;
     }
-	else
-		query = [query queryOrderedByField:[fluent_obj valueForKey:@"_orderBy_field"]];
-	
-	if([fluent_obj valueForKey:@"_orderBy_direction"] != [NSNull null])
     
-    if([fluent_obj valueForKey:@"_start"] != [NSNull null])
-        query = [query queryStartingAtValues:@[[fluent_obj valueForKey:@"_start"]]];
-    
-    if([fluent_obj valueForKey:@"_end"] != [NSNull null])
-        query = [query queryEndingAtValues:@[[fluent_obj valueForKey:@"_start"]]];
-    
-    if([fluent_obj valueForKey:@"_limit"] != [NSNull null])
-        query = [query queryLimitedTo: [[fluent_obj valueForKey:@"_limit"] intValue]];
-    
-    [query getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot,
-                                 NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Collection_Query");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        if(error)
-            [self AddStatusToCallback:dsMapIndex error:error];
-        else
-        {
-            dsMapAddDouble(dsMapIndex,(char*)"status",200);
-            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRQuerySnapshotToJSON:snapshot] UTF8String]);
+    FIRDocumentReference *docRef = [[FIRFirestore firestore] documentWithPath:path];
+    [docRef setData:value completion:^(NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Set" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendFirestoreEvent:@"FirebaseFirestore_Document_Set" asyncId:asyncId path:path status:200 extraData:nil];
         }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
     }];
-    return listenerInd;
 }
 
-
-//https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/DocumentReference
--(double) Firebase_Firestore_document_set_:(NSDictionary*)fluent_obj//:(NSString*) jsonPath value: (NSString*) [fluent_obj valueForKey:@"_value"];
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] setData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Set");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self AddStatusToCallback:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_document_update_:(NSDictionary*)fluent_obj//:(NSString*) jsonPath value: (NSString*) [fluent_obj valueForKey:@"_value"];
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] updateData:[self jsonToDic:[fluent_obj valueForKey:@"_value"]] completion:^(NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Update");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self AddStatusToCallback:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_document_get_:(NSDictionary*)fluent_obj//:(NSString*) jsonPath
-{
-    int listenerInd = [self Firestore_getListenerInd];
+- (void)documentUpdate:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Document_Update" asyncId:asyncId]) {
+        return;
+    }
     
-    [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] getDocumentWithCompletion:^(FIRDocumentSnapshot * _Nullable snapshot, NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Read");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        if(error)
-            [self AddStatusToCallback:dsMapIndex error:error];
-        else
-        {
-            if(![snapshot exists])
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",404);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"Some requested document was not found.");
+    NSDictionary *value = fluentObj[@"value"];
+    if (!value || ![value isKindOfClass:[NSDictionary class]]) {
+        [self sendErrorEvent:@"FirebaseFirestore_Document_Update" asyncId:asyncId path:path status:400 errorMessage:@"Invalid value parameter."];
+        return;
+    }
+    
+    FIRDocumentReference *docRef = [[FIRFirestore firestore] documentWithPath:path];
+    [docRef updateData:value completion:^(NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Update" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendFirestoreEvent:@"FirebaseFirestore_Document_Update" asyncId:asyncId path:path status:200 extraData:nil];
+        }
+    }];
+}
+
+- (void)documentGet:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Document_Read" asyncId:asyncId]) {
+        return;
+    }
+    
+    FIRDocumentReference *docRef = [[FIRFirestore firestore] documentWithPath:path];
+    [docRef getDocumentWithCompletion:^(FIRDocumentSnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Read" asyncId:asyncId path:path exception:error];
+        } else if (snapshot.exists) {
+            NSDictionary *extraData = @{@"value": snapshot.data};
+            [self sendFirestoreEvent:@"FirebaseFirestore_Document_Read" asyncId:asyncId path:path status:200 extraData:extraData];
+        } else {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Read" asyncId:asyncId path:path status:404 errorMessage:@"Document not found."];
+        }
+    }];
+}
+
+- (void)documentDelete:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Document_Delete" asyncId:asyncId]) {
+        return;
+    }
+    
+    FIRDocumentReference *docRef = [[FIRFirestore firestore] documentWithPath:path];
+    [docRef deleteDocumentWithCompletion:^(NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Delete" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendFirestoreEvent:@"FirebaseFirestore_Document_Delete" asyncId:asyncId path:path status:200 extraData:nil];
+        }
+    }];
+}
+
+- (void)documentListen:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Document_Listener" asyncId:asyncId]) {
+        return;
+    }
+    
+    if ([self.pathMap.allValues containsObject:path]) {
+        [self sendErrorEvent:@"FirebaseFirestore_Document_Listener" asyncId:asyncId path:path status:400 errorMessage:@"Duplicate listener for specified path."];
+        return;
+    }
+    
+    FIRDocumentReference *docRef = [[FIRFirestore firestore] documentWithPath:path];
+    id<FIRListenerRegistration> listenerRegistration = [docRef addSnapshotListener:^(FIRDocumentSnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Listener" asyncId:asyncId path:path exception:error];
+        } else if (snapshot.exists) {
+            NSDictionary *extraData = @{@"value": snapshot.data};
+            [self sendFirestoreEvent:@"FirebaseFirestore_Document_Listener" asyncId:asyncId path:path status:200 extraData:extraData];
+        } else {
+            [self sendErrorEvent:@"FirebaseFirestore_Document_Listener" asyncId:asyncId path:path status:404 errorMessage:@"Document not found."];
+        }
+    }];
+    
+    NSNumber *asyncIdNumber = @(asyncId);
+    self.listenerMap[asyncIdNumber] = listenerRegistration;
+    self.pathMap[asyncIdNumber] = path;
+}
+
+#pragma mark - Collection Methods
+
+- (void)collectionAdd:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Collection_Add" asyncId:asyncId]) {
+        return;
+    }
+    
+    NSDictionary *value = fluentObj[@"value"];
+    if (!value || ![value isKindOfClass:[NSDictionary class]]) {
+        [self sendErrorEvent:@"FirebaseFirestore_Collection_Add" asyncId:asyncId path:path status:400 errorMessage:@"Invalid value parameter."];
+        return;
+    }
+    
+    FIRCollectionReference *collectionRef = [[FIRFirestore firestore] collectionWithPath:path];
+    [collectionRef addDocumentWithData:value completion:^(NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Collection_Add" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendFirestoreEvent:@"FirebaseFirestore_Collection_Add" asyncId:asyncId path:path status:200 extraData:nil];
+        }
+    }];
+}
+
+- (void)collectionGet:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Collection_Read" asyncId:asyncId]) {
+        return;
+    }
+    
+    FIRCollectionReference *collectionRef = [[FIRFirestore firestore] collectionWithPath:path];
+    [collectionRef getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Collection_Read" asyncId:asyncId path:path exception:error];
+        } else {
+            NSDictionary *extraData = @{@"value": [self convertQuerySnapshotToDictionary:snapshot]};
+            [self sendFirestoreEvent:@"FirebaseFirestore_Collection_Read" asyncId:asyncId path:path status:200 extraData:extraData];
+        }
+    }];
+}
+
+- (void)collectionQuery:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Collection_Query" asyncId:asyncId]) {
+        return;
+    }
+    
+    FIRQuery *query = [[FIRFirestore firestore] collectionWithPath:path];
+    
+    NSArray *operations = fluentObj[@"operations"];
+    if ([operations isKindOfClass:[NSArray class]]) {
+        for (NSDictionary *operation in operations) {
+            NSString *fieldPath = operation[@"path"];
+            NSNumber *operationType = operation[@"operation"];
+            id value = operation[@"value"];
+            if (!fieldPath || !operationType || !value) continue;
+
+            QueryFilter op = (QueryFilter)[operationType integerValue];
+            
+            switch(op) {
+                case QUERY_FILTER_EQ:
+                    query = [query queryWhereField:fieldPath isEqualTo:value];
+                    break;
+                case QUERY_FILTER_NEQ:
+                    query = [query queryWhereField:fieldPath isNotEqualTo:value];
+                    break;
+                case QUERY_FILTER_GT_EQ:
+                    query = [query queryWhereField:fieldPath isGreaterThanOrEqualTo:value];
+                    break;
+                case QUERY_FILTER_GT:
+                    query = [query queryWhereField:fieldPath isGreaterThan:value];
+                    break;
+                case QUERY_FILTER_LT:
+                    query = [query queryWhereField:fieldPath isLessThan:value];
+                    break;
+                case QUERY_FILTER_LT_EQ:
+                    query = [query queryWhereField:fieldPath isLessThanOrEqualTo:value];
+                    break;
             }
-            else
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRDocumentSnapshotToJSON:snapshot] UTF8String]);
-            }
+
         }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_document_delete_:(NSDictionary*)fluent_obj//:(NSString*) jsonPath
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] deleteDocumentWithCompletion:^(NSError * _Nullable error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Delete");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self AddStatusToCallback:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return listenerInd;
-}
-
--(double) Firebase_Firestore_document_listener_:(NSDictionary*)fluent_obj//:(NSString*) jsonPath
-{
-    int listenerInd = [self Firestore_getListenerInd];
-    id<FIRListenerRegistration> ID = [[[FIRFirestore firestore] documentWithPath:[fluent_obj valueForKey:@"_path"]] addSnapshotListener:^(FIRDocumentSnapshot *snapshot, NSError *error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseFirestore_Document_Listener");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",listenerInd);
-        if(error)
-            [self AddStatusToCallback:dsMapIndex error:error];
-        else
-        {
-            if(![snapshot exists])
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",404);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"Some requested document was not found.");
-            }
-            else
-            {
-                dsMapAddDouble(dsMapIndex,(char*)"status",200);
-                dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseFirestore FIRDocumentSnapshotToJSON:snapshot] UTF8String]);
-            }
-        }
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    [self Firestore_listenerToMaps:ID ind:listenerInd];
-    return listenerInd;
-}
-
--(void) Firebase_Firestore_listener_remove_:(NSDictionary*)fluent_obj//:(double) ind
-{
-    int ind = [[fluent_obj valueForKey:@"_value"] doubleValue];
-    id<FIRListenerRegistration> ID = [Firestore_ListenerMap valueForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-    [ID remove];
-    [Firestore_ListenerMap removeObjectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-}
-
--(void) Firebase_Firestore_listener_removeAll
-{
-    NSMutableArray *array = [NSMutableArray new];
-    for(NSString* key in Firestore_ListenerMap)
-        [array addObject:key];
+    }
     
-    for(NSString* key in array)
-    {
-        id<FIRListenerRegistration> ID = [Firestore_ListenerMap valueForKey:key];
-        [ID remove];
-        [Firestore_ListenerMap removeObjectForKey:key];
-    }
-}
-
-+(NSString*) FIRQuerySnapshotToJSON:(FIRQuerySnapshot*)snapshot
-{
-    NSMutableDictionary *mutList = [NSMutableDictionary new];
-    NSArray *array = snapshot.documents;
-    for(int a = 0 ; a < array.count ; a ++)
-    {
-        [mutList setObject:[array[a] data] forKey:[array[a] documentID]];
-    }
-    return [YYFirebaseFirestore toJSON:mutList];
-}
-
-+(NSString*) FIRDocumentSnapshotToJSON:(FIRDocumentSnapshot*) snapshot
-{
-    if(snapshot == nil)
-        return @"{}";
-    if([snapshot data] == nil)
-        return @"{}";
-    
-    return [YYFirebaseFirestore toJSON:[snapshot data]];
-}
-
-+(NSDictionary*) json2dic:(NSString*) json
-{
-    NSError *jsonError = nil;
-    NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&jsonError];
-    if(jsonError == nil)
-        return dic;
-    return nil;
-}
-
-+(NSString*) toJSON:(id) obj
-{
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj
-                                                           options:0//NSJSONWritingPrettyPrinted
-                                                             error:&error];
-    if(error == nil)
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    else
-        return @"{}";
-}
-
-enum Error {
-  kErrorOk = 0,
-  kErrorNone = 0,
-  kErrorCancelled = 1,
-  kErrorUnknown = 2,
-  kErrorInvalidArgument = 3,
-  kErrorDeadlineExceeded = 4,
-  kErrorNotFound = 5,
-  kErrorAlreadyExists = 6,
-  kErrorPermissionDenied = 7,
-  kErrorResourceExhausted = 8,
-  kErrorFailedPrecondition = 9,
-  kErrorAborted = 10,
-  kErrorOutOfRange = 11,
-  kErrorUnimplemented = 12,
-  kErrorInternal = 13,
-  kErrorUnavailable = 14,
-  kErrorDataLoss = 15,
-  kErrorUnauthenticated = 16
-};
-
--(void) AddStatusToCallback:(int) dsMapIndex error:(NSError*) e
-{
-    //i found this code in Firestore/core/src/util/status.cc
-    if(e)
-    {
-        NSLog(@"Kaguva Error: %@",[e localizedDescription]);
-        dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)[[e localizedDescription] UTF8String]);
-        switch(e.code)
+    NSString *orderBy = fluentObj[@"orderBy"];
+    if ([orderBy isKindOfClass:[NSString class]]) {
+        NSNumber *sort = fluentObj[@"sort"];
+        if (sort && [sort isKindOfClass:[NSNumber class]])
         {
-          case Error::kErrorCancelled:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnknown:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorInvalidArgument:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorDeadlineExceeded:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorNotFound:
-                dsMapAddDouble(dsMapIndex,(char*)"status",404);
-            break;
-          case Error::kErrorAlreadyExists:
-                dsMapAddDouble(dsMapIndex,(char*)"status",409);
-            break;
-          case Error::kErrorPermissionDenied:
-                dsMapAddDouble(dsMapIndex,(char*)"status",403);
-            break;
-          case Error::kErrorUnauthenticated:
-                dsMapAddDouble(dsMapIndex,(char*)"status",401);
-            break;
-          case Error::kErrorResourceExhausted:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorFailedPrecondition:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorAborted:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorOutOfRange:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnimplemented:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorInternal:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          case Error::kErrorUnavailable:
-                dsMapAddDouble(dsMapIndex,(char*)"status",503);
-            break;
-          case Error::kErrorDataLoss:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
-          default:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-            break;
+            QuerySort querySort = (QuerySort)[sort integerValue];
+            if (querySort == QUERY_SORT_ASCN) {
+                query = [query queryOrderedByField:orderBy];
+            } else if (querySort == QUERY_SORT_DESC) {
+                query = [query queryOrderedByField:orderBy descending:YES];
+            }
+        } else {
+            query = [query queryOrderedByField:orderBy];
         }
     }
-    else
-        dsMapAddDouble(dsMapIndex,(char*)"status",200);
+    
+    NSNumber *limitToFirst = fluentObj[@"limitToFirst"];
+    if ([limitToFirst isKindOfClass:[NSNumber class]] && [limitToFirst integerValue] > 0) {
+        query = [query queryLimitedTo:[limitToFirst integerValue]];
+    }
+
+    NSNumber *limitToLast = fluentObj[@"limitToLast"];
+    if ([limitToLast isKindOfClass:[NSNumber class]] && [limitToLast integerValue] > 0) {
+        query = [query queryLimitedToLast:[limitToLast integerValue]];
+    }
+    
+    [query getDocumentsWithCompletion:^(FIRQuerySnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Collection_Query" asyncId:asyncId path:path exception:error];
+        } else {
+            NSDictionary *extraData = @{@"value": [self convertQuerySnapshotToDictionary:snapshot]};
+            [self sendFirestoreEvent:@"FirebaseFirestore_Collection_Query" asyncId:asyncId path:path status:200 extraData:extraData];
+        }
+    }];
+}
+
+- (void)collectionListen:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    if (![self validatePath:path eventType:@"FirebaseFirestore_Collection_Listener" asyncId:asyncId]) {
+        return;
+    }
+    
+    if ([self.pathMap.allValues containsObject:path]) {
+        [self sendErrorEvent:@"FirebaseFirestore_Collection_Listener" asyncId:asyncId path:path status:400 errorMessage:@"Duplicate listener for specified path."];
+        return;
+    }
+    
+    FIRCollectionReference *collectionRef = [[FIRFirestore firestore] collectionWithPath:path];
+    id<FIRListenerRegistration> listenerRegistration = [collectionRef addSnapshotListener:^(FIRQuerySnapshot * _Nullable snapshot, NSError * _Nullable error) {
+        if (error) {
+            [self sendErrorEvent:@"FirebaseFirestore_Collection_Listener" asyncId:asyncId path:path exception:error];
+        } else {
+            NSDictionary *extraData = @{@"value": [self convertQuerySnapshotToDictionary:snapshot]};
+            [self sendFirestoreEvent:@"FirebaseFirestore_Collection_Listener" asyncId:asyncId path:path status:200 extraData:extraData];
+        }
+    }];
+    
+    NSNumber *asyncIdNumber = @(asyncId);
+    self.listenerMap[asyncIdNumber] = listenerRegistration;
+    self.pathMap[asyncIdNumber] = path;
+}
+
+#pragma mark - Listener Management
+
+- (void)listenerRemove:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSNumber *listenerIdNumber = fluentObj[@"value"];
+    if (!listenerIdNumber || ![listenerIdNumber isKindOfClass:[NSNumber class]]) {
+        [self sendErrorEvent:@"FirebaseFirestore_RemoveListener" asyncId:asyncId path:nil status:400 errorMessage:@"Unable to extract listener id."];
+        return;
+    }
+    
+    NSNumber *asyncIdNumber = listenerIdNumber;
+    id<FIRListenerRegistration> listenerRegistration = self.listenerMap[asyncIdNumber];
+    NSString *path = self.pathMap[asyncIdNumber];
+    
+    if (listenerRegistration) {
+        [listenerRegistration remove];
+        [self.listenerMap removeObjectForKey:asyncIdNumber];
+        [self.pathMap removeObjectForKey:asyncIdNumber];
+        [self sendFirestoreEvent:@"FirebaseFirestore_RemoveListener" asyncId:asyncId path:path status:200 extraData:@{@"value": asyncIdNumber}];
+    } else {
+        [self sendErrorEvent:@"FirebaseFirestore_RemoveListener" asyncId:asyncId path:nil status:400 errorMessage:[NSString stringWithFormat:@"Listener not found for ID: %@", asyncIdNumber]];
+    }
+}
+
+- (void)listenerRemoveAll:(long)asyncId {
+    NSMutableArray *removedListeners = [NSMutableArray array];
+    for (NSNumber *asyncIdNumber in self.listenerMap.allKeys) {
+        id<FIRListenerRegistration> listenerRegistration = self.listenerMap[asyncIdNumber];
+        [listenerRegistration remove];
+        [removedListeners addObject:asyncIdNumber];
+    }
+    [self.listenerMap removeAllObjects];
+    [self.pathMap removeAllObjects];
+    
+    [self sendFirestoreEvent:@"FirebaseFirestore_RemoveListeners" asyncId:asyncId path:nil status:200 extraData:@{@"values": removedListeners}];
+}
+
+#pragma mark - Helper Methods
+
+- (BOOL)validatePath:(NSString *)path eventType:(NSString *)eventType asyncId:(long)asyncId {
+    if (!path || [path isEqualToString:@""]) {
+        [self sendErrorEvent:eventType asyncId:asyncId path:nil status:400 errorMessage:@"Path parameter is missing or empty."];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)sendFirestoreEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status extraData:(nullable NSDictionary *)extraData {
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    data[@"listener"] = @(asyncId);
+    if (path) {
+        data[@"path"] = path;
+    }
+    data[@"status"] = @(status);
+    if (extraData) {
+        [data addEntriesFromDictionary:extraData];
+    }
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage {
+    NSDictionary *extraData = @{@"errorMessage": errorMessage};
+    [self sendFirestoreEvent:eventType asyncId:asyncId path:path status:status extraData:extraData];
+}
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception {
+    int status = [self getStatusFromError:exception];
+    [self sendErrorEvent:eventType asyncId:asyncId path:path status:status errorMessage:exception.localizedDescription];
+}
+
+- (int)getStatusFromError:(NSError *)error {
+    // Map Firebase Firestore errors to HTTP status codes
+    if (error) {
+        FIRFirestoreErrorCode code = (FIRFirestoreErrorCode)error.code;
+        switch (code) {
+            case FIRFirestoreErrorCodeAborted:
+            case FIRFirestoreErrorCodeCancelled:
+            case FIRFirestoreErrorCodeDataLoss:
+            case FIRFirestoreErrorCodeDeadlineExceeded:
+            case FIRFirestoreErrorCodeFailedPrecondition:
+            case FIRFirestoreErrorCodeInternal:
+            case FIRFirestoreErrorCodeOutOfRange:
+            case FIRFirestoreErrorCodeResourceExhausted:
+            case FIRFirestoreErrorCodeUnimplemented:
+            case FIRFirestoreErrorCodeUnknown:
+                return 400;
+            case FIRFirestoreErrorCodeAlreadyExists:
+                return 409;
+            case FIRFirestoreErrorCodePermissionDenied:
+                return 403;
+            case FIRFirestoreErrorCodeNotFound:
+                return 404;
+            case FIRFirestoreErrorCodeUnauthenticated:
+                return 401;
+            case FIRFirestoreErrorCodeUnavailable:
+                return 503;
+            default:
+                return 400;
+        }
+    }
+    return 400;
+}
+
+- (NSDictionary *)convertQuerySnapshotToDictionary:(FIRQuerySnapshot *)querySnapshot {
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+    for (FIRDocumentSnapshot *doc in querySnapshot.documents) {
+        result[doc.documentID] = doc.data;
+    }
+    return result;
 }
 
 @end
 
+${YYIos_FirebaseFirestore_Skip_End}

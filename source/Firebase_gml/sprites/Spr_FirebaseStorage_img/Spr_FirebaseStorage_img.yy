@@ -26,7 +26,7 @@
   "origin":0,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Firebase Storage/Sprites.yy",
+    "path":"folders/Firebase Demo/Firebase Storage/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

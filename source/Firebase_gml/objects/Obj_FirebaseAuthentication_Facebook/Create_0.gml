@@ -1,4 +1,6 @@
 
+fb_init();
+fb_logout()
 event_inherited()
 
 provider = "facebook.com"

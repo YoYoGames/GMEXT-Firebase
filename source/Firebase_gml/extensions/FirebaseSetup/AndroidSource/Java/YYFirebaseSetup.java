@@ -1,65 +1,40 @@
-
 package ${YYAndroidPackageName};
-
-import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
-
+import ${YYAndroidPackageName}.FirebaseUtils;
 import android.app.Activity;
 
 import android.util.Log;
 
-import android.os.Process;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ThreadPoolExecutor;
-import 	java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-
-import com.google.firebase.FirebaseApp;
-
 public class YYFirebaseSetup extends RunnerSocial
 {
-	private static final int EVENT_OTHER_SOCIAL = 70;
-	public static Activity activity = RunnerActivity.CurrentActivity;
+	public YYFirebaseSetup() {
+		// Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+			try {
+				// Load the FirebaseApp class dynamically
+				Class<?> firebaseAppClass = Class.forName("com.google.firebase.FirebaseApp");
 
-int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-int KEEP_ALIVE_TIME = 250;
-TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.MILLISECONDS;
-BlockingQueue<Runnable> taskQueue = new LinkedBlockingQueue<Runnable>();
-ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES,NUMBER_OF_CORES*2,KEEP_ALIVE_TIME,KEEP_ALIVE_TIME_UNIT,taskQueue,new BackgroundThreadFactory());
+				// Get the initializeApp method which takes Context and FirebaseOptions
+				java.lang.reflect.Method initializeAppMethod = firebaseAppClass.getMethod("initializeApp", android.content.Context.class);
 
-private static class BackgroundThreadFactory implements ThreadFactory 
-{
-  private static int sTag = 1;
+				// At this point, we can invoke the initializeApp method with the current activity
+				Object currentActivity = RunnerActivity.CurrentActivity; // Get current activity
+				initializeAppMethod.invoke(null, currentActivity);
 
-  @Override
-  public Thread newThread(Runnable runnable) 
-  {
-      Thread thread = new Thread(runnable);
-      thread.setName("FirebaseSetup" + sTag);
-      thread.setPriority(Process.THREAD_PRIORITY_BACKGROUND);
+				Log.i("yoyo", "Firebase initialized dynamically!");
 
-      // A exception handler is created to log the exception from threads
-      thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() 
-	  {
-          @Override
-          public void uncaughtException(Thread thread, Throwable ex) 
-		  {
-              Log.e("yoyo", thread.getName() + " encountered an error: " + ex.getMessage());
-          }
-      });
-      return thread;
-  }
-}
-
-	public YYFirebaseSetup()
-	{
-		executorService.execute(new Runnable() {
-					public void run() {
-						FirebaseApp.initializeApp(activity);
-				}
-			});
+			} catch (ClassNotFoundException e) {
+				Log.i("yoyo", "FirebaseApp class not found, Firebase SDK might not be included.");
+			} catch (NoSuchMethodException e) {
+				Log.i("yoyo", "The method to initialize FirebaseApp was not found.");
+			} catch (Exception e) {
+				Log.i("yoyo", "Error using reflection.");
+				e.printStackTrace();  // Handle other reflection exceptions
+			}
+        }, 1);
+	}
+	
+	public void SDKFirebaseSetup_Init() {
+		FirebaseUtils.getInstance().initializeAll();
 	}
 }
 

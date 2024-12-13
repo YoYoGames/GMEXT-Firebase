@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Remote Config/Objects.yy",
+    "path":"folders/Firebase Demo/Firebase Remote Config/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

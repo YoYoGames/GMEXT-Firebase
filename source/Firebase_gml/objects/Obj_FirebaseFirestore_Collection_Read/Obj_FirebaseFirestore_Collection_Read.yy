@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"CRUD",
-    "path":"folders/Firebase Firestore/Testing/CRUD.yy",
+    "path":"folders/Firebase Demo/Firebase Firestore/Objects/CRUD.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

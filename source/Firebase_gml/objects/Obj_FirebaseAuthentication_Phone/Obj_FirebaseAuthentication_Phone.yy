@@ -12,8 +12,8 @@
   "name":"Obj_FirebaseAuthentication_Phone",
   "overriddenProperties":[],
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Authentication/Testing.yy",
+    "name":"Sprites",
+    "path":"folders/Firebase Demo/Firebase Authentication/Sprites.yy",
   },
   "parentObjectId":{
     "name":"Obj_YoYo_button",

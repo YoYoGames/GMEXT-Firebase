@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"FirebaseAuthenticationUserFunctions",
   "parent":{
-    "name":"Firebase REST API Library (Don't Touch)",
-    "path":"folders/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch).yy",
+    "name":"Extensions",
+    "path":"folders/Firebase/Firebase Authentication/Extensions.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

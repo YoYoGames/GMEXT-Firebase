@@ -1,4 +1,4 @@
 
 event_inherited()
 
-text = FirebasePerformance_isPerformanceCollectionEnabled()?"Enabled":"Disabled"
+text = FirebasePerformance_isPerformanceCollectionEnabled() ? "Disable" : "Enable"

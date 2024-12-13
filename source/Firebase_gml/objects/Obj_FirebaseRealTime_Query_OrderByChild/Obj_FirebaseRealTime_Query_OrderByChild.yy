@@ -3,13 +3,14 @@
   "%Name":"Obj_FirebaseRealTime_Query_OrderByChild",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"Obj_FirebaseRealTime_Query_OrderByChild",
   "overriddenProperties":[],
   "parent":{
     "name":"Query",
-    "path":"folders/Firebase RealTime/Testing/Query.yy",
+    "path":"folders/Firebase Demo/Firebase RealTime/Testing/Query.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseRealTime_Query_options_value",

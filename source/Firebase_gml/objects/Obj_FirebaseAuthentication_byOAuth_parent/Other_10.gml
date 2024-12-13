@@ -1,8 +1,7 @@
 
-if(FirebaseAuthentication_GetUserData_raw() == "{}")
-	FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,redirect_uri)
-else
-{
+if(FirebaseAuthentication_GetUserData_raw() == "{}") {
+	FirebaseAuthentication_SignIn_OAuth(token,token_kind,provider,redirect_uri,extra_params)
+} else {
 	var reauthenticate = false
 	var array = FirebaseAuthentication_GetProviderUserInfo()
 	for(var a = 0 ; a < array_length(array) ; a ++)
@@ -13,7 +12,7 @@ else
 	}
 	
 	if(reauthenticate)
-		FirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,redirect_uri)
+		FirebaseAuthentication_ReauthenticateWithOAuth(token,token_kind,provider,redirect_uri,extra_params)
 	else
-		FirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,redirect_uri)
+		FirebaseAuthentication_LinkWithOAuthCredential(token,token_kind,provider,redirect_uri,extra_params)
 }

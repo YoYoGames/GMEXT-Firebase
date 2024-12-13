@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Authentication/Testing.yy",
+    "name":"Sprites",
+    "path":"folders/Firebase Demo/Firebase Authentication/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

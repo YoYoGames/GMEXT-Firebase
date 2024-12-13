@@ -1,8 +1,7 @@
-
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.R;
-import com.yoyogames.runner.RunnerJNILib;
+import ${YYAndroidPackageName}.FirebaseUtils;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -17,824 +16,578 @@ import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PlayGamesAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.OAuthProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-import android.content.Context;
-import android.app.Activity;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.ViewGroup;
-import android.util.Log;
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONException;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.Exception;
+import java.util.Map;
+import java.util.HashMap;
 
-public class YYFirebaseAuthentication extends RunnerSocial
-{
-	private static final int EVENT_OTHER_SOCIAL = 70;
-	public static Activity activity = RunnerActivity.CurrentActivity;
-	
-	//Start point of index
-	//Autentication 5000
-	//storage 6000
-	//Firestore 7000
-	//RealTime 10000
-	private double Auth_valueListernerInd = 5000;
-	
-	
-	private double Auth_getListenerInd()
-	{
-		Auth_valueListernerInd  ++;
-		return(Auth_valueListernerInd );
-	}
-	
-	public String SDKFirebaseAuthentication_GetUserData()
-	{
-		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-		return SDKFirebaseAuthentication_GetUserData_From(user);
-	}
-	
-	public String SDKFirebaseAuthentication_GetUserData_From(FirebaseUser user)
-	{
-		try
-		{
-			JSONObject UserMap = new JSONObject();
-			UserMap.put("displayName",user.getDisplayName());
-			UserMap.put("email",user.getEmail());
-			UserMap.put("localId",user.getUid());
-			UserMap.put("emailVerified",user.isEmailVerified()); 
-			UserMap.put("phoneNumber",user.isEmailVerified());
-			UserMap.put("photoUrl",user.getPhotoUrl());
-			UserMap.put("lastLoginAt",user.getMetadata().getCreationTimestamp());
-			UserMap.put("createdAt",user.getMetadata().getLastSignInTimestamp());
-			
-			List list = user.getProviderData();
-			JSONArray providerArray = new JSONArray();
-			for(Object obj : list) 
-			{
-				UserInfo userInfo = (UserInfo) obj;
-				if(userInfo.getProviderId().equals("firebase"))
-					continue;
-				
-				JSONObject providerObj = new JSONObject();
-				providerObj.put("displayName",userInfo.getDisplayName());
-				providerObj.put("email",userInfo.getEmail());
-				providerObj.put("phoneNumber",userInfo.getPhoneNumber());
-				providerObj.put("photoUrl",userInfo.getPhotoUrl());
-				providerObj.put("providerId",userInfo.getProviderId());
-				providerObj.put("rawId",userInfo.getUid());
-				providerObj.put("federatedId",userInfo.getUid());
-				// providerObjput("",userInfo.isEmailVerified());
-				providerArray.put(providerObj);
-			}
-			UserMap.put("providerUserInfo",providerArray);
-			
-			JSONObject root = new JSONObject();
-			root.put("kind","identitytoolkit#GetAccountInfoResponse");
-			JSONArray array = new JSONArray();
-			array.put(UserMap);
-			root.put("users",array);
-			
-			return root.toString();
-		}
-		catch(Exception e)
-		{
-			return "{}";
-		}	
-	}
-	
-	public double SDKFirebaseAuthentication_SignInWithCustomToken(String token)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().signInWithCustomToken(token).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignInWithCustomToken");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+public class YYFirebaseAuthentication extends RunnerSocial {
+
+    private FirebaseAuth authentication;
+    private FirebaseAuth.IdTokenListener idTokenListener = null;
+
+    public YYFirebaseAuthentication() {
+        // Initialize the cached instance
+        FirebaseUtils.getInstance().registerInitFunction(()-> {
+            authentication = FirebaseAuth.getInstance();
+        }, 10);
+    }
+
+    // <editor-fold desc="General API">
+
+    public String SDKFirebaseAuthentication_GetUserData() {
+        FirebaseUser user = authentication.getCurrentUser();
+        return getUserDataFromFirebaseUser(user);
+    }
+
+    public double SDKFirebaseAuthentication_SignInWithCustomToken(String token) {
+        final long asyncId = getNextAsyncId();
+
+        authentication.signInWithCustomToken(token)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_SignInWithCustomToken", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SignIn_Email(String email,String password)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{			
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_Email");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SignIn_Email(String email, String password) {
+        final long asyncId = getNextAsyncId();
+
+        authentication.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_SignIn_Email", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SignUp_Email(String email,String password)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) 
-			{			
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignUp_Email");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SignUp_Email(String email, String password) {
+        final long asyncId = getNextAsyncId();
+
+        authentication.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_SignUp_Email", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SignIn_Anonymously()
-	{
-		final double listenerInd = Auth_getListenerInd();
-        FirebaseAuth.getInstance().signInAnonymously().addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{			
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_Anonymously");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
-				}
-				else 
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SendPasswordResetEmail(String email)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth auth = FirebaseAuth.getInstance();
-		auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SendPasswordResetEmail");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });	
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ChangeEmail(String email)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangeEmail");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ChangePassword(String password)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().updatePassword(password).addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangePassword");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ChangeDisplayName(String name)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-		FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangeDisplayName");     
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				
-				if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });	
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ChangePhotoURL(String photoURL)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(photoURL)).build();
-		FirebaseAuth.getInstance().getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ChangePhotoURL");     
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				
-				if(task.isSuccessful())
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });	
-		return listenerInd;
-	}
-		
-	public double SDKFirebaseAuthentication_SendEmailVerification()
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SendEmailVerification");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_DeleteAccount()
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_DeleteAccount");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public void SDKFirebaseAuthentication_SignOut()
-	{
-		FirebaseAuth.getInstance().signOut();
-	}
-	
-	public double SDKFirebaseAuthentication_LinkWithEmailPassword(String email,String password)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		AuthCredential credential = EmailAuthProvider.getCredential(email,password);
-		FirebaseAuth.getInstance().getCurrentUser().linkWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithEmailPassword");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SignIn_Anonymously() {
+        final long asyncId = getNextAsyncId();
+
+        authentication.signInAnonymously()
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_SignIn_Anonymously", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SignIn_OAuth(String token,String token_kind,String provider,String requestUri)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		AuthCredential authCredential = getAuthCredentialFromProvider(token,token_kind,provider);
-		FirebaseAuth.getInstance().signInWithCredential(authCredential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignIn_OAuth");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
-				}
-				else 
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_LinkWithOAuthCredential(String token,String token_kind,String provider,String requestUri)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		AuthCredential authCredential = getAuthCredentialFromProvider(token,token_kind,provider);
-		FirebaseAuth.getInstance().getCurrentUser().linkWithCredential(authCredential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithOAuthCredential");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
-				}
-				else 
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public AuthCredential getAuthCredentialFromProvider(String token,String token_kind,String provider)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		AuthCredential authCredential = null;
-		switch(provider)
-		{
-			case "facebook.com":
-				authCredential = FacebookAuthProvider.getCredential(token);	
-			break;
-			
-			case "google.com":
-				if(token_kind.equals("id_token"))
-					authCredential = GoogleAuthProvider.getCredential(token,null);
-				else
-				if(token_kind.equals("access_token"))
-					authCredential = GoogleAuthProvider.getCredential(null,token);
-			break;
-			
-			case "playgames.google.com":
-				authCredential = PlayGamesAuthProvider.getCredential(token);
-			break;
-		}
-		
-		return authCredential;
-	}
-	
-	public double SDKFirebaseAuthentication_UnlinkProvider(String provider)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().unlink(provider).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{			
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_UnlinkProvider");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SendPasswordResetEmail(String email) {
+        final long asyncId = getNextAsyncId();
+
+        authentication.sendPasswordResetEmail(email)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_SendPasswordResetEmail", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_RefreshUserData()
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseAuth.getInstance().getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<Void> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_RefreshUserData");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_GetIdToken()
-	{
-		final double listenerInd = Auth_getListenerInd();
-		FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();		
-		mUser.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>()
-		{
-			public void onComplete(@NonNull Task<GetTokenResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_GetIdToken");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					String idToken = task.getResult().getToken();					
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",idToken);
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-				} 
-				else 
-				{
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value","null");
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_SignInWithPhoneNumber(String phoneNumber,String code,String sessionInfo)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		PhoneAuthCredential credential = PhoneAuthProvider.getCredential(sessionInfo, code);
-		FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_SignInWithPhoneNumber");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
-				}
-				else 
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_LinkWithPhoneNumber(String phoneNumber,String code,String sessionInfo)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		PhoneAuthCredential credential = PhoneAuthProvider.getCredential(sessionInfo, code);
-		FirebaseAuth.getInstance().getCurrentUser().linkWithCredential(credential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-			@Override
-			public void onComplete(@NonNull Task<AuthResult> task) 
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_LinkWithPhoneNumber");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-				if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
-				}
-				else 
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-			}
-		});
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ReauthenticateWithEmail(String email,String  password)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		AuthCredential credential = EmailAuthProvider.getCredential(email,password);
-		FirebaseAuth.getInstance().getCurrentUser().reauthenticateAndRetrieveData(credential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithEmail");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful())
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_ChangeEmail(String email) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ChangeEmail", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.updateEmail(email)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ChangeEmail", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ReauthenticateWithOAuth(String token,String token_kind,String provider,String requestUri)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		AuthCredential credential = getAuthCredentialFromProvider(token,token_kind,provider);
-		FirebaseAuth.getInstance().getCurrentUser().reauthenticateAndRetrieveData(credential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>()
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithOAuth");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_ChangePassword(String password) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ChangePassword", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.updatePassword(password)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ChangePassword", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ReauthenticateWithPhoneNumber(String phoneNumber,String code,String sessionInfo)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		PhoneAuthCredential credential = PhoneAuthProvider.getCredential(sessionInfo, code);
-		FirebaseAuth.getInstance().getCurrentUser().reauthenticateAndRetrieveData(credential).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_ReauthenticateWithPhoneNumber");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_ChangeDisplayName(String name) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ChangeDisplayName", asyncId);
+            return (double) asyncId;
+        }
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+            .setDisplayName(name)
+            .build();
+
+        currentUser.updateProfile(profileUpdates)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ChangeDisplayName", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		
-		return listenerInd;
-	}
-	
-	public List<String> jsonArrayString2List(String jsonArrayString)
-	{
-		try
-		{
-			JSONArray jsonArray = new JSONArray(jsonArrayString);
-			List<String> scopes = new ArrayList<>();
-			for (int i = 0; i < jsonArray.length(); i++) 
-				scopes.add(jsonArray.getString(i));
-			return scopes;
-		}
-		catch(Exception e)
-		{
-			List<String> empty = new ArrayList<>();
-			return empty;
-		}
-	}
-	
-	public double SDKFirebaseAuthentication_SignInWithProvider(String provider,String jsonArray_scopes)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		OAuthProvider.Builder auth_provider = OAuthProvider.newBuilder(provider);
-		auth_provider.setScopes(jsonArrayString2List(jsonArray_scopes));
-		
-		FirebaseAuth.getInstance().startActivityForSignInWithProvider(activity, auth_provider.build()).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_SignInWithProvider");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_ChangePhotoURL(String photoURL) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ChangePhotoURL", asyncId);
+            return (double) asyncId;
+        }
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+            .setPhotoUri(Uri.parse(photoURL))
+            .build();
+
+        currentUser.updateProfile(profileUpdates)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ChangePhotoURL", asyncId);
                 }
-				else
-				{
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_LinkWithProvider(String provider,String jsonArray_scopes)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		OAuthProvider.Builder auth_provider = OAuthProvider.newBuilder(provider);
-		auth_provider.setScopes(jsonArrayString2List(jsonArray_scopes));
-		
-		FirebaseAuth.getInstance().startActivityForSignInWithProvider(activity, auth_provider.build()).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_LinkWithProvider");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SendEmailVerification() {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_SendEmailVerification", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.sendEmailVerification()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_SendEmailVerification", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-            }
-        });
-		return listenerInd;
-	}
-	
-	public double SDKFirebaseAuthentication_ReauthenticateWithProvider(String provider,String jsonArray_scopes)
-	{
-		final double listenerInd = Auth_getListenerInd();
-		
-		OAuthProvider.Builder auth_provider = OAuthProvider.newBuilder(provider);
-		auth_provider.setScopes(jsonArrayString2List(jsonArray_scopes));
-		
-		FirebaseAuth.getInstance().getCurrentUser().startActivityForLinkWithProvider(activity, auth_provider.build()).addOnCompleteListener(activity,new OnCompleteListener<AuthResult>() 
-		{
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-			{
-				int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-				RunnerJNILib.DsMapAddString(dsMapIndex,"type","SDKFirebaseAuthentication_ReauthenticateWithProvider");
-				RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-                if(task.isSuccessful()) 
-				{
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value",SDKFirebaseAuthentication_GetUserData_From(task.getResult().getUser()));
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_DeleteAccount() {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_DeleteAccount", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.delete()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_DeleteAccount", asyncId);
                 }
-				else
-					{RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",400); RunnerJNILib.DsMapAddString(dsMapIndex,"errorMessage",task.getException().getMessage());}
-				RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
+            });
+        return (double) asyncId;
+    }
+
+    public void SDKFirebaseAuthentication_SignOut() {
+        authentication.signOut();
+    }
+
+    public double SDKFirebaseAuthentication_LinkWithEmailPassword(String email, String password) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_LinkWithEmailPassword", asyncId);
+            return (double) asyncId;
+        }
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        currentUser.linkWithCredential(credential)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_LinkWithEmailPassword", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_SignIn_OAuth(String token, String tokenKind, String provider, String __) {
+        final long asyncId = getNextAsyncId();
+
+        AuthCredential authCredential = getAuthCredentialFromProvider(token, tokenKind, provider);
+        authentication.signInWithCredential(authCredential)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_SignIn_OAuth", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_LinkWithOAuthCredential(String token, String tokenKind, String provider) {
+        final long asyncId = getNextAsyncId();
+
+        AuthCredential authCredential = getAuthCredentialFromProvider(token, tokenKind, provider);
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_LinkWithOAuthCredential", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.linkWithCredential(authCredential)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_LinkWithOAuthCredential", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_UnlinkProvider(String provider) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_UnlinkProvider", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.unlink(provider)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    handleAuthResult(task, "FirebaseAuthentication_UnlinkProvider", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_RefreshUserData() {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_RefreshUserData", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.reload()
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_RefreshUserData", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_GetIdToken() {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_GetIdToken", asyncId);
+            return (double) asyncId;
+        }
+
+        currentUser.getIdToken(true)
+            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                @Override
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("listener", asyncId);
+                    if (task.isSuccessful()) {
+                        String idToken = task.getResult().getToken();
+                        data.put("status", 200);
+                        data.put("value", idToken != null ? idToken : "");
+                    } else {
+                        data.put("status", 400);
+                        if (task.getException() != null) {
+                            data.put("errorMessage", task.getException().getMessage());
+                        } else {
+                            data.put("errorMessage", "Unknown error");
+                        }
+                    }
+                    FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_GetIdToken", data);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    public double SDKFirebaseAuthentication_IdTokenListener() {
+        final long asyncId = getNextAsyncId();
+
+        if (idTokenListener != null) {
+            Map<String, Object> data = new HashMap<>();
+            data.put("listener", asyncId);
+            data.put("status", 400);
+            data.put("errorMessage", "Already registered");
+            FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_IdTokenListener", data);
+        }
+        else {
+            idTokenListener = new FirebaseAuth.IdTokenListener() {
+                @Override
+                public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser mUser = firebaseAuth.getCurrentUser();
+                    if (mUser == null) {
+                        Map<String, Object> data = new HashMap<>();
+                        data.put("listener", asyncId);
+                        data.put("status", 200);
+                        data.put("value", "");
+                        FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_IdTokenListener", data);
+                        return;
+                    }
+
+                    mUser.getIdToken(false).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            Map<String, Object> data = new HashMap<>();
+                            data.put("listener", asyncId);
+                            if (task.isSuccessful()) {
+                                String idToken = task.getResult().getToken();
+                                data.put("status", 200);
+                                data.put("value", idToken != null ? idToken : "");
+                            } else {
+                                data.put("status", 400);
+                                if (task.getException() != null) {
+                                    data.put("errorMessage", task.getException().getMessage());
+                                } else {
+                                    data.put("errorMessage", "Unknown error");
+                                }
+                            }
+                            FirebaseUtils.sendSocialAsyncEvent("FirebaseAuthentication_IdTokenListener", data);
+                        }
+                    });
+                }
+            };
+            authentication.addIdTokenListener(idTokenListener);
+        }
+
+        return (double) asyncId;
+    }
+
+    public void SDKFirebaseAuthentication_IdTokenListener_Remove() {
+        if (idTokenListener != null) {
+            authentication.removeIdTokenListener(idTokenListener);
+            idTokenListener = null;
+        }
+    }
+
+    public double SDKFirebaseAuthentication_ReauthenticateWithEmail(String email, String password) {
+        final long asyncId = getNextAsyncId();
+
+        FirebaseUser currentUser = authentication.getCurrentUser();
+        if (currentUser == null) {
+            handleUserNotSignedIn("FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
+            return (double) asyncId;
+        }
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        currentUser.reauthenticate(credential)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    handleTaskResult(task, "FirebaseAuthentication_ReauthenticateWithEmail", asyncId);
+                }
+            });
+        return (double) asyncId;
+    }
+
+    // </editor-fold>
+
+    // <editor-fold desc="Helper Methods">
+
+    private long getNextAsyncId() {
+        return FirebaseUtils.getInstance().getNextAsyncId();
+    }
+
+    private AuthCredential getAuthCredentialFromProvider(final String token, final String tokenKind, final String provider) {
+        AuthCredential authCredential = null;
+        switch (provider) {
+            case "facebook.com":
+                authCredential = FacebookAuthProvider.getCredential(token);
+                break;
+            case "google.com":
+                if ("id_token".equals(tokenKind))
+                    authCredential = GoogleAuthProvider.getCredential(token, null);
+                else if ("access_token".equals(tokenKind))
+                    authCredential = GoogleAuthProvider.getCredential(null, token);
+                break;
+            case "playgames.google.com":
+                authCredential = PlayGamesAuthProvider.getCredential(token);
+                break;
+            default:
+                // Handle other providers if needed
+                break;
+        }
+        return authCredential;
+    }
+
+    private String getUserDataFromFirebaseUser(FirebaseUser user) {
+        if (user == null) {
+            return "{}";
+        }
+
+        try {
+            JSONObject userJson = new JSONObject();
+
+            // Basic user info
+            putIfNotNull(userJson, "displayName", user.getDisplayName());
+            putIfNotNull(userJson, "email", user.getEmail());
+            userJson.put("localId", user.getUid());
+            userJson.put("emailVerified", user.isEmailVerified());
+            putIfNotNull(userJson, "phoneNumber", user.getPhoneNumber());
+            if (user.getPhotoUrl() != null) {
+                userJson.put("photoUrl", user.getPhotoUrl().toString());
             }
-        });
-		return listenerInd;
-	}
-	
-	private FirebaseAuth.IdTokenListener mIdTokenListener = null;
-	public double SDKFirebaseAuthentication_IdTokenListener()
-	{
-		final double listenerInd = Auth_getListenerInd();
-		mIdTokenListener = new FirebaseAuth.IdTokenListener()
-		{
-			@Override
-			public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) 
-			{
-				FirebaseUser mUser = firebaseAuth.getCurrentUser();
-				if(mUser == null)
-				{
-					int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_IdTokenListener");
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-					RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-					RunnerJNILib.DsMapAddString(dsMapIndex,"value","");
-					RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);				
-					return;
-				}
-				
-				mUser.getIdToken(false).addOnCompleteListener(new OnCompleteListener<GetTokenResult>()
-				{
-					public void onComplete(@NonNull Task<GetTokenResult> task) 
-					{
-						if (task.isSuccessful()) 
-						{
-							String idToken = task.getResult().getToken();
-							int dsMapIndex = RunnerJNILib.jCreateDsMap(null,null,null);
-							RunnerJNILib.DsMapAddString(dsMapIndex,"type","FirebaseAuthentication_IdTokenListener");
-							RunnerJNILib.DsMapAddDouble(dsMapIndex,"listener",listenerInd);
-							RunnerJNILib.DsMapAddDouble(dsMapIndex,"status",200);
-							RunnerJNILib.DsMapAddString(dsMapIndex,"value",idToken);
-							RunnerJNILib.CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-						} 
-						else//ignore...
-						{}
-					}
-				});
-			}
-		};
-		FirebaseAuth.getInstance().addIdTokenListener(mIdTokenListener);
-		return listenerInd;
-	}
-	
-	public void SDKFirebaseAuthentication_IdTokenListener_Remove()
-	{
-		if(mIdTokenListener != null)
-		{
-			FirebaseAuth.getInstance().removeIdTokenListener(mIdTokenListener);
-			mIdTokenListener = null;
-		}
-	}
+            if (user.getMetadata() != null) {
+                userJson.put("lastLoginAt", user.getMetadata().getLastSignInTimestamp());
+                userJson.put("createdAt", user.getMetadata().getCreationTimestamp());
+            }
+
+            // Provider data
+            JSONArray providerArray = new JSONArray();
+            for (UserInfo userInfo : user.getProviderData()) {
+                if ("firebase".equals(userInfo.getProviderId())) {
+                    continue;
+                }
+
+                JSONObject providerObj = new JSONObject();
+                putIfNotNull(providerObj, "displayName", userInfo.getDisplayName());
+                putIfNotNull(providerObj, "email", userInfo.getEmail());
+                putIfNotNull(providerObj, "phoneNumber", userInfo.getPhoneNumber());
+                if (userInfo.getPhotoUrl() != null) {
+                    providerObj.put("photoUrl", userInfo.getPhotoUrl().toString());
+                }
+                putIfNotNull(providerObj, "providerId", userInfo.getProviderId());
+                putIfNotNull(providerObj, "rawId", userInfo.getUid());
+                putIfNotNull(providerObj, "federatedId", userInfo.getUid());
+
+                providerArray.put(providerObj);
+            }
+            userJson.put("providerUserInfo", providerArray);
+
+            // Wrap in root object
+            JSONObject root = new JSONObject();
+            root.put("kind", "identitytoolkit#GetAccountInfoResponse");
+            JSONArray usersArray = new JSONArray();
+            usersArray.put(userJson);
+            root.put("users", usersArray);
+
+            return root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "{}";
+        }
+    }
+
+    private void putIfNotNull(JSONObject jsonObject, String key, Object value) throws JSONException {
+        if (value != null) {
+            jsonObject.put(key, value);
+        }
+    }
+
+    private void handleAuthResult(Task<AuthResult> task, final String eventType, final long asyncId) {
+        if (task.isSuccessful()) {
+            // Offload complex code to a background thread (getUserDataFromFirebaseUser)
+            FirebaseUtils.getInstance().submitAsyncTask(() -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("listener", asyncId);
+                data.put("status", 200);
+                FirebaseUser user = task.getResult().getUser();
+                String userData = getUserDataFromFirebaseUser(user);
+                data.put("value", userData);
+                FirebaseUtils.sendSocialAsyncEvent(eventType, data);
+            });
+        } else {
+            Map<String, Object> data = new HashMap<>();
+            data.put("listener", asyncId);
+            data.put("status", 400);
+            if (task.getException() != null) {
+                data.put("errorMessage", task.getException().getMessage());
+            } else {
+                data.put("errorMessage", "Unknown error");
+            }
+            FirebaseUtils.sendSocialAsyncEvent(eventType, data);
+        }
+    }
+
+    private void handleTaskResult(Task<Void> task, String eventType, long asyncId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("listener", asyncId);
+        if (task.isSuccessful()) {
+            data.put("status", 200);
+        } else {
+            data.put("status", 400);
+            if (task.getException() != null) {
+                data.put("errorMessage", task.getException().getMessage());
+            } else {
+                data.put("errorMessage", "Unknown error");
+            }
+        }
+        FirebaseUtils.sendSocialAsyncEvent(eventType, data);
+    }
+
+    private void handleUserNotSignedIn(String eventType, long asyncId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("listener", asyncId);
+        data.put("status", 400);
+        data.put("errorMessage", "No user is currently signed in.");
+        FirebaseUtils.sendSocialAsyncEvent(eventType, data);
+    }
+
+    // </editor-fold>
 }
-

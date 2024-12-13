@@ -1,5 +1,7 @@
 function FirebaseREST_HTTP_Failed_Firestore()
 {
+	show_debug_message(json_encode(async_load));
+	
 	var map_error = json_decode(async_load[?"result"])
 	if(ds_exists(map_error,ds_type_map))
 	{

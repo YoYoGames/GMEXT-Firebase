@@ -31,8 +31,6 @@
  * * If ${function.FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set} was called, uses its value.
  * * If the `FirebaseCrashlyticsCollectionEnabled` key is in your app's `Info.plist`, uses that.
  * 
- * [[Warning: This function is only available on **iOS** targets.]]
- * 
  * @returns {bool}
  * @example
  * ```gml
@@ -69,6 +67,7 @@
  * @desc This function logs a message that is included in the next fatal or non-fatal report. Logs are visible in the session view on the Firebase Crashlytics console. Newline characters are stripped and extremely long messages are truncated. The maximum log size is 64k. If exceeded, the log rolls such that messages are removed, starting from the oldest.
  * 
  * @param {string} message The message to be logged.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -83,6 +82,7 @@
  * @desc Records a non-fatal report to send to Crashlytics. Non-fatal reports are manually thrown by the developer and may not represent crashes that occurred during code execution.
  * 
  * @param {string} errorMessage Error message to include in the report.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -114,6 +114,7 @@
  * 
  * @param {string} key A unique key.
  * @param {real|string} value The value to be associated with the given key.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -124,10 +125,34 @@
  */
 
 /**
+ * @func FirebaseCrashlytics_SetCustomKeys
+ * @desc Sets multiple custom key-value pairs for Crashlytics using a JSON-formatted string. Each key-value pair will be associated with subsequent fatal and non-fatal crash reports. If a key already exists, its value will be updated. The values of these keys at the time of a crash or non-fatal event are logged with that event and are visible in the session view on the Firebase Crashlytics console.
+ * 
+ * Crashlytics supports a maximum of 64 key/value pairs. New keys beyond that limit are ignored. Keys or values that exceed 1024 characters are truncated.
+ * 
+ * @param {string} key_values A json formatted string with key value pairs.
+ * @returns {constant.FirebaseCrashlyticsResult}
+ * 
+ * @event social
+ * @desc 
+ * @member {string} type The string `"FirebaseCrashlytics_SetCustomKeys"`
+ * @member {boolean} success Whether or not the operation succeeded.
+ * @event_end
+ * 
+ * @example
+ * ```gml
+ * var _data = { player: global.playerName, level: global.playerLevel };
+ * FirebaseCrashlytics_SetCustomKeys(json_stringify(_data));
+ * ```
+ * The example above sets custom keys `"player"` and `"level"` to be included in subsequent crash reports. This can help developers understand the state of the game and identify which player and game level were active when a crash occurred.
+ * @function_end
+ */
+
+/**
  * @func FirebaseCrashlytics_SetUserIdentifier
  * @desc This function records a user ID (identifier) that is associated with subsequent fatal and non-fatal reports. The user ID is visible in the session view on the Firebase Crashlytics console. Identifiers longer than 1024 characters will be truncated.
- * 
  * @param {string} identifier A unique identifier for the current user.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -143,6 +168,7 @@
  * 
  * [[Warning: If there are any unsent reports, this function will only (asynchronously) return `true` for the first time it is called in each game execution.]]
  * 
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @event social
  * @desc 
@@ -171,6 +197,7 @@
 /**
  * @func FirebaseCrashlytics_UnsentReports_Delete
  * @desc If automatic data collection is disabled, this function queues up any unsent reports on the device for deletion. Otherwise, it does nothing.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -189,6 +216,7 @@
 /**
  * @func FirebaseCrashlytics_UnsentReports_Send
  * @desc If automatic data collection is disabled, this function queues up any unsent reports on the device to be sent to Crashlytics. Otherwise, it does nothing.
+ * @returns {constant.FirebaseCrashlyticsResult}
  * 
  * @example
  * ```gml
@@ -218,4 +246,11 @@
  * ```
  * The code above checks if the application crashed on its previous execution and in that case, sends all the unsent reports to the Crashlytics servers (using the function ${function.FirebaseCrashlytics_UnsentReports_Send}).
  * @function_end
+ */
+
+/**
+ * @const FirebaseCrashlyticsResult
+ * @desc Represents the possible results for operations in the Crashlytics module.
+ * @member FIREBASE_CRASHLYTICS_SUCCESS Indicates the operation was completed successfully.
+ * @member FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS Indicates the operation failed due to invalid input parameters.
  */

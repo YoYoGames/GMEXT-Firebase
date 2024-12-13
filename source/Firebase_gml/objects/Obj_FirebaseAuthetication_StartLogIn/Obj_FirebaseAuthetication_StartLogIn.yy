@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Firebase REST API Library (Don't Touch)",
-    "path":"folders/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch).yy",
+    "path":"folders/Firebase/Firebase Authentication/Extensions/Firebase REST API Library (Don't Touch).yy",
   },
   "parentObjectId":null,
   "persistent":false,

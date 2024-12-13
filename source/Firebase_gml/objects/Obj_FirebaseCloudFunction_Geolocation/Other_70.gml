@@ -6,15 +6,16 @@ if(async_load[?"listener"] == token_request)
 		var idToken = async_load[?"value"]
 		show_debug_message(idToken)
 		
-		body = {
+		var _body = {
 			idToken: idToken,
 		};
 
-		var headerMap = ds_map_create()
-		ds_map_add(headerMap,"Content-Type","application/json")//Heads
-		request = http_request(url,"POST",headerMap,json_stringify(body))
-		ds_map_destroy(headerMap)
-
+		request = FirebaseCloudFunctions_Call("geolocation", _body, 10);
     }
+}
+else if (async_load[?"listener"] == request) {
+	
+	var _data = async_load[?"value"]
+	show_debug_message("geolocation: " + _data);
 }
 

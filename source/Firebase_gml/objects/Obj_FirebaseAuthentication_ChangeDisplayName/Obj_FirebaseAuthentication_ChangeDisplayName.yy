@@ -10,8 +10,8 @@
   "name":"Obj_FirebaseAuthentication_ChangeDisplayName",
   "overriddenProperties":[],
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Authentication/Testing.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseAuthentication_button_parent_auth_login",

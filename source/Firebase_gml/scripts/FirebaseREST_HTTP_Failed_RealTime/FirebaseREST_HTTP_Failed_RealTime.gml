@@ -9,10 +9,10 @@ function FirebaseREST_HTTP_Failed_RealTime()
 			if(ds_exists(map_error,ds_type_map))
 			{
 				var map = map_error
-				if(ds_map_exists(map,"default"))//Some times this is a list....
+				if (ds_map_exists(map,"default"))//Some times this is a list....
 				{
-					if(map[?"default"] = "")
-						errorMessage = ""
+					if(is_string(map[? "default"]))
+						errorMessage = map[? "default"];
 					else
 					{
 						var list = map[?"default"]
@@ -27,8 +27,8 @@ function FirebaseREST_HTTP_Failed_RealTime()
 				}
 				else
 				if(ds_map_exists(map,"error"))
-				if(is_string(map[?"error"]))
-					errorMessage = map[?"error"]
+				if(is_string(map[? "error"]))
+					errorMessage = map[? "error"]
 				else
 				if(ds_exists(map[?"error"],ds_type_map))
 				if(ds_map_exists(map[?"error"],"message"))

@@ -1,321 +1,224 @@
 
-function RESTFirebaseFirestore_Collection_Add(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+/// @params {Struct} _json
+function RESTFirebaseFirestore_Collection_Add(_builder, _json) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Add",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"POST",
-				FirebaseREST_Firestore_headerToken(),
-				FirebaseREST_Firestore_jsonEncode(json));
-	listener.path = path
-	return listener
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Add", Obj_FirebaseREST_Listener_Once_Firestore, _url, "POST", _header, _body);
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-function RESTFirebaseFirestore_Collection_Read(path)
-{
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Collection_Read(_builder) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Read",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"");
-	listener.path = path
-	return listener
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Read", Obj_FirebaseREST_Listener_Once_Firestore, _url, "GET", _header);
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-function RESTFirebaseFirestore_Collection_Listener(path)
-{
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Collection_Listener(_builder) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Listener",
-				Obj_FirebaseREST_Listener_On_firestore_collection,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"");
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Listener", Obj_FirebaseREST_Listener_On_firestore_collection, _url, "GET", _header);
 			
-	listener.path = path
-	return listener
+	listener.path = _builder.build_path();
+	return listener;
 }
 
-/*
-function RESTFirebaseFirestore_Collection_Query(
-				path,
-				where_operation,where_ref,where_value,
-				where_operation2,where_ref2,where_value2,
-				orderBy_direction,orderBy_field,
-				start,
-				end_,
-				limit,
-				
-				)
-{
-	Firestore_Query_ASCENDING
-	Firestore_Query_DESCENDING
-	Firestore_Query_equal
-	Firestore_Query_greater_than
-	Firestore_Query_greater_than_or_equal
-	Firestore_Query_less_than
-	Firestore_Query_less_than_or_equal
-}
-*/
-
-function RESTFirebaseFirestore_Collection_Query(struct)
-{
-	var path = struct._path
-
-	var start = struct._start
-	var end_ = struct._end
-	var limit = struct._limit
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Collection_Query(_builder) {
 	
-	if(!FirebaseREST_Firestore_path_isCollection(path))
-	{show_debug_message("error: path not correspond to collection") exit}
-	
-	var original_ref = path
-	//https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
-
-	/////////////////
-	var collection = FirebaseFirestore_Path_GetName(path,0)
-
-	//From
-	var list_from = ds_list_create()
-	var map_collector = ds_map_create()
-	ds_map_add(map_collector,"collectionId",collection)
-	ds_map_add(map_collector,"allDescendants","false")
-	//var map_count = json_decode(path)
-	//var size = ds_map_size(map_count)
-	//ds_map_destroy(map_count)
-	//if(true)//if(size mod 2 != 0)//unpair//collection
-	{
-		ds_list_add(list_from,map_collector)
-		ds_list_mark_as_map(list_from,0)
+	/// @function _direction_enum_to_string(_direction)
+	/// @returns {String}
+	static _direction_enum_to_string = function(_direction) {
+		switch (_direction) {
+			case FIREBASE_FIRESTORE_QUERY_SORT.ASCN:
+				return "ASCENDING";
+			case FIREBASE_FIRESTORE_QUERY_SORT.DESC:
+				return "DESCENDING";
+		}
 	}
 	
-	path = FirebaseFirestore_Path_Back(path,1)
-	
-	//Where
-	var map_where = ds_map_create()
-	var map_compositeFilter = ds_map_create()
-	ds_map_add(map_compositeFilter,"op","AND")
-	var list_filters = ds_list_create()
-	
-	if(!is_undefined(struct._operations))
-	for(var a = 0 ; a < array_length(struct._operations) ; a++)//if(!is_undefined(struct._operations[0]))
-	{
-		var map_FieldFilter = ds_map_create()
-		ds_map_add_map(map_FieldFilter,"field",FirebaseREST_firestore_fieldReference(struct._operations[a].path))
-		ds_map_add(map_FieldFilter,"op",struct._operations[a].operation)
-		ds_map_add_map(map_FieldFilter,"value",FirebaseREST_firestore_value(struct._operations[a].value))
-		var map_toList = ds_map_create()
-		ds_map_add_map(map_toList,"fieldFilter",map_FieldFilter)
-		ds_list_add(list_filters,map_toList)
+	/// @function _filter_enum_to_string(_filter)
+	/// @returns {String}
+	static _filter_enum_to_string = function(_filter) {
+		switch (_filter) {
+			case FIREBASE_FIRESTORE_QUERY_FILTER.LESS:
+				return "LESS_THAN";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.LESS_EQ:
+				return "LESS_THAN_OR_EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.GREAT:
+				return "GREATER_THAN";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.GREAT_EQ:
+				return "GREATER_THAN_OR_EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.EQ:
+				return "EQUAL";
+			case FIREBASE_FIRESTORE_QUERY_FILTER.NOT_EQ:
+				return "NOT_EQUAL";
+		}
 	}
 	
-	for(var a = 0 ; a < ds_list_size(list_filters) ; a++)
-		ds_list_mark_as_map(list_filters,a)
-
-	ds_map_add_list(map_compositeFilter,"filters",list_filters)
-	ds_map_add_map(map_where,"compositeFilter",map_compositeFilter)
-
-	/////////////////////////////////////////// orderBy
-	var list_orderBy = ds_list_create()
-	
-	if(!is_undefined(struct._orderBy_direction) and !is_undefined(struct._orderBy_field))
-	{
-		var map_orderList = ds_map_create()
+	with (_builder) {
+		var _private = __;
 		
-		ds_map_add_map(map_orderList,"field",FirebaseREST_firestore_fieldReference(struct._orderBy_field))
+		// https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
+
+		var _structured_query = {};
+
+		/////////////////
+
+		//From
+		
+		_structured_query.from = [ {
+				collectionId: _builder.path_array[array_length(_builder.path_array) - 1],
+				allDescendants: "false"		
+		} ];
 	
-		if(!is_undefined(struct._orderBy_direction))
-			ds_map_add(map_orderList,"direction",struct._orderBy_direction)
+		// Where
+		
+		var _operations = _private.operations;
+		var _operations_count = array_length(_operations);
+		if (_operations_count > 0) {
+			var _filters = array_create(_operations_count);
+			for (var _i = 0 ; _i < _operations_count; _i++)
+			{
+				var _operation =  _operations[_i];
+				var fieldFilter = {
+					field: __firebase_firestore_build_field_reference(_operation.path),
+					op: _filter_enum_to_string(_operation.operation),
+					value: __firebase_firestore_process_value(_operation.value)
+				}
+				_filters[_i] = { fieldFilter: fieldFilter };
+			}
+
+			var _composite_filter = { op: "AND", filters: _filters };
+			_structured_query.where = { compositeFilter: _composite_filter };
+		}
+
+		// orderBy
 	
-		ds_list_add(list_orderBy,map_orderList)
-		ds_list_mark_as_map(list_orderBy,0)
+		if (!is_undefined(_private.sort) and !is_undefined(_private.orderBy))
+		{
+			_structured_query.orderBy = [ 
+				{ 
+					field: __firebase_firestore_build_field_reference(_private.orderBy), 
+					direction: _direction_enum_to_string(_private.sort) 
+				}
+			];
+		}
+	
+		// startAt
+
+		if (!is_undefined(_private.startAt)) {
+			_structured_query.startAt = __firebase_firestore_build_cursor(_private.startAt, true);
+		} else if (!is_undefined(_private.startAfter)) {
+			_structured_query.startAt = __firebase_firestore_build_cursor(_private.startAfter, false);
+		}
+
+		// endAt
+		
+		if (!is_undefined(_private.endAt)) {
+			_structured_query.endAt = __firebase_firestore_build_cursor(_private.endAt, false);
+		} else if (!is_undefined(_private.endBefore)) {
+			_structured_query.endAt = __firebase_firestore_build_cursor(_private.endBefore, true);
+		}
+
+		// limit 
+		
+		if (!is_undefined(_private.limitToFirst)) {
+			_structured_query.limit = _private.limitToFirst;
+		}
+			
+		// request
+		
+		_private.path = string_join_ext("/", _builder.path_array, 0, array_length(_builder.path_array) - 1);
+		
+		var _url = __firebase_firestore_build_url(_builder);
+		var _header = __firebase_firestore_build_header();
+		var _body = json_stringify({ structuredQuery: _structured_query });
+
+		_url = string_concat(_url, ":runQuery");
+
+		var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Collection_Query", Obj_FirebaseREST_Listener_Once_Firestore, _url, "POST", _header, _body);
+		listener.path = _builder.build_path();
+
+		return listener;
 	}
-	
-	////////////////////////////////////////// startAt
-	var map_startAt
-	if(is_undefined(start))
-		map_startAt = ds_map_create()
-	else
-		map_startAt = FirebaseREST_firestore_cursor(start,1)
 
-	////////////////////////////////////////// endAt
-	var map_endAt
-	if(is_undefined(end_))
-		map_endAt = ds_map_create()
-	else
-		map_endAt = FirebaseREST_firestore_cursor(end_,0)
-
-
-	///////map_structuredQuery
-	var map_structuredQuery = ds_map_create()
-
-	ds_map_add_list(map_structuredQuery,"from",list_from)
-
-	if(ds_map_size(map_where))
-		ds_map_add_map(map_structuredQuery,"where",map_where)
-	else
-		ds_map_destroy(map_where)
-
-	if(ds_list_size(list_orderBy))
-		ds_map_add_list(map_structuredQuery,"orderBy",list_orderBy)
-	else
-		ds_list_destroy(list_orderBy)
-
-	if(ds_map_size(map_startAt))
-		ds_map_add_map(map_structuredQuery,"startAt",map_startAt)
-	else
-		ds_map_destroy(map_startAt)
-
-	if(ds_map_size(map_endAt))
-		ds_map_add_map(map_structuredQuery,"endAt",map_endAt)
-	else
-		ds_map_destroy(map_endAt)
-
-	//limit
-	if(!is_undefined(limit))
-		ds_map_add(map_structuredQuery,"limit",limit)
-
-
-	///////requestBody
-	var map_requestBody = ds_map_create()
-	ds_map_add_map(map_requestBody,"structuredQuery",map_structuredQuery)
-
-	var json = json_encode(map_requestBody)
-	ds_map_destroy(map_requestBody)
-	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Collection_Query",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"POST",
-				FirebaseREST_Firestore_headerToken(),
-				json)
-
-	listener.url += ":runQuery"
-	listener.path = original_ref
-
-	return listener
 }
 
-
-function RESTFirebaseFirestore_Document_Delete(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Document_Delete(_builder) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-			"FirebaseFirestore_Document_Delete",
-			Obj_FirebaseREST_Listener_Once_Firestore,
-			FirebaseREST_Firestore_getURL(path),
-			"DELETE",
-			FirebaseREST_Firestore_headerToken(),
-			"")
-	listener.path = path
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
 	
-	return listener
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Delete", Obj_FirebaseREST_Listener_Once_Firestore, _url, "DELETE", _header);
+	listener.path = _builder.build_path();
+	
+	return listener;
 }
 
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Document_Read(_builder) {
+	
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Read", Obj_FirebaseREST_Listener_Once_Firestore, _url, "GET", _header);
+	listener.path = _builder.build_path();
 
-function RESTFirebaseFirestore_Document_Read(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
-	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Read",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"")
-	
-	listener.path = path
-	return listener
+	return listener;
 }
 
-function RESTFirebaseFirestore_Document_Listener(path)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+function RESTFirebaseFirestore_Document_Listener(_builder) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Listener",
-				Obj_FirebaseREST_Listener_On_firestore_document,
-				FirebaseREST_Firestore_getURL(path),
-				"GET",
-				FirebaseREST_Firestore_headerToken(),
-				"")
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
 	
-	listener.path = path
-	return listener
+	var listener = FirebaseREST_asyncFunction_Firestore("FirebaseFirestore_Document_Listener", Obj_FirebaseREST_Listener_On_firestore_document, _url, "GET", _header);
+	listener.path = _builder.build_path();
+	
+	return listener;
 }
 
-/*Deprecated due if exists not override the document, and SDKs do it.....
-function RESTFirebaseFirestore_Document_Set(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+/// @params {Struct} _json
+function RESTFirebaseFirestore_Document_Set(_builder, _json) {
 	
-	var original_ref = path
-	var doc_name = FirebaseFirestore_Path_GetName(path,0)
-	var ref_ = FirebaseFirestore_Path_Back(path,1)
-	var listener = FirebaseREST_asyncFunction_Firestore(
-				"FirebaseFirestore_Document_Set",
-				Obj_FirebaseREST_Listener_Once_Firestore,
-				FirebaseREST_Firestore_getURL(ref_),
-				"POST",
-				FirebaseREST_Firestore_headerToken(),
-				FirebaseREST_Firestore_jsonEncode(json),
-				)
-	listener.url += "?documentId=" + doc_name
-	listener.path = original_ref
-	return listener
-}
-*/
-
-function RESTFirebaseFirestore_Document_Set(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-					"RESTFirebaseFirestore_Document_Set",
-					Obj_FirebaseREST_Listener_Once_Firestore,
-					FirebaseREST_Firestore_getURL(path),
-					"PATCH",
-					FirebaseREST_Firestore_headerToken(),
-					FirebaseREST_Firestore_jsonEncode(json))
-	listener.path = path
-	return listener
+	var listener = FirebaseREST_asyncFunction_Firestore("RESTFirebaseFirestore_Document_Set", Obj_FirebaseREST_Listener_Once_Firestore, _url, "PATCH", _header, _body);
+	listener.path = _builder.build_path();
+	
+	return listener;
 }
 
-function RESTFirebaseFirestore_Document_Update(path,json)
-{
-	if(!FirebaseREST_Firestore_path_isDocument(path))
-	{show_debug_message("error: path not correspond to document") exit}
+/// @params {Struct.FirebaseFirestoreBuilder} _builder
+/// @params {Struct} _json
+function RESTFirebaseFirestore_Document_Update(_builder, _json) {
 	
-	var listener = FirebaseREST_asyncFunction_Firestore(
-					"RESTFirebaseFirestore_Document_Update",
-					Obj_FirebaseREST_Listener_Once_Firestore,
-					FirebaseREST_Firestore_getURL(path),
-					"PATCH",
-					FirebaseREST_Firestore_headerToken(),
-					FirebaseREST_Firestore_jsonEncode(json)
-				)
-	listener.url += FriebaseREST_Firestore_urlUpdateMask(json)
-	show_debug_message(listener.url)
-	listener.path = path
-	return listener
+	var _url = __firebase_firestore_build_url(_builder);
+	var _header = __firebase_firestore_build_header();
+	var _body = __firebase_firestore_build_body(_json);
+	
+	_url = __firebase_firestore_build_update_mask_url(_url, _json);
+	
+	var listener = FirebaseREST_asyncFunction_Firestore("RESTFirebaseFirestore_Document_Update", Obj_FirebaseREST_Listener_Once_Firestore, _url, "PATCH", _header, _body);
+	listener.path = _builder.build_path();
+	
+	return listener;
 }

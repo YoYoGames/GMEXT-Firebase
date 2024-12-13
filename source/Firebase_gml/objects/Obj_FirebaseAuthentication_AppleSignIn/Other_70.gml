@@ -3,9 +3,8 @@ event_inherited()
 
 switch(async_load[?"id"])
 {
-	case mac_applesignin_signin_response:
 	case applesignin_signin_response:
-		
+	
 	var appleSignInResponse = async_load[?"response_json"]
 		
 	if(appleSignInResponse == "")
@@ -19,8 +18,9 @@ switch(async_load[?"id"])
 	{
 		show_debug_message("Apple Sign In Succeeded");
 		var identityToken = jsonMap[? "identityToken"];
-			
+		
 		token = identityToken
+		nonce = jsonMap[? "nonce"];
 		event_user(0)
 	}
 	else
@@ -30,7 +30,6 @@ switch(async_load[?"id"])
 		
 	break;
 	
-	case mac_applesignin_credential_response:
 	case applesignin_credential_response:
 		
 	break

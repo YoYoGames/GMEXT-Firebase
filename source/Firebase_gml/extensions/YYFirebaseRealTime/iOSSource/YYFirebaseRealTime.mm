@@ -1,357 +1,475 @@
+// YYFirebaseRealTime.m
+
+${YYIos_FirebaseDatabase_Skip_Start}
 
 #import "YYFirebaseRealTime.h"
-#import <UIKit/UIKit.h>
+#import "FirebaseUtils.h"
 
-const int EVENT_OTHER_SOCIAL = 70;
-extern int CreateDsMap( int _num, ... );
-extern void CreateAsynEventWithDSMap(int dsmapindex, int event_index);
-extern UIViewController *g_controller;
-extern UIView *g_glView;
-extern int g_DeviceWidth;
-extern int g_DeviceHeight;
+@interface YYFirebaseRealTime ()
 
-extern "C" void dsMapClear(int _dsMap );
-extern "C" int dsMapCreate();
-extern "C" void dsMapAddInt(int _dsMap, char* _key, int _value);
-extern "C" void dsMapAddDouble(int _dsMap, char* _key, double _value);
-extern "C" void dsMapAddString(int _dsMap, char* _key, char* _value);
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, NSNumber *> *listenerMap;
+@property (nonatomic, strong) NSMutableDictionary<NSNumber *, FIRDatabaseReference *> *referenceMap;
 
-extern "C" int dsListCreate();
-extern "C" void dsListAddInt(int _dsList, int _value);
-extern "C" void dsListAddString(int _dsList, char* _value);
-extern "C" const char* dsListGetValueString(int _dsList, int _listIdx);
-extern "C" double dsListGetValueDouble(int _dsList, int _listIdx);
-extern "C" int dsListGetSize(int _dsList);
+// Define action constants
+typedef NS_ENUM(NSInteger, DatabaseAction) {
+    ACTION_SET = 0,
+    ACTION_READ,
+    ACTION_LISTEN,
+    ACTION_EXISTS,
+    ACTION_DELETE,
+    ACTION_LISTENER_REMOVE,
+    ACTION_LISTENER_REMOVE_ALL
+};
 
-extern "C" void createSocialAsyncEventWithDSMap(int dsmapindex);
+// Methods
+- (void)setValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)readValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)listenValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)deleteValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)existsValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)removeListener:(long)asyncId fluentObj:(NSDictionary *)fluentObj;
+- (void)removeAllListeners:(long)asyncId;
+- (NSDictionary<NSString *, void (^)(id)> *)createValueEventListener:(NSString *)eventType asyncId:(long)asyncId path:(NSString *)path;
+- (FIRDatabaseReference *)buildReference:(NSDictionary *)fluentObj;
+- (FIRDatabaseQuery *)buildQuery:(long)asyncId eventType:(NSString *)eventType fluentObj:(NSDictionary *)fluentObj dataRef:(FIRDatabaseReference *)dataRef;
+- (int)getStatusFromError:(NSError *)error;
+- (void)sendDatabaseEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status extraData:(nullable NSDictionary *)extraData;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage;
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception;
 
+@end
 
 @implementation YYFirebaseRealTime
 
-///////////////////////////////////////REALTIME DATABASE
-
-	-(id) init
-	{
-		if(self = [super init])
-		{
-			if(![FIRApp defaultApp])
-				[FIRApp configure];
-				
-			return self;
-		}
-	}
-
-	
-	-(double) FirebaseRealTime_SDK:(NSString*) fluent_json
-	{
-        NSDictionary *fluent_obj = [YYFirebaseRealTime json2dic:fluent_json];
-		
-        NSString *action = [fluent_obj valueForKey:@"_action"];
-		if([action isEqualToString:@"Set"])
-			return [self Write: fluent_obj];
-		else if([action isEqualToString:@"Read"] || [action isEqualToString:@"Listener"])
-			return  [self Read: fluent_obj];
-		else if([action isEqualToString:@"Exists"])
-			return  [self Exists: fluent_obj];
-		else if([action isEqualToString:@"Delete"])
-			return [self Delete: fluent_obj];
-		else if([action isEqualToString:@"ListenerRemove"])
-			[self ListenerRemove: fluent_obj];
-		else if([action isEqualToString:@"ListenerRemoveAll"])
-            [self ListenerRemoveAll];
-		return 0.0;
-	}
-	
--(void) Init
-{
-	//Start point of index
-	//Autentication 5000
-	//storage 6000
-	//Firestore 7000
-	//RealTime 10000
-	RealTime_indMap = 10000;
-    RealTime_ListenerMap = [[NSMutableDictionary alloc] init];
-    RealTime_ReferenceMap = [[NSMutableDictionary alloc] init];
+- (instancetype)init {
+    if (self = [super init]) {
+        self.listenerMap = [NSMutableDictionary dictionary];
+        self.referenceMap = [NSMutableDictionary dictionary];
+    }
+    return self;
 }
 
--(double) Write:(NSDictionary*) fluent_obj
-{
-    const int Id = [self getListenerInd];
-    FIRDatabaseReference *ref=[YYFirebaseRealTime getRef:fluent_obj];
+#pragma mark - Main SDK Method
 
-    id value = [fluent_obj valueForKey:@"_value"];
-    if([value isKindOfClass:[NSString class]])
-    {
-        id dic = [YYFirebaseRealTime json2dic: value];
-        if(dic != nil)
-            value = dic;
-    }
-    
-            //[YYFirebaseRealTime json2dic:@""];
-    
-    if([fluent_obj valueForKey:@"_push"] != [NSNull null])
-        ref = [ref childByAutoId];
-    [ref setValue: value withCompletionBlock:^(NSError *error, FIRDatabaseReference *ref)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Set");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    }];
-    return (double)Id;
-}
+- (double)FirebaseRealTime_SDK:(NSString *)fluentJson { 
+    // Generate asyncId synchronously
+    long asyncId = [[FirebaseUtils sharedInstance] getNextAsyncId];
 
--(double) Read:(NSDictionary*) fluent_obj 
-{
-    const int Id = [self getListenerInd];
-    FIRDatabaseReference *ref = [YYFirebaseRealTime getRef:fluent_obj];
-    FIRDatabaseQuery *mQuery = ref;
-    
-    if([fluent_obj valueForKey:@"_OrderBy"] != [NSNull null])
-    {
-        if([[fluent_obj valueForKey:@"_OrderBy"] isKindOfClass:[NSString class]])
-            mQuery = [mQuery queryOrderedByChild:[fluent_obj valueForKey:@"_OrderBy"]];
-        else
-        switch([[fluent_obj valueForKey:@"_OrderBy"] intValue])
-        {
-            //case 0: mQuery = [mQuery queryOrderedByChild:OrderKey]; break;
-            case 1: mQuery = [mQuery queryOrderedByKey]; break;
-            case 2: mQuery = [mQuery queryOrderedByValue]; break;
-        }
-    }
-    
-    if([fluent_obj valueForKey:@"_StartValue"] != [NSNull null])
-        mQuery = [mQuery queryStartingAtValue: [fluent_obj valueForKey:@"_StartValue"]];
-    if([fluent_obj valueForKey:@"_EndValue"] != [NSNull null])
-        mQuery = [mQuery queryEndingAtValue: [fluent_obj valueForKey:@"_EndValue"]];
-    if([fluent_obj valueForKey:@"_EqualTo"] != [NSNull null])
-        mQuery = [mQuery queryEqualToValue: [fluent_obj valueForKey:@"_EqualTo"]];
-    
-    if([fluent_obj valueForKey:@"_LimitKind"] != [NSNull null])
-    if([fluent_obj valueForKey:@"_LimitValue"] != [NSNull null])
-    {
-        switch([[fluent_obj valueForKey:@"_LimitKind"] intValue])
-        {
-            case 0: mQuery = [mQuery queryLimitedToFirst:[[fluent_obj valueForKey:@"_LimitValue"] intValue]]; break;
-            case 1: mQuery = [mQuery queryLimitedToLast:[[fluent_obj valueForKey:@"_LimitValue"] intValue]]; break;
-        }
-    }
-    
-    id blockCallback = ^(FIRDataSnapshot * _Nonnull snapshot)
-    {
-        int dsMapIndex = dsMapCreate();
-        if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Read"])
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Read");
-        if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Listener"])
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Listener");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
+    // Submit async task
+    [[FirebaseUtils sharedInstance] submitAsyncTask:^{
+        NSError *jsonError = nil;
+        NSDictionary *fluentObj = [NSJSONSerialization JSONObjectWithData:[fluentJson dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   options:0
+                                                                     error:&jsonError];
         
-        if(!snapshot.exists)
-        {
-            CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+        if (jsonError || ![fluentObj isKindOfClass:[NSDictionary class]]) {
+            [self sendDatabaseEvent:@"FirebaseRealTime_SDK"
+                           asyncId:asyncId
+                              path:nil
+                            status:400
+                        extraData:@{@"errorMessage": @"Invalid JSON input"}];
             return;
         }
         
-        id value = snapshot.value;
-        if([value isKindOfClass:[NSString class]])
-            dsMapAddString(dsMapIndex,(char*)"value",(char*)[(NSString*)snapshot.value UTF8String]);
+        NSNumber *actionNumber = fluentObj[@"action"];
+        if (!actionNumber || ![actionNumber isKindOfClass:[NSNumber class]]) {
+            [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 errorMessage:@"Action not specified in JSON."];
+            return;
+        }
+        DatabaseAction action = (DatabaseAction)[actionNumber integerValue];
         
-        if([value isKindOfClass:[NSNumber class]])
-            dsMapAddDouble(dsMapIndex,(char*)"value",[snapshot.value doubleValue]);
-        
-        if([value isKindOfClass:[NSDictionary class]])
-            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
-
-        if([value isKindOfClass:[NSArray class]])
-            dsMapAddString(dsMapIndex,(char*)"value",(char*)[[YYFirebaseRealTime toJSON:snapshot.value] UTF8String]);
-        
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    };
-    
-    id cancelBlockCalback = ^(NSError * _Nonnull error)
-    {
-        int dsMapIndex = dsMapCreate();
-        if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Read"])
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Read");
-        if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Listener"])
-            dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Listener");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];
-        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-    };
-    
-    if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Read"])
-        [mQuery observeSingleEventOfType:FIRDataEventTypeValue withBlock:blockCallback withCancelBlock:cancelBlockCalback];
-    else
-    if([[fluent_obj valueForKey:@"_action"] isEqualToString:@"Listener"])
-    {
-        FIRDatabaseHandle listener = [mQuery observeEventType:FIRDataEventTypeValue withBlock:blockCallback withCancelBlock:cancelBlockCalback];
-        [self listenerToMaps:ref listener:listener ind:Id];
-    }
-    
-    return (double)Id;
-}
-
--(double) Delete:(NSDictionary*) fluent_obj
-{
-    const int Id = [self getListenerInd];
-    FIRDatabaseReference *ref=[YYFirebaseRealTime getRef:fluent_obj];
-    [ref removeValueWithCompletionBlock:^(NSError *error, FIRDatabaseReference *ref)
-     {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Delete");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-     }];
-    return (double)Id;
-}
-
--(double) Exists:(NSDictionary*) fluent_obj
-{
-    const int Id = [self getListenerInd];
-    FIRDatabaseReference *ref=[YYFirebaseRealTime getRef:fluent_obj];
-    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot)
-    {
-        double exists = 0.0;
-        if([snapshot exists])
-            exists = 1.0;
-        
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Exists");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        dsMapAddDouble(dsMapIndex,(char*)"status",200);
-        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        dsMapAddDouble(dsMapIndex,(char*)"value",exists);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
-
-    } withCancelBlock:^(NSError * _Nonnull error)
-    {
-        int dsMapIndex = dsMapCreate();
-        dsMapAddString(dsMapIndex,(char*)"type",(char*)"FirebaseRealTime_Exists");
-        dsMapAddString(dsMapIndex,(char*)"path",(char*)[(NSString*)[fluent_obj valueForKey:@"_path"] UTF8String]);
-        [self InsertCallbackStatus:dsMapIndex error:error];        dsMapAddDouble(dsMapIndex,(char*)"listener",Id);
-        CreateAsynEventWithDSMap(dsMapIndex,EVENT_OTHER_SOCIAL);
+        switch (action) {
+            case ACTION_SET:
+                [self setValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_READ:
+                [self readValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTEN:
+                [self listenValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_EXISTS:
+                [self existsValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_DELETE:
+                [self deleteValue:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTENER_REMOVE:
+                [self removeListener:asyncId fluentObj:fluentObj];
+                break;
+            case ACTION_LISTENER_REMOVE_ALL:
+                [self removeAllListeners:asyncId];
+                break;
+            default:
+                [self sendErrorEvent:@"FirebaseRealTime_SDK" asyncId:asyncId path:nil status:400 
+                    errorMessage:[NSString stringWithFormat:@"Unknown action: %ld", static_cast<long>(action)]];
+                break;
+        }
+    } completion:^(NSError * _Nullable error) {
+        if (error != nil) {
+            [self sendErrorEvent: @"FirebaseRealTime_SDK" asyncId:asyncId path:nil exception:error];
+        }
     }];
-    return (double)Id;
-}
-
--(int)getListenerInd
-{
-    RealTime_indMap++;
-    return(RealTime_indMap);
-}
-
--(void) listenerToMaps:(FIRDatabaseReference*) ref listener: (FIRDatabaseHandle) listener ind:(int) ind
-{
-    [RealTime_ListenerMap setValue:[NSString stringWithFormat:@"%lu",(unsigned long)listener] forKey:[NSString stringWithFormat:@"%d",ind]];
-    [RealTime_ReferenceMap setValue:ref forKey:[NSString stringWithFormat:@"%d",ind]];
-}
-
--(double) ListenerRemove:(NSDictionary*) fluent_obj
-{
-    NSNumber *number = [fluent_obj valueForKey:@"_value"];
-    int ind = [number intValue];
-    FIRDatabaseReference *ref=[RealTime_ReferenceMap objectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-    NSString *ListenerString = [RealTime_ListenerMap objectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-    NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
-    unsigned long listener = [[formatter numberFromString:ListenerString] unsignedLongValue];
-    [formatter release];
     
-    [ref removeObserverWithHandle:(FIRDatabaseHandle)listener];
-    [RealTime_ListenerMap removeObjectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-    [RealTime_ReferenceMap removeObjectForKey:[NSString stringWithFormat:@"%d",(int)ind]];
-    
-    return 0.0;
+    return (double)asyncId;
 }
 
--(void) ListenerRemoveAll
-{
-    for(id key in RealTime_ListenerMap)
-    {
-        FIRDatabaseReference *ref = [RealTime_ReferenceMap objectForKey:key];
-        NSString *ListenerString = [RealTime_ListenerMap objectForKey:key];
-        NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
-        unsigned long listener = [[formatter numberFromString:ListenerString] unsignedLongValue];
-        [ref removeObserverWithHandle:(FIRDatabaseHandle)listener];
-        [formatter release];
+#pragma mark - Action Handlers
+
+- (void)setValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    id value = fluentObj[@"value"];
+    NSString *path = fluentObj[@"path"];
+    
+    id convertedValue = [FirebaseUtils convertJSON:value];
+    
+    FIRDatabaseReference *reference = [self buildReference:fluentObj];
+    [reference setValue:convertedValue withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error != nil) {
+            [self sendErrorEvent:@"FirebaseRealTime_Set" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendDatabaseEvent:@"FirebaseRealTime_Set" asyncId:asyncId path:path status:200 extraData:nil];
+        }
+    }];
+}
+
+- (void)readValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    FIRDatabaseReference *dataRef = [self buildReference:fluentObj];
+    FIRDatabaseQuery *query = [self buildQuery:asyncId
+                                        eventType:@"FirebaseRealTime_Read"
+                                         fluentObj:fluentObj
+                                           dataRef:dataRef];
+    
+    if (!query) return;
+    
+    // Create the ValueEventListener equivalent
+    NSDictionary<NSString *, void (^)(id)> *listenerBlocks = [self createValueEventListener:@"FirebaseRealTime_Read"
+                                                                                                 asyncId:asyncId
+                                                                                                    path:path];
+    
+    [query observeSingleEventOfType:FIRDataEventTypeValue withBlock:listenerBlocks[@"onDataChange"] withCancelBlock:listenerBlocks[@"onCancel"]];
+}
+
+- (void)listenValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    FIRDatabaseReference *dataRef = [self buildReference:fluentObj];
+    FIRDatabaseQuery *query = [self buildQuery:asyncId
+                                        eventType:@"FirebaseRealTime_Listener"
+                                         fluentObj:fluentObj
+                                           dataRef:dataRef];
+    
+    if (!query) return;
+    
+    // Create the ValueEventListener equivalent
+    NSDictionary<NSString *, void (^)(id)> *listenerBlocks = [self createValueEventListener:@"FirebaseRealTime_Listener"
+                                                                                                 asyncId:asyncId
+                                                                                                    path:path];
+    
+    FIRDatabaseHandle handle = [query observeEventType:FIRDataEventTypeValue withBlock:listenerBlocks[@"onDataChange"] withCancelBlock:listenerBlocks[@"onCancel"]];
+    
+    NSNumber *asyncIdNumber = @(asyncId);
+    self.listenerMap[asyncIdNumber] = @(handle);
+    self.referenceMap[asyncIdNumber] = dataRef;
+}
+
+- (void)deleteValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    FIRDatabaseReference *ref = [self buildReference:fluentObj];
+    
+    [ref removeValueWithCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error != nil) {
+            [self sendErrorEvent:@"FirebaseRealTime_Delete" asyncId:asyncId path:path exception:error];
+        } else {
+            [self sendDatabaseEvent:@"FirebaseRealTime_Delete" asyncId:asyncId path:path status:200 extraData:nil];
+        }
+    }];
+}
+
+- (void)existsValue:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSString *path = fluentObj[@"path"];
+    FIRDatabaseReference *ref = [self buildReference:fluentObj];
+    
+    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSNumber *exists = @(snapshot.exists);
+        NSDictionary *extraData = @{@"value": exists.boolValue ? @1.0 : @0.0};
+        
+        [self sendDatabaseEvent:@"FirebaseRealTime_Exists"
+                       asyncId:asyncId
+                          path:path
+                        status:200
+                    extraData:extraData];
+    } withCancelBlock:^(NSError * _Nonnull error) {
+        [self sendErrorEvent:@"FirebaseRealTime_Exists" asyncId:asyncId path:path exception:error];
+    }];
+}
+
+- (void)removeListener:(long)asyncId fluentObj:(NSDictionary *)fluentObj {
+    NSNumber *listenerToRemove = @([fluentObj[@"value"] longValue]);
+    
+    if ([listenerToRemove longValue] == -1) {
+        NSDictionary *extraData = @{@"errorMessage": @"Unable to extract listener id."};
+        [self sendDatabaseEvent:@"FirebaseRealTime_RemoveListener"
+                       asyncId:asyncId
+                          path:nil
+                        status:400
+                    extraData:extraData];
+        return;
     }
-    [RealTime_ListenerMap removeAllObjects];
-    [RealTime_ReferenceMap removeAllObjects];
-}
-
-+(FIRDatabaseReference*) getRef:(NSDictionary*) fluent_obj
-{
-    FIRDatabaseReference *ref;
     
-    if([fluent_obj valueForKey:@"_database"] == [NSNull null])
-        ref = [[FIRDatabase database] reference];
-    else
-        ref = [[FIRDatabase databaseWithURL:[fluent_obj valueForKey:@"_database"]] reference];
+    FIRDatabaseReference *dataRef = self.referenceMap[listenerToRemove];
+    NSNumber *handleNumber = self.listenerMap[listenerToRemove];
     
-    ref = [ref child:[fluent_obj valueForKey:@"_path"]];
+    if (dataRef && handleNumber) {
+        FIRDatabaseHandle handle = [handleNumber longValue];
+        [dataRef removeObserverWithHandle:handle];
+        [self.listenerMap removeObjectForKey:listenerToRemove];
+        [self.referenceMap removeObjectForKey:listenerToRemove];
+        
+        NSDictionary *extraData = @{@"value": listenerToRemove};
+        [self sendDatabaseEvent:@"FirebaseRealTime_RemoveListener"
+                       asyncId:asyncId
+                          path:dataRef.URL
+                        status:200
+                    extraData:extraData];
+    } else {
+        NSString *errorMsg = [NSString stringWithFormat:@"Listener or DatabaseReference not found for ID: %@", listenerToRemove];
+        NSDictionary *extraData = @{@"errorMessage": errorMsg};
+        [self sendDatabaseEvent:@"FirebaseRealTime_RemoveListener"
+                       asyncId:asyncId
+                          path:dataRef.URL
+                        status:400
+                    extraData:extraData];
+    }
+}
+
+- (void)removeAllListeners:(long)asyncId {
+    NSMutableArray<NSNumber *> *removedListeners = [NSMutableArray array];
     
-    return ref;
+    NSArray<NSNumber *> *keys = [self.referenceMap allKeys];
+    for (NSNumber *listenerToRemove in keys) {
+        FIRDatabaseReference *dataRef = self.referenceMap[listenerToRemove];
+        NSNumber *handleNumber = self.listenerMap[listenerToRemove];
+        if (dataRef && handleNumber) {
+            FIRDatabaseHandle handle = [handleNumber longValue];
+            [dataRef removeObserverWithHandle:handle];
+            [removedListeners addObject:listenerToRemove];
+        }
+    }
+    [self.listenerMap removeAllObjects];
+    [self.referenceMap removeAllObjects];
+    
+    NSDictionary *extraData = @{@"values": removedListeners};
+    [self sendDatabaseEvent:@"FirebaseRealTime_RemoveListeners"
+                   asyncId:asyncId
+                      path:nil
+                    status:200
+                extraData:extraData];
 }
 
-+(NSDictionary*) json2dic:(NSString*) json
-{
-    NSError *jsonError = nil;
-    NSData *objectData = [json dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:objectData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&jsonError];
-    if(jsonError == nil)
-        return dic;
-    return nil;
+#pragma mark - Helper Methods
+
+- (NSDictionary<NSString *, void (^)(id)> *)createValueEventListener:(NSString *)eventType
+                                                                            asyncId:(long)asyncId
+                                                                               path:(NSString *)path {
+    __weak YYFirebaseRealTime *weakSelf = self;
+    id onDataChange = ^(FIRDataSnapshot * _Nonnull snapshot) {
+        __strong YYFirebaseRealTime *strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        NSMutableDictionary *extraData = [NSMutableDictionary dictionary];
+        
+        if (snapshot.exists) {
+            id dataValue = snapshot.value;
+            if ([dataValue isKindOfClass:[NSArray class]] || [dataValue isKindOfClass:[NSMutableArray class]]) {
+                if ([snapshot hasChildren]) {
+                    NSMutableArray *list = [NSMutableArray array];
+                    
+                    // Enumerate through each child snapshot
+                    for (FIRDataSnapshot *childSnapshot in snapshot.children) {
+                        id childValue = childSnapshot.value;
+                        if (childValue) {
+                            [list addObject:childValue];
+                        }
+                    }
+                    dataValue = [list copy];
+                }
+            }
+            extraData[@"value"] = dataValue;
+        }
+        
+        [strongSelf sendDatabaseEvent:eventType
+                           asyncId:asyncId
+                              path:path
+                            status:200
+                        extraData:extraData];
+    };
+    
+    id onCancel = ^(NSError * _Nonnull error) {
+        __strong YYFirebaseRealTime *strongSelf = weakSelf;
+        if (!strongSelf) return;
+        
+        [strongSelf sendErrorEvent:eventType asyncId:asyncId path:path exception:error];
+    };
+    
+    return @{@"onDataChange": onDataChange, @"onCancel": onCancel};
 }
 
-+(NSString*) toJSON:(id) obj
-{
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:obj
-                                                           options:0//NSJSONWritingPrettyPrinted
-                                                             error:&error];
-    if(error == nil)
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    else
-        return @"{}";
+- (FIRDatabaseReference *)buildReference:(NSDictionary *)fluentObj {
+    FIRDatabaseReference *dataRef;
+    NSString *databaseUrl = fluentObj[@"database"];
+    
+    if (databaseUrl && [databaseUrl isKindOfClass:[NSString class]]) {
+        dataRef = [[FIRDatabase database] referenceFromURL:databaseUrl];
+    } else {
+        dataRef = [[FIRDatabase database] reference];
+    }
+    
+    NSString *path = fluentObj[@"path"];
+    if (path && [path isKindOfClass:[NSString class]]) {
+        dataRef = [dataRef child:path];
+    }
+    
+    id pushValue = fluentObj[@"push"];
+    if ([pushValue isKindOfClass:[NSNumber class]] && [pushValue boolValue]) {
+        dataRef = [dataRef childByAutoId];
+    }
+    
+    return dataRef;
 }
 
-- (void) InsertCallbackStatus:(int) dsMapIndex error:(NSError*) error
-{
+- (FIRDatabaseQuery *)buildQuery:(long)asyncId
+                           eventType:(NSString *)eventType
+                            fluentObj:(NSDictionary *)fluentObj
+                              dataRef:(FIRDatabaseReference *)dataRef {
+    FIRDatabaseQuery *query = dataRef;
+    
+    NSString *orderBy = fluentObj[@"orderBy"];
+    if (orderBy && [orderBy isKindOfClass:[NSString class]]) {
+        if ([orderBy isEqualToString:@"$key"]) {
+            query = [query queryOrderedByKey];
+        }
+        else if ([orderBy isEqualToString:@"$value"]) {
+            query = [query queryOrderedByValue];
+        }
+        else if ([orderBy isEqualToString:@"$priority"]) {
+            query = [query queryOrderedByPriority];
+        }
+        else {
+            // Default to ordering by child property
+            query = [query queryOrderedByChild:orderBy];
+        }
+    }
+    
+    // Apply additional query parameters (equalTo or range queries)
+    id equalTo = fluentObj[@"equalTo"];
+    id startAt = fluentObj[@"startAt"];
+    id startAfter = fluentObj[@"startAfter"];
+    id endAt = fluentObj[@"endAt"];
+    id endBefore = fluentObj[@"endBefore"];
+    
+    if (equalTo && ![equalTo isKindOfClass:[NSNull class]]) {
+        if ([equalTo isKindOfClass:[NSString class]] ||
+            [equalTo isKindOfClass:[NSNumber class]] ) {
+            query = [query queryEqualToValue:equalTo];
+        }
+    } else {
+        // You can only use one of these (startAt or startAfter)
+        if (startAt && ![startAt isKindOfClass:[NSNull class]]) {
+            if ([startAt isKindOfClass:[NSString class]] ||
+                [startAt isKindOfClass:[NSNumber class]] ) {
+                query = [query queryStartingAtValue:startAt];
+            }
+        }
+        else if (startAfter && ![startAfter isKindOfClass:[NSNull class]]) {
+            if ([startAfter isKindOfClass:[NSString class]] ||
+                [startAfter isKindOfClass:[NSNumber class]] ) {
+                query = [query queryStartingAfterValue:startAfter];
+            }
+        }
+        
+        // You can only use one of these (endAt or endBefore)
+        if (endAt && ![endAt isKindOfClass:[NSNull class]]) {
+            if ([endAt isKindOfClass:[NSString class]] ||
+                [endAt isKindOfClass:[NSNumber class]] ) {
+                query = [query queryEndingAtValue:endAt];
+            }
+        }
+        else if (endBefore && ![endBefore isKindOfClass:[NSNull class]]) {
+            if ([endBefore isKindOfClass:[NSString class]] ||
+                [endBefore isKindOfClass:[NSNumber class]] ) {
+                query = [query queryEndingBeforeValue:endBefore];
+            }
+        }
+    }
+
+    // Apply limit queries
+    NSNumber *limitToFirst = fluentObj[@"limitToFirst"];
+    NSNumber *limitToLast = fluentObj[@"limitToLast"];
+    
+    if (limitToFirst && [limitToFirst isKindOfClass:[NSNumber class]]) {
+        query = [query queryLimitedToFirst:[limitToFirst integerValue]];
+    }
+    
+    if (limitToLast && [limitToLast isKindOfClass:[NSNumber class]]) {
+        query = [query queryLimitedToLast:[limitToLast integerValue]];
+    }
+    
+    return query;
+}
+
+- (int)getStatusFromError:(NSError *)error {
     //I found this error codes in FirebaseDatabase/Sources/Utilities/FUtilities.m
-    //Looks enoght for RealTime
     if(error)
     {
         switch(error.code)
         {
             case 1:
-                dsMapAddDouble(dsMapIndex,(char*)"status",401);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"permission_denied");
-                break;
+                return 401;
             case 2:
-                dsMapAddDouble(dsMapIndex,(char*)"status",503);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"unavailable");
+                return 503;
                 break;
             case 3:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"WriteCanceled");
-                break;
+                return 400;
             default:
-                dsMapAddDouble(dsMapIndex,(char*)"status",400);
-                dsMapAddString(dsMapIndex,(char*)"errorMessage",(char*)"Unknown Error");
-                break;
+                return 400;
         };
     }
     else
-        dsMapAddDouble(dsMapIndex,(char*)"status",200);
+        return 200;
 }
+
+- (void)sendDatabaseEvent:(NSString *)eventType
+                asyncId:(long)asyncId
+                   path:(nullable NSString *)path
+                 status:(int)status
+             extraData:(nullable NSDictionary *)extraData {
+    NSMutableDictionary *data = [NSMutableDictionary dictionary];
+    data[@"listener"] = @(asyncId);
+    
+    if (path) {
+        data[@"path"] = path;
+    }
+    
+    data[@"status"] = @(status);
+    
+    if (extraData) {
+        [data addEntriesFromDictionary:extraData];
+    }
+    
+    [FirebaseUtils sendSocialAsyncEvent:eventType data:data];
+}
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path status:(int)status errorMessage:(NSString *)errorMessage {
+    NSDictionary *extraData = @{@"errorMessage": errorMessage};
+    [self sendDatabaseEvent:eventType asyncId:asyncId path:path status:status extraData:extraData];
+}
+
+- (void)sendErrorEvent:(NSString *)eventType asyncId:(long)asyncId path:(nullable NSString *)path exception:(NSError *)exception {
+    int status = [self getStatusFromError:exception];
+    [self sendErrorEvent:eventType asyncId:asyncId path:path status:status errorMessage:exception.localizedDescription];
+}
+
 
 @end
 
+${YYIos_FirebaseDatabase_Skip_End}

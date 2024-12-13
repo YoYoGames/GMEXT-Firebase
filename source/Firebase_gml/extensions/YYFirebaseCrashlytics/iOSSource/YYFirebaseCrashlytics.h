@@ -1,19 +1,22 @@
-
+#import <Foundation/Foundation.h>
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseCrashlytics/FirebaseCrashlytics.h>
 
-#if !defined(__has_include)
-  #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \
-          import the headers individually."
-#else
-  #if __has_include(<FirebaseCrashlytics/FirebaseCrashlytics.h>)
-    #import<FirebaseCrashlytics/FirebaseCrashlytics.h>
-  #endif
+@interface YYFirebaseCrashlytics : NSObject
 
-#endif  // defined(__has_include)
+@property (nonatomic, assign) BOOL isAutoDataCollectionEnabled;
 
-@interface YYFirebaseCrashlytics:NSObject
-{
-}
+- (double)FirebaseCrashlytics_SetUserIdentifier:(NSString *)string;
+- (double)FirebaseCrashlytics_SetCustomKey:(NSString *)key value:(NSString *)value;
+- (double)FirebaseCrashlytics_SetCustomKeys:(NSString *)jsonString;
+- (double)FirebaseCrashlytics_Log:(NSString *)message;
+- (void)FirebaseCrashlytics_Crash:(NSString *)message;
+- (double)FirebaseCrashlytics_RecordException:(NSString *)message;
+- (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set:(double)enabled;
+- (double)FirebaseCrashlytics_CrashlyticsCollectionEnabled_Check;
+- (double)FirebaseCrashlytics_DidCrashOnPreviousExecution;
+- (double)FirebaseCrashlytics_UnsentReports_Delete;
+- (double)FirebaseCrashlytics_UnsentReports_Send;
+- (double)FirebaseCrashlytics_UnsentReports_Check;
 
 @end
-

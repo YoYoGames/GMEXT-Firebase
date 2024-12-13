@@ -1,22 +1,16 @@
+${YYIos_FirebaseFirestore_Skip_Start}
 
 #import <FirebaseCore/FirebaseCore.h>
+#import <FirebaseFirestore/FirebaseFirestore.h>
 
-#if !defined(__has_include)
-  #error "Firebase.h won't import anything if your compiler doesn't support __has_include. Please \
-          import the headers individually."
-#else
+NS_ASSUME_NONNULL_BEGIN
 
-  #if __has_include(<FirebaseFirestore/FirebaseFirestore.h>)
-    #import <FirebaseFirestore/FirebaseFirestore.h>
-  #endif
+@interface YYFirebaseFirestore : NSObject
 
-#endif  // defined(__has_include)
-
-@interface YYFirebaseFirestore:NSObject
-{
-    NSMutableDictionary *Firestore_ListenerMap;
-    int Firestore_indMap;
-}
+- (double)FirebaseFirestore_SDK:(NSString *)fluentJson;
 
 @end
 
+NS_ASSUME_NONNULL_END
+
+${YYIos_FirebaseFirestore_Skip_End}

@@ -9,8 +9,8 @@
   "name":"Obj_FirebaseAuthentication_allCallbacks",
   "overriddenProperties":[],
   "parent":{
-    "name":"Testing",
-    "path":"folders/Firebase Authentication/Testing.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Authentication/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

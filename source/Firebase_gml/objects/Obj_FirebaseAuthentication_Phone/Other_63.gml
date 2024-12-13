@@ -17,7 +17,8 @@ if(async_load[?"result"] != "")
 	if(async_load[?"id"] == request_code)
 	{
 		var code = async_load[?"result"]
-		
+		show_debug_message("Request_code:")
+		show_debug_message([phone,code,sessionInfo])
 		if(FirebaseAuthentication_GetUID() == "")
 			FirebaseAuthentication_SignInWithPhoneNumber(phone,code,sessionInfo)
 		else

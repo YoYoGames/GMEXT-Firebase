@@ -13,18 +13,18 @@ if(!Obj_FirebaseRealTime_Query_OrderByChild.locked)
 	builder = builder.OrderByChild(Obj_FirebaseRealTime_Query_OrderByChild.value)
 
 if(!Obj_FirebaseRealTime_Query_EqualTo.locked and Obj_FirebaseRealTime_Query_EqualTo.value != "")
-	builder = builder.EqualTo(real(Obj_FirebaseRealTime_Query_EqualTo.value))
+	builder = builder.EqualTo(Obj_FirebaseRealTime_Query_EqualTo.value)
 	
 if(!Obj_FirebaseRealTime_Query_StartAt.locked and Obj_FirebaseRealTime_Query_StartAt.value != "")
-	builder = builder.StartAt(real(Obj_FirebaseRealTime_Query_StartAt.value))
+	builder = builder.StartAt(Obj_FirebaseRealTime_Query_StartAt.value)
 
 if(!Obj_FirebaseRealTime_Query_EndAt.locked and Obj_FirebaseRealTime_Query_EndAt.value != "")
-	builder = builder.EndAt(real(Obj_FirebaseRealTime_Query_EndAt.value))
+	builder = builder.EndAt(Obj_FirebaseRealTime_Query_EndAt.value)
 
 if(!Obj_FirebaseRealTime_Query_LimitToLast.locked)
 	builder = builder.LimitToLast(Obj_FirebaseRealTime_Query_LimitToLast.value)
 
 if(!Obj_FirebaseRealTime_Query_LimitToFirst.locked)
 	builder = builder.LimitToFirst(Obj_FirebaseRealTime_Query_LimitToFirst.value)
-	
+
 builder.Read();

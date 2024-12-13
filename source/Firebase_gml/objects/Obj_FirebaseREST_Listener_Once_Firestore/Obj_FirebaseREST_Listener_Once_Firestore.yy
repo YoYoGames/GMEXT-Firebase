@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
-    "path":"folders/Firebase Firestore/Extensions/Firebase REST API Library (Don't Touch)/Listeners Firestore/Tools/Objects.yy",
+    "path":"folders/Firebase/Firebase Firestore/Extensions/Firebase REST API Library (Don't Touch)/Listeners Firestore/Tools/Objects.yy",
   },
   "parentObjectId":{
     "name":"Obj_FirebaseREST_Listener_Firestore",

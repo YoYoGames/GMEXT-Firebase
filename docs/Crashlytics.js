@@ -32,5 +32,10 @@
  * @ref FirebaseCrashlytics_UnsentReports_Send
  * @section_end
  * 
+ * @section_const Constants
+ * @desc The following constants are given for working with Firebase Crashlytics extension:
+ * @ref FirebaseCrashlyticsResult
+ * @section_end
+ * 
  * @module_end
  */

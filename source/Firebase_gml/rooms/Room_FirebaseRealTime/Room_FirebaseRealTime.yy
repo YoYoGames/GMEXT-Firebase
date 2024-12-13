@@ -66,7 +66,7 @@
   "name":"Room_FirebaseRealTime",
   "parent":{
     "name":"Rooms",
-    "path":"folders/Firebase RealTime/Rooms.yy",
+    "path":"folders/Firebase Demo/Firebase RealTime/Rooms.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

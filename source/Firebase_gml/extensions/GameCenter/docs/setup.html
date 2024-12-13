@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Setup - GMEXT-GameCenter</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+        <link href="assets/css/gmext_style.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Setup";
+        var mkdocs_page_input_path = "setup.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/gml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> GMEXT-GameCenter
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="home.html">GameCenter Ext</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="setup.html">Setup</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ios">iOS</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#macos">macOS</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="quick_start_guide.html">Quick Start Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="presentview.html">PresentView</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="localplayer.html">LocalPlayer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="savedgames.html">SavedGames</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="leaderboard.html">Leaderboard</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="achievement.html">Achievement</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="accesspoint.html">AccessPoint</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">GMEXT-GameCenter</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Setup</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter/edit/master/docs/setup.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="setup">Setup</h1>
+<p>The Apple GameCenter extension is to be used alongside your Apple Developer account (<a href="https://appstoreconnect.apple.com/">App Store Connect webpage</a>). All the required personal leaderboard ids and achievement ids should be managed from there.</p>
+<ol>
+<li>For creating leaderboards follow this guide: <a href="https://developer.apple.com/help/app-store-connect/configure-game-center/configure-leaderboards">Adding Leaderboards</a></li>
+<li>For creating achievements follow the guide: <a href="https://developer.apple.com/help/app-store-connect/configure-game-center/configure-achievements">Adding Achievements</a></li>
+<li>If you intend to use <a href="savedgames.html">SavedGames</a> functionality you need to create a new iCloud container using your Apple developer account dashboard (<a href="https://icloud.developer.apple.com/dashboard/">dashboard link</a>).</li>
+</ol>
+<h2 id="ios">iOS</h2>
+<p>These are steps specific to the iOS export of the extension:</p>
+<ol>
+<li>
+<p>If you intend to use <a href="savedgames.html">SavedGames</a> functionality. You will also need to config your project following these steps:</p>
+</li>
+<li>
+<p>Double click the <strong>GameCenter</strong> extension icon on your project:</p>
+</li>
+</ol>
+<p><img alt="Asset Browser Extension" src="assets/images/GameCenter_AssetBrowser_extension.png" /></p>
+<ul>
+<li>Click <strong>iOS</strong> line under <strong>Extra Platforms</strong>:</li>
+</ul>
+<p><img alt="Asset Browser Extension" src="assets/images/GameCenter_Platform_Settings.png" /></p>
+<ul>
+<li>This will bring you to the code injection panel:</li>
+</ul>
+<p><img alt="Asset Browser Extension" src="assets/images/gamecenter_ios_codeinjection.png" /></p>
+<p>In this panel you need to make sure you have the following code in the <code>SAVED GAMES SECTION</code>:</p>
+<pre class="highlight"><code class="language-gml">    &lt;key&gt;com.apple.developer.icloud-container-identifiers&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;iCloud.${YYBundleIdentifier}&lt;/string&gt;
+    &lt;/array&gt;
+
+    &lt;key&gt;com.apple.developer.icloud-services&lt;/key&gt;
+    &lt;array&gt;
+        &lt;string&gt;CloudDocuments&lt;/string&gt;
+    &lt;/array&gt;</code></pre>
+<blockquote>
+<p>If the code is already there and you are not using this functionality you should remove the section entirely.</p>
+</blockquote>
+<h2 id="macos">macOS</h2>
+<p>These are steps specific to the macOS export, in order to properly make use of GameCenter extension:</p>
+<ol>
+<li>After exporting the project to macOS YYC using the IDE open the Xcode project in your mac. And follow the described steps in the image below:</li>
+</ol>
+<p><img alt="Asset Browser Extension" src="assets/images/gamecenter_macos_config1.png" /></p>
+<ol>
+<li>In the <strong>Capabilities</strong> popup window search for <strong>"GameCenter"</strong> on the top bar and double click it to add it to your project:</li>
+</ol>
+<p><img alt="Asset Browser Extension" src="assets/images/gamecenter_macos_config2.png" /></p>
+<ol>
+<li>If you intend to use <a href="savedgames.html">SavedGames</a> functionality, you will need to also add the <strong>"iCloud"</strong> capability.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To add this capability follow step <code>2.</code> and search for <strong>"iCloud"</strong> and double click it to add it to your project.</p>
+</div>
+<p><img alt="Asset Browser Extension" src="assets/images/gamecenter_macos_config3.png" /></p>
+<p>There are some final options you will need to configure when using this capability:</p>
+<ul>
+<li>Enable - ✅ <strong>iCloud Documents</strong> - from the iCloud section.</li>
+<li>Select the previously created iCloud container.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You are also able to create a new iCloud container directly from XCode (using the <code>+</code> icon).</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="home.html" class="btn btn-neutral float-left" title="GameCenter Ext"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="quick_start_guide.html" class="btn btn-neutral float-right" title="Quick Start Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p><p align="center">GameMaker 2024</p></p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/YoYoGames/GMEXT-GameCenter" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="home.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="quick_start_guide.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      <script src="assets/js/gmext_script.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

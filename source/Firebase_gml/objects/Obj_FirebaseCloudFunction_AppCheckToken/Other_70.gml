@@ -1,11 +1,11 @@
 
 
-if(async_load[?"type"] == "FirebaseAppCheck_GetToket")
+if(async_load[?"type"] == "FirebaseAppCheck_GetToken")
 {
 	if(async_load[?"success"])
 	{
 		var _token = async_load[?"token"]
-		show_debug_message("FirebaseAppCheck_GetToket:\n" + _token)
+		show_debug_message("FirebaseAppCheck_GetToken:\n" + _token)
 
 		var _body = {
 			token: _token

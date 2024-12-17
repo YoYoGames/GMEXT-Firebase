@@ -1,2 +1,2 @@
 
-FirebaseAppCheck_GetToket(false)
+FirebaseAppCheck_GetToken(false)

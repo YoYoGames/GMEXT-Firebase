@@ -16,7 +16,7 @@
 	return self;
 }
 
--(void) FirebaseAppCheck_GetToket:(double)_force_refresh
+-(void) FirebaseAppCheck_GetToken:(double)_force_refresh
 {
 
     [[FIRAppCheck appCheck] tokenForcingRefresh:_force_refresh>0.5 completion:^(FIRAppCheckToken * _Nullable token, NSError * _Nullable error) {
@@ -35,7 +35,7 @@
 			data[@"success"] = @(1.0);
 		}
         
-        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAppCheck_GetToket" data:data];
+        [FirebaseUtils sendSocialAsyncEvent:@"FirebaseAppCheck_GetToken" data:data];
     }];
 }
 

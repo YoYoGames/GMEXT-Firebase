@@ -22,4 +22,3 @@
     * ### [Realtime Guides](guides_realtime)
   * ### [Remote Config](remote_config)
     * ### [Remote Config Guides](guides_remote_config)
-  * ### [Local Notifications](local_notifications)

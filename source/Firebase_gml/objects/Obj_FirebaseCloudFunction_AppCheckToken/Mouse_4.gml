@@ -1,5 +1,5 @@
 		
-FirebaseAppCheck_GetToket(false)
+FirebaseAppCheck_GetToken(false)
 
 //var body = {
 //		token: "JUST FOR TESTING"

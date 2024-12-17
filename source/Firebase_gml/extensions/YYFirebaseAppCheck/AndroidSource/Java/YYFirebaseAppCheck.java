@@ -29,7 +29,7 @@ public class YYFirebaseAppCheck
 	}
 	
 	
-	public void FirebaseAppCheck_GetToket(double _force_refresh)
+	public void FirebaseAppCheck_GetToken(double _force_refresh)
 	{
 		FirebaseAppCheck.getInstance().getAppCheckToken(_force_refresh > 0.5).addOnCompleteListener(new OnCompleteListener<AppCheckToken>() 
 		{
@@ -49,7 +49,7 @@ public class YYFirebaseAppCheck
 					data.put("success", 0.0);
 				}
 
-				FirebaseUtils.sendSocialAsyncEvent("FirebaseAppCheck_GetToket",data);
+				FirebaseUtils.sendSocialAsyncEvent("FirebaseAppCheck_GetToken",data);
 			}
 		});
 	}

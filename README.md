@@ -51,11 +51,6 @@ The Firebase API works on Android/iOS/Web through SDK, and all platforms using t
   * HTML5: `source/Firebase_gml/extensions/YYFirebaseStorage/YYFirebaseStorage.js`
   * REST API: inside GM project, asset browser: `Firebase Storage --> Extensions --> Firebase REST API Library`
 
-BONUS:
-* Local Notifications
-  * ANDROID SOURCE: `source/Firebase_gml/extensions/YYLocalNotifications/AndroidSource/Java`
-  * IOS SOURCE: `source/Firebase_gml/extensions/YYLocalNotifications/iOSSource`
-
 
 ---
 

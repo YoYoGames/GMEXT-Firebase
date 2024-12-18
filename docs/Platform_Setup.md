@@ -18,12 +18,12 @@ This setup is necessary for all the Firebase modules using Android and needs to 
 2. Now go to the **Your apps**  **section and click on the Android** button:<br>
       ![](assets/setupYourAppsSelect.PNG)
 
-3. On this screen you need enter your **Package name** (required), **App nickname** (optional) and Debug signing certificate SHA-1 (required if you are using Firebase Authentication).<br>
+3. On this screen you need enter your **Package name** (required), **App nickname** (optional) and **Debug signing certificate SHA-1** (required if you are using Firebase Authentication).<br>
       ![](assets/setupAndroidStep1.PNG)
 You can get your package name from the [Android Game Options](https://manual.gamemaker.io/monthly/en/#t=Settings%2FGame_Options%2FAndroid.htm), and your **Debug signing certificate SHA-1** from the [Android Preferences](https://manual.gamemaker.io/monthly/en/#t=Setting_Up_And_Version_Information%2FPlatform_Preferences%2FAndroid.htm) (under Keystore):<br>
       ![](assets/keyHash.png)
 
-4. Click on ** **Download google-services.json**  (make sure to save this file as we will need it in subsequent steps).<br>
+4. Click on **Download google-services.json** (make sure to save this file as we will need it in subsequent steps).<br>
       ![](assets/setupAndroidStep2.PNG)
 
 5. Ignore this screen, as this is already done in the extension.<br>
@@ -54,7 +54,7 @@ You can get your package name from the [Android Game Options](https://manual.gam
 
 # iOS Setup
 
-  This setup is necessary for all the Firebase modules using iOS and needs to be done once per project, and basically involves importing the ** **GoogleServices-Info.plist**  file into your project.
+  This setup is necessary for all the Firebase modules using iOS and needs to be done once per project, and basically involves importing the **GoogleServices-Info.plist**  file into your project.
 
 > **:warning: IMPORTANT**
 >
@@ -66,10 +66,10 @@ You can get your package name from the [Android Game Options](https://manual.gam
 2. Now go to the **Your apps**  **section and click on the iOS** button:<br>
       ![](assets/setupYourAppsSelect.PNG)
 
-3. Fill the form with your **iOS Bundle ID** , **App nickname** and **AppStore ID** (last two are optional).<br>
+3. Fill the form with your **iOS Bundle ID**, **App nickname** and **AppStore ID** (last two are optional).<br>
       ![](assets/setupiOSStep1.PNG)
 
-4. Click on ** **Download GoogleService-info.plist**  (make sure to save this file as we will need it in subsequent steps).<br>
+4. Click on **Download GoogleService-info.plist** (make sure to save this file as we will need it in subsequent steps).<br>
       ![](assets/setupiOSStep2.PNG)
 
 5. Ignore this screen, as this is already done in the extension.<br>

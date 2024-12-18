@@ -17,7 +17,7 @@
   "extensionVersion":"0.0.1",
   "files":[
     {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToket","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToket","help":"FirebaseAppCheck_GetToket(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToket","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToken","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToken","help":"FirebaseAppCheck_GetToken(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_LimitedUseToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseAppCheck_LimitedUseToken","help":"FirebaseAppCheck_LimitedUseToken()","hidden":false,"kind":4,"name":"FirebaseAppCheck_LimitedUseToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
       ],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

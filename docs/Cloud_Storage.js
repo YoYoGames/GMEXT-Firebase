@@ -16,7 +16,7 @@
  * 
  * @section_end
  * 
- * @section Functions
+ * @section_func Functions
  * @desc The following functions are provided for working with the Firebase Cloud Storage extension:
  * @ref FirebaseStorage_Cancel
  * @ref FirebaseStorage_Delete

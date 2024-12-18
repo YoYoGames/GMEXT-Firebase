@@ -1,14 +1,151 @@
-#import "UNUserNotificationCenterMultiplexer.h"
+#import <objc/runtime.h>
+#import <UserNotifications/UserNotifications.h>
+
+#import "iPad_RunnerAppDelegate.h"
 #import "YYFirebaseCloudMessaging.h"
 #import "FirebaseUtils.h"
 
-#define EVENT_OTHER_SOCIAL 70
 #define EVENT_OTHER_NOTIFICATION 71
+
+static const void *kOnceTokenKey = &kOnceTokenKey;
+
+typedef void(^RunOnceCompletionHandler)(void);
+typedef void(^RunOncePresentationHandler)(UNNotificationPresentationOptions options);
+
+// Wrap a "void(void)" completion handler so it only runs once
+static void(^RunOnceVoidCompletionHandler(void(^originalHandler)(void)))(void) {
+    __block BOOL called = NO;
+    return ^{
+        if (!called) {
+            called = YES;
+            if (originalHandler) originalHandler();
+        } else {
+            // Already called, do nothing
+        }
+    };
+}
+
+// Wrap a "(UNNotificationPresentationOptions)" completion handler so it only runs once
+static void(^RunOncePresentationCompletionHandler(void(^originalHandler)(UNNotificationPresentationOptions)))(UNNotificationPresentationOptions) {
+    __block BOOL called = NO;
+    return ^(UNNotificationPresentationOptions options){
+        if (!called) {
+            called = YES;
+            if (originalHandler) originalHandler(options);
+        } else {
+            // Already called, do nothing
+        }
+    };
+}
 
 @implementation YYFirebaseCloudMessaging
 
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        class_addProtocol([iPad_RunnerAppDelegate class], @protocol(UNUserNotificationCenterDelegate));
+        [self swizzleUserNotificationMethods];
+    });
+}
+
++ (void)swizzleUserNotificationMethods {
+    Class appDelegateClass = [iPad_RunnerAppDelegate class];
+
+    // willPresentNotification
+    [self swizzleMethodInClass:appDelegateClass
+              originalSelector:@selector(userNotificationCenter:willPresentNotification:withCompletionHandler:)
+              swizzledSelector:@selector(yy_userNotificationCenter:willPresentNotification:withCompletionHandler:)];
+
+    // didReceiveNotificationResponse
+    [self swizzleMethodInClass:appDelegateClass
+              originalSelector:@selector(userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:)
+              swizzledSelector:@selector(yy_userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:)];
+}
+
++ (void)swizzleMethodInClass:(Class)appDelegateClass
+            originalSelector:(SEL)originalSelector
+            swizzledSelector:(SEL)swizzledSelector {
+
+    Method originalMethod = class_getInstanceMethod(appDelegateClass, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(self, swizzledSelector);
+
+    BOOL didAddMethod = class_addMethod(appDelegateClass,
+                                        originalSelector,
+                                        method_getImplementation(swizzledMethod),
+                                        method_getTypeEncoding(swizzledMethod));
+
+    if (didAddMethod) {
+        NSLog(@"[MobileUtils_APN] Added method %@ to class %@", NSStringFromSelector(originalSelector), NSStringFromClass(appDelegateClass));
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+        NSLog(@"[MobileUtils_APN] Swizzled method %@ in class %@", NSStringFromSelector(originalSelector), NSStringFromClass(appDelegateClass));
+    }
+}
+
+#pragma mark - Swizzled Notification Methods
+
+// Swizzled willPresentNotification
+- (void)yy_userNotificationCenter:(UNUserNotificationCenter *)center
+          willPresentNotification:(UNNotification *)notification
+            withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+
+    // Wrap the completionHandler with a run-once handler
+    void (^onceHandler)(UNNotificationPresentationOptions) = RunOncePresentationCompletionHandler(completionHandler);
+
+    // Call the original if available
+    if ([self respondsToSelector:@selector(yy_userNotificationCenter:willPresentNotification:withCompletionHandler:)]) {
+        // Here yy_ version is original due to method_exchangeImplementations logic
+        [self yy_userNotificationCenter:center willPresentNotification:notification withCompletionHandler:onceHandler];
+    }
+
+    // Insert your logic here
+    NSLog(@"YYFirebaseCloudMessaging: willPresentNotification");
+
+    UNNotificationTrigger *trigger = notification.request.trigger;
+    if ([trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        NSDictionary *userInfo = notification.request.content.userInfo;
+        [YYFirebaseCloudMessaging handleIncomingMessage:userInfo];
+    }
+
+    onceHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionBadge);
+}
+
+// Swizzled didReceiveNotificationResponse
+- (void)yy_userNotificationCenter:(UNUserNotificationCenter *)center
+     didReceiveNotificationResponse:(UNNotificationResponse *)response
+              withCompletionHandler:(void (^)(void))completionHandler {
+
+    // Wrap the completionHandler with a run-once handler
+    void (^onceHandler)(void) = RunOnceVoidCompletionHandler(completionHandler);
+
+    // Call the original if available
+    if ([self respondsToSelector:@selector(yy_userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:)]) {
+        [self yy_userNotificationCenter:center didReceiveNotificationResponse:response withCompletionHandler:onceHandler];
+    }
+
+    // Insert your logic here
+    NSLog(@"YYFirebaseCloudMessaging: didReceiveNotificationResponse");
+
+    UNNotificationTrigger *trigger = response.notification.request.trigger;
+    if ([trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
+        NSDictionary *userInfo = response.notification.request.content.userInfo;
+        [YYFirebaseCloudMessaging handleIncomingMessage:userInfo];
+    }
+
+    onceHandler();
+}
+
+#pragma mark - Extension Init
+
 - (instancetype)init {
     self = [super init];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        id appDelegate = [[UIApplication sharedApplication] delegate];
+        center.delegate = appDelegate;
+    });
     return self;
 }
 
@@ -96,17 +233,13 @@
     // Set delegates
     [FIRMessaging messaging].delegate = self;
 
-	// Register with the UNUserNotificationCenter multiplexer
-	UNUserNotificationCenterMultiplexer *multiplexer = [UNUserNotificationCenterMultiplexer sharedInstance];
-    [multiplexer registerDelegate:self];
-
     // Request notification permissions
     [self FirebaseCloudMessaging_RequestPermission];
 
     // Handle any pending notifications using launchOptions
     if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
         NSDictionary *notification = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-        [self handleIncomingMessage:notification];
+        [YYFirebaseCloudMessaging handleIncomingMessage:notification];
     }
 }
 
@@ -118,51 +251,9 @@
 	[FirebaseUtils sendSocialAsyncEvent:@"FirebaseMessaging_OnNewToken" data:data];
 }
 
-#pragma mark - UNUserNotificationCenterDelegate
+#pragma mark - Helper Methods
 
-// Handle notifications when the app is in the foreground
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-		willPresentNotification:(UNNotification *)notification 
-        withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
-
-    UNNotificationTrigger *trigger = notification.request.trigger;
-    
-	NSLog(@"YYFirebaseCloudMessaging: willPresentNotification");
-
-    // This is NOT a remote notification? Ignore...
-    if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-        return;
-    }
-
-    NSDictionary *userInfo = notification.request.content.userInfo;
-    [self handleIncomingMessage:userInfo];
-
-    // Decide whether to show the notification when the app is in foreground
-    completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionBadge);
-}
-
-// Handle notifications when the user interacts with them (background or terminated state)
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center 
-		didReceiveNotificationResponse:(UNNotificationResponse *)response 
-        withCompletionHandler:(void (^)(void))completionHandler {
-
-    UNNotification *notification = response.notification;
-    UNNotificationTrigger *trigger = notification.request.trigger;
-    
-	NSLog(@"YYFirebaseCloudMessaging: didReceiveNotificationResponse");
-
-    // This is NOT a remote notification? Ignore...
-    if (![trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
-        return;
-    }
-
-    NSDictionary *userInfo = response.notification.request.content.userInfo;
-    [self handleIncomingMessage:userInfo];
-
-    completionHandler();
-}
-
-- (void)handleIncomingMessage:(NSDictionary *)userInfo {
++ (void)handleIncomingMessage:(NSDictionary *)userInfo {
 	[FirebaseUtils sendAsyncEvent:EVENT_OTHER_NOTIFICATION eventType:@"Notification_Remote" data:userInfo];
 }
 

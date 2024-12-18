@@ -2,9 +2,8 @@
 #import <Foundation/Foundation.h>
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseMessaging/FirebaseMessaging.h>
-#import <UserNotifications/UserNotifications.h>
 
-@interface YYFirebaseCloudMessaging : NSObject <FIRMessagingDelegate, UNUserNotificationCenterDelegate>
+@interface YYFirebaseCloudMessaging : NSObject <FIRMessagingDelegate>
 
 - (void)FirebaseCloudMessaging_GetToken;
 - (void)FirebaseCloudMessaging_SubscribeToTopic:(NSString *)topic;

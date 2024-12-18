@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"GameCenter",
-  "copyToTargets":9007199254740998,
+  "copyToTargets":0,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"1.3.0",

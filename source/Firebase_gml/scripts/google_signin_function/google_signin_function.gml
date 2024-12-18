@@ -1,5 +1,5 @@
 
-function google_signin_function(){
+function google_signin_function() {
 
 }
 

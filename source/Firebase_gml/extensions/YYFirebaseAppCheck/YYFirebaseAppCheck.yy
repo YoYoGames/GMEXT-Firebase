@@ -3,7 +3,7 @@
   "%Name":"YYFirebaseAppCheck",
   "androidactivityinject":"",
   "androidclassname":"YYFirebaseAppCheck",
-  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n    implementation(\"com.google.firebase:firebase-appcheck-playintegrity\")\r\n</YYAndroidGradleDependencies>\r\n",
+  "androidcodeinjection":"\r\n<YYAndroidGradleDependencies>\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='PlayIntegrity'>\r\n        implementation(\"com.google.firebase:firebase-appcheck-playintegrity\")\r\n    </toExpand>\r\n\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='Debug'>\r\n        implementation(\"com.google.firebase:firebase-appcheck-debug\")\r\n    </toExpand>\r\n</YYAndroidGradleDependencies>\r\n\r\n<YYAndroid_AppCheck_Provider_Include>\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='PlayIntegrity'>\r\n        import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;\r\n    </toExpand>\r\n\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='Debug'>\r\n        import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;\r\n    </toExpand>\r\n</YYAndroid_AppCheck_Provider_Include>\r\n\r\n<YYAndroid_AppCheck_Provider>\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='PlayIntegrity'>\r\n        PlayIntegrityAppCheckProviderFactory\r\n    </toExpand>\r\n\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_androidProvider}' match='Debug'>\r\n        DebugAppCheckProviderFactory\r\n    </toExpand>\r\n</YYAndroid_AppCheck_Provider>",
   "androidinject":"",
   "androidmanifestinject":"",
   "androidPermissions":[],
@@ -11,12 +11,12 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseAppCheck",
-  "copyToTargets":0,
+  "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"0.0.1",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":3035426170322551022,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
+    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":9007199254741004,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToken","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToken","help":"FirebaseAppCheck_GetToken(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_LimitedUseToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseAppCheck_LimitedUseToken","help":"FirebaseAppCheck_LimitedUseToken()","hidden":false,"kind":4,"name":"FirebaseAppCheck_LimitedUseToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
       ],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
@@ -30,7 +30,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"\r\npod 'FirebaseAppCheck','11.3.0'\r\n",
-  "ioscodeinjection":"\r\n<YYIosCocoaPods>\r\npod 'FirebaseAppCheck','11.3.0'\r\n</YYIosCocoaPods>\r\n\r\n<YYIosEntitlements>\r\n<key>com.apple.developer.devicecheck.appattest-environment</key>\r\n<string>production</string>\r\n</YYIosEntitlements>\r\n\r\n\r\n",
+  "ioscodeinjection":"\r\n<YYIosCocoaPods>\r\npod 'FirebaseAppCheck','11.3.0'\r\n</YYIosCocoaPods>\r\n\r\n<YYIosEntitlements>\r\n<key>com.apple.developer.devicecheck.appattest-environment</key>\r\n<string>production</string>\r\n</YYIosEntitlements>\r\n\r\n<YYIosLaunchActionCommandLineArguments>\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_iosProvider}' match='Debug'>\r\n        <CommandLineArgument argument = \"FIRDebugEnabled\" isEnabled = \"YES\"></CommandLineArgument>\r\n    </toExpand>\r\n</YYIosLaunchActionCommandLineArguments>\r\n\r\n<YYIos_AppCheck_Provider>\r\n    <toExpand condition='${EXTOPT_YYFirebaseAppCheck_iosProvider}' match='Debug'>\r\n        #define __FIREBASE_APPCHECK_DEBUG_PROVIDER__\r\n    </toExpand>\r\n</YYIos_AppCheck_Provider>",
   "iosdelegatename":"",
   "iosplistinject":"",
   "iosProps":true,
@@ -41,7 +41,18 @@
   "maclinkerflags":"-ObjC",
   "macsourcedir":"",
   "name":"YYFirebaseAppCheck",
-  "options":[],
+  "options":[
+    {"$GMExtensionOption":"","%Name":"__extOptLabel1","defaultValue":"ANDROID OPTIONS:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"d9de3c4d-ada6-4892-91bb-c3957434332e","hidden":false,"listItems":[],"name":"__extOptLabel1","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"androidProvider","defaultValue":"Debug","description":"","displayName":"Android Provider","exportToINI":false,"extensionId":null,"guid":"88b9c315-098f-45dd-980c-ea65040c1435","hidden":false,"listItems":[
+        "Debug",
+        "PlayIntegrity",
+      ],"name":"androidProvider","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"__extOptLabel","defaultValue":"iOS OPTIONS:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"b73ca5ea-6536-47f2-a877-57e56625ce4b","hidden":false,"listItems":[],"name":"__extOptLabel","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"iosProvider","defaultValue":"Debug","description":"","displayName":"iOS Provider","exportToINI":false,"extensionId":null,"guid":"d2b9fe67-7ca9-45fe-959f-eb8cd354136d","hidden":false,"listItems":[
+        "Debug",
+        "AppAttest|DeviceCheck",
+      ],"name":"iosProvider","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+  ],
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{

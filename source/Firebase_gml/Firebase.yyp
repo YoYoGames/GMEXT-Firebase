@@ -125,7 +125,6 @@
     {"id":{"name":"GoogleSignIn","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},},
     {"id":{"name":"WebView","path":"extensions/WebView/WebView.yy",},},
     {"id":{"name":"YYFirebaseAnalytics","path":"extensions/YYFirebaseAnalytics/YYFirebaseAnalytics.yy",},},
-    {"id":{"name":"YYFirebaseAppCheck_Debug","path":"extensions/YYFirebaseAppCheck_Debug/YYFirebaseAppCheck_Debug.yy",},},
     {"id":{"name":"YYFirebaseAppCheck","path":"extensions/YYFirebaseAppCheck/YYFirebaseAppCheck.yy",},},
     {"id":{"name":"YYFirebaseAuthentication","path":"extensions/YYFirebaseAuthentication/YYFirebaseAuthentication.yy",},},
     {"id":{"name":"YYFirebaseCloudFunctions","path":"extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.yy",},},

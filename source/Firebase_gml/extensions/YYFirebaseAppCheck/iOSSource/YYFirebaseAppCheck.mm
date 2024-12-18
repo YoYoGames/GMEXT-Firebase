@@ -2,12 +2,12 @@
 #import "YYFirebaseAppCheck.h"
 #import "FirebaseUtils.h"
 
+${YYIos_AppCheck_Provider}
 
-
-@interface YourAppCheckProviderFactory : NSObject <FIRAppCheckProviderFactory>
+@interface AutoAppCheckProviderFactory : NSObject <FIRAppCheckProviderFactory>
 @end
 
-@implementation YourAppCheckProviderFactory
+@implementation AutoAppCheckProviderFactory
 
 - (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app {
   if (@available(iOS 14.0, *)) {
@@ -26,7 +26,12 @@
 	if (self) {
 		
 		[[FirebaseUtils sharedInstance] registerInitFunction:^{
-			YourAppCheckProviderFactory *providerFactory = [[YourAppCheckProviderFactory alloc] init];
+
+#ifdef __FIREBASE_APPCHECK_DEBUG_PROVIDER__
+			FIRAppCheckProviderFactory *providerFactory = [[FIRAppCheckDebugProviderFactory alloc] init];
+#else
+			FIRAppCheckProviderFactory *providerFactory = [[AutoAppCheckProviderFactory alloc] init];
+#endif
 			[FIRAppCheck setAppCheckProviderFactory:providerFactory];
 			
 		} withPriority:1];

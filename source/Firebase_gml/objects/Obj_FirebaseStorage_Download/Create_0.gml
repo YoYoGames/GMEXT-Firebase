@@ -6,6 +6,6 @@ text = "Download"
 
 img = noone
 
-porcent = 0
+percent = 0
 
 localfile = "download.png"

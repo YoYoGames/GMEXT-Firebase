@@ -419,11 +419,6 @@ public class FacebookExtension2  extends RunnerSocial
 		return currentRequestId;
     }
 	
-    public void fb_login(double permissionsListId, double loginType) 
-	{    	
-		fb_login(permissionsListId);
-    }	
-	
     private static void fb_set_status(String newState)
     {
 		Log.i("yoyo", "Facebook login status: " + msLoginStatus);

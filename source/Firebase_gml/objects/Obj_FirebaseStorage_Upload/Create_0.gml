@@ -3,6 +3,6 @@
 event_inherited();
 
 text = "Upload"
-porcent = 0
+percent = 0
 
 localfile = "upload.png"

@@ -89,9 +89,8 @@ YYFacebook *mFb;
 // fb_login
 ////////////////////////////
 - (double)fb_login:(double)_permissions
-		 loginType:(double)_loginType
 {
-    return [mFb fb_loginWith_permissions:[self dsListToArray: _permissions] mviewcontroller:g_controller _loginType:_loginType];
+    return [mFb fb_loginWith_permissions:[self dsListToArray: _permissions] mviewcontroller:g_controller];
 }
 
 - (void)fb_logout

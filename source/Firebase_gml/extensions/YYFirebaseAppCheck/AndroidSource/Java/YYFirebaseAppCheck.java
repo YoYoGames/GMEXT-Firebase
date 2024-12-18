@@ -2,7 +2,11 @@ package ${YYAndroidPackageName};
 
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.AppCheckToken;
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+
+${YYAndroid_AppCheck_Provider_Include}
+
+//import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -22,10 +26,9 @@ public class YYFirebaseAppCheck
 	public YYFirebaseAppCheck() {
         // Initialize the cached instance
         FirebaseUtils.getInstance().registerInitFunction(()-> {
-			Log.i("yoyo","Firebase init by: YYFirebaseAppCheck");
             appCheck = FirebaseAppCheck.getInstance();
-			appCheck.installAppCheckProviderFactory(PlayIntegrityAppCheckProviderFactory.getInstance());
-        }, 5);
+			appCheck.installAppCheckProviderFactory(${YYAndroid_AppCheck_Provider}.getInstance());
+        }, 6);
 	}
 	
 	

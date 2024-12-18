@@ -424,7 +424,7 @@ class YYFacebookShareDialog: SharingDelegate
     ////////////////////////////
     // fb_login
     ////////////////////////////
-    @objc public func fb_login(_permissions: NSArray,mviewcontroller:UIViewController, _loginType: Double) -> Double
+    @objc public func fb_login(_permissions: NSArray,mviewcontroller:UIViewController) -> Double
     {
         
         // Check if we're alredy logged in
@@ -434,25 +434,6 @@ class YYFacebookShareDialog: SharingDelegate
             fb_set_status(_status: "AUTHORISED");
             return 0;
         }
-        
-        /*
-        // Parse login type
-        FBSDKLoginBehavior eType = FBSDKLoginBehaviorNative;
-        switch((int)_loginType)
-        {
-            case FacebookExtension2_LOGIN_TYPE_WEB_VIEW:
-                eType = FBSDKLoginBehaviorWeb;
-                break;
-                
-            case FacebookExtension2_LOGIN_TYPE_SYSTEM_ACCOUNT:
-                eType = FBSDKLoginBehaviorSystemAccount;
-                break;
-                
-            case FacebookExtension2_LOGIN_TYPE_BROWSER:
-                eType = FBSDKLoginBehaviorBrowser;
-                break;
-        }
-        */
         
         // Start login process
         fb_set_status(_status: "PROCESSING");

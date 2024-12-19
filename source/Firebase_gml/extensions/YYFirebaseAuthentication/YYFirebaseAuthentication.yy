@@ -109,6 +109,7 @@
   "macsourcedir":"",
   "name":"YYFirebaseAuthentication",
   "options":[
+    {"$GMExtensionOption":"","%Name":"appId","defaultValue":"","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"6302af9d-839b-45ed-8392-870257ce79b5","hidden":false,"listItems":[],"name":"appId","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"WebAPIKey","defaultValue":"","description":"Get this from your Firebase project's dashboard.","displayName":"WebAPI Key","exportToINI":false,"extensionId":null,"guid":"2df2e529-85ff-4387-bb93-5f6df9f9f215","hidden":false,"listItems":[],"name":"WebAPIKey","optType":2,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"mode","defaultValue":"SDKs When Available","description":"The SDK is limited to some platforms (check the manual)","displayName":"Mode (SDK or REST)","exportToINI":false,"extensionId":null,"guid":"04e841fc-69d6-4b67-9520-26032dc733fb","hidden":false,"listItems":[
         "SDKs Only",

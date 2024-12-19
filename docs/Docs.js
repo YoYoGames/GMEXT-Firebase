@@ -11,6 +11,7 @@
  * @section Modules
  * @desc This is a list of the modules included in the Firebase collection:
  * @ref module.analytics
+ * @ref module.app_check
  * @ref module.authentication
  * @ref module.cloud_functions
  * @ref module.cloud_messaging

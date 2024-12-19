@@ -26,6 +26,7 @@
  * @ref FirebaseCrashlytics_Log
  * @ref FirebaseCrashlytics_RecordException
  * @ref FirebaseCrashlytics_SetCustomKey
+ * @ref FirebaseCrashlytics_SetCustomKeys
  * @ref FirebaseCrashlytics_SetUserIdentifier
  * @ref FirebaseCrashlytics_UnsentReports_Check
  * @ref FirebaseCrashlytics_UnsentReports_Delete

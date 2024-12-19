@@ -3,6 +3,8 @@
 * ### [Modules]
   * ### ${module.analytics}
     * ### [Analytics Guides](guides_analytics)
+  * ### ${module.app_check}
+    * ### ${page.guides_app_check}
   * ### [Authentication](authentication)
     * ### [Authentication Guides](guides_authentication)
     * ### [Authentication Logins](logins_authentication)

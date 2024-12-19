@@ -253,4 +253,5 @@
  * @desc Represents the possible results for operations in the Crashlytics module.
  * @member FIREBASE_CRASHLYTICS_SUCCESS Indicates the operation was completed successfully.
  * @member FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS Indicates the operation failed due to invalid input parameters.
+ * @const_end
  */

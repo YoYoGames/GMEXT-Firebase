@@ -13,7 +13,7 @@ This setup is necessary for all the Firebase modules using Android and needs to 
 > Please refer to [this Helpdesk article](https://help.gamemaker.io/hc/en-us/articles/115001368727-Setting-Up-For-Android) for instructions on setting up an Android project.
 
 1. Click the **Settings** icon (next to Project Overview) and select **Project settings:** <br>
-          ![](assets/setupProjectSettings.PNG)
+      ![](assets/setupProjectSettings.PNG)
 
 2. Now go to the **Your apps**  **section and click on the Android** button:<br>
       ![](assets/setupYourAppsSelect.PNG)

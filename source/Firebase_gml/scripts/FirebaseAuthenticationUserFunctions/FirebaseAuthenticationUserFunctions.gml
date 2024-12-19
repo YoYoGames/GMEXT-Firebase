@@ -449,6 +449,7 @@ function FirebaseAuthentication_SendEmailVerification()
 	Firebase_Listener_SetErrorCountLimit_Authentication(listener,0)
 	return listener;
 }
+
 /*
 //Confirm email verification // Not contain id_token, Maybe can be useful even in SDKs, already tested in REST API
 function FirebaseAuthentication_ConfirmEmailVerification(oobCode)
@@ -471,6 +472,7 @@ function FirebaseAuthentication_ConfirmEmailVerification(oobCode)
 	return listener;
 }
 */
+
 //Delete account
 function FirebaseAuthentication_DeleteAccount()
 {
@@ -524,7 +526,6 @@ function FirebaseAuthentication_SignOut()
 		event_perform_async(ev_async_social,map)
 	}
 }
-
 
 function FirebaseAuthentication_GetIdToken()
 {

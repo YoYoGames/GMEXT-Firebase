@@ -45,7 +45,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"\r\n        pod 'FirebaseMessaging', '11.3.0'\r\n",
-  "ioscodeinjection":"\r\n<YYIosCocoaPods>\r\n        pod 'FirebaseMessaging', '11.3.0'\r\n</YYIosCocoaPods>\r\n\r\n",
+  "ioscodeinjection":"\r\n<YYIosCocoaPods>\r\n        pod 'FirebaseMessaging', '11.3.0'\r\n</YYIosCocoaPods>\r\n\r\n<YYIosEntitlements>\r\n<key>aps-environment</key>\r\n<string>development</string>\r\n</YYIosEntitlements>",
   "iosdelegatename":"",
   "iosplistinject":"",
   "iosProps":true,

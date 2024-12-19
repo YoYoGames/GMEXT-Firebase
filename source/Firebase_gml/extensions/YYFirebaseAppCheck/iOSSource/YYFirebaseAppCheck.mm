@@ -10,11 +10,15 @@ ${YYIos_AppCheck_Provider}
 @implementation AutoAppCheckProviderFactory
 
 - (nullable id<FIRAppCheckProvider>)createProviderWithApp:(nonnull FIRApp *)app {
-  if (@available(iOS 14.0, *)) {
-    return [[FIRAppAttestProvider alloc] initWithApp:app];
-  } else {
-    return [[FIRDeviceCheckProvider alloc] initWithApp:app];
-  }
+if (@available(iOS 14.0, *)) {
+		return [[FIRAppAttestProvider alloc] initWithApp:app];
+	} else {
+		// iOS 13 and earlier
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+		return [[FIRDeviceCheckProvider alloc] initWithApp:app];
+#pragma clang diagnostic pop
+	}
 }
 
 @end
@@ -28,9 +32,9 @@ ${YYIos_AppCheck_Provider}
 		[[FirebaseUtils sharedInstance] registerInitFunction:^{
 
 #ifdef __FIREBASE_APPCHECK_DEBUG_PROVIDER__
-			FIRAppCheckProviderFactory *providerFactory = [[FIRAppCheckDebugProviderFactory alloc] init];
+			id<FIRAppCheckProviderFactory> providerFactory = [[FIRAppCheckDebugProviderFactory alloc] init];
 #else
-			FIRAppCheckProviderFactory *providerFactory = [[AutoAppCheckProviderFactory alloc] init];
+			id<FIRAppCheckProviderFactory> providerFactory = [[AutoAppCheckProviderFactory alloc] init];
 #endif
 			[FIRAppCheck setAppCheckProviderFactory:providerFactory];
 			

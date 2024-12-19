@@ -1,4 +1,6 @@
 #import <UIKit/UIKit.h>
+#import <UserNotifications/UserNotifications.h>
+
 #import <Foundation/Foundation.h>
 #import <FirebaseCore/FirebaseCore.h>
 #import <FirebaseMessaging/FirebaseMessaging.h>

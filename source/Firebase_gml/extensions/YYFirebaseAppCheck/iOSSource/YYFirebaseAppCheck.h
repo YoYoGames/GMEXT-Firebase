@@ -5,7 +5,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface YYFirebaseAppCheck : NSObject <FIRAppCheckProviderFactory>
+@interface YYFirebaseAppCheck : NSObject
 
 @end
 

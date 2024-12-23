@@ -3,7 +3,7 @@
     "projectFile": "source/Firebase_gml/Firebase.yyp",
     "projectVersion": "LTS22",
     "releaseTemplate": "templates/release_body.md",
-    "documentationFolder": "source/Firebase_gml/extensions/FirebaseSetup",
+    "documentationFolder": "source/Firebase_gml/extensions/FirebaseSetup/FirebaseSetup.yy",
     "extensionMetaData": [
         {
             "extensionFile": "source/Firebase_gml/extensions/YYFirebaseAnalytics/YYFirebaseAnalytics.yy",

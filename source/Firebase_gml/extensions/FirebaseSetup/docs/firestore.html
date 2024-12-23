@@ -55,6 +55,14 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="app_check.html">App Check</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_app_check.html">App Check Guide</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
                 </li>
               </ul>
@@ -140,10 +148,6 @@
                 <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
-                </li>
-              </ul>
       </div>
     </div>
     </nav>
@@ -185,8 +189,12 @@ Check the <a href="https://firebase.google.com/docs/firestore">official page</a>
 <li><a href="guides_firestore.html#platform-setup">Platform Setup</a> (configuring SDKs or REST API)</li>
 </ul>
 <h2 id="functions">Functions</h2>
-<p>The Firestore extension was implemented using a fluent-API (method chaining) approach and the entry point for interacting with the database is using the function <a href="firestore.html#firebasefirestore">FirebaseFirestore</a>, which will return a <a href="firestore.html#dbreference">dbReference</a>, that can be either a <em>&lt;dbCollection&gt;</em> or a <em>&lt;dbDocument&gt;</em>.
-The following functions are given for working with the Firebase Firestore extension:</p>
+<p>The Firestore extension was implemented using a fluent-API (method chaining) approach and the entry point for interacting with the database is using the function <a href="firestore.html#firebasefirestore">FirebaseFirestore</a>, which will return a <a href="firestore.html#dbreference">dbReference</a>, that can be either a <em>&lt;dbCollection&gt;</em> or a <em>&lt;dbDocument&gt;</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The write functions <a href="firestore.html#dbreferenceset">&lt;dbReference&gt;.Set</a> and <a href="firestore.html#dbreferenceupdate">&lt;dbReference&gt;.Update</a> can take a struct, an array or a JSON encoded string.</p>
+</div>
+<p>The following functions are given for working with the Firebase Firestore extension:</p>
 <ul>
 <li><a href="firestore.html#firebasefirestore">FirebaseFirestore</a></li>
 <li><a href="firestore.html#dbreferencechild">&lt;dbReference&gt;.Child</a></li>
@@ -679,8 +687,8 @@ The code above matches the response against the correct event <strong>type</stro
 <tbody>
 <tr>
 <td>json</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
-<td>A JSON formatted string to fill the document with.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Structs.htm">Struct</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a></td>
+<td>A struct, array or JSON formatted string to fill the document with.</td>
 </tr>
 </tbody>
 </table>
@@ -734,9 +742,12 @@ The code above matches the response against the correct event <strong>type</stro
 </table>
 <p><br></p>
 <p><strong>Example:</strong></p>
-<p><pre class="highlight"><code class="language-gml">var _json = json_stringify({ name: "Hero", level: 100 });
-listenerId = FirebaseFirestore("myCollection/newDoc").Set(_json);</code></pre>
-The code above creates a JSON formatted string of a struct (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function) and then sets the database document (<code>"myCollection/newDoc"</code>) to the new string. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<p><pre class="highlight"><code class="language-gml">var _data = { name: "Hero", level: 100 };
+var _json = json_stringify(_data);
+listenerId = FirebaseFirestore("myCollection/newDoc").Set(_json);
+// OR:
+// listenerId = FirebaseFirestore("myCollection/newDoc").Set(_data);</code></pre>
+The code above creates a JSON formatted string of a struct using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function (or directly from the struct as shown in the comments) and then sets the database document (<code>"myCollection/newDoc"</code>) to the new string. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
 <pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Set")
 {
     if (async_load[? "status"] == 200)
@@ -777,8 +788,8 @@ The code above matches the response against the correct event <strong>type</stro
 <tbody>
 <tr>
 <td>json</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
-<td>A JSON formatted string to update the document with.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Structs.htm">Struct</a> or <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a></td>
+<td>A struct, array or JSON formatted string to fill the document with.</td>
 </tr>
 </tbody>
 </table>
@@ -832,9 +843,12 @@ The code above matches the response against the correct event <strong>type</stro
 </table>
 <p><br></p>
 <p><strong>Example:</strong></p>
-<p><pre class="highlight"><code class="language-gml">var _json = json_stringify({ level: 200 });
-listenerId = FirebaseFirestore("myCollection/newDoc").Update(_json);</code></pre>
-The code above creates a JSON formatted string of a struct (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function) and then updates the document (<code>"myCollection/newDoc"</code>) with the new key/value pairs (omitted keys will not be deleted). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">var _data = { level: 200 };
+var _json = json_stringify(_data);
+listenerId = FirebaseFirestore("myCollection/newDoc").Update(_json);
+// OR:
+// listenerId = FirebaseFirestore("myCollection/newDoc").Update(_data);</code></pre>
+The code above creates a JSON formatted string of a struct using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_stringify.htm">json_stringify</a> function (or directly from the struct as shown in the comments) and then updates the document (<code>"myCollection/newDoc"</code>) with the new key/value pairs (omitted keys will not be deleted). The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
 <p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseFirestore_Document_Update")
 {
     if (async_load[? "status"] == 200)

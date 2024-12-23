@@ -55,6 +55,14 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="app_check.html">App Check</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_app_check.html">App Check Guide</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
                 </li>
               </ul>
@@ -136,10 +144,6 @@
                 <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
-                </li>
-              </ul>
       </div>
     </div>
     </nav>
@@ -175,8 +179,705 @@
 </ul>
 <h2 id="functions">Functions</h2>
 <p>The following functions are provided for working with the Firebase Cloud Storage extension:</p>
+<ul>
+<li><a href="cloud_storage.html#firebasestorage_cancel">FirebaseStorage_Cancel</a></li>
+<li><a href="cloud_storage.html#firebasestorage_delete">FirebaseStorage_Delete</a></li>
+<li><a href="cloud_storage.html#firebasestorage_download">FirebaseStorage_Download</a></li>
+<li><a href="cloud_storage.html#firebasestorage_geturl">FirebaseStorage_GetURL</a></li>
+<li><a href="cloud_storage.html#firebasestorage_list">FirebaseStorage_List</a></li>
+<li><a href="cloud_storage.html#firebasestorage_listall">FirebaseStorage_ListAll</a></li>
+<li><a href="cloud_storage.html#firebasestorage_upload">FirebaseStorage_Upload</a></li>
+</ul>
 <p><br></p>
 <hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_cancel">FirebaseStorage_Cancel</h1>
+<p>This function is used to cancel an upload (see <a href="cloud_storage.html#firebasestorage_upload">FirebaseStorage_Upload</a>) or download (see <a href="cloud_storage.html#firebasestorage_download">FirebaseStorage_Download</a>) process.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_Cancel(listener)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The upload/download asynchronous listener</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listener = FirebaseStorage_Upload(localfile, path);
+
+// After some time
+FirebaseStorage_Cancel(listener);</code></pre>
+The code above will start a file upload to the given <code>path</code> (using the <a href="cloud_storage.html#firebasestorage_upload">FirebaseStorage_Upload</a> function) and after a while cancel it.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_delete">FirebaseStorage_Delete</h1>
+<p>This function deletes a path in the Firebase Cloud Storage and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_Delete(firebasePath, bucket=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>firebasePath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path on the Firebase Cloud Storage server</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseStorage_Delete"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the delete succeeded</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _uid = FirebaseAuthentication_GetUID();
+listenerId = FirebaseStorage_Delete("UserProfiles/" + _uid + "/img.png");</code></pre>
+The code above uses the user identifier (provided by the function <a href="authentication.html#firebaseauthentication_getuid">FirebaseAuthentication_GetUID</a> from the Firebase Authentication extension) to create a remote path and then deletes a file in that path. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseStorage_Delete")
+{
+    if (async_load[? "success"])
+    {
+        show_debug_message("File was deleted");
+    }
+    else
+    {
+        show_debug_message("File could not be deleted");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and logs whether the task was completed successfully or not.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_download">FirebaseStorage_Download</h1>
+<p>This function is used to download files from a remote path and returns a listener identifier that can be used for tracking progress on the request.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is not available on the Web target.</p>
+</div>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_Download(localPath, firebasePath, bucket=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>localPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The local path where the files will be downloaded</td>
+</tr>
+<tr>
+<td>firebasePath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path on the Firebase Cloud Storage server</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseStorage_Download"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote file path.</td>
+</tr>
+<tr>
+<td>localPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The local file path.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the download succeeded (if finished)</td>
+</tr>
+<tr>
+<td>error</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A string describing the error that occurred (if any)</td>
+</tr>
+<tr>
+<td>transferred</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Number of transferred bytes (if NOT finished)</td>
+</tr>
+<tr>
+<td>total</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>Total number of bytes (if NOT finished)</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _uid = FirebaseAuthentication_GetUID();
+listenerId = FirebaseStorage_Download("profilePic.png", "UserProfiles/" + _uid + "/img.png");</code></pre>
+The code above uses the user identifier (provided by the function <a href="authentication.html#firebaseauthentication_getuid">FirebaseAuthentication_GetUID</a> from the Firebase Authentication extension) to create a remote path string, then downloads a file from the server to a local path. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseStorage_Download")
+{
+    if (ds_map_exists(async_load[? "success"]))
+    {
+        if (async_load[? "success"])
+        {
+            global.percent = 100;
+            img = sprite_add(async_load[?"localPath"], 0, 0, 0, 0, 0);
+            show_message_async("Download SUCCESS");
+        }
+        else
+        {
+            global.percent = 0;
+            show_message_async("Download FAILED");
+        }
+    }
+    else
+    {
+        global.percent = 100 * async_load[? "transferred"] / async_load[? "total"];
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and if the download has not finished yet (<code>"success"</code> key is not present) then calculates the download percentage and stores it inside a global variable (<code>global.percent</code>). When the download finishes it checks if it was a successful download and if so it adds the downloaded file as a sprite (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_add.htm">sprite_add</a> function).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Always remember to free sprites added this way when you no longer need them (using <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Asset_Management/Sprites/Sprite_Manipulation/sprite_delete.htm">sprite_delete</a>), otherwise it can lead to memory leaks.</p>
+</div>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_geturl">FirebaseStorage_GetURL</h1>
+<p>This function asynchronously retrieves a long lived download URL with a revocable token. This can be used to share the file with others, but can be revoked by the developer in the Firebase Console if desired.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_GetURL(firebasePath, bucket=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>firebasePath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path on Firebase Cloud Storage server.</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The constant <code>"FirebaseStorage_GetURL"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote file path.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the task succeeded</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The URL of the file (if task succeeded)</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseStorage_GetURL(path);</code></pre>
+The code above tries to retrieve an URL from a remote path on the Firebase Cloud Storage server. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseStorage_GetURL")
+{
+    if (async_load[? "success"])
+    {
+        show_debug_message(async_load[? "path"] + " URL: " + async_load[? "value"]);
+    }
+    else
+    {
+        show_debug_message("There was an error retrieving the URL");
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and if the task was successful it logs the retrieved URL for the specific path.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_list">FirebaseStorage_List</h1>
+<p>This function queries the contents of a Firebase Cloud Storage path, if <code>pageToken</code> is provided the query will start after the page number provided. It also returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_List(path, maxResults, pageToken=undefined, bucket=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote Firebase path to query</td>
+</tr>
+<tr>
+<td>maxResults</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The max number of results</td>
+</tr>
+<tr>
+<td>pageToken</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Token of the last request</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseStorage_List"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the task succeeded</td>
+</tr>
+<tr>
+<td>files</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of an array of file paths.</td>
+</tr>
+<tr>
+<td>folders</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of an array of folder paths.</td>
+</tr>
+<tr>
+<td>pageToken</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The current query page.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseStorage_List("/testing", 5);</code></pre>
+The code above queries for files and folders inside the path <code>"/testing"</code>, returning a maximum of <code>5</code> results. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.
+<pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseStorage_List")
+{
+    if (async_load[? "success"])
+    {
+        global.arrayOfFiles = json_parse(async_load[? "files"]);
+        global.arrayOfFolders = json_parse(async_load[? "folders"]);
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and if the task was successful it stores the files and folders paths parsed as arrays (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a> function) inside global variables (<code>global.arrayOfFiles</code> and <code>global.arrayOfFolders</code>).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_listall">FirebaseStorage_ListAll</h1>
+<p>This function queries all the contents of a Firebase Cloud Storage path and returns a listener identifier that can be used for tracking progress on the request.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_ListAll(path, bucket)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote Firebase path to query</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseStorage_ListAll"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The asynchronous listener ID.</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path.</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the task succeeded</td>
+</tr>
+<tr>
+<td>files</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of an array of file paths.</td>
+</tr>
+<tr>
+<td>folders</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A JSON formatted string of an array of folder paths.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">listenerId = FirebaseStorage_ListAll("/testing");</code></pre>
+The code above queries for all files and folders inside the path <code>"/testing"</code>. The function call will then return a listener ID (<code>listenerId</code>) that can be used inside a <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><pre class="highlight"><code class="language-gml">if (async_load[? "type"] == "FirebaseStorage_ListAll")
+{
+    if (async_load[? "success"])
+    {
+        global.arrayOfFiles = json_parse(async_load[? "files"]);
+        global.arrayOfFolders = json_parse(async_load[? "folders"]);
+    }
+}</code></pre>
+The code above matches the response against the correct event <strong>type</strong> and if the task was successful it stores the files and folders paths parsed as arrays (using the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/File_Handling/Encoding_And_Hashing/json_parse.htm">json_parse</a> function) inside global variables (<code>global.arrayOfFiles</code> and <code>global.arrayOfFolders</code>).</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorage_upload">FirebaseStorage_Upload</h1>
+<p>This function is used to upload files to a remote path. It returns a listener identifier that can be used for tracking progress.</p>
+<p>A <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a> is triggered at various points during the upload providing information on upload progress, completion or any errors that occurred.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseStorage_Upload(localPath, firebasePath, bucket=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>localPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The local path</td>
+</tr>
+<tr>
+<td>firebasePath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote path on the Firebase Cloud Storage server</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Other Firebase Storage bucket</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseStorage_Upload"</code></td>
+</tr>
+<tr>
+<td>listener</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The listener for which this event is triggered</td>
+</tr>
+<tr>
+<td>path</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The remote file path</td>
+</tr>
+<tr>
+<td>localPath</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The local file path</td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether the upload succeeded</td>
+</tr>
+<tr>
+<td>error</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>An error message describing the error that occurred</td>
+</tr>
+<tr>
+<td>transferred</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of bytes transferred</td>
+</tr>
+<tr>
+<td>total</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The total number of bytes</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
               
             </div>
           </div><footer>

@@ -55,6 +55,14 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="app_check.html">App Check</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_app_check.html">App Check Guide</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
                 </li>
               </ul>
@@ -97,6 +105,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#constants">Constants</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -134,10 +144,6 @@
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
                 </li>
               </ul>
       </div>
@@ -187,10 +193,16 @@ Check the <a href="https://firebase.google.com/products/crashlytics">official pa
 <li><a href="crashlytics.html#firebasecrashlytics_log">FirebaseCrashlytics_Log</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_recordexception">FirebaseCrashlytics_RecordException</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_setcustomkey">FirebaseCrashlytics_SetCustomKey</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_setcustomkeys">FirebaseCrashlytics_SetCustomKeys</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_setuseridentifier">FirebaseCrashlytics_SetUserIdentifier</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_unsentreports_check">FirebaseCrashlytics_UnsentReports_Check</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_unsentreports_delete">FirebaseCrashlytics_UnsentReports_Delete</a></li>
 <li><a href="crashlytics.html#firebasecrashlytics_unsentreports_send">FirebaseCrashlytics_UnsentReports_Send</a></li>
+</ul>
+<h2 id="constants">Constants</h2>
+<p>The following constants are given for working with Firebase Crashlytics extension:</p>
+<ul>
+<li><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -252,10 +264,6 @@ The code above catches all the exceptions and trigger a <strong>fatal error</str
 <li>If <a href="crashlytics.html#firebasecrashlytics_crashlyticscollectionenabled_set">FirebaseCrashlytics_CrashlyticsCollectionEnabled_Set</a> was called, uses its value.</li>
 <li>If the <code>FirebaseCrashlyticsCollectionEnabled</code> key is in your app's <code>Info.plist</code>, uses that.</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This function is only available on <strong>iOS</strong> targets.</p>
-</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -351,7 +359,7 @@ The code above checks if automatic data collection is enabled (using <a href="cr
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
@@ -390,7 +398,7 @@ The code example above will log a message that will be included in the next repo
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
@@ -449,12 +457,80 @@ In the code above we have a switch statement where the variable (<code>character
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">FirebaseCrashlytics_SetCustomKey("level", room_get_name(room));</code></pre>
 The code above sets the custom key <code>"level"</code> to be included in subsequent reports, which can help the developer know which room caused a certain crash.</p>
+<p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecrashlytics_setcustomkeys">FirebaseCrashlytics_SetCustomKeys</h1>
+<p>Sets multiple custom key-value pairs for Crashlytics using a JSON-formatted string. Each key-value pair will be associated with subsequent fatal and non-fatal crash reports. If a key already exists, its value will be updated. The values of these keys at the time of a crash or non-fatal event are logged with that event and are visible in the session view on the Firebase Crashlytics console.</p>
+<p>Crashlytics supports a maximum of 64 key/value pairs. New keys beyond that limit are ignored. Keys or values that exceed 1024 characters are truncated.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">FirebaseCrashlytics_SetCustomKeys(key_values)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key_values</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A json formatted string with key value pairs.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Object_Properties/Async_Events/Social.htm">Social Async Event</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The string <code>"FirebaseCrashlytics_SetCustomKeys"</code></td>
+</tr>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>Whether or not the operation succeeded.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _data = { player: global.playerName, level: global.playerLevel };
+FirebaseCrashlytics_SetCustomKeys(json_stringify(_data));</code></pre>
+The example above sets custom keys <code>"player"</code> and <code>"level"</code> to be included in subsequent crash reports. This can help developers understand the state of the game and identify which player and game level were active when a crash occurred.</p>
 <p><br></p>
 <p><br></p>
 <hr />
@@ -488,7 +564,7 @@ The code above sets the custom key <code>"level"</code> to be included in subseq
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
@@ -516,7 +592,7 @@ The code above will add additional user information to the any subsequent report
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
@@ -573,7 +649,7 @@ The code above matches the response against the correct event <strong>type</stro
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
@@ -602,7 +678,7 @@ The code above exists in the <a href="https://manual.gamemaker.io/monthly/en/The
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p>N/A</p>
+<p><a href="crashlytics.html#firebasecrashlyticsresult">FirebaseCrashlyticsResult</a></p>
 </blockquote>
 <p><br></p>
 <p><strong>Example:</strong></p>
@@ -641,6 +717,42 @@ The code above exists in the <a href="https://manual.gamemaker.io/monthly/en/The
 }</code></pre>
 The code above checks if the application crashed on its previous execution and in that case, sends all the unsent reports to the Crashlytics servers (using the function <a href="crashlytics.html#firebasecrashlytics_unsentreports_send">FirebaseCrashlytics_UnsentReports_Send</a>).</p>
 <p><br></p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasecrashlyticsresult">FirebaseCrashlyticsResult</h1>
+<p>Represents the possible results for operations in the Crashlytics module.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="crashlytics.html#firebasecrashlytics_log">FirebaseCrashlytics_Log</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_recordexception">FirebaseCrashlytics_RecordException</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_setcustomkey">FirebaseCrashlytics_SetCustomKey</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_setcustomkeys">FirebaseCrashlytics_SetCustomKeys</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_setuseridentifier">FirebaseCrashlytics_SetUserIdentifier</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_unsentreports_check">FirebaseCrashlytics_UnsentReports_Check</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_unsentreports_delete">FirebaseCrashlytics_UnsentReports_Delete</a></li>
+<li><a href="crashlytics.html#firebasecrashlytics_unsentreports_send">FirebaseCrashlytics_UnsentReports_Send</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FIREBASE_CRASHLYTICS_SUCCESS</code></td>
+<td>Indicates the operation was completed successfully.</td>
+</tr>
+<tr>
+<td><code>FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS</code></td>
+<td>Indicates the operation failed due to invalid input parameters.</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
               
             </div>

@@ -57,6 +57,14 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="app_check.html">App Check</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_app_check.html">App Check Guide</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a>
                 </li>
               </ul>
@@ -132,10 +140,6 @@
                 <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="local_notifications.html">Local Notifications</a>
-                </li>
-              </ul>
       </div>
     </div>
     </nav>
@@ -172,20 +176,20 @@
 <ol>
 <li>
 <p>Click the <strong>Settings</strong> icon (next to Project Overview) and select <strong>Project settings:</strong> <br>
-          <img alt="" src="assets/setupProjectSettings.PNG" /></p>
+      <img alt="" src="assets/setupProjectSettings.PNG" /></p>
 </li>
 <li>
 <p>Now go to the <strong>Your apps</strong>  <strong>section and click on the Android</strong> button:<br>
       <img alt="" src="assets/setupYourAppsSelect.PNG" /></p>
 </li>
 <li>
-<p>On this screen you need enter your <strong>Package name</strong> (required), <strong>App nickname</strong> (optional) and Debug signing certificate SHA-1 (required if you are using Firebase Authentication).<br>
+<p>On this screen you need enter your <strong>Package name</strong> (required), <strong>App nickname</strong> (optional) and <strong>Debug signing certificate SHA-1</strong> (required if you are using Firebase Authentication).<br>
       <img alt="" src="assets/setupAndroidStep1.PNG" />
 You can get your package name from the <a href="https://manual.gamemaker.io/monthly/en/#t=Settings%2FGame_Options%2FAndroid.htm">Android Game Options</a>, and your <strong>Debug signing certificate SHA-1</strong> from the <a href="https://manual.gamemaker.io/monthly/en/#t=Setting_Up_And_Version_Information%2FPlatform_Preferences%2FAndroid.htm">Android Preferences</a> (under Keystore):<br>
       <img alt="" src="assets/keyHash.png" /></p>
 </li>
 <li>
-<p>Click on ** <strong>Download google-services.json</strong>  (make sure to save this file as we will need it in subsequent steps).<br>
+<p>Click on <strong>Download google-services.json</strong> (make sure to save this file as we will need it in subsequent steps).<br>
       <img alt="" src="assets/setupAndroidStep2.PNG" /></p>
 </li>
 <li>
@@ -217,7 +221,7 @@ You can get your package name from the <a href="https://manual.gamemaker.io/mont
 <!-- Page HTML do not touch -->
 <p><a /><p align="right"><a href="#top">Back To Top</a></p></p>
 <h1 id="ios-setup">iOS Setup</h1>
-<p>This setup is necessary for all the Firebase modules using iOS and needs to be done once per project, and basically involves importing the ** <strong>GoogleServices-Info.plist</strong>  file into your project.</p>
+<p>This setup is necessary for all the Firebase modules using iOS and needs to be done once per project, and basically involves importing the <strong>GoogleServices-Info.plist</strong>  file into your project.</p>
 <blockquote>
 <p><strong><img alt="⚠️" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/26a0.png" title=":warning:" /> IMPORTANT</strong></p>
 <p>Please refer to <a href="https://help.gamemaker.io/hc/en-us/articles/115001368747-Setting-Up-For-iOS-Including-iPadOS">this Helpdesk article</a> for instructions on setting up an iOS project.</p>
@@ -232,11 +236,11 @@ You can get your package name from the <a href="https://manual.gamemaker.io/mont
       <img alt="" src="assets/setupYourAppsSelect.PNG" /></p>
 </li>
 <li>
-<p>Fill the form with your <strong>iOS Bundle ID</strong> , <strong>App nickname</strong> and <strong>AppStore ID</strong> (last two are optional).<br>
+<p>Fill the form with your <strong>iOS Bundle ID</strong>, <strong>App nickname</strong> and <strong>AppStore ID</strong> (last two are optional).<br>
       <img alt="" src="assets/setupiOSStep1.PNG" /></p>
 </li>
 <li>
-<p>Click on ** <strong>Download GoogleService-info.plist</strong>  (make sure to save this file as we will need it in subsequent steps).<br>
+<p>Click on <strong>Download GoogleService-info.plist</strong> (make sure to save this file as we will need it in subsequent steps).<br>
       <img alt="" src="assets/setupiOSStep2.PNG" /></p>
 </li>
 <li>

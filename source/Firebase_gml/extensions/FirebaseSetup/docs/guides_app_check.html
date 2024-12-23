@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="img/favicon.ico" />
-    <title>Remote Config Guides - GMEXT-Firebase</title>
+    <title>App Check Guide - GMEXT-Firebase</title>
     <link rel="stylesheet" href="css/theme.css" />
     <link rel="stylesheet" href="css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -14,8 +14,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Remote Config Guides";
-        var mkdocs_page_input_path = "guides_remote_config.md";
+        var mkdocs_page_name = "App Check Guide";
+        var mkdocs_page_input_path = "guides_app_check.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -58,8 +58,14 @@
                 <li class="toctree-l1"><a class="reference internal" href="app_check.html">App Check</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="guides_app_check.html">App Check Guide</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">App Check Guide</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#firebase-console">Firebase Console</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#gamemaker">GameMaker</a>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -134,12 +140,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="remote_config.html">Remote Config</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Remote Config Guides</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#enabling-remote-config">Enabling Remote Config</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="guides_remote_config.html">Remote Config Guides</a>
                 </li>
               </ul>
       </div>
@@ -156,9 +158,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Remote Config Guides</li>
+      <li class="breadcrumb-item active">App Check Guide</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/guides_remote_config.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/YoYoGames/GMEXT-Firebase/edit/master/docs/guides_app_check.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -166,45 +168,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <p><a id="top"></a></p>
-<!-- Page HTML do not touch -->
-<p><a /><p align="right"><a href="#top">Back To Top</a></p></p>
-<h1 id="platform-setup">Platform Setup</h1>
-<p>The Firebase Remote Config implementation uses SDK dependencies and therefore is only available on <strong>Android</strong>, <strong>iOS</strong> and <strong>Web</strong> targets. In this section we will cover the required setup necessary to start using the Firebase Remote Config extension in your game.
-  Select your target platform below and follow the simple steps to get your project up and running (you only need follow these topics once per project):</p>
-<ul>
-<li>{page.platform_setup#Android_Setup}</li>
-<li>{page.platform_setup#iOS_Setup}</li>
-<li>{page.platform_setup#Web_Setup}</li>
-</ul>
-<h2 id="enabling-remote-config">Enabling Remote Config</h2>
-<ol>
-<li>
-<p>Go to <strong>Remote Config</strong> and click on the <strong>Create configuration</strong> button:<br>
-      <img alt="" src="assets/remoteConfigEnable.PNG" /></p>
-</li>
-<li>
-<p>Click on the <strong>Add parameter</strong> button:<br>
-      <img alt="" src="assets/remoteConfigAddParameter.PNG" />
- **</p>
-</li>
-<li>
-<p>Add a <strong>Parameter name (key)</strong> and a <strong>Default value (string/real)</strong>, then click <strong>Save:</strong> <br>
-      <img alt="" src="assets/remoteConfigCreateParameter.PNG" /></p>
-</li>
-<li>
-<p>After adding all your parameters, don't forget to click <strong>Publish changes:</strong> <br>
-      <img alt="" src="assets/remoteConfigPublish.PNG" /></p>
-</li>
-<li>
-<p>You are now all set to use the Remote Config extension!</p>
-</li>
-</ol>
+                <h1 id="app-check-guide">App Check Guide</h1>
+<h2 id="firebase-console">Firebase Console</h2>
+<p>To enable App Check in your game, register your app in the <a href="https://console.firebase.google.com/project/_/appcheck">App Check section of the Firebase Console</a>.</p>
+<h2 id="gamemaker">GameMaker</h2>
+<p>Add the <code>YYFirebaseAppCheck</code> extension to your game. On the extension's supported platforms (Android, iOS and tvOS) it will automatically register the attestation provider that you set in the <a href="https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Extensions.htm#extension_options">Extension Options</a>.</p>
+<p>Both the <strong>Android Provider</strong> and <strong>iOS Provider</strong> default to <strong>Debug</strong>, which is the provider you should use when developing in a debug setting.
+More specifically, your game will use either the <a href="https://firebase.google.com/docs/app-check/android/debug-provider">Android Debug Provider</a> or the <a href="https://firebase.google.com/docs/app-check/ios/debug-provider">iOS Debug Provider</a>, depending on the target platform set.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The debug provider allows access to your Firebase resources from unverified devices. <strong>Don't</strong> use the debug provider in production builds of your app, and <strong>don't</strong> share your debug builds with untrusted parties.</p>
+</div>
+<p>When building a final release, set the provider to <strong>PlayIntegrity</strong> for Android, or to <strong>AppAttest|DeviceCheck</strong> for iOS.
+On iOS versions 14 and up <a href="https://firebase.google.com/docs/app-check/ios/app-attest-provider">App Attest</a> is used, on other versions <a href="https://firebase.google.com/docs/app-check/ios/devicecheck-provider">DeviceCheck</a> is used instead.</p>
+<p>When working with a non-Firebase backend you can use the functions <a href="app_check.html#firebaseappcheck_gettoken">FirebaseAppCheck_GetToken</a> and <a href="app_check.html#firebaseappcheck_limitedusetoken">FirebaseAppCheck_LimitedUseToken</a>.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="remote_config.html" class="btn btn-neutral float-left" title="Remote Config"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="app_check.html" class="btn btn-neutral float-left" title="App Check"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -232,8 +215,10 @@
         </span>
     
     
-      <span><a href="remote_config.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="app_check.html" style="color: #fcfcfc">&laquo; Previous</a></span>
     
+    
+      <span><a href="authentication.html" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

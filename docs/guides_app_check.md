@@ -8,7 +8,7 @@ To enable App Check in your game, register your app in the [App Check section of
 
 ## GameMaker
 
-Add the `YYFirebaseAppCheck` extension to your game. On the extension's supported platforms (Android, iOS and tvOS) it will automatically register the attestation provider that you set in the [Extension Options](manual.gamemaker.io/monthly/en/The_Asset_Editors/Extensions.htm#extension_options).
+Add the `YYFirebaseAppCheck` extension to your game. On the extension's supported platforms (Android, iOS and tvOS) it will automatically register the attestation provider that you set in the [Extension Options](https://manual.gamemaker.io/monthly/en/The_Asset_Editors/Extensions.htm#extension_options).
 
 Both the **Android Provider** and **iOS Provider** default to **Debug**, which is the provider you should use when developing in a debug setting.
 More specifically, your game will use either the [Android Debug Provider](https://firebase.google.com/docs/app-check/android/debug-provider) or the [iOS Debug Provider](https://firebase.google.com/docs/app-check/ios/debug-provider), depending on the target platform set.

@@ -1,5 +1,5 @@
 * ### [Firebase](home)
-* ### [Platform Setup](platform_setup)
+* ### ${page.platform_setup}
 * ### [Modules]
   * ### ${module.analytics}
     * ### [Analytics Guides](guides_analytics)

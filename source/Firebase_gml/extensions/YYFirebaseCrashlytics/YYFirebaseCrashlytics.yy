@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741068,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.2.0",
+  "extensionVersion":"3.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseCrashlytics.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_CRASHLYTICS_SUCCESS","hidden":false,"name":"FIREBASE_CRASHLYTICS_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},

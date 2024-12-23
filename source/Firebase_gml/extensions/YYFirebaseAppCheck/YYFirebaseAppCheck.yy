@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"0.0.1",
+  "extensionVersion":"1.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":9007199254741004,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToken","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToken","help":"FirebaseAppCheck_GetToken(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

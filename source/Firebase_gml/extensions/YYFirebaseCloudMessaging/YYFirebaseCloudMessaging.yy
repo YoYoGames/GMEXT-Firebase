@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741068,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.2.0",
+  "extensionVersion":"3.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseCloudMessaging.ext","constants":[],"copyToTargets":-1,"filename":"FirebaseCloudMessaging.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_GetToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_GetToken","help":"FirebaseCloudMessaging_GetToken()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},

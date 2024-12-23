@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.3.0",
+  "extensionVersion":"3.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseAnalytics.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_ANALYTICS_SUCCESS","hidden":false,"name":"FIREBASE_ANALYTICS_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},

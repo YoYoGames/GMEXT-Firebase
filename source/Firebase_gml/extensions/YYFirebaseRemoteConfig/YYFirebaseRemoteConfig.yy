@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741036,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"2.2.0",
+  "extensionVersion":"3.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseRemoteConfig.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_REMOTE_CONFIG_SUCCESS","hidden":false,"name":"FIREBASE_REMOTE_CONFIG_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},

@@ -14,7 +14,7 @@
   "copyToTargets":44,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"1.2.0",
+  "extensionVersion":"2.0.0",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebasePerformanceMonitoring.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_SUCCESS","hidden":false,"name":"FIREBASE_PERFORMANCE_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},

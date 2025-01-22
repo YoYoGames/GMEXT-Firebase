@@ -11,7 +11,7 @@ if(FirebaseAuthentication_Library_useSDK)
 }
 else
 {
-	app_id = extension_get_option_value("YYFirebaseAuthentication", "appId");
+	app_id = extension_get_option_value("YYFirebaseAuthentication", "projectId");
 	
 	//Only if you are working with REST API and you want sign in with GooglePlayServices.....
 	provider = "google.com"/*"playgames.*/

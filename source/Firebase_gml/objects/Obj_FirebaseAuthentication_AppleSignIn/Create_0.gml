@@ -4,7 +4,7 @@ event_inherited()
 AppleSignIn_Init()
 AppleSignIn_GetCredentialState("")//Apple "identitiyToken"
 
-app_id = extension_get_option_value("YYFirebaseAuthentication", "appId");
+app_id = extension_get_option_value("YYFirebaseAuthentication", "projectId");
 
 nonce = "";
 provider = "apple.com"

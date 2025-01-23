@@ -11,11 +11,11 @@ if(FirebaseAuthentication_Library_useSDK)
 }
 else
 {
-	app_id = extension_get_option_value("YYFirebaseAuthentication", "projectId");
+	project_id = extension_get_option_value("YYFirebaseAuthentication", "projectId");
 	
 	//Only if you are working with REST API and you want sign in with GooglePlayServices.....
 	provider = "google.com"/*"playgames.*/
-	redirect_uri = $"https://{app_id}.firebaseapp.com/__/auth/handler"
+	redirect_uri = $"https://{project_id}.firebaseapp.com/__/auth/handler"
 	token_kind = "id_token"
 	//https://console.cloud.google.com/apis/credentials
 	//Select your project

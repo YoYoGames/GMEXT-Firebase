@@ -311,7 +311,7 @@ public class YYFirebaseRealTime extends RunnerSocial {
         } else {
             String databaseUrl = fluentObj.optString("database", null);
             if (databaseUrl != null) {
-                dataRef = FirebaseDatabase.getInstance(databaseUrl).getReference();
+                dataRef = [[FIRDatabase databaseWithURL: databaseUrl] reference];
             } else {
                 dataRef = FirebaseDatabase.getInstance().getReference();
             }

@@ -425,7 +425,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 			return FirebaseFirestore_SDK(json_stringify(__));
 		}
 		
-		return RESTFirebaseFirestore_Collection_Add(__.path, _value)
+		return RESTFirebaseFirestore_Collection_Add(self, _value)
     }
 	
 	/// @function Update(value)
@@ -510,7 +510,7 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 		if(is_document())
 			return RESTFirebaseFirestore_Document_Listener(self)
 		
-		return RESTFirebaseFirestore_Collection_Listener(__.path)
+		return RESTFirebaseFirestore_Collection_Listener(self)
     }
 	
 	/// @function Listen()

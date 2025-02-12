@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseCloudMessaging",
-  "copyToTargets":9007199254741068,
+  "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"3.0.0",

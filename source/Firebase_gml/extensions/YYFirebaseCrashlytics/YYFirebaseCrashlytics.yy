@@ -11,7 +11,7 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseCrashlytics",
-  "copyToTargets":9007199254741068,
+  "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"3.0.0",
@@ -19,7 +19,7 @@
     {"$GMExtensionFile":"","%Name":"FirebaseCrashlytics.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_CRASHLYTICS_SUCCESS","hidden":false,"name":"FIREBASE_CRASHLYTICS_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS","hidden":false,"name":"FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-1",},
-      ],"copyToTargets":-1,"filename":"FirebaseCrashlytics.ext","final":"","functions":[
+      ],"copyToTargets":9007199254741004,"filename":"FirebaseCrashlytics.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_Log","argCount":0,"args":[1,],"documentation":"/// @desc Logs a custom message to Crashlytics. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful.\r\n/// @param {string} message The message to log.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_Log","help":"FirebaseCrashlytics_Log(string)","hidden":false,"kind":4,"name":"FirebaseCrashlytics_Log","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_SetCustomKey","argCount":0,"args":[1,1,],"documentation":"/// @desc Sets a custom key-value pair for Crashlytics. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful.\r\n/// @param {string} key The name of the custom key.\r\n/// @param {string} value The value to associate with the custom key.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_SetCustomKey","help":"FirebaseCrashlytics_SetCustomKey(key,value)","hidden":false,"kind":4,"name":"FirebaseCrashlytics_SetCustomKey","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_SetUserIdentifier","argCount":0,"args":[1,],"documentation":"/// @desc Sets the user identifier for Crashlytics. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful.\r\n/// @param {string} userId The unique user identifier to set.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_SetUserIdentifier","help":"FirebaseCrashlytics_SetUserIdentifier(user)","hidden":false,"kind":4,"name":"FirebaseCrashlytics_SetUserIdentifier","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},

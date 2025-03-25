@@ -9,12 +9,21 @@ The Firebase API works on Android/iOS/Web through SDK, and all platforms using t
   * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseAnalytics/AndroidSource/Java`
   * IOS SOURCE: `source/Firebase_gml/extensions/YYFirebaseAnalytics/iOSSource`
   * HTML5: `source/Firebase_gml/extensions/YYFirebaseAnalytics/FirebaseAnalytics.js`
-  
+
+* Firebase App Check
+  * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseAppCheck/AndroidSource/Java`
+  * IOS SOURCE: `source/Firebase_gml/extensions/YYFirebaseAppCheck/iOSSource`
+
 * Firebase Authentication
   * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseAuthentication/AndroidSource/Java`
   * IOS SOURCE: `source/Firebase_gml/extensions/YYFirebaseAuthentication/iOSSource`
   * HTML5: `source/Firebase_gml/extensions/YYFirebaseAuthentication/FirebaseAuthentication.js`
   * REST API: inside GM project, asset browser: `Firebase Authentication --> Extensions --> Firebase REST API Library`
+
+* Firebase Cloud Functions
+  * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseCloudFunctions/AndroidSource/Java`
+  * IOS SOURCE: `source/Firebase_gml/extensions/YYFirebaseCloudFunctions/iOSSource`
+  * HTML5: `source/Firebase_gml/extensions/YYFirebaseCloudFunctions/YYFirebaseCloudFunctions.js`
 
 * Firebase Cloud Messaging
   * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseCloudMessaging/AndroidSource/Java`
@@ -49,7 +58,6 @@ The Firebase API works on Android/iOS/Web through SDK, and all platforms using t
   * ANDROID SOURCE: `source/Firebase_gml/extensions/YYFirebaseStorage/AndroidSource/Java`
   * IOS SOURCE: `source/Firebase_gml/extensions/YYFirebaseStorage/iOSSource`
   * HTML5: `source/Firebase_gml/extensions/YYFirebaseStorage/YYFirebaseStorage.js`
-  * REST API: inside GM project, asset browser: `Firebase Storage --> Extensions --> Firebase REST API Library`
 
 
 ---

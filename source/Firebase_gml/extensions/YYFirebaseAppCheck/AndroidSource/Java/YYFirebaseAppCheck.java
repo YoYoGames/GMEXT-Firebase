@@ -5,8 +5,8 @@ import com.google.firebase.appcheck.AppCheckToken;
 
 ${YYAndroid_AppCheck_Provider_Include}
 
-//import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+// import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 
 import androidx.annotation.NonNull;
 import android.util.Log;

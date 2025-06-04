@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "119970190534",
+    "firebase_url": "https://yoyotest-61434-default-rtdb.firebaseio.com",
+    "project_id": "yoyotest-61434",
+    "storage_bucket": "yoyotest-61434.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119970190534:android:87ffb61b27b3c2ab2bf3c7",
+        "android_client_info": {
+          "package_name": "com.kaguva.yytest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD78lta4N9GQEI9Dq7Nlha-OrBOgzHXjUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -43,12 +43,12 @@
   "name":"YYFirebaseAppCheck",
   "options":[
     {"$GMExtensionOption":"","%Name":"__extOptLabel1","defaultValue":"ANDROID OPTIONS:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"d9de3c4d-ada6-4892-91bb-c3957434332e","hidden":false,"listItems":[],"name":"__extOptLabel1","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-    {"$GMExtensionOption":"","%Name":"androidProvider","defaultValue":"Debug","description":"","displayName":"Android Provider","exportToINI":false,"extensionId":null,"guid":"88b9c315-098f-45dd-980c-ea65040c1435","hidden":false,"listItems":[
+    {"$GMExtensionOption":"","%Name":"androidProvider","defaultValue":"PlayIntegrity","description":"","displayName":"Android Provider","exportToINI":false,"extensionId":null,"guid":"88b9c315-098f-45dd-980c-ea65040c1435","hidden":false,"listItems":[
         "Debug",
         "PlayIntegrity",
       ],"name":"androidProvider","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
     {"$GMExtensionOption":"","%Name":"__extOptLabel","defaultValue":"iOS OPTIONS:","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"b73ca5ea-6536-47f2-a877-57e56625ce4b","hidden":false,"listItems":[],"name":"__extOptLabel","optType":5,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
-    {"$GMExtensionOption":"","%Name":"iosProvider","defaultValue":"Debug","description":"","displayName":"iOS Provider","exportToINI":false,"extensionId":null,"guid":"d2b9fe67-7ca9-45fe-959f-eb8cd354136d","hidden":false,"listItems":[
+    {"$GMExtensionOption":"","%Name":"iosProvider","defaultValue":"AppAttest|DeviceCheck","description":"","displayName":"iOS Provider","exportToINI":false,"extensionId":null,"guid":"d2b9fe67-7ca9-45fe-959f-eb8cd354136d","hidden":false,"listItems":[
         "Debug",
         "AppAttest|DeviceCheck",
       ],"name":"iosProvider","optType":6,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},

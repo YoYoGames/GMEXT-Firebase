@@ -14,7 +14,10 @@
     "name":"Objects",
     "path":"folders/Firebase Demo/Firebase Storage/Objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_gm_button",
+    "path":"objects/obj_gm_button/obj_gm_button.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

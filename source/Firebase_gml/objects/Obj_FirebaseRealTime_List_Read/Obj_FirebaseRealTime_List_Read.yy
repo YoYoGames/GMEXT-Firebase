@@ -14,8 +14,8 @@
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/Query.yy",
   },
   "parentObjectId":{
-    "name":"Obj_FirebaseRealTime_Query_OrderByChild",
-    "path":"objects/Obj_FirebaseRealTime_Query_OrderByChild/Obj_FirebaseRealTime_Query_OrderByChild.yy",
+    "name":"obj_gm_button",
+    "path":"objects/obj_gm_button/obj_gm_button.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

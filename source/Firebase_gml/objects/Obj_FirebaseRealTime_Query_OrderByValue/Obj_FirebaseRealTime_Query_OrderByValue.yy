@@ -13,8 +13,8 @@
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/Query.yy",
   },
   "parentObjectId":{
-    "name":"Obj_FirebaseRealTime_Query_OrderByChild",
-    "path":"objects/Obj_FirebaseRealTime_Query_OrderByChild/Obj_FirebaseRealTime_Query_OrderByChild.yy",
+    "name":"Obj_FirebaseRealTime_Query_options",
+    "path":"objects/Obj_FirebaseRealTime_Query_options/Obj_FirebaseRealTime_Query_options.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

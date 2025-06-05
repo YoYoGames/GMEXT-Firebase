@@ -13,8 +13,8 @@
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/Query.yy",
   },
   "parentObjectId":{
-    "name":"obj_gm_button",
-    "path":"objects/obj_gm_button/obj_gm_button.yy",
+    "name":"Obj_FirebaseRealTime_Query_options_value",
+    "path":"objects/Obj_FirebaseRealTime_Query_options_value/Obj_FirebaseRealTime_Query_options_value.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

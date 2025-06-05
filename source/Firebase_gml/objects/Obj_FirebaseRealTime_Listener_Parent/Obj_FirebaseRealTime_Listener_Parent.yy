@@ -12,10 +12,7 @@
     "name":"CRUD",
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/CRUD.yy",
   },
-  "parentObjectId":{
-    "name":"Obj_YoYo_button",
-    "path":"objects/Obj_YoYo_button/Obj_YoYo_button.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

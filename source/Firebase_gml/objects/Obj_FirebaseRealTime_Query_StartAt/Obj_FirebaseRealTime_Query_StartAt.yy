@@ -14,8 +14,8 @@
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/Query.yy",
   },
   "parentObjectId":{
-    "name":"Obj_FirebaseRealTime_Query_options_value",
-    "path":"objects/Obj_FirebaseRealTime_Query_options_value/Obj_FirebaseRealTime_Query_options_value.yy",
+    "name":"Obj_FirebaseRealTime_Query_OrderByChild",
+    "path":"objects/Obj_FirebaseRealTime_Query_OrderByChild/Obj_FirebaseRealTime_Query_OrderByChild.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Spr_YoYo_button",
-    "path":"sprites/Spr_YoYo_button/Spr_YoYo_button.yy",
+    "name":"spr_gm_button",
+    "path":"sprites/spr_gm_button/spr_gm_button.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -14,8 +14,8 @@
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/CRUD.yy",
   },
   "parentObjectId":{
-    "name":"obj_gm_button",
-    "path":"objects/obj_gm_button/obj_gm_button.yy",
+    "name":"Obj_FirebaseRealTime_Listener_Parent",
+    "path":"objects/Obj_FirebaseRealTime_Listener_Parent/Obj_FirebaseRealTime_Listener_Parent.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

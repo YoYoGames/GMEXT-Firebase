@@ -12,8 +12,8 @@
     "path":"folders/Firebase Demo/Firebase Firestore/Objects/Query.yy",
   },
   "parentObjectId":{
-    "name":"obj_gm_button",
-    "path":"objects/obj_gm_button/obj_gm_button.yy",
+    "name":"Obj_FirebaseFirestore_Collection_Query_options_value_path",
+    "path":"objects/Obj_FirebaseFirestore_Collection_Query_options_value_path/Obj_FirebaseFirestore_Collection_Query_options_value_path.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

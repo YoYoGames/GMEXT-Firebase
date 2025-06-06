@@ -12,7 +12,10 @@
     "name":"CRUD",
     "path":"folders/Firebase Demo/Firebase RealTime/Testing/CRUD.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_gm_button",
+    "path":"objects/obj_gm_button/obj_gm_button.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

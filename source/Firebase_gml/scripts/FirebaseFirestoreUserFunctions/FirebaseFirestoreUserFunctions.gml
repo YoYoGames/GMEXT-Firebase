@@ -219,6 +219,8 @@ function FirebaseFirestoreBuilder(_path, _database) constructor {
 		return (array_length(path_array) mod 2) == 0;
 	}
 	
+	__.isDocument = is_document()
+	
 	/// @function build_path()
 	/// @returns {String}
 	/// @ignore

@@ -11,12 +11,17 @@
   "androidsourcedir":"",
   "author":"",
   "classname":"YYFirebaseCloudMessaging",
-  "copyToTargets":9007199254741068,
+  "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
   "extensionVersion":"3.0.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebaseCloudMessaging.ext","constants":[],"copyToTargets":-1,"filename":"FirebaseCloudMessaging.ext","final":"","functions":[
+    {"$GMExtensionFile":"","%Name":"FirebaseCloudMessaging.ext","constants":[
+        {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"1",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_AUTHORIZED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_AUTHORIZED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"2",},
+        {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_DENIED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_DENIED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"3",},
+      ],"copyToTargets":-1,"filename":"FirebaseCloudMessaging.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_GetToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_GetToken","help":"FirebaseCloudMessaging_GetToken()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_SubscribeToTopic","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseCloudMessaging_SubscribeToTopic","help":"FirebaseCloudMessaging_SubscribeToTopic(topic)","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_SubscribeToTopic","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_UnsubscribeFromTopic","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseCloudMessaging_UnsubscribeFromTopic","help":"FirebaseCloudMessaging_UnsubscribeFromTopic(topic)","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_UnsubscribeFromTopic","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
@@ -25,6 +30,7 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_DeleteToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_DeleteToken","help":"FirebaseCloudMessaging_DeleteToken()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_DeleteToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","help":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","help":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery(bool)","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
+        {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_RequestPermission","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_RequestPermission","help":"FirebaseCloudMessaging_RequestPermission()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_RequestPermission","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
       ],"init":"","kind":4,"name":"FirebaseCloudMessaging.ext","order":[
         {"name":"FirebaseCloudMessaging_GetToken","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
         {"name":"FirebaseCloudMessaging_SubscribeToTopic","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},

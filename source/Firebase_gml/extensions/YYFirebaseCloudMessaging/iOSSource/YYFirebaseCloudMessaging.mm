@@ -160,20 +160,39 @@ static void(^RunOncePresentationCompletionHandler(void(^originalHandler)(UNNotif
                     // Register for remote notifications
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [[UIApplication sharedApplication] registerForRemoteNotifications];
+						
+						NSMutableDictionary *data = [NSMutableDictionary dictionary];
+						data[@"state"] = @(0);
+						[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_RequestPermission" data:data];
+						
                     });
                 } else {
                     // Handle error or inform the user
-                    NSLog(@"Notification permission not granted: %@", error.localizedDescription);
+                    // NSLog(@"Notification permission not granted: %@", error.localizedDescription);
+					
+					NSMutableDictionary *data = [NSMutableDictionary dictionary];
+					data[@"state"] = @(1);
+					data[@"error"] = error.localizedDescription;
+					[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_RequestPermission" data:data];
                 }
             }];
         } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized) {
             // Already authorized, register for remote notifications
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[UIApplication sharedApplication] registerForRemoteNotifications];
+				
+				NSMutableDictionary *data = [NSMutableDictionary dictionary];
+				data[@"state"] = @(2);
+				[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_RequestPermission" data:data];
+						
             });
         } else {
             // Authorization denied, handle accordingly
             NSLog(@"Notification permission denied");
+			
+			NSMutableDictionary *data = [NSMutableDictionary dictionary];
+			data[@"state"] = @(3);
+			[FirebaseUtils sendSocialAsyncEvent:@"FirebaseCloudMessaging_RequestPermission" data:data];
         }
     }];
 }
@@ -233,7 +252,7 @@ static void(^RunOncePresentationCompletionHandler(void(^originalHandler)(UNNotif
     [FIRMessaging messaging].delegate = self;
 
     // Request notification permissions
-    [self FirebaseCloudMessaging_RequestPermission];
+    // [self FirebaseCloudMessaging_RequestPermission]; // commented out, now the user have the liberty of call it when need it.
 
     // Handle any pending notifications using launchOptions
     if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {

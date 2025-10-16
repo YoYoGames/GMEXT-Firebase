@@ -13,8 +13,8 @@
     "path":"folders/Firebase Demo/Firebase Crashlytics/Objects.yy",
   },
   "parentObjectId":{
-    "name":"Obj_YoYo_button",
-    "path":"objects/Obj_YoYo_button/Obj_YoYo_button.yy",
+    "name":"obj_gm_button",
+    "path":"objects/obj_gm_button/obj_gm_button.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Spr_YoYo_button",
-    "path":"sprites/Spr_YoYo_button/Spr_YoYo_button.yy",
+    "name":"spr_gm_button",
+    "path":"sprites/spr_gm_button/spr_gm_button.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "647388682485",
+    "project_id": "my-test-game-463123",
+    "storage_bucket": "my-test-game-463123.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647388682485:android:98774338f5986d4ec58dbc",
+        "android_client_info": {
+          "package_name": "com.kaguva.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647388682485-1e5615g4lu5lvt41pru7nrnbe0o8g24i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kaguva.test",
+            "certificate_hash": "aeea75f045c0e6556184537f3eaf3b58544f1c61"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFp1Gw9j5i3QSYPFgapRGxBsxb3R4jFMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

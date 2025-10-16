@@ -108,20 +108,21 @@ window.FirebaseAuthenticationExt = Object.assign(window.FirebaseAuthenticationEx
      * @return {object|null} The AuthCredential object or null if not found.
      */
     getAuthCredentialFromProvider: function(token, tokenKind, provider) {
+        const { module } = window.FirebaseAuthenticationExt;
         let authCredential = null;
         switch (provider) {
             case "facebook.com":
-                authCredential = firebase.auth.FacebookAuthProvider.credential(token);
+                authCredential = module.FacebookAuthProvider.credential(token);
                 break;
             case "google.com":
                 if (tokenKind === "id_token") {
-                    authCredential = firebase.auth.GoogleAuthProvider.credential(token, null);
+                    authCredential = module.GoogleAuthProvider.credential(token, null);
                 } else if (tokenKind === "access_token") {
-                    authCredential = firebase.auth.GoogleAuthProvider.credential(null, token);
+                    authCredential = module.GoogleAuthProvider.credential(null, token);
                 }
                 break;
             case "apple.com":
-                authCredential = firebase.auth.OAuthProvider("apple.com").credential({
+                authCredential = module.OAuthProvider("apple.com").credential({
                     idToken: token,
                 });
                 break;

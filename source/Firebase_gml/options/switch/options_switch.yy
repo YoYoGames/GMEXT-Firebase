@@ -11,7 +11,7 @@
   "option_switch_interpolate_pixels":true,
   "option_switch_project_nmeta":"${options_dir}/switch/application.nmeta",
   "option_switch_scale":0,
-  "option_switch_splash_screen":"${base_options_dir}/switch/splash.png",
+  "option_switch_splash_screen":"${options_dir}/switch/splash.png",
   "option_switch_texture_page":"2048x2048",
   "option_switch_use_splash":false,
   "resourceType":"GMSwitchOptions",

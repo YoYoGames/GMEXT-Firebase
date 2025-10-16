@@ -20,14 +20,9 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseFirestore_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseFirestore_SDK","help":"FirebaseFirestore_SDK(fluent_json)","hidden":false,"kind":4,"name":"FirebaseFirestore_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
       ],"init":"","kind":4,"name":"FirebaseFirestore.ext","order":[
         {"name":"FirebaseFirestore_SDK","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
-    {"$GMExtensionFile":"","%Name":"FirebaseFirestore.js","constants":[],"copyToTargets":32,"filename":"FirebaseFirestore.js","final":"","functions":[
-        {"$GMExtensionFunction":"","%Name":"FirebaseFirestore_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseFirestore_SDK","help":"FirebaseFirestore_SDK(json)","hidden":false,"kind":5,"name":"FirebaseFirestore_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":5,"name":"FirebaseFirestore.js","order":[
-        {"name":"FirebaseFirestore_SDK","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},
-        {"name":"FirebaseFirestore_SDK","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},
-        {"name":"FirebaseFirestore_SDK","path":"extensions/YYFirebaseFirestore/YYFirebaseFirestore.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"FirebaseFirestore.js","name":"FirebaseFirestore.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"\r\n\r\nimplementation 'com.google.firebase:firebase-firestore'\r\n\r\n\r\n\r\nimplementation 'com.google.firebase:firebase-firestore'\r\n\r\n",
   "hasConvertedCodeInjection":true,

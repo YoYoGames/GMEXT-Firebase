@@ -167,3 +167,68 @@
  * The code above matches the response against the correct event **type**, and if the tasks succeeds it stores the topic value in a local variable (`_topic`) and logs the success of the operation.
  * @function_end
  */
+
+/**
+ * @func FirebaseCloudMessaging_RequestPermission
+ * @desc This function requests the necessary permissions for remote notifications on iOS and registers to receive them if the permissions could be successfully obtained.
+ * 
+ * @event social
+ * @desc 
+ * @member {string} type The string `"FirebaseCloudMessaging_RequestPermission"`
+ * @member {constant.FIREBASECLOUDMESSAGING_STATE} state The state of the permission request
+ * @member {string} [error] The error message, if permissions weren't granted
+ * @event_end
+ * 
+ * @example
+ * ```gml
+ * /// Function Call
+ * FirebaseCloudMessaging_RequestPermission();
+ * ```
+ * First the function is called to request permissions for remote notifications.
+ * 
+ * ```gml
+ * /// Async Social Event
+ * switch(async_load[?"type"])
+ * {
+ *     case "FirebaseMessaging_OnNewToken":
+ *         show_debug_message("FCM OnNewToken: " + async_load[?"value"]);
+ * 	   break;
+ * 
+ *     case "FirebaseCloudMessaging_RequestPermission":
+ *         switch(async_load[?"state"])
+ *         {
+ *             case FIREBASECLOUDMESSAGING_STATE_GRANTED:
+ *                 show_debug_message("Notifications Granted");
+ *             break;
+ *     
+ *             case FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED:
+ *                 show_debug_message("Notifications Not Granted");
+ *             break;
+ *     
+ *             case FIREBASECLOUDMESSAGING_STATE_AUTHORIZED:
+ *                 show_debug_message("Notifications Authorized");
+ *             break;
+ *     
+ *             case FIREBASECLOUDMESSAGING_STATE_DENIED:
+ *                 show_debug_message("Notifications Denied");
+ *             break;
+ *         }
+ *     
+ *     break;
+ * }
+ * ```
+ * In the ${event.social} a debug message is output to inform about the state of the permission request.
+ * 
+ * @function_end
+ */
+
+
+/**
+ * @constant FIREBASECLOUDMESSAGING_STATE
+ * @desc This set of constants represent the various states of a permission request.
+ * @member FIREBASECLOUDMESSAGING_STATE_GRANTED The permissions were granted
+ * @member FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED The permissions weren't granted
+ * @member FIREBASECLOUDMESSAGING_STATE_AUTHORIZED Already authorised
+ * @member FIREBASECLOUDMESSAGING_STATE_DENIED The permissions were denied
+ * @constant_end
+ */

@@ -17,12 +17,7 @@ setupAndroid() {
 
     # Resolve the credentials file path and copy it to the Android ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    DEST_DIR="$1/AndroidSource/ProjectFiles"
-    if [ -f "$DEST_DIR" ]; then
-        rm -f "$DEST_DIR"
-    fi
-    mkdir -p "$DEST_DIR"
-    itemCopyTo "${FILE_PATH}" "$DEST_DIR/"
+    itemCopyTo "${FILE_PATH}" "$1/AndroidSource/ProjectFiles/"
 }
 
 # setupiOS: Copies the iOS Firebase credentials plist file into the project's
@@ -35,12 +30,7 @@ setupiOS() {
 
     # Resolve the credentials file path and copy it to the iOS ProjectFiles folder
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
-    DEST_DIR="$1/iOSProjectFiles"
-    if [ -f "$DEST_DIR" ]; then
-        rm -f "$DEST_DIR"
-    fi
-    mkdir -p "$DEST_DIR"
-    itemCopyTo "${FILE_PATH}" "$DEST_DIR/"
+    itemCopyTo "${FILE_PATH}" "$1/iOSProjectFiles/"
 }
 
 setupHTML5() {
@@ -63,14 +53,10 @@ optionGetValue "versionLTS" RUNTIME_VERSION_LTS
 versionLockCheck "$YYruntimeVersion" \
     $RUNTIME_VERSION_STABLE \
     $RUNTIME_VERSION_BETA \
-    $RUNTIME_VERSION_RED \
+    $RUNTIME_VERSION_DEV \
     $RUNTIME_VERSION_LTS
 
-
-rm -rf "$(dirname "$0")/AndroidSource/ProjectFiles/"*
-rm -rf "$(dirname "$0")/iOSProjectFiles/"*
-
-mkdir -p "$(dirname "$0")/AndroidSource/ProjectFiles"
-mkdir -p "$(dirname "$0")/iOSProjectFiles"
+itemClearDir "$(dirname "$0")/AndroidSource/ProjectFiles"
+itemClearDir "$(dirname "$0")/iOSProjectFiles"
 
 setup$YYPLATFORM_name "$(dirname "$0")"

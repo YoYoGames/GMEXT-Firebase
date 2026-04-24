@@ -24,6 +24,12 @@
  * @ref FirebaseCloudMessaging_SetAutoInitEnabled
  * @ref FirebaseCloudMessaging_SubscribeToTopic
  * @ref FirebaseCloudMessaging_UnsubscribeFromTopic
+ * @ref FirebaseCloudMessaging_RequestPermission
+ * @section_end
+ * 
+ * @section_const Constants
+ * @desc 
+ * @ref FIREBASECLOUDMESSAGING_STATE
  * @section_end
  * 
  * @module_end

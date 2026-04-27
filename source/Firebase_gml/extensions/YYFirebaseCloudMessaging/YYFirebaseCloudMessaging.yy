@@ -14,7 +14,7 @@
   "copyToTargets":9007199254741004,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"3.0.0",
+  "extensionVersion":"3.0.2",
   "files":[
     {"$GMExtensionFile":"","%Name":"FirebaseCloudMessaging.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},

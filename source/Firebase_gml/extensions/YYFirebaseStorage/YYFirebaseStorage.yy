@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"3.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"YYFirebaseStorage.ext","constants":[],"copyToTargets":9007199254741036,"filename":"YYFirebaseStorage.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"YYFirebaseStorage.ext","constants":[],"copyToTargets":9007199254741036,"filename":"YYFirebaseStorage.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_Cancel","argCount":0,"args":[1,],"documentation":"","externalName":"SDKFirebaseStorage_Cancel","help":"SDKFirebaseStorage_Cancel(listener)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_Cancel","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_Download","argCount":0,"args":[1,1,1,],"documentation":"","externalName":"SDKFirebaseStorage_Download","help":"SDKFirebaseStorage_Download(localPath,storagePath,bucket)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_Download","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_Upload","argCount":0,"args":[1,1,1,],"documentation":"","externalName":"SDKFirebaseStorage_Upload","help":"SDKFirebaseStorage_Upload(localPath,storagePath,bucket)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_Upload","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
@@ -24,15 +24,7 @@
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_GetURL","argCount":0,"args":[1,1,],"documentation":"","externalName":"SDKFirebaseStorage_GetURL","help":"SDKFirebaseStorage_GetURL(storagePath,bucket)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_GetURL","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_List","argCount":0,"args":[1,2,1,1,],"documentation":"","externalName":"SDKFirebaseStorage_List","help":"SDKFirebaseStorage_List(firebasePath,maxResults,pageToken,bucket)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_List","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseStorage_ListAll","argCount":0,"args":[1,1,],"documentation":"","externalName":"SDKFirebaseStorage_ListAll","help":"SDKFirebaseStorage_ListAll(firebasePath,bucket)","hidden":false,"kind":4,"name":"SDKFirebaseStorage_ListAll","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"YYFirebaseStorage.ext","order":[
-        {"name":"SDKFirebaseStorage_Cancel","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_Download","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_Upload","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_Delete","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_GetURL","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_List","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-        {"name":"SDKFirebaseStorage_ListAll","path":"extensions/YYFirebaseStorage/YYFirebaseStorage.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"YYFirebaseStorage.ext","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"YYFirebaseStorage.js","name":"YYFirebaseStorage.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

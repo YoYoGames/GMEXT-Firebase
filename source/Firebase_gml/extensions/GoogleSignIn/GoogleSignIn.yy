@@ -16,13 +16,10 @@
   "exportToGame":true,
   "extensionVersion":"2.0.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":3026418953887940846,"filename":"GoogleSignIn.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"","constants":[],"copyToTargets":3026418953887940846,"filename":"GoogleSignIn.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"__GoogleSignIn_Show","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_Show","help":"GoogleSignIn_Show()","hidden":true,"kind":4,"name":"__GoogleSignIn_Show","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"__GoogleSignIn_SignOut","argCount":0,"args":[],"documentation":"","externalName":"GoogleSignIn_SignOut","help":"GoogleSignIn_SignOut()","hidden":true,"kind":4,"name":"__GoogleSignIn_SignOut","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":4,"name":"","order":[
-        {"name":"__GoogleSignIn_Show","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
-        {"name":"__GoogleSignIn_SignOut","path":"extensions/GoogleSignIn/GoogleSignIn.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"GoogleSignIn.js","name":"GoogleSignIn.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

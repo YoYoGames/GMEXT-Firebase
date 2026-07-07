@@ -121,11 +121,33 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
     return kFirebaseAnalyticsSuccess;
 }
 
-- (double)FirebaseAnalytics_SetConsent:(double)ads analytics:(double)analytics {
-    NSMutableDictionary<NSString *, NSString *> *consentSettings = [NSMutableDictionary dictionary];
+- (double)FirebaseAnalytics_SetConsent:(double)adsConsent
+                             analytics:(double)analyticsConsent
+                            adUserData:(double)adUserDataConsent
+                     adPersonalization:(double)adPersonalizationConsent
+{
+	
+    NSDictionary<FIRConsentType, FIRConsentStatus> *consentSettings = @{
+        FIRConsentTypeAdStorage:
+            (adsConsent >= 0.5)
+                ? FIRConsentStatusGranted
+                : FIRConsentStatusDenied,
 
-    consentSettings[FIRConsentTypeAdStorage] = (ads >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
-    consentSettings[FIRConsentTypeAnalyticsStorage] = (analytics >= 0.5) ? FIRConsentStatusGranted : FIRConsentStatusDenied;
+        FIRConsentTypeAnalyticsStorage:
+            (analyticsConsent >= 0.5)
+                ? FIRConsentStatusGranted
+                : FIRConsentStatusDenied,
+
+        FIRConsentTypeAdUserData:
+            (adUserDataConsent >= 0.5)
+                ? FIRConsentStatusGranted
+                : FIRConsentStatusDenied,
+
+        FIRConsentTypeAdPersonalization:
+            (adPersonalizationConsent >= 0.5)
+                ? FIRConsentStatusGranted
+                : FIRConsentStatusDenied
+    };
 
     [FIRAnalytics setConsent:consentSettings];
 

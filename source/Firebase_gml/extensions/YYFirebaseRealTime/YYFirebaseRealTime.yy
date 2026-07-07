@@ -16,11 +16,9 @@
   "exportToGame":true,
   "extensionVersion":"3.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebaseRealTime.ext","constants":[],"copyToTargets":44,"filename":"FirebaseRealTime.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"FirebaseRealTime.ext","constants":[],"copyToTargets":44,"filename":"FirebaseRealTime.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseRealTime_SDK","argCount":0,"args":[1,],"documentation":"","externalName":"FirebaseRealTime_SDK","help":"FirebaseRealTime_SDK(json)","hidden":false,"kind":4,"name":"FirebaseRealTime_SDK","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"FirebaseRealTime.ext","order":[
-        {"name":"FirebaseRealTime_SDK","path":"extensions/YYFirebaseRealTime/YYFirebaseRealTime.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"FirebaseRealTime.ext","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebaseRealTime.js","name":"FirebaseRealTime.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

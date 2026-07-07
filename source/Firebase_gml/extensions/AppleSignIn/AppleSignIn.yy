@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"1.2.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[
+    {"$GMExtensionFile":"v1","%Name":"","constants":[
         {"$GMExtensionConstant":"","%Name":"applesignin_scope_fullname","hidden":false,"name":"applesignin_scope_fullname","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"\"fullname\"",},
         {"$GMExtensionConstant":"","%Name":"applesignin_scope_email","hidden":false,"name":"applesignin_scope_email","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"\"email\"",},
         {"$GMExtensionConstant":"","%Name":"applesignin_signin_response","hidden":false,"name":"applesignin_signin_response","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"1",},
@@ -33,13 +33,7 @@
         {"$GMExtensionFunction":"","%Name":"AppleSignIn_AddScope","argCount":0,"args":[1,],"documentation":"","externalName":"AppleSignIn_AddScope","help":"AppleSignIn_AddScope(scope)","hidden":false,"kind":4,"name":"AppleSignIn_AddScope","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"AppleSignIn_ClearScopes","argCount":0,"args":[],"documentation":"","externalName":"AppleSignIn_ClearScopes","help":"AppleSignIn_ClearScopes()","hidden":false,"kind":4,"name":"AppleSignIn_ClearScopes","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"AppleSignIn_GetCredentialState","argCount":0,"args":[1,],"documentation":"","externalName":"AppleSignIn_GetCredentialState","help":"AppleSignIn_GetCredentialState(identitiy_token)","hidden":false,"kind":4,"name":"AppleSignIn_GetCredentialState","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"","order":[
-        {"name":"AppleSignIn_Init","path":"extensions/AppleSignIn/AppleSignIn.yy",},
-        {"name":"AppleSignIn_AuthoriseUser","path":"extensions/AppleSignIn/AppleSignIn.yy",},
-        {"name":"AppleSignIn_AddScope","path":"extensions/AppleSignIn/AppleSignIn.yy",},
-        {"name":"AppleSignIn_ClearScopes","path":"extensions/AppleSignIn/AppleSignIn.yy",},
-        {"name":"AppleSignIn_GetCredentialState","path":"extensions/AppleSignIn/AppleSignIn.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"libAppleSignInMacLib.dylib","name":"libAppleSignInMacLib.dylib","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":1,},
         {"$GMProxyFile":"","%Name":"AppleSignIn.js","name":"AppleSignIn.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},

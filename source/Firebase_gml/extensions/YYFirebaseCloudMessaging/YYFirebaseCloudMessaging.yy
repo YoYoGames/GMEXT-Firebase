@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"3.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebaseCloudMessaging.ext","constants":[
+    {"$GMExtensionFile":"v1","%Name":"FirebaseCloudMessaging.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_GRANTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_NOT_GRANTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"1",},
         {"$GMExtensionConstant":"","%Name":"FIREBASECLOUDMESSAGING_STATE_AUTHORIZED","hidden":false,"name":"FIREBASECLOUDMESSAGING_STATE_AUTHORIZED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"2",},
@@ -31,16 +31,7 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","help":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","help":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery(bool)","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCloudMessaging_RequestPermission","argCount":0,"args":[],"documentation":"","externalName":"FirebaseCloudMessaging_RequestPermission","help":"FirebaseCloudMessaging_RequestPermission()","hidden":false,"kind":4,"name":"FirebaseCloudMessaging_RequestPermission","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":4,"name":"FirebaseCloudMessaging.ext","order":[
-        {"name":"FirebaseCloudMessaging_GetToken","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_SubscribeToTopic","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_UnsubscribeFromTopic","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_IsAutoInitEnabled","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_SetAutoInitEnabled","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_DeleteToken","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_DeliveryMetricsExportToBigQueryEnabled","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-        {"name":"FirebaseCloudMessaging_SetDeliveryMetricsExportToBigQuery","path":"extensions/YYFirebaseCloudMessaging/YYFirebaseCloudMessaging.yy",},
-      ],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"init":"","kind":4,"name":"FirebaseCloudMessaging.ext","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"\r\n     implementation 'com.google.firebase:firebase-messaging'\r\n",
   "hasConvertedCodeInjection":true,

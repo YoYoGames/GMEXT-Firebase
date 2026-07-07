@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"3.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebaseRemoteConfig.ext","constants":[
+    {"$GMExtensionFile":"v1","%Name":"FirebaseRemoteConfig.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_REMOTE_CONFIG_SUCCESS","hidden":false,"name":"FIREBASE_REMOTE_CONFIG_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED","hidden":false,"name":"FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-1",},
       ],"copyToTargets":9007199254741036,"filename":"FirebaseRemoteConfig.ext","final":"","functions":[
@@ -28,15 +28,7 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseRemoteConfig_Reset","argCount":0,"args":[],"documentation":"/// @desc Resets all Firebase Remote Config settings for the current app instance. Triggers an asynchronous event `FirebaseRemoteConfig_Reset` with a success status (1.0 if successful, 0.0 otherwise) and an optional error message. Always returns `FIREBASE_REMOTE_CONFIG_SUCCESS`.\r\n/// @returns {Real}","externalName":"FirebaseRemoteConfig_Reset","help":"FirebaseRemoteConfig_Reset()","hidden":false,"kind":4,"name":"FirebaseRemoteConfig_Reset","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseRemoteConfig_SetDefaultsAsync","argCount":0,"args":[1,],"documentation":"/// @desc Sets default remote configuration parameters using a JSON string. Triggers an asynchronous event `FirebaseRemoteConfig_SetDefaultsAsync` with a success status (1.0 if successful, 0.0 otherwise) and an optional error message. Always returns `FIREBASE_REMOTE_CONFIG_SUCCESS`.\r\n/// @param {String} json A JSON string representing default configuration key-value pairs.\r\n/// @returns {Real}","externalName":"FirebaseRemoteConfig_SetDefaultsAsync","help":"FirebaseRemoteConfig_SetDefaultsAsync(json)","hidden":false,"kind":4,"name":"FirebaseRemoteConfig_SetDefaultsAsync","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseRemoteConfig_AddOnConfigUpdateListener","argCount":0,"args":[],"documentation":"/// @desc Registers a configuration update listener for Firebase Remote Config. Multiple listeners are not supported. Always returns `FIREBASE_REMOTE_CONFIG_SUCCESS` after enabling the listener, or `FIREBASE_REMOTE_CONFIG_ERROR_UNSUPPORTED` if multiple listeners are detected.\r\n/// @returns {Real}","externalName":"FirebaseRemoteConfig_AddOnConfigUpdateListener","help":"FirebaseRemoteConfig_AddOnConfigUpdateListener()","hidden":false,"kind":4,"name":"FirebaseRemoteConfig_AddOnConfigUpdateListener","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"FirebaseRemoteConfig.ext","order":[
-        {"name":"FirebaseRemoteConfig_Initialize","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_FetchAndActivate","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_Reset","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_GetKeys","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_GetString","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_GetDouble","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-        {"name":"FirebaseRemoteConfig_SetDefaultsAsync","path":"extensions/YYFirebaseRemoteConfig/YYFirebaseRemoteConfig.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"FirebaseRemoteConfig.ext","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebaseRemoteConfig.js","name":"FirebaseRemoteConfig.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
   ],

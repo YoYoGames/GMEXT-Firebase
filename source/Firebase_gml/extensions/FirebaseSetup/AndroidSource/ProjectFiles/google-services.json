@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "647388682485",
+    "firebase_url": "https://my-test-game-463123-default-rtdb.firebaseio.com",
     "project_id": "my-test-game-463123",
     "storage_bucket": "my-test-game-463123.firebasestorage.app"
   },

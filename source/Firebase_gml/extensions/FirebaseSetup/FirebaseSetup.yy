@@ -16,9 +16,9 @@
   "exportToGame":true,
   "extensionVersion":"1.2.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"","constants":[],"copyToTargets":-1,"filename":"FirebaseSetup.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"SDKFirebaseSetup_Init","argCount":0,"args":[],"documentation":"","externalName":"SDKFirebaseSetup_Init","help":"SDKFirebaseSetup_Init()","hidden":true,"kind":4,"name":"SDKFirebaseSetup_Init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"SDKFirebaseSetup_Init","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[
+      ],"init":"SDKFirebaseSetup_Init","kind":4,"name":"","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebaseSetup.js","name":"FirebaseSetup.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

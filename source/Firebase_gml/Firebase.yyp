@@ -2,7 +2,7 @@
   "$GMProject":"v1",
   "%Name":"Firebase",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -113,7 +113,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.13.1.193",
+    "IDEVersion":"2024.14.4.222",
   },
   "name":"Firebase",
   "resources":[
@@ -154,6 +154,7 @@
     {"id":{"name":"Obj_FirebaseAnalytics_LogEvent","path":"objects/Obj_FirebaseAnalytics_LogEvent/Obj_FirebaseAnalytics_LogEvent.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_ResetAnalyticsData","path":"objects/Obj_FirebaseAnalytics_ResetAnalyticsData/Obj_FirebaseAnalytics_ResetAnalyticsData.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled","path":"objects/Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled/Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled.yy",},},
+    {"id":{"name":"Obj_FirebaseAnalytics_SetConsent","path":"objects/Obj_FirebaseAnalytics_SetConsent/Obj_FirebaseAnalytics_SetConsent.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_SetDefaultEventParameters","path":"objects/Obj_FirebaseAnalytics_SetDefaultEventParameters/Obj_FirebaseAnalytics_SetDefaultEventParameters.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_SetSessionTimeoutDuration","path":"objects/Obj_FirebaseAnalytics_SetSessionTimeoutDuration/Obj_FirebaseAnalytics_SetSessionTimeoutDuration.yy",},},
     {"id":{"name":"Obj_FirebaseAnalytics_SetUserId","path":"objects/Obj_FirebaseAnalytics_SetUserId/Obj_FirebaseAnalytics_SetUserId.yy",},},

@@ -117,6 +117,7 @@
     {"name":"Obj_FacebookSignIn_OAuth","order":2,"path":"objects/Obj_FacebookSignIn_OAuth/Obj_FacebookSignIn_OAuth.yy",},
     {"name":"Obj_FirebaseAnalytics_ResetAnalyticsData","order":1,"path":"objects/Obj_FirebaseAnalytics_ResetAnalyticsData/Obj_FirebaseAnalytics_ResetAnalyticsData.yy",},
     {"name":"Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled","order":2,"path":"objects/Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled/Obj_FirebaseAnalytics_SetAnalyticsCollectionEnabled.yy",},
+    {"name":"Obj_FirebaseAnalytics_SetConsent","order":7,"path":"objects/Obj_FirebaseAnalytics_SetConsent/Obj_FirebaseAnalytics_SetConsent.yy",},
     {"name":"Obj_FirebaseAnalytics_SetDefaultEventParameters","order":3,"path":"objects/Obj_FirebaseAnalytics_SetDefaultEventParameters/Obj_FirebaseAnalytics_SetDefaultEventParameters.yy",},
     {"name":"Obj_FirebaseAnalytics_SetSessionTimeoutDuration","order":4,"path":"objects/Obj_FirebaseAnalytics_SetSessionTimeoutDuration/Obj_FirebaseAnalytics_SetSessionTimeoutDuration.yy",},
     {"name":"Obj_FirebaseAnalytics_SetUserId","order":5,"path":"objects/Obj_FirebaseAnalytics_SetUserId/Obj_FirebaseAnalytics_SetUserId.yy",},

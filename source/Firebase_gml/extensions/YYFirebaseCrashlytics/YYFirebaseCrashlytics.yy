@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"3.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebaseCrashlytics.ext","constants":[
+    {"$GMExtensionFile":"v1","%Name":"FirebaseCrashlytics.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_CRASHLYTICS_SUCCESS","hidden":false,"name":"FIREBASE_CRASHLYTICS_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS","hidden":false,"name":"FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-1",},
       ],"copyToTargets":9007199254741004,"filename":"FirebaseCrashlytics.ext","final":"","functions":[
@@ -32,7 +32,7 @@
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_UnsentReports_Send","argCount":0,"args":[],"documentation":"/// @desc Sends all unsent Crashlytics reports. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_UnsentReports_Send","help":"FirebaseCrashlytics_UnsentReports_Send()","hidden":false,"kind":4,"name":"FirebaseCrashlytics_UnsentReports_Send","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_UnsentReports_Check","argCount":0,"args":[],"documentation":"/// @desc Checks if there are any unsent Crashlytics reports, this is an async operation. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_UnsentReports_Check","help":"FirebaseCrashlytics_UnsentReports_Check()","hidden":false,"kind":4,"name":"FirebaseCrashlytics_UnsentReports_Check","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebaseCrashlytics_SetCustomKeys","argCount":0,"args":[1,],"documentation":"/// @desc Sets multiple custom keys and values for Crashlytics using a JSON string, this is an async operation. Returns `FIREBASE_CRASHLYTICS_SUCCESS` if successful, or `FIREBASE_CRASHLYTICS_ERROR_INVALID_PARAMETERS` if the JSON string is invalid.\r\n/// @param {string} jsonString A JSON string containing key-value pairs to set.\r\n/// @return {real}","externalName":"FirebaseCrashlytics_SetCustomKeys","help":"FirebaseCrashlytics_SetCustomKeys","hidden":false,"kind":4,"name":"FirebaseCrashlytics_SetCustomKeys","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"FirebaseCrashlytics.ext","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
+      ],"init":"","kind":4,"name":"FirebaseCrashlytics.ext","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
   ],
   "gradleinject":"\r\n      implementation 'com.google.firebase:firebase-crashlytics'\r\n",
   "hasConvertedCodeInjection":true,

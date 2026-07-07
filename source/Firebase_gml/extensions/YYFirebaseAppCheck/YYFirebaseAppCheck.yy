@@ -16,10 +16,10 @@
   "exportToGame":true,
   "extensionVersion":"1.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[],"copyToTargets":9007199254741004,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
+    {"$GMExtensionFile":"v1","%Name":"","constants":[],"copyToTargets":9007199254741004,"filename":"YYFirebaseAppCheck.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_GetToken","argCount":0,"args":[2,],"documentation":"","externalName":"FirebaseAppCheck_GetToken","help":"FirebaseAppCheck_GetToken(force_refresh)","hidden":false,"kind":4,"name":"FirebaseAppCheck_GetToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebaseAppCheck_LimitedUseToken","argCount":0,"args":[],"documentation":"","externalName":"FirebaseAppCheck_LimitedUseToken","help":"FirebaseAppCheck_LimitedUseToken()","hidden":false,"kind":4,"name":"FirebaseAppCheck_LimitedUseToken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":4,"name":"","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"init":"","kind":4,"name":"","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"\r\n    implementation(\"com.google.firebase:firebase-appcheck-playintegrity\")\r\n",
   "hasConvertedCodeInjection":true,

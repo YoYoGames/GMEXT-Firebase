@@ -119,14 +119,23 @@ public class YYFirebaseAnalytics extends RunnerSocial {
         return FIREBASE_ANALYTICS_SUCCESS;
     }
 
-    public double FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent) {
+    public double FirebaseAnalytics_SetConsent(double adsConsent, double analyticsConsent, double adUserDataConsent, double adPersonalizationConsent) {
         Map<FirebaseAnalytics.ConsentType, FirebaseAnalytics.ConsentStatus> consentMap = new HashMap<>();
 
         consentMap.put(FirebaseAnalytics.ConsentType.AD_STORAGE,
                 adsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
 
         consentMap.put(FirebaseAnalytics.ConsentType.ANALYTICS_STORAGE,
-                analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED : FirebaseAnalytics.ConsentStatus.DENIED);
+                analyticsConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED
+                        : FirebaseAnalytics.ConsentStatus.DENIED);
+
+        consentMap.put(FirebaseAnalytics.ConsentType.AD_USER_DATA,
+                adUserDataConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED
+                        : FirebaseAnalytics.ConsentStatus.DENIED);
+
+        consentMap.put(FirebaseAnalytics.ConsentType.AD_PERSONALIZATION,
+                adPersonalizationConsent >= 0.5 ? FirebaseAnalytics.ConsentStatus.GRANTED
+                        : FirebaseAnalytics.ConsentStatus.DENIED);
 
         analytics.setConsent(consentMap);
         return FIREBASE_ANALYTICS_SUCCESS;

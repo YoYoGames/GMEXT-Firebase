@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"2.1.0",
   "files":[
-    {"$GMExtensionFile":"","%Name":"","constants":[
+    {"$GMExtensionFile":"v1","%Name":"","constants":[
         {"$GMExtensionConstant":"","%Name":"FacebookExtension2_EVENT_ACHIEVED_LEVEL","hidden":false,"name":"FacebookExtension2_EVENT_ACHIEVED_LEVEL","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"101",},
         {"$GMExtensionConstant":"","%Name":"FacebookExtension2_EVENT_ADDED_PAYMENT_INFO","hidden":false,"name":"FacebookExtension2_EVENT_ADDED_PAYMENT_INFO","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"102",},
         {"$GMExtensionConstant":"","%Name":"FacebookExtension2_EVENT_ADDED_TO_CART","hidden":false,"name":"FacebookExtension2_EVENT_ADDED_TO_CART","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"103",},
@@ -55,22 +55,7 @@
         {"$GMExtensionFunction":"","%Name":"fb_init","argCount":0,"args":[],"documentation":"","externalName":"fb_init","help":"","hidden":false,"kind":4,"name":"fb_init","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"fb_refresh_accesstoken","argCount":0,"args":[],"documentation":"","externalName":"fb_refresh_accesstoken","help":"fb_refresh_accesstoken()","hidden":false,"kind":4,"name":"fb_refresh_accesstoken","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"fb_send_event","argCount":0,"args":[2,2,2,],"documentation":"","externalName":"fb_send_event","help":"fb_send_event( event_id, event_value_float, event_value_object )","hidden":false,"kind":4,"name":"fb_send_event","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"","order":[
-        {"name":"fb_accesstoken","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_check_permission","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_dialog","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_graph_request","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_ready","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_login","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_logout","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_request_publish_permissions","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_request_read_permissions","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_status","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_user_id","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_init","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_refresh_accesstoken","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-        {"name":"fb_send_event","path":"extensions/FacebookExtension2/FacebookExtension2.yy",},
-      ],"origname":"extensions\\FacebookExt2.ext","ProxyFiles":[
+      ],"init":"","kind":4,"name":"","origname":"extensions\\FacebookExt2.ext","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FacebookExtJS.js","name":"FacebookExtJS.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],

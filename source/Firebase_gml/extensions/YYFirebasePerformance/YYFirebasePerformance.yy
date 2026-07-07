@@ -16,7 +16,7 @@
   "exportToGame":true,
   "extensionVersion":"2.0.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"FirebasePerformanceMonitoring.ext","constants":[
+    {"$GMExtensionFile":"v1","%Name":"FirebasePerformanceMonitoring.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_SUCCESS","hidden":false,"name":"FIREBASE_PERFORMANCE_SUCCESS","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_NOT_FOUND","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_NOT_FOUND","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-1",},
         {"$GMExtensionConstant":"","%Name":"FIREBASE_PERFORMANCE_ERROR_INVALID_NAME","hidden":false,"name":"FIREBASE_PERFORMANCE_ERROR_INVALID_NAME","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"-2",},
@@ -48,30 +48,7 @@
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_Trace_Attribute_GetAll","argCount":0,"args":[1,],"documentation":"/// @desc Retrieves all custom attributes for a given trace in JSON format. Returns a JSON string containing all attributes, or an empty JSON object if the trace is not found.\r\n/// @param {String} name The name of the trace.\r\n/// @returns {String}","externalName":"FirebasePerformance_Trace_Attribute_GetAll","help":"FirebasePerformance_Trace_Attribute_GetAll(name)","hidden":false,"kind":4,"name":"FirebasePerformance_Trace_Attribute_GetAll","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_Trace_Metric_GetLong","argCount":0,"args":[1,1,],"documentation":"/// @desc Retrieves the value of a custom metric for a given trace. Returns the metric value, or `0.0` if the trace is not found.\r\n/// @param {String} name The name of the trace.\r\n/// @param {String} metric The name of the metric to retrieve.\r\n/// @returns {Real}","externalName":"FirebasePerformance_Trace_Metric_GetLong","help":"FirebasePerformance_Trace_Metric_GetLong(name,metric)","hidden":false,"kind":4,"name":"FirebasePerformance_Trace_Metric_GetLong","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"FirebasePerformance_HttpMetric_Attribute_GetAll","argCount":0,"args":[1,],"documentation":"/// @desc Retrieves all custom attributes for an HTTP Metric in JSON format. Returns a JSON string containing all attributes, or an empty JSON object if the metric is not found.\r\n/// @param {String} name The name of the HTTP Metric.\r\n/// @returns {String}","externalName":"FirebasePerformance_HttpMetric_Attribute_GetAll","help":"FirebasePerformance_HttpMetric_Attribute_GetAll(name)","hidden":false,"kind":4,"name":"FirebasePerformance_HttpMetric_Attribute_GetAll","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"","kind":4,"name":"FirebasePerformanceMonitoring.ext","order":[
-        {"name":"FirebasePerformance_setPerformanceCollectionEnabled","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_isPerformanceCollectionEnabled","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Create","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Start","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Stop","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Metric_Put","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Metric_Increment","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Metric_GetLong","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Attribute_Put","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Attribute_Remove","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Attribute_Get","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_Trace_Attribute_GetAll","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Create","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Start","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Stop","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_SetHttpResponseCode","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_SetRequestPayloadSize","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_SetResponseContentType","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_SetResponsePayloadSize","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Attribute_Put","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Attribute_Remove","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-        {"name":"FirebasePerformance_HttpMetric_Attribute_Get","path":"extensions/YYFirebasePerformance/YYFirebasePerformance.yy",},
-      ],"origname":"","ProxyFiles":[
+      ],"init":"","kind":4,"name":"FirebasePerformanceMonitoring.ext","origname":"","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"FirebasePerformance.js","name":"FirebasePerformance.js","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":5,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
   ],

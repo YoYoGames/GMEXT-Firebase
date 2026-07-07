@@ -1,17 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"Obj_AppleSignIn_Oauth_Http",
+  "%Name":"Obj_FirebaseAnalytics_SetConsent",
   "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":7,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"Obj_AppleSignIn_Oauth_Http",
+  "name":"Obj_FirebaseAnalytics_SetConsent",
   "overriddenProperties":[],
   "parent":{
-    "name":"Apple SignIn",
-    "path":"folders/Authentication Providers/Extensions/Apple SignIn.yy",
+    "name":"Objects",
+    "path":"folders/Firebase Demo/Firebase Analytics/Objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_gm_button",
+    "path":"objects/obj_gm_button/obj_gm_button.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -25,13 +29,14 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"state","filters":[],"listItems":[],"multiselect":false,"name":"state","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_gm_button",
+    "path":"sprites/spr_gm_button/spr_gm_button.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

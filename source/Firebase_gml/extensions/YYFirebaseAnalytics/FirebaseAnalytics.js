@@ -241,13 +241,24 @@ function FirebaseAnalytics_SetUserProperty(name, value) {
 }
 
 /**
- * Sets the user consent state for analytics and ad storage.
- * A value greater than or equal to `0.5` grants consent, while a value below `0.5` denies it.
- * @param {number} ads - Consent state for ad storage (>= 0.5 for GRANTED).
- * @param {number} analytics - Consent state for analytics storage (>= 0.5 for GRANTED).
- * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution, or an error code if not initialized.
+ * Sets the user consent state for analytics and advertising features.
+ * A value greater than or equal to `0.5` grants consent,
+ * while a value below `0.5` denies it.
+ *
+ * @param {number} adsConsent - Consent state for ad storage.
+ * @param {number} analyticsConsent - Consent state for analytics storage.
+ * @param {number} adUserDataConsent - Consent state for sending user data for advertising.
+ * @param {number} adPersonalizationConsent - Consent state for personalized advertising.
+ *
+ * @return {number} Returns `FIREBASE_ANALYTICS_SUCCESS` after execution,
+ * or `FIREBASE_ANALYTICS_ERROR_NOT_INITIALIZED` if Analytics is not initialized.
  */
-function FirebaseAnalytics_SetConsent(ads, analytics) {
+function FirebaseAnalytics_SetConsent(
+	adsConsent,
+	analyticsConsent,
+	adUserDataConsent,
+	adPersonalizationConsent
+) {
 	const { isAnalyticsInitialized, module } = window.FirebaseAnalyticsExt;
 
 	if (!isAnalyticsInitialized()) {
@@ -255,10 +266,29 @@ function FirebaseAnalytics_SetConsent(ads, analytics) {
 	}
 
 	const consentMap = {
-        ad_storage: ads >= 0.5 ? 'granted' : 'denied',
-        analytics_storage: analytics >= 0.5 ? 'granted' : 'denied'
-    };
-    module.setConsent(consentMap);
+		ad_storage:
+			adsConsent >= 0.5
+				? "granted"
+				: "denied",
+
+		analytics_storage:
+			analyticsConsent >= 0.5
+				? "granted"
+				: "denied",
+
+		ad_user_data:
+			adUserDataConsent >= 0.5
+				? "granted"
+				: "denied",
+
+		ad_personalization:
+			adPersonalizationConsent >= 0.5
+				? "granted"
+				: "denied"
+	};
+
+	module.setConsent(consentMap);
+
 	return FIREBASE_ANALYTICS_SUCCESS;
 }
 

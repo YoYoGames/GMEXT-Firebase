@@ -31,6 +31,7 @@
  * @ref FirebaseAnalytics_SetSessionTimeoutDuration
  * @ref FirebaseAnalytics_SetUserId
  * @ref FirebaseAnalytics_SetUserProperty
+ * @ref FirebaseAnalytics_SetConsent
  * @section_end
  * 
  * @section_const Constants

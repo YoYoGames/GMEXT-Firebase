@@ -135,6 +135,20 @@
  */
 
 /**
+ * @func FirebaseAnalytics_SetConsent
+ * @desc Sets the user's consent preferences across four different options. You can pass `true` or `false` (1 or 0) to grant or deny consent.
+ * 
+ * @param {real} adsConsent Grants or denies consent for ad storage.
+ * @param {real} analyticsConsent Grants or denies consent for analytics storage.
+ * @param {real} adUserDataConsent Grants or denies consent for ad user data collection.
+ * @param {real} adPersonalizationConsent Grants or denies consent for ad personalization.
+ * 
+ * @returns {constant.FirebaseAnalyticsResult}
+ * 
+ * @function_end
+ */
+
+/**
  * @const FirebaseAnalyticsResult
  * @desc Represents the possible results for operations in the Analytics module.
  * @member FIREBASE_ANALYTICS_SUCCESS Indicates the operation was completed successfully.

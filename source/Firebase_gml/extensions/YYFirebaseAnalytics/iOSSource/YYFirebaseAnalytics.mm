@@ -107,13 +107,13 @@ static const double kFirebaseAnalyticsErrorInvalidParameters = -1.0;
     return kFirebaseAnalyticsSuccess;
 }
 
-- (double)FirebaseAnalytics_SetUserPropertyString:(NSString *)propertyName value:(NSString *)value {
+- (double)FirebaseAnalytics_SetUserProperty:(NSString *)propertyName value:(NSString *)value {
     if (![self isValidPropertyName:propertyName]) {
         return kFirebaseAnalyticsErrorInvalidParameters;
     }
 
     if ([self isStringNullOrEmpty:value]) {
-        NSLog(@"FirebaseAnalytics_SetUserPropertyString :: property value is empty, clearing property");
+        NSLog(@"FirebaseAnalytics_SetUserProperty :: property value is empty, clearing property");
         value = nil;
     }
     [FIRAnalytics setUserPropertyString:value forName:propertyName];

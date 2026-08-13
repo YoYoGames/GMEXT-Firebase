@@ -465,7 +465,9 @@
         {"$GMExtensionFunction":"","%Name":"__ump_show_privacy_options_form","argCount":2,"args":[1,2,],"documentation":"@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}","externalName":"__EXT_NATIVE__ump_show_privacy_options_form","help":"","hidden":true,"kind":4,"name":"__ump_show_privacy_options_form","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"__GMFirebase_invocation_handler","argCount":2,"args":[1,2,],"documentation":"@param {Pointer} _buffer_ptr\r\n@param {Real} _buffer_size","externalName":"__EXT_NATIVE__GMFirebase_invocation_handler","help":"","hidden":true,"kind":4,"name":"__GMFirebase_invocation_handler","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
         {"$GMExtensionFunction":"","%Name":"__GMFirebase_queue_buffer","argCount":2,"args":[1,2,],"documentation":"@param {Pointer} _buffer_ptr\r\n@param {Real} _buffer_size","externalName":"__EXT_NATIVE__GMFirebase_queue_buffer","help":"","hidden":true,"kind":4,"name":"__GMFirebase_queue_buffer","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},
-      ],"init":"","kind":4,"name":"","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+      ],"init":"","kind":4,"name":"","origname":"","ProxyFiles":[
+        {"$GMProxyFile":"","%Name":"GMFirebase.dll","name":"GMFirebase.dll","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":6,},
+      ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":null,
   "hasConvertedCodeInjection":true,
@@ -491,8 +493,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Firebase_EXTGEN",
-    "path":"folders/Firebase_EXTGEN.yy",
+    "name":"Firebase",
+    "path":"folders/Firebase.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

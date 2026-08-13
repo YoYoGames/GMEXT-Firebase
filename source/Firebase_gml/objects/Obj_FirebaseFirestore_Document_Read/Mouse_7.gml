@@ -1,3 +1,0 @@
-
-FirebaseFirestore("Collection/Document").Read()
-

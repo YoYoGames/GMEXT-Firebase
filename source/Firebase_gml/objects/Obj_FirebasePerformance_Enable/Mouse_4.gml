@@ -1,3 +1,0 @@
-
-FirebasePerformance_setPerformanceCollectionEnabled(!FirebasePerformance_isPerformanceCollectionEnabled())
-

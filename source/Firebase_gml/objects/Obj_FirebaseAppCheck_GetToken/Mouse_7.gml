@@ -1,2 +1,0 @@
-
-FirebaseAppCheck_GetToken(false)

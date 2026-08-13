@@ -1,2 +1,0 @@
-
-FirebaseAnalytics_ResetAnalyticsData()

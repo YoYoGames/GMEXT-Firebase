@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"GMFirebase_API",
   "parent":{
-    "name":"Firebase_EXTGEN",
-    "path":"folders/Firebase_EXTGEN.yy",
+    "name":"Firebase",
+    "path":"folders/Firebase.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

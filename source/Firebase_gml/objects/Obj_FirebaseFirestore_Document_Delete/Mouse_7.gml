@@ -1,2 +1,0 @@
-
-FirebaseFirestore("Collection/Document").Delete()

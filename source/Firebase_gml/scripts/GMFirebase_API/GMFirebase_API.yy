@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebase_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebase_API",
+  "parent":{
+    "name":"Firebase_EXTGEN",
+    "path":"folders/Firebase_EXTGEN.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

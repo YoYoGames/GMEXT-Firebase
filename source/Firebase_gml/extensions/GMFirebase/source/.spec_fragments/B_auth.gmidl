@@ -1,0 +1,480 @@
+// ============================================================
+// Auth - error codes
+// ============================================================
+// Mirrors firebase::auth::AuthError (firebase/auth/types.h) exactly, value for
+// value, so C++ can hand these codes across the wire as plain numbers with no
+// translation step and GML code can still compare against named constants.
+// The tail of the real SDK enum (kAuthErrorInvalidEventHandler and onward) is
+// gated behind #ifdef INTERNAL_EXPERIMENTAL in the SDK header, which is not
+// defined in a normal SDK consumption build, so those members do not exist in
+// the ABI we link against and are intentionally omitted here too.
+[global, bind = typed_gml]
+enum FirebaseAuthError
+{
+	None = 0,
+	Unimplemented = -1,
+	Failure = 1,
+	InvalidCustomToken = 2,
+	CustomTokenMismatch = 3,
+	InvalidCredential = 4,
+	UserDisabled = 5,
+	AccountExistsWithDifferentCredentials = 6,
+	OperationNotAllowed = 7,
+	EmailAlreadyInUse = 8,
+	RequiresRecentLogin = 9,
+	CredentialAlreadyInUse = 10,
+	InvalidEmail = 11,
+	WrongPassword = 12,
+	TooManyRequests = 13,
+	UserNotFound = 14,
+	ProviderAlreadyLinked = 15,
+	NoSuchProvider = 16,
+	InvalidUserToken = 17,
+	UserTokenExpired = 18,
+	NetworkRequestFailed = 19,
+	InvalidApiKey = 20,
+	AppNotAuthorized = 21,
+	UserMismatch = 22,
+	WeakPassword = 23,
+	NoSignedInUser = 24,
+	ApiNotAvailable = 25,
+	ExpiredActionCode = 26,
+	InvalidActionCode = 27,
+	InvalidMessagePayload = 28,
+	InvalidPhoneNumber = 29,
+	MissingPhoneNumber = 30,
+	InvalidRecipientEmail = 31,
+	InvalidSender = 32,
+	InvalidVerificationCode = 33,
+	InvalidVerificationId = 34,
+	MissingVerificationCode = 35,
+	MissingVerificationId = 36,
+	MissingEmail = 37,
+	MissingPassword = 38,
+	QuotaExceeded = 39,
+	RetryPhoneAuth = 40,
+	SessionExpired = 41,
+	AppNotVerified = 42,
+	AppVerificationFailed = 43,
+	CaptchaCheckFailed = 44,
+	InvalidAppCredential = 45,
+	MissingAppCredential = 46,
+	InvalidClientId = 47,
+	InvalidContinueUri = 48,
+	MissingContinueUri = 49,
+	KeychainError = 50,
+	MissingAppToken = 51,
+	MissingIosBundleId = 52,
+	NotificationNotForwarded = 53,
+	UnauthorizedDomain = 54,
+	WebContextAlreadyPresented = 55,
+	WebContextCancelled = 56,
+	DynamicLinkNotActivated = 57,
+	Cancelled = 58,
+	InvalidProviderId = 59,
+	WebInternalError = 60,
+	WebStorateUnsupported = 61,
+	TenantIdMismatch = 62,
+	UnsupportedTenantOperation = 63,
+	InvalidLinkDomain = 64,
+	RejectedCredential = 65,
+	PhoneNumberNotFound = 66,
+	InvalidTenantId = 67,
+	MissingClientIdentifier = 68,
+	MissingMultiFactorSession = 69,
+	MissingMultiFactorInfo = 70,
+	InvalidMultiFactorSession = 71,
+	MultiFactorInfoNotFound = 72,
+	AdminRestrictedOperation = 73,
+	UnverifiedEmail = 74,
+	SecondFactorAlreadyEnrolled = 75,
+	MaximumSecondFactorCountExceeded = 76,
+	UnsupportedFirstFactor = 77,
+	EmailChangeNeedsVerification = 78,
+}
+
+// ============================================================
+// Auth core
+// ============================================================
+
+// Lazily creates/fetches the singleton firebase::auth::Auth for the shared
+// firebase::App (see firebase_app_initialize()). Returns false and sets
+// firebase_last_error_code()/message() on failure - most commonly because
+// firebase_app_initialize() has not been called yet.
+[global, bind = typed_gml]
+function firebase_auth_get_auth(): bool;
+
+[global, bind = typed_gml]
+function firebase_auth_language_code(): string;
+
+[global, bind = typed_gml]
+function firebase_auth_set_language_code(
+	language_code: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_use_app_language(): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_use_emulator(
+	host: string,
+	port: real
+): unit;
+
+// Ref to the currently signed-in user, or `undefined` if nobody is signed in.
+// Release with firebase_auth_user_release() once done with it.
+[global, bind = typed_gml, type_hint=`uint64?`]
+function firebase_auth_current_user(): gmval;
+
+[global, bind = typed_gml]
+function firebase_auth_sign_out(): unit;
+
+// callback(error_code: real, error_message: string, providers: array of string)
+[global, bind = typed_gml]
+function firebase_auth_fetch_providers_for_email(
+	email: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// ============================================================
+// Sign-in / sign-up
+// ============================================================
+// Every function below follows the same callback shape:
+//   callback(error_code: real, error_message: string, user: uint64 or undefined)
+// `user` is a GM_FB_TYPE_AUTH_USER ref (see firebase_auth_user_* below);
+// release it with firebase_auth_user_release() once done with it.
+
+[global, bind = typed_gml]
+function firebase_auth_sign_in_with_custom_token(
+	custom_token: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_sign_in_with_credential(
+	[type_hint=`uint64`] credential_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_sign_in_and_retrieve_data_with_credential(
+	[type_hint=`uint64`] credential_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_sign_in_anonymously(
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_sign_in_with_email_and_password(
+	email: string,
+	password: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_create_user_with_email_and_password(
+	email: string,
+	password: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_send_password_reset_email(
+	email: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// ============================================================
+// AuthStateListener / IdTokenListener
+// ============================================================
+// callback(user: uint64 or undefined), fired every time the signed-in user
+// changes (sign-in, sign-out, or - for the id-token variant - token refresh).
+// Returns a listener ref for the matching remove function below.
+
+[global, bind = typed_gml, type_hint=`uint64?`]
+function firebase_auth_add_state_listener(
+	callback: func
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_auth_remove_state_listener(
+	[type_hint=`uint64`] listener_ref: gmval
+): unit;
+
+[global, bind = typed_gml, type_hint=`uint64?`]
+function firebase_auth_add_id_token_listener(
+	callback: func
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_auth_remove_id_token_listener(
+	[type_hint=`uint64`] listener_ref: gmval
+): unit;
+
+// ============================================================
+// Credential
+// ============================================================
+// firebase::auth::Credential is an opaque, provider-agnostic value handed to
+// sign-in/link/reauthenticate calls above and to firebase_auth_user_link_with_
+// credential/reauthenticate below. Every *_get_credential() factory below
+// mints one of these refs.
+
+[global, bind = typed_gml]
+function firebase_auth_credential_provider(
+	[type_hint=`uint64`] credential_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_credential_is_valid(
+	[type_hint=`uint64`] credential_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_auth_credential_release(
+	[type_hint=`uint64`] credential_ref: gmval
+): unit;
+
+// ============================================================
+// Identity provider factories
+// ============================================================
+// Every one of these is a synchronous, local-only value construction (no
+// network round-trip) that mints a GM_FB_TYPE_AUTH_CREDENTIAL ref, except
+// firebase_auth_game_center_auth_provider_get_credential(), which talks to the
+// local GameCenter session and is genuinely async.
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_email_auth_provider_get_credential(
+	email: string,
+	password: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_facebook_auth_provider_get_credential(
+	access_token: string
+): gmval;
+
+// callback(error_code: real, error_message: string, credential: uint64 or undefined)
+[global, bind = typed_gml]
+function firebase_auth_game_center_auth_provider_get_credential(
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_game_center_auth_provider_is_player_authenticated(): bool;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_github_auth_provider_get_credential(
+	token: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_google_auth_provider_get_credential(
+	id_token: string,
+	access_token: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_oauth_provider_get_credential(
+	provider_id: string,
+	id_token: string,
+	access_token: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_oauth_provider_get_credential_with_nonce(
+	provider_id: string,
+	id_token: string,
+	raw_nonce: string,
+	access_token: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_play_games_auth_provider_get_credential(
+	server_auth_code: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_auth_twitter_auth_provider_get_credential(
+	token: string,
+	secret: string
+): gmval;
+
+// ============================================================
+// Phone Auth - deliberate stub for this pass
+// ============================================================
+// Always fails with FirebaseAuthError.Unimplemented. See the extensive
+// comment above the implementation in GMFirebase_auth_credential.cpp for why
+// full phone-auth verification (platform-native reCAPTCHA/SMS-retriever UI,
+// PhoneAuthProvider::Listener, ForceResendingToken lifecycle) was scoped out
+// of this pass. This function exists so calling code gets a clear, typed
+// error today and does not need to change call sites once phone auth is
+// implemented for real.
+[global, bind = typed_gml]
+function firebase_auth_phone_verify_phone_number(
+	phone_number: string,
+	timeout_ms: real
+): real;
+
+// ============================================================
+// User
+// ============================================================
+// firebase::auth::User has no address of its own (Auth::current_user() and
+// every sign-in/link/reauthenticate callback above hand it back by value), so
+// every GM_FB_TYPE_AUTH_USER ref below is a private heap copy minted on the
+// C++ side. Call firebase_auth_user_release() once done with a user ref;
+// releasing it never signs the underlying account out.
+
+[global, bind = typed_gml]
+function firebase_auth_user_release(
+	[type_hint=`uint64`] user_ref: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_auth_user_is_valid(
+	[type_hint=`uint64`] user_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_auth_user_uid(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_email(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_display_name(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_photo_url(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_provider_id(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_phone_number(
+	[type_hint=`uint64`] user_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_auth_user_is_email_verified(
+	[type_hint=`uint64`] user_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_auth_user_is_anonymous(
+	[type_hint=`uint64`] user_ref: gmval
+): bool;
+
+// UTC milliseconds since epoch.
+[global, bind = typed_gml]
+function firebase_auth_user_creation_timestamp(
+	[type_hint=`uint64`] user_ref: gmval
+): real;
+
+// UTC milliseconds since epoch.
+[global, bind = typed_gml]
+function firebase_auth_user_last_sign_in_timestamp(
+	[type_hint=`uint64`] user_ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string, token: string)
+[global, bind = typed_gml]
+function firebase_auth_user_get_token(
+	[type_hint=`uint64`] user_ref: gmval,
+	force_refresh: bool,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_update_password(
+	[type_hint=`uint64`] user_ref: gmval,
+	password: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string). An empty display_name/
+// photo_url clears that field rather than leaving it unchanged - re-supply
+// the current value (see firebase_auth_user_display_name()/photo_url() above)
+// to only touch one field.
+[global, bind = typed_gml]
+function firebase_auth_user_update_profile(
+	[type_hint=`uint64`] user_ref: gmval,
+	display_name: string,
+	photo_url: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_send_email_verification(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_send_email_verification_before_updating_email(
+	[type_hint=`uint64`] user_ref: gmval,
+	new_email: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_reauthenticate(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`uint64`] credential_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string, user: uint64 or undefined)
+[global, bind = typed_gml]
+function firebase_auth_user_reauthenticate_and_retrieve_data(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`uint64`] credential_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string, user: uint64 or undefined)
+[global, bind = typed_gml]
+function firebase_auth_user_link_with_credential(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`uint64`] credential_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string, user: uint64 or undefined)
+[global, bind = typed_gml]
+function firebase_auth_user_unlink(
+	[type_hint=`uint64`] user_ref: gmval,
+	provider_id: string,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_reload(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_auth_user_delete(
+	[type_hint=`uint64`] user_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): unit;

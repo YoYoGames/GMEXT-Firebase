@@ -1,0 +1,645 @@
+// ============================================================
+// Realtime Database - enums
+// ============================================================
+
+// Mirrors firebase::LogLevel (firebase/log.h). Shared conceptually with
+// Analytics' desktop log callback (which surfaces log_level as a plain
+// `real`, not this enum, since it predates this declaration) - if another
+// module ever needs a typed log level, reuse this one rather than declaring
+// a second FirebaseLogLevel.
+[global, bind = typed_gml]
+enum FirebaseLogLevel
+{
+	Verbose = 0,
+	Debug = 1,
+	Info = 2,
+	Warning = 3,
+	Error = 4,
+	Assert = 5,
+}
+
+// Mirrors firebase::database::Error (firebase/database/common.h). Every
+// Database callback below that reports an error_code returns one of these
+// values as a plain `real` (same convention as the rest of this extension -
+// there is no single unified Firebase result enum to bind to), this enum
+// exists purely so GML code can use named constants instead of magic numbers.
+[global, bind = typed_gml]
+enum FirebaseDatabaseError
+{
+	None = 0,
+	Disconnected = 1,
+	ExpiredToken = 2,
+	InvalidToken = 3,
+	MaxRetries = 4,
+	NetworkError = 5,
+	OperationFailed = 6,
+	OverriddenBySet = 7,
+	PermissionDenied = 8,
+	Unavailable = 9,
+	UnknownError = 10,
+	WriteCanceled = 11,
+	InvalidVariantType = 12,
+	ConflictingOperationInProgress = 13,
+	TransactionAbortedByUser = 14,
+}
+
+// ============================================================
+// Realtime Database - Database
+// ============================================================
+// A Database* is SDK-owned and never deleted by this extension (matching
+// Database::GetInstance()'s documented lifetime - it lives as long as the
+// App), so there is deliberately no firebase_database_release().
+
+// Uses the default App's default-URL database.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_get_instance(): gmval;
+
+// Uses the default App against a specific database URL (for apps with more
+// than one Realtime Database instance).
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_get_instance_for_url(
+	url: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_get_url(
+	[type_hint=`uint64`] db_ref: gmval
+): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_get_reference(
+	[type_hint=`uint64`] db_ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_get_reference_at_path(
+	[type_hint=`uint64`] db_ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_get_reference_from_url(
+	[type_hint=`uint64`] db_ref: gmval,
+	url: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_go_offline(
+	[type_hint=`uint64`] db_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_go_online(
+	[type_hint=`uint64`] db_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_purge_outstanding_writes(
+	[type_hint=`uint64`] db_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_set_persistence_enabled(
+	[type_hint=`uint64`] db_ref: gmval,
+	enabled: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_set_log_level(
+	[type_hint=`uint64`] db_ref: gmval,
+	[type_hint=`FirebaseLogLevel`] log_level: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`FirebaseLogLevel`]
+function firebase_database_get_log_level(
+	[type_hint=`uint64`] db_ref: gmval
+): gmval;
+
+// ============================================================
+// Realtime Database - Query surface
+// ============================================================
+// DatabaseReference IS-A Query in the underlying SDK, but the two are kept
+// as separate ref families here: a GM_FB_TYPE_DATABASE_REF handle (minted by
+// Database.GetReference*/DatabaseReference.Child|Push|Parent|Root) is only
+// ever accepted by firebase_database_ref_*, and a GM_FB_TYPE_DATABASE_QUERY
+// handle (minted by any OrderBy*/StartAt/EndAt/EqualTo/LimitTo* call below,
+// on either family) is only ever accepted by firebase_database_query_*.
+// Every OrderBy*/StartAt/EndAt/EqualTo/LimitTo* call, on either family,
+// always returns a *_query ref, never a *_ref one - the result has lost
+// DatabaseReference-only capabilities (Child/Push/SetValue/...) regardless
+// of which family it started from. Call firebase_database_query_get_reference
+// to recover a plain DatabaseReference (with the ordering/filtering stripped
+// off) from either family.
+//
+// order_value/child_key mirror StartAt/EndAt/EqualTo's Variant+optional key
+// overloads: order_value accepts a real, string, or bool (matching the
+// subset of Variant types those SDK calls document as valid for ordering).
+
+// ---- firebase_database_ref_* ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_order_by_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_order_by_key(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_order_by_value(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_order_by_priority(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_start_at(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_start_at_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_end_at(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_end_at_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_equal_to_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_limit_to_first(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_limit_to_last(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+// Strips any ordering/filtering back off, returning a plain *_ref handle.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_get_reference(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_ref_set_keep_synchronized(
+	[type_hint=`uint64`] ref: gmval,
+	keep_sync: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_ref_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml]
+function firebase_database_ref_get_value(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// on_value_changed(snapshot_ref: uint64)
+// on_cancelled(error_code: real, error_message: string)
+// Returns a listener ref for firebase_database_ref_remove_value_listener -
+// never pass it to remove_child_listener, they are different C++ types
+// sharing one type code.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_add_value_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] on_value_changed: gmval,
+	[type_hint=`func?`] on_cancelled: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_ref_remove_value_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] listener_ref: gmval
+): real;
+
+// Detaches every value listener from this query with the SDK, but does not
+// (cannot) free the GMFirebaseValueListener heap instances behind refs GML
+// is still holding - call remove_value_listener on each of those separately.
+[global, bind = typed_gml]
+function firebase_database_ref_remove_all_value_listeners(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// on_child_added/changed/moved(snapshot_ref: uint64, previous_sibling_key: string)
+// on_child_removed(snapshot_ref: uint64)
+// on_cancelled(error_code: real, error_message: string)
+// Returns a listener ref for firebase_database_ref_remove_child_listener -
+// never pass it to remove_value_listener.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_add_child_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] on_child_added: gmval,
+	[type_hint=`func?`] on_child_changed: gmval,
+	[type_hint=`func?`] on_child_moved: gmval,
+	[type_hint=`func?`] on_child_removed: gmval,
+	[type_hint=`func?`] on_cancelled: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_ref_remove_child_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] listener_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_ref_remove_all_child_listeners(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// ---- firebase_database_query_* (identical surface, operating on a
+// GM_FB_TYPE_DATABASE_QUERY handle instead) ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_order_by_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_order_by_key(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_order_by_value(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_order_by_priority(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_start_at(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_start_at_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_end_at(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_end_at_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_equal_to_key(
+	[type_hint=`uint64`] ref: gmval,
+	order_value: gmval,
+	child_key: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_limit_to_first(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_limit_to_last(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_get_reference(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_query_set_keep_synchronized(
+	[type_hint=`uint64`] ref: gmval,
+	keep_sync: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_query_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml]
+function firebase_database_query_get_value(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_add_value_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] on_value_changed: gmval,
+	[type_hint=`func?`] on_cancelled: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_query_remove_value_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] listener_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_query_remove_all_value_listeners(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_query_add_child_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] on_child_added: gmval,
+	[type_hint=`func?`] on_child_changed: gmval,
+	[type_hint=`func?`] on_child_moved: gmval,
+	[type_hint=`func?`] on_child_removed: gmval,
+	[type_hint=`func?`] on_cancelled: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_query_remove_child_listener(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] listener_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_query_remove_all_child_listeners(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// Frees the value-copy registry slot for a *_query ref. Does not touch the
+// SDK query object itself (Query has no explicit close/dispose) and does not
+// affect any listener refs still outstanding against it.
+[global, bind = typed_gml]
+function firebase_database_query_release(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// ============================================================
+// Realtime Database - DatabaseReference-only surface
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_database_ref_key(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_database_ref_is_root(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_get_parent(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_get_root(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+// Appends a new auto-generated, chronologically-ordered child key (Firebase
+// "push ID") and returns a ref to it - the SDK does not write any value at
+// that location, callers still need a follow-up set_value.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_push(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_ref_get_database(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_ref_get_url(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_database_ref_go_online(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_ref_go_offline(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// value: real|string|bool|array|struct (converted through the same
+// firebase::Variant mapping described in GMFirebase_common.h).
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_database_ref_set_value(
+	[type_hint=`uint64`] ref: gmval,
+	value: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_database_ref_set_priority(
+	[type_hint=`uint64`] ref: gmval,
+	priority: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_database_ref_set_value_and_priority(
+	[type_hint=`uint64`] ref: gmval,
+	value: gmval,
+	priority: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// values: struct mapping child paths to the value each should be set to
+// (Firebase's own UpdateChildren semantics - a multi-location patch update).
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_database_ref_update_children(
+	[type_hint=`uint64`] ref: gmval,
+	values: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_database_ref_remove_value(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Deliberate stub - always fails with FirebaseDatabaseError.TransactionAbortedByUser.
+//
+// firebase::database::DatabaseReference::RunTransaction() invokes its
+// DoTransaction handler synchronously - possibly multiple times, retrying on
+// optimistic-concurrency conflicts - directly on the Realtime Database SDK's
+// own internal run-loop thread, and that handler must return a
+// TransactionResult (commit/abort) before RunTransaction() itself returns.
+// Every other async SDK call in this extension crosses the wire by firing a
+// GMFunction callback once, from whichever thread the SDK completes it on,
+// with no reply expected back - that fire-and-forget shape cannot express
+// "pause the SDK thread and block until GML answers with a MutableData
+// mutation," and attempting it risks deadlocking against the same
+// DispatchQueue/step-loop machinery the reply would need to arrive through.
+// Implementing this for real would need a from-scratch synchronous
+// mid-transaction round trip (or a queued-retry emulation built on top of
+// get_value+set_value) that is out of scope for this pass.
+// callback(error_code: real, error_message: string, snapshot_ref: uint64) -
+// snapshot_ref is always 0.
+[global, bind = typed_gml]
+function firebase_database_ref_run_transaction(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Frees the value-copy registry slot for a *_ref handle. Does not touch the
+// underlying database location.
+[global, bind = typed_gml]
+function firebase_database_ref_release(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// ============================================================
+// Realtime Database - DataSnapshot
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_exists(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_snapshot_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_has_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_has_children(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_children_count(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// Returns an array of uint64 snapshot refs, one per child, in the snapshot's
+// Query-defined iteration order. Each element is an independently owned
+// GM_FB_TYPE_DATA_SNAPSHOT ref and must be released separately with
+// firebase_database_snapshot_release().
+[global, bind = typed_gml]
+function firebase_database_snapshot_get_children(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_snapshot_key(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_snapshot_get_reference(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Returns a 1-element array wrapping the snapshot's value - unwrap on the
+// GML side via result[0]. A Firebase value is dynamically typed
+// (undefined/bool/real/string/array/struct, arbitrarily nested for
+// array/struct), so this indirection is what lets a single untyped gmval
+// return carry any of those shapes generically; result[0] mirrors whatever
+// shape the data at this location actually has.
+[global, bind = typed_gml]
+function firebase_database_snapshot_get_value(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Same 1-element-array convention as get_value(), applied to the snapshot's
+// priority (also a dynamically-typed Firebase value - usually real, string,
+// or undefined).
+[global, bind = typed_gml]
+function firebase_database_snapshot_get_priority(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Frees the value-copy registry slot for a snapshot ref. Does not touch the
+// underlying database location.
+[global, bind = typed_gml]
+function firebase_database_snapshot_release(
+	[type_hint=`uint64`] ref: gmval
+): real;

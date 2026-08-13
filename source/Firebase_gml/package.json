@@ -1,0 +1,14 @@
+{
+  "name": "firebase-gml-tooling",
+  "private": true,
+  "description": "gm-cli tooling for the Firebase.yyp GameMaker project",
+  "scripts": {
+    "gm": "gm-cli",
+    "resource": "gm-cli resourcetool eval",
+    "resource:repl": "gm-cli resourcetool repl",
+    "resource:mcp": "gm-cli resourcetool mcp"
+  },
+  "devDependencies": {
+    "@gamemaker/gm-cli": "^2.2.0"
+  }
+}

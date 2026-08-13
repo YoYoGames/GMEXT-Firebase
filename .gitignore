@@ -18,3 +18,6 @@ source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.bat.bak
 source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.sh.bak
 
 source/Firebase_cloud/
+
+source/Firebase_gml/node_modules/
+source/Firebase_gml/.gm-cli-cache/

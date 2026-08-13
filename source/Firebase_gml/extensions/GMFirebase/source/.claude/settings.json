@@ -56,10 +56,13 @@
       "Bash(echo \"CONFIG EXIT: $?\")",
       "Bash(cygpath -w /tmp/build_out2.log)",
       "Bash(cygpath -w /tmp/build_out3.log)",
-      "Bash(find \"/d/Github/GMEXT-Firebase\" -iname \".gitignore\" -not -path \"*/node_modules/*\" 2>/dev/null)"
+      "Bash(find \"/d/Github/GMEXT-Firebase\" -iname \".gitignore\" -not -path \"*/node_modules/*\" 2>/dev/null)",
+      "Bash(cd \"d:\\\\Github\\\\GMEXT-Firebase\\\\source\\\\Firebase_gml\" && grep -n \"obj_gm_button_goto_menu\\\\|obj_firebase\\\\b\" Firebase.yyp Firebase.resource_order)",
+      "Bash(npm run *)"
     ],
     "additionalDirectories": [
-      "D:\\Github\\GMEXT-Firebase\\source\\Firebase_gml\\extensions\\GMFirebase\\AndroidSource\\Java\\code_gen"
+      "D:\\Github\\GMEXT-Firebase\\source\\Firebase_gml\\extensions\\GMFirebase\\AndroidSource\\Java\\code_gen",
+      "d:\\Github\\GMEXT-Firebase\\source\\Firebase_gml"
     ]
   }
 }

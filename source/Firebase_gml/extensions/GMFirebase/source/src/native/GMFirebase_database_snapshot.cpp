@@ -115,15 +115,16 @@ uint64_t firebase_database_snapshot_get_reference(uint64_t ref)
 // struct as well as a scalar.
 gm::wire::DataStream firebase_database_snapshot_get_value(uint64_t ref)
 {
-	gm::wire::ArrayStream arr;
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr)
-		arr << std::optional<std::uint8_t>{};
-	else
-		pushVariantToArray(s->value(), arr);
+	TRACE("firebase_database_snapshot_get_value");
+	// gm::wire::ArrayStream arr;
+	// DataSnapshot* s = resolve_db_snapshot(ref);
+	// if (s == nullptr)
+	// 	arr << std::optional<std::uint8_t>{};
+	// else
+	// 	pushVariantToArray(s->value(), arr);
 
 	gm::wire::DataStream out;
-	out << arr;
+	// out << arr;
 	return out;
 }
 

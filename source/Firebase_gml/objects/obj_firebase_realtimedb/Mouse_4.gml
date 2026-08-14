@@ -16,7 +16,7 @@ firebase_database_ref_set_value(_ref, click_count, function(error_code, error_me
 	var _ref = firebase_database_get_reference_at_path(_db, "demo/click_count");
 	firebase_database_ref_get_value(_ref, function(error_code, error_message, snapshot_ref) {
 		if (error_code == FirebaseDatabaseError.None) {
-			var _value = firebase_database_snapshot_get_value(snapshot_ref)[0];
+			var _value = firebase_database_snapshot_get_value(snapshot_ref);
 			show_debug_message($"Realtime DB: read back click_count = {_value}");
 		} else {
 			show_debug_message($"Realtime DB: get_value failed ({error_code}) {error_message}");

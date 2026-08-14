@@ -1,15 +1,5 @@
 {
   "FolderOrderSettings":[
-    {"name":"Authentication Providers","order":4,"path":"folders/Authentication Providers.yy",},
-    {"name":"Extensions","order":1,"path":"folders/Authentication Providers/Extensions.yy",},
-    {"name":"Apple SignIn","order":1,"path":"folders/Authentication Providers/Extensions/Apple SignIn.yy",},
-    {"name":"FacebookAPI","order":2,"path":"folders/Authentication Providers/Extensions/FacebookAPI.yy",},
-    {"name":"GameCenter","order":3,"path":"folders/Authentication Providers/Extensions/GameCenter.yy",},
-    {"name":"Extensions","order":1,"path":"folders/Authentication Providers/Extensions/GameCenter/Extensions.yy",},
-    {"name":"GooglePlayServices","order":4,"path":"folders/Authentication Providers/Extensions/GooglePlayServices.yy",},
-    {"name":"GoogleSignIn","order":5,"path":"folders/Authentication Providers/Extensions/GoogleSignIn.yy",},
-    {"name":"WebView","order":6,"path":"folders/Authentication Providers/Extensions/WebView.yy",},
-    {"name":"Extensions","order":1,"path":"folders/Authentication Providers/Extensions/WebView/Extensions.yy",},
     {"name":"ExtensionCore","order":9,"path":"folders/ExtensionCore.yy",},
     {"name":"Firebase Demos","order":10,"path":"folders/Firebase Demos.yy",},
     {"name":"Firebase","order":8,"path":"folders/Firebase.yy",},

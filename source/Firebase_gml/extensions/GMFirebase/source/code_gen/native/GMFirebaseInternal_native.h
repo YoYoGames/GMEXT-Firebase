@@ -455,7 +455,7 @@ double firebase_database_snapshot_children_count(std::uint64_t ref);
 gm::wire::DataStream firebase_database_snapshot_get_children(std::uint64_t ref);
 std::string firebase_database_snapshot_key(std::uint64_t ref);
 std::uint64_t firebase_database_snapshot_get_reference(std::uint64_t ref);
-gm::wire::DataStream firebase_database_snapshot_get_value(std::uint64_t ref);
+std::optional<gm::wire::DataStream> firebase_database_snapshot_get_value(std::uint64_t ref);
 gm::wire::DataStream firebase_database_snapshot_get_priority(std::uint64_t ref);
 double firebase_database_snapshot_release(std::uint64_t ref);
 std::uint64_t firebase_firestore_get_instance();

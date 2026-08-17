@@ -1325,20 +1325,18 @@ function firebase_database_snapshot_get_reference(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// Returns a 1-element array wrapping the snapshot's value - unwrap on the
-// GML side via result[0]. A Firebase value is dynamically typed
+// Returns the snapshot's value as-is. A Firebase value is dynamically typed
 // (undefined/bool/real/string/array/struct, arbitrarily nested for
-// array/struct), so this indirection is what lets a single untyped gmval
-// return carry any of those shapes generically; result[0] mirrors whatever
-// shape the data at this location actually has.
-[global, bind = typed_gml]
+// array/struct), so the returned gmval mirrors whatever shape the data at
+// this location actually has.
+[global, bind = typed_gml, type_hint=`any?`]
 function firebase_database_snapshot_get_value(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// Same 1-element-array convention as get_value(), applied to the snapshot's
-// priority (also a dynamically-typed Firebase value - usually real, string,
-// or undefined).
+// Same convention as get_value(), applied to the snapshot's priority instead
+// (also a dynamically-typed Firebase value - usually real, string, or
+// undefined).
 [global, bind = typed_gml]
 function firebase_database_snapshot_get_priority(
 	[type_hint=`uint64`] ref: gmval

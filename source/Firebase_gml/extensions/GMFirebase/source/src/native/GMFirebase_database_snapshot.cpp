@@ -105,42 +105,33 @@ uint64_t firebase_database_snapshot_get_reference(uint64_t ref)
 	return registerDatabaseReference(s->GetReference());
 }
 
-// Returns a 1-element array wrapping the snapshot's value - unwrap on the GML
-// side via result[0]. This indirection exists because a Firebase Variant is
-// dynamically typed (null/bool/number/string/vector/map) with no fixed gmval
-// shape of its own; boxing it as the sole element of an ArrayStream lets the
-// generic wire codec serialize whatever shape pushVariantToArray() produced
-// without a dedicated spec type_hint. Nested vector/map values recurse into
-// nested array/struct elements, so `result[0]` may itself be an array or a
-// struct as well as a scalar.
-gm::wire::DataStream firebase_database_snapshot_get_value(uint64_t ref)
+// Returns the snapshot's value as-is: a real/string/bool/undefined for a
+// scalar, or an array/struct for a vector/map, matching whatever shape the
+// data at this location actually has. A Firebase Variant is dynamically
+// typed with no fixed gmval shape of its own, so this writes directly onto
+// the wire via writeVariantToStream() rather than through a spec type_hint.
+std::optional<gm::wire::DataStream> firebase_database_snapshot_get_value(uint64_t ref)
 {
-	TRACE("firebase_database_snapshot_get_value");
-	// gm::wire::ArrayStream arr;
-	// DataSnapshot* s = resolve_db_snapshot(ref);
-	// if (s == nullptr)
-	// 	arr << std::optional<std::uint8_t>{};
-	// else
-	// 	pushVariantToArray(s->value(), arr);
-
 	gm::wire::DataStream out;
-	// out << arr;
+	DataSnapshot* s = resolve_db_snapshot(ref);
+	if (s == nullptr)
+		out << std::optional<std::uint8_t>{};
+	else
+		writeVariantToStream(s->value(), out);
+
 	return out;
 }
 
-// Same 1-element-array convention as get_value(), applied to the snapshot's
-// priority instead.
+// Same convention as get_value(), applied to the snapshot's priority instead.
 gm::wire::DataStream firebase_database_snapshot_get_priority(uint64_t ref)
 {
-	gm::wire::ArrayStream arr;
+	gm::wire::DataStream out;
 	DataSnapshot* s = resolve_db_snapshot(ref);
 	if (s == nullptr)
-		arr << std::optional<std::uint8_t>{};
+		out << std::optional<std::uint8_t>{};
 	else
-		pushVariantToArray(s->priority(), arr);
+		writeVariantToStream(s->priority(), out);
 
-	gm::wire::DataStream out;
-	out << arr;
 	return out;
 }
 

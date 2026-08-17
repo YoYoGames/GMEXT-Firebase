@@ -2519,7 +2519,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_value(char* __arg_b
     auto&& __result = firebase_database_snapshot_get_value(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: Any
+    // return: __result, type: optional<Any>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }

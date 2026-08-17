@@ -225,6 +225,12 @@ inline bool unregisterFirebaseValue(uint32_t id, std::map<uint32_t, T>& map)
 void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out);
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out);
 
+// Same conversion as pushVariantToArray(), but writes the value directly onto
+// a top-level DataStream instead of boxing it as an array element - used for
+// "Any"-typed returns where the caller wants the value itself (a plain real/
+// string/array/struct/undefined), not a 1-element array wrapper.
+void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out);
+
 // Inbound (GML -> C++): reconstructs a firebase::Variant from a decoded
 // incoming GMValue, recursing through GMArrayView/GMObjectView for
 // vector/map values.

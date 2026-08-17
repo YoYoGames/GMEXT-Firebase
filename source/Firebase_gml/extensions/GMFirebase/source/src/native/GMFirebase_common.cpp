@@ -122,6 +122,61 @@ void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out)
 	}
 }
 
+void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
+{
+	switch (v.type())
+	{
+	case firebase::Variant::kTypeInt64:
+		// GML has no int64 - every Firebase numeric value crosses the wire as
+		// a double, same convention as everywhere else in this extension.
+		out << static_cast<double>(v.int64_value());
+		break;
+
+	case firebase::Variant::kTypeDouble:
+		out << v.double_value();
+		break;
+
+	case firebase::Variant::kTypeBool:
+		out << v.bool_value();
+		break;
+
+	case firebase::Variant::kTypeStaticString:
+	case firebase::Variant::kTypeMutableString:
+		out << std::string_view{ v.string_value() };
+		break;
+
+	case firebase::Variant::kTypeStaticBlob:
+	case firebase::Variant::kTypeMutableBlob:
+		// No dedicated binary kind is threaded through here; expose blob
+		// bytes as a raw string so callers can still recover them.
+		out << std::string_view{ reinterpret_cast<const char*>(v.blob_data()), v.blob_size() };
+		break;
+
+	case firebase::Variant::kTypeVector:
+	{
+		gm::wire::ArrayStream nested;
+		for (const auto& elem : v.vector())
+			pushVariantToArray(elem, nested);
+		out << nested;
+		break;
+	}
+
+	case firebase::Variant::kTypeMap:
+	{
+		gm::wire::StructStream nested;
+		for (const auto& kv : v.map())
+			addVariantToStruct(kv.first.AsString().string_value(), kv.second, nested);
+		out << nested;
+		break;
+	}
+
+	case firebase::Variant::kTypeNull:
+	default:
+		out << std::optional<std::uint8_t>{};
+		break;
+	}
+}
+
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out)
 {
 	switch (v.type())

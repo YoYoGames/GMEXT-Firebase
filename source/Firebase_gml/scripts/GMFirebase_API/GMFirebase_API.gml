@@ -4581,7 +4581,14 @@ function firebase_database_snapshot_get_value(_ref)
     var __return_value__ = __firebase_database_snapshot_get_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 

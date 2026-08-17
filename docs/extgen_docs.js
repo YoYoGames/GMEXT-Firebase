@@ -1302,76 +1302,76 @@
  */
 
 /**
- * @function_partial firestore_get_instance
+ * @function_partial firebase_firestore_get_instance
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_get_instance_for_database
+ * @function_partial firebase_firestore_get_instance_for_database
  * @param {String} database_name
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_get_host
+ * @function_partial firebase_firestore_settings_get_host
  * @param {Real} instance_ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_set_host
+ * @function_partial firebase_firestore_settings_set_host
  * @param {Real} instance_ref
  * @param {String} host
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_get_ssl_enabled
+ * @function_partial firebase_firestore_settings_get_ssl_enabled
  * @param {Real} instance_ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_set_ssl_enabled
+ * @function_partial firebase_firestore_settings_set_ssl_enabled
  * @param {Real} instance_ref
  * @param {Bool} enabled
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_get_persistence_enabled
+ * @function_partial firebase_firestore_settings_get_persistence_enabled
  * @param {Real} instance_ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_set_persistence_enabled
+ * @function_partial firebase_firestore_settings_set_persistence_enabled
  * @param {Real} instance_ref
  * @param {Bool} enabled
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_get_cache_size_bytes
+ * @function_partial firebase_firestore_settings_get_cache_size_bytes
  * @param {Real} instance_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_settings_set_cache_size_bytes
+ * @function_partial firebase_firestore_settings_set_cache_size_bytes
  * @param {Real} instance_ref
  * @param {Real} bytes
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection
+ * @function_partial firebase_firestore_collection
  * @param {Real} instance_ref
  * @param {String} path
  * @returns {Real}
@@ -1379,7 +1379,7 @@
  */
 
 /**
- * @function_partial firestore_document
+ * @function_partial firebase_firestore_document
  * @param {Real} instance_ref
  * @param {String} path
  * @returns {Real}
@@ -1387,7 +1387,7 @@
  */
 
 /**
- * @function_partial firestore_collection_group
+ * @function_partial firebase_firestore_collection_group
  * @param {Real} instance_ref
  * @param {String} collection_id
  * @returns {Real}
@@ -1395,20 +1395,20 @@
  */
 
 /**
- * @function_partial firestore_batch
+ * @function_partial firebase_firestore_batch
  * @param {Real} instance_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_set_log_level
+ * @function_partial firebase_firestore_set_log_level
  * @param {Real} level
  * @function_end
  */
 
 /**
- * @function_partial firestore_enable_network
+ * @function_partial firebase_firestore_enable_network
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1416,7 +1416,7 @@
  */
 
 /**
- * @function_partial firestore_disable_network
+ * @function_partial firebase_firestore_disable_network
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1424,7 +1424,7 @@
  */
 
 /**
- * @function_partial firestore_terminate
+ * @function_partial firebase_firestore_terminate
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1432,7 +1432,7 @@
  */
 
 /**
- * @function_partial firestore_clear_persistence
+ * @function_partial firebase_firestore_clear_persistence
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1440,7 +1440,7 @@
  */
 
 /**
- * @function_partial firestore_wait_for_pending_writes
+ * @function_partial firebase_firestore_wait_for_pending_writes
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1448,7 +1448,7 @@
  */
 
 /**
- * @function_partial firestore_run_transaction
+ * @function_partial firebase_firestore_run_transaction
  * @param {Real} instance_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1456,35 +1456,35 @@
  */
 
 /**
- * @function_partial firestore_collection_ref_id
+ * @function_partial firebase_firestore_collection_ref_id
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection_ref_path
+ * @function_partial firebase_firestore_collection_ref_path
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection_ref_parent
+ * @function_partial firebase_firestore_collection_ref_parent
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection_ref_document
+ * @function_partial firebase_firestore_collection_ref_document
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection_ref_document_path
+ * @function_partial firebase_firestore_collection_ref_document_path
  * @param {Real} ref
  * @param {String} path
  * @returns {Real}
@@ -1492,7 +1492,7 @@
  */
 
 /**
- * @function_partial firestore_collection_ref_add
+ * @function_partial firebase_firestore_collection_ref_add
  * @param {Real} ref
  * @param {Any} data
  * @param {Function} [callback]
@@ -1501,41 +1501,41 @@
  */
 
 /**
- * @function_partial firestore_collection_ref_is_valid
+ * @function_partial firebase_firestore_collection_ref_is_valid
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_collection_ref_release
+ * @function_partial firebase_firestore_collection_ref_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_ref_id
- * @param {Real} ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firestore_document_ref_path
+ * @function_partial firebase_firestore_document_ref_id
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_ref_parent
+ * @function_partial firebase_firestore_document_ref_path
+ * @param {Real} ref
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_ref_parent
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_ref_collection
+ * @function_partial firebase_firestore_document_ref_collection
  * @param {Real} ref
  * @param {String} path
  * @returns {Real}
@@ -1543,7 +1543,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_get
+ * @function_partial firebase_firestore_document_ref_get
  * @param {Real} ref
  * @param {Real} source
  * @param {Function} [callback]
@@ -1552,7 +1552,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_set
+ * @function_partial firebase_firestore_document_ref_set
  * @param {Real} ref
  * @param {Any} data
  * @param {Function} [callback]
@@ -1561,7 +1561,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_set_merge
+ * @function_partial firebase_firestore_document_ref_set_merge
  * @param {Real} ref
  * @param {Any} data
  * @param {Function} [callback]
@@ -1570,7 +1570,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_set_merge_fields
+ * @function_partial firebase_firestore_document_ref_set_merge_fields
  * @param {Real} ref
  * @param {Any} data
  * @param {Any} fields
@@ -1580,7 +1580,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_update
+ * @function_partial firebase_firestore_document_ref_update
  * @param {Real} ref
  * @param {Any} data
  * @param {Function} [callback]
@@ -1589,7 +1589,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_delete
+ * @function_partial firebase_firestore_document_ref_delete
  * @param {Real} ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1597,7 +1597,7 @@
  */
 
 /**
- * @function_partial firestore_document_ref_add_snapshot_listener
+ * @function_partial firebase_firestore_document_ref_add_snapshot_listener
  * @param {Real} ref
  * @param {Bool} include_metadata_changes
  * @param {Function} [callback]
@@ -1606,29 +1606,20 @@
  */
 
 /**
- * @function_partial firestore_document_ref_is_valid
+ * @function_partial firebase_firestore_document_ref_is_valid
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_ref_release
+ * @function_partial firebase_firestore_document_ref_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_where_equal_to
- * @param {Real} ref
- * @param {String} field
- * @param {Any} value
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firestore_query_where_not_equal_to
+ * @function_partial firebase_firestore_query_where_equal_to
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1637,7 +1628,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_less_than
+ * @function_partial firebase_firestore_query_where_not_equal_to
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1646,7 +1637,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_less_than_or_equal_to
+ * @function_partial firebase_firestore_query_where_less_than
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1655,7 +1646,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_greater_than
+ * @function_partial firebase_firestore_query_where_less_than_or_equal_to
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1664,7 +1655,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_greater_than_or_equal_to
+ * @function_partial firebase_firestore_query_where_greater_than
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1673,7 +1664,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_array_contains
+ * @function_partial firebase_firestore_query_where_greater_than_or_equal_to
  * @param {Real} ref
  * @param {String} field
  * @param {Any} value
@@ -1682,7 +1673,16 @@
  */
 
 /**
- * @function_partial firestore_query_where_array_contains_any
+ * @function_partial firebase_firestore_query_where_array_contains
+ * @param {Real} ref
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_array_contains_any
  * @param {Real} ref
  * @param {String} field
  * @param {Any} values
@@ -1691,7 +1691,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_in
+ * @function_partial firebase_firestore_query_where_in
  * @param {Real} ref
  * @param {String} field
  * @param {Any} values
@@ -1700,7 +1700,7 @@
  */
 
 /**
- * @function_partial firestore_query_where_not_in
+ * @function_partial firebase_firestore_query_where_not_in
  * @param {Real} ref
  * @param {String} field
  * @param {Any} values
@@ -1709,7 +1709,7 @@
  */
 
 /**
- * @function_partial firestore_query_order_by
+ * @function_partial firebase_firestore_query_order_by
  * @param {Real} ref
  * @param {String} field
  * @param {Real} direction
@@ -1718,7 +1718,7 @@
  */
 
 /**
- * @function_partial firestore_query_limit
+ * @function_partial firebase_firestore_query_limit
  * @param {Real} ref
  * @param {Real} limit
  * @returns {Real}
@@ -1726,7 +1726,7 @@
  */
 
 /**
- * @function_partial firestore_query_limit_to_last
+ * @function_partial firebase_firestore_query_limit_to_last
  * @param {Real} ref
  * @param {Real} limit
  * @returns {Real}
@@ -1734,7 +1734,7 @@
  */
 
 /**
- * @function_partial firestore_query_start_at_snapshot
+ * @function_partial firebase_firestore_query_start_at_snapshot
  * @param {Real} ref
  * @param {Real} snapshot_ref
  * @returns {Real}
@@ -1742,7 +1742,7 @@
  */
 
 /**
- * @function_partial firestore_query_start_at_values
+ * @function_partial firebase_firestore_query_start_at_values
  * @param {Real} ref
  * @param {Any} values
  * @returns {Real}
@@ -1750,7 +1750,7 @@
  */
 
 /**
- * @function_partial firestore_query_start_after_snapshot
+ * @function_partial firebase_firestore_query_start_after_snapshot
  * @param {Real} ref
  * @param {Real} snapshot_ref
  * @returns {Real}
@@ -1758,7 +1758,7 @@
  */
 
 /**
- * @function_partial firestore_query_start_after_values
+ * @function_partial firebase_firestore_query_start_after_values
  * @param {Real} ref
  * @param {Any} values
  * @returns {Real}
@@ -1766,7 +1766,7 @@
  */
 
 /**
- * @function_partial firestore_query_end_before_snapshot
+ * @function_partial firebase_firestore_query_end_before_snapshot
  * @param {Real} ref
  * @param {Real} snapshot_ref
  * @returns {Real}
@@ -1774,7 +1774,7 @@
  */
 
 /**
- * @function_partial firestore_query_end_before_values
+ * @function_partial firebase_firestore_query_end_before_values
  * @param {Real} ref
  * @param {Any} values
  * @returns {Real}
@@ -1782,7 +1782,7 @@
  */
 
 /**
- * @function_partial firestore_query_end_at_snapshot
+ * @function_partial firebase_firestore_query_end_at_snapshot
  * @param {Real} ref
  * @param {Real} snapshot_ref
  * @returns {Real}
@@ -1790,7 +1790,7 @@
  */
 
 /**
- * @function_partial firestore_query_end_at_values
+ * @function_partial firebase_firestore_query_end_at_values
  * @param {Real} ref
  * @param {Any} values
  * @returns {Real}
@@ -1798,7 +1798,7 @@
  */
 
 /**
- * @function_partial firestore_query_get
+ * @function_partial firebase_firestore_query_get
  * @param {Real} ref
  * @param {Real} source
  * @param {Function} [callback]
@@ -1807,7 +1807,7 @@
  */
 
 /**
- * @function_partial firestore_query_add_snapshot_listener
+ * @function_partial firebase_firestore_query_add_snapshot_listener
  * @param {Real} ref
  * @param {Bool} include_metadata_changes
  * @param {Function} [callback]
@@ -1816,20 +1816,20 @@
  */
 
 /**
- * @function_partial firestore_query_is_valid
+ * @function_partial firebase_firestore_query_is_valid
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_release
+ * @function_partial firebase_firestore_query_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_write_batch_set
+ * @function_partial firebase_firestore_write_batch_set
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
@@ -1838,7 +1838,7 @@
  */
 
 /**
- * @function_partial firestore_write_batch_set_merge
+ * @function_partial firebase_firestore_write_batch_set_merge
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
@@ -1847,7 +1847,7 @@
  */
 
 /**
- * @function_partial firestore_write_batch_set_merge_fields
+ * @function_partial firebase_firestore_write_batch_set_merge_fields
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
@@ -1857,7 +1857,7 @@
  */
 
 /**
- * @function_partial firestore_write_batch_update
+ * @function_partial firebase_firestore_write_batch_update
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
@@ -1866,7 +1866,7 @@
  */
 
 /**
- * @function_partial firestore_write_batch_delete
+ * @function_partial firebase_firestore_write_batch_delete
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @returns {Real}
@@ -1874,7 +1874,7 @@
  */
 
 /**
- * @function_partial firestore_write_batch_commit
+ * @function_partial firebase_firestore_write_batch_commit
  * @param {Real} batch_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -1882,67 +1882,67 @@
  */
 
 /**
- * @function_partial firestore_write_batch_release
+ * @function_partial firebase_firestore_write_batch_release
  * @param {Real} batch_ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_delete
+ * @function_partial firebase_firestore_field_value_delete
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_server_timestamp
+ * @function_partial firebase_firestore_field_value_server_timestamp
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_array_union
+ * @function_partial firebase_firestore_field_value_array_union
  * @param {Any} values
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_array_remove
+ * @function_partial firebase_firestore_field_value_array_remove
  * @param {Any} values
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_increment_integer
+ * @function_partial firebase_firestore_field_value_increment_integer
  * @param {Real} value
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_increment_double
+ * @function_partial firebase_firestore_field_value_increment_double
  * @param {Real} value
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_integer
+ * @function_partial firebase_firestore_field_value_integer
  * @param {Real} value
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_double
+ * @function_partial firebase_firestore_field_value_double
  * @param {Real} value
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_timestamp
+ * @function_partial firebase_firestore_field_value_timestamp
  * @param {Real} seconds
  * @param {Real} nanoseconds
  * @returns {Real}
@@ -1950,7 +1950,7 @@
  */
 
 /**
- * @function_partial firestore_field_value_geo_point
+ * @function_partial firebase_firestore_field_value_geo_point
  * @param {Real} latitude
  * @param {Real} longitude
  * @returns {Real}
@@ -1958,68 +1958,68 @@
  */
 
 /**
- * @function_partial firestore_field_value_reference
+ * @function_partial firebase_firestore_field_value_reference
  * @param {Real} document_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_blob
+ * @function_partial firebase_firestore_field_value_blob
  * @param {String} data
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_null
+ * @function_partial firebase_firestore_field_value_null
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_field_value_release
+ * @function_partial firebase_firestore_field_value_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_exists
+ * @function_partial firebase_firestore_document_snapshot_exists
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_id
+ * @function_partial firebase_firestore_document_snapshot_id
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_reference
+ * @function_partial firebase_firestore_document_snapshot_reference
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_metadata_has_pending_writes
+ * @function_partial firebase_firestore_document_snapshot_metadata_has_pending_writes
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_metadata_is_from_cache
+ * @function_partial firebase_firestore_document_snapshot_metadata_is_from_cache
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_document_snapshot_get
+ * @function_partial firebase_firestore_document_snapshot_get
  * @param {Real} ref
  * @param {String} field
  * @param {Real} server_timestamp_behavior
@@ -2028,7 +2028,7 @@
  */
 
 /**
- * @function_partial firestore_document_snapshot_get_data
+ * @function_partial firebase_firestore_document_snapshot_get_data
  * @param {Real} ref
  * @param {Real} server_timestamp_behavior
  * @returns {Any}
@@ -2036,48 +2036,48 @@
  */
 
 /**
- * @function_partial firestore_document_snapshot_release
+ * @function_partial firebase_firestore_document_snapshot_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_size
+ * @function_partial firebase_firestore_query_snapshot_size
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_empty
+ * @function_partial firebase_firestore_query_snapshot_empty
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_metadata_has_pending_writes
+ * @function_partial firebase_firestore_query_snapshot_metadata_has_pending_writes
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_metadata_is_from_cache
+ * @function_partial firebase_firestore_query_snapshot_metadata_is_from_cache
  * @param {Real} ref
  * @returns {Bool}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_documents
+ * @function_partial firebase_firestore_query_snapshot_documents
  * @param {Real} ref
  * @returns {Any}
  * @function_end
  */
 
 /**
- * @function_partial firestore_query_snapshot_document_changes
+ * @function_partial firebase_firestore_query_snapshot_document_changes
  * @param {Real} ref
  * @param {Bool} include_metadata_changes
  * @returns {Any}
@@ -2085,46 +2085,46 @@
  */
 
 /**
- * @function_partial firestore_query_snapshot_release
+ * @function_partial firebase_firestore_query_snapshot_release
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial firestore_listener_registration_remove
+ * @function_partial firebase_firestore_listener_registration_remove
  * @param {Real} ref
  * @function_end
  */
 
 /**
- * @function_partial storage_get_instance
+ * @function_partial firebase_storage_get_instance
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_get_instance_with_url
+ * @function_partial firebase_storage_get_instance_with_url
  * @param {String} url
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_url
+ * @function_partial firebase_storage_url
  * @param {Real} storage_ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_get_reference
+ * @function_partial firebase_storage_get_reference
  * @param {Real} storage_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_get_reference_path
+ * @function_partial firebase_storage_get_reference_path
  * @param {Real} storage_ref
  * @param {String} path
  * @returns {Real}
@@ -2132,7 +2132,7 @@
  */
 
 /**
- * @function_partial storage_get_reference_from_url
+ * @function_partial firebase_storage_get_reference_from_url
  * @param {Real} storage_ref
  * @param {String} url
  * @returns {Real}
@@ -2140,49 +2140,49 @@
  */
 
 /**
- * @function_partial storage_max_download_retry_time
+ * @function_partial firebase_storage_max_download_retry_time
  * @param {Real} storage_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_set_max_download_retry_time
+ * @function_partial firebase_storage_set_max_download_retry_time
  * @param {Real} storage_ref
  * @param {Real} seconds
  * @function_end
  */
 
 /**
- * @function_partial storage_max_upload_retry_time
+ * @function_partial firebase_storage_max_upload_retry_time
  * @param {Real} storage_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_set_max_upload_retry_time
+ * @function_partial firebase_storage_set_max_upload_retry_time
  * @param {Real} storage_ref
  * @param {Real} seconds
  * @function_end
  */
 
 /**
- * @function_partial storage_max_operation_retry_time
+ * @function_partial firebase_storage_max_operation_retry_time
  * @param {Real} storage_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_set_max_operation_retry_time
+ * @function_partial firebase_storage_set_max_operation_retry_time
  * @param {Real} storage_ref
  * @param {Real} seconds
  * @function_end
  */
 
 /**
- * @function_partial storage_use_emulator
+ * @function_partial firebase_storage_use_emulator
  * @param {Real} storage_ref
  * @param {String} host
  * @param {Real} port
@@ -2190,7 +2190,7 @@
  */
 
 /**
- * @function_partial storage_ref_child
+ * @function_partial firebase_storage_ref_child
  * @param {Real} ref
  * @param {String} path
  * @returns {Real}
@@ -2198,49 +2198,49 @@
  */
 
 /**
- * @function_partial storage_ref_get_parent
+ * @function_partial firebase_storage_ref_get_parent
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_bucket
+ * @function_partial firebase_storage_ref_bucket
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_full_path
+ * @function_partial firebase_storage_ref_full_path
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_name
+ * @function_partial firebase_storage_ref_name
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_is_valid
+ * @function_partial firebase_storage_ref_is_valid
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_storage
+ * @function_partial firebase_storage_ref_storage
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_ref_delete
+ * @function_partial firebase_storage_ref_delete
  * @param {Real} ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2248,7 +2248,7 @@
  */
 
 /**
- * @function_partial storage_ref_get_download_url
+ * @function_partial firebase_storage_ref_get_download_url
  * @param {Real} ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2256,7 +2256,7 @@
  */
 
 /**
- * @function_partial storage_ref_get_metadata
+ * @function_partial firebase_storage_ref_get_metadata
  * @param {Real} ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2264,7 +2264,7 @@
  */
 
 /**
- * @function_partial storage_ref_update_metadata
+ * @function_partial firebase_storage_ref_update_metadata
  * @param {Real} ref
  * @param {Real} metadata_ref
  * @param {Function} [callback]
@@ -2273,7 +2273,7 @@
  */
 
 /**
- * @function_partial storage_ref_put_bytes
+ * @function_partial firebase_storage_ref_put_bytes
  * @param {Real} ref
  * @param {Buffer} data
  * @param {Real} metadata_ref
@@ -2285,7 +2285,7 @@
  */
 
 /**
- * @function_partial storage_ref_put_file
+ * @function_partial firebase_storage_ref_put_file
  * @param {Real} ref
  * @param {String} local_path
  * @param {Real} metadata_ref
@@ -2297,7 +2297,7 @@
  */
 
 /**
- * @function_partial storage_ref_get_bytes
+ * @function_partial firebase_storage_ref_get_bytes
  * @param {Real} ref
  * @param {Buffer} data
  * @param {Function} [progress_callback]
@@ -2308,7 +2308,7 @@
  */
 
 /**
- * @function_partial storage_ref_get_file
+ * @function_partial firebase_storage_ref_get_file
  * @param {Real} ref
  * @param {String} local_path
  * @param {Function} [progress_callback]
@@ -2319,7 +2319,7 @@
  */
 
 /**
- * @function_partial storage_ref_list
+ * @function_partial firebase_storage_ref_list
  * @param {Real} ref
  * @param {Real} max_results
  * @param {String} page_token
@@ -2329,167 +2329,167 @@
  */
 
 /**
- * @function_partial storage_metadata_create
+ * @function_partial firebase_storage_metadata_create
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_release
+ * @function_partial firebase_storage_metadata_release
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_is_valid
+ * @function_partial firebase_storage_metadata_is_valid
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_bucket
+ * @function_partial firebase_storage_metadata_bucket
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_cache_control
+ * @function_partial firebase_storage_metadata_cache_control
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_set_cache_control
+ * @function_partial firebase_storage_metadata_set_cache_control
  * @param {Real} ref
  * @param {String} value
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_content_disposition
+ * @function_partial firebase_storage_metadata_content_disposition
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_set_content_disposition
+ * @function_partial firebase_storage_metadata_set_content_disposition
  * @param {Real} ref
  * @param {String} value
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_content_encoding
+ * @function_partial firebase_storage_metadata_content_encoding
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_set_content_encoding
+ * @function_partial firebase_storage_metadata_set_content_encoding
  * @param {Real} ref
  * @param {String} value
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_content_language
+ * @function_partial firebase_storage_metadata_content_language
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_set_content_language
+ * @function_partial firebase_storage_metadata_set_content_language
  * @param {Real} ref
  * @param {String} value
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_content_type
+ * @function_partial firebase_storage_metadata_content_type
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_set_content_type
+ * @function_partial firebase_storage_metadata_set_content_type
  * @param {Real} ref
  * @param {String} value
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_creation_time
+ * @function_partial firebase_storage_metadata_creation_time
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_generation
+ * @function_partial firebase_storage_metadata_generation
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_metadata_generation
+ * @function_partial firebase_storage_metadata_metadata_generation
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_name
+ * @function_partial firebase_storage_metadata_name
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_path
+ * @function_partial firebase_storage_metadata_path
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_get_reference
+ * @function_partial firebase_storage_metadata_get_reference
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_size_bytes
+ * @function_partial firebase_storage_metadata_size_bytes
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_updated_time
+ * @function_partial firebase_storage_metadata_updated_time
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_custom_metadata_count
+ * @function_partial firebase_storage_metadata_custom_metadata_count
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_metadata_custom_metadata_key_at
+ * @function_partial firebase_storage_metadata_custom_metadata_key_at
  * @param {Real} ref
  * @param {Real} index
  * @returns {String}
@@ -2497,7 +2497,7 @@
  */
 
 /**
- * @function_partial storage_metadata_get_custom_metadata
+ * @function_partial firebase_storage_metadata_get_custom_metadata
  * @param {Real} ref
  * @param {String} key
  * @returns {String}
@@ -2505,7 +2505,7 @@
  */
 
 /**
- * @function_partial storage_metadata_set_custom_metadata
+ * @function_partial firebase_storage_metadata_set_custom_metadata
  * @param {Real} ref
  * @param {String} key
  * @param {String} value
@@ -2513,112 +2513,97 @@
  */
 
 /**
- * @function_partial storage_controller_create
+ * @function_partial firebase_storage_controller_create
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_release
+ * @function_partial firebase_storage_controller_release
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_is_valid
+ * @function_partial firebase_storage_controller_is_valid
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_pause
+ * @function_partial firebase_storage_controller_pause
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_resume
+ * @function_partial firebase_storage_controller_resume
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_cancel
+ * @function_partial firebase_storage_controller_cancel
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_is_paused
+ * @function_partial firebase_storage_controller_is_paused
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_bytes_transferred
+ * @function_partial firebase_storage_controller_bytes_transferred
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_total_byte_count
+ * @function_partial firebase_storage_controller_total_byte_count
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_controller_get_reference
+ * @function_partial firebase_storage_controller_get_reference
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_list_result_release
+ * @function_partial firebase_storage_list_result_release
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_list_result_is_valid
+ * @function_partial firebase_storage_list_result_is_valid
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_list_result_item_count
+ * @function_partial firebase_storage_list_result_item_count
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial storage_list_result_item_at
- * @param {Real} ref
- * @param {Real} index
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial storage_list_result_prefix_count
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial storage_list_result_prefix_at
+ * @function_partial firebase_storage_list_result_item_at
  * @param {Real} ref
  * @param {Real} index
  * @returns {Real}
@@ -2626,34 +2611,49 @@
  */
 
 /**
- * @function_partial storage_list_result_next_page_token
+ * @function_partial firebase_storage_list_result_prefix_count
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_list_result_prefix_at
+ * @param {Real} ref
+ * @param {Real} index
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_list_result_next_page_token
  * @param {Real} ref
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial functions_get_instance
+ * @function_partial firebase_functions_get_instance
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial functions_get_instance_with_region
+ * @function_partial firebase_functions_get_instance_with_region
  * @param {String} region
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial functions_use_functions_emulator
+ * @function_partial firebase_functions_use_functions_emulator
  * @param {Real} functions_ref
  * @param {String} origin
  * @function_end
  */
 
 /**
- * @function_partial functions_get_https_callable
+ * @function_partial firebase_functions_get_https_callable
  * @param {Real} functions_ref
  * @param {String} name
  * @returns {Real}
@@ -2661,7 +2661,7 @@
  */
 
 /**
- * @function_partial functions_get_https_callable_with_options
+ * @function_partial firebase_functions_get_https_callable_with_options
  * @param {Real} functions_ref
  * @param {String} name
  * @param {Real} limited_use_app_check_token
@@ -2670,7 +2670,7 @@
  */
 
 /**
- * @function_partial functions_get_https_callable_from_url
+ * @function_partial firebase_functions_get_https_callable_from_url
  * @param {Real} functions_ref
  * @param {String} url
  * @returns {Real}
@@ -2678,7 +2678,7 @@
  */
 
 /**
- * @function_partial functions_get_https_callable_from_url_with_options
+ * @function_partial firebase_functions_get_https_callable_from_url_with_options
  * @param {Real} functions_ref
  * @param {String} url
  * @param {Real} limited_use_app_check_token
@@ -2687,14 +2687,14 @@
  */
 
 /**
- * @function_partial functions_callable_is_valid
+ * @function_partial firebase_functions_callable_is_valid
  * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial functions_callable_call
+ * @function_partial firebase_functions_callable_call
  * @param {Real} ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2702,7 +2702,7 @@
  */
 
 /**
- * @function_partial functions_callable_call_with_data
+ * @function_partial firebase_functions_callable_call_with_data
  * @param {Real} ref
  * @param {Any} data
  * @param {Function} [callback]
@@ -2711,13 +2711,13 @@
  */
 
 /**
- * @function_partial remote_config_get_instance
+ * @function_partial firebase_remote_config_get_instance
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial remote_config_ensure_initialized
+ * @function_partial firebase_remote_config_ensure_initialized
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2725,7 +2725,7 @@
  */
 
 /**
- * @function_partial remote_config_set_config_settings
+ * @function_partial firebase_remote_config_set_config_settings
  * @param {Real} rc_ref
  * @param {Real} fetch_timeout_ms
  * @param {Real} minimum_fetch_interval_ms
@@ -2735,21 +2735,21 @@
  */
 
 /**
- * @function_partial remote_config_get_config_settings_fetch_timeout
+ * @function_partial firebase_remote_config_get_config_settings_fetch_timeout
  * @param {Real} rc_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial remote_config_get_config_settings_minimum_fetch_interval
+ * @function_partial firebase_remote_config_get_config_settings_minimum_fetch_interval
  * @param {Real} rc_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial remote_config_fetch
+ * @function_partial firebase_remote_config_fetch
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2757,7 +2757,7 @@
  */
 
 /**
- * @function_partial remote_config_fetch_with_expiration
+ * @function_partial firebase_remote_config_fetch_with_expiration
  * @param {Real} rc_ref
  * @param {Real} cache_expiration_in_seconds
  * @param {Function} [callback]
@@ -2766,7 +2766,7 @@
  */
 
 /**
- * @function_partial remote_config_fetch_and_activate
+ * @function_partial firebase_remote_config_fetch_and_activate
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2774,7 +2774,7 @@
  */
 
 /**
- * @function_partial remote_config_activate
+ * @function_partial firebase_remote_config_activate
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2782,7 +2782,7 @@
  */
 
 /**
- * @function_partial remote_config_get_boolean
+ * @function_partial firebase_remote_config_get_boolean
  * @param {Real} rc_ref
  * @param {String} key
  * @returns {Real}
@@ -2790,7 +2790,7 @@
  */
 
 /**
- * @function_partial remote_config_get_long
+ * @function_partial firebase_remote_config_get_long
  * @param {Real} rc_ref
  * @param {String} key
  * @returns {Real}
@@ -2798,7 +2798,7 @@
  */
 
 /**
- * @function_partial remote_config_get_double
+ * @function_partial firebase_remote_config_get_double
  * @param {Real} rc_ref
  * @param {String} key
  * @returns {Real}
@@ -2806,7 +2806,7 @@
  */
 
 /**
- * @function_partial remote_config_get_string
+ * @function_partial firebase_remote_config_get_string
  * @param {Real} rc_ref
  * @param {String} key
  * @returns {String}
@@ -2814,7 +2814,7 @@
  */
 
 /**
- * @function_partial remote_config_get_data_size
+ * @function_partial firebase_remote_config_get_data_size
  * @param {Real} rc_ref
  * @param {String} key
  * @returns {Real}
@@ -2822,7 +2822,7 @@
  */
 
 /**
- * @function_partial remote_config_get_data
+ * @function_partial firebase_remote_config_get_data
  * @param {Real} rc_ref
  * @param {String} key
  * @param {Buffer} out_buffer
@@ -2831,7 +2831,7 @@
  */
 
 /**
- * @function_partial remote_config_get_keys_by_prefix
+ * @function_partial firebase_remote_config_get_keys_by_prefix
  * @param {Real} rc_ref
  * @param {String} prefix
  * @param {Function} [callback]
@@ -2840,7 +2840,7 @@
  */
 
 /**
- * @function_partial remote_config_get_keys
+ * @function_partial firebase_remote_config_get_keys
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2848,7 +2848,7 @@
  */
 
 /**
- * @function_partial remote_config_get_all
+ * @function_partial firebase_remote_config_get_all
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2856,7 +2856,7 @@
  */
 
 /**
- * @function_partial remote_config_set_defaults
+ * @function_partial firebase_remote_config_set_defaults
  * @param {Real} rc_ref
  * @param {Any} defaults
  * @param {Function} [callback]
@@ -2865,14 +2865,14 @@
  */
 
 /**
- * @function_partial remote_config_get_info
+ * @function_partial firebase_remote_config_get_info
  * @param {Real} rc_ref
  * @returns {Struct.FirebaseRemoteConfigInfo}
  * @function_end
  */
 
 /**
- * @function_partial remote_config_add_config_update_listener
+ * @function_partial firebase_remote_config_add_config_update_listener
  * @param {Real} rc_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -2880,70 +2880,70 @@
  */
 
 /**
- * @function_partial remote_config_remove_config_update_listener
+ * @function_partial firebase_remote_config_remove_config_update_listener
  * @param {Real} reg_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_initialize
+ * @function_partial firebase_messaging_initialize
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_terminate
+ * @function_partial firebase_messaging_terminate
  * @function_end
  */
 
 /**
- * @function_partial messaging_set_token_registration_on_init_enabled
+ * @function_partial firebase_messaging_set_token_registration_on_init_enabled
  * @param {Real} enabled
  * @function_end
  */
 
 /**
- * @function_partial messaging_is_token_registration_on_init_enabled
+ * @function_partial firebase_messaging_is_token_registration_on_init_enabled
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_delivery_metrics_export_to_big_query_enabled
+ * @function_partial firebase_messaging_delivery_metrics_export_to_big_query_enabled
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_set_delivery_metrics_export_to_big_query
+ * @function_partial firebase_messaging_set_delivery_metrics_export_to_big_query
  * @param {Real} enabled
  * @function_end
  */
 
 /**
- * @function_partial messaging_request_permission
+ * @function_partial firebase_messaging_request_permission
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_get_token
+ * @function_partial firebase_messaging_get_token
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_delete_token
+ * @function_partial firebase_messaging_delete_token
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_subscribe
+ * @function_partial firebase_messaging_subscribe
  * @param {String} topic
  * @param {Function} [callback]
  * @returns {Real}
@@ -2951,7 +2951,7 @@
  */
 
 /**
- * @function_partial messaging_unsubscribe
+ * @function_partial firebase_messaging_unsubscribe
  * @param {String} topic
  * @param {Function} [callback]
  * @returns {Real}
@@ -2959,274 +2959,274 @@
  */
 
 /**
- * @function_partial messaging_poll_message
+ * @function_partial firebase_messaging_poll_message
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_poll_token
+ * @function_partial firebase_messaging_poll_token
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_current_token
+ * @function_partial firebase_messaging_current_token
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_from
+ * @function_partial firebase_messaging_message_from
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_to
+ * @function_partial firebase_messaging_message_to
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_collapse_key
+ * @function_partial firebase_messaging_message_collapse_key
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_message_id
+ * @function_partial firebase_messaging_message_message_id
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_message_type
+ * @function_partial firebase_messaging_message_message_type
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_priority
+ * @function_partial firebase_messaging_message_priority
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_original_priority
+ * @function_partial firebase_messaging_message_original_priority
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_time_to_live
+ * @function_partial firebase_messaging_message_time_to_live
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_sent_time
+ * @function_partial firebase_messaging_message_sent_time
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_error
+ * @function_partial firebase_messaging_message_error
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_error_description
+ * @function_partial firebase_messaging_message_error_description
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_link
+ * @function_partial firebase_messaging_message_link
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_opened
+ * @function_partial firebase_messaging_message_notification_opened
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_data_count
+ * @function_partial firebase_messaging_message_data_count
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_data_key_at
+ * @function_partial firebase_messaging_message_data_key_at
  * @param {Real} index
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_get_data
+ * @function_partial firebase_messaging_message_get_data
  * @param {String} key
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_raw_data_size
+ * @function_partial firebase_messaging_message_raw_data_size
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_raw_data_copy
+ * @function_partial firebase_messaging_message_raw_data_copy
  * @param {Buffer} out_buffer
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_has_notification
+ * @function_partial firebase_messaging_message_has_notification
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_title
+ * @function_partial firebase_messaging_message_notification_title
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_body
+ * @function_partial firebase_messaging_message_notification_body
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_icon
+ * @function_partial firebase_messaging_message_notification_icon
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_sound
+ * @function_partial firebase_messaging_message_notification_sound
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_badge
+ * @function_partial firebase_messaging_message_notification_badge
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_tag
+ * @function_partial firebase_messaging_message_notification_tag
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_color
+ * @function_partial firebase_messaging_message_notification_color
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_click_action
+ * @function_partial firebase_messaging_message_notification_click_action
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_body_loc_key
+ * @function_partial firebase_messaging_message_notification_body_loc_key
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_body_loc_args_count
+ * @function_partial firebase_messaging_message_notification_body_loc_args_count
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_body_loc_args_at
+ * @function_partial firebase_messaging_message_notification_body_loc_args_at
  * @param {Real} index
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_title_loc_key
+ * @function_partial firebase_messaging_message_notification_title_loc_key
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_title_loc_args_count
+ * @function_partial firebase_messaging_message_notification_title_loc_args_count
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_title_loc_args_at
+ * @function_partial firebase_messaging_message_notification_title_loc_args_at
  * @param {Real} index
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial messaging_message_notification_android_channel_id
+ * @function_partial firebase_messaging_message_notification_android_channel_id
  * @returns {String}
  * @function_end
  */
 
 /**
- * @function_partial ump_get_instance
+ * @function_partial firebase_ump_get_instance
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial ump_get_consent_status
+ * @function_partial firebase_ump_get_consent_status
  * @param {Real} consent_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial ump_get_consent_form_status
+ * @function_partial firebase_ump_get_consent_form_status
  * @param {Real} consent_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial ump_get_privacy_options_requirement_status
+ * @function_partial firebase_ump_get_privacy_options_requirement_status
  * @param {Real} consent_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial ump_can_request_ads
+ * @function_partial firebase_ump_can_request_ads
  * @param {Real} consent_ref
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial ump_reset
+ * @function_partial firebase_ump_reset
  * @param {Real} consent_ref
  * @function_end
  */
 
 /**
- * @function_partial ump_request_consent_info_update
+ * @function_partial firebase_ump_request_consent_info_update
  * @param {Real} consent_ref
  * @param {Real} debug_geography
  * @param {Real} tag_for_under_age_of_consent
@@ -3237,7 +3237,7 @@
  */
 
 /**
- * @function_partial ump_load_consent_form
+ * @function_partial firebase_ump_load_consent_form
  * @param {Real} consent_ref
  * @param {Function} [callback]
  * @returns {Real}
@@ -3245,16 +3245,7 @@
  */
 
 /**
- * @function_partial ump_show_consent_form
- * @param {Real} consent_ref
- * @param {Real} form_parent
- * @param {Function} [callback]
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial ump_load_and_show_consent_form_if_required
+ * @function_partial firebase_ump_show_consent_form
  * @param {Real} consent_ref
  * @param {Real} form_parent
  * @param {Function} [callback]
@@ -3263,7 +3254,16 @@
  */
 
 /**
- * @function_partial ump_show_privacy_options_form
+ * @function_partial firebase_ump_load_and_show_consent_form_if_required
+ * @param {Real} consent_ref
+ * @param {Real} form_parent
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_ump_show_privacy_options_form
  * @param {Real} consent_ref
  * @param {Real} form_parent
  * @param {Function} [callback]

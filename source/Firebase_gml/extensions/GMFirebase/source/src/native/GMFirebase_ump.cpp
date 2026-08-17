@@ -32,7 +32,7 @@ namespace
 
 // Nullable: ConsentInfo::GetInstance() can fail (e.g. missing dependency on
 // Android), in which case GML gets back "no value" rather than a ref.
-std::optional<uint64_t> ump_get_instance()
+std::optional<uint64_t> firebase_ump_get_instance()
 {
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
@@ -52,35 +52,35 @@ std::optional<uint64_t> ump_get_instance()
 	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(consent_info) & 0xFFFFFFFFu), GM_FB_TYPE_UMP_CONSENT_INFO);
 }
 
-double ump_get_consent_status(uint64_t consent_ref)
+double firebase_ump_get_consent_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kConsentStatusUnknown);
 	return static_cast<double>(consent_info->GetConsentStatus());
 }
 
-double ump_get_consent_form_status(uint64_t consent_ref)
+double firebase_ump_get_consent_form_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kConsentFormStatusUnknown);
 	return static_cast<double>(consent_info->GetConsentFormStatus());
 }
 
-double ump_get_privacy_options_requirement_status(uint64_t consent_ref)
+double firebase_ump_get_privacy_options_requirement_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kPrivacyOptionsRequirementStatusUnknown);
 	return static_cast<double>(consent_info->GetPrivacyOptionsRequirementStatus());
 }
 
-double ump_can_request_ads(uint64_t consent_ref)
+double firebase_ump_can_request_ads(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return 0.0;
 	return consent_info->CanRequestAds() ? 1.0 : 0.0;
 }
 
-void ump_reset(uint64_t consent_ref)
+void firebase_ump_reset(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return;
@@ -89,7 +89,7 @@ void ump_reset(uint64_t consent_ref)
 
 // debug_device_ids: a GML array of strings (may be `undefined`/omitted -
 // treated as empty). callback(error_code: real, error_message: string)
-double ump_request_consent_info_update(uint64_t consent_ref, double debug_geography,
+double firebase_ump_request_consent_info_update(uint64_t consent_ref, double debug_geography,
 	double tag_for_under_age_of_consent, const GMValue& debug_device_ids,
 	const std::optional<GMFunction>& callback)
 {
@@ -119,7 +119,7 @@ double ump_request_consent_info_update(uint64_t consent_ref, double debug_geogra
 }
 
 // callback(error_code: real, error_message: string)
-double ump_load_consent_form(uint64_t consent_ref, const std::optional<GMFunction>& callback)
+double firebase_ump_load_consent_form(uint64_t consent_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return 0.0;
@@ -135,7 +135,7 @@ double ump_load_consent_form(uint64_t consent_ref, const std::optional<GMFunctio
 // form_parent: opaque platform form-parent handle (jobject/id/void* cast to
 // uint64) - see GMFirebase_ump.h. Pass 0 on desktop.
 // callback(error_code: real, error_message: string)
-double ump_show_consent_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+double firebase_ump_show_consent_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return 0.0;
@@ -150,7 +150,7 @@ double ump_show_consent_form(uint64_t consent_ref, uint64_t form_parent, const s
 }
 
 // callback(error_code: real, error_message: string)
-double ump_load_and_show_consent_form_if_required(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+double firebase_ump_load_and_show_consent_form_if_required(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return 0.0;
@@ -165,7 +165,7 @@ double ump_load_and_show_consent_form_if_required(uint64_t consent_ref, uint64_t
 }
 
 // callback(error_code: real, error_message: string)
-double ump_show_privacy_options_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+double firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return 0.0;

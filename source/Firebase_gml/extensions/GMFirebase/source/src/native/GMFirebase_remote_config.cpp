@@ -54,7 +54,7 @@ namespace
 // RemoteConfig instance
 // ============================================================
 
-uint64_t remote_config_get_instance()
+uint64_t firebase_remote_config_get_instance()
 {
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
@@ -74,7 +74,7 @@ uint64_t remote_config_get_instance()
 }
 
 // callback(error_code: real, error_message: string)
-double remote_config_ensure_initialized(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_ensure_initialized(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -89,7 +89,7 @@ double remote_config_ensure_initialized(uint64_t rc_ref, const std::optional<GMF
 }
 
 // callback(error_code: real, error_message: string)
-double remote_config_set_config_settings(uint64_t rc_ref, double fetch_timeout_ms, double minimum_fetch_interval_ms, const std::optional<GMFunction>& callback)
+double firebase_remote_config_set_config_settings(uint64_t rc_ref, double fetch_timeout_ms, double minimum_fetch_interval_ms, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -107,14 +107,14 @@ double remote_config_set_config_settings(uint64_t rc_ref, double fetch_timeout_m
 	return 1.0;
 }
 
-double remote_config_get_config_settings_fetch_timeout(uint64_t rc_ref)
+double firebase_remote_config_get_config_settings_fetch_timeout(uint64_t rc_ref)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
 	return static_cast<double>(rc->GetConfigSettings().fetch_timeout_in_milliseconds);
 }
 
-double remote_config_get_config_settings_minimum_fetch_interval(uint64_t rc_ref)
+double firebase_remote_config_get_config_settings_minimum_fetch_interval(uint64_t rc_ref)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -122,7 +122,7 @@ double remote_config_get_config_settings_minimum_fetch_interval(uint64_t rc_ref)
 }
 
 // callback(error_code: real, error_message: string)
-double remote_config_fetch(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_fetch(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -137,7 +137,7 @@ double remote_config_fetch(uint64_t rc_ref, const std::optional<GMFunction>& cal
 }
 
 // callback(error_code: real, error_message: string)
-double remote_config_fetch_with_expiration(uint64_t rc_ref, double cache_expiration_in_seconds, const std::optional<GMFunction>& callback)
+double firebase_remote_config_fetch_with_expiration(uint64_t rc_ref, double cache_expiration_in_seconds, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -152,7 +152,7 @@ double remote_config_fetch_with_expiration(uint64_t rc_ref, double cache_expirat
 }
 
 // callback(error_code: real, error_message: string, activated: bool)
-double remote_config_fetch_and_activate(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_fetch_and_activate(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -168,7 +168,7 @@ double remote_config_fetch_and_activate(uint64_t rc_ref, const std::optional<GMF
 }
 
 // callback(error_code: real, error_message: string, activated: bool)
-double remote_config_activate(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_activate(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -187,35 +187,35 @@ double remote_config_activate(uint64_t rc_ref, const std::optional<GMFunction>& 
 // Parameter values
 // ============================================================
 
-double remote_config_get_boolean(uint64_t rc_ref, std::string_view key)
+double firebase_remote_config_get_boolean(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
 	return rc->GetBoolean(std::string(key).c_str()) ? 1.0 : 0.0;
 }
 
-double remote_config_get_long(uint64_t rc_ref, std::string_view key)
+double firebase_remote_config_get_long(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
 	return static_cast<double>(rc->GetLong(std::string(key).c_str()));
 }
 
-double remote_config_get_double(uint64_t rc_ref, std::string_view key)
+double firebase_remote_config_get_double(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
 	return rc->GetDouble(std::string(key).c_str());
 }
 
-std::string remote_config_get_string(uint64_t rc_ref, std::string_view key)
+std::string firebase_remote_config_get_string(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return std::string();
 	return rc->GetString(std::string(key).c_str());
 }
 
-double remote_config_get_data_size(uint64_t rc_ref, std::string_view key)
+double firebase_remote_config_get_data_size(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -223,10 +223,10 @@ double remote_config_get_data_size(uint64_t rc_ref, std::string_view key)
 }
 
 // Copies up to out_buffer.length() bytes into out_buffer; returns the number
-// of bytes actually copied (call remote_config_get_data_size() first to
+// of bytes actually copied (call firebase_remote_config_get_data_size() first to
 // size the buffer). Mirrors GMFirebase_storage.cpp's GetBytes convention of
 // writing into a caller-supplied GML buffer rather than returning one.
-double remote_config_get_data(uint64_t rc_ref, std::string_view key, GMBuffer out_buffer)
+double firebase_remote_config_get_data(uint64_t rc_ref, std::string_view key, GMBuffer out_buffer)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -243,7 +243,7 @@ double remote_config_get_data(uint64_t rc_ref, std::string_view key, GMBuffer ou
 // ============================================================
 
 // callback(keys: array of string) - single argument, a GML array.
-double remote_config_get_keys_by_prefix(uint64_t rc_ref, std::string_view prefix, const std::optional<GMFunction>& callback)
+double firebase_remote_config_get_keys_by_prefix(uint64_t rc_ref, std::string_view prefix, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -257,7 +257,7 @@ double remote_config_get_keys_by_prefix(uint64_t rc_ref, std::string_view prefix
 }
 
 // callback(keys: array of string) - single argument, a GML array.
-double remote_config_get_keys(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_get_keys(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -272,7 +272,7 @@ double remote_config_get_keys(uint64_t rc_ref, const std::optional<GMFunction>& 
 
 // callback(values: struct) - single argument, a GML struct with one field
 // per remote config key.
-double remote_config_get_all(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+double firebase_remote_config_get_all(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
@@ -294,14 +294,14 @@ double remote_config_get_all(uint64_t rc_ref, const std::optional<GMFunction>& c
 // firebase::Variant via gmValueToVariant and sent as a
 // ConfigKeyValueVariant array.
 // callback(error_code: real, error_message: string)
-double remote_config_set_defaults(uint64_t rc_ref, const GMValue& defaults, const std::optional<GMFunction>& callback)
+double firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue& defaults, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0.0;
 
 	if (!defaults.is<GMObjectView>())
 	{
-		setFirebaseLastError(-1, "firebase_remote_config_set_defaults: defaults must be a struct");
+		setFirebaseLastError(-1, "firebase_firebase_remote_config_set_defaults: defaults must be a struct");
 		return 0.0;
 	}
 
@@ -338,7 +338,7 @@ double remote_config_set_defaults(uint64_t rc_ref, const GMValue& defaults, cons
 // Info
 // ============================================================
 
-FirebaseRemoteConfigInfo remote_config_get_info(uint64_t rc_ref)
+FirebaseRemoteConfigInfo firebase_remote_config_get_info(uint64_t rc_ref)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return FirebaseRemoteConfigInfo{};
@@ -350,7 +350,7 @@ FirebaseRemoteConfigInfo remote_config_get_info(uint64_t rc_ref)
 // ============================================================
 
 // callback(error_code: real, error_message: string, updated_keys: array of string)
-uint64_t remote_config_add_config_update_listener(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+uint64_t firebase_remote_config_add_config_update_listener(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0;
@@ -376,7 +376,7 @@ uint64_t remote_config_add_config_update_listener(uint64_t rc_ref, const std::op
 	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(boxed) & 0xFFFFFFFFu), GM_FB_TYPE_RC_LISTENER_REG);
 }
 
-double remote_config_remove_config_update_listener(uint64_t reg_ref)
+double firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
 {
 	firebase::remote_config::ConfigUpdateListenerRegistration* reg = resolveListenerReg(reg_ref);
 	if (reg == nullptr) return 0.0;

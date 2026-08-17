@@ -34,7 +34,7 @@ uint64_t registerFirestoreQuerySnapshot(const firebase::firestore::QuerySnapshot
 // DocumentSnapshot
 // ============================================================
 
-bool firestore_document_snapshot_exists(uint64_t ref)
+bool firebase_firestore_document_snapshot_exists(uint64_t ref)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -42,7 +42,7 @@ bool firestore_document_snapshot_exists(uint64_t ref)
 	return snap->exists();
 }
 
-std::string firestore_document_snapshot_id(uint64_t ref)
+std::string firebase_firestore_document_snapshot_id(uint64_t ref)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -50,7 +50,7 @@ std::string firestore_document_snapshot_id(uint64_t ref)
 	return snap->id();
 }
 
-uint64_t firestore_document_snapshot_reference(uint64_t ref)
+uint64_t firebase_firestore_document_snapshot_reference(uint64_t ref)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -58,7 +58,7 @@ uint64_t firestore_document_snapshot_reference(uint64_t ref)
 	return registerFirestoreDocRef(snap->reference());
 }
 
-bool firestore_document_snapshot_metadata_has_pending_writes(uint64_t ref)
+bool firebase_firestore_document_snapshot_metadata_has_pending_writes(uint64_t ref)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -66,7 +66,7 @@ bool firestore_document_snapshot_metadata_has_pending_writes(uint64_t ref)
 	return snap->metadata().has_pending_writes();
 }
 
-bool firestore_document_snapshot_metadata_is_from_cache(uint64_t ref)
+bool firebase_firestore_document_snapshot_metadata_is_from_cache(uint64_t ref)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -77,7 +77,7 @@ bool firestore_document_snapshot_metadata_is_from_cache(uint64_t ref)
 // Returns { exists: bool, value: <field value, or undefined if not exists> }.
 // See GMFirebase_firestore.h's converter section for how composite value
 // kinds (Timestamp/GeoPoint/Reference/Array/Map) are encoded.
-gm::wire::DataStream firestore_document_snapshot_get(uint64_t ref, std::string_view field, double server_timestamp_behavior)
+gm::wire::DataStream firebase_firestore_document_snapshot_get(uint64_t ref, std::string_view field, double server_timestamp_behavior)
 {
 	gm::wire::StructStream result;
 
@@ -108,7 +108,7 @@ gm::wire::DataStream firestore_document_snapshot_get(uint64_t ref, std::string_v
 }
 
 // Returns the full field map as a struct, field name -> converted value.
-gm::wire::DataStream firestore_document_snapshot_get_data(uint64_t ref, double server_timestamp_behavior)
+gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref, double server_timestamp_behavior)
 {
 	gm::wire::StructStream result;
 
@@ -127,7 +127,7 @@ gm::wire::DataStream firestore_document_snapshot_get_data(uint64_t ref, double s
 	return out;
 }
 
-void firestore_document_snapshot_release(uint64_t ref)
+void firebase_firestore_document_snapshot_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT)
 	{
@@ -141,7 +141,7 @@ void firestore_document_snapshot_release(uint64_t ref)
 // QuerySnapshot
 // ============================================================
 
-double firestore_query_snapshot_size(uint64_t ref)
+double firebase_firestore_query_snapshot_size(uint64_t ref)
 {
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
@@ -149,7 +149,7 @@ double firestore_query_snapshot_size(uint64_t ref)
 	return static_cast<double>(snap->size());
 }
 
-bool firestore_query_snapshot_empty(uint64_t ref)
+bool firebase_firestore_query_snapshot_empty(uint64_t ref)
 {
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
@@ -157,7 +157,7 @@ bool firestore_query_snapshot_empty(uint64_t ref)
 	return snap->empty();
 }
 
-bool firestore_query_snapshot_metadata_has_pending_writes(uint64_t ref)
+bool firebase_firestore_query_snapshot_metadata_has_pending_writes(uint64_t ref)
 {
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
@@ -165,7 +165,7 @@ bool firestore_query_snapshot_metadata_has_pending_writes(uint64_t ref)
 	return snap->metadata().has_pending_writes();
 }
 
-bool firestore_query_snapshot_metadata_is_from_cache(uint64_t ref)
+bool firebase_firestore_query_snapshot_metadata_is_from_cache(uint64_t ref)
 {
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
@@ -175,7 +175,7 @@ bool firestore_query_snapshot_metadata_is_from_cache(uint64_t ref)
 
 // Returns an array of GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT refs (each newly
 // registered), in the query's result order.
-gm::wire::DataStream firestore_query_snapshot_documents(uint64_t ref)
+gm::wire::DataStream firebase_firestore_query_snapshot_documents(uint64_t ref)
 {
 	gm::wire::ArrayStream result;
 
@@ -195,7 +195,7 @@ gm::wire::DataStream firestore_query_snapshot_documents(uint64_t ref)
 // Returns an array of
 // { type: real (FirestoreDocumentChangeType), document: uint64 ref,
 //   old_index: real (-1 if n/a), new_index: real (-1 if n/a) }.
-gm::wire::DataStream firestore_query_snapshot_document_changes(uint64_t ref, bool include_metadata_changes)
+gm::wire::DataStream firebase_firestore_query_snapshot_document_changes(uint64_t ref, bool include_metadata_changes)
 {
 	gm::wire::ArrayStream result;
 
@@ -224,7 +224,7 @@ gm::wire::DataStream firestore_query_snapshot_document_changes(uint64_t ref, boo
 	return out;
 }
 
-void firestore_query_snapshot_release(uint64_t ref)
+void firebase_firestore_query_snapshot_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT)
 	{
@@ -237,12 +237,12 @@ void firestore_query_snapshot_release(uint64_t ref)
 // ============================================================
 // ListenerRegistration
 // ============================================================
-// Shared by firestore_document_ref_add_snapshot_listener() and
-// firestore_query_add_snapshot_listener() - both heap-box their
+// Shared by firebase_firestore_document_ref_add_snapshot_listener() and
+// firebase_firestore_query_add_snapshot_listener() - both heap-box their
 // ListenerRegistration under the same GM_FB_TYPE_FIRESTORE_LISTENER_REG type
 // code, so a single remove function serves either.
 
-void firestore_listener_registration_remove(uint64_t ref)
+void firebase_firestore_listener_registration_remove(uint64_t ref)
 {
 	firebase::firestore::ListenerRegistration* reg = nullptr;
 	validate_fb_ref_ptr(ref, GM_FB_TYPE_FIRESTORE_LISTENER_REG, firebase::firestore::ListenerRegistration, reg);

@@ -934,6 +934,15 @@ namespace gm::wire::details {
 
 } // namespace gm::wire::details
 
+namespace gm::wire {
+    // Forward-declared so codec::writeValue(const std::optional<T>&) below can
+    // forward-declare the matching DataStream overload ahead of its own
+    // definition (ordinary unqualified lookup inside that template only sees
+    // names declared earlier in the file - DataStream's overload lives in the
+    // gm::wire::codec namespace, which ADL does not search for a gm::wire type).
+    class DataStream;
+}
+
 namespace gm::wire::codec {
     using namespace gm::byteio;
 
@@ -1216,6 +1225,11 @@ namespace gm::wire::codec {
     template<class T, std::size_t N> inline void writeValue(gm::byteio::IByteWriter& buf, const std::array<T, N>& arr);
     template<class T> inline void writeValue(gm::byteio::IByteWriter& buf, const std::vector<T>& vec);
 
+    // Same reason as above: the real definition lives further down (once
+    // DataStream itself is defined), but writeValue(const std::optional<T>&)
+    // needs to find it via ordinary lookup, not ADL, when T = DataStream.
+    void writeValue(gm::byteio::IByteWriter& buf, const gm::wire::DataStream& v);
+
     template<class T>
     inline void writeValue(gm::byteio::IByteWriter& buf, const std::optional<T>& opt)
     {
@@ -1361,6 +1375,19 @@ namespace gm::wire {
         virtual void clear() { buffer.clear(); }
 
         virtual void writeTo(gm::byteio::IByteWriter& output) const { output.writeBytes(buffer.data(), buffer.size()); }
+
+        // Reconstructs a DataStream by capturing the raw bytes of a sub-range
+        // verbatim (same approach as ArrayStream/StructStream::buildFrom) -
+        // used by codec::readValue<DataStream> to round-trip a "gmval" field
+        // nested inside a gm_struct. buildFrom() itself stays protected (only
+        // GMFunction gets direct access); this static entry point is the
+        // supported way for the rest of the codec to reach it.
+        static DataStream buildFromBuffer(gm::byteio::BufferReader& bv)
+        {
+            DataStream ds;
+            ds.buildFrom(bv);
+            return ds;
+        }
 
     protected:
         virtual void buildFrom(gm::byteio::BufferReader& bv) { buffer.assign(bv.data(), bv.data() + bv.remaining()); }
@@ -1732,6 +1759,17 @@ namespace gm::wire::codec {
         gm::wire::StructStream ss;
         ss.buildFrom(_sub);
         return ss;
+    }
+
+    template<>
+    inline gm::wire::DataStream readValue<gm::wire::DataStream>(BufferReader& buf)
+    {
+        size_t _init = buf.position();
+        readValue(buf); // skip exactly one encoded value, tag + payload
+        size_t _end = buf.position();
+
+        BufferReader _sub(buf.data() + _init, _end - _init);
+        return gm::wire::DataStream::buildFromBuffer(_sub);
     }
 
     inline void writeValue(gm::byteio::IByteWriter& buf, const gm::wire::DataStream& v) { v.writeTo(buf); }

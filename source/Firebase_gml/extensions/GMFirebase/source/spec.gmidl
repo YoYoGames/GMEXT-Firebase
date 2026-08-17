@@ -1352,10 +1352,31 @@ function firebase_database_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
+// Everything about a snapshot, including its (dynamically-typed) value and
+// priority - unlike FirebaseDataSnapshotInfo above, which omits them. `value`
+// mirrors firebase_database_snapshot_get_value() (undefined/bool/real/string/
+// array/struct, arbitrarily nested); `priority` mirrors
+// firebase_database_snapshot_get_priority() (usually real, string, or
+// undefined). `reference` is a newly registered GM_FB_TYPE_DATABASE_REF ref
+// owned by the caller - release it with firebase_database_ref_release() when
+// done. Not yet wired up to any function - see the .cpp for the wiring step.
+[global]
+class `[[FirebaseDataSnapshot]]` prototype Object
+{
+	[field] property key: string { get; set; }
+	[field] property exists: bool { get; set; }
+	[field] property is_valid: bool { get; set; }
+	[field] property has_children: bool { get; set; }
+	[field, type_hint=`real`] property children_count: gmval { get; set; }
+	[field, type_hint=`uint64`] property reference: gmval { get; set; }
+	[field, type_hint=`any?`] property value: gmval { get; set; }
+	[field] property priority: gmval { get; set; }
+}
+
 // Returns the dynamically-typed value at this location (undefined/bool/real/
 // string/array/struct, arbitrarily nested for array/struct), mirroring
 // whatever shape the data actually has.
-[global, bind = typed_gml]
+[global, bind = typed_gml,type_hint=`FirebaseDataSnapshot`]
 function firebase_database_snapshot_get_value(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;

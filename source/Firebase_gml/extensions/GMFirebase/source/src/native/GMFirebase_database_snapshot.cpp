@@ -130,19 +130,49 @@ gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(uint64_
 	return info;
 }
 
-// Returns the dynamically-typed value at this location (undefined/bool/real/
-// string/array/struct, arbitrarily nested for array/struct), mirroring
-// whatever shape the data actually has.
-gm::wire::DataStream firebase_database_snapshot_get_value(uint64_t ref)
+// Returns everything about the snapshot at this location, including its
+// dynamically-typed value/priority (undefined/bool/real/string/array/struct,
+// arbitrarily nested for array/struct), mirroring whatever shape the data
+// actually has. `reference` is a newly registered DatabaseReference ref that
+// the caller owns and must release with firebase_database_ref_release(). If
+// `ref` is not a valid registered snapshot, returns a default-constructed
+// struct (key "", exists/is_valid/has_children false, children_count 0,
+// reference 0, value/priority undefined) - same convention as
+// firebase_database_snapshot_get_info().
+gm_structs::FirebaseDataSnapshot firebase_database_snapshot_get_value(uint64_t ref)
 {
-	gm::wire::DataStream out;
+	gm_structs::FirebaseDataSnapshot snapshot{};
+
 	DataSnapshot* s = resolve_db_snapshot(ref);
 	if (s == nullptr)
-		out << std::optional<std::uint8_t>{};
-	else
-		writeVariantToStream(s->value(), out);
+	{
+		gm::wire::DataStream value_out;
+		value_out << std::optional<std::uint8_t>{};
+		snapshot.value = value_out;
 
-	return out;
+		gm::wire::DataStream priority_out;
+		priority_out << std::optional<std::uint8_t>{};
+		snapshot.priority = priority_out;
+
+		return snapshot;
+	}
+
+	gm::wire::DataStream value_out;
+	writeVariantToStream(s->value(), value_out);
+	snapshot.value = value_out;
+
+	gm::wire::DataStream priority_out;
+	writeVariantToStream(s->priority(), priority_out);
+	snapshot.priority = priority_out;
+
+	snapshot.key = s->key_string();
+	snapshot.exists = s->exists();
+	snapshot.is_valid = s->is_valid();
+	snapshot.has_children = s->has_children();
+	snapshot.children_count = static_cast<double>(s->children_count());
+	snapshot.reference = registerDatabaseReference(s->GetReference());
+
+	return snapshot;
 }
 
 // Same convention as get_value(), applied to the snapshot's priority instead.

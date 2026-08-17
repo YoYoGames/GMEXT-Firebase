@@ -233,6 +233,7 @@ namespace gm_enums
 namespace gm_structs
 {
     struct FirebaseDataSnapshotInfo;
+    struct FirebaseDataSnapshot;
     struct FirebaseRemoteConfigInfo;
 
     struct FirebaseDataSnapshotInfo
@@ -243,6 +244,18 @@ namespace gm_structs
         bool has_children;
         double children_count;
         std::uint64_t reference;
+    };
+
+    struct FirebaseDataSnapshot
+    {
+        std::string key;
+        bool exists;
+        bool is_valid;
+        bool has_children;
+        double children_count;
+        std::uint64_t reference;
+        std::optional<gm::wire::DataStream> value;
+        gm::wire::DataStream priority;
     };
 
     struct FirebaseRemoteConfigInfo
@@ -282,6 +295,34 @@ namespace gm::wire::codec
     }
 
     template<>
+    inline void writeValue<gm_structs::FirebaseDataSnapshot>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseDataSnapshot& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.key);
+        gm::wire::codec::writeValue(_buf, obj.exists);
+        gm::wire::codec::writeValue(_buf, obj.is_valid);
+        gm::wire::codec::writeValue(_buf, obj.has_children);
+        gm::wire::codec::writeValue(_buf, obj.children_count);
+        gm::wire::codec::writeValue(_buf, obj.reference);
+        gm::wire::codec::writeValue(_buf, obj.value);
+        gm::wire::codec::writeValue(_buf, obj.priority);
+    }
+
+    template<>
+    inline gm_structs::FirebaseDataSnapshot readValue<gm_structs::FirebaseDataSnapshot>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseDataSnapshot obj;
+        obj.key = gm::wire::codec::readValue<std::string>(_buf);
+        obj.exists = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_valid = gm::wire::codec::readValue<bool>(_buf);
+        obj.has_children = gm::wire::codec::readValue<bool>(_buf);
+        obj.children_count = gm::wire::codec::readValue<double>(_buf);
+        obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.value = gm::wire::codec::readOptional<gm::wire::DataStream>(_buf);
+        obj.priority = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        return obj;
+    }
+
+    template<>
     inline void writeValue<gm_structs::FirebaseRemoteConfigInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigInfo& obj)
     {
         gm::wire::codec::writeValue(_buf, obj.fetch_time);
@@ -313,10 +354,17 @@ namespace gm::wire::details
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    struct gm_struct_traits<gm_structs::FirebaseDataSnapshot>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 1;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 2;
     };
 
 }
@@ -498,7 +546,7 @@ gm::wire::DataStream firebase_database_snapshot_get_children(std::uint64_t ref);
 std::string firebase_database_snapshot_key(std::uint64_t ref);
 std::uint64_t firebase_database_snapshot_get_reference(std::uint64_t ref);
 gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(std::uint64_t ref);
-gm::wire::DataStream firebase_database_snapshot_get_value(std::uint64_t ref);
+gm_structs::FirebaseDataSnapshot firebase_database_snapshot_get_value(std::uint64_t ref);
 gm::wire::DataStream firebase_database_snapshot_get_priority(std::uint64_t ref);
 double firebase_database_snapshot_release(std::uint64_t ref);
 std::uint64_t firebase_firestore_get_instance();

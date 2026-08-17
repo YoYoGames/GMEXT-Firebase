@@ -1274,6 +1274,22 @@ function firebase_database_ref_release(
 // Realtime Database - DataSnapshot
 // ============================================================
 
+// Everything about a snapshot EXCEPT its (dynamically-typed) value/priority -
+// fetch those separately via firebase_database_snapshot_get_value()/
+// get_priority(). `reference` is a newly registered GM_FB_TYPE_DATABASE_REF
+// ref owned by the caller - release it with firebase_database_ref_release()
+// when done.
+[global]
+class `[[FirebaseDataSnapshotInfo]]` prototype Object
+{
+	[field] property key: string { get; set; }
+	[field] property exists: bool { get; set; }
+	[field] property is_valid: bool { get; set; }
+	[field] property has_children: bool { get; set; }
+	[field, type_hint=`real`] property children_count: gmval { get; set; }
+	[field, type_hint=`uint64`] property reference: gmval { get; set; }
+}
+
 [global, bind = typed_gml]
 function firebase_database_snapshot_exists(
 	[type_hint=`uint64`] ref: gmval
@@ -1325,11 +1341,21 @@ function firebase_database_snapshot_get_reference(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// Returns the snapshot's value as-is. A Firebase value is dynamically typed
-// (undefined/bool/real/string/array/struct, arbitrarily nested for
-// array/struct), so the returned gmval mirrors whatever shape the data at
-// this location actually has.
-[global, bind = typed_gml, type_hint=`any?`]
+// Returns everything about the snapshot at this location - except its value/
+// priority, see get_value()/get_priority() below - as a FirebaseDataSnapshotInfo
+// struct. If `ref` is not a valid registered snapshot, returns a
+// default-constructed struct (key "", exists/is_valid/has_children false,
+// children_count 0, reference 0) - same convention as
+// firebase_remote_config_get_info().
+[global, bind = typed_gml, type_hint=`FirebaseDataSnapshotInfo`]
+function firebase_database_snapshot_get_info(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Returns the dynamically-typed value at this location (undefined/bool/real/
+// string/array/struct, arbitrarily nested for array/struct), mirroring
+// whatever shape the data actually has.
+[global, bind = typed_gml]
 function firebase_database_snapshot_get_value(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;

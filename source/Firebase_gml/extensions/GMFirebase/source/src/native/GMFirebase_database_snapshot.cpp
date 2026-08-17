@@ -105,12 +105,35 @@ uint64_t firebase_database_snapshot_get_reference(uint64_t ref)
 	return registerDatabaseReference(s->GetReference());
 }
 
-// Returns the snapshot's value as-is: a real/string/bool/undefined for a
-// scalar, or an array/struct for a vector/map, matching whatever shape the
-// data at this location actually has. A Firebase Variant is dynamically
-// typed with no fixed gmval shape of its own, so this writes directly onto
-// the wire via writeVariantToStream() rather than through a spec type_hint.
-std::optional<gm::wire::DataStream> firebase_database_snapshot_get_value(uint64_t ref)
+// Returns everything about the snapshot at this location - except its value/
+// priority, see firebase_database_snapshot_get_value()/get_priority() below -
+// as a FirebaseDataSnapshotInfo struct. `reference` is a newly registered
+// DatabaseReference ref that the caller owns and must release with
+// firebase_database_ref_release(). If `ref` is not a valid registered
+// snapshot, returns a default-constructed struct (key "",
+// exists/is_valid/has_children false, children_count 0, reference 0) - same
+// convention as firebase_remote_config_get_info().
+gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(uint64_t ref)
+{
+	gm_structs::FirebaseDataSnapshotInfo info{};
+
+	DataSnapshot* s = resolve_db_snapshot(ref);
+	if (s == nullptr) return info;
+
+	info.key = s->key_string();
+	info.exists = s->exists();
+	info.is_valid = s->is_valid();
+	info.has_children = s->has_children();
+	info.children_count = static_cast<double>(s->children_count());
+	info.reference = registerDatabaseReference(s->GetReference());
+
+	return info;
+}
+
+// Returns the dynamically-typed value at this location (undefined/bool/real/
+// string/array/struct, arbitrarily nested for array/struct), mirroring
+// whatever shape the data actually has.
+gm::wire::DataStream firebase_database_snapshot_get_value(uint64_t ref)
 {
 	gm::wire::DataStream out;
 	DataSnapshot* s = resolve_db_snapshot(ref);

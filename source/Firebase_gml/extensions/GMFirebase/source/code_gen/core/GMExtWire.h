@@ -356,9 +356,7 @@ namespace gm::wire {
     using GMBufferReader = gm::byteio::BufferReader;
     using GMBufferWriter = gm::byteio::BufferWriter;
 
-    class DataStream;
     class ArrayStream;
-    class StructStream;
 
     struct GMBuffer {
     private:
@@ -1217,16 +1215,6 @@ namespace gm::wire::codec {
     template<class T> inline void writeValue(gm::byteio::IByteWriter& buf, const std::optional<T>& opt);
     template<class T, std::size_t N> inline void writeValue(gm::byteio::IByteWriter& buf, const std::array<T, N>& arr);
     template<class T> inline void writeValue(gm::byteio::IByteWriter& buf, const std::vector<T>& vec);
-
-    // Also declared up front (defined later, once DataStream/ArrayStream/StructStream are
-    // complete types): without this, a dependent call like writeValue(buf, *opt) inside the
-    // optional<T> template below can't see these overloads via two-phase lookup (ADL alone
-    // won't find them - they live in gm::wire::codec, a child namespace of the streams'
-    // enclosing gm::wire, which ADL does not search), and falls through to the primary
-    // template's static_assert instead.
-    inline void writeValue(gm::byteio::IByteWriter& buf, const gm::wire::DataStream& v);
-    inline void writeValue(gm::byteio::IByteWriter& buf, const gm::wire::ArrayStream& v);
-    inline void writeValue(gm::byteio::IByteWriter& buf, const gm::wire::StructStream& v);
 
     template<class T>
     inline void writeValue(gm::byteio::IByteWriter& buf, const std::optional<T>& opt)

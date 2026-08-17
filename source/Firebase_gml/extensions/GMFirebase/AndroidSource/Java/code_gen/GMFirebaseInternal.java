@@ -716,6 +716,10 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_snapshot_get_reference(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
+    public double __EXT_NATIVE__firebase_database_snapshot_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    {
+        return __EXT_JNI__firebase_database_snapshot_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    }
     public double __EXT_NATIVE__firebase_database_snapshot_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
         return __EXT_JNI__firebase_database_snapshot_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);

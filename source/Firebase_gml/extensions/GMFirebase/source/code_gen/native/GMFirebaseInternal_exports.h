@@ -185,6 +185,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_children_count(char* __
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_children(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT char* __EXT_NATIVE__firebase_database_snapshot_key(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_priority(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_release(char* __arg_buffer, double __arg_buffer_length);

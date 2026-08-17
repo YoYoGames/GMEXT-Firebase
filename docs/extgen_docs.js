@@ -1281,6 +1281,13 @@
  */
 
 /**
+ * @function_partial firebase_database_snapshot_get_info
+ * @param {Real} ref
+ * @returns {Struct.FirebaseDataSnapshotInfo}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_database_snapshot_get_value
  * @param {Real} ref
  * @returns {Any}
@@ -3269,6 +3276,17 @@
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
+ */
+
+/**
+ * @struct_partial FirebaseDataSnapshotInfo
+ * @member {String} key
+ * @member {Bool} exists
+ * @member {Bool} is_valid
+ * @member {Bool} has_children
+ * @member {Real} children_count
+ * @member {Real} reference
+ * @struct_end
  */
 
 /**

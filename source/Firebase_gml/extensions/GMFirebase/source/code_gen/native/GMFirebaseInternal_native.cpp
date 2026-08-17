@@ -2509,6 +2509,21 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_reference(char* __a
     return 0;
 }
 
+GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: ref, type: UInt64
+    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_snapshot_get_info(ref);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: struct FirebaseDataSnapshotInfo
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
@@ -2519,7 +2534,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_value(char* __arg_b
     auto&& __result = firebase_database_snapshot_get_value(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: optional<Any>
+    // return: __result, type: Any
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }

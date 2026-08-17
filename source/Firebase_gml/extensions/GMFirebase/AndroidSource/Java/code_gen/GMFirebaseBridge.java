@@ -195,6 +195,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_database_snapshot_get_children(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native String __EXT_JNI__firebase_database_snapshot_key(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_snapshot_get_reference(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_database_snapshot_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_snapshot_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_snapshot_get_priority(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_snapshot_release(ByteBuffer __arg_buffer, double __arg_buffer_length);

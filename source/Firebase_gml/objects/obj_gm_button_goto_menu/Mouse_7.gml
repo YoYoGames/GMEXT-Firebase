@@ -1,2 +1,2 @@
 
-room_goto(Room_Firebase)
+room_goto(goto)

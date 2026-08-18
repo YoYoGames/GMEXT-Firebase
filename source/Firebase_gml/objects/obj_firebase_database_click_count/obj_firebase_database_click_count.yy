@@ -1,16 +1,16 @@
 {
   "$GMObject":"",
-  "%Name":"obj_firebase_realtimedb",
+  "%Name":"obj_firebase_database_click_count",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_firebase_realtimedb",
+  "name":"obj_firebase_database_click_count",
   "overriddenProperties":[],
   "parent":{
-    "name":"Firebase",
-    "path":"Firebase.yyp",
+    "name":"Database",
+    "path":"folders/Firebase Demos/Database.yy",
   },
   "parentObjectId":{
     "name":"obj_gm_button",

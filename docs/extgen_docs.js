@@ -820,23 +820,9 @@
  */
 
 /**
- * @function_partial firebase_database_ref_get_reference
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
  * @function_partial firebase_database_ref_set_keep_synchronized
  * @param {Real} ref
  * @param {Real} keep_sync
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_is_valid
- * @param {Real} ref
  * @returns {Real}
  * @function_end
  */
@@ -1085,30 +1071,9 @@
  */
 
 /**
- * @function_partial firebase_database_ref_key
+ * @function_partial firebase_database_ref_get
  * @param {Real} ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_is_root
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_parent
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_root
- * @param {Real} ref
- * @returns {Real}
+ * @returns {Struct.DatabaseReference}
  * @function_end
  */
 
@@ -1124,20 +1089,6 @@
  * @function_partial firebase_database_ref_push
  * @param {Real} ref
  * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_database
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_url
- * @param {Real} ref
- * @returns {String}
  * @function_end
  */
 
@@ -3276,6 +3227,19 @@
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
+ */
+
+/**
+ * @struct_partial DatabaseReference
+ * @member {String} key
+ * @member {Bool} is_root
+ * @member {Bool} is_valid
+ * @member {Real} reference
+ * @member {Real} parent
+ * @member {Real} root
+ * @member {Real} database
+ * @member {String} url
+ * @struct_end
  */
 
 /**

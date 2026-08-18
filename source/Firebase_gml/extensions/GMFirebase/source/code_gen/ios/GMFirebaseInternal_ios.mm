@@ -556,17 +556,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_ref_limit_to_last(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_get_reference:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_get_reference(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-}
 - (double)__EXT_NATIVE__firebase_database_ref_set_keep_synchronized:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
     return __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_database_ref_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_is_valid(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_ref_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -688,21 +680,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_query_release(__arg_buffer, __arg_buffer_length);
 }
-- (char*)__EXT_NATIVE__firebase_database_ref_key:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_key(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_database_ref_is_root:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_is_root(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_database_ref_get_parent:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_get_parent(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_database_ref_get_root:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_get_root(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_ref_child:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -711,14 +691,6 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 - (double)__EXT_NATIVE__firebase_database_ref_push:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_database_ref_push(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_database_ref_get_database:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_get_database(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-}
-- (char*)__EXT_NATIVE__firebase_database_ref_get_url:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_database_ref_get_url(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_ref_go_online:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {

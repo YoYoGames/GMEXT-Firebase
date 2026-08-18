@@ -136,9 +136,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_database_ref_equal_to_key(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_limit_to_first(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_limit_to_last(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_get_reference(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_set_keep_synchronized(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_add_value_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_remove_value_listener(ByteBuffer __arg_buffer, double __arg_buffer_length);
@@ -169,14 +167,9 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_database_query_remove_child_listener(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_query_remove_all_child_listeners(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_query_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native String __EXT_JNI__firebase_database_ref_key(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_is_root(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_get_parent(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_get_root(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_database_ref_get(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_child(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_push(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_database_ref_get_database(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native String __EXT_JNI__firebase_database_ref_get_url(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_go_online(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_go_offline(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_database_ref_set_value(ByteBuffer __arg_buffer, double __arg_buffer_length);

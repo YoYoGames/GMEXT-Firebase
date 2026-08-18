@@ -120,9 +120,7 @@
 - (double)__EXT_NATIVE__firebase_database_ref_equal_to_key:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_limit_to_first:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_limit_to_last:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_get_reference:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_set_keep_synchronized:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_add_value_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_remove_value_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
@@ -153,14 +151,9 @@
 - (double)__EXT_NATIVE__firebase_database_query_remove_child_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_query_remove_all_child_listeners:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_query_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
-- (char*)__EXT_NATIVE__firebase_database_ref_key:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_is_root:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_get_parent:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_get_root:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
+- (double)__EXT_NATIVE__firebase_database_ref_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_child:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_push:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
-- (double)__EXT_NATIVE__firebase_database_ref_get_database:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
-- (char*)__EXT_NATIVE__firebase_database_ref_get_url:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_go_online:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_go_offline:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_database_ref_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length;

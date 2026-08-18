@@ -232,9 +232,22 @@ namespace gm_enums
 
 namespace gm_structs
 {
+    struct DatabaseReference;
     struct FirebaseDataSnapshotInfo;
     struct FirebaseDataSnapshot;
     struct FirebaseRemoteConfigInfo;
+
+    struct DatabaseReference
+    {
+        std::string key;
+        bool is_root;
+        bool is_valid;
+        std::uint64_t reference;
+        std::uint64_t parent;
+        std::uint64_t root;
+        std::uint64_t database;
+        std::string url;
+    };
 
     struct FirebaseDataSnapshotInfo
     {
@@ -270,6 +283,34 @@ namespace gm_structs
 
 namespace gm::wire::codec
 {
+    template<>
+    inline void writeValue<gm_structs::DatabaseReference>(gm::byteio::IByteWriter& _buf, const gm_structs::DatabaseReference& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.key);
+        gm::wire::codec::writeValue(_buf, obj.is_root);
+        gm::wire::codec::writeValue(_buf, obj.is_valid);
+        gm::wire::codec::writeValue(_buf, obj.reference);
+        gm::wire::codec::writeValue(_buf, obj.parent);
+        gm::wire::codec::writeValue(_buf, obj.root);
+        gm::wire::codec::writeValue(_buf, obj.database);
+        gm::wire::codec::writeValue(_buf, obj.url);
+    }
+
+    template<>
+    inline gm_structs::DatabaseReference readValue<gm_structs::DatabaseReference>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::DatabaseReference obj;
+        obj.key = gm::wire::codec::readValue<std::string>(_buf);
+        obj.is_root = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_valid = gm::wire::codec::readValue<bool>(_buf);
+        obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.parent = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.root = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.database = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.url = gm::wire::codec::readValue<std::string>(_buf);
+        return obj;
+    }
+
     template<>
     inline void writeValue<gm_structs::FirebaseDataSnapshotInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseDataSnapshotInfo& obj)
     {
@@ -347,24 +388,31 @@ namespace gm::wire::codec
 namespace gm::wire::details
 {
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
+    struct gm_struct_traits<gm_structs::DatabaseReference>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 0;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDataSnapshot>
+    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 1;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    struct gm_struct_traits<gm_structs::FirebaseDataSnapshot>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 2;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 3;
     };
 
 }
@@ -486,9 +534,7 @@ std::uint64_t firebase_database_ref_equal_to(std::uint64_t ref, const gm::wire::
 std::uint64_t firebase_database_ref_equal_to_key(std::uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key);
 std::uint64_t firebase_database_ref_limit_to_first(std::uint64_t ref, double limit);
 std::uint64_t firebase_database_ref_limit_to_last(std::uint64_t ref, double limit);
-std::uint64_t firebase_database_ref_get_reference(std::uint64_t ref);
 double firebase_database_ref_set_keep_synchronized(std::uint64_t ref, double keep_sync);
-double firebase_database_ref_is_valid(std::uint64_t ref);
 double firebase_database_ref_get_value(std::uint64_t ref, const std::optional<gm::wire::GMFunction>& callback);
 std::uint64_t firebase_database_ref_add_value_listener(std::uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled);
 double firebase_database_ref_remove_value_listener(std::uint64_t ref, std::uint64_t listener_ref);
@@ -519,14 +565,9 @@ std::uint64_t firebase_database_query_add_child_listener(std::uint64_t ref, cons
 double firebase_database_query_remove_child_listener(std::uint64_t ref, std::uint64_t listener_ref);
 double firebase_database_query_remove_all_child_listeners(std::uint64_t ref);
 double firebase_database_query_release(std::uint64_t ref);
-std::string firebase_database_ref_key(std::uint64_t ref);
-double firebase_database_ref_is_root(std::uint64_t ref);
-std::uint64_t firebase_database_ref_get_parent(std::uint64_t ref);
-std::uint64_t firebase_database_ref_get_root(std::uint64_t ref);
+gm_structs::DatabaseReference firebase_database_ref_get(std::uint64_t ref);
 std::uint64_t firebase_database_ref_child(std::uint64_t ref, std::string_view path);
 std::uint64_t firebase_database_ref_push(std::uint64_t ref);
-std::uint64_t firebase_database_ref_get_database(std::uint64_t ref);
-std::string firebase_database_ref_get_url(std::uint64_t ref);
 double firebase_database_ref_go_online(std::uint64_t ref);
 double firebase_database_ref_go_offline(std::uint64_t ref);
 double firebase_database_ref_set_value(std::uint64_t ref, const gm::wire::GMValue& value, const std::optional<gm::wire::GMFunction>& callback);

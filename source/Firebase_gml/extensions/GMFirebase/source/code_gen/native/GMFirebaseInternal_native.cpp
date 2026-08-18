@@ -1521,21 +1521,6 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_limit_to_last(char* __arg_bu
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_get_reference(ref);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
-}
-
 GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
@@ -1547,17 +1532,6 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(char* 
     double keep_sync = gm::wire::codec::readValue<double>(__br);
 
     auto&& __result = firebase_database_ref_set_keep_synchronized(ref, keep_sync);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_is_valid(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_is_valid(ref);
     return static_cast<double>(__result);
 }
 
@@ -2122,55 +2096,17 @@ GMEXPORT double __EXT_NATIVE__firebase_database_query_release(char* __arg_buffer
     return static_cast<double>(__result);
 }
 
-GMEXPORT char* __EXT_NATIVE__firebase_database_ref_key(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    static std::string __result;
-    __result = firebase_database_ref_key(ref);
-    return (char*)__result.c_str();
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_is_root(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_is_root(ref);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_parent(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_get_parent(ref);
+    auto&& __result = firebase_database_ref_get(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_root(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_get_root(ref);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
+    // return: __result, type: struct DatabaseReference
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -2206,33 +2142,6 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_push(char* __arg_buffer, dou
     // return: __result, type: UInt64
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_database(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_database_ref_get_database(ref);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
-}
-
-GMEXPORT char* __EXT_NATIVE__firebase_database_ref_get_url(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    static std::string __result;
-    __result = firebase_database_ref_get_url(ref);
-    return (char*)__result.c_str();
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_ref_go_online(char* __arg_buffer, double __arg_buffer_length)

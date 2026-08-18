@@ -380,9 +380,7 @@ uint64_t firebase_database_ref_equal_to(uint64_t ref, const gm::wire::GMValue& o
 uint64_t firebase_database_ref_equal_to_key(uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key) { return query_equal_to_key(resolve_db_ref(ref), order_value, child_key); }
 uint64_t firebase_database_ref_limit_to_first(uint64_t ref, double limit) { return query_limit_to_first(resolve_db_ref(ref), limit); }
 uint64_t firebase_database_ref_limit_to_last(uint64_t ref, double limit) { return query_limit_to_last(resolve_db_ref(ref), limit); }
-uint64_t firebase_database_ref_get_reference(uint64_t ref) { return query_get_reference(resolve_db_ref(ref)); }
 double firebase_database_ref_set_keep_synchronized(uint64_t ref, double keep_sync) { return query_set_keep_synchronized(resolve_db_ref(ref), keep_sync); }
-double firebase_database_ref_is_valid(uint64_t ref) { return query_is_valid(resolve_db_ref(ref)); }
 double firebase_database_ref_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_ref(ref), callback); }
 uint64_t firebase_database_ref_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_ref(ref), on_value_changed, on_cancelled); }
 double firebase_database_ref_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_ref(ref), listener_ref); }
@@ -442,32 +440,32 @@ double firebase_database_query_release(uint64_t ref)
 // DatabaseReference-only surface
 // ============================================================
 
-std::string firebase_database_ref_key(uint64_t ref)
+// Consolidates key/is_root/is_valid/get_reference/get_parent/get_root/
+// get_database/get_url into a single call. `reference`/`parent`/`root` are
+// newly registered GM_FB_TYPE_DATABASE_REF refs owned by the caller -
+// release them with firebase_database_ref_release(). `database` is a
+// GM_FB_TYPE_DATABASE ref (not owned/released, same as every other
+// Database-returning getter in this extension). If `ref` is not a valid
+// registered DatabaseReference, returns a default-constructed struct (key "",
+// is_root/is_valid false, reference/parent/root/database 0, url "").
+gm_structs::DatabaseReference firebase_database_ref_get(uint64_t ref)
 {
-	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return std::string();
-	return r->key_string();
-}
+	gm_structs::DatabaseReference out{};
 
-double firebase_database_ref_is_root(uint64_t ref)
-{
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	return r->is_root() ? 1 : 0;
-}
+	if (r == nullptr) return out;
 
-uint64_t firebase_database_ref_get_parent(uint64_t ref)
-{
-	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	return registerDatabaseReference(r->GetParent());
-}
+	out.key = r->key_string();
+	out.is_root = r->is_root();
+	out.is_valid = r->is_valid();
+	out.reference = query_get_reference(r);
+	out.parent = registerDatabaseReference(r->GetParent());
+	out.root = registerDatabaseReference(r->GetRoot());
+	Database* db = r->database();
+	out.database = db != nullptr ? packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(db), GM_FB_TYPE_DATABASE) : 0;
+	out.url = r->url();
 
-uint64_t firebase_database_ref_get_root(uint64_t ref)
-{
-	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	return registerDatabaseReference(r->GetRoot());
+	return out;
 }
 
 uint64_t firebase_database_ref_child(uint64_t ref, std::string_view path)
@@ -483,22 +481,6 @@ uint64_t firebase_database_ref_push(uint64_t ref)
 	DatabaseReference* r = resolve_db_ref(ref);
 	if (r == nullptr) return 0;
 	return registerDatabaseReference(r->PushChild());
-}
-
-uint64_t firebase_database_ref_get_database(uint64_t ref)
-{
-	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	Database* db = r->database();
-	if (db == nullptr) return 0;
-	return packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(db), GM_FB_TYPE_DATABASE);
-}
-
-std::string firebase_database_ref_get_url(uint64_t ref)
-{
-	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return std::string();
-	return r->url();
 }
 
 double firebase_database_ref_go_online(uint64_t ref)

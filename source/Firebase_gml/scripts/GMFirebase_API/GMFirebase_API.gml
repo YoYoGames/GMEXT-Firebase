@@ -225,6 +225,28 @@ enum FirebaseUmpConsentDebugGeography
 // #####################################################################
 
 /**
+ * @returns {Struct.DatabaseReference}
+ */
+function DatabaseReference() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 3562340949;
+
+    self.key = undefined;
+    self.is_root = undefined;
+    self.is_valid = undefined;
+    self.reference = undefined;
+    self.parent = undefined;
+    self.root = undefined;
+    self.database = undefined;
+    self.url = undefined;
+
+}
+
+/**
  * @returns {Struct.FirebaseDataSnapshotInfo}
  */
 function FirebaseDataSnapshotInfo() constructor
@@ -287,6 +309,101 @@ function FirebaseRemoteConfigInfo() constructor
 // #####################################################################
 // # Codecs
 // #####################################################################
+
+/**
+ * @func __DatabaseReference_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.DatabaseReference} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __DatabaseReference_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: key, type: String
+        if (!is_string(self.key)) show_error($"{_where} :: self.key expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.key));
+        buffer_write(_buffer, buffer_string, self.key);
+
+        // field: is_root, type: Bool
+        if (!is_bool(self.is_root)) show_error($"{_where} :: self.is_root expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.is_root);
+
+        // field: is_valid, type: Bool
+        if (!is_bool(self.is_valid)) show_error($"{_where} :: self.is_valid expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.is_valid);
+
+        // field: reference, type: UInt64
+        if (!is_numeric(self.reference)) show_error($"{_where} :: self.reference expected number", true);
+        buffer_write(_buffer, buffer_u64, self.reference);
+
+        // field: parent, type: UInt64
+        if (!is_numeric(self.parent)) show_error($"{_where} :: self.parent expected number", true);
+        buffer_write(_buffer, buffer_u64, self.parent);
+
+        // field: root, type: UInt64
+        if (!is_numeric(self.root)) show_error($"{_where} :: self.root expected number", true);
+        buffer_write(_buffer, buffer_u64, self.root);
+
+        // field: database, type: UInt64
+        if (!is_numeric(self.database)) show_error($"{_where} :: self.database expected number", true);
+        buffer_write(_buffer, buffer_u64, self.database);
+
+        // field: url, type: String
+        if (!is_string(self.url)) show_error($"{_where} :: self.url expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.url));
+        buffer_write(_buffer, buffer_string, self.url);
+
+    }
+}
+
+/**
+ * @func __DatabaseReference_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.DatabaseReference}
+ * @ignore
+ */
+function __DatabaseReference_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new DatabaseReference();
+    with (_inst)
+    {
+        // field: key, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.key = buffer_read(_buffer, buffer_string);
+
+        // field: is_root, type: Bool
+        self.is_root = buffer_read(_buffer, buffer_bool);
+
+        // field: is_valid, type: Bool
+        self.is_valid = buffer_read(_buffer, buffer_bool);
+
+        // field: reference, type: UInt64
+        self.reference = buffer_read(_buffer, buffer_u64);
+
+        // field: parent, type: UInt64
+        self.parent = buffer_read(_buffer, buffer_u64);
+
+        // field: root, type: UInt64
+        self.root = buffer_read(_buffer, buffer_u64);
+
+        // field: database, type: UInt64
+        self.database = buffer_read(_buffer, buffer_u64);
+
+        // field: url, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.url = buffer_read(_buffer, buffer_string);
+
+    }
+
+    return _inst;
+}
 
 /**
  * @func __FirebaseDataSnapshotInfo_encode(_inst, _buffer, _offset, _where)
@@ -3022,30 +3139,6 @@ function firebase_database_ref_limit_to_last(_ref, _limit)
 
 /**
  * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_get_reference(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_database_ref_get_reference(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _ref
  * @param {Real} _keep_sync
  * @returns {Real}
  */
@@ -3065,26 +3158,6 @@ function firebase_database_ref_set_keep_synchronized(_ref, _keep_sync)
     buffer_write(__args_buffer__, buffer_f64, _keep_sync);
 
     var __return_value__ = __firebase_database_ref_set_keep_synchronized(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
-
-    return __return_value__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_is_valid(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __return_value__ = __firebase_database_ref_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
     return __return_value__;
 }
@@ -4084,49 +4157,9 @@ function firebase_database_query_release(_ref)
 
 /**
  * @param {Real} _ref
- * @returns {String}
+ * @returns {Struct.DatabaseReference}
  */
-function firebase_database_ref_key(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __return_value__ = __firebase_database_ref_key(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
-
-    return __return_value__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_is_root(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __return_value__ = __firebase_database_ref_is_root(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
-
-    return __return_value__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_get_parent(_ref)
+function firebase_database_ref_get(_ref)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
@@ -4139,34 +4172,10 @@ function firebase_database_ref_get_parent(_ref)
 
     var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_database_ref_get_parent(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+    var __return_value__ = __firebase_database_ref_get(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_get_root(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_database_ref_get_root(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    __result__ = __DatabaseReference_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
     return __result__;
 }
 
@@ -4222,50 +4231,6 @@ function firebase_database_ref_push(_ref)
     var __result__ = undefined;
     __result__ = buffer_read(__ret_buffer__, buffer_u64);
     return __result__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {Real}
- */
-function firebase_database_ref_get_database(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_database_ref_get_database(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _ref
- * @returns {String}
- */
-function firebase_database_ref_get_url(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __return_value__ = __firebase_database_ref_get_url(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
-
-    return __return_value__;
 }
 
 /**
@@ -11136,6 +11101,7 @@ function firebase_ump_show_privacy_options_form(_consent_ref, _form_parent, _cal
 function __GMFirebase_get_decoders()
 {
     static __decoders__ = [
+        __DatabaseReference_decode,
         __FirebaseDataSnapshotInfo_decode,
         __FirebaseDataSnapshot_decode,
         __FirebaseRemoteConfigInfo_decode

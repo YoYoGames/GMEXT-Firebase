@@ -916,21 +916,10 @@ function firebase_database_ref_limit_to_last(
 	limit: real
 ): gmval;
 
-// Strips any ordering/filtering back off, returning a plain *_ref handle.
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_database_ref_get_reference(
-	[type_hint=`uint64`] ref: gmval
-): gmval;
-
 [global, bind = typed_gml]
 function firebase_database_ref_set_keep_synchronized(
 	[type_hint=`uint64`] ref: gmval,
 	keep_sync: real
-): real;
-
-[global, bind = typed_gml]
-function firebase_database_ref_is_valid(
-	[type_hint=`uint64`] ref: gmval
 ): real;
 
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
@@ -1141,23 +1130,33 @@ function firebase_database_query_release(
 // Realtime Database - DatabaseReference-only surface
 // ============================================================
 
-[global, bind = typed_gml]
-function firebase_database_ref_key(
-	[type_hint=`uint64`] ref: gmval
-): string;
+// Everything cheap to know about a DatabaseReference in one call - key,
+// identity flags, and the *_ref/*_url values that used to need five separate
+// round trips (get_reference/get_parent/get_root/get_database/get_url).
+// `reference`, `parent`, and `root` are newly registered GM_FB_TYPE_DATABASE_REF
+// refs owned by the caller - release them with firebase_database_ref_release()
+// when done. `database` is a GM_FB_TYPE_DATABASE ref (not owned/released,
+// same as every other Database-returning getter in this extension).
+[global]
+class `[[DatabaseReference]]` prototype Object
+{
+	[field] property key: string { get; set; }
+	[field] property is_root: bool { get; set; }
+	[field] property is_valid: bool { get; set; }
+	[field, type_hint=`uint64`] property reference: gmval { get; set; }
+	[field, type_hint=`uint64`] property parent: gmval { get; set; }
+	[field, type_hint=`uint64`] property root: gmval { get; set; }
+	[field, type_hint=`uint64`] property database: gmval { get; set; }
+	[field] property url: string { get; set; }
+}
 
-[global, bind = typed_gml]
-function firebase_database_ref_is_root(
-	[type_hint=`uint64`] ref: gmval
-): real;
-
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_database_ref_get_parent(
-	[type_hint=`uint64`] ref: gmval
-): gmval;
-
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_database_ref_get_root(
+// Consolidates firebase_database_ref_key/is_root/is_valid/get_reference/
+// get_parent/get_root/get_database/get_url into a single call. If `ref` is
+// not a valid registered DatabaseReference, returns a default-constructed
+// struct (key "", is_root/is_valid false, reference/parent/root/database 0,
+// url "") - same convention as firebase_database_snapshot_get_info().
+[global, bind = typed_gml, type_hint=`DatabaseReference`]
+function firebase_database_ref_get(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
@@ -1174,16 +1173,6 @@ function firebase_database_ref_child(
 function firebase_database_ref_push(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
-
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_database_ref_get_database(
-	[type_hint=`uint64`] ref: gmval
-): gmval;
-
-[global, bind = typed_gml]
-function firebase_database_ref_get_url(
-	[type_hint=`uint64`] ref: gmval
-): string;
 
 [global, bind = typed_gml]
 function firebase_database_ref_go_online(

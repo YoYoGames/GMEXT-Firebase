@@ -2057,30 +2057,27 @@ function firebase_firestore_field_value_release(
 // DocumentSnapshot
 // ============================================================
 
-[global, bind = typed_gml]
-function firebase_firestore_document_snapshot_exists(
-	[type_hint=`uint64`] ref: gmval
-): bool;
+[global]
+class `[[FirestoreDocumentSnapshotInfo]]` prototype Object
+{
+	[field] property exists: bool { get; set; }
+	[field] property id: string { get; set; }
+	[field, type_hint=`uint64`] property reference: gmval { get; set; }
+	[field] property has_pending_writes: bool { get; set; }
+	[field] property is_from_cache: bool { get; set; }
+}
 
-[global, bind = typed_gml]
-function firebase_firestore_document_snapshot_id(
-	[type_hint=`uint64`] ref: gmval
-): string;
-
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_document_snapshot_reference(
+// Consolidates firebase_firestore_document_snapshot_exists/id/reference/
+// metadata_has_pending_writes/metadata_is_from_cache into a single call.
+// `reference` is a newly registered DocumentReference ref owned by the
+// caller - release it with firebase_firestore_document_ref_release() when
+// done. If `ref` is not a valid registered DocumentSnapshot, returns a
+// default-constructed struct (exists/has_pending_writes/is_from_cache
+// false, id "", reference 0).
+[global, bind = typed_gml, type_hint=`FirestoreDocumentSnapshotInfo`]
+function firebase_firestore_document_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
-
-[global, bind = typed_gml]
-function firebase_firestore_document_snapshot_metadata_has_pending_writes(
-	[type_hint=`uint64`] ref: gmval
-): bool;
-
-[global, bind = typed_gml]
-function firebase_firestore_document_snapshot_metadata_is_from_cache(
-	[type_hint=`uint64`] ref: gmval
-): bool;
 
 // server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
 // Returns { exists: bool, value: <field value, or undefined if not exists> }.
@@ -2115,25 +2112,24 @@ function firebase_firestore_document_snapshot_release(
 // QuerySnapshot
 // ============================================================
 
-[global, bind = typed_gml]
-function firebase_firestore_query_snapshot_size(
-	[type_hint=`uint64`] ref: gmval
-): real;
+[global]
+class `[[FirestoreQuerySnapshotInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property size: gmval { get; set; }
+	[field] property empty: bool { get; set; }
+	[field] property has_pending_writes: bool { get; set; }
+	[field] property is_from_cache: bool { get; set; }
+}
 
-[global, bind = typed_gml]
-function firebase_firestore_query_snapshot_empty(
+// Consolidates firebase_firestore_query_snapshot_size/empty/
+// metadata_has_pending_writes/metadata_is_from_cache into a single call. If
+// `ref` is not a valid registered QuerySnapshot, returns a
+// default-constructed struct (size 0, empty/has_pending_writes/is_from_cache
+// false).
+[global, bind = typed_gml, type_hint=`FirestoreQuerySnapshotInfo`]
+function firebase_firestore_query_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
-): bool;
-
-[global, bind = typed_gml]
-function firebase_firestore_query_snapshot_metadata_has_pending_writes(
-	[type_hint=`uint64`] ref: gmval
-): bool;
-
-[global, bind = typed_gml]
-function firebase_firestore_query_snapshot_metadata_is_from_cache(
-	[type_hint=`uint64`] ref: gmval
-): bool;
+): gmval;
 
 // Returns an array of uint64 DocumentSnapshot refs (each newly registered -
 // release every one with firestore_document_snapshot_release() when done),

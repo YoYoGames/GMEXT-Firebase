@@ -1132,25 +1132,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_field_value_release(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_snapshot_exists:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_snapshot_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_snapshot_exists(__arg_buffer, __arg_buffer_length);
-}
-- (char*)__EXT_NATIVE__firebase_firestore_document_snapshot_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_document_snapshot_id(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_document_snapshot_reference:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_document_snapshot_reference(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_document_snapshot_metadata_has_pending_writes:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_has_pending_writes(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_document_snapshot_metadata_is_from_cache:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_is_from_cache(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_snapshot_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_document_snapshot_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -1164,21 +1148,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_document_snapshot_release(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_query_snapshot_size:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_query_snapshot_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_query_snapshot_size(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_query_snapshot_empty:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_query_snapshot_empty(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_query_snapshot_metadata_has_pending_writes:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_has_pending_writes(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_firestore_query_snapshot_metadata_is_from_cache:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_is_from_cache(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_query_snapshot_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_query_snapshot_documents:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {

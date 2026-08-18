@@ -3872,64 +3872,19 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_release(char* __arg
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_exists(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_firestore_document_snapshot_exists(ref);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT char* __EXT_NATIVE__firebase_firestore_document_snapshot_id(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    static std::string __result;
-    __result = firebase_firestore_document_snapshot_id(ref);
-    return (char*)__result.c_str();
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_document_snapshot_reference(ref);
+    auto&& __result = firebase_firestore_document_snapshot_get_info(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: UInt64
+    // return: __result, type: struct FirestoreDocumentSnapshotInfo
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_has_pending_writes(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_document_snapshot_metadata_has_pending_writes(ref);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_is_from_cache(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_document_snapshot_metadata_is_from_cache(ref);
-    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -3982,48 +3937,19 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_release(char*
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_size(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_firestore_query_snapshot_size(ref);
-    return static_cast<double>(__result);
-}
+    auto&& __result = firebase_firestore_query_snapshot_get_info(ref);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_empty(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_query_snapshot_empty(ref);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_has_pending_writes(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_query_snapshot_metadata_has_pending_writes(ref);
-    return static_cast<double>(__result);
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_is_from_cache(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: ref, type: UInt64
-    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
-
-    auto&& __result = firebase_firestore_query_snapshot_metadata_is_from_cache(ref);
-    return static_cast<double>(__result);
+    // return: __result, type: struct FirestoreQuerySnapshotInfo
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_documents(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)

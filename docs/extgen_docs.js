@@ -1942,37 +1942,9 @@
  */
 
 /**
- * @function_partial firebase_firestore_document_snapshot_exists
+ * @function_partial firebase_firestore_document_snapshot_get_info
  * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_id
- * @param {Real} ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_reference
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_metadata_has_pending_writes
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_metadata_is_from_cache
- * @param {Real} ref
- * @returns {Bool}
+ * @returns {Struct.FirestoreDocumentSnapshotInfo}
  * @function_end
  */
 
@@ -2000,30 +1972,9 @@
  */
 
 /**
- * @function_partial firebase_firestore_query_snapshot_size
+ * @function_partial firebase_firestore_query_snapshot_get_info
  * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_empty
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_metadata_has_pending_writes
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_metadata_is_from_cache
- * @param {Real} ref
- * @returns {Bool}
+ * @returns {Struct.FirestoreQuerySnapshotInfo}
  * @function_end
  */
 
@@ -3263,6 +3214,25 @@
  * @member {Real} reference
  * @member {Any} value
  * @member {Any} priority
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirestoreDocumentSnapshotInfo
+ * @member {Bool} exists
+ * @member {String} id
+ * @member {Real} reference
+ * @member {Bool} has_pending_writes
+ * @member {Bool} is_from_cache
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirestoreQuerySnapshotInfo
+ * @member {Real} size
+ * @member {Bool} empty
+ * @member {Bool} has_pending_writes
+ * @member {Bool} is_from_cache
  * @struct_end
  */
 

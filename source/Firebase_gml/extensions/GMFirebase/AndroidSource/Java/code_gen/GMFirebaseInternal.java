@@ -1056,25 +1056,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_field_value_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_snapshot_exists(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_snapshot_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_snapshot_exists(__arg_buffer, __arg_buffer_length);
-    }
-    public String __EXT_NATIVE__firebase_firestore_document_snapshot_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_document_snapshot_id(__arg_buffer, __arg_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_document_snapshot_reference(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_document_snapshot_reference(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_has_pending_writes(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_document_snapshot_metadata_has_pending_writes(__arg_buffer, __arg_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_document_snapshot_metadata_is_from_cache(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_document_snapshot_metadata_is_from_cache(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_snapshot_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_document_snapshot_get(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -1088,21 +1072,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_document_snapshot_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_query_snapshot_size(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_query_snapshot_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_query_snapshot_size(__arg_buffer, __arg_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_query_snapshot_empty(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_query_snapshot_empty(__arg_buffer, __arg_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_has_pending_writes(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_query_snapshot_metadata_has_pending_writes(__arg_buffer, __arg_buffer_length);
-    }
-    public double __EXT_NATIVE__firebase_firestore_query_snapshot_metadata_is_from_cache(ByteBuffer __arg_buffer, double __arg_buffer_length)
-    {
-        return __EXT_JNI__firebase_firestore_query_snapshot_metadata_is_from_cache(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_query_snapshot_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_query_snapshot_documents(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {

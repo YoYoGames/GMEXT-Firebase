@@ -235,6 +235,8 @@ namespace gm_structs
     struct DatabaseReference;
     struct FirebaseDataSnapshotInfo;
     struct FirebaseDataSnapshot;
+    struct FirestoreDocumentSnapshotInfo;
+    struct FirestoreQuerySnapshotInfo;
     struct FirebaseRemoteConfigInfo;
 
     struct DatabaseReference
@@ -269,6 +271,23 @@ namespace gm_structs
         std::uint64_t reference;
         gm::wire::DataStream value;
         gm::wire::DataStream priority;
+    };
+
+    struct FirestoreDocumentSnapshotInfo
+    {
+        bool exists;
+        std::string id;
+        std::uint64_t reference;
+        bool has_pending_writes;
+        bool is_from_cache;
+    };
+
+    struct FirestoreQuerySnapshotInfo
+    {
+        double size;
+        bool empty;
+        bool has_pending_writes;
+        bool is_from_cache;
     };
 
     struct FirebaseRemoteConfigInfo
@@ -364,6 +383,48 @@ namespace gm::wire::codec
     }
 
     template<>
+    inline void writeValue<gm_structs::FirestoreDocumentSnapshotInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreDocumentSnapshotInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.exists);
+        gm::wire::codec::writeValue(_buf, obj.id);
+        gm::wire::codec::writeValue(_buf, obj.reference);
+        gm::wire::codec::writeValue(_buf, obj.has_pending_writes);
+        gm::wire::codec::writeValue(_buf, obj.is_from_cache);
+    }
+
+    template<>
+    inline gm_structs::FirestoreDocumentSnapshotInfo readValue<gm_structs::FirestoreDocumentSnapshotInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreDocumentSnapshotInfo obj;
+        obj.exists = gm::wire::codec::readValue<bool>(_buf);
+        obj.id = gm::wire::codec::readValue<std::string>(_buf);
+        obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.has_pending_writes = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_from_cache = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreQuerySnapshotInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreQuerySnapshotInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.size);
+        gm::wire::codec::writeValue(_buf, obj.empty);
+        gm::wire::codec::writeValue(_buf, obj.has_pending_writes);
+        gm::wire::codec::writeValue(_buf, obj.is_from_cache);
+    }
+
+    template<>
+    inline gm_structs::FirestoreQuerySnapshotInfo readValue<gm_structs::FirestoreQuerySnapshotInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreQuerySnapshotInfo obj;
+        obj.size = gm::wire::codec::readValue<double>(_buf);
+        obj.empty = gm::wire::codec::readValue<bool>(_buf);
+        obj.has_pending_writes = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_from_cache = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
     inline void writeValue<gm_structs::FirebaseRemoteConfigInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigInfo& obj)
     {
         gm::wire::codec::writeValue(_buf, obj.fetch_time);
@@ -409,10 +470,24 @@ namespace gm::wire::details
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    struct gm_struct_traits<gm_structs::FirestoreDocumentSnapshotInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 3;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreQuerySnapshotInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 4;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 5;
     };
 
 }
@@ -678,18 +753,11 @@ std::uint64_t firebase_firestore_field_value_reference(std::uint64_t document_re
 std::uint64_t firebase_firestore_field_value_blob(std::string_view data);
 std::uint64_t firebase_firestore_field_value_null();
 void firebase_firestore_field_value_release(std::uint64_t ref);
-bool firebase_firestore_document_snapshot_exists(std::uint64_t ref);
-std::string firebase_firestore_document_snapshot_id(std::uint64_t ref);
-std::uint64_t firebase_firestore_document_snapshot_reference(std::uint64_t ref);
-bool firebase_firestore_document_snapshot_metadata_has_pending_writes(std::uint64_t ref);
-bool firebase_firestore_document_snapshot_metadata_is_from_cache(std::uint64_t ref);
+gm_structs::FirestoreDocumentSnapshotInfo firebase_firestore_document_snapshot_get_info(std::uint64_t ref);
 gm::wire::DataStream firebase_firestore_document_snapshot_get(std::uint64_t ref, std::string_view field, double server_timestamp_behavior);
 gm::wire::DataStream firebase_firestore_document_snapshot_get_data(std::uint64_t ref, double server_timestamp_behavior);
 void firebase_firestore_document_snapshot_release(std::uint64_t ref);
-double firebase_firestore_query_snapshot_size(std::uint64_t ref);
-bool firebase_firestore_query_snapshot_empty(std::uint64_t ref);
-bool firebase_firestore_query_snapshot_metadata_has_pending_writes(std::uint64_t ref);
-bool firebase_firestore_query_snapshot_metadata_is_from_cache(std::uint64_t ref);
+gm_structs::FirestoreQuerySnapshotInfo firebase_firestore_query_snapshot_get_info(std::uint64_t ref);
 gm::wire::DataStream firebase_firestore_query_snapshot_documents(std::uint64_t ref);
 gm::wire::DataStream firebase_firestore_query_snapshot_document_changes(std::uint64_t ref, bool include_metadata_changes);
 void firebase_firestore_query_snapshot_release(std::uint64_t ref);

@@ -1369,7 +1369,7 @@ class `[[FirebaseDataSnapshot]]` prototype Object
 	[field] property has_children: bool { get; set; }
 	[field, type_hint=`real`] property children_count: gmval { get; set; }
 	[field, type_hint=`uint64`] property reference: gmval { get; set; }
-	[field, type_hint=`any?`] property value: gmval { get; set; }
+	[field, type_hint=`any`] property value: gmval { get; set; }
 	[field] property priority: gmval { get; set; }
 }
 

@@ -179,11 +179,11 @@ gm_structs::FirebaseDataSnapshot firebase_database_snapshot_get_value(uint64_t r
 gm::wire::DataStream firebase_database_snapshot_get_priority(uint64_t ref)
 {
 	gm::wire::DataStream out;
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr)
-		out << std::optional<std::uint8_t>{};
-	else
-		writeVariantToStream(s->priority(), out);
+	// DataSnapshot* s = resolve_db_snapshot(ref);
+	// if (s == nullptr)
+	// 	out << std::optional<std::uint8_t>{};
+	// else
+	// 	writeVariantToStream(s->priority(), out);
 
 	return out;
 }

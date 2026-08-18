@@ -254,7 +254,7 @@ namespace gm_structs
         bool has_children;
         double children_count;
         std::uint64_t reference;
-        std::optional<gm::wire::DataStream> value;
+        gm::wire::DataStream value;
         gm::wire::DataStream priority;
     };
 
@@ -317,7 +317,7 @@ namespace gm::wire::codec
         obj.has_children = gm::wire::codec::readValue<bool>(_buf);
         obj.children_count = gm::wire::codec::readValue<double>(_buf);
         obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
-        obj.value = gm::wire::codec::readOptional<gm::wire::DataStream>(_buf);
+        obj.value = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
         obj.priority = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
         return obj;
     }

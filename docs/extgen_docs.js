@@ -3297,7 +3297,7 @@
  * @member {Bool} has_children
  * @member {Real} children_count
  * @member {Real} reference
- * @member {Any} [value]
+ * @member {Any} value
  * @member {Any} priority
  * @struct_end
  */

@@ -405,17 +405,9 @@ function __FirebaseDataSnapshot_encode(_inst, _buffer, _offset, _where = _GMFUNC
         if (!is_numeric(self.reference)) show_error($"{_where} :: self.reference expected number", true);
         buffer_write(_buffer, buffer_u64, self.reference);
 
-        // field: value, type: optional<Any>
-        if (is_undefined(self.value))
-        {
-            buffer_write(_buffer, buffer_bool, false);
-        }
-        else
-        {
-            buffer_write(_buffer, buffer_bool, true);
+        // field: value, type: Any
 
-            __ext_core_buffer_marshal_value(_buffer, self.value);
-        }
+        __ext_core_buffer_marshal_value(_buffer, self.value);
 
         // field: priority, type: Any
 
@@ -459,15 +451,8 @@ function __FirebaseDataSnapshot_decode(_buffer, _offset)
         // field: reference, type: UInt64
         self.reference = buffer_read(_buffer, buffer_u64);
 
-        // field: value, type: optional<Any>
-        if (buffer_read(_buffer, buffer_bool))
-        {
-            self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
-        }
-        else
-        {
-            self.value = undefined;
-        }
+        // field: value, type: Any
+        self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
 
         // field: priority, type: Any
         self.priority = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);

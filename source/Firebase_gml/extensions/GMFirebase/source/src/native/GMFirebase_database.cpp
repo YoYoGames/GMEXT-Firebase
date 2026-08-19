@@ -553,7 +553,7 @@ double firebase_database_ref_remove_value(uint64_t ref, const std::optional<gm::
 
 double firebase_database_ref_run_transaction(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-	// Deliberate stub. RunTransaction()'s handler is invoked synchronously
+	// Intentional limitation. RunTransaction()'s handler is invoked synchronously
 	// (possibly multiple times, for optimistic-concurrency retries) directly
 	// on the Realtime Database SDK's own run-loop thread, and must return a
 	// TransactionResult (commit/abort) before that call unwinds. There is no
@@ -581,4 +581,151 @@ double firebase_database_ref_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_DATABASE_REF) return 0;
 	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_ref_map) ? 1 : 0;
+}
+
+// ============================================================
+// DatabaseReference granular identity + server timestamp + OnDisconnect
+// ============================================================
+
+std::string firebase_database_ref_key(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return r ? r->key_string() : std::string();
+}
+
+double firebase_database_ref_is_root(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return (r && r->is_root()) ? 1.0 : 0.0;
+}
+
+double firebase_database_ref_is_valid(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return (r && r->is_valid()) ? 1.0 : 0.0;
+}
+
+uint64_t firebase_database_ref_get_parent(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return r ? registerDatabaseReference(r->GetParent()) : 0;
+}
+
+uint64_t firebase_database_ref_get_root(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return r ? registerDatabaseReference(r->GetRoot()) : 0;
+}
+
+uint64_t firebase_database_ref_get_database(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    Database* db = r ? r->database() : nullptr;
+    return db ? registerFirebasePointer(db, GM_FB_TYPE_DATABASE) : 0;
+}
+
+std::string firebase_database_ref_get_url(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    return r ? r->url() : std::string();
+}
+
+gm::wire::DataStream firebase_database_server_timestamp()
+{
+    gm::wire::DataStream out;
+    writeVariantToStream(firebase::database::ServerTimestamp(), out);
+    return out;
+}
+
+namespace
+{
+    firebase::database::DisconnectionHandler* resolveOnDisconnect(uint64_t handler_ref)
+    {
+        firebase::database::DisconnectionHandler* handler = nullptr;
+        validate_fb_ref_ptr(handler_ref, GM_FB_TYPE_DATABASE_ON_DISCONNECT, firebase::database::DisconnectionHandler, handler);
+        return handler;
+    }
+
+    double completeDisconnectFuture(firebase::Future<void> future, const std::optional<gm::wire::GMFunction>& callback)
+    {
+        future.OnCompletion([callback](const firebase::Future<void>& f)
+        {
+            setFirebaseLastError(static_cast<int>(f.error()), futureErrorMessage(f.error_message()));
+            if (callback) callback->call(static_cast<double>(f.error()), futureErrorMessage(f.error_message()));
+        });
+        return 1.0;
+    }
+}
+
+uint64_t firebase_database_ref_on_disconnect(uint64_t ref)
+{
+    DatabaseReference* r = resolve_db_ref(ref);
+    if (!r) return 0;
+    auto* handler = r->OnDisconnect();
+    return handler ? registerFirebasePointer(handler, GM_FB_TYPE_DATABASE_ON_DISCONNECT) : 0;
+}
+
+double firebase_database_on_disconnect_cancel(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* h = resolveOnDisconnect(handler_ref);
+    return h ? completeDisconnectFuture(h->Cancel(), callback) : 0.0;
+}
+
+double firebase_database_on_disconnect_remove_value(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* h = resolveOnDisconnect(handler_ref);
+    return h ? completeDisconnectFuture(h->RemoveValue(), callback) : 0.0;
+}
+
+double firebase_database_on_disconnect_set_value(uint64_t handler_ref, const gm::wire::GMValue& value,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* h = resolveOnDisconnect(handler_ref);
+    return h ? completeDisconnectFuture(h->SetValue(gmValueToVariant(value)), callback) : 0.0;
+}
+
+double firebase_database_on_disconnect_set_value_and_priority(uint64_t handler_ref,
+    const gm::wire::GMValue& value, const gm::wire::GMValue& priority,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* h = resolveOnDisconnect(handler_ref);
+    return h ? completeDisconnectFuture(h->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority)), callback) : 0.0;
+}
+
+double firebase_database_on_disconnect_update_children(uint64_t handler_ref, const gm::wire::GMValue& values,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* h = resolveOnDisconnect(handler_ref);
+    return h ? completeDisconnectFuture(h->UpdateChildren(gmValueToVariant(values)), callback) : 0.0;
+}
+
+void firebase_database_on_disconnect_release(uint64_t handler_ref)
+{
+    auto* h = static_cast<firebase::database::DisconnectionHandler*>(
+        unregisterFirebasePointer(handler_ref, GM_FB_TYPE_DATABASE_ON_DISCONNECT));
+    delete h;
+}
+
+uint64_t firebase_database_get_app(uint64_t db_ref)
+{
+    Database* db = resolve_database(db_ref);
+    return db ? wrapFirebaseApp(db->app()) : 0;
+}
+
+uint64_t firebase_database_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    firebase::InitResult init_result = firebase::kInitResultSuccess;
+    auto* db = Database::GetInstance(app, &init_result);
+    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError((int)init_result, "failed to get Realtime Database instance for app"); return 0; }
+    return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
+}
+
+uint64_t firebase_database_get_instance_for_app_url(uint64_t app_ref, std::string_view url)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    std::string u(url); firebase::InitResult init_result = firebase::kInitResultSuccess;
+    auto* db = Database::GetInstance(app, u.c_str(), &init_result);
+    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError((int)init_result, "failed to get Realtime Database instance for app/url"); return 0; }
+    return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
 }

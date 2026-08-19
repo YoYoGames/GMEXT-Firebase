@@ -372,3 +372,38 @@ std::string firebase_messaging_message_notification_android_channel_id()
 	if (!g_current_message.notification || !g_current_message.notification->android) return std::string();
 	return g_current_message.notification->android->channel_id;
 }
+
+// Firebase C++ MessagingOptions overload.
+double firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt)
+{
+    firebase::App* app = getFirebaseApp();
+    if (app == nullptr)
+    {
+        setFirebaseLastError(-1, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
+        return -1.0;
+    }
+    firebase::messaging::MessagingOptions options;
+    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt >= 0.5;
+    firebase::InitResult result = firebase::messaging::Initialize(*app, &g_firebase_messaging_listener, options);
+    if (result != firebase::kInitResultSuccess)
+        setFirebaseLastError(static_cast<int>(result), "firebase_messaging_initialize_with_options: Initialize() failed");
+    return static_cast<double>(result);
+}
+
+double firebase_messaging_initialize_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return -1.0;
+    auto result = firebase::messaging::Initialize(*app, &g_firebase_messaging_listener);
+    if (result != firebase::kInitResultSuccess) setFirebaseLastError((int)result, "Messaging::Initialize(app) failed");
+    return static_cast<double>(result);
+}
+
+double firebase_messaging_initialize_for_app_with_options(uint64_t app_ref, double suppress_notification_permission_prompt)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return -1.0;
+    firebase::messaging::MessagingOptions options;
+    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt >= 0.5;
+    auto result = firebase::messaging::Initialize(*app, &g_firebase_messaging_listener, options);
+    if (result != firebase::kInitResultSuccess) setFirebaseLastError((int)result, "Messaging::Initialize(app, options) failed");
+    return static_cast<double>(result);
+}

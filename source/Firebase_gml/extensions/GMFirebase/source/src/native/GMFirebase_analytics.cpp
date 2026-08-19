@@ -308,3 +308,33 @@ void firebase_analytics_initiate_on_device_conversion_measurement_phone(std::str
 {
 	firebase::analytics::InitiateOnDeviceConversionMeasurementWithPhoneNumber(std::string(phone_number).c_str());
 }
+
+// ============================================================
+// Firebase C++ 13.11 completeness additions
+// ============================================================
+
+void firebase_analytics_notify_app_lifecycle_change(double state)
+{
+    firebase::analytics::NotifyAppLifecycleChange(
+        static_cast<firebase::analytics::AppLifecycleState>(static_cast<int>(state)));
+}
+
+void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(GMBuffer hashed_email)
+{
+    const auto* begin = static_cast<const unsigned char*>(hashed_email.data());
+    std::vector<unsigned char> bytes(begin, begin + hashed_email.length());
+    firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedEmailAddress(std::move(bytes));
+}
+
+void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(GMBuffer hashed_phone)
+{
+    const auto* begin = static_cast<const unsigned char*>(hashed_phone.data());
+    std::vector<unsigned char> bytes(begin, begin + hashed_phone.length());
+    firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber(std::move(bytes));
+}
+
+double firebase_analytics_initialize_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0.0;
+    firebase::analytics::Initialize(*app); return 1.0;
+}

@@ -53,6 +53,14 @@ namespace
 	private:
 		gm::wire::GMFunction callback;
 	};
+
+	std::mutex g_app_check_listener_owner_mutex;
+	std::map<firebase::app_check::AppCheckListener*, firebase::app_check::AppCheck*> g_app_check_listener_owner;
+
+	firebase::app_check::AppCheck* resolveAppCheck(uint64_t ref)
+	{
+		return static_cast<firebase::app_check::AppCheck*>(resolveFirebasePointer(ref, GM_FB_TYPE_APPCHECK));
+	}
 }
 
 // ============================================================
@@ -176,6 +184,7 @@ uint64_t firebase_app_check_add_listener(const std::optional<gm::wire::GMFunctio
 
 	GmAppCheckListener* listener = new GmAppCheckListener(callback.value());
 	app_check->AddAppCheckListener(listener);
+	{ std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex); g_app_check_listener_owner[listener] = app_check; }
 
 	return registerFirebasePointer(listener, GM_FB_TYPE_APPCHECK_LISTENER);
 }
@@ -186,11 +195,74 @@ double firebase_app_check_remove_listener(uint64_t listener_ref)
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_APPCHECK_LISTENER, firebase::app_check::AppCheckListener, listener);
 	if (listener == nullptr) return 0.0;
 
-	firebase::app_check::AppCheck* app_check = getAppCheckInstance();
-	if (app_check != nullptr)
-		app_check->RemoveAppCheckListener(listener);
+	firebase::app_check::AppCheck* app_check = nullptr;
+	{
+		std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex);
+		auto it = g_app_check_listener_owner.find(listener);
+		if (it != g_app_check_listener_owner.end()) { app_check = it->second; g_app_check_listener_owner.erase(it); }
+	}
+	if (app_check != nullptr) app_check->RemoveAppCheckListener(listener);
 
 	listener = static_cast<firebase::app_check::AppCheckListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_APPCHECK_LISTENER));
 	delete listener;
 	return 1.0;
+}
+
+uint64_t firebase_app_check_get_app()
+{
+    auto* app_check = getAppCheckInstance(); return app_check ? wrapFirebaseApp(app_check->app()) : 0;
+}
+
+uint64_t firebase_app_check_get_instance_handle()
+{
+    auto* instance = getAppCheckInstance(); return instance ? registerFirebasePointer(instance, GM_FB_TYPE_APPCHECK) : 0;
+}
+
+uint64_t firebase_app_check_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    auto* instance = firebase::app_check::AppCheck::GetInstance(app);
+    if (!instance) { setFirebaseLastError(-1, "AppCheck::GetInstance(app) returned null"); return 0; }
+    return registerFirebasePointer(instance, GM_FB_TYPE_APPCHECK);
+}
+
+uint64_t firebase_app_check_instance_get_app(uint64_t instance_ref)
+{
+    auto* instance = resolveAppCheck(instance_ref); return instance ? wrapFirebaseApp(instance->app()) : 0;
+}
+
+void firebase_app_check_instance_set_token_auto_refresh_enabled(uint64_t instance_ref, bool enabled)
+{
+    auto* instance = resolveAppCheck(instance_ref); if (instance) instance->SetTokenAutoRefreshEnabled(enabled);
+}
+
+double firebase_app_check_instance_get_token(uint64_t instance_ref, bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* instance = resolveAppCheck(instance_ref); if (!instance) return 0.0;
+    instance->GetAppCheckToken(force_refresh).OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f){
+        if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
+        if (!callback) return; gm::wire::StructStream token;
+        if (f.error()==0 && f.result()) pushTokenStruct(*f.result(), token);
+        callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""}, token);
+    }); return 1.0;
+}
+
+double firebase_app_check_instance_get_limited_use_token(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* instance = resolveAppCheck(instance_ref); if (!instance) return 0.0;
+    instance->GetLimitedUseAppCheckToken().OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f){
+        if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
+        if (!callback) return; gm::wire::StructStream token;
+        if (f.error()==0 && f.result()) pushTokenStruct(*f.result(), token);
+        callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""}, token);
+    }); return 1.0;
+}
+
+uint64_t firebase_app_check_instance_add_listener(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+{
+    auto* instance = resolveAppCheck(instance_ref);
+    if (!instance || !callback) { if(!callback) setFirebaseLastError(-1,"App Check listener callback is required"); return 0; }
+    auto* listener = new GmAppCheckListener(*callback); instance->AddAppCheckListener(listener);
+    { std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex); g_app_check_listener_owner[listener] = instance; }
+    return registerFirebasePointer(listener, GM_FB_TYPE_APPCHECK_LISTENER);
 }

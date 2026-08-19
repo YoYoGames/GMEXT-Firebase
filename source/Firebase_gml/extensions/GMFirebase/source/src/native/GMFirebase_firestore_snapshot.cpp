@@ -222,3 +222,148 @@ void firebase_firestore_listener_registration_remove(uint64_t ref)
 	reg = static_cast<firebase::firestore::ListenerRegistration*>(unregisterFirebasePointer(ref, GM_FB_TYPE_FIRESTORE_LISTENER_REG));
 	delete reg;
 }
+
+// ============================================================
+// Remaining snapshot/listener accessors
+// ============================================================
+
+bool firebase_firestore_document_snapshot_is_valid(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap && snap->is_valid();
+}
+
+std::string firebase_firestore_document_snapshot_to_string(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap ? snap->ToString() : std::string();
+}
+
+gm::wire::DataStream firebase_firestore_document_snapshot_get_field_path(uint64_t ref, uint64_t field_path_ref, double server_timestamp_behavior)
+{
+    gm::wire::StructStream result;
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    firebase::firestore::FieldPath* path = nullptr;
+    validate_fb_ref_map(field_path_ref, GM_FB_TYPE_FIRESTORE_FIELD_PATH, firebase::firestore::FieldPath, g_fs_field_path_map, path);
+    if (!snap || !path)
+    {
+        result.add("exists", false);
+        result.addKeyValue("value", std::optional<std::uint8_t>{});
+    }
+    else
+    {
+        auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
+        auto value = snap->Get(*path, stb);
+        result.add("exists", value.is_valid());
+        if (value.is_valid()) addFieldValueToStruct("value", value, result);
+        else result.addKeyValue("value", std::optional<std::uint8_t>{});
+    }
+    gm::wire::DataStream out; out << result; return out;
+}
+
+bool firebase_firestore_query_snapshot_is_valid(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return snap && snap->is_valid();
+}
+
+uint64_t firebase_firestore_query_snapshot_get_query(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return snap ? registerFirestoreQuery(snap->query()) : 0;
+}
+
+bool firebase_firestore_listener_registration_is_valid(uint64_t ref)
+{
+    firebase::firestore::ListenerRegistration* reg = nullptr;
+    validate_fb_ref_ptr(ref, GM_FB_TYPE_FIRESTORE_LISTENER_REG, firebase::firestore::ListenerRegistration, reg);
+    return reg && reg->is_valid();
+}
+
+std::string firebase_firestore_document_snapshot_metadata_to_string(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap=nullptr;
+    validate_fb_ref_map(ref,GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT,firebase::firestore::DocumentSnapshot,g_fs_doc_snapshot_map,snap);
+    return snap ? snap->metadata().ToString() : std::string();
+}
+
+std::string firebase_firestore_query_snapshot_metadata_to_string(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap=nullptr;
+    validate_fb_ref_map(ref,GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT,firebase::firestore::QuerySnapshot,g_fs_query_snapshot_map,snap);
+    return snap ? snap->metadata().ToString() : std::string();
+}
+
+// ============================================================
+// Literal one-to-one snapshot accessors
+// ============================================================
+// These intentionally duplicate fields available through *_get_info().
+// They avoid allocating a GameMaker struct when a caller needs one scalar.
+
+bool firebase_firestore_document_snapshot_exists(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap && snap->exists();
+}
+
+std::string firebase_firestore_document_snapshot_id(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap ? snap->id() : std::string();
+}
+
+uint64_t firebase_firestore_document_snapshot_reference(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap ? registerFirestoreDocRef(snap->reference()) : 0;
+}
+
+bool firebase_firestore_document_snapshot_metadata_has_pending_writes(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap && snap->metadata().has_pending_writes();
+}
+
+bool firebase_firestore_document_snapshot_metadata_is_from_cache(uint64_t ref)
+{
+    firebase::firestore::DocumentSnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
+    return snap && snap->metadata().is_from_cache();
+}
+
+double firebase_firestore_query_snapshot_size(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return snap ? static_cast<double>(snap->size()) : 0.0;
+}
+
+bool firebase_firestore_query_snapshot_empty(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return !snap || snap->empty();
+}
+
+bool firebase_firestore_query_snapshot_metadata_has_pending_writes(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return snap && snap->metadata().has_pending_writes();
+}
+
+bool firebase_firestore_query_snapshot_metadata_is_from_cache(uint64_t ref)
+{
+    firebase::firestore::QuerySnapshot* snap = nullptr;
+    validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
+    return snap && snap->metadata().is_from_cache();
+}

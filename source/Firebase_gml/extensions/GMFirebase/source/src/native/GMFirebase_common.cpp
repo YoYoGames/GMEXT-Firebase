@@ -23,6 +23,16 @@ firebase::App* getFirebaseApp()
 #endif
 }
 
+uint64_t wrapFirebaseApp(firebase::App* app)
+{
+	return app ? registerFirebasePointer(app, GM_FB_TYPE_APP) : 0;
+}
+
+firebase::App* resolveFirebaseApp(uint64_t ref)
+{
+	return static_cast<firebase::App*>(resolveFirebasePointer(ref, GM_FB_TYPE_APP));
+}
+
 // ============================================================
 // Last Error State
 // ============================================================

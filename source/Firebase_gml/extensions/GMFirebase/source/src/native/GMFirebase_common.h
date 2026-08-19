@@ -2,6 +2,7 @@
 
 #include "firebase/app.h"
 #include "firebase/future.h"
+#include "firebase/log.h"
 #include "firebase/variant.h"
 #include <cstdint>
 #include <map>
@@ -17,13 +18,13 @@
 // App bootstrap
 // ============================================================
 
-// The single shared firebase::App instance every product module attaches to,
-// mirroring FMOD's getCurrentSystem()/setCurrentSystem() single-instance model.
-// Firebase itself only supports one default-named App per process on most
-// platforms, so we do not offer a multi-app registry here.
+// Default App used by the compatibility APIs. Additional named Apps may be
+// represented by GM_FB_TYPE_APP handles and passed to explicit *_for_app APIs.
 extern firebase::App* g_firebase_app;
 
 firebase::App* getFirebaseApp();
+uint64_t wrapFirebaseApp(firebase::App* app);
+firebase::App* resolveFirebaseApp(uint64_t ref);
 
 // ============================================================
 // Last Error State
@@ -77,12 +78,17 @@ uint64_t packFirebaseRef(uint32_t index, uint8_t type);
 #define GM_FB_TYPE_AUTH_CREDENTIAL 0x02        // map: firebase::auth::Credential
 #define GM_FB_TYPE_AUTH_STATE_LISTENER 0x03    // ptr: our AuthStateListener subclass
 #define GM_FB_TYPE_AUTH_ID_TOKEN_LISTENER 0x04 // ptr: our IdTokenListener subclass
+#define GM_FB_TYPE_AUTH_PHONE_CREDENTIAL 0x05  // map: firebase::auth::PhoneAuthCredential
+#define GM_FB_TYPE_AUTH_PHONE_RESEND_TOKEN 0x06 // map: PhoneAuthProvider::ForceResendingToken
+#define GM_FB_TYPE_AUTH_FEDERATED_PROVIDER 0x07 // ptr: heap-owned FederatedOAuthProvider
+#define GM_FB_TYPE_AUTH_PHONE_LISTENER 0x08    // ptr: heap-owned PhoneAuthProvider::Listener
+#define GM_FB_TYPE_AUTH 0x09                   // ptr: firebase::auth::Auth*
 
 // Auth - shared cross-file plumbing. Auth/User/Credential are each consumed
 // from more than one of GMFirebase_auth*.cpp's three files, so the bits that
 // need a single definition live here rather than being duplicated or made
 // file-static like every other module's registries.
-namespace firebase { namespace auth { class Auth; class User; class Credential; } }
+namespace firebase { namespace auth { class Auth; class User; class Credential; class PhoneAuthCredential; struct AuthResult; } }
 
 // Auth is a singleton-per-App like g_firebase_app above (Firebase only ever
 // hands back one Auth* per App), so - like the App bootstrap above - it is
@@ -105,6 +111,17 @@ uint64_t wrapFirebaseUser(const firebase::auth::User& user);
 extern std::map<uint32_t, firebase::auth::Credential> g_auth_credential_map;
 extern uint32_t g_auth_credential_index;
 
+// Resolve either a generic Credential handle or a PhoneAuthCredential handle
+// into a base Credential copy. This lets all existing sign-in/link/reauth APIs
+// accept phone credentials without weakening handle type validation.
+bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out);
+uint64_t wrapFirebaseAuthCredential(const firebase::auth::Credential& credential);
+bool firebase_auth_resolve_phone_credential(uint64_t ref, firebase::auth::PhoneAuthCredential& out);
+gm::wire::StructStream makeFirebaseAuthResultStruct(const firebase::auth::AuthResult& result);
+
+// Core App
+#define GM_FB_TYPE_APP 0x80 // ptr: firebase::App*
+
 // Realtime Database
 #define GM_FB_TYPE_DATABASE 0x10             // ptr: firebase::database::Database*
 #define GM_FB_TYPE_DATABASE_REF 0x11         // map: firebase::database::DatabaseReference
@@ -113,6 +130,7 @@ extern uint32_t g_auth_credential_index;
 #define GM_FB_TYPE_DATABASE_VALUE_LISTENER 0x14 // ptr registry: GMFirebaseValueListener
 #define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15   // map: firebase::database::MutableData (transactions)
 #define GM_FB_TYPE_DATABASE_CHILD_LISTENER 0x16 // ptr registry: GMFirebaseChildListener
+#define GM_FB_TYPE_DATABASE_ON_DISCONNECT 0x17 // ptr: heap-owned DisconnectionHandler
 
 // Firestore
 #define GM_FB_TYPE_FIRESTORE 0x20              // ptr: firebase::firestore::Firestore*
@@ -125,6 +143,10 @@ extern uint32_t g_auth_credential_index;
 #define GM_FB_TYPE_FIRESTORE_WRITE_BATCH 0x27  // map: WriteBatch
 #define GM_FB_TYPE_FIRESTORE_TRANSACTION 0x28  // ptr: Transaction* (borrowed, callback-scoped)
 #define GM_FB_TYPE_FIRESTORE_FIELD_VALUE 0x29  // map: FieldValue (sentinels + explicit-typed values)
+#define GM_FB_TYPE_FIRESTORE_FIELD_PATH 0x2A   // map: FieldPath
+#define GM_FB_TYPE_FIRESTORE_FILTER 0x2B       // map: Filter
+#define GM_FB_TYPE_FIRESTORE_AGG_QUERY 0x2C    // map: AggregateQuery
+#define GM_FB_TYPE_FIRESTORE_AGG_SNAPSHOT 0x2D // map: AggregateQuerySnapshot
 
 // Storage
 #define GM_FB_TYPE_STORAGE 0x30              // ptr: firebase::storage::Storage*
@@ -143,11 +165,15 @@ extern uint32_t g_auth_credential_index;
 
 // App Check
 #define GM_FB_TYPE_APPCHECK_LISTENER 0x60 // ptr: our AppCheckListener subclass
+#define GM_FB_TYPE_APPCHECK 0x61          // ptr: firebase::app_check::AppCheck*
 
 // User Messaging Platform (UMP) - Cloud Messaging itself needs no ref types;
 // its surface is a set of global functions plus a poll buffer (see
 // GMFirebase_messaging.*), not per-instance handles.
 #define GM_FB_TYPE_UMP_CONSENT_INFO 0x70 // ptr: firebase::ump::ConsentInfo*
+
+// Installations
+#define GM_FB_TYPE_INSTALLATIONS 0x81 // ptr: firebase::installations::Installations*
 
 // ============================================================
 // Validation Macros

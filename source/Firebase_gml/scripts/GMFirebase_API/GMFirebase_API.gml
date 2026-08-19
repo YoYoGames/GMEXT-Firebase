@@ -2038,8 +2038,175 @@ function firebase_auth_twitter_auth_provider_get_credential(_token, _secret)
     return __result__;
 }
 
-// Skipping function firebase_auth_phone_verify_phone_number (no wrapper is required)
+/**
+ * @param {String} _phone_number
+ * @param {Real} _timeout_ms
+ * @param {Real} _force_resending_token
+ * @param {Function} _on_verification_completed
+ * @param {Function} _on_verification_failed
+ * @param {Function} _on_code_sent
+ * @param {Function} _on_timeout
+ * @returns {Real}
+ */
+function firebase_auth_phone_verify_phone_number(_phone_number, _timeout_ms, _force_resending_token, _on_verification_completed, _on_verification_failed, _on_code_sent, _on_timeout)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
 
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _phone_number, type: String
+    if (!is_string(_phone_number)) show_error($"{_GMFUNCTION_} :: _phone_number expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_phone_number));
+    buffer_write(__args_buffer__, buffer_string, _phone_number);
+
+    // param: _timeout_ms, type: Float64
+    if (!is_numeric(_timeout_ms)) show_error($"{_GMFUNCTION_} :: _timeout_ms expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _timeout_ms);
+
+    // param: _force_resending_token, type: UInt64
+    if (!is_numeric(_force_resending_token)) show_error($"{_GMFUNCTION_} :: _force_resending_token expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _force_resending_token);
+
+    // param: _on_verification_completed, type: optional<Function>
+    if (is_undefined(_on_verification_completed))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_on_verification_completed)) show_error($"{_GMFUNCTION_} :: _on_verification_completed expected callable type", true);
+        var _on_verification_completed_handle = __ext_core_function_register(_on_verification_completed, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _on_verification_completed_handle);
+    }
+
+    // param: _on_verification_failed, type: optional<Function>
+    if (is_undefined(_on_verification_failed))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_on_verification_failed)) show_error($"{_GMFUNCTION_} :: _on_verification_failed expected callable type", true);
+        var _on_verification_failed_handle = __ext_core_function_register(_on_verification_failed, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _on_verification_failed_handle);
+    }
+
+    // param: _on_code_sent, type: optional<Function>
+    if (is_undefined(_on_code_sent))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_on_code_sent)) show_error($"{_GMFUNCTION_} :: _on_code_sent expected callable type", true);
+        var _on_code_sent_handle = __ext_core_function_register(_on_code_sent, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _on_code_sent_handle);
+    }
+
+    // param: _on_timeout, type: optional<Function>
+    if (is_undefined(_on_timeout))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_on_timeout)) show_error($"{_GMFUNCTION_} :: _on_timeout expected callable type", true);
+        var _on_timeout_handle = __ext_core_function_register(_on_timeout, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _on_timeout_handle);
+    }
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_phone_verify_phone_number(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _verification_id
+ * @param {String} _verification_code
+ * @returns {Real}
+ */
+function firebase_auth_phone_get_credential(_verification_id, _verification_code)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_phone_get_credential(_verification_id, _verification_code, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _credential
+ * @returns {String}
+ */
+function firebase_auth_phone_credential_sms_code(_credential)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _credential, type: UInt64
+    if (!is_numeric(_credential)) show_error($"{_GMFUNCTION_} :: _credential expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _credential);
+
+    var __return_value__ = __firebase_auth_phone_credential_sms_code(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _token
+ */
+function firebase_auth_phone_resending_token_release(_token)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _token, type: UInt64
+    if (!is_numeric(_token)) show_error($"{_GMFUNCTION_} :: _token expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _token);
+
+    var __return_value__ = __firebase_auth_phone_resending_token_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _listener
+ */
+function firebase_auth_phone_listener_release(_listener)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _listener, type: UInt64
+    if (!is_numeric(_listener)) show_error($"{_GMFUNCTION_} :: _listener expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _listener);
+
+    var __return_value__ = __firebase_auth_phone_listener_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
 
 /**
  * @param {Real} _user
@@ -11187,6 +11354,5246 @@ function firebase_ump_show_privacy_options_form(_consent_ref, _form_parent, _cal
     }
 
     var __return_value__ = __firebase_ump_show_privacy_options_form(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+// Skipping function firebase_analytics_notify_app_lifecycle_change (no wrapper is required)
+
+
+/**
+ * @param {Id.Buffer} _hashed_email
+ */
+function firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(_hashed_email)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _hashed_email, type: Buffer
+    if (!buffer_exists(_hashed_email)) show_error($"{_GMFUNCTION_} :: _hashed_email expected Id.Buffer", true);
+    __GMFirebase_queue_buffer(buffer_get_address(_hashed_email), buffer_get_size(_hashed_email));
+
+    var __return_value__ = __firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Id.Buffer} _hashed_phone
+ */
+function firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(_hashed_phone)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _hashed_phone, type: Buffer
+    if (!buffer_exists(_hashed_phone)) show_error($"{_GMFUNCTION_} :: _hashed_phone expected Id.Buffer", true);
+    __GMFirebase_queue_buffer(buffer_get_address(_hashed_phone), buffer_get_size(_hashed_phone));
+
+    var __return_value__ = __firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {String} _provider_id
+ * @param {Any} _scopes
+ * @param {Any} _custom_parameters
+ * @returns {Real}
+ */
+function firebase_auth_federated_oauth_provider_create(_provider_id, _scopes, _custom_parameters)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _provider_id, type: String
+    if (!is_string(_provider_id)) show_error($"{_GMFUNCTION_} :: _provider_id expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_provider_id));
+    buffer_write(__args_buffer__, buffer_string, _provider_id);
+
+    // param: _scopes, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _scopes);
+
+    // param: _custom_parameters, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _custom_parameters);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_federated_oauth_provider_create(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _provider
+ * @param {String} _provider_id
+ * @param {Any} _scopes
+ * @param {Any} _custom_parameters
+ */
+function firebase_auth_federated_oauth_provider_set_data(_provider, _provider_id, _scopes, _custom_parameters)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _provider, type: UInt64
+    if (!is_numeric(_provider)) show_error($"{_GMFUNCTION_} :: _provider expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _provider);
+
+    // param: _provider_id, type: String
+    if (!is_string(_provider_id)) show_error($"{_GMFUNCTION_} :: _provider_id expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_provider_id));
+    buffer_write(__args_buffer__, buffer_string, _provider_id);
+
+    // param: _scopes, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _scopes);
+
+    // param: _custom_parameters, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _custom_parameters);
+
+    var __return_value__ = __firebase_auth_federated_oauth_provider_set_data(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _provider
+ */
+function firebase_auth_federated_oauth_provider_release(_provider)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _provider, type: UInt64
+    if (!is_numeric(_provider)) show_error($"{_GMFUNCTION_} :: _provider expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _provider);
+
+    var __return_value__ = __firebase_auth_federated_oauth_provider_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _provider
+ * @param {Function} _callback
+ */
+function firebase_auth_sign_in_with_provider(_provider, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _provider, type: UInt64
+    if (!is_numeric(_provider)) show_error($"{_GMFUNCTION_} :: _provider expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _provider);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_sign_in_with_provider(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {String} _custom_token
+ * @param {Function} _callback
+ */
+function firebase_auth_sign_in_with_custom_token_result(_custom_token, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _custom_token, type: String
+    if (!is_string(_custom_token)) show_error($"{_GMFUNCTION_} :: _custom_token expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_custom_token));
+    buffer_write(__args_buffer__, buffer_string, _custom_token);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_sign_in_with_custom_token_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _credential
+ * @param {Function} _callback
+ */
+function firebase_auth_sign_in_and_retrieve_data_with_credential_result(_credential, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _credential, type: UInt64
+    if (!is_numeric(_credential)) show_error($"{_GMFUNCTION_} :: _credential expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _credential);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_sign_in_and_retrieve_data_with_credential_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Function} _callback
+ */
+function firebase_auth_sign_in_anonymously_result(_callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_sign_in_anonymously_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {String} _email
+ * @param {String} _password
+ * @param {Function} _callback
+ */
+function firebase_auth_sign_in_with_email_and_password_result(_email, _password, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _email, type: String
+    if (!is_string(_email)) show_error($"{_GMFUNCTION_} :: _email expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_email));
+    buffer_write(__args_buffer__, buffer_string, _email);
+
+    // param: _password, type: String
+    if (!is_string(_password)) show_error($"{_GMFUNCTION_} :: _password expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_password));
+    buffer_write(__args_buffer__, buffer_string, _password);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_sign_in_with_email_and_password_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {String} _email
+ * @param {String} _password
+ * @param {Function} _callback
+ */
+function firebase_auth_create_user_with_email_and_password_result(_email, _password, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _email, type: String
+    if (!is_string(_email)) show_error($"{_GMFUNCTION_} :: _email expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_email));
+    buffer_write(__args_buffer__, buffer_string, _email);
+
+    // param: _password, type: String
+    if (!is_string(_password)) show_error($"{_GMFUNCTION_} :: _password expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_password));
+    buffer_write(__args_buffer__, buffer_string, _password);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_create_user_with_email_and_password_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @returns {Real}
+ */
+function firebase_auth_user_provider_data_count(_user)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    var __return_value__ = __firebase_auth_user_provider_data_count(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _index
+ * @returns {Any}
+ */
+function firebase_auth_user_provider_data_at(_user, _index)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _index, type: Float64
+    if (!is_numeric(_index)) show_error($"{_GMFUNCTION_} :: _index expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _index);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_user_provider_data_at(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _provider
+ * @param {Function} _callback
+ */
+function firebase_auth_user_reauthenticate_with_provider(_user, _provider, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _provider, type: UInt64
+    if (!is_numeric(_provider)) show_error($"{_GMFUNCTION_} :: _provider expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _provider);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_user_reauthenticate_with_provider(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _provider
+ * @param {Function} _callback
+ */
+function firebase_auth_user_link_with_provider(_user, _provider, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _provider, type: UInt64
+    if (!is_numeric(_provider)) show_error($"{_GMFUNCTION_} :: _provider expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _provider);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_user_link_with_provider(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _credential
+ * @param {Function} _callback
+ */
+function firebase_auth_user_reauthenticate_and_retrieve_data_result(_user, _credential, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _credential, type: UInt64
+    if (!is_numeric(_credential)) show_error($"{_GMFUNCTION_} :: _credential expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _credential);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_user_reauthenticate_and_retrieve_data_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _credential
+ * @param {Function} _callback
+ */
+function firebase_auth_user_link_with_credential_result(_user, _credential, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _credential, type: UInt64
+    if (!is_numeric(_credential)) show_error($"{_GMFUNCTION_} :: _credential expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _credential);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_user_link_with_credential_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _user
+ * @param {Real} _phone_credential
+ * @param {Function} _callback
+ */
+function firebase_auth_user_update_phone_number_credential(_user, _phone_credential, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    // param: _phone_credential, type: UInt64
+    if (!is_numeric(_phone_credential)) show_error($"{_GMFUNCTION_} :: _phone_credential expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _phone_credential);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_user_update_phone_number_credential(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {String}
+ */
+function firebase_database_ref_key(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __return_value__ = __firebase_database_ref_key(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_is_root(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __return_value__ = __firebase_database_ref_is_root(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_is_valid(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __return_value__ = __firebase_database_ref_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_get_parent(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_ref_get_parent(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_get_root(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_ref_get_root(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_get_database(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_ref_get_database(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {String}
+ */
+function firebase_database_ref_get_url(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __return_value__ = __firebase_database_ref_get_url(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @returns {Any}
+ */
+function firebase_database_server_timestamp()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_server_timestamp(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _ref
+ * @returns {Real}
+ */
+function firebase_database_ref_on_disconnect(_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _ref, type: UInt64
+    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _ref);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_ref_on_disconnect(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _handler
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_database_on_disconnect_cancel(_handler, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_database_on_disconnect_cancel(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _handler
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_database_on_disconnect_remove_value(_handler, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_database_on_disconnect_remove_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _handler
+ * @param {Any} _value
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_database_on_disconnect_set_value(_handler, _value, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_database_on_disconnect_set_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _handler
+ * @param {Any} _value
+ * @param {Any} _priority
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_database_on_disconnect_set_value_and_priority(_handler, _value, _priority, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    // param: _priority, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _priority);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_database_on_disconnect_set_value_and_priority(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _handler
+ * @param {Any} _values
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_database_on_disconnect_update_children(_handler, _values, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_database_on_disconnect_update_children(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _handler
+ */
+function firebase_database_on_disconnect_release(_handler)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _handler, type: UInt64
+    if (!is_numeric(_handler)) show_error($"{_GMFUNCTION_} :: _handler expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _handler);
+
+    var __return_value__ = __firebase_database_on_disconnect_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Any} _components
+ * @returns {Real}
+ */
+function firebase_firestore_field_path_create(_components)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _components, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _components);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_path_create(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_firestore_field_path_document_id()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_path_document_id(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @returns {Bool}
+ */
+function firebase_firestore_field_path_is_valid(_field_path)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    var __return_value__ = __firebase_firestore_field_path_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @returns {String}
+ */
+function firebase_firestore_field_path_to_string(_field_path)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    var __return_value__ = __firebase_firestore_field_path_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_path
+ */
+function firebase_firestore_field_path_release(_field_path)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    var __return_value__ = __firebase_firestore_field_path_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_equal_to(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_not_equal_to(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_not_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_less_than(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_less_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_less_than_or_equal_to(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_greater_than(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_greater_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_greater_than_or_equal_to(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_array_contains(_field, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_array_contains(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_array_contains_any(_field, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_array_contains_any(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_in(_field, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _field
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_not_in(_field, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field, type: String
+    if (!is_string(_field)) show_error($"{_GMFUNCTION_} :: _field expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_field));
+    buffer_write(__args_buffer__, buffer_string, _field);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_not_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_equal_to_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_not_equal_to_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_not_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_less_than_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_less_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_less_than_or_equal_to_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_greater_than_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_greater_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_greater_than_or_equal_to_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_filter_array_contains_field_path(_field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_array_contains_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_array_contains_any_field_path(_field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_array_contains_any_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_in_field_path(_field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_filter_not_in_field_path(_field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_not_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Any} _filters
+ * @returns {Real}
+ */
+function firebase_firestore_filter_and(_filters)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _filters, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _filters);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_and(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Any} _filters
+ * @returns {Real}
+ */
+function firebase_firestore_filter_or(_filters)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _filters, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _filters);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_filter_or(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _filter
+ */
+function firebase_firestore_filter_release(_filter)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _filter, type: UInt64
+    if (!is_numeric(_filter)) show_error($"{_GMFUNCTION_} :: _filter expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _filter);
+
+    var __return_value__ = __firebase_firestore_filter_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _filter
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_filter(_query, _filter)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _filter, type: UInt64
+    if (!is_numeric(_filter)) show_error($"{_GMFUNCTION_} :: _filter expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _filter);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_filter(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_equal_to_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_not_equal_to_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_not_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_less_than_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_less_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_less_than_or_equal_to_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_less_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_greater_than_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_greater_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_greater_than_or_equal_to_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_greater_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_array_contains_field_path(_query, _field_path, _value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_array_contains_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_array_contains_any_field_path(_query, _field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_array_contains_any_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_in_field_path(_query, _field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Any} _values
+ * @returns {Real}
+ */
+function firebase_firestore_query_where_not_in_field_path(_query, _field_path, _values)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _values, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _values);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_where_not_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @param {Real} _field_path
+ * @param {Real} _direction
+ * @returns {Real}
+ */
+function firebase_firestore_query_order_by_field_path(_query, _field_path, _direction)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _direction, type: Float64
+    if (!is_numeric(_direction)) show_error($"{_GMFUNCTION_} :: _direction expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _direction);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_order_by_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _query
+ * @returns {Real}
+ */
+function firebase_firestore_query_count(_query)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_count(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _aggregate_query
+ * @returns {Real}
+ */
+function firebase_firestore_aggregate_query_get_query(_aggregate_query)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _aggregate_query, type: UInt64
+    if (!is_numeric(_aggregate_query)) show_error($"{_GMFUNCTION_} :: _aggregate_query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _aggregate_query);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_aggregate_query_get_query(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _aggregate_query
+ * @returns {Bool}
+ */
+function firebase_firestore_aggregate_query_is_valid(_aggregate_query)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _aggregate_query, type: UInt64
+    if (!is_numeric(_aggregate_query)) show_error($"{_GMFUNCTION_} :: _aggregate_query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _aggregate_query);
+
+    var __return_value__ = __firebase_firestore_aggregate_query_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _aggregate_query
+ * @param {Real} _source
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_aggregate_query_get(_aggregate_query, _source, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _aggregate_query, type: UInt64
+    if (!is_numeric(_aggregate_query)) show_error($"{_GMFUNCTION_} :: _aggregate_query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _aggregate_query);
+
+    // param: _source, type: Float64
+    if (!is_numeric(_source)) show_error($"{_GMFUNCTION_} :: _source expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _source);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_firestore_aggregate_query_get(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _aggregate_query
+ */
+function firebase_firestore_aggregate_query_release(_aggregate_query)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _aggregate_query, type: UInt64
+    if (!is_numeric(_aggregate_query)) show_error($"{_GMFUNCTION_} :: _aggregate_query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _aggregate_query);
+
+    var __return_value__ = __firebase_firestore_aggregate_query_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Real}
+ */
+function firebase_firestore_aggregate_snapshot_count(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_aggregate_snapshot_count(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Real}
+ */
+function firebase_firestore_aggregate_snapshot_get_query(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_aggregate_snapshot_get_query(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_aggregate_snapshot_is_valid(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_aggregate_snapshot_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ */
+function firebase_firestore_aggregate_snapshot_release(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_aggregate_snapshot_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _firestore
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_add_snapshots_in_sync_listener(_firestore, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _firestore, type: UInt64
+    if (!is_numeric(_firestore)) show_error($"{_GMFUNCTION_} :: _firestore expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _firestore);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_add_snapshots_in_sync_listener(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _firestore
+ * @param {Id.Buffer} _bundle
+ * @param {Function} _progress_callback
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_load_bundle(_firestore, _bundle, _progress_callback, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _firestore, type: UInt64
+    if (!is_numeric(_firestore)) show_error($"{_GMFUNCTION_} :: _firestore expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _firestore);
+
+    // param: _bundle, type: Buffer
+    if (!buffer_exists(_bundle)) show_error($"{_GMFUNCTION_} :: _bundle expected Id.Buffer", true);
+    __GMFirebase_queue_buffer(buffer_get_address(_bundle), buffer_get_size(_bundle));
+
+    // param: _progress_callback, type: optional<Function>
+    if (is_undefined(_progress_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_progress_callback)) show_error($"{_GMFUNCTION_} :: _progress_callback expected callable type", true);
+        var _progress_callback_handle = __ext_core_function_register(_progress_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _progress_callback_handle);
+    }
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_firestore_load_bundle(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _firestore
+ * @param {String} _name
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_named_query(_firestore, _name, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _firestore, type: UInt64
+    if (!is_numeric(_firestore)) show_error($"{_GMFUNCTION_} :: _firestore expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _firestore);
+
+    // param: _name, type: String
+    if (!is_string(_name)) show_error($"{_GMFUNCTION_} :: _name expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_name));
+    buffer_write(__args_buffer__, buffer_string, _name);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_firestore_named_query(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _document
+ * @param {Any} _data
+ * @param {Any} _field_paths
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_document_ref_set_merge_field_paths(_document, _data, _field_paths, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    // param: _data, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _data);
+
+    // param: _field_paths, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _field_paths);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_firestore_document_ref_set_merge_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _batch
+ * @param {Real} _document
+ * @param {Any} _data
+ * @param {Any} _field_paths
+ */
+function firebase_firestore_write_batch_set_merge_field_paths(_batch, _document, _data, _field_paths)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _batch, type: UInt64
+    if (!is_numeric(_batch)) show_error($"{_GMFUNCTION_} :: _batch expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _batch);
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    // param: _data, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _data);
+
+    // param: _field_paths, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _field_paths);
+
+    var __return_value__ = __firebase_firestore_write_batch_set_merge_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _metadata
+ * @returns {String}
+ */
+function firebase_storage_metadata_md5_hash(_metadata)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _metadata, type: UInt64
+    if (!is_numeric(_metadata)) show_error($"{_GMFUNCTION_} :: _metadata expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _metadata);
+
+    var __return_value__ = __firebase_storage_metadata_md5_hash(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_remote_config_ensure_initialized_info(_rc_ref, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_remote_config_ensure_initialized_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {String} _key
+ * @returns {Any}
+ */
+function firebase_remote_config_get_boolean_with_info(_rc_ref, _key)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _key, type: String
+    if (!is_string(_key)) show_error($"{_GMFUNCTION_} :: _key expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_key));
+    buffer_write(__args_buffer__, buffer_string, _key);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_boolean_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {String} _key
+ * @returns {Any}
+ */
+function firebase_remote_config_get_long_with_info(_rc_ref, _key)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _key, type: String
+    if (!is_string(_key)) show_error($"{_GMFUNCTION_} :: _key expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_key));
+    buffer_write(__args_buffer__, buffer_string, _key);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_long_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {String} _key
+ * @returns {Any}
+ */
+function firebase_remote_config_get_double_with_info(_rc_ref, _key)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _key, type: String
+    if (!is_string(_key)) show_error($"{_GMFUNCTION_} :: _key expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_key));
+    buffer_write(__args_buffer__, buffer_string, _key);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_double_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {String} _key
+ * @returns {Any}
+ */
+function firebase_remote_config_get_string_with_info(_rc_ref, _key)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _key, type: String
+    if (!is_string(_key)) show_error($"{_GMFUNCTION_} :: _key expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_key));
+    buffer_write(__args_buffer__, buffer_string, _key);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_string_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _rc_ref
+ * @param {String} _key
+ * @param {Id.Buffer} _out_buffer
+ * @returns {Any}
+ */
+function firebase_remote_config_get_data_with_info(_rc_ref, _key, _out_buffer)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _rc_ref, type: UInt64
+    if (!is_numeric(_rc_ref)) show_error($"{_GMFUNCTION_} :: _rc_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _rc_ref);
+
+    // param: _key, type: String
+    if (!is_string(_key)) show_error($"{_GMFUNCTION_} :: _key expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_key));
+    buffer_write(__args_buffer__, buffer_string, _key);
+
+    // param: _out_buffer, type: Buffer
+    if (!buffer_exists(_out_buffer)) show_error($"{_GMFUNCTION_} :: _out_buffer expected Id.Buffer", true);
+    __GMFirebase_queue_buffer(buffer_get_address(_out_buffer), buffer_get_size(_out_buffer));
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_data_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+// Skipping function firebase_messaging_initialize_with_options (no wrapper is required)
+
+
+/**
+ * @param {Real} _field_value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_type(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_type(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_valid(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_null(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_null(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_boolean(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_boolean(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_integer(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_integer(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_double(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_double(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_timestamp(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_timestamp(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_string(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_blob(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_blob(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_reference(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_reference(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_geo_point(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_geo_point(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_array(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_array(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_is_map(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_is_map(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Bool}
+ */
+function firebase_firestore_field_value_boolean_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_boolean_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_integer_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_integer_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_double_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_double_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {String}
+ */
+function firebase_firestore_field_value_string_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_string_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_blob_size(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_blob_size(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @param {Id.Buffer} _out_buffer
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_blob_copy(_field_value, _out_buffer)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    // param: _out_buffer, type: Buffer
+    if (!buffer_exists(_out_buffer)) show_error($"{_GMFUNCTION_} :: _out_buffer expected Id.Buffer", true);
+    __GMFirebase_queue_buffer(buffer_get_address(_out_buffer), buffer_get_size(_out_buffer));
+
+    var __return_value__ = __firebase_firestore_field_value_blob_copy(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_reference_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_reference_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Any}
+ */
+function firebase_firestore_field_value_timestamp_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_timestamp_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Any}
+ */
+function firebase_firestore_field_value_geo_point_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_geo_point_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Any}
+ */
+function firebase_firestore_field_value_array_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_array_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {Any}
+ */
+function firebase_firestore_field_value_map_value(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_map_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _field_value
+ * @returns {String}
+ */
+function firebase_firestore_field_value_to_string(_field_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _field_value, type: UInt64
+    if (!is_numeric(_field_value)) show_error($"{_GMFUNCTION_} :: _field_value expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_value);
+
+    var __return_value__ = __firebase_firestore_field_value_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _query
+ * @returns {Real}
+ */
+function firebase_firestore_query_get_firestore(_query)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _query, type: UInt64
+    if (!is_numeric(_query)) show_error($"{_GMFUNCTION_} :: _query expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _query);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_get_firestore(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _document
+ * @returns {Real}
+ */
+function firebase_firestore_document_ref_get_firestore(_document)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_document_ref_get_firestore(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _document
+ * @returns {String}
+ */
+function firebase_firestore_document_ref_to_string(_document)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    var __return_value__ = __firebase_firestore_document_ref_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _document
+ * @param {Any} _entries
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_firestore_document_ref_update_field_paths(_document, _entries, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    // param: _entries, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _entries);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_firestore_document_ref_update_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _batch
+ * @param {Real} _document
+ * @param {Any} _entries
+ * @returns {Real}
+ */
+function firebase_firestore_write_batch_update_field_paths(_batch, _document, _entries)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _batch, type: UInt64
+    if (!is_numeric(_batch)) show_error($"{_GMFUNCTION_} :: _batch expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _batch);
+
+    // param: _document, type: UInt64
+    if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _document);
+
+    // param: _entries, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _entries);
+
+    var __return_value__ = __firebase_firestore_write_batch_update_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _batch
+ * @returns {Bool}
+ */
+function firebase_firestore_write_batch_is_valid(_batch)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _batch, type: UInt64
+    if (!is_numeric(_batch)) show_error($"{_GMFUNCTION_} :: _batch expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _batch);
+
+    var __return_value__ = __firebase_firestore_write_batch_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _firestore
+ * @returns {String}
+ */
+function firebase_firestore_settings_to_string(_firestore)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _firestore, type: UInt64
+    if (!is_numeric(_firestore)) show_error($"{_GMFUNCTION_} :: _firestore expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _firestore);
+
+    var __return_value__ = __firebase_firestore_settings_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_document_snapshot_is_valid(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {String}
+ */
+function firebase_firestore_document_snapshot_to_string(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @param {Real} _field_path
+ * @param {Real} _server_timestamp_behavior
+ * @returns {Any}
+ */
+function firebase_firestore_document_snapshot_get_field_path(_snapshot, _field_path, _server_timestamp_behavior)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    // param: _field_path, type: UInt64
+    if (!is_numeric(_field_path)) show_error($"{_GMFUNCTION_} :: _field_path expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _field_path);
+
+    // param: _server_timestamp_behavior, type: Float64
+    if (!is_numeric(_server_timestamp_behavior)) show_error($"{_GMFUNCTION_} :: _server_timestamp_behavior expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _server_timestamp_behavior);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_document_snapshot_get_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_query_snapshot_is_valid(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Real}
+ */
+function firebase_firestore_query_snapshot_get_query(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_query_snapshot_get_query(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _listener
+ * @returns {Bool}
+ */
+function firebase_firestore_listener_registration_is_valid(_listener)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _listener, type: UInt64
+    if (!is_numeric(_listener)) show_error($"{_GMFUNCTION_} :: _listener expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _listener);
+
+    var __return_value__ = __firebase_firestore_listener_registration_is_valid(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_app_get_default_handle()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_get_default_handle(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _name
+ * @returns {Real}
+ */
+function firebase_app_get_instance(_name)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_get_instance(_name, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @returns {Any}
+ */
+function firebase_app_get_apps()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_get_apps(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Any} _options
+ * @param {String} _name
+ * @returns {Real}
+ */
+function firebase_app_initialize_with_options(_options, _name)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _options, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _options);
+
+    // param: _name, type: String
+    if (!is_string(_name)) show_error($"{_GMFUNCTION_} :: _name expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_name));
+    buffer_write(__args_buffer__, buffer_string, _name);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_initialize_with_options(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _json_config
+ * @param {String} _name
+ * @returns {Real}
+ */
+function firebase_app_initialize_from_json(_json_config, _name)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_initialize_from_json(_json_config, _name, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {String}
+ */
+function firebase_app_handle_get_name(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __return_value__ = __firebase_app_handle_get_name(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Any}
+ */
+function firebase_app_handle_get_options(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_handle_get_options(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @returns {Any}
+ */
+function firebase_app_get_default_options()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_get_default_options(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ */
+function firebase_app_release_handle(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __return_value__ = __firebase_app_release_handle(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+// Skipping function firebase_set_log_level (no wrapper is required)
+
+
+// Skipping function firebase_get_log_level (no wrapper is required)
+
+
+/**
+ * @returns {Real}
+ */
+function firebase_auth_get_app()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_get_app(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _database
+ * @returns {Real}
+ */
+function firebase_database_get_app(_database)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _database, type: UInt64
+    if (!is_numeric(_database)) show_error($"{_GMFUNCTION_} :: _database expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _database);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_database_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @param {String} _url
+ * @returns {Real}
+ */
+function firebase_database_get_instance_for_app_url(_app, _url)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    // param: _url, type: String
+    if (!is_string(_url)) show_error($"{_GMFUNCTION_} :: _url expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_url));
+    buffer_write(__args_buffer__, buffer_string, _url);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_get_instance_for_app_url(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _firestore
+ * @returns {Real}
+ */
+function firebase_firestore_get_app(_firestore)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _firestore, type: UInt64
+    if (!is_numeric(_firestore)) show_error($"{_GMFUNCTION_} :: _firestore expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _firestore);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_firestore_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @param {String} _database_id
+ * @returns {Real}
+ */
+function firebase_firestore_get_instance_for_app_database(_app, _database_id)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    // param: _database_id, type: String
+    if (!is_string(_database_id)) show_error($"{_GMFUNCTION_} :: _database_id expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_database_id));
+    buffer_write(__args_buffer__, buffer_string, _database_id);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_get_instance_for_app_database(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _storage
+ * @returns {Real}
+ */
+function firebase_storage_get_app(_storage)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _storage, type: UInt64
+    if (!is_numeric(_storage)) show_error($"{_GMFUNCTION_} :: _storage expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _storage);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_storage_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_storage_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_storage_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @param {String} _url
+ * @returns {Real}
+ */
+function firebase_storage_get_instance_for_app_url(_app, _url)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    // param: _url, type: String
+    if (!is_string(_url)) show_error($"{_GMFUNCTION_} :: _url expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_url));
+    buffer_write(__args_buffer__, buffer_string, _url);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_storage_get_instance_for_app_url(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _functions
+ * @returns {Real}
+ */
+function firebase_functions_get_app(_functions)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _functions, type: UInt64
+    if (!is_numeric(_functions)) show_error($"{_GMFUNCTION_} :: _functions expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _functions);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_functions_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _callable
+ * @returns {Real}
+ */
+function firebase_functions_callable_get_functions(_callable)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _callable, type: UInt64
+    if (!is_numeric(_callable)) show_error($"{_GMFUNCTION_} :: _callable expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _callable);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_functions_callable_get_functions(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_functions_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_functions_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @param {String} _region
+ * @returns {Real}
+ */
+function firebase_functions_get_instance_for_app_region(_app, _region)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    // param: _region, type: String
+    if (!is_string(_region)) show_error($"{_GMFUNCTION_} :: _region expected string", true);
+    buffer_write(__args_buffer__, buffer_u32, string_byte_length(_region));
+    buffer_write(__args_buffer__, buffer_string, _region);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_functions_get_instance_for_app_region(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_installations_get_app()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_installations_get_app(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _remote_config
+ * @returns {Real}
+ */
+function firebase_remote_config_get_app(_remote_config)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _remote_config, type: UInt64
+    if (!is_numeric(_remote_config)) show_error($"{_GMFUNCTION_} :: _remote_config expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _remote_config);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_app_check_get_app()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_check_get_app(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Bool} _value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_boolean(_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_boolean(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {String} _value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_string(_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_string(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_array(_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_array(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Any} _value
+ * @returns {Real}
+ */
+function firebase_firestore_field_value_map(_value)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _value, type: Any
+
+    __ext_core_buffer_marshal_value(__args_buffer__, _value);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_field_value_map(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_remote_config_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_remote_config_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_analytics_initialize_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __return_value__ = __firebase_analytics_initialize_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_messaging_initialize_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __return_value__ = __firebase_messaging_initialize_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app
+ * @param {Real} _suppress_notification_permission_prompt
+ * @returns {Real}
+ */
+function firebase_messaging_initialize_for_app_with_options(_app, _suppress_notification_permission_prompt)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    // param: _suppress_notification_permission_prompt, type: Float64
+    if (!is_numeric(_suppress_notification_permission_prompt)) show_error($"{_GMFUNCTION_} :: _suppress_notification_permission_prompt expected number", true);
+    buffer_write(__args_buffer__, buffer_f64, _suppress_notification_permission_prompt);
+
+    var __return_value__ = __firebase_messaging_initialize_for_app_with_options(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_ump_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_ump_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    }
+    else
+    {
+        __result__ = undefined;
+    }
+    return __result__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_auth_get_current_instance_handle()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_get_current_instance_handle(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_auth_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _auth
+ * @returns {Real}
+ */
+function firebase_auth_use_instance(_auth)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _auth, type: UInt64
+    if (!is_numeric(_auth)) show_error($"{_GMFUNCTION_} :: _auth expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _auth);
+
+    var __return_value__ = __firebase_auth_use_instance(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _auth
+ * @returns {Real}
+ */
+function firebase_auth_instance_get_app(_auth)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _auth, type: UInt64
+    if (!is_numeric(_auth)) show_error($"{_GMFUNCTION_} :: _auth expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _auth);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_instance_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_installations_get_instance_handle()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_installations_get_instance_handle(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_installations_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_installations_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _installations
+ * @returns {Real}
+ */
+function firebase_installations_instance_get_app(_installations)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _installations, type: UInt64
+    if (!is_numeric(_installations)) show_error($"{_GMFUNCTION_} :: _installations expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _installations);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_installations_instance_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _installations
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_installations_instance_get_id(_installations, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _installations, type: UInt64
+    if (!is_numeric(_installations)) show_error($"{_GMFUNCTION_} :: _installations expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _installations);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_installations_instance_get_id(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _installations
+ * @param {Bool} _force_refresh
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_installations_instance_get_token(_installations, _force_refresh, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _installations, type: UInt64
+    if (!is_numeric(_installations)) show_error($"{_GMFUNCTION_} :: _installations expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _installations);
+
+    // param: _force_refresh, type: Bool
+    if (!is_bool(_force_refresh)) show_error($"{_GMFUNCTION_} :: _force_refresh expected bool", true);
+    buffer_write(__args_buffer__, buffer_bool, _force_refresh);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_installations_instance_get_token(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _installations
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_installations_instance_delete(_installations, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _installations, type: UInt64
+    if (!is_numeric(_installations)) show_error($"{_GMFUNCTION_} :: _installations expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _installations);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_installations_instance_delete(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @returns {Real}
+ */
+function firebase_app_check_get_instance_handle()
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_check_get_instance_handle(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app
+ * @returns {Real}
+ */
+function firebase_app_check_get_instance_for_app(_app)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app, type: UInt64
+    if (!is_numeric(_app)) show_error($"{_GMFUNCTION_} :: _app expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_check_get_instance_for_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app_check
+ * @returns {Real}
+ */
+function firebase_app_check_instance_get_app(_app_check)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app_check, type: UInt64
+    if (!is_numeric(_app_check)) show_error($"{_GMFUNCTION_} :: _app_check expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app_check);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_check_instance_get_app(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _app_check
+ * @param {Bool} _enabled
+ */
+function firebase_app_check_instance_set_token_auto_refresh_enabled(_app_check, _enabled)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app_check, type: UInt64
+    if (!is_numeric(_app_check)) show_error($"{_GMFUNCTION_} :: _app_check expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app_check);
+
+    // param: _enabled, type: Bool
+    if (!is_bool(_enabled)) show_error($"{_GMFUNCTION_} :: _enabled expected bool", true);
+    buffer_write(__args_buffer__, buffer_bool, _enabled);
+
+    var __return_value__ = __firebase_app_check_instance_set_token_auto_refresh_enabled(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app_check
+ * @param {Bool} _force_refresh
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_app_check_instance_get_token(_app_check, _force_refresh, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app_check, type: UInt64
+    if (!is_numeric(_app_check)) show_error($"{_GMFUNCTION_} :: _app_check expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app_check);
+
+    // param: _force_refresh, type: Bool
+    if (!is_bool(_force_refresh)) show_error($"{_GMFUNCTION_} :: _force_refresh expected bool", true);
+    buffer_write(__args_buffer__, buffer_bool, _force_refresh);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_app_check_instance_get_token(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app_check
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_app_check_instance_get_limited_use_token(_app_check, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app_check, type: UInt64
+    if (!is_numeric(_app_check)) show_error($"{_GMFUNCTION_} :: _app_check expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app_check);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_app_check_instance_get_limited_use_token(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _app_check
+ * @param {Function} _callback
+ * @returns {Real}
+ */
+function firebase_app_check_instance_add_listener(_app_check, _callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _app_check, type: UInt64
+    if (!is_numeric(_app_check)) show_error($"{_GMFUNCTION_} :: _app_check expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _app_check);
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_app_check_instance_add_listener(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {String}
+ */
+function firebase_firestore_document_snapshot_metadata_to_string(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_metadata_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {String}
+ */
+function firebase_firestore_query_snapshot_metadata_to_string(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_metadata_to_string(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+// Skipping function firebase_get_sdk_version (no wrapper is required)
+
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_document_snapshot_exists(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_exists(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {String}
+ */
+function firebase_firestore_document_snapshot_id(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_id(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Real}
+ */
+function firebase_firestore_document_snapshot_reference(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_firestore_document_snapshot_reference(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = buffer_read(__ret_buffer__, buffer_u64);
+    return __result__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_document_snapshot_metadata_has_pending_writes(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_metadata_has_pending_writes(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_document_snapshot_metadata_is_from_cache(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_document_snapshot_metadata_is_from_cache(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Real}
+ */
+function firebase_firestore_query_snapshot_size(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_size(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_query_snapshot_empty(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_empty(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_query_snapshot_metadata_has_pending_writes(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_metadata_has_pending_writes(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Bool}
+ */
+function firebase_firestore_query_snapshot_metadata_is_from_cache(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __return_value__ = __firebase_firestore_query_snapshot_metadata_is_from_cache(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+// Skipping function firebase_auth_email_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_facebook_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_game_center_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_github_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_google_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_microsoft_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_play_games_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_twitter_auth_provider_id (no wrapper is required)
+
+
+// Skipping function firebase_auth_yahoo_auth_provider_id (no wrapper is required)
+
+
+/**
+ * @param {Function} _callback
+ */
+function firebase_auth_game_center_auth_provider_get_credential_last_result(_callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_auth_game_center_auth_provider_get_credential_last_result(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
     return __return_value__;
 }

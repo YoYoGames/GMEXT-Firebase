@@ -181,3 +181,29 @@ double firebase_functions_callable_call_with_data(uint64_t ref, const GMValue& d
 	});
 	return 1.0;
 }
+
+uint64_t firebase_functions_get_app(uint64_t functions_ref)
+{
+    auto* functions = resolveFunctions(functions_ref); return functions ? wrapFirebaseApp(functions->app()) : 0;
+}
+
+uint64_t firebase_functions_callable_get_functions(uint64_t callable_ref)
+{
+    auto* callable = resolveCallable(callable_ref);
+    auto* functions = callable ? callable->functions() : nullptr;
+    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+}
+
+uint64_t firebase_functions_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    auto* functions = firebase::functions::Functions::GetInstance(app);
+    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+}
+
+uint64_t firebase_functions_get_instance_for_app_region(uint64_t app_ref, std::string_view region)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0; std::string r(region);
+    auto* functions = firebase::functions::Functions::GetInstance(app, r.c_str());
+    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+}

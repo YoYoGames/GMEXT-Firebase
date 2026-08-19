@@ -386,3 +386,105 @@ double firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
 	delete reg;
 	return 1.0;
 }
+
+// ============================================================
+// ValueInfo / initialized-result completeness helpers
+// ============================================================
+
+namespace
+{
+    gm::wire::DataStream remoteConfigValueInfoResult(const firebase::remote_config::ValueInfo& info, double value)
+    {
+        gm::wire::StructStream s;
+        s.add("value", value);
+        s.add("source", static_cast<double>(info.source));
+        s.add("conversion_successful", info.conversion_successful);
+        gm::wire::DataStream out; out << s; return out;
+    }
+
+    gm::wire::DataStream remoteConfigValueInfoResult(const firebase::remote_config::ValueInfo& info, const std::string& value)
+    {
+        gm::wire::StructStream s;
+        s.add("value", std::string_view{ value });
+        s.add("source", static_cast<double>(info.source));
+        s.add("conversion_successful", info.conversion_successful);
+        gm::wire::DataStream out; out << s; return out;
+    }
+}
+
+double firebase_remote_config_ensure_initialized_info(uint64_t rc_ref, const std::optional<GMFunction>& callback)
+{
+    auto* rc = resolveRemoteConfig(rc_ref);
+    if (!rc) return 0.0;
+    rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
+    {
+        reportFutureError(f.error(), f.error_message());
+        if (!callback) return;
+        if (f.error() == 0 && f.result())
+            callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, toGmInfo(*f.result()));
+        else
+            callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::optional<std::uint8_t>{});
+    });
+    return 1.0;
+}
+
+gm::wire::DataStream firebase_remote_config_get_boolean_with_info(uint64_t rc_ref, std::string_view key)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return {};
+    firebase::remote_config::ValueInfo info{};
+    bool value = rc->GetBoolean(std::string(key).c_str(), &info);
+    gm::wire::StructStream s; s.add("value", value); s.add("source", static_cast<double>(info.source)); s.add("conversion_successful", info.conversion_successful);
+    gm::wire::DataStream out; out << s; return out;
+}
+
+gm::wire::DataStream firebase_remote_config_get_long_with_info(uint64_t rc_ref, std::string_view key)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return {};
+    firebase::remote_config::ValueInfo info{};
+    auto value = rc->GetLong(std::string(key).c_str(), &info);
+    return remoteConfigValueInfoResult(info, static_cast<double>(value));
+}
+
+gm::wire::DataStream firebase_remote_config_get_double_with_info(uint64_t rc_ref, std::string_view key)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return {};
+    firebase::remote_config::ValueInfo info{};
+    auto value = rc->GetDouble(std::string(key).c_str(), &info);
+    return remoteConfigValueInfoResult(info, value);
+}
+
+gm::wire::DataStream firebase_remote_config_get_string_with_info(uint64_t rc_ref, std::string_view key)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return {};
+    firebase::remote_config::ValueInfo info{};
+    auto value = rc->GetString(std::string(key).c_str(), &info);
+    return remoteConfigValueInfoResult(info, value);
+}
+
+gm::wire::DataStream firebase_remote_config_get_data_with_info(uint64_t rc_ref, std::string_view key, GMBuffer out_buffer)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return {};
+    firebase::remote_config::ValueInfo info{};
+    auto value = rc->GetData(std::string(key).c_str(), &info);
+    size_t copied = std::min(value.size(), static_cast<size_t>(out_buffer.length()));
+    if (copied) std::memcpy(out_buffer.data(), value.data(), copied);
+    gm::wire::StructStream s;
+    s.add("bytes_copied", static_cast<double>(copied));
+    s.add("size", static_cast<double>(value.size()));
+    s.add("source", static_cast<double>(info.source));
+    s.add("conversion_successful", info.conversion_successful);
+    gm::wire::DataStream out; out << s; return out;
+}
+
+uint64_t firebase_remote_config_get_app(uint64_t rc_ref)
+{
+    auto* rc = resolveRemoteConfig(rc_ref); return rc ? wrapFirebaseApp(rc->app()) : 0;
+}
+
+uint64_t firebase_remote_config_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    auto* rc = firebase::remote_config::RemoteConfig::GetInstance(app);
+    if (!rc) { setFirebaseLastError(-1, "RemoteConfig::GetInstance(app) returned null"); return 0; }
+    return registerFirebasePointer(rc, GM_FB_TYPE_REMOTE_CONFIG);
+}

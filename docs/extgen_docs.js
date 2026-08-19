@@ -463,7 +463,39 @@
  * @function_partial firebase_auth_phone_verify_phone_number
  * @param {String} phone_number
  * @param {Real} timeout_ms
+ * @param {Real} force_resending_token
+ * @param {Function} [on_verification_completed]
+ * @param {Function} [on_verification_failed]
+ * @param {Function} [on_code_sent]
+ * @param {Function} [on_timeout]
  * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_phone_get_credential
+ * @param {String} verification_id
+ * @param {String} verification_code
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_phone_credential_sms_code
+ * @param {Real} credential
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_phone_resending_token_release
+ * @param {Real} token
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_phone_listener_release
+ * @param {Real} listener
  * @function_end
  */
 
@@ -3184,6 +3216,1547 @@
  * @param {Real} form_parent
  * @param {Function} [callback]
  * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_analytics_notify_app_lifecycle_change
+ * @param {Real} state
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_analytics_initiate_on_device_conversion_measurement_hashed_email
+ * @param {Buffer} hashed_email
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone
+ * @param {Buffer} hashed_phone
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_federated_oauth_provider_create
+ * @param {String} provider_id
+ * @param {Any} scopes
+ * @param {Any} custom_parameters
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_federated_oauth_provider_set_data
+ * @param {Real} provider
+ * @param {String} provider_id
+ * @param {Any} scopes
+ * @param {Any} custom_parameters
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_federated_oauth_provider_release
+ * @param {Real} provider
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_sign_in_with_provider
+ * @param {Real} provider
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_sign_in_with_custom_token_result
+ * @param {String} custom_token
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_sign_in_and_retrieve_data_with_credential_result
+ * @param {Real} credential
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_sign_in_anonymously_result
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_sign_in_with_email_and_password_result
+ * @param {String} email
+ * @param {String} password
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_create_user_with_email_and_password_result
+ * @param {String} email
+ * @param {String} password
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_provider_data_count
+ * @param {Real} user
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_provider_data_at
+ * @param {Real} user
+ * @param {Real} index
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_reauthenticate_with_provider
+ * @param {Real} user
+ * @param {Real} provider
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_link_with_provider
+ * @param {Real} user
+ * @param {Real} provider
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_reauthenticate_and_retrieve_data_result
+ * @param {Real} user
+ * @param {Real} credential
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_link_with_credential_result
+ * @param {Real} user
+ * @param {Real} credential
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_user_update_phone_number_credential
+ * @param {Real} user
+ * @param {Real} phone_credential
+ * @param {Function} [callback]
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_key
+ * @param {Real} ref
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_is_root
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_is_valid
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_get_parent
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_get_root
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_get_database
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_get_url
+ * @param {Real} ref
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_server_timestamp
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_ref_on_disconnect
+ * @param {Real} ref
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_cancel
+ * @param {Real} handler
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_remove_value
+ * @param {Real} handler
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_set_value
+ * @param {Real} handler
+ * @param {Any} value
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_set_value_and_priority
+ * @param {Real} handler
+ * @param {Any} value
+ * @param {Any} priority
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_update_children
+ * @param {Real} handler
+ * @param {Any} values
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_on_disconnect_release
+ * @param {Real} handler
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_path_create
+ * @param {Any} components
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_path_document_id
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_path_is_valid
+ * @param {Real} field_path
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_path_to_string
+ * @param {Real} field_path
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_path_release
+ * @param {Real} field_path
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_equal_to
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_not_equal_to
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_less_than
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_less_than_or_equal_to
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_greater_than
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_greater_than_or_equal_to
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_array_contains
+ * @param {String} field
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_array_contains_any
+ * @param {String} field
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_in
+ * @param {String} field
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_not_in
+ * @param {String} field
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_equal_to_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_not_equal_to_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_less_than_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_less_than_or_equal_to_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_greater_than_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_greater_than_or_equal_to_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_array_contains_field_path
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_array_contains_any_field_path
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_in_field_path
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_not_in_field_path
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_and
+ * @param {Any} filters
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_or
+ * @param {Any} filters
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_filter_release
+ * @param {Real} filter
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_filter
+ * @param {Real} query
+ * @param {Real} filter
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_equal_to_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_not_equal_to_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_less_than_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_less_than_or_equal_to_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_greater_than_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_greater_than_or_equal_to_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_array_contains_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_array_contains_any_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_in_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_where_not_in_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Any} values
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_order_by_field_path
+ * @param {Real} query
+ * @param {Real} field_path
+ * @param {Real} direction
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_count
+ * @param {Real} query
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_query_get_query
+ * @param {Real} aggregate_query
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_query_is_valid
+ * @param {Real} aggregate_query
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_query_get
+ * @param {Real} aggregate_query
+ * @param {Real} source
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_query_release
+ * @param {Real} aggregate_query
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_snapshot_count
+ * @param {Real} snapshot
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_snapshot_get_query
+ * @param {Real} snapshot
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_snapshot_is_valid
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_aggregate_snapshot_release
+ * @param {Real} snapshot
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_add_snapshots_in_sync_listener
+ * @param {Real} firestore
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_load_bundle
+ * @param {Real} firestore
+ * @param {Buffer} bundle
+ * @param {Function} [progress_callback]
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_named_query
+ * @param {Real} firestore
+ * @param {String} name
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_ref_set_merge_field_paths
+ * @param {Real} document
+ * @param {Any} data
+ * @param {Any} field_paths
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_write_batch_set_merge_field_paths
+ * @param {Real} batch
+ * @param {Real} document
+ * @param {Any} data
+ * @param {Any} field_paths
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_metadata_md5_hash
+ * @param {Real} metadata
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_ensure_initialized_info
+ * @param {Real} rc_ref
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_boolean_with_info
+ * @param {Real} rc_ref
+ * @param {String} key
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_long_with_info
+ * @param {Real} rc_ref
+ * @param {String} key
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_double_with_info
+ * @param {Real} rc_ref
+ * @param {String} key
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_string_with_info
+ * @param {Real} rc_ref
+ * @param {String} key
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_data_with_info
+ * @param {Real} rc_ref
+ * @param {String} key
+ * @param {Buffer} out_buffer
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_initialize_with_options
+ * @param {Real} suppress_notification_permission_prompt
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_type
+ * @param {Real} field_value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_valid
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_null
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_boolean
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_integer
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_double
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_timestamp
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_string
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_blob
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_reference
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_geo_point
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_array
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_is_map
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_boolean_value
+ * @param {Real} field_value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_integer_value
+ * @param {Real} field_value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_double_value
+ * @param {Real} field_value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_string_value
+ * @param {Real} field_value
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_blob_size
+ * @param {Real} field_value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_blob_copy
+ * @param {Real} field_value
+ * @param {Buffer} out_buffer
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_reference_value
+ * @param {Real} field_value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_timestamp_value
+ * @param {Real} field_value
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_geo_point_value
+ * @param {Real} field_value
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_array_value
+ * @param {Real} field_value
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_map_value
+ * @param {Real} field_value
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_to_string
+ * @param {Real} field_value
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_get_firestore
+ * @param {Real} query
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_ref_get_firestore
+ * @param {Real} document
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_ref_to_string
+ * @param {Real} document
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_ref_update_field_paths
+ * @param {Real} document
+ * @param {Any} entries
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_write_batch_update_field_paths
+ * @param {Real} batch
+ * @param {Real} document
+ * @param {Any} entries
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_write_batch_is_valid
+ * @param {Real} batch
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_settings_to_string
+ * @param {Real} firestore
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_is_valid
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_to_string
+ * @param {Real} snapshot
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_get_field_path
+ * @param {Real} snapshot
+ * @param {Real} field_path
+ * @param {Real} server_timestamp_behavior
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_is_valid
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_get_query
+ * @param {Real} snapshot
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_listener_registration_is_valid
+ * @param {Real} listener
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_get_default_handle
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_get_instance
+ * @param {String} name
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_get_apps
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_initialize_with_options
+ * @param {Any} options
+ * @param {String} name
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_initialize_from_json
+ * @param {String} json_config
+ * @param {String} name
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_handle_get_name
+ * @param {Real} app
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_handle_get_options
+ * @param {Real} app
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_get_default_options
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_release_handle
+ * @param {Real} app
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_set_log_level
+ * @param {Real} level
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_get_log_level
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_get_app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_get_app
+ * @param {Real} database
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_get_instance_for_app_url
+ * @param {Real} app
+ * @param {String} url
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_get_app
+ * @param {Real} firestore
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_get_instance_for_app_database
+ * @param {Real} app
+ * @param {String} database_id
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_get_app
+ * @param {Real} storage
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_get_instance_for_app_url
+ * @param {Real} app
+ * @param {String} url
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_functions_get_app
+ * @param {Real} functions
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_functions_callable_get_functions
+ * @param {Real} callable
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_functions_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_functions_get_instance_for_app_region
+ * @param {Real} app
+ * @param {String} region
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_get_app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_app
+ * @param {Real} remote_config
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_get_app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_boolean
+ * @param {Bool} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_string
+ * @param {String} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_array
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_field_value_map
+ * @param {Any} value
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_remote_config_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_analytics_initialize_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_initialize_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_initialize_for_app_with_options
+ * @param {Real} app
+ * @param {Real} suppress_notification_permission_prompt
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_ump_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_get_current_instance_handle
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_use_instance
+ * @param {Real} auth
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_instance_get_app
+ * @param {Real} auth
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_get_instance_handle
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_instance_get_app
+ * @param {Real} installations
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_instance_get_id
+ * @param {Real} installations
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_instance_get_token
+ * @param {Real} installations
+ * @param {Bool} force_refresh
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_instance_delete
+ * @param {Real} installations
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_get_instance_handle
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_instance_get_app
+ * @param {Real} app_check
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_instance_set_token_auto_refresh_enabled
+ * @param {Real} app_check
+ * @param {Bool} enabled
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_instance_get_token
+ * @param {Real} app_check
+ * @param {Bool} force_refresh
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_instance_get_limited_use_token
+ * @param {Real} app_check
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_instance_add_listener
+ * @param {Real} app_check
+ * @param {Function} [callback]
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_metadata_to_string
+ * @param {Real} snapshot
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_metadata_to_string
+ * @param {Real} snapshot
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_get_sdk_version
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_exists
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_id
+ * @param {Real} snapshot
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_reference
+ * @param {Real} snapshot
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_metadata_has_pending_writes
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_document_snapshot_metadata_is_from_cache
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_size
+ * @param {Real} snapshot
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_empty
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_metadata_has_pending_writes
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_query_snapshot_metadata_is_from_cache
+ * @param {Real} snapshot
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_email_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_facebook_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_game_center_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_github_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_google_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_microsoft_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_play_games_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_twitter_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_yahoo_auth_provider_id
+ * @returns {String}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_auth_game_center_auth_provider_get_credential_last_result
+ * @param {Function} [callback]
  * @function_end
  */
 

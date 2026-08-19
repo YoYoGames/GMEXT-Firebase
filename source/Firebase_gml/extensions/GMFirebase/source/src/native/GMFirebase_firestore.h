@@ -49,6 +49,15 @@ extern uint32_t g_fs_write_batch_index;
 extern std::map<uint32_t, firebase::firestore::FieldValue> g_fs_field_value_map;
 extern uint32_t g_fs_field_value_index;
 
+extern std::map<uint32_t, firebase::firestore::FieldPath> g_fs_field_path_map;
+extern uint32_t g_fs_field_path_index;
+extern std::map<uint32_t, firebase::firestore::Filter> g_fs_filter_map;
+extern uint32_t g_fs_filter_index;
+extern std::map<uint32_t, firebase::firestore::AggregateQuery> g_fs_aggregate_query_map;
+extern uint32_t g_fs_aggregate_query_index;
+extern std::map<uint32_t, firebase::firestore::AggregateQuerySnapshot> g_fs_aggregate_snapshot_map;
+extern uint32_t g_fs_aggregate_snapshot_index;
+
 // Registers a value copy and returns a packed GM_FB_TYPE_FIRESTORE_* ref.
 // Defined in GMFirebase_firestore.cpp (doc/col/query/batch/field_value) and
 // GMFirebase_firestore_snapshot.cpp (doc_snapshot/query_snapshot).
@@ -57,6 +66,10 @@ uint64_t registerFirestoreColRef(const firebase::firestore::CollectionReference&
 uint64_t registerFirestoreQuery(const firebase::firestore::Query& query);
 uint64_t registerFirestoreWriteBatch(const firebase::firestore::WriteBatch& batch);
 uint64_t registerFirestoreFieldValue(const firebase::firestore::FieldValue& value);
+uint64_t registerFirestoreFieldPath(const firebase::firestore::FieldPath& value);
+uint64_t registerFirestoreFilter(const firebase::firestore::Filter& value);
+uint64_t registerFirestoreAggregateQuery(const firebase::firestore::AggregateQuery& value);
+uint64_t registerFirestoreAggregateSnapshot(const firebase::firestore::AggregateQuerySnapshot& value);
 uint64_t registerFirestoreDocSnapshot(const firebase::firestore::DocumentSnapshot& snapshot);
 uint64_t registerFirestoreQuerySnapshot(const firebase::firestore::QuerySnapshot& snapshot);
 
@@ -125,3 +138,4 @@ std::vector<firebase::firestore::FieldValue> gmValueToFieldValueVector(const gm:
 // Decodes an inbound gmval array of strings, for
 // firestore_document_ref_set_merge_fields/firestore_write_batch_set_merge_fields.
 std::vector<std::string> gmValueToStringVector(const gm::wire::GMValue& value);
+firebase::firestore::MapFieldPathValue gmValueToMapFieldPathValue(const gm::wire::GMValue& value);

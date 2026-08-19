@@ -178,3 +178,16 @@ double firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint64_t for
 	});
 	return 1.0;
 }
+
+std::optional<uint64_t> firebase_ump_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return std::nullopt;
+    firebase::InitResult init_result = firebase::kInitResultSuccess;
+    auto* consent_info = firebase::ump::ConsentInfo::GetInstance(*app, &init_result);
+    if (!consent_info || init_result != firebase::kInitResultSuccess)
+    {
+        setFirebaseLastError(static_cast<int>(init_result), "UMP ConsentInfo::GetInstance(app) failed");
+        return std::nullopt;
+    }
+    return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
+}

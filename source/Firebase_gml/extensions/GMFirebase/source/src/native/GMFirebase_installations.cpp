@@ -83,3 +83,72 @@ double firebase_installations_delete(const std::optional<gm::wire::GMFunction>& 
 	});
 	return 1.0;
 }
+
+uint64_t firebase_installations_get_app()
+{
+    auto* installations = getInstallationsInstance();
+    return installations ? wrapFirebaseApp(installations->app()) : 0;
+}
+
+namespace
+{
+    firebase::installations::Installations* resolveInstallations(uint64_t ref)
+    {
+        return static_cast<firebase::installations::Installations*>(resolveFirebasePointer(ref, GM_FB_TYPE_INSTALLATIONS));
+    }
+
+    double installationsGetId(firebase::installations::Installations* installations, const std::optional<gm::wire::GMFunction>& callback)
+    {
+        if (!installations) return 0.0;
+        installations->GetId().OnCompletion([callback](const firebase::Future<std::string>& f){
+            if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
+            if(callback) callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""},
+                (f.error()==0 && f.result()) ? std::string_view{*f.result()} : std::string_view{});
+        }); return 1.0;
+    }
+    double installationsGetToken(firebase::installations::Installations* installations, bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
+    {
+        if (!installations) return 0.0;
+        installations->GetToken(force_refresh).OnCompletion([callback](const firebase::Future<std::string>& f){
+            if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
+            if(callback) callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""},
+                (f.error()==0 && f.result()) ? std::string_view{*f.result()} : std::string_view{});
+        }); return 1.0;
+    }
+    double installationsDelete(firebase::installations::Installations* installations, const std::optional<gm::wire::GMFunction>& callback)
+    {
+        if (!installations) return 0.0;
+        installations->Delete().OnCompletion([callback](const firebase::Future<void>& f){
+            if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
+            if(callback) callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""});
+        }); return 1.0;
+    }
+}
+
+uint64_t firebase_installations_get_instance_handle()
+{
+    auto* instance = getInstallationsInstance();
+    return instance ? registerFirebasePointer(instance, GM_FB_TYPE_INSTALLATIONS) : 0;
+}
+
+uint64_t firebase_installations_get_instance_for_app(uint64_t app_ref)
+{
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
+    auto* instance = firebase::installations::Installations::GetInstance(app);
+    if (!instance) { setFirebaseLastError(-1, "Installations::GetInstance(app) returned null"); return 0; }
+    return registerFirebasePointer(instance, GM_FB_TYPE_INSTALLATIONS);
+}
+
+uint64_t firebase_installations_instance_get_app(uint64_t instance_ref)
+{
+    auto* instance = resolveInstallations(instance_ref); return instance ? wrapFirebaseApp(instance->app()) : 0;
+}
+
+double firebase_installations_instance_get_id(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+{ return installationsGetId(resolveInstallations(instance_ref), callback); }
+
+double firebase_installations_instance_get_token(uint64_t instance_ref, bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
+{ return installationsGetToken(resolveInstallations(instance_ref), force_refresh, callback); }
+
+double firebase_installations_instance_delete(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+{ return installationsDelete(resolveInstallations(instance_ref), callback); }

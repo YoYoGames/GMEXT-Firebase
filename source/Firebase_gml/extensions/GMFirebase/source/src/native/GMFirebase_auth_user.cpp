@@ -327,17 +327,17 @@ void firebase_auth_user_reauthenticate(uint64_t user_ref, uint64_t credential_re
 {
 	firebase::auth::User* user = nullptr;
 	validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
-	firebase::auth::Credential* credential = nullptr;
-	validate_fb_ref_map(credential_ref, GM_FB_TYPE_AUTH_CREDENTIAL, firebase::auth::Credential, g_auth_credential_map, credential);
+	firebase::auth::Credential credential;
+	bool credential_ok = resolveFirebaseAuthCredential(credential_ref, credential);
 
-	if (user == nullptr || credential == nullptr)
+	if (user == nullptr || !credential_ok)
 	{
 		if (callback)
 			callback->call(static_cast<double>(firebase::auth::kAuthErrorFailure), std::string(firebase_last_error_message()));
 		return;
 	}
 
-	user->Reauthenticate(*credential).OnCompletion(
+	user->Reauthenticate(credential).OnCompletion(
 		[callback](const firebase::Future<void>& f)
 		{
 			int code = f.error();
@@ -353,17 +353,17 @@ void firebase_auth_user_reauthenticate_and_retrieve_data(uint64_t user_ref, uint
 {
 	firebase::auth::User* user = nullptr;
 	validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
-	firebase::auth::Credential* credential = nullptr;
-	validate_fb_ref_map(credential_ref, GM_FB_TYPE_AUTH_CREDENTIAL, firebase::auth::Credential, g_auth_credential_map, credential);
+	firebase::auth::Credential credential;
+	bool credential_ok = resolveFirebaseAuthCredential(credential_ref, credential);
 
-	if (user == nullptr || credential == nullptr)
+	if (user == nullptr || !credential_ok)
 	{
 		if (callback)
 			callback->call(static_cast<double>(firebase::auth::kAuthErrorFailure), std::string(firebase_last_error_message()), std::optional<uint64_t>{});
 		return;
 	}
 
-	user->ReauthenticateAndRetrieveData(*credential).OnCompletion(
+	user->ReauthenticateAndRetrieveData(credential).OnCompletion(
 		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
@@ -385,17 +385,17 @@ void firebase_auth_user_link_with_credential(uint64_t user_ref, uint64_t credent
 {
 	firebase::auth::User* user = nullptr;
 	validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
-	firebase::auth::Credential* credential = nullptr;
-	validate_fb_ref_map(credential_ref, GM_FB_TYPE_AUTH_CREDENTIAL, firebase::auth::Credential, g_auth_credential_map, credential);
+	firebase::auth::Credential credential;
+	bool credential_ok = resolveFirebaseAuthCredential(credential_ref, credential);
 
-	if (user == nullptr || credential == nullptr)
+	if (user == nullptr || !credential_ok)
 	{
 		if (callback)
 			callback->call(static_cast<double>(firebase::auth::kAuthErrorFailure), std::string(firebase_last_error_message()), std::optional<uint64_t>{});
 		return;
 	}
 
-	user->LinkWithCredential(*credential).OnCompletion(
+	user->LinkWithCredential(credential).OnCompletion(
 		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
@@ -491,4 +491,135 @@ void firebase_auth_user_delete(uint64_t user_ref, const std::optional<gm::wire::
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
 		});
+}
+
+// ============================================================
+// Provider data / federated provider / phone-number operations
+// ============================================================
+
+double firebase_auth_user_provider_data_count(uint64_t user_ref)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    return user ? static_cast<double>(user->provider_data().size()) : 0.0;
+}
+
+gm::wire::DataStream firebase_auth_user_provider_data_at(uint64_t user_ref, double index)
+{
+    gm::wire::StructStream info;
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    if (user != nullptr)
+    {
+        auto providers = user->provider_data();
+        size_t i = index < 0.0 ? providers.size() : static_cast<size_t>(index);
+        if (i < providers.size())
+        {
+            const auto& p = providers[i];
+            info.add("uid", std::string_view{ p.uid() });
+            info.add("email", std::string_view{ p.email() });
+            info.add("display_name", std::string_view{ p.display_name() });
+            info.add("photo_url", std::string_view{ p.photo_url() });
+            info.add("provider_id", std::string_view{ p.provider_id() });
+            info.add("phone_number", std::string_view{ p.phone_number() });
+        }
+    }
+    gm::wire::DataStream out;
+    out << info;
+    return out;
+}
+
+namespace
+{
+    firebase::auth::FederatedOAuthProvider* resolveUserFederatedProvider(uint64_t provider_ref)
+    {
+        firebase::auth::FederatedOAuthProvider* provider = nullptr;
+        validate_fb_ref_ptr(provider_ref, GM_FB_TYPE_AUTH_FEDERATED_PROVIDER, firebase::auth::FederatedOAuthProvider, provider);
+        return provider;
+    }
+
+    void completeUserAuthResult(const firebase::Future<firebase::auth::AuthResult>& f,
+        const std::optional<gm::wire::GMFunction>& callback)
+    {
+        const int code = f.error();
+        const char* message = f.error_message();
+        setFirebaseLastError(code, message ? message : "");
+        if (!callback) return;
+        if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResultStruct(*f.result()));
+        else
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<std::uint8_t>{});
+    }
+}
+
+void firebase_auth_user_reauthenticate_with_provider(uint64_t user_ref, uint64_t provider_ref,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    auto* provider = resolveUserFederatedProvider(provider_ref);
+    if (!user || !provider) return;
+    user->ReauthenticateWithProvider(provider).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    {
+        completeUserAuthResult(f, callback);
+    });
+}
+
+void firebase_auth_user_link_with_provider(uint64_t user_ref, uint64_t provider_ref,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    auto* provider = resolveUserFederatedProvider(provider_ref);
+    if (!user || !provider) return;
+    user->LinkWithProvider(provider).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    {
+        completeUserAuthResult(f, callback);
+    });
+}
+
+void firebase_auth_user_reauthenticate_and_retrieve_data_result(uint64_t user_ref, uint64_t credential_ref,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    firebase::auth::Credential credential;
+    if (!user || !resolveFirebaseAuthCredential(credential_ref, credential)) return;
+    user->ReauthenticateAndRetrieveData(credential).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    {
+        completeUserAuthResult(f, callback);
+    });
+}
+
+void firebase_auth_user_link_with_credential_result(uint64_t user_ref, uint64_t credential_ref,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    firebase::auth::Credential credential;
+    if (!user || !resolveFirebaseAuthCredential(credential_ref, credential)) return;
+    user->LinkWithCredential(credential).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    {
+        completeUserAuthResult(f, callback);
+    });
+}
+
+void firebase_auth_user_update_phone_number_credential(uint64_t user_ref, uint64_t phone_credential_ref,
+    const std::optional<gm::wire::GMFunction>& callback)
+{
+    firebase::auth::User* user = nullptr;
+    validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+    firebase::auth::PhoneAuthCredential credential;
+    if (!user || !firebase_auth_resolve_phone_credential(phone_credential_ref, credential)) return;
+    user->UpdatePhoneNumberCredential(credential).OnCompletion([callback](const firebase::Future<firebase::auth::User>& f)
+    {
+        const int code = f.error();
+        const char* message = f.error_message();
+        setFirebaseLastError(code, message ? message : "");
+        if (!callback) return;
+        std::optional<uint64_t> out;
+        if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
+            out = wrapFirebaseUser(*f.result());
+        callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, out);
+    });
 }

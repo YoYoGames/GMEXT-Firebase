@@ -1,3 +1,3 @@
 
-text = "Database"
-goto = rm_firebase_database
+text = "Authentication"
+goto = rm_firebase_authentication

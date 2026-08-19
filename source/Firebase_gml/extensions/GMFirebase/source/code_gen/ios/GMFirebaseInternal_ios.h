@@ -73,6 +73,7 @@
 - (double)__EXT_NATIVE__firebase_auth_play_games_auth_provider_get_credential:(char*)server_auth_code arg1:(char*)__ret_buffer arg2:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_auth_twitter_auth_provider_get_credential:(char*)token arg1:(char*)secret arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_auth_phone_verify_phone_number:(char*)phone_number arg1:(double)timeout_ms;
+- (double)__EXT_NATIVE__firebase_auth_user_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_auth_user_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_auth_user_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (char*)__EXT_NATIVE__firebase_auth_user_uid:(char*)__arg_buffer arg1:(double)__arg_buffer_length;

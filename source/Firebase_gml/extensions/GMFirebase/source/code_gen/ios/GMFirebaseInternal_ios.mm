@@ -368,6 +368,10 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_phone_verify_phone_number(phone_number, timeout_ms);
 }
+- (double)__EXT_NATIVE__firebase_auth_user_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
 - (double)__EXT_NATIVE__firebase_auth_user_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
     return __EXT_NATIVE__firebase_auth_user_release(__arg_buffer, __arg_buffer_length);

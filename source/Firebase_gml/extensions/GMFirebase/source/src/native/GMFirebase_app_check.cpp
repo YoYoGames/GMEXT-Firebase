@@ -177,8 +177,7 @@ uint64_t firebase_app_check_add_listener(const std::optional<gm::wire::GMFunctio
 	GmAppCheckListener* listener = new GmAppCheckListener(callback.value());
 	app_check->AddAppCheckListener(listener);
 
-	uint32_t id = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(listener) & 0xFFFFFFFFu);
-	return packFirebaseRef(id, GM_FB_TYPE_APPCHECK_LISTENER);
+	return registerFirebasePointer(listener, GM_FB_TYPE_APPCHECK_LISTENER);
 }
 
 double firebase_app_check_remove_listener(uint64_t listener_ref)
@@ -191,6 +190,7 @@ double firebase_app_check_remove_listener(uint64_t listener_ref)
 	if (app_check != nullptr)
 		app_check->RemoveAppCheckListener(listener);
 
+	listener = static_cast<firebase::app_check::AppCheckListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_APPCHECK_LISTENER));
 	delete listener;
 	return 1.0;
 }

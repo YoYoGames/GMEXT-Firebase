@@ -77,7 +77,7 @@ uint64_t firebase_functions_get_instance()
 		return 0;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(functions) & 0xFFFFFFFFu), GM_FB_TYPE_FUNCTIONS);
+	return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }
 
 uint64_t firebase_functions_get_instance_with_region(std::string_view region)
@@ -96,7 +96,7 @@ uint64_t firebase_functions_get_instance_with_region(std::string_view region)
 		return 0;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(functions) & 0xFFFFFFFFu), GM_FB_TYPE_FUNCTIONS);
+	return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }
 
 void firebase_functions_use_functions_emulator(uint64_t firebase_functions_ref, std::string_view origin)

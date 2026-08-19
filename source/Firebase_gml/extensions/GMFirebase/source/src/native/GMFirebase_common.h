@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 #include <native/GMFirebaseInternal_native.h>
 
@@ -65,11 +66,11 @@ uint64_t packFirebaseRef(uint32_t index, uint8_t type);
 // ============================================================
 // Type Codes
 // ============================================================
-// Pointer-identified types (SDK-owned heap objects, or our own heap-allocated
-// listener subclasses) use validate_fb_ref_ptr. Value-copy types (cheap
-// reference-style SDK objects like DatabaseReference/DocumentReference, which
-// have no stable address of their own to reuse as an identity) use
-// validate_fb_ref_map against a per-module registry map.
+// Every GML-facing handle contains ONLY a 32-bit registry id. Native pointers
+// are never truncated into the handle payload (that is not safe on 64-bit
+// processes). Pointer-backed types use the central pointer registry below;
+// value-copy types (DatabaseReference/DocumentReference/etc.) use per-module
+// value registries. In both cases the public ABI remains a single uint64.
 
 // Auth
 #define GM_FB_TYPE_AUTH_USER 0x01              // ptr: firebase::auth::User*
@@ -92,9 +93,9 @@ firebase::auth::Auth* getFirebaseAuth();
 // firebase::auth::User has no stable address of its own: Auth::current_user()
 // and every Future<User>/AuthResult::user hand the pimpl-style value back by
 // value, never by pointer. GM_FB_TYPE_AUTH_USER refs are heap copies minted by
-// this helper so pointer identity still works with validate_fb_ref_ptr; GML
-// calls firebase_auth_user_release() to free one when done with it. Defined
-// in GMFirebase_auth_user.cpp.
+// this helper and registered under a 32-bit id; GML calls
+// firebase_auth_user_release() to unregister/delete one when done with it.
+// Defined in GMFirebase_auth_user.cpp.
 uint64_t wrapFirebaseUser(const firebase::auth::User& user);
 
 // GM_FB_TYPE_AUTH_CREDENTIAL's registry: entries are minted in
@@ -109,8 +110,9 @@ extern uint32_t g_auth_credential_index;
 #define GM_FB_TYPE_DATABASE_REF 0x11         // map: firebase::database::DatabaseReference
 #define GM_FB_TYPE_DATABASE_QUERY 0x12       // map: firebase::database::Query
 #define GM_FB_TYPE_DATA_SNAPSHOT 0x13        // map: firebase::database::DataSnapshot
-#define GM_FB_TYPE_DATABASE_LISTENER 0x14    // ptr: our ValueListener/ChildListener subclass
-#define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15 // map: firebase::database::MutableData (transactions)
+#define GM_FB_TYPE_DATABASE_VALUE_LISTENER 0x14 // ptr registry: GMFirebaseValueListener
+#define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15   // map: firebase::database::MutableData (transactions)
+#define GM_FB_TYPE_DATABASE_CHILD_LISTENER 0x16 // ptr registry: GMFirebaseChildListener
 
 // Firestore
 #define GM_FB_TYPE_FIRESTORE 0x20              // ptr: firebase::firestore::Firestore*
@@ -159,14 +161,18 @@ extern uint32_t g_auth_credential_index;
 		output = (sentinel); \
 	}
 
-// Payload is the truncated pointer itself.
+// Pointer-backed handle registry. The registry owns identity only; object
+// lifetime is still controlled by the module that allocated/obtained the
+// pointer. registerFirebasePointer() deduplicates identical borrowed SDK
+// singleton pointers, while unregisterFirebasePointer() removes an owned
+// pointer before its module deletes it.
+uint64_t registerFirebasePointer(void* pointer, uint8_t type_code);
+void* resolveFirebasePointer(uint64_t ref, uint8_t expected_type);
+void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type);
+
 #define validate_fb_ref_ptr(ref, type_code, cpp_type, output) \
 	{ \
-		if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == (type_code)) \
-		{ \
-			output = reinterpret_cast<cpp_type*>(static_cast<uintptr_t>(gm_fb_ref_id(ref))); \
-		} \
-		else gm_fb_ref_reject(output, nullptr) \
+		output = static_cast<cpp_type*>(resolveFirebasePointer((ref), (type_code))); \
 	}
 
 // Payload is an index into a module-owned registry map; output is a pointer to
@@ -198,6 +204,12 @@ template <typename T>
 inline uint32_t registerFirebaseValue(T value, uint32_t& index, std::map<uint32_t, T>& map)
 {
 	uint32_t id = ++index;
+	// Keep 0 reserved for invalid/null and never reuse a live id. In normal
+	// operation ids are monotonic for the life of the process, which also means
+	// a released stale GML handle cannot accidentally target a newer object.
+	while (id == 0 || map.find(id) != map.end())
+		id = ++index;
+
 	map.emplace(id, std::move(value));
 	return id;
 }

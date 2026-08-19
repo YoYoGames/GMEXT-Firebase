@@ -77,7 +77,7 @@ uint64_t firebase_database_get_instance()
 		return 0;
 	}
 
-	return packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(db), GM_FB_TYPE_DATABASE);
+	return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
 }
 
 uint64_t firebase_database_get_instance_for_url(std::string_view url)
@@ -98,7 +98,7 @@ uint64_t firebase_database_get_instance_for_url(std::string_view url)
 		return 0;
 	}
 
-	return packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(db), GM_FB_TYPE_DATABASE);
+	return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
 }
 
 std::string firebase_database_get_url(uint64_t db_ref)
@@ -306,16 +306,17 @@ static uint64_t query_add_value_listener(Query* q,
 	listener->on_value_changed = on_value_changed;
 	listener->on_cancelled = on_cancelled;
 	q->AddValueListener(listener);
-	return packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(listener), GM_FB_TYPE_DATABASE_LISTENER);
+	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_VALUE_LISTENER);
 }
 
 static double query_remove_value_listener(Query* q, uint64_t listener_ref)
 {
 	if (q == nullptr) return 0;
 	GMFirebaseValueListener* listener = nullptr;
-	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_LISTENER, GMFirebaseValueListener, listener);
+	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER, GMFirebaseValueListener, listener);
 	if (listener == nullptr) return 0;
 	q->RemoveValueListener(listener);
+	listener = static_cast<GMFirebaseValueListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER));
 	delete listener;
 	return 1;
 }
@@ -345,16 +346,17 @@ static uint64_t query_add_child_listener(Query* q,
 	listener->on_child_removed = on_child_removed;
 	listener->on_cancelled = on_cancelled;
 	q->AddChildListener(listener);
-	return packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(listener), GM_FB_TYPE_DATABASE_LISTENER);
+	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_CHILD_LISTENER);
 }
 
 static double query_remove_child_listener(Query* q, uint64_t listener_ref)
 {
 	if (q == nullptr) return 0;
 	GMFirebaseChildListener* listener = nullptr;
-	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_LISTENER, GMFirebaseChildListener, listener);
+	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER, GMFirebaseChildListener, listener);
 	if (listener == nullptr) return 0;
 	q->RemoveChildListener(listener);
+	listener = static_cast<GMFirebaseChildListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER));
 	delete listener;
 	return 1;
 }
@@ -448,9 +450,9 @@ double firebase_database_query_release(uint64_t ref)
 // Database-returning getter in this extension). If `ref` is not a valid
 // registered DatabaseReference, returns a default-constructed struct (key "",
 // is_root/is_valid false, reference/parent/root/database 0, url "").
-gm_structs::DatabaseReference firebase_database_ref_get(uint64_t ref)
+gm_structs::FirebaseDatabaseReferenceInfo firebase_database_ref_get(uint64_t ref)
 {
-	gm_structs::DatabaseReference out{};
+	gm_structs::FirebaseDatabaseReferenceInfo out{};
 
 	DatabaseReference* r = resolve_db_ref(ref);
 	if (r == nullptr) return out;
@@ -462,7 +464,7 @@ gm_structs::DatabaseReference firebase_database_ref_get(uint64_t ref)
 	out.parent = registerDatabaseReference(r->GetParent());
 	out.root = registerDatabaseReference(r->GetRoot());
 	Database* db = r->database();
-	out.database = db != nullptr ? packFirebaseRef((uint32_t)reinterpret_cast<uintptr_t>(db), GM_FB_TYPE_DATABASE) : 0;
+	out.database = db != nullptr ? registerFirebasePointer(db, GM_FB_TYPE_DATABASE) : 0;
 	out.url = r->url();
 
 	return out;

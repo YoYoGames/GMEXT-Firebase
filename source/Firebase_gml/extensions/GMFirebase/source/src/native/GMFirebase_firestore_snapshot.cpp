@@ -219,5 +219,6 @@ void firebase_firestore_listener_registration_remove(uint64_t ref)
 	if (reg == nullptr) return;
 
 	reg->Remove();
+	reg = static_cast<firebase::firestore::ListenerRegistration*>(unregisterFirebasePointer(ref, GM_FB_TYPE_FIRESTORE_LISTENER_REG));
 	delete reg;
 }

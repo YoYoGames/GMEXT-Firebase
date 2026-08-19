@@ -61,6 +61,91 @@ uint64_t packFirebaseRef(uint32_t index, uint8_t type)
 }
 
 // ============================================================
+// Pointer-backed handle registry
+// ============================================================
+
+namespace
+{
+	struct FirebasePointerEntry
+	{
+		uint8_t type = 0;
+		void* pointer = nullptr;
+	};
+
+	std::mutex g_firebase_pointer_registry_mutex;
+	std::map<uint32_t, FirebasePointerEntry> g_firebase_pointer_registry;
+	std::map<std::pair<uint8_t, uintptr_t>, uint32_t> g_firebase_pointer_reverse;
+	uint32_t g_firebase_pointer_registry_index = 0;
+}
+
+uint64_t registerFirebasePointer(void* pointer, uint8_t type_code)
+{
+	if (pointer == nullptr)
+	{
+		setFirebaseLastError(-1, "cannot register null Firebase pointer");
+		return 0;
+	}
+
+	std::lock_guard<std::mutex> lock(g_firebase_pointer_registry_mutex);
+	const auto reverse_key = std::make_pair(type_code, reinterpret_cast<uintptr_t>(pointer));
+	const auto existing = g_firebase_pointer_reverse.find(reverse_key);
+	if (existing != g_firebase_pointer_reverse.end())
+		return packFirebaseRef(existing->second, type_code);
+
+	uint32_t id = ++g_firebase_pointer_registry_index;
+	// 0 is reserved as the invalid/null handle. If uint32_t ever wraps during
+	// one process lifetime, keep advancing until an unused non-zero id is found.
+	while (id == 0 || g_firebase_pointer_registry.find(id) != g_firebase_pointer_registry.end())
+		id = ++g_firebase_pointer_registry_index;
+
+	g_firebase_pointer_registry.emplace(id, FirebasePointerEntry{ type_code, pointer });
+	g_firebase_pointer_reverse.emplace(reverse_key, id);
+	return packFirebaseRef(id, type_code);
+}
+
+void* resolveFirebasePointer(uint64_t ref, uint8_t expected_type)
+{
+	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != expected_type)
+	{
+		setFirebaseLastError(-1, "invalid handle");
+		return nullptr;
+	}
+
+	std::lock_guard<std::mutex> lock(g_firebase_pointer_registry_mutex);
+	const auto it = g_firebase_pointer_registry.find(gm_fb_ref_id(ref));
+	if (it == g_firebase_pointer_registry.end() || it->second.type != expected_type || it->second.pointer == nullptr)
+	{
+		setFirebaseLastError(-1, "invalid or stale handle");
+		return nullptr;
+	}
+
+	return it->second.pointer;
+}
+
+void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type)
+{
+	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != expected_type)
+	{
+		setFirebaseLastError(-1, "invalid handle");
+		return nullptr;
+	}
+
+	std::lock_guard<std::mutex> lock(g_firebase_pointer_registry_mutex);
+	const uint32_t id = gm_fb_ref_id(ref);
+	const auto it = g_firebase_pointer_registry.find(id);
+	if (it == g_firebase_pointer_registry.end() || it->second.type != expected_type || it->second.pointer == nullptr)
+	{
+		setFirebaseLastError(-1, "invalid or stale handle");
+		return nullptr;
+	}
+
+	void* pointer = it->second.pointer;
+	g_firebase_pointer_reverse.erase(std::make_pair(expected_type, reinterpret_cast<uintptr_t>(pointer)));
+	g_firebase_pointer_registry.erase(it);
+	return pointer;
+}
+
+// ============================================================
 // firebase::Variant <-> gm::wire converters
 // ============================================================
 

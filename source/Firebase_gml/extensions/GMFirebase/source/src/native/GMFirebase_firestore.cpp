@@ -512,8 +512,7 @@ uint64_t firebase_firestore_get_instance()
 		return 0;
 	}
 
-	uint32_t id = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(fs) & 0xFFFFFFFFu);
-	return packFirebaseRef(id, GM_FB_TYPE_FIRESTORE);
+	return registerFirebasePointer(fs, GM_FB_TYPE_FIRESTORE);
 }
 
 uint64_t firebase_firestore_get_instance_for_database(std::string_view database_name)
@@ -534,8 +533,7 @@ uint64_t firebase_firestore_get_instance_for_database(std::string_view database_
 		return 0;
 	}
 
-	uint32_t id = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(fs) & 0xFFFFFFFFu);
-	return packFirebaseRef(id, GM_FB_TYPE_FIRESTORE);
+	return registerFirebasePointer(fs, GM_FB_TYPE_FIRESTORE);
 }
 
 std::string firebase_firestore_settings_get_host(uint64_t instance_ref)
@@ -994,8 +992,7 @@ uint64_t firebase_firestore_document_ref_add_snapshot_listener(uint64_t ref, boo
 			cb.call((double)error, std::string_view{ error_message }, snapshot_ref);
 		}));
 
-	uint32_t id = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(reg) & 0xFFFFFFFFu);
-	return packFirebaseRef(id, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
+	return registerFirebasePointer(reg, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
 }
 
 bool firebase_firestore_document_ref_is_valid(uint64_t ref)
@@ -1231,8 +1228,7 @@ uint64_t firebase_firestore_query_add_snapshot_listener(uint64_t ref, bool inclu
 			cb.call((double)error, std::string_view{ error_message }, snapshot_ref);
 		}));
 
-	uint32_t id = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(reg) & 0xFFFFFFFFu);
-	return packFirebaseRef(id, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
+	return registerFirebasePointer(reg, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
 }
 
 bool firebase_firestore_query_is_valid(uint64_t ref)

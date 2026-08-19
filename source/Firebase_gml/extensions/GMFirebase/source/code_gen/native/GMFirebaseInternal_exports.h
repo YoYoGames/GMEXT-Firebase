@@ -79,6 +79,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_oauth_provider_get_credential_with_n
 GMEXPORT double __EXT_NATIVE__firebase_auth_play_games_auth_provider_get_credential(char* server_auth_code, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_auth_twitter_auth_provider_get_credential(char* token, char* secret, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_auth_phone_verify_phone_number(char* phone_number, double timeout_ms);
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_auth_user_release(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_auth_user_is_valid(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT char* __EXT_NATIVE__firebase_auth_user_uid(char* __arg_buffer, double __arg_buffer_length);

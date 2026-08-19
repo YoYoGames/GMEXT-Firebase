@@ -225,15 +225,40 @@ enum FirebaseUmpConsentDebugGeography
 // #####################################################################
 
 /**
- * @returns {Struct.DatabaseReference}
+ * @returns {Struct.FirebaseAuthUserInfo}
  */
-function DatabaseReference() constructor
+function FirebaseAuthUserInfo() constructor
 {
     /**
      * Internally generated hash for quick validation
      * @ignore
      */
-    static __uid = 3562340949;
+    static __uid = 311442373;
+
+    self.uid = undefined;
+    self.email = undefined;
+    self.display_name = undefined;
+    self.photo_url = undefined;
+    self.provider_id = undefined;
+    self.phone_number = undefined;
+    self.is_email_verified = undefined;
+    self.is_anonymous = undefined;
+    self.is_valid = undefined;
+    self.creation_timestamp = undefined;
+    self.last_sign_in_timestamp = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseDatabaseReferenceInfo}
+ */
+function FirebaseDatabaseReferenceInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 3138794886;
 
     self.key = undefined;
     self.is_root = undefined;
@@ -263,28 +288,6 @@ function FirebaseDataSnapshotInfo() constructor
     self.has_children = undefined;
     self.children_count = undefined;
     self.reference = undefined;
-
-}
-
-/**
- * @returns {Struct.FirebaseDataSnapshot}
- */
-function FirebaseDataSnapshot() constructor
-{
-    /**
-     * Internally generated hash for quick validation
-     * @ignore
-     */
-    static __uid = 1996445928;
-
-    self.key = undefined;
-    self.exists = undefined;
-    self.is_valid = undefined;
-    self.has_children = undefined;
-    self.children_count = undefined;
-    self.reference = undefined;
-    self.value = undefined;
-    self.priority = undefined;
 
 }
 
@@ -348,14 +351,138 @@ function FirebaseRemoteConfigInfo() constructor
 // #####################################################################
 
 /**
- * @func __DatabaseReference_encode(_inst, _buffer, _offset, _where)
- * @param {Struct.DatabaseReference} _inst
+ * @func __FirebaseAuthUserInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAuthUserInfo} _inst
  * @param {Id.Buffer} _buffer
  * @param {Real} _offset
  * @param {String} _where
  * @ignore
  */
-function __DatabaseReference_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+function __FirebaseAuthUserInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: uid, type: String
+        if (!is_string(self.uid)) show_error($"{_where} :: self.uid expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.uid));
+        buffer_write(_buffer, buffer_string, self.uid);
+
+        // field: email, type: String
+        if (!is_string(self.email)) show_error($"{_where} :: self.email expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.email));
+        buffer_write(_buffer, buffer_string, self.email);
+
+        // field: display_name, type: String
+        if (!is_string(self.display_name)) show_error($"{_where} :: self.display_name expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.display_name));
+        buffer_write(_buffer, buffer_string, self.display_name);
+
+        // field: photo_url, type: String
+        if (!is_string(self.photo_url)) show_error($"{_where} :: self.photo_url expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.photo_url));
+        buffer_write(_buffer, buffer_string, self.photo_url);
+
+        // field: provider_id, type: String
+        if (!is_string(self.provider_id)) show_error($"{_where} :: self.provider_id expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.provider_id));
+        buffer_write(_buffer, buffer_string, self.provider_id);
+
+        // field: phone_number, type: String
+        if (!is_string(self.phone_number)) show_error($"{_where} :: self.phone_number expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.phone_number));
+        buffer_write(_buffer, buffer_string, self.phone_number);
+
+        // field: is_email_verified, type: Bool
+        if (!is_bool(self.is_email_verified)) show_error($"{_where} :: self.is_email_verified expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.is_email_verified);
+
+        // field: is_anonymous, type: Bool
+        if (!is_bool(self.is_anonymous)) show_error($"{_where} :: self.is_anonymous expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.is_anonymous);
+
+        // field: is_valid, type: Bool
+        if (!is_bool(self.is_valid)) show_error($"{_where} :: self.is_valid expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.is_valid);
+
+        // field: creation_timestamp, type: Float64
+        if (!is_numeric(self.creation_timestamp)) show_error($"{_where} :: self.creation_timestamp expected number", true);
+        buffer_write(_buffer, buffer_f64, self.creation_timestamp);
+
+        // field: last_sign_in_timestamp, type: Float64
+        if (!is_numeric(self.last_sign_in_timestamp)) show_error($"{_where} :: self.last_sign_in_timestamp expected number", true);
+        buffer_write(_buffer, buffer_f64, self.last_sign_in_timestamp);
+
+    }
+}
+
+/**
+ * @func __FirebaseAuthUserInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAuthUserInfo}
+ * @ignore
+ */
+function __FirebaseAuthUserInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAuthUserInfo();
+    with (_inst)
+    {
+        // field: uid, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.uid = buffer_read(_buffer, buffer_string);
+
+        // field: email, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.email = buffer_read(_buffer, buffer_string);
+
+        // field: display_name, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.display_name = buffer_read(_buffer, buffer_string);
+
+        // field: photo_url, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.photo_url = buffer_read(_buffer, buffer_string);
+
+        // field: provider_id, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.provider_id = buffer_read(_buffer, buffer_string);
+
+        // field: phone_number, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.phone_number = buffer_read(_buffer, buffer_string);
+
+        // field: is_email_verified, type: Bool
+        self.is_email_verified = buffer_read(_buffer, buffer_bool);
+
+        // field: is_anonymous, type: Bool
+        self.is_anonymous = buffer_read(_buffer, buffer_bool);
+
+        // field: is_valid, type: Bool
+        self.is_valid = buffer_read(_buffer, buffer_bool);
+
+        // field: creation_timestamp, type: Float64
+        self.creation_timestamp = buffer_read(_buffer, buffer_f64);
+
+        // field: last_sign_in_timestamp, type: Float64
+        self.last_sign_in_timestamp = buffer_read(_buffer, buffer_f64);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseDatabaseReferenceInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseDatabaseReferenceInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseDatabaseReferenceInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
 {
     buffer_seek(_buffer, buffer_seek_start, _offset);
     with (_inst)
@@ -398,17 +525,17 @@ function __DatabaseReference_encode(_inst, _buffer, _offset, _where = _GMFUNCTIO
 }
 
 /**
- * @func __DatabaseReference_decode(_buffer, _offset)
+ * @func __FirebaseDatabaseReferenceInfo_decode(_buffer, _offset)
  * @param {Id.Buffer} _buffer
  * @param {Real} _offset
- * @returns {Struct.DatabaseReference}
+ * @returns {Struct.FirebaseDatabaseReferenceInfo}
  * @ignore
  */
-function __DatabaseReference_decode(_buffer, _offset)
+function __FirebaseDatabaseReferenceInfo_decode(_buffer, _offset)
 {
     buffer_seek(_buffer, buffer_seek_start, _offset);
 
-    _inst = new DatabaseReference();
+    _inst = new FirebaseDatabaseReferenceInfo();
     with (_inst)
     {
         // field: key, type: String
@@ -515,101 +642,6 @@ function __FirebaseDataSnapshotInfo_decode(_buffer, _offset)
 
         // field: reference, type: UInt64
         self.reference = buffer_read(_buffer, buffer_u64);
-
-    }
-
-    return _inst;
-}
-
-/**
- * @func __FirebaseDataSnapshot_encode(_inst, _buffer, _offset, _where)
- * @param {Struct.FirebaseDataSnapshot} _inst
- * @param {Id.Buffer} _buffer
- * @param {Real} _offset
- * @param {String} _where
- * @ignore
- */
-function __FirebaseDataSnapshot_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
-{
-    buffer_seek(_buffer, buffer_seek_start, _offset);
-    with (_inst)
-    {
-        // field: key, type: String
-        if (!is_string(self.key)) show_error($"{_where} :: self.key expected string", true);
-        buffer_write(_buffer, buffer_u32, string_byte_length(self.key));
-        buffer_write(_buffer, buffer_string, self.key);
-
-        // field: exists, type: Bool
-        if (!is_bool(self.exists)) show_error($"{_where} :: self.exists expected bool", true);
-        buffer_write(_buffer, buffer_bool, self.exists);
-
-        // field: is_valid, type: Bool
-        if (!is_bool(self.is_valid)) show_error($"{_where} :: self.is_valid expected bool", true);
-        buffer_write(_buffer, buffer_bool, self.is_valid);
-
-        // field: has_children, type: Bool
-        if (!is_bool(self.has_children)) show_error($"{_where} :: self.has_children expected bool", true);
-        buffer_write(_buffer, buffer_bool, self.has_children);
-
-        // field: children_count, type: Float64
-        if (!is_numeric(self.children_count)) show_error($"{_where} :: self.children_count expected number", true);
-        buffer_write(_buffer, buffer_f64, self.children_count);
-
-        // field: reference, type: UInt64
-        if (!is_numeric(self.reference)) show_error($"{_where} :: self.reference expected number", true);
-        buffer_write(_buffer, buffer_u64, self.reference);
-
-        // field: value, type: Any
-
-        __ext_core_buffer_marshal_value(_buffer, self.value);
-
-        // field: priority, type: Any
-
-        __ext_core_buffer_marshal_value(_buffer, self.priority);
-
-    }
-}
-
-/**
- * @func __FirebaseDataSnapshot_decode(_buffer, _offset)
- * @param {Id.Buffer} _buffer
- * @param {Real} _offset
- * @returns {Struct.FirebaseDataSnapshot}
- * @ignore
- */
-function __FirebaseDataSnapshot_decode(_buffer, _offset)
-{
-    var __decoders__ = __GMFirebase_get_decoders();
-
-    buffer_seek(_buffer, buffer_seek_start, _offset);
-
-    _inst = new FirebaseDataSnapshot();
-    with (_inst)
-    {
-        // field: key, type: String
-        buffer_read(_buffer, buffer_u32);
-        self.key = buffer_read(_buffer, buffer_string);
-
-        // field: exists, type: Bool
-        self.exists = buffer_read(_buffer, buffer_bool);
-
-        // field: is_valid, type: Bool
-        self.is_valid = buffer_read(_buffer, buffer_bool);
-
-        // field: has_children, type: Bool
-        self.has_children = buffer_read(_buffer, buffer_bool);
-
-        // field: children_count, type: Float64
-        self.children_count = buffer_read(_buffer, buffer_f64);
-
-        // field: reference, type: UInt64
-        self.reference = buffer_read(_buffer, buffer_u64);
-
-        // field: value, type: Any
-        self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
-
-        // field: priority, type: Any
-        self.priority = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
 
     }
 
@@ -2008,6 +2040,30 @@ function firebase_auth_twitter_auth_provider_get_credential(_token, _secret)
 
 // Skipping function firebase_auth_phone_verify_phone_number (no wrapper is required)
 
+
+/**
+ * @param {Real} _user
+ * @returns {Struct.FirebaseAuthUserInfo}
+ */
+function firebase_auth_user_get_info(_user)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _user, type: UInt64
+    if (!is_numeric(_user)) show_error($"{_GMFUNCTION_} :: _user expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _user);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_auth_user_get_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __FirebaseAuthUserInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    return __result__;
+}
 
 /**
  * @param {Real} _user_ref
@@ -4329,7 +4385,7 @@ function firebase_database_query_release(_ref)
 
 /**
  * @param {Real} _ref
- * @returns {Struct.DatabaseReference}
+ * @returns {Struct.FirebaseDatabaseReferenceInfo}
  */
 function firebase_database_ref_get(_ref)
 {
@@ -4347,7 +4403,7 @@ function firebase_database_ref_get(_ref)
     var __return_value__ = __firebase_database_ref_get(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __DatabaseReference_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    __result__ = __FirebaseDatabaseReferenceInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
     return __result__;
 }
 
@@ -4913,19 +4969,19 @@ function firebase_database_snapshot_get_reference(_ref)
 }
 
 /**
- * @param {Real} _ref
+ * @param {Real} _snapshot
  * @returns {Struct.FirebaseDataSnapshotInfo}
  */
-function firebase_database_snapshot_get_info(_ref)
+function firebase_database_snapshot_get_info(_snapshot)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
 
     var __ret_buffer__ = __ext_core_get_ret_buffer();
 
@@ -4937,34 +4993,10 @@ function firebase_database_snapshot_get_info(_ref)
 }
 
 /**
- * @param {Real} _ref
- * @returns {Struct.FirebaseDataSnapshot}
- */
-function firebase_database_snapshot_get_value(_ref)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __args_buffer__ = __ext_core_get_args_buffer();
-
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_database_snapshot_get_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = __FirebaseDataSnapshot_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
-    return __result__;
-}
-
-/**
- * @param {Real} _ref
+ * @param {Real} _snapshot
  * @returns {Any}
  */
-function firebase_database_snapshot_get_priority(_ref)
+function firebase_database_snapshot_get_value(_snapshot)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
@@ -4973,9 +5005,35 @@ function firebase_database_snapshot_get_priority(_ref)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
+
+    var __ret_buffer__ = __ext_core_get_ret_buffer();
+
+    var __return_value__ = __firebase_database_snapshot_get_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+
+    var __result__ = undefined;
+    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    return __result__;
+}
+
+/**
+ * @param {Real} _snapshot
+ * @returns {Any}
+ */
+function firebase_database_snapshot_get_priority(_snapshot)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
 
     var __ret_buffer__ = __ext_core_get_ret_buffer();
 
@@ -4987,19 +5045,19 @@ function firebase_database_snapshot_get_priority(_ref)
 }
 
 /**
- * @param {Real} _ref
+ * @param {Real} _snapshot
  * @returns {Real}
  */
-function firebase_database_snapshot_release(_ref)
+function firebase_database_snapshot_release(_snapshot)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _ref, type: UInt64
-    if (!is_numeric(_ref)) show_error($"{_GMFUNCTION_} :: _ref expected number", true);
-    buffer_write(__args_buffer__, buffer_u64, _ref);
+    // param: _snapshot, type: UInt64
+    if (!is_numeric(_snapshot)) show_error($"{_GMFUNCTION_} :: _snapshot expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _snapshot);
 
     var __return_value__ = __firebase_database_snapshot_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -11137,9 +11195,9 @@ function firebase_ump_show_privacy_options_form(_consent_ref, _form_parent, _cal
 function __GMFirebase_get_decoders()
 {
     static __decoders__ = [
-        __DatabaseReference_decode,
+        __FirebaseAuthUserInfo_decode,
+        __FirebaseDatabaseReferenceInfo_decode,
         __FirebaseDataSnapshotInfo_decode,
-        __FirebaseDataSnapshot_decode,
         __FirestoreDocumentSnapshotInfo_decode,
         __FirestoreQuerySnapshotInfo_decode,
         __FirebaseRemoteConfigInfo_decode

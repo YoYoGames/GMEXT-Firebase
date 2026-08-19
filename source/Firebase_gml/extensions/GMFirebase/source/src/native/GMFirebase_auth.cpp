@@ -368,11 +368,9 @@ void firebase_auth_send_password_reset_email(std::string_view email, const std::
 // AuthStateListener / IdTokenListener
 // ============================================================
 // Each listener is a small heap-allocated subclass that owns its own
-// gm::wire::GMFunction. Its heap address is the ref GML gets back (packed
-// under GM_FB_TYPE_AUTH_STATE_LISTENER/GM_FB_TYPE_AUTH_ID_TOKEN_LISTENER); the
-// remove function looks it back up via validate_fb_ref_ptr, unregisters it
-// from Auth, and deletes it. No shared global map/mutex is needed - the
-// pointer itself is the identity, exactly like FMOD's own SDK-owned handles.
+// gm::wire::GMFunction. GML receives a packed registry id, never the native
+// address. The remove function resolves that id, unregisters the listener from
+// Auth and from GMFirebase's pointer registry, then deletes it.
 
 namespace
 {
@@ -430,7 +428,7 @@ std::optional<uint64_t> firebase_auth_add_state_listener(const gm::wire::GMFunct
 	GmAuthStateListener* listener = new GmAuthStateListener(callback);
 	auth->AddAuthStateListener(listener);
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(listener)), GM_FB_TYPE_AUTH_STATE_LISTENER);
+	return registerFirebasePointer(listener, GM_FB_TYPE_AUTH_STATE_LISTENER);
 }
 
 void firebase_auth_remove_state_listener(uint64_t listener_ref)
@@ -444,6 +442,7 @@ void firebase_auth_remove_state_listener(uint64_t listener_ref)
 	if (auth != nullptr)
 		auth->RemoveAuthStateListener(listener);
 
+	listener = static_cast<GmAuthStateListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_AUTH_STATE_LISTENER));
 	delete listener;
 }
 
@@ -456,7 +455,7 @@ std::optional<uint64_t> firebase_auth_add_id_token_listener(const gm::wire::GMFu
 	GmIdTokenListener* listener = new GmIdTokenListener(callback);
 	auth->AddIdTokenListener(listener);
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(listener)), GM_FB_TYPE_AUTH_ID_TOKEN_LISTENER);
+	return registerFirebasePointer(listener, GM_FB_TYPE_AUTH_ID_TOKEN_LISTENER);
 }
 
 void firebase_auth_remove_id_token_listener(uint64_t listener_ref)
@@ -470,5 +469,6 @@ void firebase_auth_remove_id_token_listener(uint64_t listener_ref)
 	if (auth != nullptr)
 		auth->RemoveIdTokenListener(listener);
 
+	listener = static_cast<GmIdTokenListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_AUTH_ID_TOKEN_LISTENER));
 	delete listener;
 }

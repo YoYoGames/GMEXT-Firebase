@@ -468,6 +468,13 @@
  */
 
 /**
+ * @function_partial firebase_auth_user_get_info
+ * @param {Real} user
+ * @returns {Struct.FirebaseAuthUserInfo}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_auth_user_release
  * @param {Real} user_ref
  * @function_end
@@ -1073,7 +1080,7 @@
 /**
  * @function_partial firebase_database_ref_get
  * @param {Real} ref
- * @returns {Struct.DatabaseReference}
+ * @returns {Struct.FirebaseDatabaseReferenceInfo}
  * @function_end
  */
 
@@ -1233,28 +1240,28 @@
 
 /**
  * @function_partial firebase_database_snapshot_get_info
- * @param {Real} ref
+ * @param {Real} snapshot
  * @returns {Struct.FirebaseDataSnapshotInfo}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_get_value
- * @param {Real} ref
- * @returns {Struct.FirebaseDataSnapshot}
+ * @param {Real} snapshot
+ * @returns {Any}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_get_priority
- * @param {Real} ref
+ * @param {Real} snapshot
  * @returns {Any}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_release
- * @param {Real} ref
+ * @param {Real} snapshot
  * @returns {Real}
  * @function_end
  */
@@ -3181,7 +3188,23 @@
  */
 
 /**
- * @struct_partial DatabaseReference
+ * @struct_partial FirebaseAuthUserInfo
+ * @member {String} uid
+ * @member {String} email
+ * @member {String} display_name
+ * @member {String} photo_url
+ * @member {String} provider_id
+ * @member {String} phone_number
+ * @member {Bool} is_email_verified
+ * @member {Bool} is_anonymous
+ * @member {Bool} is_valid
+ * @member {Real} creation_timestamp
+ * @member {Real} last_sign_in_timestamp
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirebaseDatabaseReferenceInfo
  * @member {String} key
  * @member {Bool} is_root
  * @member {Bool} is_valid
@@ -3201,19 +3224,6 @@
  * @member {Bool} has_children
  * @member {Real} children_count
  * @member {Real} reference
- * @struct_end
- */
-
-/**
- * @struct_partial FirebaseDataSnapshot
- * @member {String} key
- * @member {Bool} exists
- * @member {Bool} is_valid
- * @member {Bool} has_children
- * @member {Real} children_count
- * @member {Real} reference
- * @member {Any} value
- * @member {Any} priority
  * @struct_end
  */
 

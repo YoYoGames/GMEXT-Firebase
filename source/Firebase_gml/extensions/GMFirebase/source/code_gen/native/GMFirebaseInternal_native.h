@@ -232,14 +232,29 @@ namespace gm_enums
 
 namespace gm_structs
 {
-    struct DatabaseReference;
+    struct FirebaseAuthUserInfo;
+    struct FirebaseDatabaseReferenceInfo;
     struct FirebaseDataSnapshotInfo;
-    struct FirebaseDataSnapshot;
     struct FirestoreDocumentSnapshotInfo;
     struct FirestoreQuerySnapshotInfo;
     struct FirebaseRemoteConfigInfo;
 
-    struct DatabaseReference
+    struct FirebaseAuthUserInfo
+    {
+        std::string uid;
+        std::string email;
+        std::string display_name;
+        std::string photo_url;
+        std::string provider_id;
+        std::string phone_number;
+        bool is_email_verified;
+        bool is_anonymous;
+        bool is_valid;
+        double creation_timestamp;
+        double last_sign_in_timestamp;
+    };
+
+    struct FirebaseDatabaseReferenceInfo
     {
         std::string key;
         bool is_root;
@@ -259,18 +274,6 @@ namespace gm_structs
         bool has_children;
         double children_count;
         std::uint64_t reference;
-    };
-
-    struct FirebaseDataSnapshot
-    {
-        std::string key;
-        bool exists;
-        bool is_valid;
-        bool has_children;
-        double children_count;
-        std::uint64_t reference;
-        gm::wire::DataStream value;
-        gm::wire::DataStream priority;
     };
 
     struct FirestoreDocumentSnapshotInfo
@@ -303,7 +306,41 @@ namespace gm_structs
 namespace gm::wire::codec
 {
     template<>
-    inline void writeValue<gm_structs::DatabaseReference>(gm::byteio::IByteWriter& _buf, const gm_structs::DatabaseReference& obj)
+    inline void writeValue<gm_structs::FirebaseAuthUserInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAuthUserInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.uid);
+        gm::wire::codec::writeValue(_buf, obj.email);
+        gm::wire::codec::writeValue(_buf, obj.display_name);
+        gm::wire::codec::writeValue(_buf, obj.photo_url);
+        gm::wire::codec::writeValue(_buf, obj.provider_id);
+        gm::wire::codec::writeValue(_buf, obj.phone_number);
+        gm::wire::codec::writeValue(_buf, obj.is_email_verified);
+        gm::wire::codec::writeValue(_buf, obj.is_anonymous);
+        gm::wire::codec::writeValue(_buf, obj.is_valid);
+        gm::wire::codec::writeValue(_buf, obj.creation_timestamp);
+        gm::wire::codec::writeValue(_buf, obj.last_sign_in_timestamp);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAuthUserInfo readValue<gm_structs::FirebaseAuthUserInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAuthUserInfo obj;
+        obj.uid = gm::wire::codec::readValue<std::string>(_buf);
+        obj.email = gm::wire::codec::readValue<std::string>(_buf);
+        obj.display_name = gm::wire::codec::readValue<std::string>(_buf);
+        obj.photo_url = gm::wire::codec::readValue<std::string>(_buf);
+        obj.provider_id = gm::wire::codec::readValue<std::string>(_buf);
+        obj.phone_number = gm::wire::codec::readValue<std::string>(_buf);
+        obj.is_email_verified = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_anonymous = gm::wire::codec::readValue<bool>(_buf);
+        obj.is_valid = gm::wire::codec::readValue<bool>(_buf);
+        obj.creation_timestamp = gm::wire::codec::readValue<double>(_buf);
+        obj.last_sign_in_timestamp = gm::wire::codec::readValue<double>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseDatabaseReferenceInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseDatabaseReferenceInfo& obj)
     {
         gm::wire::codec::writeValue(_buf, obj.key);
         gm::wire::codec::writeValue(_buf, obj.is_root);
@@ -316,9 +353,9 @@ namespace gm::wire::codec
     }
 
     template<>
-    inline gm_structs::DatabaseReference readValue<gm_structs::DatabaseReference>(gm::byteio::BufferReader& _buf)
+    inline gm_structs::FirebaseDatabaseReferenceInfo readValue<gm_structs::FirebaseDatabaseReferenceInfo>(gm::byteio::BufferReader& _buf)
     {
-        gm_structs::DatabaseReference obj;
+        gm_structs::FirebaseDatabaseReferenceInfo obj;
         obj.key = gm::wire::codec::readValue<std::string>(_buf);
         obj.is_root = gm::wire::codec::readValue<bool>(_buf);
         obj.is_valid = gm::wire::codec::readValue<bool>(_buf);
@@ -351,34 +388,6 @@ namespace gm::wire::codec
         obj.has_children = gm::wire::codec::readValue<bool>(_buf);
         obj.children_count = gm::wire::codec::readValue<double>(_buf);
         obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
-        return obj;
-    }
-
-    template<>
-    inline void writeValue<gm_structs::FirebaseDataSnapshot>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseDataSnapshot& obj)
-    {
-        gm::wire::codec::writeValue(_buf, obj.key);
-        gm::wire::codec::writeValue(_buf, obj.exists);
-        gm::wire::codec::writeValue(_buf, obj.is_valid);
-        gm::wire::codec::writeValue(_buf, obj.has_children);
-        gm::wire::codec::writeValue(_buf, obj.children_count);
-        gm::wire::codec::writeValue(_buf, obj.reference);
-        gm::wire::codec::writeValue(_buf, obj.value);
-        gm::wire::codec::writeValue(_buf, obj.priority);
-    }
-
-    template<>
-    inline gm_structs::FirebaseDataSnapshot readValue<gm_structs::FirebaseDataSnapshot>(gm::byteio::BufferReader& _buf)
-    {
-        gm_structs::FirebaseDataSnapshot obj;
-        obj.key = gm::wire::codec::readValue<std::string>(_buf);
-        obj.exists = gm::wire::codec::readValue<bool>(_buf);
-        obj.is_valid = gm::wire::codec::readValue<bool>(_buf);
-        obj.has_children = gm::wire::codec::readValue<bool>(_buf);
-        obj.children_count = gm::wire::codec::readValue<double>(_buf);
-        obj.reference = gm::wire::codec::readValue<std::uint64_t>(_buf);
-        obj.value = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
-        obj.priority = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
         return obj;
     }
 
@@ -449,21 +458,21 @@ namespace gm::wire::codec
 namespace gm::wire::details
 {
     template<>
-    struct gm_struct_traits<gm_structs::DatabaseReference>
+    struct gm_struct_traits<gm_structs::FirebaseAuthUserInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 0;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
+    struct gm_struct_traits<gm_structs::FirebaseDatabaseReferenceInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 1;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDataSnapshot>
+    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 2;
@@ -562,6 +571,7 @@ std::uint64_t firebase_auth_oauth_provider_get_credential_with_nonce(std::string
 std::uint64_t firebase_auth_play_games_auth_provider_get_credential(std::string_view server_auth_code);
 std::uint64_t firebase_auth_twitter_auth_provider_get_credential(std::string_view token, std::string_view secret);
 double firebase_auth_phone_verify_phone_number(std::string_view phone_number, double timeout_ms);
+gm_structs::FirebaseAuthUserInfo firebase_auth_user_get_info(std::uint64_t user);
 void firebase_auth_user_release(std::uint64_t user_ref);
 bool firebase_auth_user_is_valid(std::uint64_t user_ref);
 std::string firebase_auth_user_uid(std::uint64_t user_ref);
@@ -640,7 +650,7 @@ std::uint64_t firebase_database_query_add_child_listener(std::uint64_t ref, cons
 double firebase_database_query_remove_child_listener(std::uint64_t ref, std::uint64_t listener_ref);
 double firebase_database_query_remove_all_child_listeners(std::uint64_t ref);
 double firebase_database_query_release(std::uint64_t ref);
-gm_structs::DatabaseReference firebase_database_ref_get(std::uint64_t ref);
+gm_structs::FirebaseDatabaseReferenceInfo firebase_database_ref_get(std::uint64_t ref);
 std::uint64_t firebase_database_ref_child(std::uint64_t ref, std::string_view path);
 std::uint64_t firebase_database_ref_push(std::uint64_t ref);
 double firebase_database_ref_go_online(std::uint64_t ref);
@@ -661,10 +671,10 @@ double firebase_database_snapshot_children_count(std::uint64_t ref);
 gm::wire::DataStream firebase_database_snapshot_get_children(std::uint64_t ref);
 std::string firebase_database_snapshot_key(std::uint64_t ref);
 std::uint64_t firebase_database_snapshot_get_reference(std::uint64_t ref);
-gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(std::uint64_t ref);
-gm_structs::FirebaseDataSnapshot firebase_database_snapshot_get_value(std::uint64_t ref);
-gm::wire::DataStream firebase_database_snapshot_get_priority(std::uint64_t ref);
-double firebase_database_snapshot_release(std::uint64_t ref);
+gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(std::uint64_t snapshot);
+gm::wire::DataStream firebase_database_snapshot_get_value(std::uint64_t snapshot);
+gm::wire::DataStream firebase_database_snapshot_get_priority(std::uint64_t snapshot);
+double firebase_database_snapshot_release(std::uint64_t snapshot);
 std::uint64_t firebase_firestore_get_instance();
 std::uint64_t firebase_firestore_get_instance_for_database(std::string_view database_name);
 std::string firebase_firestore_settings_get_host(std::uint64_t instance_ref);

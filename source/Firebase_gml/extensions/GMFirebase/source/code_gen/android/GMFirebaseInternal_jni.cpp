@@ -912,6 +912,25 @@ static jdouble __JNI_WRAPPER__firebase_auth_phone_verify_phone_number_2DD715DF14
     return static_cast<jdouble>(__ret);
 }
 
+// firebase_auth_user_get_info JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_get_info_00E3F250CE08(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_get_info((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
 // firebase_auth_user_release JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
 static jdouble __JNI_WRAPPER__firebase_auth_user_release_2641D3568439(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
@@ -6128,6 +6147,7 @@ extern "C" {
             { "__EXT_JNI__firebase_auth_play_games_auth_provider_get_credential", "(Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_play_games_auth_provider_get_credential_C562F1B99653 },
             { "__EXT_JNI__firebase_auth_twitter_auth_provider_get_credential", "(Ljava/lang/String;Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_twitter_auth_provider_get_credential_8C3FADDC2B14 },
             { "__EXT_JNI__firebase_auth_phone_verify_phone_number", "(Ljava/lang/String;D)D", (void*)__JNI_WRAPPER__firebase_auth_phone_verify_phone_number_2DD715DF1492 },
+            { "__EXT_JNI__firebase_auth_user_get_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_get_info_00E3F250CE08 },
             { "__EXT_JNI__firebase_auth_user_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_release_2641D3568439 },
             { "__EXT_JNI__firebase_auth_user_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_is_valid_A379114D92DD },
             { "__EXT_JNI__firebase_auth_user_uid", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_auth_user_uid_0D4DF9E5C83C },

@@ -70,7 +70,7 @@ uint64_t firebase_remote_config_get_instance()
 		return 0;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(rc) & 0xFFFFFFFFu), GM_FB_TYPE_REMOTE_CONFIG);
+	return registerFirebasePointer(rc, GM_FB_TYPE_REMOTE_CONFIG);
 }
 
 // callback(error_code: real, error_message: string)
@@ -373,7 +373,7 @@ uint64_t firebase_remote_config_add_config_update_listener(uint64_t rc_ref, cons
 	});
 
 	auto* boxed = new firebase::remote_config::ConfigUpdateListenerRegistration(std::move(registration));
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(boxed) & 0xFFFFFFFFu), GM_FB_TYPE_RC_LISTENER_REG);
+	return registerFirebasePointer(boxed, GM_FB_TYPE_RC_LISTENER_REG);
 }
 
 double firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
@@ -382,6 +382,7 @@ double firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
 	if (reg == nullptr) return 0.0;
 
 	reg->Remove();
+	reg = static_cast<firebase::remote_config::ConfigUpdateListenerRegistration*>(unregisterFirebasePointer(reg_ref, GM_FB_TYPE_RC_LISTENER_REG));
 	delete reg;
 	return 1.0;
 }

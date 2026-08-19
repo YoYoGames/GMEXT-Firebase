@@ -33,16 +33,11 @@ uint64_t registerDatabaseSnapshot(const firebase::database::DataSnapshot& snapsh
 // Listeners
 // ============================================================
 // Heap-allocated subclasses, each owning the gm::wire::GMFunction(s) it was
-// registered with. The heap pointer itself is packed as the
-// GM_FB_TYPE_DATABASE_LISTENER ref GML gets back from
-// add_value_listener/add_child_listener, to be handed back later to
-// remove_value_listener/remove_child_listener (which also deletes it).
-//
-// A ref minted by add_value_listener must only ever be passed back to
-// remove_value_listener, and one minted by add_child_listener only to
-// remove_child_listener - the two are different C++ types living under the
-// same type code (there is only one "our own listener" slot reserved in
-// GMFirebase_common.h), so crossing them is undefined behavior.
+// registered with. GML receives only a 32-bit registry id packed into the
+// uint64 handle; the native pointer itself never crosses the ABI. Value and
+// child listeners intentionally use different type codes, so passing a child
+// listener handle to remove_value_listener (or vice versa) is rejected rather
+// than reinterpreting one C++ listener type as the other.
 
 class GMFirebaseValueListener : public firebase::database::ValueListener
 {

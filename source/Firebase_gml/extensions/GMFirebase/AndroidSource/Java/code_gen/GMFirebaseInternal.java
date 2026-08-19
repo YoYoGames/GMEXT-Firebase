@@ -292,6 +292,10 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_phone_verify_phone_number(phone_number, timeout_ms);
     }
+    public double __EXT_NATIVE__firebase_auth_user_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    {
+        return __EXT_JNI__firebase_auth_user_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    }
     public double __EXT_NATIVE__firebase_auth_user_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
         return __EXT_JNI__firebase_auth_user_release(__arg_buffer, __arg_buffer_length);

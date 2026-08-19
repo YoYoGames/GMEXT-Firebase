@@ -147,7 +147,7 @@ uint64_t firebase_storage_get_instance()
 		return 0;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(storage) & 0xFFFFFFFFu), GM_FB_TYPE_STORAGE);
+	return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
 }
 
 uint64_t firebase_storage_get_instance_with_url(std::string_view url)
@@ -166,7 +166,7 @@ uint64_t firebase_storage_get_instance_with_url(std::string_view url)
 		return 0;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(storage) & 0xFFFFFFFFu), GM_FB_TYPE_STORAGE);
+	return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
 }
 
 std::string firebase_storage_url(uint64_t firebase_storage_ref)
@@ -298,7 +298,7 @@ uint64_t firebase_storage_ref_storage(uint64_t ref)
 	if (self == nullptr) return 0;
 	firebase::storage::Storage* storage = self->storage();
 	if (storage == nullptr) return 0;
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(storage) & 0xFFFFFFFFu), GM_FB_TYPE_STORAGE);
+	return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
 }
 
 // callback(error_code: real, error_message: string)

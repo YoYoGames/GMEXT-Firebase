@@ -17,9 +17,9 @@
     {"$GMFolder":"","%Name":"Database","folderPath":"folders/Firebase Demos/Database.yy","name":"Database","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firestore","folderPath":"folders/Firebase Demos/Firestore.yy","name":"Firestore","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Functions","folderPath":"folders/Firebase Demos/Functions.yy","name":"Functions","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"UMP","folderPath":"folders/Firebase Demos/UMP.yy","name":"UMP","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"RemoteConfig","folderPath":"folders/Firebase Demos/RemoteConfig.yy","name":"RemoteConfig","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Storage","folderPath":"folders/Firebase Demos/Storage.yy","name":"Storage","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"UMP","folderPath":"folders/Firebase Demos/UMP.yy","name":"UMP","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Firebase","folderPath":"folders/Firebase.yy","name":"Firebase","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"GM Extensions Assets","folderPath":"folders/GM Extensions Assets.yy","name":"GM Extensions Assets","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Font","folderPath":"folders/GM Extensions Assets/Font.yy","name":"Font","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -37,7 +37,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2026.0.0.16",
+    "IDEVersion":"2024.14.4.222",
   },
   "name":"Firebase",
   "resources":[

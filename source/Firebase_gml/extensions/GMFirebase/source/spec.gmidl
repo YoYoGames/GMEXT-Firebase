@@ -2,6 +2,20 @@
 module GMFirebase;
 
 // ============================================================
+// Public ABI / allocation policy
+// ============================================================
+// Native-backed Firebase identity objects are represented as packed uint64
+// handles: [extension id | Firebase-local type | 32-bit registry id]. The
+// payload is always a registry id - never a native pointer. Passing handles
+// between Firebase calls therefore creates no GameMaker struct/object and no
+// additional GC pressure.
+//
+// GameMaker classes below are reserved for explicit value materialization
+// (for example *_get_info()), configuration, or result data that GML actually
+// needs to inspect. Hot-path listeners return handles and primitive callback
+// values; callers opt into struct/array allocation only when they request it.
+
+// ============================================================
 // App core
 // ============================================================
 
@@ -554,6 +568,30 @@ function firebase_auth_phone_verify_phone_number(
 // C++ side. Call firebase_auth_user_release() once done with a user ref;
 // releasing it never signs the underlying account out.
 
+// Explicit convenience materialization. Sign-in/current-user/listener paths
+// still return only the uint64 user handle. Call this when multiple user
+// properties are needed together and the one GML struct allocation is useful.
+[global]
+class `[[FirebaseAuthUserInfo]]` prototype Object
+{
+	[field] property uid: string { get; set; }
+	[field] property email: string { get; set; }
+	[field] property display_name: string { get; set; }
+	[field] property photo_url: string { get; set; }
+	[field] property provider_id: string { get; set; }
+	[field] property phone_number: string { get; set; }
+	[field] property is_email_verified: bool { get; set; }
+	[field] property is_anonymous: bool { get; set; }
+	[field] property is_valid: bool { get; set; }
+	[field, type_hint=`real`] property creation_timestamp: gmval { get; set; }
+	[field, type_hint=`real`] property last_sign_in_timestamp: gmval { get; set; }
+}
+
+[global, bind = typed_gml, type_hint=`FirebaseAuthUserInfo`]
+function firebase_auth_user_get_info(
+	[type_hint=`uint64`] user: gmval
+): gmval;
+
 [global, bind = typed_gml]
 function firebase_auth_user_release(
 	[type_hint=`uint64`] user_ref: gmval
@@ -931,9 +969,9 @@ function firebase_database_ref_get_value(
 
 // on_value_changed(snapshot_ref: uint64)
 // on_cancelled(error_code: real, error_message: string)
-// Returns a listener ref for firebase_database_ref_remove_value_listener -
-// never pass it to remove_child_listener, they are different C++ types
-// sharing one type code.
+// Returns a value-listener handle for firebase_database_ref_remove_value_listener.
+// Value and child listeners use distinct encoded handle type codes, so mixing
+// them is rejected safely.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_database_ref_add_value_listener(
 	[type_hint=`uint64`] ref: gmval,
@@ -958,8 +996,8 @@ function firebase_database_ref_remove_all_value_listeners(
 // on_child_added/changed/moved(snapshot_ref: uint64, previous_sibling_key: string)
 // on_child_removed(snapshot_ref: uint64)
 // on_cancelled(error_code: real, error_message: string)
-// Returns a listener ref for firebase_database_ref_remove_child_listener -
-// never pass it to remove_value_listener.
+// Returns a child-listener handle for firebase_database_ref_remove_child_listener.
+// It is intentionally a different encoded type from a value-listener handle.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_database_ref_add_child_listener(
 	[type_hint=`uint64`] ref: gmval,
@@ -1130,7 +1168,9 @@ function firebase_database_query_release(
 // Realtime Database - DatabaseReference-only surface
 // ============================================================
 
-// Everything cheap to know about a DatabaseReference in one call - key,
+// Explicit convenience materialization for a DatabaseReference. This allocates
+// one GML struct and registers the returned reference/parent/root handles, so
+// prefer the granular getters on frame-sensitive paths. It collects key,
 // identity flags, and the *_ref/*_url values that used to need five separate
 // round trips (get_reference/get_parent/get_root/get_database/get_url).
 // `reference`, `parent`, and `root` are newly registered GM_FB_TYPE_DATABASE_REF
@@ -1138,7 +1178,7 @@ function firebase_database_query_release(
 // when done. `database` is a GM_FB_TYPE_DATABASE ref (not owned/released,
 // same as every other Database-returning getter in this extension).
 [global]
-class `[[DatabaseReference]]` prototype Object
+class `[[FirebaseDatabaseReferenceInfo]]` prototype Object
 {
 	[field] property key: string { get; set; }
 	[field] property is_root: bool { get; set; }
@@ -1155,7 +1195,7 @@ class `[[DatabaseReference]]` prototype Object
 // not a valid registered DatabaseReference, returns a default-constructed
 // struct (key "", is_root/is_valid false, reference/parent/root/database 0,
 // url "") - same convention as firebase_database_snapshot_get_info().
-[global, bind = typed_gml, type_hint=`DatabaseReference`]
+[global, bind = typed_gml, type_hint=`FirebaseDatabaseReferenceInfo`]
 function firebase_database_ref_get(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
@@ -1263,7 +1303,10 @@ function firebase_database_ref_release(
 // Realtime Database - DataSnapshot
 // ============================================================
 
-// Everything about a snapshot EXCEPT its (dynamically-typed) value/priority -
+// Explicit convenience materialization for snapshot metadata. This allocates
+// one GML struct; hot listener paths should use the individual snapshot
+// getters when only one or two fields are needed. It contains everything
+// about a snapshot EXCEPT its (dynamically-typed) value/priority -
 // fetch those separately via firebase_database_snapshot_get_value()/
 // get_priority(). `reference` is a newly registered GM_FB_TYPE_DATABASE_REF
 // ref owned by the caller - release it with firebase_database_ref_release()
@@ -1338,36 +1381,16 @@ function firebase_database_snapshot_get_reference(
 // firebase_remote_config_get_info().
 [global, bind = typed_gml, type_hint=`FirebaseDataSnapshotInfo`]
 function firebase_database_snapshot_get_info(
-	[type_hint=`uint64`] ref: gmval
+	[type_hint=`uint64`] snapshot: gmval
 ): gmval;
 
-// Everything about a snapshot, including its (dynamically-typed) value and
-// priority - unlike FirebaseDataSnapshotInfo above, which omits them. `value`
-// mirrors firebase_database_snapshot_get_value() (undefined/bool/real/string/
-// array/struct, arbitrarily nested); `priority` mirrors
-// firebase_database_snapshot_get_priority() (usually real, string, or
-// undefined). `reference` is a newly registered GM_FB_TYPE_DATABASE_REF ref
-// owned by the caller - release it with firebase_database_ref_release() when
-// done. Not yet wired up to any function - see the .cpp for the wiring step.
-[global]
-class `[[FirebaseDataSnapshot]]` prototype Object
-{
-	[field] property key: string { get; set; }
-	[field] property exists: bool { get; set; }
-	[field] property is_valid: bool { get; set; }
-	[field] property has_children: bool { get; set; }
-	[field, type_hint=`real`] property children_count: gmval { get; set; }
-	[field, type_hint=`uint64`] property reference: gmval { get; set; }
-	[field, type_hint=`any`] property value: gmval { get; set; }
-	[field] property priority: gmval { get; set; }
-}
-
-// Returns the dynamically-typed value at this location (undefined/bool/real/
-// string/array/struct, arbitrarily nested for array/struct), mirroring
-// whatever shape the data actually has.
-[global, bind = typed_gml,type_hint=`FirebaseDataSnapshot`]
+// Materializes ONLY the dynamically-typed value at this location
+// (undefined/bool/real/string/array/struct, arbitrarily nested). The snapshot
+// itself remains the uint64 handle, so merely receiving/passing a snapshot
+// through a listener does not allocate a GameMaker struct.
+[global, bind = typed_gml]
 function firebase_database_snapshot_get_value(
-	[type_hint=`uint64`] ref: gmval
+	[type_hint=`uint64`] snapshot: gmval
 ): gmval;
 
 // Same convention as get_value(), applied to the snapshot's priority instead
@@ -1375,14 +1398,14 @@ function firebase_database_snapshot_get_value(
 // undefined).
 [global, bind = typed_gml]
 function firebase_database_snapshot_get_priority(
-	[type_hint=`uint64`] ref: gmval
+	[type_hint=`uint64`] snapshot: gmval
 ): gmval;
 
 // Frees the value-copy registry slot for a snapshot ref. Does not touch the
 // underlying database location.
 [global, bind = typed_gml]
 function firebase_database_snapshot_release(
-	[type_hint=`uint64`] ref: gmval
+	[type_hint=`uint64`] snapshot: gmval
 ): real;
 
 // ============================================================

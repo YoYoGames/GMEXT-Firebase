@@ -49,7 +49,7 @@ std::optional<uint64_t> firebase_ump_get_instance()
 		return std::nullopt;
 	}
 
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(consent_info) & 0xFFFFFFFFu), GM_FB_TYPE_UMP_CONSENT_INFO);
+	return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
 }
 
 double firebase_ump_get_consent_status(uint64_t consent_ref)

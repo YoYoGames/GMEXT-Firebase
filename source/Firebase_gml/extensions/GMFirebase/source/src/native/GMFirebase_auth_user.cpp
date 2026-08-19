@@ -3,9 +3,8 @@
 // firebase::auth::User is a pimpl-style value type: Auth::current_user(),
 // every Future<AuthResult>::result()->user, and Future<User>::result() all
 // hand it back BY VALUE, never as a User*. There is no SDK-owned User* to
-// reuse as a pointer identity. To still satisfy GM_FB_TYPE_AUTH_USER's
-// pointer-identified contract (see GMFirebase_common.h), wrapFirebaseUser()
-// heap-allocates our own private copy of the value and hands out its address;
+// reuse as a native identity. wrapFirebaseUser() heap-allocates a private copy
+// and registers it under a 32-bit id; only the packed id crosses into GML.
 // firebase_auth_user_release() is how GML frees that copy once it is done
 // with it. This does NOT touch any SDK-internal session state - User's copy
 // ctor/dtor only manage the lightweight pimpl handle, so deleting our copy
@@ -21,7 +20,7 @@ using namespace gm_enums;
 uint64_t wrapFirebaseUser(const firebase::auth::User& user)
 {
 	firebase::auth::User* copy = new firebase::auth::User(user);
-	return packFirebaseRef(static_cast<uint32_t>(reinterpret_cast<uintptr_t>(copy)), GM_FB_TYPE_AUTH_USER);
+	return registerFirebasePointer(copy, GM_FB_TYPE_AUTH_USER);
 }
 
 void firebase_auth_user_release(uint64_t user_ref)
@@ -31,12 +30,35 @@ void firebase_auth_user_release(uint64_t user_ref)
 	if (user == nullptr)
 		return;
 
+	user = static_cast<firebase::auth::User*>(unregisterFirebasePointer(user_ref, GM_FB_TYPE_AUTH_USER));
 	delete user;
 }
 
 // ============================================================
 // Basic properties
 // ============================================================
+
+gm_structs::FirebaseAuthUserInfo firebase_auth_user_get_info(uint64_t user_ref)
+{
+	gm_structs::FirebaseAuthUserInfo out{};
+	firebase::auth::User* user = nullptr;
+	validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
+	if (user == nullptr)
+		return out;
+
+	out.uid = user->uid();
+	out.email = user->email();
+	out.display_name = user->display_name();
+	out.photo_url = user->photo_url();
+	out.provider_id = user->provider_id();
+	out.phone_number = user->phone_number();
+	out.is_email_verified = user->is_email_verified();
+	out.is_anonymous = user->is_anonymous();
+	out.is_valid = user->is_valid();
+	out.creation_timestamp = static_cast<double>(user->metadata().creation_timestamp);
+	out.last_sign_in_timestamp = static_cast<double>(user->metadata().last_sign_in_timestamp);
+	return out;
+}
 
 bool firebase_auth_user_is_valid(uint64_t user_ref)
 {

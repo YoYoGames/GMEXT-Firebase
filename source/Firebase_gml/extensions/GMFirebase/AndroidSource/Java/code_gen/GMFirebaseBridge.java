@@ -89,6 +89,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_auth_play_games_auth_provider_get_credential(String server_auth_code, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_auth_twitter_auth_provider_get_credential(String token, String secret, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_auth_phone_verify_phone_number(String phone_number, double timeout_ms);
+    public static native double __EXT_JNI__firebase_auth_user_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_auth_user_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_auth_user_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native String __EXT_JNI__firebase_auth_user_uid(ByteBuffer __arg_buffer, double __arg_buffer_length);

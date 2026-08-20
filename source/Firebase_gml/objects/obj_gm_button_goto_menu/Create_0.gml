@@ -1,6 +1,6 @@
 
 event_inherited();
 
-text = "Back"
+text = "Menu"
 
-goto = rm_firebase
+goto = rm_firebase_menu

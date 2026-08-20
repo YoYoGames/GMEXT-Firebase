@@ -1,0 +1,1 @@
+firebase_analytics_set_user_id("john@example.com");

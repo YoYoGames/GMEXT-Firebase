@@ -4,13 +4,14 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":12,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_firebase_database_set",
   "overriddenProperties":[],
   "parent":{
-    "name":"Database",
-    "path":"folders/Firebase Demos/Database.yy",
+    "name":"CRUD",
+    "path":"folders/Firebase Demos/Database/CRUD.yy",
   },
   "parentObjectId":{
     "name":"obj_gm_button",

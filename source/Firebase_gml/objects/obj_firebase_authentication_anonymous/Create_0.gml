@@ -1,4 +1,4 @@
 event_inherited();
 
-text = ""
+text = "Anonymous"
 

@@ -1,16 +1,16 @@
 {
   "$GMObject":"",
-  "%Name":"obj_firebase_storage",
+  "%Name":"obj_firebase_analytics_collection_enable",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_firebase_storage",
+  "name":"obj_firebase_analytics_collection_enable",
   "overriddenProperties":[],
   "parent":{
-    "name":"Storage",
-    "path":"folders/Firebase Demos/Storage.yy",
+    "name":"Analytics",
+    "path":"folders/Firebase Demos/Analytics.yy",
   },
   "parentObjectId":{
     "name":"obj_gm_button",

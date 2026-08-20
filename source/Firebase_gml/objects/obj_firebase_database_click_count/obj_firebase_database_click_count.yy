@@ -9,8 +9,8 @@
   "name":"obj_firebase_database_click_count",
   "overriddenProperties":[],
   "parent":{
-    "name":"Database",
-    "path":"folders/Firebase Demos/Database.yy",
+    "name":"CRUD",
+    "path":"folders/Firebase Demos/Database/CRUD.yy",
   },
   "parentObjectId":{
     "name":"obj_gm_button",

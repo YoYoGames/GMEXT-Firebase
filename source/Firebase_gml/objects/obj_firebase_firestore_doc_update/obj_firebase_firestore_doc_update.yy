@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"obj_firebase_firestore_doc_write",
+  "%Name":"obj_firebase_firestore_doc_update",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_firebase_firestore_doc_write",
+  "name":"obj_firebase_firestore_doc_update",
   "overriddenProperties":[],
   "parent":{
     "name":"Firestore",

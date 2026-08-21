@@ -1,4 +1,4 @@
 event_inherited();
 
-text = "Doc Write"
+text = "Doc Update"
 

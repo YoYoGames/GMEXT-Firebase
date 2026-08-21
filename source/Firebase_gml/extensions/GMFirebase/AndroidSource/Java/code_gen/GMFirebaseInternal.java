@@ -1020,57 +1020,57 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_write_batch_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_delete(ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_delete()
     {
-        return __EXT_JNI__firebase_firestore_field_value_delete(__ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_delete();
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_server_timestamp(ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_server_timestamp()
     {
-        return __EXT_JNI__firebase_firestore_field_value_server_timestamp(__ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_server_timestamp();
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_array_union(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_array_union(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_array_union(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_array_union(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_array_remove(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_array_remove(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_array_remove(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_array_remove(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_increment_integer(double value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_increment_integer(double value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_increment_integer(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_increment_integer(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_increment_double(double value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_increment_double(double value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_increment_double(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_increment_double(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_integer(double value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_integer(double value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_integer(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_integer(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_double(double value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_double(double value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_double(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_double(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds)
     {
-        return __EXT_JNI__firebase_firestore_field_value_timestamp(seconds, nanoseconds, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_timestamp(seconds, nanoseconds);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_geo_point(double latitude, double longitude, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_geo_point(double latitude, double longitude)
     {
-        return __EXT_JNI__firebase_firestore_field_value_geo_point(latitude, longitude, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_geo_point(latitude, longitude);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_reference(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_reference(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_reference(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_reference(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_blob(String data, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_blob(String data)
     {
-        return __EXT_JNI__firebase_firestore_field_value_blob(data, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_blob(data);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_null(ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_null()
     {
-        return __EXT_JNI__firebase_firestore_field_value_null(__ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_null();
     }
     public double __EXT_NATIVE__firebase_firestore_field_value_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1900,13 +1900,13 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_on_disconnect_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_path_create(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_path_create(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_path_create(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_path_create(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_path_document_id(ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_path_document_id()
     {
-        return __EXT_JNI__firebase_firestore_field_path_document_id(__ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_path_document_id();
     }
     public double __EXT_NATIVE__firebase_firestore_field_path_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1920,93 +1920,93 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_field_path_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_equal_to(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_equal_to(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_not_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_not_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_not_equal_to(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_not_equal_to(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_less_than(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_less_than(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_less_than(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_less_than(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_less_than_or_equal_to(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_less_than_or_equal_to(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_greater_than(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_greater_than(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_greater_than(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_greater_than(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_greater_than_or_equal_to(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_greater_than_or_equal_to(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_array_contains(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_array_contains(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_array_contains(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_array_contains(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_any(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_any(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_array_contains_any(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_array_contains_any(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_in(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_in(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_in(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_in(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_not_in(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_not_in(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_not_in(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_not_in(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_equal_to_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_equal_to_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_not_equal_to_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_not_equal_to_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_less_than_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_less_than_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_less_than_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_less_than_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_less_than_or_equal_to_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_less_than_or_equal_to_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_greater_than_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_greater_than_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_greater_than_or_equal_to_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_greater_than_or_equal_to_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_array_contains_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_array_contains_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_any_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_array_contains_any_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_array_contains_any_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_array_contains_any_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_in_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_in_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_in_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_in_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_not_in_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_not_in_field_path(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_not_in_field_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_not_in_field_path(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_and(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_and(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_and(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_and(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_filter_or(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_filter_or(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_filter_or(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_filter_or(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_filter_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2412,21 +2412,21 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_check_get_app(__ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_boolean(double value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_boolean(double value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_boolean(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_boolean(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_string(String value, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_string(String value)
     {
-        return __EXT_JNI__firebase_firestore_field_value_string(value, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_string(value);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_array(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_array(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_array(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_array(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_map(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_map(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_map(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_map(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_instance_for_app(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {

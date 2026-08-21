@@ -7403,39 +7403,11 @@ function firebase_firestore_write_batch_release(_batch_ref)
     return __return_value__;
 }
 
-/**
- * @returns {Real}
- */
-function firebase_firestore_field_value_delete()
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_delete (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_delete(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_server_timestamp (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @returns {Real}
- */
-function firebase_firestore_field_value_server_timestamp()
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_server_timestamp(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
 /**
  * @param {Any} _values
@@ -7452,13 +7424,9 @@ function firebase_firestore_field_value_array_union(_values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_value_array_union(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_value_array_union(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -7476,124 +7444,28 @@ function firebase_firestore_field_value_array_remove(_values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_value_array_remove(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_value_array_remove(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
-/**
- * @param {Real} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_increment_integer(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_increment_integer (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_increment_integer(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_increment_double (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
-/**
- * @param {Real} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_increment_double(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_integer (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_increment_double(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_double (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
-/**
- * @param {Real} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_integer(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_timestamp (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_integer(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_geo_point (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_double(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_double(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _seconds
- * @param {Real} _nanoseconds
- * @returns {Real}
- */
-function firebase_firestore_field_value_timestamp(_seconds, _nanoseconds)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_timestamp(_seconds, _nanoseconds, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {Real} _latitude
- * @param {Real} _longitude
- * @returns {Real}
- */
-function firebase_firestore_field_value_geo_point(_latitude, _longitude)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_geo_point(_latitude, _longitude, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
 /**
  * @param {Real} _document_ref
@@ -7610,49 +7482,16 @@ function firebase_firestore_field_value_reference(_document_ref)
     if (!is_numeric(_document_ref)) show_error($"{_GMFUNCTION_} :: _document_ref expected number", true);
     buffer_write(__args_buffer__, buffer_u64, _document_ref);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_value_reference(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_value_reference(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
-/**
- * @param {String} _data
- * @returns {Real}
- */
-function firebase_firestore_field_value_blob(_data)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_blob (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_blob(_data, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_null (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @returns {Real}
- */
-function firebase_firestore_field_value_null()
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_null(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
 /**
  * @param {Real} _ref
@@ -12388,31 +12227,13 @@ function firebase_firestore_field_path_create(_components)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _components);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_path_create(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_path_create(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
-/**
- * @returns {Real}
- */
-function firebase_firestore_field_path_document_id()
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_path_document_id (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_path_document_id(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
 /**
  * @param {Real} _field_path
@@ -12494,13 +12315,9 @@ function firebase_firestore_filter_equal_to(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12524,13 +12341,9 @@ function firebase_firestore_filter_not_equal_to(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_not_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_not_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12554,13 +12367,9 @@ function firebase_firestore_filter_less_than(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_less_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_less_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12584,13 +12393,9 @@ function firebase_firestore_filter_less_than_or_equal_to(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12614,13 +12419,9 @@ function firebase_firestore_filter_greater_than(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_greater_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_greater_than(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12644,13 +12445,9 @@ function firebase_firestore_filter_greater_than_or_equal_to(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12674,13 +12471,9 @@ function firebase_firestore_filter_array_contains(_field, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_array_contains(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_array_contains(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12704,13 +12497,9 @@ function firebase_firestore_filter_array_contains_any(_field, _values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_array_contains_any(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_array_contains_any(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12734,13 +12523,9 @@ function firebase_firestore_filter_in(_field, _values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12764,13 +12549,9 @@ function firebase_firestore_filter_not_in(_field, _values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_not_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_not_in(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12793,13 +12574,9 @@ function firebase_firestore_filter_equal_to_field_path(_field_path, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12822,13 +12599,9 @@ function firebase_firestore_filter_not_equal_to_field_path(_field_path, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_not_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_not_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12851,13 +12624,9 @@ function firebase_firestore_filter_less_than_field_path(_field_path, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_less_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_less_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12880,13 +12649,9 @@ function firebase_firestore_filter_less_than_or_equal_to_field_path(_field_path,
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_less_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12909,13 +12674,9 @@ function firebase_firestore_filter_greater_than_field_path(_field_path, _value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_greater_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_greater_than_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12938,13 +12699,9 @@ function firebase_firestore_filter_greater_than_or_equal_to_field_path(_field_pa
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_greater_than_or_equal_to_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12967,13 +12724,9 @@ function firebase_firestore_filter_array_contains_field_path(_field_path, _value
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_array_contains_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_array_contains_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -12996,13 +12749,9 @@ function firebase_firestore_filter_array_contains_any_field_path(_field_path, _v
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_array_contains_any_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_array_contains_any_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -13025,13 +12774,9 @@ function firebase_firestore_filter_in_field_path(_field_path, _values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -13054,13 +12799,9 @@ function firebase_firestore_filter_not_in_field_path(_field_path, _values)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _values);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_not_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_not_in_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -13078,13 +12819,9 @@ function firebase_firestore_filter_and(_filters)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _filters);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_and(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_and(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -13102,13 +12839,9 @@ function firebase_firestore_filter_or(_filters)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _filters);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_filter_or(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_filter_or(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -15641,41 +15374,11 @@ function firebase_app_check_get_app()
     return __result__;
 }
 
-/**
- * @param {Bool} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_boolean(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
+// Skipping function firebase_firestore_field_value_boolean (no wrapper is required)
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
 
-    var __return_value__ = __firebase_firestore_field_value_boolean(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
+// Skipping function firebase_firestore_field_value_string (no wrapper is required)
 
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
-
-/**
- * @param {String} _value
- * @returns {Real}
- */
-function firebase_firestore_field_value_string(_value)
-{
-    var __available__ = __GMFirebase_is_available();
-    if (!__available__) return;
-
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
-
-    var __return_value__ = __firebase_firestore_field_value_string(_value, buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
-}
 
 /**
  * @param {Any} _value
@@ -15692,13 +15395,9 @@ function firebase_firestore_field_value_array(_value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_value_array(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_value_array(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**
@@ -15716,13 +15415,9 @@ function firebase_firestore_field_value_map(_value)
 
     __ext_core_buffer_marshal_value(__args_buffer__, _value);
 
-    var __ret_buffer__ = __ext_core_get_ret_buffer();
+    var __return_value__ = __firebase_firestore_field_value_map(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-    var __return_value__ = __firebase_firestore_field_value_map(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
-
-    var __result__ = undefined;
-    __result__ = buffer_read(__ret_buffer__, buffer_u64);
-    return __result__;
+    return __return_value__;
 }
 
 /**

@@ -318,6 +318,12 @@ void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValu
 
 namespace
 {
+	// Embeddable Firestore helper handles (FieldValue/FieldPath/Filter) are
+	// intentionally surfaced to GML as exact doubles. The packed handle layout
+	// uses only 50 bits, so every handle is losslessly representable in a GML
+	// real and GMValue can decode it even when nested inside structs/arrays.
+	// Normal identity handles can remain uint64 on the typed API surface.
+	//
 	// Reinterprets a plain inbound double as one of this extension's packed
 	// refs (see GMFirebase_common.h's ext/type bit layout) if - and only if -
 	// its value exactly matches the reserved bit pattern. Real user data
@@ -442,76 +448,76 @@ std::vector<std::string> gmValueToStringVector(const gm::wire::GMValue& value)
 // FieldValue is expected, e.g. WhereEqualTo). gmValueToFieldValue() resolves
 // the ref back to the concrete FieldValue it was registered with.
 
-uint64_t firebase_firestore_field_value_delete()
+double firebase_firestore_field_value_delete()
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Delete());
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Delete()));
 }
 
-uint64_t firebase_firestore_field_value_server_timestamp()
+double firebase_firestore_field_value_server_timestamp()
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::ServerTimestamp());
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::ServerTimestamp()));
 }
 
-uint64_t firebase_firestore_field_value_array_union(const gm::wire::GMValue& values)
+double firebase_firestore_field_value_array_union(const gm::wire::GMValue& values)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::ArrayUnion(gmValueToFieldValueVector(values)));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::ArrayUnion(gmValueToFieldValueVector(values))));
 }
 
-uint64_t firebase_firestore_field_value_array_remove(const gm::wire::GMValue& values)
+double firebase_firestore_field_value_array_remove(const gm::wire::GMValue& values)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::ArrayRemove(gmValueToFieldValueVector(values)));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::ArrayRemove(gmValueToFieldValueVector(values))));
 }
 
-uint64_t firebase_firestore_field_value_increment_integer(double value)
+double firebase_firestore_field_value_increment_integer(double value)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Increment<int64_t>(static_cast<int64_t>(value)));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Increment<int64_t>(static_cast<int64_t>(value))));
 }
 
-uint64_t firebase_firestore_field_value_increment_double(double value)
+double firebase_firestore_field_value_increment_double(double value)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Increment<double>(value));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Increment<double>(value)));
 }
 
-uint64_t firebase_firestore_field_value_integer(double value)
+double firebase_firestore_field_value_integer(double value)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Integer(static_cast<int64_t>(value)));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Integer(static_cast<int64_t>(value))));
 }
 
-uint64_t firebase_firestore_field_value_double(double value)
+double firebase_firestore_field_value_double(double value)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Double(value));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Double(value)));
 }
 
-uint64_t firebase_firestore_field_value_timestamp(double seconds, double nanoseconds)
+double firebase_firestore_field_value_timestamp(double seconds, double nanoseconds)
 {
 	firebase::Timestamp ts(static_cast<int64_t>(seconds), static_cast<int32_t>(nanoseconds));
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Timestamp(ts));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Timestamp(ts)));
 }
 
-uint64_t firebase_firestore_field_value_geo_point(double latitude, double longitude)
+double firebase_firestore_field_value_geo_point(double latitude, double longitude)
 {
 	firebase::firestore::GeoPoint gp(latitude, longitude);
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::GeoPoint(gp));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::GeoPoint(gp)));
 }
 
-uint64_t firebase_firestore_field_value_reference(uint64_t document_ref)
+double firebase_firestore_field_value_reference(uint64_t document_ref)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
 	if (doc == nullptr)
 		return 0;
 
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Reference(*doc));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Reference(*doc)));
 }
 
-uint64_t firebase_firestore_field_value_blob(std::string_view data)
+double firebase_firestore_field_value_blob(std::string_view data)
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Blob(reinterpret_cast<const uint8_t*>(data.data()), data.size()));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Blob(reinterpret_cast<const uint8_t*>(data.data()), data.size())));
 }
 
-uint64_t firebase_firestore_field_value_null()
+double firebase_firestore_field_value_null()
 {
-	return registerFirestoreFieldValue(firebase::firestore::FieldValue::Null());
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Null()));
 }
 
 void firebase_firestore_field_value_release(uint64_t ref)
@@ -1460,14 +1466,14 @@ namespace
     }
 }
 
-uint64_t firebase_firestore_field_path_create(const gm::wire::GMValue& components)
+double firebase_firestore_field_path_create(const gm::wire::GMValue& components)
 {
-    return registerFirestoreFieldPath(firebase::firestore::FieldPath(gmValueToStringVector(components)));
+    return static_cast<double>(registerFirestoreFieldPath(firebase::firestore::FieldPath(gmValueToStringVector(components))));
 }
 
-uint64_t firebase_firestore_field_path_document_id()
+double firebase_firestore_field_path_document_id()
 {
-    return registerFirestoreFieldPath(firebase::firestore::FieldPath::DocumentId());
+    return static_cast<double>(registerFirestoreFieldPath(firebase::firestore::FieldPath::DocumentId()));
 }
 
 bool firebase_firestore_field_path_is_valid(uint64_t ref)
@@ -1490,17 +1496,17 @@ void firebase_firestore_field_path_release(uint64_t ref)
 }
 
 #define GM_FS_FILTER_STRING_ONE(fn_name, sdk_name) \
-uint64_t fn_name(std::string_view field, const gm::wire::GMValue& value) { \
-    return registerFirestoreFilter(firebase::firestore::Filter::sdk_name(std::string(field), gmValueToFieldValue(value))); }
+double fn_name(std::string_view field, const gm::wire::GMValue& value) { \
+    return static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::sdk_name(std::string(field), gmValueToFieldValue(value)))); }
 #define GM_FS_FILTER_STRING_MANY(fn_name, sdk_name) \
-uint64_t fn_name(std::string_view field, const gm::wire::GMValue& values) { \
-    return registerFirestoreFilter(firebase::firestore::Filter::sdk_name(std::string(field), gmValueToFieldValueVector(values))); }
+double fn_name(std::string_view field, const gm::wire::GMValue& values) { \
+    return static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::sdk_name(std::string(field), gmValueToFieldValueVector(values)))); }
 #define GM_FS_FILTER_PATH_ONE(fn_name, sdk_name) \
-uint64_t fn_name(uint64_t field_path_ref, const gm::wire::GMValue& value) { \
-    auto* fp = resolveFieldPath(field_path_ref); return fp ? registerFirestoreFilter(firebase::firestore::Filter::sdk_name(*fp, gmValueToFieldValue(value))) : 0; }
+double fn_name(uint64_t field_path_ref, const gm::wire::GMValue& value) { \
+    auto* fp = resolveFieldPath(field_path_ref); return fp ? static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::sdk_name(*fp, gmValueToFieldValue(value)))) : 0.0; }
 #define GM_FS_FILTER_PATH_MANY(fn_name, sdk_name) \
-uint64_t fn_name(uint64_t field_path_ref, const gm::wire::GMValue& values) { \
-    auto* fp = resolveFieldPath(field_path_ref); return fp ? registerFirestoreFilter(firebase::firestore::Filter::sdk_name(*fp, gmValueToFieldValueVector(values))) : 0; }
+double fn_name(uint64_t field_path_ref, const gm::wire::GMValue& values) { \
+    auto* fp = resolveFieldPath(field_path_ref); return fp ? static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::sdk_name(*fp, gmValueToFieldValueVector(values)))) : 0.0; }
 
 GM_FS_FILTER_STRING_ONE(firebase_firestore_filter_equal_to, EqualTo)
 GM_FS_FILTER_STRING_ONE(firebase_firestore_filter_not_equal_to, NotEqualTo)
@@ -1528,13 +1534,13 @@ GM_FS_FILTER_PATH_MANY(firebase_firestore_filter_not_in_field_path, NotIn)
 #undef GM_FS_FILTER_PATH_ONE
 #undef GM_FS_FILTER_PATH_MANY
 
-uint64_t firebase_firestore_filter_and(const gm::wire::GMValue& filters)
+double firebase_firestore_filter_and(const gm::wire::GMValue& filters)
 {
-    return registerFirestoreFilter(firebase::firestore::Filter::And(gmValueToFilterVector(filters)));
+    return static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::And(gmValueToFilterVector(filters))));
 }
-uint64_t firebase_firestore_filter_or(const gm::wire::GMValue& filters)
+double firebase_firestore_filter_or(const gm::wire::GMValue& filters)
 {
-    return registerFirestoreFilter(firebase::firestore::Filter::Or(gmValueToFilterVector(filters)));
+    return static_cast<double>(registerFirestoreFilter(firebase::firestore::Filter::Or(gmValueToFilterVector(filters))));
 }
 void firebase_firestore_filter_release(uint64_t ref)
 {
@@ -1869,7 +1875,7 @@ uint64_t firebase_firestore_get_instance_for_app_database(uint64_t app_ref, std:
     return registerFirebasePointer(fs, GM_FB_TYPE_FIRESTORE);
 }
 
-uint64_t firebase_firestore_field_value_boolean(bool value) { return registerFirestoreFieldValue(firebase::firestore::FieldValue::Boolean(value)); }
-uint64_t firebase_firestore_field_value_string(std::string_view value) { return registerFirestoreFieldValue(firebase::firestore::FieldValue::String(std::string(value))); }
-uint64_t firebase_firestore_field_value_array(const gm::wire::GMValue& value) { return registerFirestoreFieldValue(firebase::firestore::FieldValue::Array(gmValueToFieldValueVector(value))); }
-uint64_t firebase_firestore_field_value_map(const gm::wire::GMValue& value) { return registerFirestoreFieldValue(firebase::firestore::FieldValue::Map(gmValueToMapFieldValue(value))); }
+double firebase_firestore_field_value_boolean(bool value) { return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Boolean(value))); }
+double firebase_firestore_field_value_string(std::string_view value) { return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::String(std::string(value)))); }
+double firebase_firestore_field_value_array(const gm::wire::GMValue& value) { return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Array(gmValueToFieldValueVector(value)))); }
+double firebase_firestore_field_value_map(const gm::wire::GMValue& value) { return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Map(gmValueToMapFieldValue(value)))); }

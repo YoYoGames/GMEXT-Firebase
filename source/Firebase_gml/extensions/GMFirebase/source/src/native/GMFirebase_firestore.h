@@ -43,9 +43,11 @@ extern uint32_t g_fs_write_batch_index;
 // constructors (Integer/Timestamp/GeoPoint/Reference/Blob/Null) that let
 // script code opt into a precise Firestore type GML's all-double "real"
 // can't otherwise express. Both flavors are minted by
-// firestore_field_value_*() and registered here identically; gmValueToFieldValue()
-// resolves a ref found nested inside a plain data map back to the concrete
-// FieldValue it was registered with.
+// firestore_field_value_*() and registered here identically. These embeddable
+// helper handles are surfaced to GML as exact doubles (packed refs use only 50
+// bits), because dynamic GMValue containers support real/double but not a nested
+// int64 wire kind. gmValueToFieldValue() resolves such a ref found inside a plain
+// data map back to the concrete FieldValue it was registered with.
 extern std::map<uint32_t, firebase::firestore::FieldValue> g_fs_field_value_map;
 extern uint32_t g_fs_field_value_index;
 

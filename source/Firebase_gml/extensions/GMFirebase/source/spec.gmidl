@@ -4,11 +4,13 @@ module GMFirebase;
 // ============================================================
 // Public ABI / allocation policy
 // ============================================================
-// Native-backed Firebase identity objects are represented as packed uint64
-// handles: [extension id | Firebase-local type | 32-bit registry id]. The
-// payload is always a registry id - never a native pointer. Passing handles
-// between Firebase calls therefore creates no GameMaker struct/object and no
-// additional GC pressure.
+// Native-backed Firebase identity objects are represented as packed handles:
+// [extension id | Firebase-local type | 32-bit registry id]. The payload is
+// always a registry id - never a native pointer. Normal identity handles use
+// typed uint64 on the GML API. Firestore helper handles that are intentionally
+// embedded inside dynamic gmval structs/arrays (FieldValue/FieldPath/Filter)
+// are surfaced as exact GML reals instead; the packed layout uses only 50 bits,
+// so this loses no precision and avoids requiring caller-side real() casts.
 //
 // GameMaker classes below are reserved for explicit value materialization
 // (for example *_get_info()), configuration, or result data that GML actually
@@ -2024,78 +2026,78 @@ function firebase_firestore_write_batch_release(
 // ============================================================
 // FieldValue - sentinels + explicit-typed value constructors
 // ============================================================
-// Every function below mints a ref that is only meaningful fed back into a
-// data struct passed to *_set()/_set_merge()/_set_merge_fields()/_update()/
-// _add() (or, for firestore_field_value_reference(), also directly wherever
-// a value is expected, e.g. firestore_query_where_equal_to()). GML has no
-// int64 or a way to tag a raw real as "this must be a Firestore Timestamp/
-// GeoPoint/Reference/Blob/int64" - these constructors are how script code
-// opts into that exact typing; a plain real/string/bool/array/struct in a
-// data map is otherwise stored as double/string/bool/array/map respectively.
+// Every function below mints a packed Firestore helper handle surfaced as a
+// GML real. This is intentional: packed Firebase handles use only 50 bits, so
+// the value is exactly representable as double and can be embedded directly in
+// gmval structs/arrays. No real() cast is required. Dynamic GMValue containers
+// do not expose a nested int64 wire kind. Feed these values into *_set(),
+// *_set_merge(), *_set_merge_fields(), *_update(), *_add(), etc. GML has no
+// native way to tag a raw real as a Firestore Timestamp/GeoPoint/Reference/Blob/
+// integer/sentinel, so these constructors provide that exact typing.
 
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_delete(): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_delete(): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_server_timestamp(): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_server_timestamp(): real;
 
 // values: array of value. Adds elements not already present in the stored
 // array; a no-op on any element that already exists there.
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_array_union(
 	values: gmval
-): gmval;
+): real;
 
 // values: array of value. Removes all matching elements from the stored array.
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_array_remove(
 	values: gmval
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_increment_integer(
 	value: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_increment_double(
 	value: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_integer(
 	value: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_double(
 	value: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_timestamp(
 	seconds: real,
 	nanoseconds: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_geo_point(
 	latitude: real,
 	longitude: real
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_reference(
 	[type_hint=`uint64`] document_ref: gmval
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
+[global, bind = typed_gml]
 function firebase_firestore_field_value_blob(
 	data: string
-): gmval;
+): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_null(): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_null(): real;
 
 [global, bind = typed_gml]
 function firebase_firestore_field_value_release(
@@ -3360,10 +3362,12 @@ function firebase_database_on_disconnect_update_children([type_hint=`uint64`] ha
 function firebase_database_on_disconnect_release([type_hint=`uint64`] handler: gmval): unit;
 
 // ---- Firestore: FieldPath ----
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_path_create(components: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_path_document_id(): gmval;
+// FieldPath builder handles are exact GML reals so they can be placed directly
+// in gmval arrays/update-entry structs without a real() cast.
+[global, bind = typed_gml]
+function firebase_firestore_field_path_create(components: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_path_document_id(): real;
 [global, bind = typed_gml]
 function firebase_firestore_field_path_is_valid([type_hint=`uint64`] field_path: gmval): bool;
 [global, bind = typed_gml]
@@ -3372,52 +3376,54 @@ function firebase_firestore_field_path_to_string([type_hint=`uint64`] field_path
 function firebase_firestore_field_path_release([type_hint=`uint64`] field_path: gmval): unit;
 
 // ---- Firestore: composable Filter API ----
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_equal_to(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_not_equal_to(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_less_than(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_less_than_or_equal_to(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_greater_than(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_greater_than_or_equal_to(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_array_contains(field: string, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_array_contains_any(field: string, values: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_in(field: string, values: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_not_in(field: string, values: gmval): gmval;
+// Filter builder handles are exact GML reals so filter_and()/filter_or() arrays
+// can contain them directly. Release/typed query APIs still accept the handle.
+[global, bind = typed_gml]
+function firebase_firestore_filter_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_or_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_or_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_any(field: string, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_in(field: string, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_in(field: string, values: gmval): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_not_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_less_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_less_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_greater_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_greater_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_array_contains_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_array_contains_any_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_not_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_filter_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_any_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
 
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_and(filters: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_filter_or(filters: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_filter_and(filters: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_or(filters: gmval): real;
 [global, bind = typed_gml]
 function firebase_firestore_filter_release([type_hint=`uint64`] filter: gmval): unit;
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3654,14 +3660,14 @@ function firebase_remote_config_get_app([type_hint=`uint64`] remote_config: gmva
 function firebase_app_check_get_app(): gmval;
 
 // ---- Firestore explicit FieldValue constructors ----
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_boolean(value: bool): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_string(value: string): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_array(value: gmval): gmval;
-[global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_field_value_map(value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_boolean(value: bool): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_string(value: string): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_array(value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_map(value: gmval): real;
 
 // ---- Explicit App linkage for global/singleton modules ----
 [global, bind = typed_gml, type_hint=`uint64`]

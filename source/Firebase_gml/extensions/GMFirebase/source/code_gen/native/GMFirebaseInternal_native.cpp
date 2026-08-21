@@ -3818,27 +3818,19 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_release(char* __arg
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_delete(char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_delete()
 {
     auto&& __result = firebase_firestore_field_value_delete();
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_server_timestamp(char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_server_timestamp()
 {
     auto&& __result = firebase_firestore_field_value_server_timestamp();
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_union(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_union(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3846,14 +3838,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_union(char* _
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_field_value_array_union(values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_remove(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_remove(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3861,74 +3849,46 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array_remove(char* 
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_field_value_array_remove(values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_increment_integer(double value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_increment_integer(double value)
 {
     auto&& __result = firebase_firestore_field_value_increment_integer(static_cast<double>(value));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_increment_double(double value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_increment_double(double value)
 {
     auto&& __result = firebase_firestore_field_value_increment_double(static_cast<double>(value));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_integer(double value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_integer(double value)
 {
     auto&& __result = firebase_firestore_field_value_integer(static_cast<double>(value));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_double(double value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_double(double value)
 {
     auto&& __result = firebase_firestore_field_value_double(static_cast<double>(value));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds)
 {
     auto&& __result = firebase_firestore_field_value_timestamp(static_cast<double>(seconds), static_cast<double>(nanoseconds));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_geo_point(double latitude, double longitude, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_geo_point(double latitude, double longitude)
 {
     auto&& __result = firebase_firestore_field_value_geo_point(static_cast<double>(latitude), static_cast<double>(longitude));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_reference(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3936,31 +3896,19 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_reference(char* __a
     std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
     auto&& __result = firebase_firestore_field_value_reference(document_ref);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* data, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* data)
 {
     auto&& __result = firebase_firestore_field_value_blob(data);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_null(char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_null()
 {
     auto&& __result = firebase_firestore_field_value_null();
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_release(char* __arg_buffer, double __arg_buffer_length)
@@ -6767,7 +6715,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_release(char* __ar
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_create(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_create(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6775,21 +6723,13 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_create(char* __arg_b
     gm::wire::GMValue components = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_field_path_create(components);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_document_id(char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_document_id()
 {
     auto&& __result = firebase_firestore_field_path_document_id();
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -6826,7 +6766,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_path_release(char* __arg_
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6837,14 +6777,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to(char* __arg_buf
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_equal_to(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6855,14 +6791,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to(char* __arg
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_not_equal_to(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6873,14 +6805,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than(char* __arg_bu
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_less_than(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6891,14 +6819,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to(ch
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_less_than_or_equal_to(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6909,14 +6833,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than(char* __arg
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_greater_than(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6927,14 +6847,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_greater_than_or_equal_to(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6945,14 +6861,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains(char* __a
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_array_contains(field, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6963,14 +6875,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any(char*
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_array_contains_any(field, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6981,14 +6889,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in(char* __arg_buffer, d
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_in(field, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6999,14 +6903,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in(char* __arg_buffe
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_not_in(field, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7017,14 +6917,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_equal_to_field_path(char
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_equal_to_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7035,14 +6931,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path(
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_not_equal_to_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7053,14 +6945,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_field_path(cha
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_less_than_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7071,14 +6959,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_fi
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_less_than_or_equal_to_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7089,14 +6973,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_field_path(
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_greater_than_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7107,14 +6987,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_greater_than_or_equal_to_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7125,14 +7001,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_field_pat
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_array_contains_field_path(field_path, value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7143,14 +7015,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_array_contains_any_field
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_array_contains_any_field_path(field_path, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7161,14 +7029,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_in_field_path(char* __ar
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_in_field_path(field_path, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in_field_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in_field_path(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7179,14 +7043,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_not_in_field_path(char* 
     gm::wire::GMValue values = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_not_in_field_path(field_path, values);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_and(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_and(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7194,14 +7054,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_and(char* __arg_buffer, 
     gm::wire::GMValue filters = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_and(filters);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_or(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_or(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7209,11 +7065,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_or(char* __arg_buffer, d
     gm::wire::GMValue filters = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_filter_or(filters);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_filter_release(char* __arg_buffer, double __arg_buffer_length)
@@ -8698,27 +8550,19 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_get_app(char* __ret_buffer, dou
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_boolean(double value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_boolean(double value)
 {
     auto&& __result = firebase_firestore_field_value_boolean(static_cast<bool>(value));
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_string(char* value, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_string(char* value)
 {
     auto&& __result = firebase_firestore_field_value_string(value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8726,14 +8570,10 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_array(char* __arg_b
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_field_value_array(value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_map(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_map(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8741,11 +8581,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_map(char* __arg_buf
     gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
 
     auto&& __result = firebase_firestore_field_value_map(value);
-    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
-
-    // return: __result, type: UInt64
-    gm::wire::codec::writeValue(__bw, __result);
-    return 0;
+    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_instance_for_app(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)

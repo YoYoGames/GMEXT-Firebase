@@ -1,20 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"obj_firebase_database_score",
+  "%Name":"obj_firebase_database_query_by_timestamp",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_firebase_database_score",
+  "name":"obj_firebase_database_query_by_timestamp",
   "overriddenProperties":[],
   "parent":{
-    "name":"Database",
-    "path":"folders/Firebase Demos/Database.yy",
+    "name":"Query",
+    "path":"folders/Firebase Demos/Database/Query.yy",
   },
   "parentObjectId":{
-    "name":"obj_gm_button",
-    "path":"objects/obj_gm_button/obj_gm_button.yy",
+    "name":"obj_firebase_database_query_option",
+    "path":"objects/obj_firebase_database_query_option/obj_firebase_database_query_option.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

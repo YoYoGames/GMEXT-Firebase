@@ -1,16 +1,16 @@
 {
   "$GMObject":"",
-  "%Name":"obj_firebase_database_atomic_muti_location",
+  "%Name":"obj_firebase_database_query_execute",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":6,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_firebase_database_atomic_muti_location",
+  "name":"obj_firebase_database_query_execute",
   "overriddenProperties":[],
   "parent":{
-    "name":"CRUD",
-    "path":"folders/Firebase Demos/Database/CRUD.yy",
+    "name":"Query",
+    "path":"folders/Firebase Demos/Database/Query.yy",
   },
   "parentObjectId":{
     "name":"obj_gm_button",

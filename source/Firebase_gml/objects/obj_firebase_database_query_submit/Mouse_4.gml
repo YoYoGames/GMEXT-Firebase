@@ -15,13 +15,17 @@ firebase_database_ref_set_value(
         user: "USER_123",
         text: "Hello!",
         scored_at: firebase_database_server_timestamp(),
-		score: _score
+        score: _score
     },
-    function(_error, _ref_score)
+    function(_error, _message)
     {
         if (_error == 0)
         {
-            show_debug_message("Score Submited");
+            show_debug_message("Score submitted");
+        }
+        else
+        {
+            show_debug_message(_message);
         }
     }
 );

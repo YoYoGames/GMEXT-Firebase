@@ -34,13 +34,12 @@
     {"$GMIncludedFile":"","%Name":"CloudFunctions - Release.zip","CopyToMask":-1,"filePath":"datafiles","name":"CloudFunctions - Release.zip","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Firebase reCatcha Web - Release.zip","CopyToMask":-1,"filePath":"datafiles","name":"Firebase reCatcha Web - Release.zip","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"GMEXT-Firebase.html","CopyToMask":-1,"filePath":"datafiles","name":"GMEXT-Firebase.html","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
-    {"$GMIncludedFile":"","%Name":"google-services.json","CopyToMask":-1,"filePath":"datafiles","name":"google-services.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"img_close.png","CopyToMask":-1,"filePath":"datafiles","name":"img_close.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.4.222",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"Firebase",
   "resources":[

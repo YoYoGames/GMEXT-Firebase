@@ -1,0 +1,1 @@
+draw_text(10,10,$"analytics supported: { firebase_analytics_is_desktop_initialized() }")

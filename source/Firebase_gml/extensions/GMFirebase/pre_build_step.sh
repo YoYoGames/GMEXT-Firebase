@@ -1,0 +1,113 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+sed -i.bak -e 's/\r$//' "$SCRIPT_DIR/scriptUtils.sh" 2>/dev/null || true
+rm -f "$SCRIPT_DIR/scriptUtils.sh.bak"
+chmod +x "$SCRIPT_DIR/scriptUtils.sh"
+source "$SCRIPT_DIR/scriptUtils.sh"
+
+setupAndroid() {
+    echo "[FirebaseSetup] Staging Android Firebase files from extension options."
+
+    optionGetValue "jsonFile" CREDENTIAL_FILE
+    if [ -z "$CREDENTIAL_FILE" ]; then
+        logError "Extension option 'jsonFile' is empty."
+        exit 1
+    fi
+
+    pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
+    mkdir -p "$1/AndroidSource/ProjectFiles"
+    cp -f "$FILE_PATH" "$1/AndroidSource/ProjectFiles/google-services.json"
+
+    optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
+        logError "Extension option 'firebaseCppSdkPath' is empty."
+        exit 1
+    fi
+
+    pathResolveExisting "$YYprojectDir" "$FIREBASE_CPP_SDK_OPTION" FIREBASE_CPP_SDK
+
+    if [ ! -f "$FIREBASE_CPP_SDK/include/firebase/app.h" ]; then
+        logError "'$FIREBASE_CPP_SDK' is not a Firebase C++ SDK root. Expected '$FIREBASE_CPP_SDK/include/firebase/app.h'."
+        exit 1
+    fi
+
+    MESSAGING_AAR="$FIREBASE_CPP_SDK/libs/android/firebase_messaging_cpp.aar"
+    if [ ! -f "$MESSAGING_AAR" ]; then
+        logError "Firebase Messaging C++ AAR not found: '$MESSAGING_AAR'."
+        exit 1
+    fi
+
+    mkdir -p "$1/AndroidSource/libs-aar"
+    cp -f "$MESSAGING_AAR" "$1/AndroidSource/libs-aar/firebase_messaging_cpp.aar"
+
+    echo "[FirebaseSetup] Android Firebase assets staged successfully."
+}
+
+setupiOS() {
+    echo "[FirebaseSetup] Staging iOS Firebase credentials from extension options."
+
+    optionGetValue "plistFile" CREDENTIAL_FILE
+    if [ -z "$CREDENTIAL_FILE" ]; then
+        logError "Extension option 'plistFile' is empty."
+        exit 1
+    fi
+
+    pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
+    mkdir -p "$1/iOSProjectFiles"
+    cp -f "$FILE_PATH" "$1/iOSProjectFiles/GoogleService-Info.plist"
+
+    echo "[FirebaseSetup] iOS Firebase credentials staged successfully."
+}
+
+setupDesktop() {
+    echo "[FirebaseSetup] Validating desktop Firebase JSON from extension options."
+
+    optionGetValue "desktopJsonFile" CREDENTIAL_FILE
+    if [ -z "$CREDENTIAL_FILE" ]; then
+        logError "Extension option 'desktopJsonFile' is empty. This option is required for Windows/macOS/Linux Firebase C++ builds."
+        exit 1
+    fi
+
+    pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
+
+    # Do not copy into the GameMaker project's datafiles directory.
+    # post_build_step.sh copies this file into the compiled desktop output,
+    # beside the executable when one exists there.
+    echo "[FirebaseSetup] Desktop Firebase config resolved: $FILE_PATH"
+}
+
+setupHTML5() {
+    echo "[FirebaseSetup] HTML5: no native Firebase C++ staging required."
+}
+
+scriptInit
+
+optionGetValue "versionStable" RUNTIME_VERSION_STABLE
+optionGetValue "versionBeta" RUNTIME_VERSION_BETA
+optionGetValue "versionDev" RUNTIME_VERSION_DEV
+optionGetValue "versionLTS" RUNTIME_VERSION_LTS
+versionLockCheck "$YYruntimeVersion" "$RUNTIME_VERSION_STABLE" "$RUNTIME_VERSION_BETA" "$RUNTIME_VERSION_DEV" "$RUNTIME_VERSION_LTS"
+
+itemClearDir "$SCRIPT_DIR/AndroidSource/ProjectFiles"
+itemClearDir "$SCRIPT_DIR/iOSProjectFiles"
+rm -f "$SCRIPT_DIR/AndroidSource/libs-aar/firebase_messaging_cpp.aar"
+
+case "$YYPLATFORM_name" in
+    Android)
+        setupAndroid "$SCRIPT_DIR"
+        ;;
+    iOS)
+        setupiOS "$SCRIPT_DIR"
+        ;;
+    tvOS|HTML5)
+        echo "[FirebaseSetup] $YYPLATFORM_name: no desktop Firebase JSON staging required."
+        ;;
+    *)
+        # Windows/macOS/Linux native targets land here. This intentionally avoids
+        # depending on GameMaker's exact desktop platform display names.
+        setupDesktop "$SCRIPT_DIR"
+        ;;
+esac

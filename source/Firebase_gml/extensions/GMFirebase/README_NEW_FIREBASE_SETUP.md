@@ -1,9 +1,19 @@
-# FirebaseSetup — Firebase C++ 13.11.0
+# GMFirebase Firebase configuration staging
 
-This version is driven entirely by GameMaker extension options.
+The extension pre/post build scripts stage the platform Firebase configuration files needed by GameMaker exports.
 
-- Android: `jsonFile` + `firebaseCppSdkPath`
-- iOS: `plistFile`
-- Windows/macOS/Linux: `desktopJsonFile`
+## Linux desktop
 
-Desktop builds stage the selected JSON into the GameMaker project's `datafiles` directory as `google-services.json`, then clean it after Run/Package.
+Firebase C++ desktop searches the process current working directory for `google-services-desktop.json`, then `google-services.json`. GameMaker's Linux package places the executable at the root of `<project>.zip`, while normal runner assets live under `assets/`.
+
+The post-build script therefore injects the configured desktop JSON in both locations:
+
+```text
+<Project>.zip
+├── <Project>
+├── google-services.json          # primary: beside executable / working directory
+└── assets/
+    └── google-services.json      # fallback/debug copy
+```
+
+The root copy is the one Firebase C++ desktop needs.

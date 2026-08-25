@@ -33,6 +33,15 @@ if not exist "%YYoutputFolder%" (
     exit /b 1
 )
 
+:: For Linux exports, inject the Firebase JSON into the GameMaker package ZIP.
+:: Firebase C++ desktop searches the process current working directory, so the
+:: primary copy must be at ZIP root beside the Linux executable. An assets copy
+:: is kept as a fallback/debug convenience.
+if /I "%YYPLATFORM_name%"=="Linux" call :packageLinuxFirebaseJson
+if errorlevel 1 exit /b %errorlevel%
+if /I "%YYPLATFORM_name%"=="Ubuntu" call :packageLinuxFirebaseJson
+if errorlevel 1 exit /b %errorlevel%
+
 set "GMF_SOURCE=%FIREBASE_JSON_SOURCE%"
 set "GMF_OUTPUT=%YYoutputFolder%"
 set "GMF_PROJECT=%YYprojectName%"
@@ -82,3 +91,66 @@ set "GMF_PROJECT="
 set "GMF_PLATFORM="
 
 exit /b 0
+
+:: ----------------------------------------------------------------------------------------------------
+:packageLinuxFirebaseJson
+setlocal EnableDelayedExpansion
+
+set "GMF_LINUX_PROJECT=%YYprojectName%"
+if not defined GMF_LINUX_PROJECT (
+    if defined YYprojectPath (
+        for %%A in ("%YYprojectPath%") do set "GMF_LINUX_PROJECT=%%~nA"
+    )
+)
+
+if not defined GMF_LINUX_PROJECT (
+    echo [FirebaseSetup] ERROR: Unable to determine the GameMaker project name for Linux asset ZIP staging.
+    endlocal & exit /b 1
+)
+
+set "GMF_LINUX_ZIP=%YYoutputFolder%\!GMF_LINUX_PROJECT!.zip"
+if not exist "!GMF_LINUX_ZIP!" (
+    echo [FirebaseSetup] ERROR: GameMaker Linux asset ZIP does not exist:
+    echo [FirebaseSetup]   !GMF_LINUX_ZIP!
+    endlocal & exit /b 1
+)
+
+set "GMF_LINUX_TEMP=%YYoutputFolder%\!GMF_LINUX_PROJECT!___firebase_temp___"
+if exist "!GMF_LINUX_TEMP!" rmdir /S /Q "!GMF_LINUX_TEMP!"
+mkdir "!GMF_LINUX_TEMP!\assets"
+if errorlevel 1 (
+    echo [FirebaseSetup] ERROR: Failed to create temporary Linux package directory.
+    endlocal & exit /b 1
+)
+
+copy /Y "%FIREBASE_JSON_SOURCE%" "!GMF_LINUX_TEMP!\google-services.json" >nul
+if errorlevel 1 (
+    echo [FirebaseSetup] ERROR: Failed to stage root google-services.json for Linux package ZIP.
+    rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
+    endlocal & exit /b 1
+)
+
+copy /Y "%FIREBASE_JSON_SOURCE%" "!GMF_LINUX_TEMP!\assets\google-services.json" >nul
+if errorlevel 1 (
+    echo [FirebaseSetup] ERROR: Failed to stage fallback assets/google-services.json for Linux package ZIP.
+    rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
+    endlocal & exit /b 1
+)
+
+pushd "%YYoutputFolder%" >nul
+call %Utils% zipUpdate "!GMF_LINUX_PROJECT!___firebase_temp___" "!GMF_LINUX_PROJECT!.zip"
+set "GMF_ZIP_RESULT=!errorlevel!"
+popd >nul
+
+rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
+
+if not "!GMF_ZIP_RESULT!"=="0" (
+    echo [FirebaseSetup] ERROR: Failed to add Firebase JSON to Linux asset ZIP.
+    endlocal & exit /b !GMF_ZIP_RESULT!
+)
+
+echo [FirebaseSetup] Linux Firebase config added to GameMaker package ZIP:
+echo [FirebaseSetup]   !GMF_LINUX_ZIP! -^> google-services.json
+echo [FirebaseSetup]   !GMF_LINUX_ZIP! -^> assets/google-services.json ^(fallback^)
+
+endlocal & exit /b 0

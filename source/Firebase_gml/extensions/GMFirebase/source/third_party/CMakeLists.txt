@@ -354,27 +354,75 @@ elseif(UNIX)
   # ---------------------------------------------------------------------------
   # Firebase source checkout
   # ---------------------------------------------------------------------------
-  # Default layout:
+  # Linux builds Firebase C++ from source with PIC.
   #
-  #   source/
-  #     Firebase_sdk/
-  #     Firebase_cpp_source/
-  #     Firebase_gml/
+  # Keep the source checkout on the native Linux filesystem rather than under
+  # /media/sf_* so the Firebase/Firestore build can freely create symlinks,
+  # virtual environments, and other filesystem objects.
   #
-  # Override with -DFIREBASE_CPP_SOURCE_ROOT=/path/to/firebase-cpp-sdk.
-  get_filename_component(
-    _FIREBASE_CPP_SOURCE_ROOT_DEFAULT
-    "${FIREBASE_SDK_ROOT}/../Firebase_cpp_source"
-    ABSOLUTE)
+  # The source version must match the packaged Firebase C++ SDK version.
+  set(_FIREBASE_CPP_VERSION "v13.11.0")
+
+  if(DEFINED ENV{HOME} AND NOT "$ENV{HOME}" STREQUAL "")
+    set(_FIREBASE_CPP_SOURCE_ROOT_DEFAULT
+        "$ENV{HOME}/.cache/GMFirebase/firebase_cpp_source/${_FIREBASE_CPP_VERSION}")
+  else()
+    set(_FIREBASE_CPP_SOURCE_ROOT_DEFAULT
+        "/tmp/GMFirebase/firebase_cpp_source/${_FIREBASE_CPP_VERSION}")
+  endif()
 
   set(FIREBASE_CPP_SOURCE_ROOT
       "${_FIREBASE_CPP_SOURCE_ROOT_DEFAULT}"
       CACHE PATH "Path to Firebase C++ SDK source checkout used on Linux")
 
+  # Automatically obtain the matching Firebase C++ source checkout when it is
+  # not already available.  Once cloned, subsequent builds reuse the cached
+  # checkout and do not require another download.
+  if(NOT EXISTS "${FIREBASE_CPP_SOURCE_ROOT}/CMakeLists.txt")
+    message(STATUS
+      "[third_party] Firebase Linux source checkout not found; downloading ${_FIREBASE_CPP_VERSION}")
+
+    find_package(Git REQUIRED)
+
+    get_filename_component(
+      _FIREBASE_CPP_SOURCE_PARENT
+      "${FIREBASE_CPP_SOURCE_ROOT}"
+      DIRECTORY)
+
+    file(MAKE_DIRECTORY "${_FIREBASE_CPP_SOURCE_PARENT}")
+
+    # Remove an incomplete checkout from a previously interrupted clone.
+    if(EXISTS "${FIREBASE_CPP_SOURCE_ROOT}")
+      file(REMOVE_RECURSE "${FIREBASE_CPP_SOURCE_ROOT}")
+    endif()
+
+    execute_process(
+      COMMAND
+        "${GIT_EXECUTABLE}"
+        clone
+        --branch "${_FIREBASE_CPP_VERSION}"
+        --depth 1
+        https://github.com/firebase/firebase-cpp-sdk.git
+        "${FIREBASE_CPP_SOURCE_ROOT}"
+      RESULT_VARIABLE _FIREBASE_GIT_RESULT
+    )
+
+    if(NOT _FIREBASE_GIT_RESULT EQUAL 0)
+      message(FATAL_ERROR
+        "Failed to download Firebase C++ SDK ${_FIREBASE_CPP_VERSION}.\n"
+        "Git result: ${_FIREBASE_GIT_RESULT}\n"
+        "Target directory:\n"
+        "  ${FIREBASE_CPP_SOURCE_ROOT}")
+    endif()
+  endif()
+
   _ext_tp_require_file(
     "${FIREBASE_CPP_SOURCE_ROOT}/CMakeLists.txt"
     "Firebase C++ source checkout CMakeLists.txt"
     FIREBASE_CPP_SOURCE_ROOT)
+
+  message(STATUS
+    "[third_party] Firebase Linux source=${FIREBASE_CPP_SOURCE_ROOT}")
 
   # ---------------------------------------------------------------------------
   # Firebase binary/build tree

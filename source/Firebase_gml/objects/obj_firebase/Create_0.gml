@@ -1,4 +1,6 @@
 
+show_debug_message("firebase_app_initialize");
+
 if (!firebase_app_initialize())
 {
     show_debug_message("Firebase init failed: " + firebase_last_error_message());

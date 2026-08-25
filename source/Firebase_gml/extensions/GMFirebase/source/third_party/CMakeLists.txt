@@ -192,6 +192,19 @@ elseif(ANDROID)
   message(STATUS
     "[third_party] Firebase Android ABI=${CMAKE_ANDROID_ARCH_ABI}")
 
+  # ExtGen generates JNI_OnLoad() inside GMFirebaseInternal_jni.cpp and keeps
+  # its JavaVM pointer private to that translation unit. GMFirebase_app.cpp
+  # also needs the JavaVM so Firebase C++ can call the Android App::Create
+  # overload with JNIEnv* + Activity.
+  #
+  # Rename ExtGen's generated JNI_OnLoad at compile time. GMFirebase_app.cpp
+  # undefines this macro locally, provides the real JNI_OnLoad, captures the
+  # JavaVM, then forwards to GMFirebase_ExtGen_JNI_OnLoad so ExtGen's original
+  # initialization still runs unchanged. This works with the existing
+  # ANDROID_PLATFORM=21 and avoids private libart/libnativehelper dependencies.
+  target_compile_definitions(${EXT_MAIN_TARGET} PRIVATE
+    JNI_OnLoad=GMFirebase_ExtGen_JNI_OnLoad)
+
   foreach(_module IN LISTS EXT_TP_FIREBASE_MODULES)
     set(_lib_path "${_FIREBASE_ANDROID_LIB_DIR}/libfirebase_${_module}.a")
     _ext_tp_require_file(

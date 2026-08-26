@@ -1,0 +1,103 @@
+[gml_api]
+module GMFirebasePerformance;
+
+[global, bind = typed_gml]
+enum FirebasePerformanceHttpMethod:int32
+{
+    Get = 0,
+    Put = 1,
+    Post = 2,
+    Delete = 3,
+    Head = 4,
+    Patch = 5,
+    Options = 6,
+    Trace = 7,
+    Connect = 8,
+}
+
+[global, bind = typed_gml]
+function firebase_performance_set_collection_enabled(enabled: bool): unit;
+
+[global, bind = typed_gml]
+function firebase_performance_is_collection_enabled(): bool;
+
+// Returns 0 on failure. Handles are extension-local IDs, never native pointers.
+[global, bind = typed_gml]
+function firebase_performance_trace_start(name: string): real;
+
+[global, bind = typed_gml]
+function firebase_performance_trace_stop(trace: real): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_trace_put_attribute(
+    trace: real,
+    key: string,
+    value: string
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_trace_remove_attribute(
+    trace: real,
+    key: string
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_trace_put_metric(
+    trace: real,
+    name: string,
+    value: real
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_trace_increment_metric(
+    trace: real,
+    name: string,
+    increment_by: real
+): bool;
+
+// Returns 0 on failure.
+[global, bind = typed_gml]
+function firebase_performance_http_metric_start(
+    url: string,
+    [type_hint=`FirebasePerformanceHttpMethod`]method: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_set_response_code(
+    metric: real,
+    response_code: int32
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_set_request_payload_size(
+    metric: real,
+    bytes: real
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_set_response_payload_size(
+    metric: real,
+    bytes: real
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_set_response_content_type(
+    metric: real,
+    content_type: string
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_put_attribute(
+    metric: real,
+    key: string,
+    value: string
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_remove_attribute(
+    metric: real,
+    key: string
+): bool;
+
+[global, bind = typed_gml]
+function firebase_performance_http_metric_stop(metric: real): bool;

@@ -1,0 +1,55 @@
+[gml_api]
+module GMFirebaseCrashlytics;
+
+// Firebase Crashlytics mobile wrapper.
+// Android: com.google.firebase:firebase-crashlytics (+ firebase-crashlytics-ndk)
+// iOS: FirebaseCrashlytics
+
+[global, bind = typed_gml]
+function firebase_crashlytics_set_collection_enabled(enabled: bool): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_is_collection_enabled(): bool;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_did_crash_on_previous_execution(): bool;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_log(message: string): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_set_user_id(user_id: string): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_set_custom_key_string(key: string, value: string): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_set_custom_key_real(key: string, value: real): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_set_custom_key_bool(key: string, value: bool): unit;
+
+// Records a non-fatal error.
+// Android records a RuntimeException and attaches the supplied domain/code as
+// exception-specific custom keys. iOS records an NSError using domain/code.
+[global, bind = typed_gml]
+function firebase_crashlytics_record_error(
+    domain: string,
+    code: int32,
+    message: string
+): unit;
+
+// callback(success: bool, has_unsent_reports: bool, error_message: string)
+[global, bind = typed_gml]
+function firebase_crashlytics_check_for_unsent_reports(callback: func): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_send_unsent_reports(): unit;
+
+[global, bind = typed_gml]
+function firebase_crashlytics_delete_unsent_reports(): unit;
+
+// Deliberately terminates the app to verify Crashlytics integration.
+// Use only in a development/test build.
+[global, bind = typed_gml]
+function firebase_crashlytics_test_crash(): unit;

@@ -74,6 +74,7 @@
     {"id":{"name":"obj_firebase_authentication_email_sign_in","path":"objects/obj_firebase_authentication_email_sign_in/obj_firebase_authentication_email_sign_in.yy",},},
     {"id":{"name":"obj_firebase_authentication_sign_out","path":"objects/obj_firebase_authentication_sign_out/obj_firebase_authentication_sign_out.yy",},},
     {"id":{"name":"obj_firebase_authentication_token","path":"objects/obj_firebase_authentication_token/obj_firebase_authentication_token.yy",},},
+    {"id":{"name":"obj_firebase_cloud_messaging_get_token","path":"objects/obj_firebase_cloud_messaging_get_token/obj_firebase_cloud_messaging_get_token.yy",},},
     {"id":{"name":"obj_firebase_cloud_messaging","path":"objects/obj_firebase_cloud_messaging/obj_firebase_cloud_messaging.yy",},},
     {"id":{"name":"obj_firebase_crashlytics_crash","path":"objects/obj_firebase_crashlytics_crash/obj_firebase_crashlytics_crash.yy",},},
     {"id":{"name":"obj_firebase_crashlytics_delete_unsent_reports","path":"objects/obj_firebase_crashlytics_delete_unsent_reports/obj_firebase_crashlytics_delete_unsent_reports.yy",},},

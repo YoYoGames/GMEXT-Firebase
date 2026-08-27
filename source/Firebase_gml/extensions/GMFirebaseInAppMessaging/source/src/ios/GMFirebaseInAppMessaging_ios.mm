@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 
 #include <memory>
@@ -7,6 +6,7 @@
 #include <type_traits>
 #include <utility>
 
+@import FirebaseCore;
 @import FirebaseInAppMessaging;
 
 #import "GMFirebaseInAppMessaging_ios.h"
@@ -20,6 +20,9 @@ namespace
     static std::shared_ptr<GMFunction> gClickCallback;
     static std::shared_ptr<GMFunction> gDismissCallback;
     static std::shared_ptr<GMFunction> gDisplayErrorCallback;
+
+    // clear_callbacks disables lifecycle reattachment until a callback is set again.
+    static bool gBridgeEnabled = true;
 
 
     static NSString *toNSString(
@@ -183,10 +186,55 @@ namespace
 
 @interface GMFirebaseInAppMessaging ()
     <FIRInAppMessagingDisplayDelegate>
+
+- (void)installFiamDelegate:(NSString *)reason;
+
 @end
 
 
 @implementation GMFirebaseInAppMessaging
+
+
+// -----------------------------------------------------------------------------
+// GameMaker / iOS lifecycle
+// -----------------------------------------------------------------------------
+
+- (void)onStart
+{
+    [self installFiamDelegate:@"onStart"];
+}
+
+
+- (void)onResume
+{
+    [self installFiamDelegate:@"onResume"];
+}
+
+
+- (void)installFiamDelegate:(NSString *)reason
+{
+    if (!gBridgeEnabled)
+        return;
+
+    // The separate FIAM extension can be created before the main Firebase
+    // extension calls FIRApp configure. Do not touch FIAM until a default
+    // Firebase app exists. Callback setters retry this after GML initialization.
+    if ([FIRApp defaultApp] == nil)
+    {
+        NSLog(
+            @"GMFirebaseInAppMessaging: Firebase default app not ready; delegate not attached (%@)",
+            reason
+        );
+        return;
+    }
+
+    [FIRInAppMessaging inAppMessaging].delegate = self;
+
+    NSLog(
+        @"GMFirebaseInAppMessaging: FIAM delegate attached: %@",
+        reason
+    );
+}
 
 
 // -----------------------------------------------------------------------------
@@ -249,53 +297,59 @@ namespace
 - (void)firebase_in_app_messaging_set_impression_callback:
     (GMFunction)callback
 {
+    gBridgeEnabled = true;
+
     gImpressionCallback =
         std::make_shared<GMFunction>(
             std::move(callback));
 
-    [FIRInAppMessaging inAppMessaging].delegate =
-        self;
+    [self installFiamDelegate:@"set_callback"];
 }
 
 
 - (void)firebase_in_app_messaging_set_click_callback:
     (GMFunction)callback
 {
+    gBridgeEnabled = true;
+
     gClickCallback =
         std::make_shared<GMFunction>(
             std::move(callback));
 
-    [FIRInAppMessaging inAppMessaging].delegate =
-        self;
+    [self installFiamDelegate:@"set_callback"];
 }
 
 
 - (void)firebase_in_app_messaging_set_dismiss_callback:
     (GMFunction)callback
 {
+    gBridgeEnabled = true;
+
     gDismissCallback =
         std::make_shared<GMFunction>(
             std::move(callback));
 
-    [FIRInAppMessaging inAppMessaging].delegate =
-        self;
+    [self installFiamDelegate:@"set_callback"];
 }
 
 
 - (void)firebase_in_app_messaging_set_display_error_callback:
     (GMFunction)callback
 {
+    gBridgeEnabled = true;
+
     gDisplayErrorCallback =
         std::make_shared<GMFunction>(
             std::move(callback));
 
-    [FIRInAppMessaging inAppMessaging].delegate =
-        self;
+    [self installFiamDelegate:@"set_callback"];
 }
 
 
 - (void)firebase_in_app_messaging_clear_callbacks
 {
+    gBridgeEnabled = false;
+
     [FIRInAppMessaging inAppMessaging].delegate =
         nil;
 
@@ -321,6 +375,11 @@ namespace
 
     MessageInfo info =
         messageInfo(inAppMessage);
+
+    NSLog(
+        @"GMFirebaseInAppMessaging: FIAM impression received: %@",
+        toNSString(info.campaignName)
+    );
 
     runOnMain(
         [callback, info]()
@@ -363,6 +422,11 @@ namespace
     std::string actionText =
         toString(action.actionText);
 
+    NSLog(
+        @"GMFirebaseInAppMessaging: FIAM click received: %@",
+        toNSString(info.campaignName)
+    );
+
     runOnMain(
         [
             callback,
@@ -401,6 +465,11 @@ namespace
     MessageInfo info =
         messageInfo(inAppMessage);
 
+    NSLog(
+        @"GMFirebaseInAppMessaging: FIAM dismiss received: %@",
+        toNSString(info.campaignName)
+    );
+
     runOnMain(
         [callback, info]()
         {
@@ -434,6 +503,12 @@ namespace
         error != nil
             ? toString(error.localizedDescription)
             : std::string("Unknown FIAM display error");
+
+    NSLog(
+        @"GMFirebaseInAppMessaging: FIAM display error received: %@ / %@",
+        toNSString(info.campaignName),
+        toNSString(errorMessage)
+    );
 
     runOnMain(
         [

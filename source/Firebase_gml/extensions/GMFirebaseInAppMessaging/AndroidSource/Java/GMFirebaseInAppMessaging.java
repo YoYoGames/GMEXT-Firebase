@@ -1,10 +1,8 @@
-
 package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.GMExtWire.GMFunction;
-import ${YYAndroidPackageName}.RunnerActivity;
-
-import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
@@ -41,15 +39,93 @@ public class GMFirebaseInAppMessaging
     private volatile GMFunction dismissCallback = null;
     private volatile GMFunction displayErrorCallback = null;
 
-    private volatile boolean impressionListenerInstalled = false;
-    private volatile boolean clickListenerInstalled = false;
-    private volatile boolean dismissListenerInstalled = false;
-    private volatile boolean displayErrorListenerInstalled = false;
+    private final Object callbackLock = new Object();
+
+    private static final Handler MAIN_HANDLER =
+        new Handler(Looper.getMainLooper());
+
+    // Keep the native FIAM bridge active before the GML Create event.
+    // Startup/test events are buffered until the matching GML callback exists.
+    private volatile boolean bridgeEnabled = true;
+
+    private MessageInfo pendingImpression = null;
+    private ClickInfo pendingClick = null;
+    private MessageInfo pendingDismiss = null;
+    private DisplayErrorInfo pendingDisplayError = null;
+
+
+    @Override
+    public void onStart()
+    {
+        installNativeListeners("onStart");
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        installNativeListeners("onResume");
+    }
+
+
+    @Override
+    public void onDestroy()
+    {
+        removeNativeListeners("onDestroy");
+    }
 
 
     private FirebaseInAppMessaging fiam()
     {
         return FirebaseInAppMessaging.getInstance();
+    }
+
+
+    private void installNativeListeners(String reason)
+    {
+        if (!bridgeEnabled)
+            return;
+
+        try
+        {
+            FirebaseInAppMessaging instance = fiam();
+
+            // FIAM can clear developer listeners when the Activity goes to the
+            // background. Remove-before-add prevents duplicates on every resume.
+            instance.removeImpressionListener(this);
+            instance.removeClickListener(this);
+            instance.removeDismissListener(this);
+            instance.removeDisplayErrorListener(this);
+
+            instance.addImpressionListener(this);
+            instance.addClickListener(this);
+            instance.addDismissListener(this);
+            instance.addDisplayErrorListener(this);
+
+            Log.i(TAG, "FIAM developer listeners attached: " + reason);
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Failed to attach FIAM developer listeners: " + reason, error);
+        }
+    }
+
+
+    private void removeNativeListeners(String reason)
+    {
+        try
+        {
+            FirebaseInAppMessaging instance = fiam();
+            instance.removeImpressionListener(this);
+            instance.removeClickListener(this);
+            instance.removeDismissListener(this);
+            instance.removeDisplayErrorListener(this);
+            Log.i(TAG, "FIAM developer listeners removed: " + reason);
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Failed to remove FIAM developer listeners: " + reason, error);
+        }
     }
 
 
@@ -100,12 +176,22 @@ public class GMFirebaseInAppMessaging
     public void firebase_in_app_messaging_set_impression_callback(
         GMFunction callback)
     {
-        impressionCallback = callback;
+        MessageInfo pending;
 
-        if (!impressionListenerInstalled)
+        synchronized (callbackLock)
         {
-            fiam().addImpressionListener(this);
-            impressionListenerInstalled = true;
+            bridgeEnabled = true;
+            impressionCallback = callback;
+            pending = pendingImpression;
+            pendingImpression = null;
+        }
+
+        installNativeListeners("set_impression_callback");
+
+        if (callback != null && pending != null)
+        {
+            final MessageInfo event = pending;
+            runOnGameThread(() -> invokeImpression(callback, event));
         }
     }
 
@@ -113,12 +199,22 @@ public class GMFirebaseInAppMessaging
     public void firebase_in_app_messaging_set_click_callback(
         GMFunction callback)
     {
-        clickCallback = callback;
+        ClickInfo pending;
 
-        if (!clickListenerInstalled)
+        synchronized (callbackLock)
         {
-            fiam().addClickListener(this);
-            clickListenerInstalled = true;
+            bridgeEnabled = true;
+            clickCallback = callback;
+            pending = pendingClick;
+            pendingClick = null;
+        }
+
+        installNativeListeners("set_click_callback");
+
+        if (callback != null && pending != null)
+        {
+            final ClickInfo event = pending;
+            runOnGameThread(() -> invokeClick(callback, event));
         }
     }
 
@@ -126,12 +222,22 @@ public class GMFirebaseInAppMessaging
     public void firebase_in_app_messaging_set_dismiss_callback(
         GMFunction callback)
     {
-        dismissCallback = callback;
+        MessageInfo pending;
 
-        if (!dismissListenerInstalled)
+        synchronized (callbackLock)
         {
-            fiam().addDismissListener(this);
-            dismissListenerInstalled = true;
+            bridgeEnabled = true;
+            dismissCallback = callback;
+            pending = pendingDismiss;
+            pendingDismiss = null;
+        }
+
+        installNativeListeners("set_dismiss_callback");
+
+        if (callback != null && pending != null)
+        {
+            final MessageInfo event = pending;
+            runOnGameThread(() -> invokeDismiss(callback, event));
         }
     }
 
@@ -139,48 +245,44 @@ public class GMFirebaseInAppMessaging
     public void firebase_in_app_messaging_set_display_error_callback(
         GMFunction callback)
     {
-        displayErrorCallback = callback;
+        DisplayErrorInfo pending;
 
-        if (!displayErrorListenerInstalled)
+        synchronized (callbackLock)
         {
-            fiam().addDisplayErrorListener(this);
-            displayErrorListenerInstalled = true;
+            bridgeEnabled = true;
+            displayErrorCallback = callback;
+            pending = pendingDisplayError;
+            pendingDisplayError = null;
+        }
+
+        installNativeListeners("set_display_error_callback");
+
+        if (callback != null && pending != null)
+        {
+            final DisplayErrorInfo event = pending;
+            runOnGameThread(() -> invokeDisplayError(callback, event));
         }
     }
 
 
     public void firebase_in_app_messaging_clear_callbacks()
     {
-        FirebaseInAppMessaging instance = fiam();
-
-        if (impressionListenerInstalled)
+        synchronized (callbackLock)
         {
-            instance.removeImpressionListener(this);
-            impressionListenerInstalled = false;
+            bridgeEnabled = false;
+
+            impressionCallback = null;
+            clickCallback = null;
+            dismissCallback = null;
+            displayErrorCallback = null;
+
+            pendingImpression = null;
+            pendingClick = null;
+            pendingDismiss = null;
+            pendingDisplayError = null;
         }
 
-        if (clickListenerInstalled)
-        {
-            instance.removeClickListener(this);
-            clickListenerInstalled = false;
-        }
-
-        if (dismissListenerInstalled)
-        {
-            instance.removeDismissListener(this);
-            dismissListenerInstalled = false;
-        }
-
-        if (displayErrorListenerInstalled)
-        {
-            instance.removeDisplayErrorListener(this);
-            displayErrorListenerInstalled = false;
-        }
-
-        impressionCallback = null;
-        clickCallback = null;
-        dismissCallback = null;
-        displayErrorCallback = null;
+        removeNativeListeners("clear_callbacks");
     }
 
 
@@ -192,31 +294,25 @@ public class GMFirebaseInAppMessaging
     public void impressionDetected(
         InAppMessage inAppMessage)
     {
-        final GMFunction callback = impressionCallback;
+        final MessageInfo info = messageInfo(inAppMessage);
+        final GMFunction callback;
 
-        if (callback == null)
-            return;
-
-        final MessageInfo info =
-            messageInfo(inAppMessage);
-
-        runOnGameThread(() ->
+        synchronized (callbackLock)
         {
-            try
+            if (!bridgeEnabled)
+                return;
+
+            callback = impressionCallback;
+
+            if (callback == null)
             {
-                callback.call(
-                    info.messageId,
-                    info.campaignName,
-                    info.isTestMessage,
-                    info.messageType,
-                    info.dataJson
-                );
+                pendingImpression = info;
+                Log.i(TAG, "FIAM impression buffered: " + info.campaignName);
+                return;
             }
-            catch (Exception error)
-            {
-                Log.e(TAG, "Impression callback failed.", error);
-            }
-        });
+        }
+
+        runOnGameThread(() -> invokeImpression(callback, info));
     }
 
 
@@ -225,55 +321,25 @@ public class GMFirebaseInAppMessaging
         InAppMessage inAppMessage,
         Action action)
     {
-        final GMFunction callback = clickCallback;
+        final ClickInfo info = clickInfo(inAppMessage, action);
+        final GMFunction callback;
 
-        if (callback == null)
-            return;
-
-        final MessageInfo info =
-            messageInfo(inAppMessage);
-
-        final String actionUrl =
-            action != null
-                ? safe(action.getActionUrl())
-                : "";
-
-        String actionText = "";
-
-        if (action != null)
+        synchronized (callbackLock)
         {
-            Button button = action.getButton();
+            if (!bridgeEnabled)
+                return;
 
-            if (button != null)
+            callback = clickCallback;
+
+            if (callback == null)
             {
-                Text text = button.getText();
-
-                if (text != null)
-                    actionText = safe(text.getText());
+                pendingClick = info;
+                Log.i(TAG, "FIAM click buffered: " + info.message.campaignName);
+                return;
             }
         }
 
-        final String finalActionText = actionText;
-
-        runOnGameThread(() ->
-        {
-            try
-            {
-                callback.call(
-                    info.messageId,
-                    info.campaignName,
-                    info.isTestMessage,
-                    info.messageType,
-                    actionUrl,
-                    finalActionText,
-                    info.dataJson
-                );
-            }
-            catch (Exception error)
-            {
-                Log.e(TAG, "Click callback failed.", error);
-            }
-        });
+        runOnGameThread(() -> invokeClick(callback, info));
     }
 
 
@@ -281,31 +347,25 @@ public class GMFirebaseInAppMessaging
     public void messageDismissed(
         InAppMessage inAppMessage)
     {
-        final GMFunction callback = dismissCallback;
+        final MessageInfo info = messageInfo(inAppMessage);
+        final GMFunction callback;
 
-        if (callback == null)
-            return;
-
-        final MessageInfo info =
-            messageInfo(inAppMessage);
-
-        runOnGameThread(() ->
+        synchronized (callbackLock)
         {
-            try
+            if (!bridgeEnabled)
+                return;
+
+            callback = dismissCallback;
+
+            if (callback == null)
             {
-                callback.call(
-                    info.messageId,
-                    info.campaignName,
-                    info.isTestMessage,
-                    info.messageType,
-                    info.dataJson
-                );
+                pendingDismiss = info;
+                Log.i(TAG, "FIAM dismiss buffered: " + info.campaignName);
+                return;
             }
-            catch (Exception error)
-            {
-                Log.e(TAG, "Dismiss callback failed.", error);
-            }
-        });
+        }
+
+        runOnGameThread(() -> invokeDismiss(callback, info));
     }
 
 
@@ -314,37 +374,112 @@ public class GMFirebaseInAppMessaging
         InAppMessage inAppMessage,
         FirebaseInAppMessagingDisplayCallbacks.InAppMessagingErrorReason errorReason)
     {
-        final GMFunction callback = displayErrorCallback;
+        final DisplayErrorInfo info = new DisplayErrorInfo(
+            messageInfo(inAppMessage),
+            errorReason != null ? errorReason.name() : "UNKNOWN"
+        );
 
-        if (callback == null)
-            return;
+        final GMFunction callback;
 
-        final MessageInfo info =
-            messageInfo(inAppMessage);
-
-        final String errorMessage =
-            errorReason != null
-                ? errorReason.name()
-                : "UNKNOWN";
-
-        runOnGameThread(() ->
+        synchronized (callbackLock)
         {
-            try
+            if (!bridgeEnabled)
+                return;
+
+            callback = displayErrorCallback;
+
+            if (callback == null)
             {
-                callback.call(
-                    info.messageId,
-                    info.campaignName,
-                    info.isTestMessage,
-                    info.messageType,
-                    errorMessage,
-                    info.dataJson
-                );
+                pendingDisplayError = info;
+                Log.i(TAG, "FIAM display error buffered: " + info.message.campaignName);
+                return;
             }
-            catch (Exception error)
-            {
-                Log.e(TAG, "Display-error callback failed.", error);
-            }
-        });
+        }
+
+        runOnGameThread(() -> invokeDisplayError(callback, info));
+    }
+
+
+    private void invokeImpression(GMFunction callback, MessageInfo info)
+    {
+        try
+        {
+            Log.i(TAG, "FIAM impression -> GML: " + info.campaignName);
+            callback.call(
+                info.messageId,
+                info.campaignName,
+                info.isTestMessage,
+                info.messageType,
+                info.dataJson
+            );
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Impression callback failed.", error);
+        }
+    }
+
+
+    private void invokeClick(GMFunction callback, ClickInfo info)
+    {
+        try
+        {
+            Log.i(TAG, "FIAM click -> GML: " + info.message.campaignName);
+            callback.call(
+                info.message.messageId,
+                info.message.campaignName,
+                info.message.isTestMessage,
+                info.message.messageType,
+                info.actionUrl,
+                info.actionText,
+                info.message.dataJson
+            );
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Click callback failed.", error);
+        }
+    }
+
+
+    private void invokeDismiss(GMFunction callback, MessageInfo info)
+    {
+        try
+        {
+            Log.i(TAG, "FIAM dismiss -> GML: " + info.campaignName);
+            callback.call(
+                info.messageId,
+                info.campaignName,
+                info.isTestMessage,
+                info.messageType,
+                info.dataJson
+            );
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Dismiss callback failed.", error);
+        }
+    }
+
+
+    private void invokeDisplayError(GMFunction callback, DisplayErrorInfo info)
+    {
+        try
+        {
+            Log.i(TAG, "FIAM display error -> GML: " + info.message.campaignName);
+            callback.call(
+                info.message.messageId,
+                info.message.campaignName,
+                info.message.isTestMessage,
+                info.message.messageType,
+                info.errorMessage,
+                info.message.dataJson
+            );
+        }
+        catch (Exception error)
+        {
+            Log.e(TAG, "Display-error callback failed.", error);
+        }
     }
 
 
@@ -372,6 +507,34 @@ public class GMFirebaseInAppMessaging
             this.isTestMessage = isTestMessage;
             this.messageType = messageType;
             this.dataJson = dataJson;
+        }
+    }
+
+
+    private static final class ClickInfo
+    {
+        final MessageInfo message;
+        final String actionUrl;
+        final String actionText;
+
+        ClickInfo(MessageInfo message, String actionUrl, String actionText)
+        {
+            this.message = message;
+            this.actionUrl = actionUrl;
+            this.actionText = actionText;
+        }
+    }
+
+
+    private static final class DisplayErrorInfo
+    {
+        final MessageInfo message;
+        final String errorMessage;
+
+        DisplayErrorInfo(MessageInfo message, String errorMessage)
+        {
+            this.message = message;
+            this.errorMessage = errorMessage;
         }
     }
 
@@ -424,6 +587,34 @@ public class GMFirebaseInAppMessaging
     }
 
 
+    private static ClickInfo clickInfo(
+        InAppMessage message,
+        Action action)
+    {
+        String actionUrl = "";
+        String actionText = "";
+
+        if (action != null)
+        {
+            actionUrl = safe(action.getActionUrl());
+
+            Button button = action.getButton();
+            if (button != null)
+            {
+                Text text = button.getText();
+                if (text != null)
+                    actionText = safe(text.getText());
+            }
+        }
+
+        return new ClickInfo(
+            messageInfo(message),
+            actionUrl,
+            actionText
+        );
+    }
+
+
     private static String dataJson(
         Map<String, String> data)
     {
@@ -451,18 +642,15 @@ public class GMFirebaseInAppMessaging
     private static void runOnGameThread(
         Runnable runnable)
     {
-        Activity activity =
-            RunnerActivity.CurrentActivity;
-
-        if (activity == null)
+        // GameMaker's Java callback bridge is safe from Android's main thread.
+        // Do not depend on CurrentActivity here: a lifecycle callback may arrive
+        // while the Activity reference is temporarily unavailable.
+        if (Looper.myLooper() == Looper.getMainLooper())
         {
-            Log.w(
-                TAG,
-                "Skipping FIAM callback because CurrentActivity is null."
-            );
+            runnable.run();
             return;
         }
 
-        activity.runOnUiThread(runnable);
+        MAIN_HANDLER.post(runnable);
     }
 }

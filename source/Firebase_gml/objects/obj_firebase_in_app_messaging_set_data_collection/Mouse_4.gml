@@ -1,0 +1,2 @@
+
+firebase_in_app_messaging_set_automatic_data_collection_enabled(!firebase_in_app_messaging_is_automatic_data_collection_enabled());

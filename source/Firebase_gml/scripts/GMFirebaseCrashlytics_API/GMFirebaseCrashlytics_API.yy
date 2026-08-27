@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseCrashlytics_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseCrashlytics_API",
+  "parent":{
+    "name":"FirebaseCrashlytics",
+    "path":"folders/FirebaseCrashlytics.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

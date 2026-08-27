@@ -1,0 +1,77 @@
+[gml_api]
+module GMFirebaseInAppMessaging;
+
+// Firebase In-App Messaging mobile wrapper.
+//
+// Android:
+//   com.google.firebase:firebase-inappmessaging-display
+//
+// iOS:
+//   FirebaseInAppMessaging
+//
+// Firebase Analytics must be enabled because FIAM targeting and
+// campaign triggers depend on Analytics.
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_automatic_data_collection_enabled(
+    enabled: bool
+): unit;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_is_automatic_data_collection_enabled(): bool;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_messages_suppressed(
+    suppressed: bool
+): unit;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_are_messages_suppressed(): bool;
+
+// Fires a contextual FIAM trigger.
+// Configure a campaign in Firebase Console with the same event name.
+[global, bind = typed_gml]
+function firebase_in_app_messaging_trigger_event(
+    event_name: string
+): unit;
+
+
+// Lifecycle callbacks.
+//
+// impression:
+// callback(message_id, campaign_name, is_test_message, message_type, data_json)
+//
+// click:
+// callback(message_id, campaign_name, is_test_message, message_type,
+//          action_url, action_text, data_json)
+//
+// dismiss:
+// callback(message_id, campaign_name, is_test_message, message_type, data_json)
+//
+// display error:
+// callback(message_id, campaign_name, is_test_message, message_type,
+//          error_message, data_json)
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_impression_callback(
+    callback: func
+): unit;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_click_callback(
+    callback: func
+): unit;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_dismiss_callback(
+    callback: func
+): unit;
+
+[global, bind = typed_gml]
+function firebase_in_app_messaging_set_display_error_callback(
+    callback: func
+): unit;
+
+// Removes all lifecycle callbacks installed by this wrapper.
+[global, bind = typed_gml]
+function firebase_in_app_messaging_clear_callbacks(): unit;

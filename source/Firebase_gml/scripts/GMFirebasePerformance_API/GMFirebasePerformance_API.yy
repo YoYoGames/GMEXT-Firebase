@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebasePerformance_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebasePerformance_API",
+  "parent":{
+    "name":"FirebasePerformance",
+    "path":"folders/FirebasePerformance.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

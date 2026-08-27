@@ -59,8 +59,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Firebase",
-    "path":"Firebase.yyp",
+    "name":"FirebaseCrashlytics",
+    "path":"folders/FirebaseCrashlytics.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

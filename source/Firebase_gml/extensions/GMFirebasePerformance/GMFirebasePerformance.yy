@@ -59,8 +59,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Firebase",
-    "path":"Firebase.yyp",
+    "name":"FirebasePerformance",
+    "path":"folders/FirebasePerformance.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

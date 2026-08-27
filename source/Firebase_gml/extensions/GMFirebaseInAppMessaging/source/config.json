@@ -1,0 +1,39 @@
+{
+  "$schema": "./extgen.schema.json",
+  "input": "spec.gmidl",
+  "root": "./",
+  "gamemaker": {
+    "runtime": {"outputFile": "../../../scripts/ExtensionCore_api/ExtensionCore_api.gml"},
+    "wrappers": {
+      "outputFile": "../../../scripts/GMFirebaseInAppMessaging_API/GMFirebaseInAppMessaging_API.gml"
+    },
+    "extension": {
+      "mode": "patch",
+      "outputFile": "../../../extensions/GMFirebaseInAppMessaging/GMFirebaseInAppMessaging.yy"
+    },
+    "injectors": { }
+  },
+    "targets": {
+    "android":{
+      "mode": "java"
+    },
+    "ios":{
+      "mode": "objc"
+    }
+  },
+  "extras": {
+    "docs": { 
+      "outputFile": "../../../../../docs/extgen_docs.js"
+    }
+  },
+    "build": {
+        "emitCmake": true,
+        "cmake": {
+            "cppStandard": 17,
+            "cppExtensions": false,
+            "strictWarnings": true,
+            "useThirdParty": true,
+            "emitPresets": true
+        }
+    }
+}

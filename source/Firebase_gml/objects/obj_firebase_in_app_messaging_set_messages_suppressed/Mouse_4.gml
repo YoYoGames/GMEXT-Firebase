@@ -1,0 +1,3 @@
+
+firebase_in_app_messaging_set_messages_suppressed(!firebase_in_app_messaging_are_messages_suppressed())
+

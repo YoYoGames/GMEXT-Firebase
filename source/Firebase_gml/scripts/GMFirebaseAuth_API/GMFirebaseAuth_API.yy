@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseAuth_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseAuth_API",
+  "parent":{
+    "name":"GMFirebaseAuth",
+    "path":"folders/FirebaseCPP/GMFirebaseAuth.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

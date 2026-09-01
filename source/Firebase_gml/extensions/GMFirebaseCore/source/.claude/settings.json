@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"D:\\\\Github\\\\GMEXT-Firebase\\\\source\\\\Firebase_gml\\\\extensions\")",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/**)",
+      "Bash(echo \"=== GMFirebaseCore ===\"; find \"D:\\\\Github\\\\GMEXT-Firebase\\\\source\\\\Firebase_gml\\\\extensions\\\\GMFirebaseCore\" -maxdepth 4 | head -100)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseCore/**)",
+      "Bash(find \"D:\\\\Github\\\\GMEXT-Firebase\\\\source\\\\Firebase_gml\\\\extensions\\\\GMFirebaseAuth\" -maxdepth 4 -iname \"*.cmake\" -o -maxdepth 4 -iname \"CMakeLists.txt\" | head -50)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseAuth/**)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseAuth/source/src/**)",
+      "Bash(grep -rl \"gmfirebase_core_get_api\\\\|GMFirebaseCoreAPI\\\\|core_api\" \"D:\\\\Github\\\\GMEXT-Firebase\\\\source\\\\Firebase_gml\\\\extensions\\\\GMFirebaseAuth\" 2>/dev/null)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseAuth/source/src/native/**)",
+      "Bash(cd \"D:/Github/GMEXT-Firebase/source/Firebase_gml/extensions\" *)",
+      "Bash(cmake --build out/build/win-x64-release --config Release)",
+      "PowerShell(Get-Command cmake -ErrorAction SilentlyContinue)",
+      "Bash(ls \"D:/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseAuth/source/out/build/\" 2>/dev/null)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseAuth/source/out/build/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(ls -la \"C:/ProgramData/GameMakerStudio2-LTS2026/Cache/runtimes/runtime-2026.0.0.23/windows/x64/\" 2>/dev/null | head -30)",
+      "Read(//c/ProgramData/GameMakerStudio2-LTS2026/Cache/runtimes/runtime-2026.0.0.23/windows/x64/**)",
+      "Bash(find \"D:/Github/GMEXT-Firebase/source/Firebase_gml/extensions\" -iname \"*.pdb\" 2>/dev/null | head -30 *)",
+      "Read(//c/Users/jzavala/AppData/Local/GameMakerStudio2-LTS2026/GMS2TEMP/Firebase_3354D572_VM/**)",
+      "Bash(ls \"D:/Github/GMEXT-Firebase/source/Firebase_gml/objects/obj_firebase_authentication_anonymous/\")",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/objects/obj_firebase_authentication_anonymous/**)",
+      "PowerShell(Get-Process -Name \"Runner\" -ErrorAction SilentlyContinue)",
+      "Read(//d/Github/GMEXT-Firebase/source/**)"
+    ],
+    "additionalDirectories": [
+      "D:\\Github\\GMEXT-Firebase\\source\\Firebase_gml\\extensions\\GMFirebaseAuth\\source\\src\\native"
+    ]
+  }
+}

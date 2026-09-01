@@ -1,0 +1,7 @@
+out/
+
+# REQUIRED for console targets with extra configs
+CMakeUserPresets.json
+
+# Bundler's local machine state (apple_mobile Xcode integration) - always machine-local
+.bundle/

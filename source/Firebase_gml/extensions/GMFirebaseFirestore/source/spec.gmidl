@@ -1,0 +1,1045 @@
+[gml_api]
+module GMFirebaseFirestore;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Firestore - enums
+// ============================================================
+
+[global, bind = typed_gml]
+enum FirestoreError
+{
+	Ok = 0,
+	Cancelled = 1,
+	Unknown = 2,
+	InvalidArgument = 3,
+	DeadlineExceeded = 4,
+	NotFound = 5,
+	AlreadyExists = 6,
+	PermissionDenied = 7,
+	ResourceExhausted = 8,
+	FailedPrecondition = 9,
+	Aborted = 10,
+	OutOfRange = 11,
+	Unimplemented = 12,
+	Internal = 13,
+	Unavailable = 14,
+	DataLoss = 15,
+	Unauthenticated = 16,
+}
+
+[global, bind = typed_gml]
+enum FirestoreSource
+{
+	Default = 0,
+	Cache = 1,
+	Server = 2,
+}
+
+[global, bind = typed_gml]
+enum FirestoreDirection
+{
+	Ascending = 0,
+	Descending = 1,
+}
+
+[global, bind = typed_gml]
+enum FirestoreServerTimestampBehavior
+{
+	None = 0,
+	Estimate = 1,
+	Previous = 2,
+}
+
+[global, bind = typed_gml]
+enum FirestoreDocumentChangeType
+{
+	Added = 0,
+	Modified = 1,
+	Removed = 2,
+}
+
+// ============================================================
+// Firestore - instance / settings / lifecycle
+// ============================================================
+
+// Attaches to the shared firebase::App from firebase_app_initialize() and
+// the "(default)" database. Returns a ref for every other firestore_*()
+// function below.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_get_instance(): gmval;
+
+// Same as firestore_get_instance() but for a named (multi-database) Firestore
+// database instead of "(default)".
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_get_instance_for_database(
+	database_name: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_get_host(
+	[type_hint=`uint64`] instance_ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_set_host(
+	[type_hint=`uint64`] instance_ref: gmval,
+	host: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_get_ssl_enabled(
+	[type_hint=`uint64`] instance_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_set_ssl_enabled(
+	[type_hint=`uint64`] instance_ref: gmval,
+	enabled: bool
+): unit;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_get_persistence_enabled(
+	[type_hint=`uint64`] instance_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_set_persistence_enabled(
+	[type_hint=`uint64`] instance_ref: gmval,
+	enabled: bool
+): unit;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_get_cache_size_bytes(
+	[type_hint=`uint64`] instance_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_settings_set_cache_size_bytes(
+	[type_hint=`uint64`] instance_ref: gmval,
+	bytes: real
+): unit;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_collection(
+	[type_hint=`uint64`] instance_ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document(
+	[type_hint=`uint64`] instance_ref: gmval,
+	path: string
+): gmval;
+
+// Query across every collection with this id, at any depth under the
+// database root (Firestore::CollectionGroup). Returned ref is a plain query
+// ref - use the firestore_query_*() functions on it, same as any other query.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_collection_group(
+	[type_hint=`uint64`] instance_ref: gmval,
+	collection_id: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_batch(
+	[type_hint=`uint64`] instance_ref: gmval
+): gmval;
+
+// level: a firebase::LogLevel ordinal (kLogLevelVerbose=0 .. kLogLevelAssert=6).
+[global, bind = typed_gml]
+function firebase_firestore_set_log_level(
+	level: real
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_enable_network(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_disable_network(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string). instance_ref (and every
+// ref derived from it) must not be used again once this completes.
+[global, bind = typed_gml]
+function firebase_firestore_terminate(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_clear_persistence(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_wait_for_pending_writes(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Intentional limitation - reports FirestoreError.Unimplemented until a safe synchronous GML transaction bridge exists.
+// See GMFirebase_firestore.cpp's firestore_run_transaction() for why.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_run_transaction(
+	[type_hint=`uint64`] instance_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// ============================================================
+// CollectionReference
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_firestore_collection_ref_id(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_firestore_collection_ref_path(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+// The parent DocumentReference, or an invalid ref (see
+// firestore_document_ref_is_valid) for a root-level collection.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_collection_ref_parent(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// A new DocumentReference with an auto-generated id.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_collection_ref_document(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_collection_ref_document_path(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+// data: struct of field name -> value (real|string|bool|array|struct, or a
+// firestore_field_value_*() ref for an explicit-typed/sentinel value).
+// callback(error_code: real, error_message: string, document_ref: uint64)
+[global, bind = typed_gml]
+function firebase_firestore_collection_ref_add(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_collection_ref_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_collection_ref_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// DocumentReference
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_id(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_path(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document_ref_parent(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document_ref_collection(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+// source: a FirestoreSource value.
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_get(
+	[type_hint=`uint64`] ref: gmval,
+	source: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// data: struct of field name -> value. Overwrites the whole document (or
+// creates it if missing).
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_set(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Same as firestore_document_ref_set(), but merges into any existing document
+// instead of overwriting it (SetOptions::Merge()).
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_set_merge(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Same as firestore_document_ref_set_merge(), but only merges the listed
+// dotted field paths (SetOptions::MergeFields()). fields: array of string.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_set_merge_fields(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	fields: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// data: struct of field name -> value. Fails if the document does not exist.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_update(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_delete(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Fires once immediately with the current cached/server value, then again on
+// every subsequent change, until firestore_listener_registration_remove() is
+// called with the returned ref. A callback is required.
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document_ref_add_snapshot_listener(
+	[type_hint=`uint64`] ref: gmval,
+	include_metadata_changes: bool,
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// Query
+// ============================================================
+// Every function below also accepts a CollectionReference ref in place of a
+// Query ref (CollectionReference publicly inherits from Query in the SDK),
+// so e.g. firestore_query_where_equal_to(firestore_collection(...), ...)
+// is valid and returns a new, independent Query ref reflecting the added
+// clause - none of these mutate the ref passed in.
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_not_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_less_than(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_less_than_or_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_greater_than(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_greater_than_or_equal_to(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_array_contains(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	value: gmval
+): gmval;
+
+// values: array of value.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_array_contains_any(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	values: gmval
+): gmval;
+
+// values: array of value.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_in(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	values: gmval
+): gmval;
+
+// values: array of value.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_not_in(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	values: gmval
+): gmval;
+
+// direction: a FirestoreDirection value.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_order_by(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	direction: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_limit(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_limit_to_last(
+	[type_hint=`uint64`] ref: gmval,
+	limit: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_start_at_snapshot(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] snapshot_ref: gmval
+): gmval;
+
+// values: array of value, one per orderBy()/documentId() clause on the query.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_start_at_values(
+	[type_hint=`uint64`] ref: gmval,
+	values: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_start_after_snapshot(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] snapshot_ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_start_after_values(
+	[type_hint=`uint64`] ref: gmval,
+	values: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_end_before_snapshot(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] snapshot_ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_end_before_values(
+	[type_hint=`uint64`] ref: gmval,
+	values: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_end_at_snapshot(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] snapshot_ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_end_at_values(
+	[type_hint=`uint64`] ref: gmval,
+	values: gmval
+): gmval;
+
+// source: a FirestoreSource value.
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml]
+function firebase_firestore_query_get(
+	[type_hint=`uint64`] ref: gmval,
+	source: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Fires once immediately with the current cached/server results, then again
+// on every subsequent change, until firestore_listener_registration_remove()
+// is called with the returned ref. A callback is required.
+// callback(error_code: real, error_message: string, snapshot_ref: uint64)
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_add_snapshot_listener(
+	[type_hint=`uint64`] ref: gmval,
+	include_metadata_changes: bool,
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_query_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_query_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// WriteBatch
+// ============================================================
+// Unlike DocumentReference/CollectionReference/Query's Set/Update/Delete,
+// none of these are async by themselves - only firestore_write_batch_commit()
+// talks to the network. data: struct of field name -> value, same as
+// firestore_document_ref_set()/update().
+
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_set(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_set_merge(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): real;
+
+// fields: array of string.
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_set_merge_fields(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval,
+	fields: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_update(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_delete(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_commit(
+	[type_hint=`uint64`] batch_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_release(
+	[type_hint=`uint64`] batch_ref: gmval
+): unit;
+
+// ============================================================
+// FieldValue - sentinels + explicit-typed value constructors
+// ============================================================
+// Every function below mints a packed Firestore helper handle surfaced as a
+// GML real. This is intentional: packed Firebase handles use only 50 bits, so
+// the value is exactly representable as double and can be embedded directly in
+// gmval structs/arrays. No real() cast is required. Dynamic GMValue containers
+// do not expose a nested int64 wire kind. Feed these values into *_set(),
+// *_set_merge(), *_set_merge_fields(), *_update(), *_add(), etc. GML has no
+// native way to tag a raw real as a Firestore Timestamp/GeoPoint/Reference/Blob/
+// integer/sentinel, so these constructors provide that exact typing.
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_delete(): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_server_timestamp(): real;
+
+// values: array of value. Adds elements not already present in the stored
+// array; a no-op on any element that already exists there.
+[global, bind = typed_gml]
+function firebase_firestore_field_value_array_union(
+	values: gmval
+): real;
+
+// values: array of value. Removes all matching elements from the stored array.
+[global, bind = typed_gml]
+function firebase_firestore_field_value_array_remove(
+	values: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_increment_integer(
+	value: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_increment_double(
+	value: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_integer(
+	value: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_double(
+	value: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_timestamp(
+	seconds: real,
+	nanoseconds: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_geo_point(
+	latitude: real,
+	longitude: real
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_reference(
+	[type_hint=`uint64`] document_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_blob(
+	data: string
+): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_null(): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_field_value_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// DocumentSnapshot
+// ============================================================
+
+[global]
+class `[[FirestoreDocumentSnapshotInfo]]` prototype Object
+{
+	[field] property exists: bool { get; set; }
+	[field] property id: string { get; set; }
+	[field, type_hint=`uint64`] property reference: gmval { get; set; }
+	[field] property has_pending_writes: bool { get; set; }
+	[field] property is_from_cache: bool { get; set; }
+}
+
+// Consolidates firebase_firestore_document_snapshot_exists/id/reference/
+// metadata_has_pending_writes/metadata_is_from_cache into a single call.
+// `reference` is a newly registered DocumentReference ref owned by the
+// caller - release it with firebase_firestore_document_ref_release() when
+// done. If `ref` is not a valid registered DocumentSnapshot, returns a
+// default-constructed struct (exists/has_pending_writes/is_from_cache
+// false, id "", reference 0).
+[global, bind = typed_gml, type_hint=`FirestoreDocumentSnapshotInfo`]
+function firebase_firestore_document_snapshot_get_info(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
+// Returns { exists: bool, value: <field value, or undefined if not exists> }.
+// A composite value kind with no single GML primitive is encoded as a small
+// tagged struct: { type: "timestamp", seconds: real, nanoseconds: real } or
+// { type: "geopoint", latitude: real, longitude: real }; a document reference
+// field is encoded as a plain uint64 DocumentReference ref (a real number),
+// the same as every other reference-typed handle in this extension; nested
+// arrays/maps recurse using the same rules.
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_get(
+	[type_hint=`uint64`] ref: gmval,
+	field: string,
+	server_timestamp_behavior: real
+): gmval;
+
+// server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
+// Returns the document's full field map as a struct, field name -> value,
+// using the same value encoding as firestore_document_snapshot_get().
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_get_data(
+	[type_hint=`uint64`] ref: gmval,
+	server_timestamp_behavior: real
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// QuerySnapshot
+// ============================================================
+
+[global]
+class `[[FirestoreQuerySnapshotInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property size: gmval { get; set; }
+	[field] property empty: bool { get; set; }
+	[field] property has_pending_writes: bool { get; set; }
+	[field] property is_from_cache: bool { get; set; }
+}
+
+// Consolidates firebase_firestore_query_snapshot_size/empty/
+// metadata_has_pending_writes/metadata_is_from_cache into a single call. If
+// `ref` is not a valid registered QuerySnapshot, returns a
+// default-constructed struct (size 0, empty/has_pending_writes/is_from_cache
+// false).
+[global, bind = typed_gml, type_hint=`FirestoreQuerySnapshotInfo`]
+function firebase_firestore_query_snapshot_get_info(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Returns an array of uint64 DocumentSnapshot refs (each newly registered -
+// release every one with firestore_document_snapshot_release() when done),
+// in the query's result order.
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_documents(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// Returns an array of
+// { type: real (FirestoreDocumentChangeType), document: uint64 (a newly
+// registered DocumentSnapshot ref), old_index: real (-1 if n/a),
+// new_index: real (-1 if n/a) }.
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_document_changes(
+	[type_hint=`uint64`] ref: gmval,
+	include_metadata_changes: bool
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+// ============================================================
+// ListenerRegistration
+// ============================================================
+// Shared by firestore_document_ref_add_snapshot_listener() and
+// firestore_query_add_snapshot_listener().
+
+[global, bind = typed_gml]
+function firebase_firestore_listener_registration_remove(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
+
+// ---- Firestore: FieldPath ----
+// FieldPath builder handles are exact GML reals so they can be placed directly
+// in gmval arrays/update-entry structs without a real() cast.
+[global, bind = typed_gml]
+function firebase_firestore_field_path_create(components: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_path_document_id(): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_path_is_valid([type_hint=`uint64`] field_path: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_path_to_string([type_hint=`uint64`] field_path: gmval): string;
+[global, bind = typed_gml]
+function firebase_firestore_field_path_release([type_hint=`uint64`] field_path: gmval): unit;
+
+// ---- Firestore: composable Filter API ----
+// Filter builder handles are exact GML reals so filter_and()/filter_or() arrays
+// can contain them directly. Release/typed query APIs still accept the handle.
+[global, bind = typed_gml]
+function firebase_firestore_filter_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_or_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_or_equal_to(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains(field: string, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_any(field: string, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_in(field: string, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_in(field: string, values: gmval): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_filter_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_less_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_greater_than_or_equal_to_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_field_path([type_hint=`uint64`] field_path: gmval, value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_array_contains_any_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_not_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_filter_and(filters: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_or(filters: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_filter_release([type_hint=`uint64`] filter: gmval): unit;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_filter([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] filter: gmval): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_equal_to_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_not_equal_to_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_less_than_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_less_than_or_equal_to_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_greater_than_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_greater_than_or_equal_to_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_array_contains_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, value: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_array_contains_any_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_in_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_where_not_in_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_order_by_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, direction: real): gmval;
+
+// ---- Firestore: aggregate Count() ----
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_count([type_hint=`uint64`] query: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_aggregate_query_get_query([type_hint=`uint64`] aggregate_query: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_query_is_valid([type_hint=`uint64`] aggregate_query: gmval): bool;
+// source: AggregateSource.kServer = 0. callback(error_code,error_message,snapshot)
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_query_get([type_hint=`uint64`] aggregate_query: gmval, source: real, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_query_release([type_hint=`uint64`] aggregate_query: gmval): unit;
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_snapshot_count([type_hint=`uint64`] snapshot: gmval): real;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_aggregate_snapshot_get_query([type_hint=`uint64`] snapshot: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_aggregate_snapshot_release([type_hint=`uint64`] snapshot: gmval): unit;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_add_snapshots_in_sync_listener([type_hint=`uint64`] firestore: gmval, [type_hint=`func?`] callback: gmval): gmval;
+
+// bundle is the raw Firestore bundle bytes. progress_callback(progress_struct)
+// and callback(error_code,error_message,final_progress_struct).
+[global, bind = typed_gml]
+function firebase_firestore_load_bundle([type_hint=`uint64`] firestore: gmval, [type_hint=buffer] bundle: gmval, [type_hint=`func?`] progress_callback: gmval, [type_hint=`func?`] callback: gmval): real;
+
+// callback(error_code,error_message,query_handle_or_undefined)
+[global, bind = typed_gml]
+function firebase_firestore_named_query([type_hint=`uint64`] firestore: gmval, name: string, [type_hint=`func?`] callback: gmval): real;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval): unit;
+
+
+// ---- Firestore: remaining 13.11 value/snapshot accessors ----
+[global, bind = typed_gml]
+function firebase_firestore_field_value_type([type_hint=`uint64`] field_value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_valid([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_null([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_boolean([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_integer([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_double([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_timestamp([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_string([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_blob([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_reference([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_geo_point([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_array([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_is_map([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_boolean_value([type_hint=`uint64`] field_value: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_integer_value([type_hint=`uint64`] field_value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_double_value([type_hint=`uint64`] field_value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_string_value([type_hint=`uint64`] field_value: gmval): string;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_blob_size([type_hint=`uint64`] field_value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_blob_copy([type_hint=`uint64`] field_value: gmval, [type_hint=buffer] out_buffer: gmval): real;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_field_value_reference_value([type_hint=`uint64`] field_value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_timestamp_value([type_hint=`uint64`] field_value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_geo_point_value([type_hint=`uint64`] field_value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_array_value([type_hint=`uint64`] field_value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_map_value([type_hint=`uint64`] field_value: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_to_string([type_hint=`uint64`] field_value: gmval): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_get_firestore([type_hint=`uint64`] query: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document_ref_get_firestore([type_hint=`uint64`] document: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_to_string([type_hint=`uint64`] document: gmval): string;
+// entries = array of { field_path: FirebaseFirestoreFieldPathHandle, value: any }
+[global, bind = typed_gml]
+function firebase_firestore_document_ref_update_field_paths([type_hint=`uint64`] document: gmval, entries: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_update_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, entries: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_write_batch_is_valid([type_hint=`uint64`] batch: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_settings_to_string([type_hint=`uint64`] firestore: gmval): string;
+
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_to_string([type_hint=`uint64`] snapshot: gmval): string;
+// Returns { exists, value } like firebase_firestore_document_snapshot_get().
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_get_field_path([type_hint=`uint64`] snapshot: gmval, [type_hint=`uint64`] field_path: gmval, server_timestamp_behavior: real): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_query_snapshot_get_query([type_hint=`uint64`] snapshot: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_listener_registration_is_valid([type_hint=`uint64`] listener: gmval): bool;
+
+
+// ---- Module -> App / explicit App-instance overloads ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_get_app([type_hint=`uint64`] firestore: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_get_instance_for_app_database([type_hint=`uint64`] app: gmval, database_id: string): gmval;
+
+// ---- Firestore explicit FieldValue constructors ----
+[global, bind = typed_gml]
+function firebase_firestore_field_value_boolean(value: bool): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_string(value: string): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_array(value: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_field_value_map(value: gmval): real;
+
+function firebase_firestore_document_snapshot_metadata_to_string([type_hint=`uint64`] snapshot: gmval): string;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_metadata_to_string([type_hint=`uint64`] snapshot: gmval): string;
+
+// ---- Firestore literal snapshot scalar accessors ----
+// These mirror the SDK methods directly and avoid allocating the *_get_info()
+// convenience struct when only one field is needed.
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_exists([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_id([type_hint=`uint64`] snapshot: gmval): string;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_firestore_document_snapshot_reference([type_hint=`uint64`] snapshot: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_metadata_has_pending_writes([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_document_snapshot_metadata_is_from_cache([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_size([type_hint=`uint64`] snapshot: gmval): real;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_empty([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_metadata_has_pending_writes([type_hint=`uint64`] snapshot: gmval): bool;
+[global, bind = typed_gml]
+function firebase_firestore_query_snapshot_metadata_is_from_cache([type_hint=`uint64`] snapshot: gmval): bool;

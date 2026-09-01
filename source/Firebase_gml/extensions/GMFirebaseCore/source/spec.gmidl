@@ -1,0 +1,76 @@
+[gml_api]
+module GMFirebaseCore;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Public ABI / allocation policy
+// ============================================================
+// Native-backed Firebase identity objects are represented as packed handles:
+// [extension id | Firebase-local type | 32-bit registry id]. The payload is
+// always a registry id - never a native pointer. Normal identity handles use
+// typed uint64 on the GML API. Firestore helper handles that are intentionally
+// embedded inside dynamic gmval structs/arrays (FieldValue/FieldPath/Filter)
+// are surfaced as exact GML reals instead; the packed layout uses only 50 bits,
+// so this loses no precision and avoids requiring caller-side real() casts.
+//
+// GameMaker classes below are reserved for explicit value materialization
+// (for example *_get_info()), configuration, or result data that GML actually
+// needs to inspect. Hot-path listeners return handles and primitive callback
+// values; callers opt into struct/array allocation only when they request it.
+
+// ============================================================
+// App core
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_app_initialize(): real;
+
+[global, bind = typed_gml]
+function firebase_app_is_initialized(): real;
+
+[global, bind = typed_gml]
+function firebase_app_get_name(): string;
+
+// ============================================================
+// Utility
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_last_error_code(): real;
+
+[global, bind = typed_gml]
+function firebase_last_error_message(): string;
+
+// ============================================================
+
+// ---- Firebase App / multi-app / global logging ----
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_get_default_handle(): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_get_instance(name: string): gmval;
+// Returns array<uint64 FirebaseAppHandle>.
+[global, bind = typed_gml]
+function firebase_app_get_apps(): gmval;
+// options fields: app_id, api_key, messaging_sender_id, database_url,
+// ga_tracking_id, storage_bucket, project_id. (client_id/package_name are SDK-internal in 13.11.)
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_initialize_with_options(options: gmval, name: string): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_initialize_from_json(json_config: string, name: string): gmval;
+[global, bind = typed_gml]
+function firebase_app_handle_get_name([type_hint=`uint64`] app: gmval): string;
+[global, bind = typed_gml]
+function firebase_app_handle_get_options([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_app_get_default_options(): gmval;
+[global, bind = typed_gml]
+function firebase_app_release_handle([type_hint=`uint64`] app: gmval): unit;
+[global, bind = typed_gml]
+function firebase_set_log_level(level: real): unit;
+[global, bind = typed_gml]
+function firebase_get_log_level(): real;
+
+function firebase_get_sdk_version(): string;

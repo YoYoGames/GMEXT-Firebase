@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseUMP_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseUMP_API",
+  "parent":{
+    "name":"GMFirebaseUMP",
+    "path":"folders/FirebaseCPP/GMFirebaseUMP.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

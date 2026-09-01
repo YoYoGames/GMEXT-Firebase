@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseCore_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseCore_API",
+  "parent":{
+    "name":"GMFirebaseCore",
+    "path":"folders/FirebaseCPP/GMFirebaseCore.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

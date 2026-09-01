@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseInstallations_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseInstallations_API",
+  "parent":{
+    "name":"GMFirebaseInstallations",
+    "path":"folders/FirebaseCPP/GMFirebaseInstallations.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

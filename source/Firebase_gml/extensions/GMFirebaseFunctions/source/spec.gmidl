@@ -1,0 +1,83 @@
+[gml_api]
+module GMFirebaseFunctions;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Cloud Functions
+// ============================================================
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_instance(): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_instance_with_region(
+	region: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_functions_use_functions_emulator(
+	[type_hint=`uint64`] functions_ref: gmval,
+	origin: string
+): unit;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_https_callable(
+	[type_hint=`uint64`] functions_ref: gmval,
+	name: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_https_callable_with_options(
+	[type_hint=`uint64`] functions_ref: gmval,
+	name: string,
+	limited_use_app_check_token: real
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_https_callable_from_url(
+	[type_hint=`uint64`] functions_ref: gmval,
+	url: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_https_callable_from_url_with_options(
+	[type_hint=`uint64`] functions_ref: gmval,
+	url: string,
+	limited_use_app_check_token: real
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_functions_callable_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string, data: gmval)
+[global, bind = typed_gml]
+function firebase_functions_callable_call(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// data: arbitrary GML value (real/string/bool/array/struct) sent as the
+// call's params. callback(error_code: real, error_message: string, data: gmval)
+[global, bind = typed_gml]
+function firebase_functions_callable_call_with_data(
+	[type_hint=`uint64`] ref: gmval,
+	data: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+
+// ---- Module -> App / explicit App-instance overloads ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_app([type_hint=`uint64`] functions: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_callable_get_functions([type_hint=`uint64`] callable: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_functions_get_instance_for_app_region([type_hint=`uint64`] app: gmval, region: string): gmval;

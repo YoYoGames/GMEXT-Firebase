@@ -1,0 +1,464 @@
+// ##### extgen :: Auto-generated file do not edit!! #####
+
+#import "GMFirebaseAuthInternal_ios.h"
+#import "native/GMFirebaseAuthInternal_exports.h"
+#import <objc/runtime.h>
+
+
+extern "C" const char* extOptGetString(char* _ext, char* _opt);
+
+// Adapter: matches const signature expected by the C++ API
+static const char* ExtOptGetString(const char* ext, const char* opt)
+{
+    return extOptGetString(const_cast<char*>(ext), const_cast<char*>(opt));
+}
+
+static BOOL GMIsSubclassOf(Class cls, Class base)
+{
+    for (Class c = cls; c != Nil; c = class_getSuperclass(c)) {
+        if (c == base) return YES;
+    }
+    return NO;
+}
+
+static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
+{
+    // Build set of methods already defined on subclass
+    unsigned subCount = 0;
+    Method *subList = class_copyMethodList(subclass, &subCount);
+
+    CFMutableSetRef owned = CFSetCreateMutable(kCFAllocatorDefault, 0, NULL);
+    for (unsigned i = 0; i < subCount; ++i) {
+        CFSetAddValue(owned, method_getName(subList[i]));
+    }
+
+    // Walk base class methods
+    unsigned baseCount = 0;
+    Method *baseList = class_copyMethodList(base, &baseCount);
+
+    for (unsigned i = 0; i < baseCount; ++i) {
+        SEL sel = method_getName(baseList[i]);
+        const char *name = sel_getName(sel);
+
+        // Only inject extension selectors (methods prefixed with __EXT_NATIVE__)
+        if (!name || strncmp(name, "__EXT_NATIVE__", 13) != 0) continue;
+
+        // Add only if subclass doesn't already have it
+        if (!CFSetContainsValue(owned, sel)) {
+            IMP imp = method_getImplementation(baseList[i]);
+            const char *types = method_getTypeEncoding(baseList[i]);
+            if (class_addMethod(subclass, sel, imp, types)) {
+                CFSetAddValue(owned, sel);
+            }
+        }
+    }
+
+    if (subList) free(subList);
+    if (baseList) free(baseList);
+    if (owned) CFRelease(owned);
+}
+
+@implementation GMFirebaseAuthInternal
+
++ (void)load
+{
+    // Find all loaded classes
+    int num = objc_getClassList(NULL, 0);
+    if (num <= 0) return;
+
+    Class *classes = (Class *)malloc(sizeof(Class) * (unsigned)num);
+    num = objc_getClassList(classes, num);
+
+    Class base = [GMFirebaseAuthInternal class];
+
+    for (int i = 0; i < num; ++i) {
+        Class cls = classes[i];
+        if (cls == base) continue;
+
+        // We only care about direct or indirect subclasses
+        if (GMIsSubclassOf(cls, base)) {
+            GMInjectSelectorsIntoSubclass(cls, base);
+        }
+    }
+
+    free(classes);
+
+    gm::details::GMRTRunnerInterface ri{};
+    ri.ExtOptGetString = &ExtOptGetString;
+    GMExtensionInitialise(&ri, sizeof(ri));
+}
+
+- (double)__EXT_NATIVE__firebase_auth_get_auth
+{
+    return __EXT_NATIVE__firebase_auth_get_auth();
+}
+- (char*)__EXT_NATIVE__firebase_auth_language_code
+{
+    return __EXT_NATIVE__firebase_auth_language_code();
+}
+- (double)__EXT_NATIVE__firebase_auth_set_language_code:(char*)language_code
+{
+    return __EXT_NATIVE__firebase_auth_set_language_code(language_code);
+}
+- (double)__EXT_NATIVE__firebase_auth_use_app_language
+{
+    return __EXT_NATIVE__firebase_auth_use_app_language();
+}
+- (double)__EXT_NATIVE__firebase_auth_use_emulator:(char*)host arg1:(double)port
+{
+    return __EXT_NATIVE__firebase_auth_use_emulator(host, port);
+}
+- (double)__EXT_NATIVE__firebase_auth_current_user:(char*)__ret_buffer arg1:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_current_user(__ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_out
+{
+    return __EXT_NATIVE__firebase_auth_sign_out();
+}
+- (double)__EXT_NATIVE__firebase_auth_fetch_providers_for_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_fetch_providers_for_email(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_credential(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_anonymously(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_send_password_reset_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_send_password_reset_email(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_add_state_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_add_state_listener(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_remove_state_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_remove_state_listener(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_add_id_token_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_add_id_token_listener(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_remove_id_token_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_remove_id_token_listener(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_credential_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_credential_provider(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_credential_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_credential_is_valid(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_credential_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_credential_release(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_email_auth_provider_get_credential:(char*)email arg1:(char*)password arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_email_auth_provider_get_credential(email, password, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_facebook_auth_provider_get_credential:(char*)access_token arg1:(char*)__ret_buffer arg2:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_facebook_auth_provider_get_credential(access_token, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_is_player_authenticated
+{
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_is_player_authenticated();
+}
+- (double)__EXT_NATIVE__firebase_auth_github_auth_provider_get_credential:(char*)token arg1:(char*)__ret_buffer arg2:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_github_auth_provider_get_credential(token, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_google_auth_provider_get_credential:(char*)id_token arg1:(char*)access_token arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_google_auth_provider_get_credential(id_token, access_token, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_oauth_provider_get_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_oauth_provider_get_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_oauth_provider_get_credential_with_nonce:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_oauth_provider_get_credential_with_nonce(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_play_games_auth_provider_get_credential:(char*)server_auth_code arg1:(char*)__ret_buffer arg2:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_play_games_auth_provider_get_credential(server_auth_code, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_twitter_auth_provider_get_credential:(char*)token arg1:(char*)secret arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_twitter_auth_provider_get_credential(token, secret, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_phone_verify_phone_number:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_phone_verify_phone_number(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_phone_get_credential:(char*)verification_id arg1:(char*)verification_code arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_phone_get_credential(verification_id, verification_code, __ret_buffer, __ret_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_phone_credential_sms_code:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_phone_credential_sms_code(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_phone_resending_token_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_phone_resending_token_release(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_phone_listener_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_phone_listener_release(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_release(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_is_valid(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_uid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_uid(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_email(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_display_name:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_display_name(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_photo_url:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_photo_url(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_provider_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_provider_id(__arg_buffer, __arg_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_user_phone_number:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_phone_number(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_is_email_verified:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_is_email_verified(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_is_anonymous:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_is_anonymous(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_creation_timestamp:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_creation_timestamp(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_last_sign_in_timestamp:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_last_sign_in_timestamp(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_get_token(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_update_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_update_password(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_update_profile:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_update_profile(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_send_email_verification(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_link_with_credential(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_unlink:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_unlink(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_reload:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_reload(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_delete(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_federated_oauth_provider_create:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_federated_oauth_provider_create(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_federated_oauth_provider_set_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_federated_oauth_provider_set_data(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_federated_oauth_provider_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_federated_oauth_provider_release(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_provider(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_provider_data_count:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_provider_data_count(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_provider_data_at:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_provider_data_at(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_link_with_provider(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_link_with_credential_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_user_update_phone_number_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_get_app:(char*)__ret_buffer arg1:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_get_app(__ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_get_current_instance_handle:(char*)__ret_buffer arg1:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_get_current_instance_handle(__ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_get_instance_for_app:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_get_instance_for_app(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_use_instance:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_use_instance(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_auth_instance_get_app:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_instance_get_app(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (char*)__EXT_NATIVE__firebase_auth_email_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_email_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_facebook_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_facebook_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_game_center_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_github_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_github_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_google_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_google_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_microsoft_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_microsoft_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_play_games_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_play_games_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_twitter_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_twitter_auth_provider_id();
+}
+- (char*)__EXT_NATIVE__firebase_auth_yahoo_auth_provider_id
+{
+    return __EXT_NATIVE__firebase_auth_yahoo_auth_provider_id();
+}
+- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__GMFirebaseAuth_invocation_handler:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__GMFirebaseAuth_invocation_handler(__arg_buffer, __arg_buffer_length);
+}
+@end
+

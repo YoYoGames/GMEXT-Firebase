@@ -1,0 +1,63 @@
+// ##### extgen :: Auto-generated file do not edit!! #####
+
+#pragma once
+#include "core/GMExtUtils.h"
+
+// Internal function used for fetching dispatched function calls to GML
+GMEXPORT double __EXT_NATIVE__GMFirebaseMessaging_invocation_handler(char* __ret_buffer, double __ret_buffer_length);
+
+// Internal function used for queueing buffers to native code
+GMEXPORT double __EXT_NATIVE__GMFirebaseMessaging_queue_buffer(char* __arg_buffer, double __arg_buffer_length);
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_terminate();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_set_token_registration_on_init_enabled(double enabled);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_is_token_registration_on_init_enabled();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_delivery_metrics_export_to_big_query_enabled();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_set_delivery_metrics_export_to_big_query(double enabled);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_request_permission(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_get_token(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_delete_token(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_subscribe(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_unsubscribe(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_message();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_token();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_current_token();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_from();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_to();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_collapse_key();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_message_id();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_message_type();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_priority();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_original_priority();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_time_to_live();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_sent_time();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_error();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_error_description();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_link();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_notification_opened();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_data_count();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_data_key_at(double index);
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_get_data(char* key);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_raw_data_size();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_raw_data_copy(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_has_notification();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_title();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_body();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_icon();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_sound();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_badge();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_tag();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_color();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_click_action();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_body_loc_key();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_count();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_at(double index);
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_title_loc_key();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_count();
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_at(double index);
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_android_channel_id();
+GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize_for_app(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize_for_app_with_options(char* __arg_buffer, double __arg_buffer_length);
+

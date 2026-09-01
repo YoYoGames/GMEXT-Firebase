@@ -1,0 +1,210 @@
+[gml_api]
+module GMFirebaseMessaging;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Cloud Messaging
+// ============================================================
+//
+// Messaging exposes no per-instance handle - every function below is
+// global. messaging_poll_message()/messaging_poll_token() drain the SDK's
+// own PollableListener buffer and should be called once per step from
+// GML's event loop; the per-field getters below read back whatever the
+// most recent successful poll populated.
+
+[global, bind = typed_gml]
+function firebase_messaging_initialize(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_terminate(): unit;
+
+[global, bind = typed_gml]
+function firebase_messaging_set_token_registration_on_init_enabled(
+	enabled: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_messaging_is_token_registration_on_init_enabled(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_delivery_metrics_export_to_big_query_enabled(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_set_delivery_metrics_export_to_big_query(
+	enabled: real
+): unit;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_messaging_request_permission(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, token: string)
+[global, bind = typed_gml]
+function firebase_messaging_get_token(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_messaging_delete_token(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_messaging_subscribe(
+	topic: string,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_messaging_unsubscribe(
+	topic: string,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Returns 1 and refreshes the current-message getters below if a message
+// was pending; 0 otherwise.
+[global, bind = typed_gml]
+function firebase_messaging_poll_message(): real;
+
+// Returns 1 and refreshes messaging_current_token() if a freshly-generated
+// registration token was pending; 0 otherwise.
+[global, bind = typed_gml]
+function firebase_messaging_poll_token(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_current_token(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_from(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_to(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_collapse_key(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_message_id(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_message_type(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_priority(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_original_priority(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_time_to_live(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_sent_time(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_error(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_error_description(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_link(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_opened(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_data_count(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_data_key_at(
+	index: real
+): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_get_data(
+	key: string
+): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_raw_data_size(): real;
+
+// out_buffer: a GML buffer, sized via messaging_message_raw_data_size()
+// first; returns the number of bytes actually copied.
+[global, bind = typed_gml]
+function firebase_messaging_message_raw_data_copy(
+	[type_hint=buffer] out_buffer: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_has_notification(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_title(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_body(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_icon(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_sound(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_badge(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_tag(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_color(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_click_action(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_body_loc_key(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_body_loc_args_count(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_body_loc_args_at(
+	index: real
+): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_title_loc_key(): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_title_loc_args_count(): real;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_title_loc_args_at(
+	index: real
+): string;
+
+[global, bind = typed_gml]
+function firebase_messaging_message_notification_android_channel_id(): string;
+
+
+// ---- Messaging ----
+[global, bind = typed_gml]
+function firebase_messaging_initialize_with_options(suppress_notification_permission_prompt: real): real;
+
+
+// ---- Explicit App linkage for global/singleton modules ----
+
+[global, bind = typed_gml]
+function firebase_messaging_initialize_for_app([type_hint=`uint64`] app: gmval): real;
+[global, bind = typed_gml]
+function firebase_messaging_initialize_for_app_with_options([type_hint=`uint64`] app: gmval, suppress_notification_permission_prompt: real): real;

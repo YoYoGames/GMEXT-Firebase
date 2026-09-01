@@ -1,0 +1,146 @@
+[gml_api]
+module GMFirebaseAnalytics;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// Analytics
+// ============================================================
+
+[global, bind = typed_gml]
+function firebase_analytics_initialize(): real;
+
+[global, bind = typed_gml]
+function firebase_analytics_terminate(): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_analytics_collection_enabled(
+	enabled: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_consent(
+	ad_storage: real,
+	analytics_storage: real,
+	ad_user_data: real,
+	ad_personalization: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_log_event(
+	name: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_log_event_string(
+	name: string,
+	parameter_name: string,
+	parameter_value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_log_event_number(
+	name: string,
+	parameter_name: string,
+	parameter_value: real
+): unit;
+
+// params: array of {name: string, value: <real|string|bool|array|struct>}.
+[global, bind = typed_gml]
+function firebase_analytics_log_event_params(
+	name: string,
+	params: gmval
+): unit;
+
+// params: array of {name: string, value: <real|string|bool|array|struct>}.
+[global, bind = typed_gml]
+function firebase_analytics_set_default_event_parameters(
+	params: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_log_apple_transaction(
+	transaction_id: string,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_user_property(
+	name: string,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_user_id(
+	user_id: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_session_timeout_duration(
+	milliseconds: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_reset_analytics_data(): unit;
+
+// callback(error_code: real, error_message: string, instance_id: string)
+[global, bind = typed_gml]
+function firebase_analytics_get_analytics_instance_id(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, session_id: real)
+[global, bind = typed_gml]
+function firebase_analytics_get_session_id(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// Desktop-only diagnostics; no-op on iOS/Android (see firebase/analytics.h).
+[global, bind = typed_gml]
+function firebase_analytics_notify_app_lifecycle_termination(): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_is_desktop_initialized(): real;
+
+[global, bind = typed_gml]
+function firebase_analytics_set_desktop_debug_mode(
+	enabled: real
+): unit;
+
+// callback(log_level: real, message: string). Windows Desktop only.
+[global, bind = typed_gml]
+function firebase_analytics_set_log_callback(
+	[type_hint=`func?`] callback: gmval
+): unit;
+
+// iOS/tvOS only; no-op elsewhere.
+[global, bind = typed_gml]
+function firebase_analytics_initiate_on_device_conversion_measurement_email(
+	email_address: string
+): unit;
+
+// iOS only; no-op elsewhere.
+[global, bind = typed_gml]
+function firebase_analytics_initiate_on_device_conversion_measurement_phone(
+	phone_number: string
+): unit;
+
+
+// ---- Analytics ----
+[global, bind = typed_gml]
+function firebase_analytics_notify_app_lifecycle_change(state: real): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(
+    [type_hint=buffer] hashed_email: gmval
+): unit;
+
+[global, bind = typed_gml]
+function firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(
+    [type_hint=buffer] hashed_phone: gmval
+): unit;
+
+
+[global, bind = typed_gml]
+function firebase_analytics_initialize_for_app([type_hint=`uint64`] app: gmval): real;

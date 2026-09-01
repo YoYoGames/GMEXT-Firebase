@@ -1,0 +1,211 @@
+[gml_api]
+module GMFirebaseRemoteConfig;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Remote Config
+// ============================================================
+
+[global, bind = typed_gml]
+enum FirebaseRemoteConfigLastFetchStatus
+{
+	Success = 0,
+	Failure = 1,
+	Pending = 2,
+}
+
+[global, bind = typed_gml]
+enum FirebaseRemoteConfigFetchFailureReason
+{
+	Invalid = 0,
+	Throttled = 1,
+	Error = 2,
+}
+
+[global]
+class `[[FirebaseRemoteConfigInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property fetch_time: gmval { get; set; }
+	[field, type_hint=`real`] property last_fetch_status: gmval { get; set; }
+	[field, type_hint=`real`] property last_fetch_failure_reason: gmval { get; set; }
+	[field, type_hint=`real`] property throttled_end_time: gmval { get; set; }
+}
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_remote_config_get_instance(): gmval;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_remote_config_ensure_initialized(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_remote_config_set_config_settings(
+	[type_hint=`uint64`] rc_ref: gmval,
+	fetch_timeout_ms: real,
+	minimum_fetch_interval_ms: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_config_settings_fetch_timeout(
+	[type_hint=`uint64`] rc_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_config_settings_minimum_fetch_interval(
+	[type_hint=`uint64`] rc_ref: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_remote_config_fetch(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_remote_config_fetch_with_expiration(
+	[type_hint=`uint64`] rc_ref: gmval,
+	cache_expiration_in_seconds: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, activated: bool)
+[global, bind = typed_gml]
+function firebase_remote_config_fetch_and_activate(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, activated: bool)
+[global, bind = typed_gml]
+function firebase_remote_config_activate(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_boolean(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_long(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_double(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string
+): real;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_string(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string
+): string;
+
+[global, bind = typed_gml]
+function firebase_remote_config_get_data_size(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string
+): real;
+
+// out_buffer: a GML buffer, sized via remote_config_get_data_size() first;
+// returns the number of bytes actually copied.
+[global, bind = typed_gml]
+function firebase_remote_config_get_data(
+	[type_hint=`uint64`] rc_ref: gmval,
+	key: string,
+	[type_hint=buffer] out_buffer: gmval
+): real;
+
+// callback(keys: array of string) - single argument, a GML array.
+[global, bind = typed_gml]
+function firebase_remote_config_get_keys_by_prefix(
+	[type_hint=`uint64`] rc_ref: gmval,
+	prefix: string,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(keys: array of string) - single argument, a GML array.
+[global, bind = typed_gml]
+function firebase_remote_config_get_keys(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(values: struct) - single argument, a GML struct with one field
+// per remote config key.
+[global, bind = typed_gml]
+function firebase_remote_config_get_all(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// defaults: a GML struct {key: value, ...}; each value may be any
+// real/string/bool/array/struct GML value.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_remote_config_set_defaults(
+	[type_hint=`uint64`] rc_ref: gmval,
+	defaults: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigInfo`]
+function firebase_remote_config_get_info(
+	[type_hint=`uint64`] rc_ref: gmval
+): gmval;
+
+// callback(error_code: real, error_message: string, updated_keys: array of string),
+// fired on every real-time config update. Returns a registration ref for
+// remote_config_remove_config_update_listener.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_remote_config_add_config_update_listener(
+	[type_hint=`uint64`] rc_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_remote_config_remove_config_update_listener(
+	[type_hint=`uint64`] reg_ref: gmval
+): real;
+
+
+// ---- Remote Config ValueInfo ----
+// Scalar functions return {value, source, conversion_successful}.
+[global, bind = typed_gml]
+function firebase_remote_config_ensure_initialized_info([type_hint=`uint64`] rc_ref: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_remote_config_get_boolean_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
+[global, bind = typed_gml]
+function firebase_remote_config_get_long_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
+[global, bind = typed_gml]
+function firebase_remote_config_get_double_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
+[global, bind = typed_gml]
+function firebase_remote_config_get_string_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
+// Returns {bytes_copied,size,source,conversion_successful}.
+[global, bind = typed_gml]
+function firebase_remote_config_get_data_with_info([type_hint=`uint64`] rc_ref: gmval, key: string, [type_hint=buffer] out_buffer: gmval): gmval;
+
+
+// ---- Module -> App / explicit App-instance overloads ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_remote_config_get_app([type_hint=`uint64`] remote_config: gmval): gmval;
+
+// ---- Explicit App linkage for global/singleton modules ----
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_remote_config_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;

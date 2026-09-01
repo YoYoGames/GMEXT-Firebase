@@ -1,0 +1,125 @@
+[gml_api]
+module GMFirebaseUMP;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// User Messaging Platform (UMP) - consent
+// ============================================================
+
+[global, bind = typed_gml]
+enum FirebaseUmpConsentStatus
+{
+	Unknown = 0,
+	Required = 1,
+	NotRequired = 2,
+	Obtained = 3,
+}
+
+[global, bind = typed_gml]
+enum FirebaseUmpConsentFormStatus
+{
+	Unknown = 0,
+	Unavailable = 1,
+	Available = 2,
+}
+
+[global, bind = typed_gml]
+enum FirebaseUmpPrivacyOptionsRequirementStatus
+{
+	Unknown = 0,
+	NotRequired = 1,
+	Required = 2,
+}
+
+[global, bind = typed_gml]
+enum FirebaseUmpConsentDebugGeography
+{
+	Disabled = 0,
+	EEA = 1,
+	NonEEA = 2,
+}
+
+// Nullable: fails (returns no value) if there is no firebase::App yet, or
+// if ConsentInfo::GetInstance() itself fails to initialize.
+[global, bind = typed_gml, type_hint=`uint64?`]
+function firebase_ump_get_instance(): gmval;
+
+[global, bind = typed_gml]
+function firebase_ump_get_consent_status(
+	[type_hint=`uint64`] consent_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_ump_get_consent_form_status(
+	[type_hint=`uint64`] consent_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_ump_get_privacy_options_requirement_status(
+	[type_hint=`uint64`] consent_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_ump_can_request_ads(
+	[type_hint=`uint64`] consent_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_ump_reset(
+	[type_hint=`uint64`] consent_ref: gmval
+): unit;
+
+// debug_device_ids: a GML array of strings (may be `undefined` - treated as
+// empty). callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_ump_request_consent_info_update(
+	[type_hint=`uint64`] consent_ref: gmval,
+	debug_geography: real,
+	tag_for_under_age_of_consent: real,
+	debug_device_ids: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_ump_load_consent_form(
+	[type_hint=`uint64`] consent_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// form_parent: opaque platform form-parent handle (jobject/id/void* cast to
+// a uint64 - see GMFirebase_ump.h). Pass 0 on desktop, where the SDK's own
+// FormParent is a stub the SDK never dereferences.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_ump_show_consent_form(
+	[type_hint=`uint64`] consent_ref: gmval,
+	[type_hint=`uint64`] form_parent: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// See ump_show_consent_form for form_parent. callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_ump_load_and_show_consent_form_if_required(
+	[type_hint=`uint64`] consent_ref: gmval,
+	[type_hint=`uint64`] form_parent: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// See ump_show_consent_form for form_parent. callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_ump_show_privacy_options_form(
+	[type_hint=`uint64`] consent_ref: gmval,
+	[type_hint=`uint64`] form_parent: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+
+
+// ---- Explicit App linkage for global/singleton modules ----
+
+[global, bind = typed_gml, type_hint=`uint64?`]
+function firebase_ump_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;

@@ -1,0 +1,88 @@
+// ##### extgen :: Auto-generated file do not edit!! #####
+
+#pragma once
+#include "core/GMExtUtils.h"
+
+// Internal function used for fetching dispatched function calls to GML
+GMEXPORT double __EXT_NATIVE__GMFirebaseStorage_invocation_handler(char* __ret_buffer, double __ret_buffer_length);
+
+// Internal function used for queueing buffers to native code
+GMEXPORT double __EXT_NATIVE__GMFirebaseStorage_queue_buffer(char* __arg_buffer, double __arg_buffer_length);
+
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_instance(char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_instance_with_url(char* url, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_url(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_reference_path(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_reference_from_url(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_max_download_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_set_max_download_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_max_upload_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_set_max_upload_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_max_operation_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_set_max_operation_retry_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_use_emulator(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_child(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_parent(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_ref_bucket(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_ref_full_path(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_ref_name(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_is_valid(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_storage(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_delete(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_download_url(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_metadata(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_update_metadata(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_bytes(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_file(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_bytes(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_file(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_list(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_create(char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_release(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_is_valid(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_bucket(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_cache_control(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_cache_control(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_content_disposition(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_content_disposition(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_content_encoding(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_content_encoding(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_content_language(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_content_language(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_content_type(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_content_type(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_creation_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_generation(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_metadata_generation(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_name(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_path(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_get_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_size_bytes(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_updated_time(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_custom_metadata_count(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_custom_metadata_key_at(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_get_custom_metadata(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_set_custom_metadata(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_create(char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_release(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_is_valid(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_pause(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_resume(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_cancel(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_is_paused(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_bytes_transferred(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_total_byte_count(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_controller_get_reference(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_release(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_is_valid(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_item_count(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_item_at(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_prefix_count(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_prefix_at(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_list_result_next_page_token(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_md5_hash(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_app(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_instance_for_app(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_get_instance_for_app_url(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+

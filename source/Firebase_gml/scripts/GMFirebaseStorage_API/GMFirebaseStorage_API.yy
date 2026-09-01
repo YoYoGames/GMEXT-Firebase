@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseStorage_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseStorage_API",
+  "parent":{
+    "name":"GMFirebaseStorage",
+    "path":"folders/FirebaseCPP/GMFirebaseStorage.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

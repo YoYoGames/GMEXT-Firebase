@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseRemoteConfig_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseRemoteConfig_API",
+  "parent":{
+    "name":"GMFirebaseRemoteConfig",
+    "path":"folders/FirebaseCPP/GMFirebaseRemoteConfig.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

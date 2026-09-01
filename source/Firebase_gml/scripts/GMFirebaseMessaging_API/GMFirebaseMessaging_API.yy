@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseMessaging_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseMessaging_API",
+  "parent":{
+    "name":"GMFirebaseMessaging",
+    "path":"folders/FirebaseCPP/GMFirebaseMessaging.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

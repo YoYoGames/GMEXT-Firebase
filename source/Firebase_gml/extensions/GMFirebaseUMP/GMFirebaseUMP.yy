@@ -1,0 +1,327 @@
+{
+  "$GMExtension": "",
+  "%Name": "GMFirebaseUMP",
+  "androidactivityinject": null,
+  "androidclassname": "GMFirebaseUMP",
+  "androidcodeinjection": "",
+  "androidinject": null,
+  "androidmanifestinject": null,
+  "androidPermissions": [],
+  "androidProps": false,
+  "androidsourcedir": "",
+  "author": "",
+  "classname": "GMFirebaseUMP",
+  "copyToTargets": -1,
+  "description": "",
+  "exportToGame": true,
+  "extensionVersion": "0.0.1",
+  "files": [
+    {
+      "$GMExtensionFile": "v1",
+      "%Name": "",
+      "constants": [],
+      "copyToTargets": -1,
+      "filename": "GMFirebaseUMP.ext",
+      "final": "",
+      "functions": [
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_get_instance",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_get_instance",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_get_instance",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_get_consent_status",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_get_consent_status",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_get_consent_status",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_get_consent_form_status",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_get_consent_form_status",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_get_consent_form_status",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_get_privacy_options_requirement_status",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_get_privacy_options_requirement_status",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_can_request_ads",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_can_request_ads",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_can_request_ads",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_reset",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_reset",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_reset",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_request_consent_info_update",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_request_consent_info_update",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_request_consent_info_update",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_load_consent_form",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_load_consent_form",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_load_consent_form",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_show_consent_form",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_show_consent_form",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_show_consent_form",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_load_and_show_consent_form_if_required",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_load_and_show_consent_form_if_required",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_show_privacy_options_form",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_show_privacy_options_form",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_show_privacy_options_form",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_ump_get_instance_for_app",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_ump_get_instance_for_app",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_ump_get_instance_for_app",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__GMFirebaseUMP_invocation_handler",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _buffer_ptr\r\n@param {Real} _buffer_size",
+          "externalName": "__EXT_NATIVE__GMFirebaseUMP_invocation_handler",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__GMFirebaseUMP_invocation_handler",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        }
+      ],
+      "init": "",
+      "kind": 4,
+      "name": "",
+      "origname": "",
+      "ProxyFiles": [
+        {
+          "$GMProxyFile": "",
+          "%Name": "GMFirebaseUMP.dll",
+          "name": "GMFirebaseUMP.dll",
+          "resourceType": "GMProxyFile",
+          "resourceVersion": "2.0",
+          "TargetMask": 6
+        }
+      ],
+      "resourceType": "GMExtensionFile",
+      "resourceVersion": "2.0",
+      "uncompress": false,
+      "usesRunnerInterface": false
+    }
+  ],
+  "gradleinject": null,
+  "hasConvertedCodeInjection": true,
+  "helpfile": "",
+  "HTML5CodeInjection": "",
+  "html5Props": false,
+  "IncludedResources": [],
+  "installdir": "",
+  "iosCocoaPodDependencies": "",
+  "iosCocoaPods": "",
+  "ioscodeinjection": "",
+  "iosdelegatename": "",
+  "iosplistinject": null,
+  "iosProps": false,
+  "iosSystemFrameworkEntries": [],
+  "iosThirdPartyFrameworkEntries": [],
+  "license": "",
+  "maccompilerflags": "",
+  "maclinkerflags": "-ObjC",
+  "macsourcedir": "",
+  "name": "GMFirebaseUMP",
+  "options": [],
+  "optionsFile": "options.json",
+  "packageId": "",
+  "parent": {
+    "name": "GMFirebaseUMP",
+    "path": "folders/FirebaseCPP/GMFirebaseUMP.yy"
+  },
+  "productId": "",
+  "resourceType": "GMExtension",
+  "resourceVersion": "2.0",
+  "sourcedir": "",
+  "supportedTargets": -1,
+  "tvosclassname": null,
+  "tvosCocoaPodDependencies": "",
+  "tvosCocoaPods": "",
+  "tvoscodeinjection": "",
+  "tvosdelegatename": null,
+  "tvosmaccompilerflags": "",
+  "tvosmaclinkerflags": "",
+  "tvosplistinject": null,
+  "tvosProps": false,
+  "tvosSystemFrameworkEntries": [],
+  "tvosThirdPartyFrameworkEntries": []
+}

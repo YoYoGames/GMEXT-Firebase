@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GMFirebaseAppCheck_API",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GMFirebaseAppCheck_API",
+  "parent":{
+    "name":"GMFirebaseAppCheck",
+    "path":"folders/FirebaseCPP/GMFirebaseAppCheck.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

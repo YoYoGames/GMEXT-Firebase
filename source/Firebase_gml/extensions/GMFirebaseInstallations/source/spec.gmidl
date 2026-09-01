@@ -1,0 +1,50 @@
+[gml_api]
+module GMFirebaseInstallations;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Installations
+// ============================================================
+
+// callback(error_code: real, error_message: string, id: string)
+[global, bind = typed_gml]
+function firebase_installations_get_id(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, token: string)
+[global, bind = typed_gml]
+function firebase_installations_get_token(
+	force_refresh: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_installations_delete(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// ============================================================
+
+// ---- Module -> App / explicit App-instance overloads ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_installations_get_app(): gmval;
+
+// ---- Installations explicit instance API ----
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_installations_get_instance_handle(): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_installations_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_installations_instance_get_app([type_hint=`uint64`] installations: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_installations_instance_get_id([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_installations_instance_get_token([type_hint=`uint64`] installations: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_installations_instance_delete([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): real;

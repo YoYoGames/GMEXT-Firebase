@@ -1,0 +1,81 @@
+[gml_api]
+module GMFirebaseAppCheck;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// App Check
+// ============================================================
+
+[global, bind = typed_gml]
+enum FirebaseAppCheckProvider
+{
+	Debug = 0,
+	DeviceCheck = 1,
+	PlayIntegrity = 2,
+	AppAttest = 3,
+}
+
+// Call before firebase_app_initialize() - some platforms only honor the
+// provider factory if it is set before the underlying firebase::App exists.
+[global, bind = typed_gml]
+function firebase_app_check_set_provider_factory(
+	provider: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_app_check_debug_provider_set_debug_token(
+	token: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_app_check_set_token_auto_refresh_enabled(
+	enabled: real
+): unit;
+
+// callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
+[global, bind = typed_gml]
+function firebase_app_check_get_token(
+	force_refresh: real,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
+[global, bind = typed_gml]
+function firebase_app_check_get_limited_use_token(
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(token: {token: string, expire_time_millis: real}), fired on every
+// token change. Returns a listener ref for firebase_app_check_remove_listener.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_add_listener(
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_app_check_remove_listener(
+	[type_hint=`uint64`] listener_ref: gmval
+): real;
+
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_get_app(): gmval;
+
+// ---- App Check explicit instance API ----
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_get_instance_handle(): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_instance_get_app([type_hint=`uint64`] app_check: gmval): gmval;
+[global, bind = typed_gml]
+function firebase_app_check_instance_set_token_auto_refresh_enabled([type_hint=`uint64`] app_check: gmval, enabled: bool): unit;
+[global, bind = typed_gml]
+function firebase_app_check_instance_get_token([type_hint=`uint64`] app_check: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml]
+function firebase_app_check_instance_get_limited_use_token([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_app_check_instance_add_listener([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): gmval;

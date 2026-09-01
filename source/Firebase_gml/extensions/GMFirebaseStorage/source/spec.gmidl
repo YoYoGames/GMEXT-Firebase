@@ -1,0 +1,455 @@
+[gml_api]
+module GMFirebaseStorage;
+
+// Split from the working monolithic GMFirebase specification.
+// Public function names are intentionally preserved.
+// Generated code_gen files are NOT included; run Extension Generator for this module.
+
+// ============================================================
+// Cloud Storage
+// ============================================================
+
+// ---- Storage instance ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_instance(): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_instance_with_url(
+	url: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_url(
+	[type_hint=`uint64`] storage_ref: gmval
+): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_reference(
+	[type_hint=`uint64`] storage_ref: gmval
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_reference_path(
+	[type_hint=`uint64`] storage_ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_reference_from_url(
+	[type_hint=`uint64`] storage_ref: gmval,
+	url: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_max_download_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_set_max_download_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval,
+	seconds: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_max_upload_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_set_max_upload_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval,
+	seconds: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_max_operation_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_set_max_operation_retry_time(
+	[type_hint=`uint64`] storage_ref: gmval,
+	seconds: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_use_emulator(
+	[type_hint=`uint64`] storage_ref: gmval,
+	host: string,
+	port: real
+): unit;
+
+// ---- StorageReference ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_ref_child(
+	[type_hint=`uint64`] ref: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_ref_get_parent(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_ref_bucket(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_ref_full_path(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_ref_name(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_ref_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_ref_storage(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml]
+function firebase_storage_ref_delete(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, url: string)
+[global, bind = typed_gml]
+function firebase_storage_ref_get_download_url(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, metadata_ref: uint64)
+[global, bind = typed_gml]
+function firebase_storage_ref_get_metadata(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, metadata_ref: uint64)
+[global, bind = typed_gml]
+function firebase_storage_ref_update_metadata(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=`uint64`] metadata_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// metadata_ref/controller_ref: pass 0 for "not provided" - controller_ref
+// must come from storage_controller_create() if you want to pause/resume/
+// cancel or poll progress mid-transfer.
+// progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
+// callback(error_code: real, error_message: string, metadata_ref: uint64)
+[global, bind = typed_gml]
+function firebase_storage_ref_put_bytes(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=buffer] data: gmval,
+	[type_hint=`uint64`] metadata_ref: gmval,
+	[type_hint=`func?`] progress_callback: gmval,
+	[type_hint=`uint64`] controller_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// See storage_ref_put_bytes for metadata_ref/controller_ref/callback shapes.
+[global, bind = typed_gml]
+function firebase_storage_ref_put_file(
+	[type_hint=`uint64`] ref: gmval,
+	local_path: string,
+	[type_hint=`uint64`] metadata_ref: gmval,
+	[type_hint=`func?`] progress_callback: gmval,
+	[type_hint=`uint64`] controller_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// data: a GML buffer pre-sized to the maximum number of bytes to download;
+// the SDK writes directly into it. controller_ref: pass 0 for "not
+// provided". progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
+// callback(error_code: real, error_message: string, bytes_read: real)
+[global, bind = typed_gml]
+function firebase_storage_ref_get_bytes(
+	[type_hint=`uint64`] ref: gmval,
+	[type_hint=buffer] data: gmval,
+	[type_hint=`func?`] progress_callback: gmval,
+	[type_hint=`uint64`] controller_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// callback(error_code: real, error_message: string, bytes_read: real)
+[global, bind = typed_gml]
+function firebase_storage_ref_get_file(
+	[type_hint=`uint64`] ref: gmval,
+	local_path: string,
+	[type_hint=`func?`] progress_callback: gmval,
+	[type_hint=`uint64`] controller_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// page_token: pass "" for the first page.
+// callback(error_code: real, error_message: string, list_result_ref: uint64)
+[global, bind = typed_gml]
+function firebase_storage_ref_list(
+	[type_hint=`uint64`] ref: gmval,
+	max_results: real,
+	page_token: string,
+	[type_hint=`func?`] callback: gmval
+): real;
+
+// ---- Metadata ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_metadata_create(): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_release(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_bucket(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_cache_control(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_cache_control(
+	[type_hint=`uint64`] ref: gmval,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_content_disposition(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_content_disposition(
+	[type_hint=`uint64`] ref: gmval,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_content_encoding(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_content_encoding(
+	[type_hint=`uint64`] ref: gmval,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_content_language(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_content_language(
+	[type_hint=`uint64`] ref: gmval,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_content_type(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_content_type(
+	[type_hint=`uint64`] ref: gmval,
+	value: string
+): unit;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_creation_time(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_generation(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_metadata_generation(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_name(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_path(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_metadata_get_reference(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_size_bytes(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_updated_time(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_custom_metadata_count(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_custom_metadata_key_at(
+	[type_hint=`uint64`] ref: gmval,
+	index: real
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_get_custom_metadata(
+	[type_hint=`uint64`] ref: gmval,
+	key: string
+): string;
+
+[global, bind = typed_gml]
+function firebase_storage_metadata_set_custom_metadata(
+	[type_hint=`uint64`] ref: gmval,
+	key: string,
+	value: string
+): unit;
+
+// ---- Controller ----
+// Must be created via storage_controller_create() before being passed as an
+// optional controller_ref to a Put*/Get* call above, so its map-stable
+// address is ready to hand the SDK as the out-param it polls during the
+// transfer.
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_controller_create(): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_release(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_pause(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_resume(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_cancel(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_is_paused(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_bytes_transferred(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_controller_total_byte_count(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_controller_get_reference(
+	[type_hint=`uint64`] ref: gmval
+): gmval;
+
+// ---- StorageListResult ----
+
+[global, bind = typed_gml]
+function firebase_storage_list_result_release(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_list_result_is_valid(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_list_result_item_count(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_list_result_item_at(
+	[type_hint=`uint64`] ref: gmval,
+	index: real
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_list_result_prefix_count(
+	[type_hint=`uint64`] ref: gmval
+): real;
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_list_result_prefix_at(
+	[type_hint=`uint64`] ref: gmval,
+	index: real
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_storage_list_result_next_page_token(
+	[type_hint=`uint64`] ref: gmval
+): string;
+
+
+// ---- Storage ----
+[global, bind = typed_gml]
+function firebase_storage_metadata_md5_hash([type_hint=`uint64`] metadata: gmval): string;
+
+
+// ---- Module -> App / explicit App-instance overloads ----
+
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_app([type_hint=`uint64`] storage: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_storage_get_instance_for_app_url([type_hint=`uint64`] app: gmval, url: string): gmval;

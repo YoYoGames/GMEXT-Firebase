@@ -23,7 +23,8 @@
       "Bash(ls \"D:/Github/GMEXT-Firebase/source/Firebase_gml/objects/obj_firebase_authentication_anonymous/\")",
       "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/objects/obj_firebase_authentication_anonymous/**)",
       "PowerShell(Get-Process -Name \"Runner\" -ErrorAction SilentlyContinue)",
-      "Read(//d/Github/GMEXT-Firebase/source/**)"
+      "Read(//d/Github/GMEXT-Firebase/source/**)",
+      "Read(//d/Github/GMEXT-Firebase/source/Firebase_gml/extensions/GMFirebaseFirestore/source/src/native/**)"
     ],
     "additionalDirectories": [
       "D:\\Github\\GMEXT-Firebase\\source\\Firebase_gml\\extensions\\GMFirebaseAuth\\source\\src\\native"

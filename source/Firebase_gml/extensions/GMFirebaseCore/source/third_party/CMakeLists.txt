@@ -68,7 +68,7 @@ target_include_directories(ext_third_party
 # break the moment a cross-DLL App*/handle touches SDK code that depends on
 # them (see GMFirebase_core_auth_api.h).
 set(EXT_TP_FIREBASE_MODULES
-    "auth"
+    "auth;firestore"
     CACHE STRING "Firebase product modules to link, semicolon-separated" FORCE)
 
 message(STATUS "[third_party] FIREBASE_SDK_ROOT = ${FIREBASE_SDK_ROOT}")

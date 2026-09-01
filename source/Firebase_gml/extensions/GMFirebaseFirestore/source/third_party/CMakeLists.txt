@@ -58,10 +58,19 @@ _ext_tp_require_file(
 target_include_directories(ext_third_party
   INTERFACE "${FIREBASE_SDK_ROOT}/include")
 
-# firebase_app is mandatory and is deliberately linked LAST, as required by
-# Firebase's C++ integration guidance.
+# GMFirebaseFirestore no longer statically links any Firebase product module:
+# every firebase::firestore::* call now happens inside GMFirebaseCore, reached
+# through GMFirebaseCoreFirestoreAPI (see
+# GMFirebase_core_firestore_client.cpp/.h). Only firebase_app remains linked
+# below - it is still required by the generic firebase::Variant conversion
+# helpers in GMFirebase_common_client.cpp (shared boilerplate vendored into
+# every product extension), which are real SDK calls compiled into
+# firebase_app, not header-only. firebase::App itself is only ever handled
+# here as an opaque pointer (no App/CleanupNotifier methods are called), so
+# linking firebase_app does not reintroduce the cross-DLL crash this split
+# was designed to avoid.
 set(EXT_TP_FIREBASE_MODULES
-    "firestore"
+    ""
     CACHE STRING "Firebase product modules to link, semicolon-separated" FORCE)
 
 message(STATUS "[third_party] FIREBASE_SDK_ROOT = ${FIREBASE_SDK_ROOT}")
@@ -191,6 +200,24 @@ elseif(ANDROID)
 
   message(STATUS
     "[third_party] Firebase Android ABI=${CMAKE_ANDROID_ARCH_ABI}")
+
+  # ANDROID_STL must be c++_shared here: the Firestore Core ABI (unlike
+  # Core's own POD/opaque-handle-only App API) passes STL types (std::string,
+  # gm::wire::GMFunction/GMValue) by value across the Core<->product .so
+  # boundary. With the NDK's static STL each .so gets a private copy of
+  # libc++'s RTTI/exception tables, so an STL object built in one .so cannot
+  # safely be destroyed/thrown/compared in another - a documented Android NDK
+  # ODR hazard, not something specific to this codebase.
+  if(ANDROID_STL STREQUAL "c++_shared")
+    find_library(_libcxx_shared_lib c++_shared)
+    if(_libcxx_shared_lib)
+      list(APPEND _EXT_TP_RUNTIME_DLLS "${_libcxx_shared_lib}")
+    else()
+      message(WARNING "[third_party] ANDROID_STL=c++_shared but libc++_shared.so was not found by find_library().")
+    endif()
+  else()
+    message(WARNING "[third_party] ANDROID_STL=${ANDROID_STL}: cross-.so calls that pass STL types by value (the Firestore Core ABI) require c++_shared.")
+  endif()
 
   # Product modules do not create firebase::App and therefore keep ExtGen's
   # generated JNI_OnLoad unchanged. GMFirebaseCore owns JavaVM/App bootstrap.

@@ -1,12 +1,21 @@
 # Native linking for GMFirebaseCore
 
-This is the required runtime extension. It owns:
+`GMFirebaseCore` is the single native owner of the Firebase C++ SDK for the split extension suite.
 
-- the one logical `firebase::App*` used by GMFirebase APIs,
-- App handle registration/resolution,
-- the shared pointer-backed handle registry,
-- shared last-error state,
-- Android JavaVM/Activity Firebase App bootstrap,
-- the exported `gmfirebase_core_get_api()` C ABI.
+It links `firebase_app` plus these supported products:
 
-Its CMake integration links `firebase_app`.
+- analytics
+- app_check
+- auth
+- database
+- firestore
+- functions
+- installations
+- messaging
+- remote_config
+- storage
+- ump
+
+`GMFirebaseAuth` and `GMFirebaseFirestore` use their existing typed Core ABI tables. The other product extensions use the generic `gmfirebase_core_resolve_product_proc()` dispatch ABI. Product DLLs/shared objects no longer statically link Firebase C++ libraries.
+
+Excluded from this migration, by design: `GMFirebasePerformance`, `GMFirebaseInAppMessaging`, and `GMFirebaseCrashlytics`.

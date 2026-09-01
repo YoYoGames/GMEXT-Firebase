@@ -61,14 +61,13 @@ target_include_directories(ext_third_party
 # firebase_app is mandatory and is deliberately linked LAST, as required by
 # Firebase's C++ integration guidance.
 #
-# GMFirebaseCore is now the only extension DLL that statically links the
-# Firebase C++ SDK - product modules (Auth first) call through
-# GMFirebaseCoreAuthAPI etc. instead of linking the SDK themselves, since the
-# SDK's own file-static/class-static registries are duplicated per-DLL and
-# break the moment a cross-DLL App*/handle touches SDK code that depends on
-# them (see GMFirebase_core_auth_api.h).
+# GMFirebaseCore is the only extension DLL/shared object that statically links
+# the Firebase C++ SDK. Auth/Firestore use their typed Core API tables; all other
+# C++ product extensions use gmfirebase_core_resolve_product_proc(). Keeping all
+# Firebase SDK execution in Core prevents duplicated Firebase internal static
+# registries across split native modules.
 set(EXT_TP_FIREBASE_MODULES
-    "auth;firestore"
+    "analytics;app_check;auth;database;firestore;functions;installations;messaging;remote_config;storage;ump"
     CACHE STRING "Firebase product modules to link, semicolon-separated" FORCE)
 
 message(STATUS "[third_party] FIREBASE_SDK_ROOT = ${FIREBASE_SDK_ROOT}")

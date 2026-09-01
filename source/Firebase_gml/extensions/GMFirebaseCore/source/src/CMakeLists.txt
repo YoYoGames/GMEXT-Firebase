@@ -43,3 +43,5 @@ endif()
 
 target_sources(${PROJECT_NAME} PRIVATE ${TARGET_SRCS})
 target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")
+# Generated data-model headers for Firebase product implementations now owned by Core.
+target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}/module_codegen")

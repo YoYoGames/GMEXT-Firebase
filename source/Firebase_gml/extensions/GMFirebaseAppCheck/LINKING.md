@@ -1,10 +1,13 @@
 # Native linking for GMFirebaseAppCheck
 
-This product module requires `GMFirebaseCore` in the GameMaker project.
+`GMFirebaseAppCheck` requires `GMFirebaseCore` in the GameMaker project.
 
-- Firebase product library: `app_check`
-- Core state is reached through `gmfirebase_core_get_api()` via the supplied client shim.
-- This module never calls `firebase::App::Create()`.
-- The Firebase C++ product target still links `firebase_app` because Firebase's supported native link contract requires each product target to link its App library; the actual `firebase::App*` used by this wrapper is always obtained from Core.
-- On Windows/Linux/Android/macOS the Core ABI is resolved at runtime, so build order does not matter.
-- On iOS/tvOS the split extensions are static archives and the final Xcode link resolves the Core ABI symbol.
+- Firebase C++ product library: `app_check`.
+- **Only `GMFirebaseCore` links that library (and `firebase_app`).**
+- This product extension is a thin ABI client and does not link the Firebase C++ SDK.
+- The original `firebase_app_check_*` ExtGen-facing function names/signatures are preserved.
+- Calls are resolved through `gmfirebase_core_resolve_product_proc()` and execute inside Core.
+- Windows/Linux/Android/macOS resolve Core at runtime, so extension load order is not significant.
+- iOS/tvOS resolve Core when the final GameMaker application links the static extension archives.
+
+This avoids multiple Firebase C++ copies in separate DLLs/shared objects and therefore avoids duplicated Firebase internal registries.

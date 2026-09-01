@@ -260,7 +260,7 @@
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "Android",
         "ANDROID_PLATFORM": "21",
-        "ANDROID_STL": "c++_shared",
+        "ANDROID_STL": "c++_static",
         "BUILD_SHARED_LIBS": "ON",
         "CMAKE_BUILD_TYPE": "Release",
         "EXT_ANDROID_OUTPUT_DIR": "../AndroidSource"
@@ -274,7 +274,7 @@
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "Android",
         "ANDROID_PLATFORM": "21",
-        "ANDROID_STL": "c++_shared",
+        "ANDROID_STL": "c++_static",
         "BUILD_SHARED_LIBS": "ON",
         "CMAKE_BUILD_TYPE": "Debug",
         "EXT_ANDROID_OUTPUT_DIR": "../AndroidSource"

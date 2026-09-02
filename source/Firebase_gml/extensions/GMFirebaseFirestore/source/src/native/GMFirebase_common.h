@@ -1,9 +1,5 @@
 #pragma once
 
-#include "firebase/app.h"
-#include "firebase/future.h"
-#include "firebase/log.h"
-#include "firebase/variant.h"
 #include <cstdint>
 #include <map>
 #include <mutex>
@@ -13,20 +9,6 @@
 #include <utility>
 #include <vector>
 #include <native/GMFirebaseFirestoreInternal_native.h>
-
-// ============================================================
-// App bootstrap
-// ============================================================
-
-// Default App used by the compatibility APIs. Additional named Apps may be
-// represented by GM_FB_TYPE_APP handles and passed to explicit *_for_app APIs.
-// The default firebase::App instance is owned by GMFirebaseCore.
-// Product modules access it through getFirebaseApp() below; they do not
-// define or mutate a module-local g_firebase_app.
-
-firebase::App* getFirebaseApp();
-uint64_t wrapFirebaseApp(firebase::App* app);
-firebase::App* resolveFirebaseApp(uint64_t ref);
 
 // ============================================================
 // Last Error State
@@ -214,31 +196,3 @@ inline bool unregisterFirebaseValue(uint32_t id, std::map<uint32_t, T>& map)
 {
 	return map.erase(id) != 0;
 }
-
-// ============================================================
-// firebase::Variant <-> gm::wire converters
-// ============================================================
-//
-// Covers Realtime Database (values/priorities), Remote Config (GetAll/
-// defaults) and Cloud Functions (call args/results) - the three products
-// that speak firebase::Variant. Firestore uses its own richer FieldValue and
-// gets a separate converter in GMFirebase_firestore.*.
-//
-// Outbound (C++ -> GML): a Variant has no meaning on its own on the wire, so
-// rather than returning a GMValue (a read-only view over already-decoded
-// bytes) we append it directly onto an in-progress ArrayStream/StructStream -
-// the same stream that ends up passed as a callback.call(...) argument or
-// returned as a struct-typed value.
-void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out);
-void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out);
-
-// Same conversion as pushVariantToArray(), but writes the value directly onto
-// a top-level DataStream instead of boxing it as an array element - used for
-// "Any"-typed returns where the caller wants the value itself (a plain real/
-// string/array/struct/undefined), not a 1-element array wrapper.
-void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out);
-
-// Inbound (GML -> C++): reconstructs a firebase::Variant from a decoded
-// incoming GMValue, recursing through GMArrayView/GMObjectView for
-// vector/map values.
-firebase::Variant gmValueToVariant(const gm::wire::GMValue& value);

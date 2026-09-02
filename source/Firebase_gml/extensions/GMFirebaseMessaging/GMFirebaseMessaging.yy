@@ -7,7 +7,7 @@
   "androidinject":null,
   "androidmanifestinject":null,
   "androidPermissions":[],
-  "androidProps":false,
+  "androidProps":true,
   "androidsourcedir":"",
   "author":"",
   "classname":"GMFirebaseMessaging",

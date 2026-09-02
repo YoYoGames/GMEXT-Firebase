@@ -5,3 +5,5 @@ CMakeUserPresets.json
 
 # Bundler's local machine state (apple_mobile Xcode integration) - always machine-local
 .bundle/
+# Generated from the active GameMaker .yyp by pre_build_step
+third_party/GMFirebaseEnabledModules.cmake

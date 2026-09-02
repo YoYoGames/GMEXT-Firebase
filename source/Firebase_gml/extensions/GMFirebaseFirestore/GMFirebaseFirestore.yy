@@ -3,7 +3,7 @@
   "%Name":"GMFirebaseFirestore",
   "androidactivityinject":null,
   "androidclassname":"GMFirebaseFirestore",
-  "androidcodeinjection":"<YYAndroidGradleDependencies>\r\n\r\n    implementation 'com.google.firebase:firebase-firestore'\r\n\r\n</YYAndroidGradleDependencies>\r\n",
+  "androidcodeinjection":"",
   "androidinject":null,
   "androidmanifestinject":null,
   "androidPermissions":[],

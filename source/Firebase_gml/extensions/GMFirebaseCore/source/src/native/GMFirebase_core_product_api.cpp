@@ -9,8 +9,14 @@
 #ifndef GMFIREBASE_WITH_APP_CHECK
 #define GMFIREBASE_WITH_APP_CHECK 0
 #endif
+#ifndef GMFIREBASE_WITH_AUTH
+#define GMFIREBASE_WITH_AUTH 0
+#endif
 #ifndef GMFIREBASE_WITH_DATABASE
 #define GMFIREBASE_WITH_DATABASE 0
+#endif
+#ifndef GMFIREBASE_WITH_FIRESTORE
+#define GMFIREBASE_WITH_FIRESTORE 0
 #endif
 #ifndef GMFIREBASE_WITH_FUNCTIONS
 #define GMFIREBASE_WITH_FUNCTIONS 0
@@ -37,8 +43,14 @@ GMFirebaseCoreProc gmfirebase_core_resolve_analytics_proc(const char* symbol);
 #if GMFIREBASE_WITH_APP_CHECK
 GMFirebaseCoreProc gmfirebase_core_resolve_app_check_proc(const char* symbol);
 #endif
+#if GMFIREBASE_WITH_AUTH
+GMFirebaseCoreProc gmfirebase_core_resolve_auth_proc(const char* symbol);
+#endif
 #if GMFIREBASE_WITH_DATABASE
 GMFirebaseCoreProc gmfirebase_core_resolve_database_proc(const char* symbol);
+#endif
+#if GMFIREBASE_WITH_FIRESTORE
+GMFirebaseCoreProc gmfirebase_core_resolve_firestore_proc(const char* symbol);
 #endif
 #if GMFIREBASE_WITH_FUNCTIONS
 GMFirebaseCoreProc gmfirebase_core_resolve_functions_proc(const char* symbol);
@@ -72,9 +84,17 @@ GMFirebaseCoreProc gmfirebase_core_resolve_product_proc(const char* product, con
     if (std::strcmp(product, "app_check") == 0)
         return gmfirebase_core_resolve_app_check_proc(symbol);
 #endif
+#if GMFIREBASE_WITH_AUTH
+    if (std::strcmp(product, "auth") == 0)
+        return gmfirebase_core_resolve_auth_proc(symbol);
+#endif
 #if GMFIREBASE_WITH_DATABASE
     if (std::strcmp(product, "database") == 0)
         return gmfirebase_core_resolve_database_proc(symbol);
+#endif
+#if GMFIREBASE_WITH_FIRESTORE
+    if (std::strcmp(product, "firestore") == 0)
+        return gmfirebase_core_resolve_firestore_proc(symbol);
 #endif
 #if GMFIREBASE_WITH_FUNCTIONS
     if (std::strcmp(product, "functions") == 0)

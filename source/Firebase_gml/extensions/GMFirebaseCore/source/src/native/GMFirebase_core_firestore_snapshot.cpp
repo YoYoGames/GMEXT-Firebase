@@ -2,20 +2,20 @@
 // removal. Ported from GMFirebaseFirestore/source/src/native/
 // GMFirebase_firestore_snapshot.cpp as part of the Core-ABI-forwarder split:
 // this file now lives in GMFirebaseCore (which alone links the Firebase SDK)
-// and exposes its entry points through GMFirebaseCoreFirestoreAPI instead of
-// directly to GML. Shares GMFirebase_core_firestore_impl.h's registries/
-// converters with GMFirebase_core_firestore.cpp (e.g. add_snapshot_listener
-// there registers the DocumentSnapshot/QuerySnapshot values this file's
-// accessors read back).
+// and exposes its entry points through gmfirebase_core_resolve_firestore_proc()
+// (see GMFirebase_core_firestore_resolver.cpp) instead of directly to GML.
+// Shares GMFirebase_core_firestore_impl.h's registries/converters with
+// GMFirebase_core_firestore.cpp (e.g. add_snapshot_listener there registers
+// the DocumentSnapshot/QuerySnapshot values this file's accessors read back).
 //
 // Two deviations from the old monolith, both required by the split:
 //  - Everything lives in namespace gmfb_firestore, with entry points renamed
-//    to drop the firebase_firestore_ prefix (matching every field name in
-//    GMFirebaseCoreFirestoreAPI).
+//    to drop the firebase_firestore_ prefix (matching the symbol names the
+//    proc resolver looks up).
 //  - document_snapshot_get_info/query_snapshot_get_info return the
 //    hand-written GMFirebaseFirestoreDocumentSnapshotInfo/
 //    GMFirebaseFirestoreQuerySnapshotInfo mirrors (declared in
-//    GMFirebase_core_firestore_api.h) instead of the old gm_structs::
+//    GMFirebase_core_firestore_types.h) instead of the old gm_structs::
 //    equivalents - Core cannot depend on any product module's generated code.
 //    addFieldValueToStruct() also takes its StructStream first (stream-first/
 //    string-key order), per GMFirebase_core_firestore_impl.h's contract.

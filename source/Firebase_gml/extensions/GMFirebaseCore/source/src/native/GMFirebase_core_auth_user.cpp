@@ -5,14 +5,14 @@
 // hand it back BY VALUE, never as a User*. There is no SDK-owned User* to
 // reuse as a native identity. wrapUser() heap-allocates a private copy and
 // registers it under a 32-bit id; only the packed id crosses into GML (and,
-// via the GMFirebaseCoreAuthAPI, into GMFirebaseAuth). user_release() is how
+// via the generic proc resolver, into GMFirebaseAuth). user_release() is how
 // GML frees that copy once it is done with it. This does NOT touch any
 // SDK-internal session state - User's copy ctor/dtor only manage the
 // lightweight pimpl handle, so deleting our copy never signs anyone out or
 // invalidates the underlying AuthData Auth itself still owns.
 //
 // user_get_info() returns the hand-written GMFirebaseAuthUserInfo mirror
-// (GMFirebase_core_auth_api.h) instead of GMFirebaseAuth's generated
+// (GMFirebase_core_auth_user_info.h) instead of GMFirebaseAuth's generated
 // gm_structs::FirebaseAuthUserInfo - Core cannot depend on a product
 // module's generated code. GMFirebaseAuth's thin forwarder copies these
 // fields into the real gm_structs type its stub returns.

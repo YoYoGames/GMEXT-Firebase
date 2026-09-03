@@ -2,12 +2,13 @@
 
 // Internal (non-exported) declarations shared by the three Core-side Auth
 // implementation files (GMFirebase_core_auth.cpp / _user.cpp / _credential.cpp)
-// and wired into the GMFirebaseCoreAuthAPI table by GMFirebase_core_auth_api.cpp.
-// This mirrors the split that used to exist per source file in GMFirebaseAuth,
-// now living inside GMFirebaseCore since Auth no longer links the Firebase SDK.
+// and exposed to GMFirebaseAuth's forwarders through the generic proc
+// resolver in GMFirebase_core_auth_resolver.cpp. This mirrors the split that
+// used to exist per source file in GMFirebaseAuth, now living inside
+// GMFirebaseCore since Auth no longer links the Firebase SDK.
 // Hand-written, not generated - fine to edit directly.
 
-#include "GMFirebase_core_auth_api.h"
+#include "GMFirebase_core_auth_user_info.h"
 #include "core/GMExtWire.h"
 
 #include <cstdint>
@@ -53,14 +54,15 @@ namespace gmfb_auth
     // families. Defined in GMFirebase_core_auth.cpp.
     gm::wire::StructStream makeAuthResultStruct(const firebase::auth::AuthResult& result);
 
-    // ---- GMFirebaseCoreAuthAPI table entries ----
-    // One function per GMFirebaseCoreAuthAPI field, same name and signature, so
-    // GMFirebase_core_auth_api.cpp can point the table directly at these with no
-    // adapters. Only user_get_info's return type differs from the corresponding
-    // GML-facing declaration: it returns the hand-written GMFirebaseAuthUserInfo
-    // mirror (declared in GMFirebase_core_auth_api.h) instead of Auth's
-    // generated gm_structs::FirebaseAuthUserInfo, since Core cannot depend on
-    // any product module's generated code.
+    // ---- Exposed via gmfirebase_core_resolve_auth_proc() ----
+    // One function per resolvable "firebase_auth_<name>" symbol, same name and
+    // signature, so GMFirebase_core_auth_resolver.cpp can hand its address
+    // straight back with no adapters. Only user_get_info's return type differs
+    // from the corresponding GML-facing declaration: it returns the
+    // hand-written GMFirebaseAuthUserInfo mirror (declared in
+    // GMFirebase_core_auth_user_info.h) instead of Auth's generated
+    // gm_structs::FirebaseAuthUserInfo, since Core cannot depend on any
+    // product module's generated code.
 
     bool get_auth();
     std::string language_code();

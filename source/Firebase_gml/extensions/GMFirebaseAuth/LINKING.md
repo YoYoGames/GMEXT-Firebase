@@ -9,13 +9,16 @@ This product module requires `GMFirebaseCore` in the GameMaker project.
   file-static registries (e.g. `CleanupNotifier`) are duplicated per-DLL: an
   `App*`/`Auth*` created through Core was never visible to an independent SDK
   copy statically linked into a product DLL.
-- Auth state is reached through `gmfirebase_core_get_auth_api()` (returning a
-  `GMFirebaseCoreAuthAPI*`) via `GMFirebase_core_auth_client.cpp/.h`; App state
-  is still reached separately through `gmfirebase_core_get_api()` via the
-  existing common client shim.
+- Auth state is reached through the generic proc resolver -
+  `gmfirebase_core_resolve_product_proc("auth", symbol)` via
+  `GMFirebase_core_product_client.cpp/.h` - which returns an untyped function
+  pointer that each forwarder casts to its exact signature
+  (`gmfirebaseGetCoreProductProcAs<Proc>(...)`); App state is still reached
+  separately through `gmfirebase_core_get_api()` via the existing common
+  client shim.
 - This module never calls `firebase::App::Create()`, `Auth::GetAuth()`, or any
   other Firebase Auth SDK entry point directly - every `GMFirebase_auth*.cpp`
-  file is a thin forwarder over `GMFirebaseCoreAuthAPI`.
+  file is a thin forwarder resolved through Core's generic auth proc table.
 - `firebase_app` is still linked (see `third_party/CMakeLists.txt`), but only
   for the generic `firebase::Variant` conversion helpers in
   `GMFirebase_common_client.cpp` (shared boilerplate vendored into every

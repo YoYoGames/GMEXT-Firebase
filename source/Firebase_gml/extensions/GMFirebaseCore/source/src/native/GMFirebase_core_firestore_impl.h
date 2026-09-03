@@ -2,14 +2,14 @@
 
 // Internal (non-exported) declarations shared by the Core-side Firestore
 // implementation files (GMFirebase_core_firestore.cpp /
-// GMFirebase_core_firestore_snapshot.cpp) and wired into the
-// GMFirebaseCoreFirestoreAPI table by GMFirebase_core_firestore_api.cpp.
-// This mirrors the split that used to exist in GMFirebaseFirestore
-// (GMFirebase_firestore.h), now living inside GMFirebaseCore since Firestore
-// no longer links the Firebase SDK. Hand-written, not generated - fine to
-// edit directly.
+// GMFirebase_core_firestore_snapshot.cpp) and resolved by symbol name for
+// GMFirebaseFirestore through GMFirebase_core_firestore_resolver.cpp's
+// gmfirebase_core_resolve_firestore_proc(). This mirrors the split that used
+// to exist in GMFirebaseFirestore (GMFirebase_firestore.h), now living inside
+// GMFirebaseCore since Firestore no longer links the Firebase SDK.
+// Hand-written, not generated - fine to edit directly.
 
-#include "GMFirebase_core_firestore_api.h"
+#include "GMFirebase_core_firestore_types.h"
 #include "core/GMExtWire.h"
 
 #include <cstdint>
@@ -89,14 +89,16 @@ namespace gmfb_firestore
 
     gm::wire::StructStream loadBundleProgressStruct(const firebase::firestore::LoadBundleTaskProgress& progress);
 
-    // ---- GMFirebaseCoreFirestoreAPI table entries ----
-    // One function per GMFirebaseCoreFirestoreAPI field, same name and
-    // signature, so GMFirebase_core_firestore_api.cpp can point the table
-    // directly at these with no adapters. document_snapshot_get_info's and
+    // ---- Firestore proc-resolver entries ----
+    // One function per symbol GMFirebaseFirestore's forwarder resolves via
+    // gmfirebase_core_resolve_firestore_proc() (see
+    // GMFirebase_core_firestore_resolver.cpp), named "firebase_firestore_" +
+    // <name> - so the resolver's strcmp chain can point straight at these
+    // with no adapters. document_snapshot_get_info's and
     // query_snapshot_get_info's return types differ from the corresponding
     // GML-facing declarations: they return the hand-written
     // GMFirebaseFirestoreDocumentSnapshotInfo/GMFirebaseFirestoreQuerySnapshotInfo
-    // mirrors (declared in GMFirebase_core_firestore_api.h) instead of
+    // mirrors (declared in GMFirebase_core_firestore_types.h) instead of
     // Firestore's generated gm_structs:: equivalents, since Core cannot
     // depend on any product module's generated code.
 

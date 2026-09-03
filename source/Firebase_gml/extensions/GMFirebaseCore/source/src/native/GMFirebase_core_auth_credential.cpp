@@ -8,7 +8,9 @@
 // GMFirebaseAuth copy, this map is file-local (not `extern`-shared) - cross-file
 // access from GMFirebase_core_auth.cpp / _user.cpp now goes through the
 // gmfb_auth::wrapCredential/resolveCredential/resolvePhoneCredentialForUser
-// declarations in GMFirebase_core_auth_impl.h instead.
+// declarations in GMFirebase_core_auth_impl.h instead. Every function here is
+// exposed to GMFirebaseAuth through the generic proc resolver in
+// GMFirebase_core_auth_resolver.cpp.
 #include "GMFirebase_core_auth_impl.h"
 #include "GMFirebase_common.h"
 #include "firebase/auth.h"

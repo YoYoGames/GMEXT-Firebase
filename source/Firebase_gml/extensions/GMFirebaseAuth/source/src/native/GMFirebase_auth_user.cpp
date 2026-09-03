@@ -6,7 +6,8 @@
 // lives entirely inside GMFirebaseCore - Auth just holds the opaque
 // user_ref/credential_ref handles GML already deals in and forwards them.
 #include "GMFirebase_common.h"
-#include "GMFirebase_core_auth_client.h"
+#include "GMFirebase_core_product_client.h"
+#include "GMFirebase_core_auth_user_info.h"
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -39,9 +40,10 @@ namespace
 
 void firebase_auth_user_release(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api != nullptr)
-        api->user_release(user_ref);
+    using Proc = void (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_release");
+    if (proc != nullptr)
+        proc(user_ref);
 }
 
 // ============================================================
@@ -51,14 +53,20 @@ void firebase_auth_user_release(uint64_t user_ref)
 gm_structs::FirebaseAuthUserInfo firebase_auth_user_get_info(uint64_t user_ref)
 {
     gm_structs::FirebaseAuthUserInfo out{};
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+
+    // Core's real implementation returns the hand-written GMFirebaseAuthUserInfo
+    // mirror (GMFirebase_core_auth_user_info.h) instead of this module's
+    // generated gm_structs::FirebaseAuthUserInfo, since Core cannot depend on
+    // any product module's generated code.
+    using Proc = GMFirebaseAuthUserInfo (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_get_info");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return out;
     }
 
-    GMFirebaseAuthUserInfo info = api->user_get_info(user_ref);
+    GMFirebaseAuthUserInfo info = proc(user_ref);
     out.uid = info.uid;
     out.email = info.email;
     out.display_name = info.display_name;
@@ -75,68 +83,79 @@ gm_structs::FirebaseAuthUserInfo firebase_auth_user_get_info(uint64_t user_ref)
 
 bool firebase_auth_user_is_valid(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr && api->user_is_valid(user_ref);
+    using Proc = bool (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_is_valid");
+    return proc != nullptr && proc(user_ref);
 }
 
 std::string firebase_auth_user_uid(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_uid(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_uid");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 std::string firebase_auth_user_email(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_email(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_email");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 std::string firebase_auth_user_display_name(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_display_name(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_display_name");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 std::string firebase_auth_user_photo_url(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_photo_url(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_photo_url");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 std::string firebase_auth_user_provider_id(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_provider_id(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_provider_id");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 std::string firebase_auth_user_phone_number(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_phone_number(user_ref) : std::string();
+    using Proc = std::string (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_phone_number");
+    return proc != nullptr ? proc(user_ref) : std::string();
 }
 
 bool firebase_auth_user_is_email_verified(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr && api->user_is_email_verified(user_ref);
+    using Proc = bool (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_is_email_verified");
+    return proc != nullptr && proc(user_ref);
 }
 
 bool firebase_auth_user_is_anonymous(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr && api->user_is_anonymous(user_ref);
+    using Proc = bool (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_is_anonymous");
+    return proc != nullptr && proc(user_ref);
 }
 
 double firebase_auth_user_creation_timestamp(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_creation_timestamp(user_ref) : 0.0;
+    using Proc = double (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_creation_timestamp");
+    return proc != nullptr ? proc(user_ref) : 0.0;
 }
 
 double firebase_auth_user_last_sign_in_timestamp(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_last_sign_in_timestamp(user_ref) : 0.0;
+    using Proc = double (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_last_sign_in_timestamp");
+    return proc != nullptr ? proc(user_ref) : 0.0;
 }
 
 // ============================================================
@@ -145,8 +164,9 @@ double firebase_auth_user_last_sign_in_timestamp(uint64_t user_ref)
 
 void firebase_auth_user_get_token(uint64_t user_ref, bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, bool, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_get_token");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         if (callback)
@@ -154,7 +174,7 @@ void firebase_auth_user_get_token(uint64_t user_ref, bool force_refresh, const s
         return;
     }
 
-    api->user_get_token(user_ref, force_refresh, callback);
+    proc(user_ref, force_refresh, callback);
 }
 
 // ============================================================
@@ -163,26 +183,28 @@ void firebase_auth_user_get_token(uint64_t user_ref, bool force_refresh, const s
 
 void firebase_auth_user_update_password(uint64_t user_ref, std::string_view password, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, std::string_view, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_update_password");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_update_password(user_ref, password, callback);
+    proc(user_ref, password, callback);
 }
 
 void firebase_auth_user_update_profile(uint64_t user_ref, std::string_view display_name, std::string_view photo_url, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, std::string_view, std::string_view, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_update_profile");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_update_profile(user_ref, display_name, photo_url, callback);
+    proc(user_ref, display_name, photo_url, callback);
 }
 
 // ============================================================
@@ -191,26 +213,28 @@ void firebase_auth_user_update_profile(uint64_t user_ref, std::string_view displ
 
 void firebase_auth_user_send_email_verification(uint64_t user_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_send_email_verification");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_send_email_verification(user_ref, callback);
+    proc(user_ref, callback);
 }
 
 void firebase_auth_user_send_email_verification_before_updating_email(uint64_t user_ref, std::string_view new_email, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, std::string_view, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_send_email_verification_before_updating_email");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_send_email_verification_before_updating_email(user_ref, new_email, callback);
+    proc(user_ref, new_email, callback);
 }
 
 // ============================================================
@@ -219,50 +243,54 @@ void firebase_auth_user_send_email_verification_before_updating_email(uint64_t u
 
 void firebase_auth_user_reauthenticate(uint64_t user_ref, uint64_t credential_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_reauthenticate");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_reauthenticate(user_ref, credential_ref, callback);
+    proc(user_ref, credential_ref, callback);
 }
 
 void firebase_auth_user_reauthenticate_and_retrieve_data(uint64_t user_ref, uint64_t credential_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_reauthenticate_and_retrieve_data");
+    if (proc == nullptr)
     {
         notifyUserRefFailure(callback);
         return;
     }
 
-    api->user_reauthenticate_and_retrieve_data(user_ref, credential_ref, callback);
+    proc(user_ref, credential_ref, callback);
 }
 
 void firebase_auth_user_link_with_credential(uint64_t user_ref, uint64_t credential_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_link_with_credential");
+    if (proc == nullptr)
     {
         notifyUserRefFailure(callback);
         return;
     }
 
-    api->user_link_with_credential(user_ref, credential_ref, callback);
+    proc(user_ref, credential_ref, callback);
 }
 
 void firebase_auth_user_unlink(uint64_t user_ref, std::string_view provider_id, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, std::string_view, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_unlink");
+    if (proc == nullptr)
     {
         notifyUserRefFailure(callback);
         return;
     }
 
-    api->user_unlink(user_ref, provider_id, callback);
+    proc(user_ref, provider_id, callback);
 }
 
 // ============================================================
@@ -271,26 +299,28 @@ void firebase_auth_user_unlink(uint64_t user_ref, std::string_view provider_id, 
 
 void firebase_auth_user_reload(uint64_t user_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_reload");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_reload(user_ref, callback);
+    proc(user_ref, callback);
 }
 
 void firebase_auth_user_delete(uint64_t user_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_delete");
+    if (proc == nullptr)
     {
         notifyMessageOnly(callback);
         return;
     }
 
-    api->user_delete(user_ref, callback);
+    proc(user_ref, callback);
 }
 
 // ============================================================
@@ -299,15 +329,17 @@ void firebase_auth_user_delete(uint64_t user_ref, const std::optional<gm::wire::
 
 double firebase_auth_user_provider_data_count(uint64_t user_ref)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    return api != nullptr ? api->user_provider_data_count(user_ref) : 0.0;
+    using Proc = double (*)(uint64_t);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_provider_data_count");
+    return proc != nullptr ? proc(user_ref) : 0.0;
 }
 
 gm::wire::DataStream firebase_auth_user_provider_data_at(uint64_t user_ref, double index)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api != nullptr)
-        return api->user_provider_data_at(user_ref, index);
+    using Proc = gm::wire::DataStream (*)(uint64_t, double);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_provider_data_at");
+    if (proc != nullptr)
+        return proc(user_ref, index);
 
     reportCoreUnavailable();
     gm::wire::StructStream info;
@@ -319,64 +351,69 @@ gm::wire::DataStream firebase_auth_user_provider_data_at(uint64_t user_ref, doub
 void firebase_auth_user_reauthenticate_with_provider(uint64_t user_ref, uint64_t provider_ref,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_reauthenticate_with_provider");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return;
     }
 
-    api->user_reauthenticate_with_provider(user_ref, provider_ref, callback);
+    proc(user_ref, provider_ref, callback);
 }
 
 void firebase_auth_user_link_with_provider(uint64_t user_ref, uint64_t provider_ref,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_link_with_provider");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return;
     }
 
-    api->user_link_with_provider(user_ref, provider_ref, callback);
+    proc(user_ref, provider_ref, callback);
 }
 
 void firebase_auth_user_reauthenticate_and_retrieve_data_result(uint64_t user_ref, uint64_t credential_ref,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_reauthenticate_and_retrieve_data_result");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return;
     }
 
-    api->user_reauthenticate_and_retrieve_data_result(user_ref, credential_ref, callback);
+    proc(user_ref, credential_ref, callback);
 }
 
 void firebase_auth_user_link_with_credential_result(uint64_t user_ref, uint64_t credential_ref,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_link_with_credential_result");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return;
     }
 
-    api->user_link_with_credential_result(user_ref, credential_ref, callback);
+    proc(user_ref, credential_ref, callback);
 }
 
 void firebase_auth_user_update_phone_number_credential(uint64_t user_ref, uint64_t phone_credential_ref,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    const auto* api = gmfirebaseGetCoreAuthAPI();
-    if (api == nullptr)
+    using Proc = void (*)(uint64_t, uint64_t, const std::optional<gm::wire::GMFunction>&);
+    const Proc proc = gmfirebaseGetCoreProductProcAs<Proc>("auth", "firebase_auth_user_update_phone_number_credential");
+    if (proc == nullptr)
     {
         reportCoreUnavailable();
         return;
     }
 
-    api->user_update_phone_number_credential(user_ref, phone_credential_ref, callback);
+    proc(user_ref, phone_credential_ref, callback);
 }

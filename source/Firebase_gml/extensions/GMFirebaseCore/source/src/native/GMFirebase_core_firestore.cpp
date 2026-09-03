@@ -6,10 +6,11 @@
 // gm::wire converter.
 //
 // This is GMFirebaseFirestore's former GMFirebase_firestore.cpp, moved here
-// because only GMFirebaseCore now statically links the Firebase C++ SDK (see
-// GMFirebase_core_firestore_api.h for why). Bodies are unchanged except:
-// names moved into the gmfb_firestore:: namespace to match
-// GMFirebaseCoreFirestoreAPI's fields; pushFieldValueToArray/
+// because only GMFirebaseCore now statically links the Firebase C++ SDK.
+// Bodies are unchanged except: names moved into the gmfb_firestore::
+// namespace to match the symbols gmfirebase_core_resolve_firestore_proc()
+// resolves for GMFirebaseFirestore (see GMFirebase_core_firestore_resolver.cpp);
+// pushFieldValueToArray/
 // addFieldValueToStruct take their stream argument first (matching this
 // file's other converters) instead of last; and resolveFieldPath/
 // resolveFilter/resolveAggregateQuery/resolveAggregateSnapshot are public,

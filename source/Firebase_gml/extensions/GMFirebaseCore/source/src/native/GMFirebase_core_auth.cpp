@@ -5,11 +5,12 @@
 //
 // This is GMFirebaseAuth's former GMFirebase_auth.cpp, moved here because
 // only GMFirebaseCore now statically links the Firebase C++ SDK (see
-// GMFirebase_core_auth_api.h for why). Bodies are unchanged; only the names
-// moved into the gmfb_auth:: namespace to match GMFirebaseCoreAuthAPI's
-// fields, and gm::wire::GMFunction/GMValue/StructStream still cross straight
-// through since they're ordinary C++ classes safe to share across this
-// repo's DLLs.
+// GMFirebase_core_auth_impl.h for why). Bodies are unchanged; only the names
+// moved into the gmfb_auth:: namespace so gmfirebase_core_resolve_auth_proc()
+// (GMFirebase_core_auth_resolver.cpp) can hand their addresses straight back
+// to GMFirebaseAuth's forwarders, and gm::wire::GMFunction/GMValue/StructStream
+// still cross straight through since they're ordinary C++ classes safe to
+// share across this repo's DLLs.
 #include "GMFirebase_core_auth_impl.h"
 #include "GMFirebase_common.h"
 #include "firebase/auth.h"

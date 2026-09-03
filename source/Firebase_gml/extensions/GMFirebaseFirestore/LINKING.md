@@ -10,15 +10,17 @@ This product module requires `GMFirebaseCore` in the GameMaker project.
   `CleanupNotifier`) are duplicated per-DLL: an `App*`/`Firestore*` created
   through Core was never visible to an independent SDK copy statically
   linked into a product DLL.
-- Firestore state is reached through `gmfirebase_core_get_firestore_api()`
-  (returning a `GMFirebaseCoreFirestoreAPI*`) via
-  `GMFirebase_core_firestore_client.cpp/.h`; App state is still reached
-  separately through `gmfirebase_core_get_api()` via the existing common
-  client shim.
+- Firestore state is reached through GMFirebaseCore's generic proc resolver -
+  `gmfirebaseGetCoreProductProcAs<Proc>("firestore", "firebase_firestore_...")`
+  (`GMFirebase_core_product_client.cpp/.h`, `GMFirebase_core_product_api.h`),
+  which resolves each symbol via `gmfirebase_core_resolve_firestore_proc()` on
+  the Core side; App state is still reached separately through
+  `gmfirebase_core_get_api()` via the existing common client shim.
 - This module never calls `firebase::App::Create()`,
   `firebase::firestore::Firestore::GetInstance()`, or any other Firebase
   Firestore SDK entry point directly - every `GMFirebase_firestore*.cpp` file
-  is a thin forwarder over `GMFirebaseCoreFirestoreAPI`.
+  is a thin forwarder that resolves each entry point by name through the
+  generic proc resolver described above.
 - `firebase_app` is still linked (see `third_party/CMakeLists.txt`), but only
   for the generic `firebase::Variant` conversion helpers in
   `GMFirebase_common_client.cpp` (shared boilerplate vendored into every

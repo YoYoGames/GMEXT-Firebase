@@ -436,12 +436,18 @@ elseif(APPLE)
       pthread
       gssapi_krb5)
 
+    # NOTE: each "-framework X" must be a single list element (via the
+    # SHELL: prefix), not two separate "-framework" "X" elements -- CMake's
+    # link-line de-duplication otherwise treats the repeated bare
+    # "-framework" flag as a duplicate and strips all but the first one,
+    # leaving the later framework names as orphaned/nonexistent file
+    # arguments on the link command line.
     target_link_options(ext_third_party INTERFACE
-      "-framework" "CoreFoundation"
-      "-framework" "Foundation"
-      "-framework" "GSS"
-      "-framework" "Security"
-      "-framework" "SystemConfiguration"
+      "SHELL:-framework CoreFoundation"
+      "SHELL:-framework Foundation"
+      "SHELL:-framework GSS"
+      "SHELL:-framework Security"
+      "SHELL:-framework SystemConfiguration"
       "-lresolv")
   endif()
 

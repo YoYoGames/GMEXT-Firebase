@@ -429,9 +429,10 @@ elseif(APPLE)
 
     # Firebase desktop dependency set documented in readme.md for macOS:
     # gssapi_krb5 + pthread, and the CoreFoundation/Foundation/GSS/Security
-    # frameworks. SystemConfiguration + resolv are not listed there but are
-    # kept here (harmless, always-available system frameworks) since Firestore/
-    # Realtime Database/Storage networking depend on them in practice.
+    # frameworks. SystemConfiguration, Network and resolv are not listed
+    # there but are required in practice: Firestore's ConnectivityMonitorApple
+    # uses Network.framework's NWPathMonitor for reachability, and
+    # SystemConfiguration/resolv are pulled in by the same networking code.
     target_link_libraries(ext_third_party INTERFACE
       pthread
       gssapi_krb5)
@@ -448,6 +449,7 @@ elseif(APPLE)
       "SHELL:-framework GSS"
       "SHELL:-framework Security"
       "SHELL:-framework SystemConfiguration"
+      "SHELL:-framework Network"
       "-lresolv")
   endif()
 

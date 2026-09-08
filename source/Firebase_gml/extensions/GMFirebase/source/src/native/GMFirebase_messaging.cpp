@@ -6,6 +6,22 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// Firebase C++ SDK deprecated the token-based FCM registration API in favor of
+// an Installation-ID-based model (Register()/Unregister()/OnRegistrationReceived),
+// but that model doesn't hand back the ID synchronously the way GetToken()/DeleteToken()
+// did. Keeping the deprecated calls preserves this extension's existing token-based
+// GML API contract; these macros just silence -Werror,-Wdeprecated-declarations at the call sites.
+#if defined(__clang__) || defined(__GNUC__)
+#define GMF_DEPRECATED_PUSH() _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define GMF_DEPRECATED_POP() _Pragma("GCC diagnostic pop")
+#elif defined(_MSC_VER)
+#define GMF_DEPRECATED_PUSH() __pragma(warning(push)) __pragma(warning(disable : 4996))
+#define GMF_DEPRECATED_POP() __pragma(warning(pop))
+#else
+#define GMF_DEPRECATED_PUSH()
+#define GMF_DEPRECATED_POP()
+#endif
+
 namespace
 {
 	firebase::messaging::PollableListener g_firebase_messaging_listener;
@@ -51,12 +67,17 @@ void firebase_messaging_terminate()
 
 void firebase_messaging_set_token_registration_on_init_enabled(double enabled)
 {
+	GMF_DEPRECATED_PUSH()
 	firebase::messaging::SetTokenRegistrationOnInitEnabled(enabled >= 0.5);
+	GMF_DEPRECATED_POP()
 }
 
 double firebase_messaging_is_token_registration_on_init_enabled()
 {
-	return firebase::messaging::IsTokenRegistrationOnInitEnabled() ? 1.0 : 0.0;
+	GMF_DEPRECATED_PUSH()
+	bool enabled = firebase::messaging::IsTokenRegistrationOnInitEnabled();
+	GMF_DEPRECATED_POP()
+	return enabled ? 1.0 : 0.0;
 }
 
 double firebase_messaging_delivery_metrics_export_to_big_query_enabled()
@@ -89,7 +110,10 @@ double firebase_messaging_request_permission(const std::optional<GMFunction>& ca
 // callback(error_code: real, error_message: string, token: string)
 double firebase_messaging_get_token(const std::optional<GMFunction>& callback)
 {
-	firebase::messaging::GetToken().OnCompletion([callback](const firebase::Future<std::string>& f)
+	GMF_DEPRECATED_PUSH()
+	firebase::Future<std::string> future = firebase::messaging::GetToken();
+	GMF_DEPRECATED_POP()
+	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
 		if (f.error() != 0)
 			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
@@ -103,7 +127,10 @@ double firebase_messaging_get_token(const std::optional<GMFunction>& callback)
 // callback(error_code: real, error_message: string)
 double firebase_messaging_delete_token(const std::optional<GMFunction>& callback)
 {
-	firebase::messaging::DeleteToken().OnCompletion([callback](const firebase::Future<void>& f)
+	GMF_DEPRECATED_PUSH()
+	firebase::Future<void> future = firebase::messaging::DeleteToken();
+	GMF_DEPRECATED_POP()
+	future.OnCompletion([callback](const firebase::Future<void>& f)
 	{
 		if (f.error() != 0)
 			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
@@ -161,7 +188,10 @@ double firebase_messaging_poll_message()
 double firebase_messaging_poll_token()
 {
 	std::string token;
-	if (!g_firebase_messaging_listener.PollRegistrationToken(&token))
+	GMF_DEPRECATED_PUSH()
+	bool got_token = g_firebase_messaging_listener.PollRegistrationToken(&token);
+	GMF_DEPRECATED_POP()
+	if (!got_token)
 		return 0.0;
 
 	g_current_token = std::move(token);

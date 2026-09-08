@@ -20,10 +20,10 @@
     {"name":"Firebase","order":8,"path":"folders/Firebase.yy",},
     {"name":"FirebaseCrashlytics","order":15,"path":"folders/FirebaseCrashlytics.yy",},
     {"name":"FirebaseInAppMessaging","order":16,"path":"folders/FirebaseInAppMessaging.yy",},
+    {"name":"FirebasePerformance","order":17,"path":"folders/FirebasePerformance.yy",},
     {"name":"Font","order":1,"path":"folders/GM Extensions Assets/Font.yy",},
     {"name":"Objects","order":2,"path":"folders/GM Extensions Assets/Objects.yy",},
     {"name":"Sprites","order":3,"path":"folders/GM Extensions Assets/Sprites.yy",},
-    {"name":"FirebasePerformance","order":17,"path":"folders/FirebasePerformance.yy",},
   ],
   "ResourceOrderSettings":[
     {"name":"fnt_gm_20","order":1,"path":"fonts/fnt_gm_20/fnt_gm_20.yy",},

@@ -30,11 +30,11 @@
     {"$GMFolder":"","%Name":"Firebase","folderPath":"folders/Firebase.yy","name":"Firebase","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"FirebaseCrashlytics","folderPath":"folders/FirebaseCrashlytics.yy","name":"FirebaseCrashlytics","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"FirebaseInAppMessaging","folderPath":"folders/FirebaseInAppMessaging.yy","name":"FirebaseInAppMessaging","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"FirebasePerformance","folderPath":"folders/FirebasePerformance.yy","name":"FirebasePerformance","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"GM Extensions Assets","folderPath":"folders/GM Extensions Assets.yy","name":"GM Extensions Assets","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Font","folderPath":"folders/GM Extensions Assets/Font.yy","name":"Font","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/GM Extensions Assets/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/GM Extensions Assets/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"FirebasePerformance","folderPath":"folders/FirebasePerformance.yy","name":"FirebasePerformance","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[

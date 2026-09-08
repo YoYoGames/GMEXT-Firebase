@@ -494,6 +494,8 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
 // before any other GMFirebase_* module function, on every platform.
 double firebase_app_initialize()
 {
+    fprintf(stderr, "[GMFirebase] firebase_app_initialize() called\n");
+
 #if defined(__ANDROID__)
     if (g_firebase_app != nullptr)
         return 1.0;
@@ -521,7 +523,9 @@ double firebase_app_initialize()
 
     return 1.0;
 #else
+	fprintf(stderr, "[GMFirebase] firebase_app_initialize() calling getFirebaseApp()\n");
 	firebase::App* app = getFirebaseApp();
+	fprintf(stderr, "[GMFirebase] firebase_app_initialize() getFirebaseApp() returned %p\n", (void*)app);
 	if (app == nullptr)
 	{
 		setFirebaseLastError(-1, "firebase_app_initialize: failed to create firebase::App");

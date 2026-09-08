@@ -5,6 +5,7 @@
 #include "firebase/log.h"
 #include "firebase/variant.h"
 #include <cstdint>
+#include <cstdio>
 #include <map>
 #include <mutex>
 #include <optional>

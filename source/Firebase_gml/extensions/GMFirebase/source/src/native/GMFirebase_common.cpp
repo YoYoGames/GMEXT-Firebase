@@ -8,17 +8,25 @@ firebase::App* g_firebase_app = nullptr;
 
 firebase::App* getFirebaseApp()
 {
+	fprintf(stderr, "[GMFirebase] getFirebaseApp() called\n");
+
 	if (g_firebase_app != nullptr)
+	{
+		fprintf(stderr, "[GMFirebase] getFirebaseApp() returning existing app\n");
 		return g_firebase_app;
+	}
 
 #if defined(__ANDROID__)
 	// Android requires the JNI env + activity; GMFirebase_app.cpp's
 	// firebase_app_initialize() is expected to have already set
 	// g_firebase_app via App::Create(jni_env, activity) before any other
 	// module calls getFirebaseApp(). We do not attempt a JNI-less fallback.
+	fprintf(stderr, "[GMFirebase] getFirebaseApp() Android path with no existing app -> nullptr\n");
 	return nullptr;
 #else
+	fprintf(stderr, "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
 	g_firebase_app = firebase::App::Create();
+	fprintf(stderr, "[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
 	return g_firebase_app;
 #endif
 }

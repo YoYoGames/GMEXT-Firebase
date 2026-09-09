@@ -7,8 +7,7 @@
 #include <windows.h>
 #elif FIREBASE_PLATFORM_OSX
 #include <climits>
-#include <mach-o/dyld.h>
-#include <stdlib.h>
+#include <CoreFoundation/CoreFoundation.h>
 #elif FIREBASE_PLATFORM_LINUX
 #include <climits>
 #include <unistd.h>
@@ -25,40 +24,70 @@ namespace
 {
 	// On desktop, App::Create() with no arguments only auto-loads
 	// google-services(-desktop).json from the process's *current working
-	// directory*, not from wherever the executable itself lives. That is a
-	// reasonable assumption on Windows (double-clicking/launching an .exe
-	// there conventionally sets the CWD to its own folder) but not on macOS,
-	// where a Finder-launched .app bundle's CWD is unrelated to
-	// Contents/MacOS (often the user's home directory). post_build_step
-	// already stages google-services.json beside the built executable on
-	// every desktop platform, so point Firebase's search path there
-	// explicitly via SetDefaultConfigPath() instead of relying on CWD.
-	std::string getExecutableDir()
+	// directory*, not from wherever the config file is actually staged.
+	// post_build_step stages a copy beside the built executable on every
+	// desktop platform. On macOS specifically, GameMaker's own generated
+	// Xcode project *also* stages google-services.json as an Included File
+	// via a "Copy Files" build phase with dstSubfolderSpec=7 (Resources) --
+	// i.e. into <App>.app/Contents/Resources/, not Contents/MacOS/ where the
+	// executable itself lives (confirmed by inspecting the generated
+	// Firebase.xcodeproj/project.pbxproj). So on macOS the executable's own
+	// directory is the wrong place to point Firebase at; the bundle's
+	// Resources directory (via CFBundleCopyResourcesDirectoryURL) is the
+	// location that is actually guaranteed to contain the file.
+	std::string getConfigSearchDir()
 	{
-		std::string full;
+		TRACE("[GMFirebase] getConfigSearchDir() FIREBASE_PLATFORM_OSX=%d FIREBASE_PLATFORM_WINDOWS=%d FIREBASE_PLATFORM_LINUX=%d\n",
+			(int)FIREBASE_PLATFORM_OSX, (int)FIREBASE_PLATFORM_WINDOWS, (int)FIREBASE_PLATFORM_LINUX);
+
 #if FIREBASE_PLATFORM_WINDOWS
 		char path[MAX_PATH];
 		DWORD len = GetModuleFileNameA(nullptr, path, MAX_PATH);
+		TRACE("[GMFirebase] getConfigSearchDir() GetModuleFileNameA len=%lu\n", (unsigned long)len);
 		if (len == 0 || len == MAX_PATH) return std::string();
-		full.assign(path, len);
+		std::string full(path, len);
+		size_t slash = full.find_last_of("/\\");
+		if (slash == std::string::npos) return std::string();
+		std::string dir = full.substr(0, slash + 1);
 #elif FIREBASE_PLATFORM_OSX
+		CFBundleRef bundle = CFBundleGetMainBundle();
+		if (!bundle)
+		{
+			TRACE("[GMFirebase] getConfigSearchDir() CFBundleGetMainBundle() returned null\n");
+			return std::string();
+		}
+		CFURLRef resourcesUrl = CFBundleCopyResourcesDirectoryURL(bundle);
+		if (!resourcesUrl)
+		{
+			TRACE("[GMFirebase] getConfigSearchDir() CFBundleCopyResourcesDirectoryURL() returned null\n");
+			return std::string();
+		}
 		char path[PATH_MAX];
-		uint32_t size = sizeof(path);
-		if (_NSGetExecutablePath(path, &size) != 0) return std::string();
-		char resolved[PATH_MAX];
-		if (!realpath(path, resolved)) return std::string();
-		full.assign(resolved);
+		Boolean ok = CFURLGetFileSystemRepresentation(resourcesUrl, TRUE, reinterpret_cast<UInt8*>(path), sizeof(path));
+		CFRelease(resourcesUrl);
+		if (!ok)
+		{
+			TRACE("[GMFirebase] getConfigSearchDir() CFURLGetFileSystemRepresentation() failed\n");
+			return std::string();
+		}
+		TRACE("[GMFirebase] getConfigSearchDir() resources dir=%s\n", path);
+		std::string dir(path);
+		if (!dir.empty() && dir.back() != '/') dir += '/';
 #elif FIREBASE_PLATFORM_LINUX
 		char path[PATH_MAX];
 		ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+		TRACE("[GMFirebase] getConfigSearchDir() readlink len=%zd\n", len);
 		if (len <= 0) return std::string();
-		full.assign(path, static_cast<size_t>(len));
-#else
-		return std::string();
-#endif
+		std::string full(path, static_cast<size_t>(len));
 		size_t slash = full.find_last_of("/\\");
 		if (slash == std::string::npos) return std::string();
-		return full.substr(0, slash + 1);
+		std::string dir = full.substr(0, slash + 1);
+#else
+		TRACE("[GMFirebase] getConfigSearchDir() no platform branch compiled in\n");
+		return std::string();
+#endif
+		TRACE("[GMFirebase] getConfigSearchDir() dir=%s\n", dir.c_str());
+		return dir;
 	}
 }
 #endif // FIREBASE_PLATFORM_DESKTOP
@@ -82,11 +111,11 @@ firebase::App* getFirebaseApp()
 	return nullptr;
 #else
 #if FIREBASE_PLATFORM_DESKTOP
-	std::string exeDir = getExecutableDir();
-	if (!exeDir.empty())
+	std::string configDir = getConfigSearchDir();
+	if (!configDir.empty())
 	{
-		TRACE("[GMFirebase] getFirebaseApp() SetDefaultConfigPath(%s)\n", exeDir.c_str());
-		firebase::App::SetDefaultConfigPath(exeDir.c_str());
+		TRACE("[GMFirebase] getFirebaseApp() SetDefaultConfigPath(%s)\n", configDir.c_str());
+		firebase::App::SetDefaultConfigPath(configDir.c_str());
 	}
 #endif
 	TRACE( "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");

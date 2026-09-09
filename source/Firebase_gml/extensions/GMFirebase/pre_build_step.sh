@@ -60,6 +60,55 @@ setupiOS() {
     cp -f "$FILE_PATH" "$1/iOSProjectFiles/GoogleService-Info.plist"
 
     echo "[FirebaseSetup] iOS Firebase credentials staged successfully."
+
+    # Stage the Firebase C++ SDK's prebuilt iOS xcframeworks into
+    # iOSSourceFromMac as one .zip per module (matching each entry already
+    # declared under iosThirdPartyFrameworkEntries in GMFirebase.yy), so the
+    # GameMaker iOS build links them without any manual zipping/Included
+    # Files step. Each framework binary is a plain static archive (no
+    # codesign involved), so no signature stripping is needed here -
+    # ditto alone produces a build-ready zip.
+    optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
+        logError "Extension option 'firebaseCppSdkPath' is empty."
+        exit 1
+    fi
+
+    pathResolveExisting "$YYprojectDir" "$FIREBASE_CPP_SDK_OPTION" FIREBASE_CPP_SDK
+
+    IOS_DIR="$1/iOSSourceFromMac"
+    mkdir -p "$IOS_DIR"
+
+    FIREBASE_XCFRAMEWORK_MODULES="firebase firebase_analytics firebase_app_check firebase_auth firebase_database firebase_firestore firebase_functions firebase_installations firebase_messaging firebase_remote_config firebase_storage firebase_ump"
+
+    for module in $FIREBASE_XCFRAMEWORK_MODULES; do
+        XCFW="$FIREBASE_CPP_SDK/xcframeworks/$module.xcframework"
+        if [ ! -d "$XCFW" ]; then
+            logError "Firebase xcframework not found: '$XCFW'."
+            exit 1
+        fi
+
+        ZIP="$IOS_DIR/$module.zip"
+
+        # Skip re-zipping when the existing zip is already newer than every
+        # file under the source xcframework (avoids re-zipping ~900MB of
+        # SDK binaries on every build when nothing changed).
+        if [ -f "$ZIP" ] && [ -z "$(find "$XCFW" -newer "$ZIP" -print -quit)" ]; then
+            echo "[FirebaseSetup] $module.zip is up to date, skipping."
+            continue
+        fi
+
+        echo "[FirebaseSetup] Staging iOS dependency: $XCFW -> $module.zip"
+        rm -f "$ZIP"
+        # --keepParent keeps the top-level <module>.xcframework folder inside
+        # the archive; --norsrc/--noextattr avoid AppleDouble "._" files that
+        # break ProcessXCFramework.
+        if ! ditto -c -k --norsrc --noextattr --keepParent "$XCFW" "$ZIP"; then
+            logError "Failed to zip '$XCFW' into '$ZIP'."
+        fi
+    done
+
+    echo "[FirebaseSetup] iOS Firebase SDK xcframeworks staged successfully."
 }
 
 setupDesktop() {

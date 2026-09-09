@@ -1,4 +1,18 @@
+// Exposes firebase::App::SetDefaultConfigPath(), otherwise hidden from
+// public consumers of the SDK header. Only affects this translation unit.
+#define INTERNAL_EXPERIMENTAL 1
 #include "GMFirebase_common.h"
+
+#if FIREBASE_PLATFORM_WINDOWS
+#include <windows.h>
+#elif FIREBASE_PLATFORM_OSX
+#include <climits>
+#include <mach-o/dyld.h>
+#include <stdlib.h>
+#elif FIREBASE_PLATFORM_LINUX
+#include <climits>
+#include <unistd.h>
+#endif
 
 // ============================================================
 // App bootstrap
@@ -6,13 +20,56 @@
 
 firebase::App* g_firebase_app = nullptr;
 
+#if FIREBASE_PLATFORM_DESKTOP
+namespace
+{
+	// On desktop, App::Create() with no arguments only auto-loads
+	// google-services(-desktop).json from the process's *current working
+	// directory*, not from wherever the executable itself lives. That is a
+	// reasonable assumption on Windows (double-clicking/launching an .exe
+	// there conventionally sets the CWD to its own folder) but not on macOS,
+	// where a Finder-launched .app bundle's CWD is unrelated to
+	// Contents/MacOS (often the user's home directory). post_build_step
+	// already stages google-services.json beside the built executable on
+	// every desktop platform, so point Firebase's search path there
+	// explicitly via SetDefaultConfigPath() instead of relying on CWD.
+	std::string getExecutableDir()
+	{
+		std::string full;
+#if FIREBASE_PLATFORM_WINDOWS
+		char path[MAX_PATH];
+		DWORD len = GetModuleFileNameA(nullptr, path, MAX_PATH);
+		if (len == 0 || len == MAX_PATH) return std::string();
+		full.assign(path, len);
+#elif FIREBASE_PLATFORM_OSX
+		char path[PATH_MAX];
+		uint32_t size = sizeof(path);
+		if (_NSGetExecutablePath(path, &size) != 0) return std::string();
+		char resolved[PATH_MAX];
+		if (!realpath(path, resolved)) return std::string();
+		full.assign(resolved);
+#elif FIREBASE_PLATFORM_LINUX
+		char path[PATH_MAX];
+		ssize_t len = readlink("/proc/self/exe", path, sizeof(path) - 1);
+		if (len <= 0) return std::string();
+		full.assign(path, static_cast<size_t>(len));
+#else
+		return std::string();
+#endif
+		size_t slash = full.find_last_of("/\\");
+		if (slash == std::string::npos) return std::string();
+		return full.substr(0, slash + 1);
+	}
+}
+#endif // FIREBASE_PLATFORM_DESKTOP
+
 firebase::App* getFirebaseApp()
 {
-	fprintf(stderr, "[GMFirebase] getFirebaseApp() called\n");
+	TRACE("[GMFirebase] getFirebaseApp() called\n");
 
 	if (g_firebase_app != nullptr)
 	{
-		fprintf(stderr, "[GMFirebase] getFirebaseApp() returning existing app\n");
+		TRACE("[GMFirebase] getFirebaseApp() returning existing app\n");
 		return g_firebase_app;
 	}
 
@@ -21,12 +78,20 @@ firebase::App* getFirebaseApp()
 	// firebase_app_initialize() is expected to have already set
 	// g_firebase_app via App::Create(jni_env, activity) before any other
 	// module calls getFirebaseApp(). We do not attempt a JNI-less fallback.
-	fprintf(stderr, "[GMFirebase] getFirebaseApp() Android path with no existing app -> nullptr\n");
+	TRACE("[GMFirebase] getFirebaseApp() Android path with no existing app -> nullptr\n");
 	return nullptr;
 #else
-	fprintf(stderr, "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
+#if FIREBASE_PLATFORM_DESKTOP
+	std::string exeDir = getExecutableDir();
+	if (!exeDir.empty())
+	{
+		TRACE("[GMFirebase] getFirebaseApp() SetDefaultConfigPath(%s)\n", exeDir.c_str());
+		firebase::App::SetDefaultConfigPath(exeDir.c_str());
+	}
+#endif
+	TRACE( "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
 	g_firebase_app = firebase::App::Create();
-	fprintf(stderr, "[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
+	TRACE( "[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
 	return g_firebase_app;
 #endif
 }

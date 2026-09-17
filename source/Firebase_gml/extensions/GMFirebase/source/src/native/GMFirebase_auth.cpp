@@ -145,12 +145,9 @@ FirebaseError firebase_auth_fetch_providers_for_email(std::string_view email, co
 			if (!callback)
 				return;
 
-			gm::wire::ArrayStream providers;
+			std::vector<std::string> providers;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-			{
-				for (const std::string& provider_id : f.result()->providers)
-					providers.push(std::string_view{ provider_id });
-			}
+				providers = f.result()->providers;
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), providers);
 		});
@@ -465,16 +462,13 @@ namespace
 {
     firebase::auth::FederatedOAuthProviderData gmToFederatedProviderData(
         std::string_view provider_id,
-        const gm::wire::GMValue& scopes,
+        const std::vector<std::string_view>& scopes,
         const gm::wire::GMValue& custom_parameters)
     {
         firebase::auth::FederatedOAuthProviderData data{std::string(provider_id)};
-        if (scopes.is<gm::wire::GMArrayView>())
-        {
-            auto a = scopes.as<gm::wire::GMArrayView>();
-            for (const auto& v : a)
-                if (v.is<std::string_view>()) data.scopes.emplace_back(v.as<std::string_view>());
-        }
+        data.scopes.reserve(scopes.size());
+        for (std::string_view scope : scopes)
+            data.scopes.emplace_back(scope);
         if (custom_parameters.is<gm::wire::GMObjectView>())
         {
             auto o = custom_parameters.as<gm::wire::GMObjectView>();
@@ -501,26 +495,28 @@ namespace
         if (!callback) return;
 
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResultStruct(wrapFirebaseUser(auth, f.result()->user), *f.result()));
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResult(wrapFirebaseUser(auth, f.result()->user), *f.result()));
         else
-            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<std::uint8_t>{});
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<gm_structs::FirebaseAuthResult>{});
     }
 }
 
-gm::wire::StructStream makeFirebaseAuthResultStruct(uint64_t user_ref, const firebase::auth::AuthResult& result)
+gm_structs::FirebaseAuthResult makeFirebaseAuthResult(uint64_t user_ref, const firebase::auth::AuthResult& result)
 {
-    gm::wire::StructStream out;
-    if (!result.user.is_valid()) user_ref = 0;
-    uint64_t credential_ref = result.credential.is_valid() ? wrapFirebaseAuthCredential(result.credential) : 0;
-    uint64_t updated_credential_ref = result.additional_user_info.updated_credential.is_valid()
-        ? wrapFirebaseAuthCredential(result.additional_user_info.updated_credential) : 0;
+    gm_structs::FirebaseAuthResult out;
+    if (result.user.is_valid())
+        out.user = user_ref;
+    if (result.credential.is_valid())
+        out.credential = wrapFirebaseAuthCredential(result.credential);
 
-    out.add("user", static_cast<double>(user_ref));
-    out.add("credential", static_cast<double>(credential_ref));
-    out.add("provider_id", std::string_view{ result.additional_user_info.provider_id });
-    out.add("user_name", std::string_view{ result.additional_user_info.user_name });
-    out.add("updated_credential", static_cast<double>(updated_credential_ref));
+    gm_structs::FirebaseAuthAdditionalUserInfo& info = out.additional_user_info;
+    info.provider_id = result.additional_user_info.provider_id;
+    info.user_name = result.additional_user_info.user_name;
+    if (result.additional_user_info.updated_credential.is_valid())
+        info.updated_credential = wrapFirebaseAuthCredential(result.additional_user_info.updated_credential);
 
+    // The profile map has provider-defined keys, so it stays a dynamic struct.
+    // A gmval field carries exactly one encoded value, hence the single <<.
     gm::wire::StructStream profile;
     for (const auto& kv : result.additional_user_info.profile)
     {
@@ -528,12 +524,12 @@ gm::wire::StructStream makeFirebaseAuthResultStruct(uint64_t user_ref, const fir
         if (key.type() == firebase::Variant::kTypeStaticString || key.type() == firebase::Variant::kTypeMutableString)
             addVariantToStruct(key.string_value(), kv.second, profile);
     }
-    out.add("profile", profile);
+    info.profile << profile;
     return out;
 }
 
 uint64_t firebase_auth_federated_oauth_provider_create(std::string_view provider_id,
-    const gm::wire::GMValue& scopes, const gm::wire::GMValue& custom_parameters)
+    const std::vector<std::string_view>& scopes, const gm::wire::GMValue& custom_parameters)
 {
     auto data = gmToFederatedProviderData(provider_id, scopes, custom_parameters);
     auto* provider = new firebase::auth::FederatedOAuthProvider(data);
@@ -541,7 +537,7 @@ uint64_t firebase_auth_federated_oauth_provider_create(std::string_view provider
 }
 
 void firebase_auth_federated_oauth_provider_set_data(uint64_t provider_ref, std::string_view provider_id,
-    const gm::wire::GMValue& scopes, const gm::wire::GMValue& custom_parameters)
+    const std::vector<std::string_view>& scopes, const gm::wire::GMValue& custom_parameters)
 {
     auto* provider = resolveFederatedProvider(provider_ref);
     if (!provider) return;

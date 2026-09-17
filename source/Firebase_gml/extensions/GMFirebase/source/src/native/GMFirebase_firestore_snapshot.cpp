@@ -3,6 +3,7 @@
 // GMFirebase_firestore.cpp (e.g. AddSnapshotListener there registers the
 // DocumentSnapshot/QuerySnapshot values this file's accessors read back).
 #include "GMFirebase_firestore.h"
+#include <utility>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -55,37 +56,49 @@ FirestoreDocumentSnapshotInfo firebase_firestore_document_snapshot_get_info(uint
 	return out;
 }
 
-// Returns { exists: bool, value: <field value, or undefined if not exists> }.
+namespace
+{
+	// A gmval field is a DataStream holding exactly one encoded value. One
+	// element pushed onto a scratch ArrayStream is exactly that encoding (the
+	// array header is only written at serialization), so the FieldValue switch
+	// in pushFieldValueToArray is not repeated here.
+	void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out)
+	{
+		gm::wire::ArrayStream one;
+		pushFieldValueToArray(v, one);
+		const std::vector<std::byte>& encoded = std::as_const(one).getBuffer();
+		gm::byteio::BufferReader bytes(const_cast<std::byte*>(encoded.data()), encoded.size());
+		out.buildFrom(bytes);
+	}
+
+	// exists distinguishes a missing field from a present Firestore null; the
+	// value is undefined in both cases. An invalid FieldValue is what Get()
+	// returns for a missing field.
+	gm_structs::FirestoreFieldLookup makeFieldLookup(const firebase::firestore::FieldValue* value)
+	{
+		gm_structs::FirestoreFieldLookup out;
+		out.exists = value != nullptr && value->is_valid();
+		if (out.exists)
+			writeFieldValueToStream(*value, out.value);
+		else
+			out.value << std::optional<std::uint8_t>{};
+		return out;
+	}
+}
+
 // See GMFirebase_firestore.h's converter section for how composite value
 // kinds (Timestamp/GeoPoint/Reference/Array/Map) are encoded.
-gm::wire::DataStream firebase_firestore_document_snapshot_get(uint64_t ref, std::string_view field, double server_timestamp_behavior)
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(uint64_t ref, std::string_view field, double server_timestamp_behavior)
 {
-	gm::wire::StructStream result;
-
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
 	if (snap == nullptr)
-	{
-		result.add("exists", false);
-		result.addKeyValue("value", std::optional<std::uint8_t>{});
-	}
-	else
-	{
-		auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
-		std::string field_name(field);
-		firebase::firestore::FieldValue value = snap->Get(field_name.c_str(), stb);
+		return makeFieldLookup(nullptr);
 
-		bool exists = value.is_valid();
-		result.add("exists", exists);
-		if (exists)
-			addFieldValueToStruct("value", value, result);
-		else
-			result.addKeyValue("value", std::optional<std::uint8_t>{});
-	}
-
-	gm::wire::DataStream out;
-	out << result;
-	return out;
+	auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
+	std::string field_name(field);
+	firebase::firestore::FieldValue value = snap->Get(field_name.c_str(), stb);
+	return makeFieldLookup(&value);
 }
 
 // Returns the full field map as a struct, field name -> converted value.
@@ -145,53 +158,50 @@ FirestoreQuerySnapshotInfo firebase_firestore_query_snapshot_get_info(uint64_t r
 
 // Returns an array of GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT refs (each newly
 // registered), in the query's result order.
-gm::wire::DataStream firebase_firestore_query_snapshot_documents(uint64_t ref)
+std::vector<std::uint64_t> firebase_firestore_query_snapshot_documents(uint64_t ref)
 {
-	gm::wire::ArrayStream result;
+	std::vector<std::uint64_t> result;
 
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
 	if (snap != nullptr)
 	{
-		for (const auto& doc : snap->documents())
-			result.push(static_cast<double>(registerFirestoreDocSnapshot(doc)));
+		std::vector<firebase::firestore::DocumentSnapshot> documents = snap->documents();
+		result.reserve(documents.size());
+		for (const auto& doc : documents)
+			result.push_back(registerFirestoreDocSnapshot(doc));
 	}
-
-	gm::wire::DataStream out;
-	out << result;
-	return out;
+	return result;
 }
 
-// Returns an array of
-// { type: real (FirestoreDocumentChangeType), document: uint64 ref,
-//   old_index: real (-1 if n/a), new_index: real (-1 if n/a) }.
-gm::wire::DataStream firebase_firestore_query_snapshot_document_changes(uint64_t ref, bool include_metadata_changes)
+// Each document is a newly registered DocumentSnapshot ref; old_index and
+// new_index are -1 where the SDK reports npos.
+std::vector<gm_structs::FirestoreDocumentChange> firebase_firestore_query_snapshot_document_changes(uint64_t ref, bool include_metadata_changes)
 {
-	gm::wire::ArrayStream result;
+	std::vector<gm_structs::FirestoreDocumentChange> result;
 
 	firebase::firestore::QuerySnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT, firebase::firestore::QuerySnapshot, g_fs_query_snapshot_map, snap);
 	if (snap != nullptr)
 	{
 		auto mc = include_metadata_changes ? firebase::firestore::MetadataChanges::kInclude : firebase::firestore::MetadataChanges::kExclude;
-		for (const auto& change : snap->DocumentChanges(mc))
+		std::vector<firebase::firestore::DocumentChange> changes = snap->DocumentChanges(mc);
+		result.reserve(changes.size());
+		for (const auto& change : changes)
 		{
-			gm::wire::StructStream entry;
-			entry.add("type", static_cast<double>(change.type()));
-			entry.add("document", static_cast<double>(registerFirestoreDocSnapshot(change.document())));
+			gm_structs::FirestoreDocumentChange entry;
+			entry.type = static_cast<gm_enums::FirestoreDocumentChangeType>(change.type());
+			entry.document = registerFirestoreDocSnapshot(change.document());
 
 			std::size_t old_index = change.old_index();
 			std::size_t new_index = change.new_index();
-			entry.add("old_index", old_index == firebase::firestore::DocumentChange::npos ? -1.0 : static_cast<double>(old_index));
-			entry.add("new_index", new_index == firebase::firestore::DocumentChange::npos ? -1.0 : static_cast<double>(new_index));
+			entry.old_index = old_index == firebase::firestore::DocumentChange::npos ? -1.0 : static_cast<double>(old_index);
+			entry.new_index = new_index == firebase::firestore::DocumentChange::npos ? -1.0 : static_cast<double>(new_index);
 
-			result.push(entry);
+			result.push_back(std::move(entry));
 		}
 	}
-
-	gm::wire::DataStream out;
-	out << result;
-	return out;
+	return result;
 }
 
 void firebase_firestore_query_snapshot_release(uint64_t ref)
@@ -241,27 +251,18 @@ std::string firebase_firestore_document_snapshot_to_string(uint64_t ref)
     return snap ? snap->ToString() : std::string();
 }
 
-gm::wire::DataStream firebase_firestore_document_snapshot_get_field_path(uint64_t ref, uint64_t field_path_ref, double server_timestamp_behavior)
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(uint64_t ref, uint64_t field_path_ref, double server_timestamp_behavior)
 {
-    gm::wire::StructStream result;
     firebase::firestore::DocumentSnapshot* snap = nullptr;
     validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
     firebase::firestore::FieldPath* path = nullptr;
     validate_fb_ref_map(field_path_ref, GM_FB_TYPE_FIRESTORE_FIELD_PATH, firebase::firestore::FieldPath, g_fs_field_path_map, path);
     if (!snap || !path)
-    {
-        result.add("exists", false);
-        result.addKeyValue("value", std::optional<std::uint8_t>{});
-    }
-    else
-    {
-        auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
-        auto value = snap->Get(*path, stb);
-        result.add("exists", value.is_valid());
-        if (value.is_valid()) addFieldValueToStruct("value", value, result);
-        else result.addKeyValue("value", std::optional<std::uint8_t>{});
-    }
-    gm::wire::DataStream out; out << result; return out;
+        return makeFieldLookup(nullptr);
+
+    auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
+    firebase::firestore::FieldValue value = snap->Get(*path, stb);
+    return makeFieldLookup(&value);
 }
 
 bool firebase_firestore_query_snapshot_is_valid(uint64_t ref)

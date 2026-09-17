@@ -75,20 +75,18 @@ double firebase_database_snapshot_children_count(uint64_t ref)
 // Returns an array of GM_FB_TYPE_DATA_SNAPSHOT refs, one per child, in
 // Query-defined iteration order. Each ref is independently owned and must be
 // released with firebase_database_snapshot_release() by the caller.
-gm::wire::DataStream firebase_database_snapshot_get_children(uint64_t ref)
+std::vector<std::uint64_t> firebase_database_snapshot_get_children(uint64_t ref)
 {
-	gm::wire::ArrayStream arr;
+	std::vector<std::uint64_t> refs;
 	DataSnapshot* s = resolve_db_snapshot(ref);
 	if (s != nullptr)
 	{
 		std::vector<DataSnapshot> children = s->children();
+		refs.reserve(children.size());
 		for (const DataSnapshot& child : children)
-			arr.push(registerDatabaseSnapshot(child));
+			refs.push_back(registerDatabaseSnapshot(child));
 	}
-
-	gm::wire::DataStream out;
-	out << arr;
-	return out;
+	return refs;
 }
 
 std::string firebase_database_snapshot_key(uint64_t ref)

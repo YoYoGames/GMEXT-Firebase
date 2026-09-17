@@ -193,6 +193,13 @@ namespace gm_enums
         Removed = 2
     };
 
+    enum class FirestoreLoadBundleTaskState : std::int64_t
+    {
+        Error = 0,
+        InProgress = 1,
+        Success = 2
+    };
+
     enum class FirebaseRemoteConfigLastFetchStatus : std::int64_t
     {
         Success = 0,
@@ -205,6 +212,13 @@ namespace gm_enums
         Invalid = 0,
         Throttled = 1,
         Error = 2
+    };
+
+    enum class FirebaseRemoteConfigValueSource : std::int64_t
+    {
+        StaticValue = 0,
+        RemoteValue = 1,
+        DefaultValue = 2
     };
 
     enum class FirebaseUmpConsentStatus : std::int64_t
@@ -241,12 +255,59 @@ namespace gm_enums
 
 namespace gm_structs
 {
+    struct FirebaseAnalyticsParameter;
+    struct FirebaseAppCheckToken;
+    struct FirebaseAuthProviderUserInfo;
+    struct FirebaseAuthAdditionalUserInfo;
     struct FirebaseAuthUserInfo;
     struct FirebaseDatabaseReferenceInfo;
     struct FirebaseDataSnapshotInfo;
+    struct FirestoreTimestamp;
+    struct FirestoreGeoPoint;
+    struct FirestoreDocumentChange;
+    struct FirestoreFieldLookup;
+    struct FirestoreFieldPathValue;
+    struct FirestoreLoadBundleTaskProgress;
     struct FirestoreDocumentSnapshotInfo;
     struct FirestoreQuerySnapshotInfo;
     struct FirebaseRemoteConfigInfo;
+    struct FirebaseRemoteConfigBooleanInfo;
+    struct FirebaseRemoteConfigLongInfo;
+    struct FirebaseRemoteConfigDoubleInfo;
+    struct FirebaseRemoteConfigStringInfo;
+    struct FirebaseRemoteConfigDataInfo;
+    struct FirebaseAppOptions;
+    struct FirebaseAuthResult;
+
+    struct FirebaseAnalyticsParameter
+    {
+        std::string name;
+        gm::wire::DataStream value;
+    };
+
+    struct FirebaseAppCheckToken
+    {
+        std::string token;
+        double expire_time_millis;
+    };
+
+    struct FirebaseAuthProviderUserInfo
+    {
+        std::string uid;
+        std::string email;
+        std::string display_name;
+        std::string photo_url;
+        std::string provider_id;
+        std::string phone_number;
+    };
+
+    struct FirebaseAuthAdditionalUserInfo
+    {
+        std::string provider_id;
+        std::string user_name;
+        gm::wire::DataStream profile;
+        std::optional<std::uint64_t> updated_credential;
+    };
 
     struct FirebaseAuthUserInfo
     {
@@ -285,6 +346,47 @@ namespace gm_structs
         std::uint64_t reference;
     };
 
+    struct FirestoreTimestamp
+    {
+        double seconds;
+        double nanoseconds;
+    };
+
+    struct FirestoreGeoPoint
+    {
+        double latitude;
+        double longitude;
+    };
+
+    struct FirestoreDocumentChange
+    {
+        gm_enums::FirestoreDocumentChangeType type;
+        std::uint64_t document;
+        double old_index;
+        double new_index;
+    };
+
+    struct FirestoreFieldLookup
+    {
+        bool exists;
+        gm::wire::DataStream value;
+    };
+
+    struct FirestoreFieldPathValue
+    {
+        double field_path;
+        gm::wire::DataStream value;
+    };
+
+    struct FirestoreLoadBundleTaskProgress
+    {
+        double documents_loaded;
+        double total_documents;
+        double bytes_loaded;
+        double total_bytes;
+        gm_enums::FirestoreLoadBundleTaskState state;
+    };
+
     struct FirestoreDocumentSnapshotInfo
     {
         bool exists;
@@ -310,10 +412,140 @@ namespace gm_structs
         double throttled_end_time;
     };
 
+    struct FirebaseRemoteConfigBooleanInfo
+    {
+        bool value;
+        gm_enums::FirebaseRemoteConfigValueSource source;
+        bool conversion_successful;
+    };
+
+    struct FirebaseRemoteConfigLongInfo
+    {
+        double value;
+        gm_enums::FirebaseRemoteConfigValueSource source;
+        bool conversion_successful;
+    };
+
+    struct FirebaseRemoteConfigDoubleInfo
+    {
+        double value;
+        gm_enums::FirebaseRemoteConfigValueSource source;
+        bool conversion_successful;
+    };
+
+    struct FirebaseRemoteConfigStringInfo
+    {
+        std::string value;
+        gm_enums::FirebaseRemoteConfigValueSource source;
+        bool conversion_successful;
+    };
+
+    struct FirebaseRemoteConfigDataInfo
+    {
+        double bytes_copied;
+        double size;
+        gm_enums::FirebaseRemoteConfigValueSource source;
+        bool conversion_successful;
+    };
+
+    struct FirebaseAppOptions
+    {
+        std::optional<std::string> app_id;
+        std::optional<std::string> api_key;
+        std::optional<std::string> messaging_sender_id;
+        std::optional<std::string> database_url;
+        std::optional<std::string> ga_tracking_id;
+        std::optional<std::string> storage_bucket;
+        std::optional<std::string> project_id;
+    };
+
+    struct FirebaseAuthResult
+    {
+        std::optional<std::uint64_t> user;
+        std::optional<std::uint64_t> credential;
+        gm_structs::FirebaseAuthAdditionalUserInfo additional_user_info;
+    };
+
 }
 
 namespace gm::wire::codec
 {
+    template<>
+    inline void writeValue<gm_structs::FirebaseAnalyticsParameter>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAnalyticsParameter& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.name);
+        gm::wire::codec::writeValue(_buf, obj.value);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAnalyticsParameter readValue<gm_structs::FirebaseAnalyticsParameter>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAnalyticsParameter obj;
+        obj.name = gm::wire::codec::readValue<std::string>(_buf);
+        obj.value = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseAppCheckToken>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAppCheckToken& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.token);
+        gm::wire::codec::writeValue(_buf, obj.expire_time_millis);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAppCheckToken readValue<gm_structs::FirebaseAppCheckToken>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAppCheckToken obj;
+        obj.token = gm::wire::codec::readValue<std::string>(_buf);
+        obj.expire_time_millis = gm::wire::codec::readValue<double>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseAuthProviderUserInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAuthProviderUserInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.uid);
+        gm::wire::codec::writeValue(_buf, obj.email);
+        gm::wire::codec::writeValue(_buf, obj.display_name);
+        gm::wire::codec::writeValue(_buf, obj.photo_url);
+        gm::wire::codec::writeValue(_buf, obj.provider_id);
+        gm::wire::codec::writeValue(_buf, obj.phone_number);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAuthProviderUserInfo readValue<gm_structs::FirebaseAuthProviderUserInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAuthProviderUserInfo obj;
+        obj.uid = gm::wire::codec::readValue<std::string>(_buf);
+        obj.email = gm::wire::codec::readValue<std::string>(_buf);
+        obj.display_name = gm::wire::codec::readValue<std::string>(_buf);
+        obj.photo_url = gm::wire::codec::readValue<std::string>(_buf);
+        obj.provider_id = gm::wire::codec::readValue<std::string>(_buf);
+        obj.phone_number = gm::wire::codec::readValue<std::string>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseAuthAdditionalUserInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAuthAdditionalUserInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.provider_id);
+        gm::wire::codec::writeValue(_buf, obj.user_name);
+        gm::wire::codec::writeValue(_buf, obj.profile);
+        gm::wire::codec::writeValue(_buf, obj.updated_credential);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAuthAdditionalUserInfo readValue<gm_structs::FirebaseAuthAdditionalUserInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAuthAdditionalUserInfo obj;
+        obj.provider_id = gm::wire::codec::readValue<std::string>(_buf);
+        obj.user_name = gm::wire::codec::readValue<std::string>(_buf);
+        obj.profile = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        obj.updated_credential = gm::wire::codec::readOptional<std::uint64_t>(_buf);
+        return obj;
+    }
+
     template<>
     inline void writeValue<gm_structs::FirebaseAuthUserInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAuthUserInfo& obj)
     {
@@ -401,6 +633,112 @@ namespace gm::wire::codec
     }
 
     template<>
+    inline void writeValue<gm_structs::FirestoreTimestamp>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreTimestamp& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.seconds);
+        gm::wire::codec::writeValue(_buf, obj.nanoseconds);
+    }
+
+    template<>
+    inline gm_structs::FirestoreTimestamp readValue<gm_structs::FirestoreTimestamp>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreTimestamp obj;
+        obj.seconds = gm::wire::codec::readValue<double>(_buf);
+        obj.nanoseconds = gm::wire::codec::readValue<double>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreGeoPoint>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreGeoPoint& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.latitude);
+        gm::wire::codec::writeValue(_buf, obj.longitude);
+    }
+
+    template<>
+    inline gm_structs::FirestoreGeoPoint readValue<gm_structs::FirestoreGeoPoint>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreGeoPoint obj;
+        obj.latitude = gm::wire::codec::readValue<double>(_buf);
+        obj.longitude = gm::wire::codec::readValue<double>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreDocumentChange>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreDocumentChange& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.type);
+        gm::wire::codec::writeValue(_buf, obj.document);
+        gm::wire::codec::writeValue(_buf, obj.old_index);
+        gm::wire::codec::writeValue(_buf, obj.new_index);
+    }
+
+    template<>
+    inline gm_structs::FirestoreDocumentChange readValue<gm_structs::FirestoreDocumentChange>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreDocumentChange obj;
+        obj.type = gm::wire::codec::readValue<gm_enums::FirestoreDocumentChangeType>(_buf);
+        obj.document = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.old_index = gm::wire::codec::readValue<double>(_buf);
+        obj.new_index = gm::wire::codec::readValue<double>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreFieldLookup>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreFieldLookup& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.exists);
+        gm::wire::codec::writeValue(_buf, obj.value);
+    }
+
+    template<>
+    inline gm_structs::FirestoreFieldLookup readValue<gm_structs::FirestoreFieldLookup>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreFieldLookup obj;
+        obj.exists = gm::wire::codec::readValue<bool>(_buf);
+        obj.value = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreFieldPathValue>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreFieldPathValue& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.field_path);
+        gm::wire::codec::writeValue(_buf, obj.value);
+    }
+
+    template<>
+    inline gm_structs::FirestoreFieldPathValue readValue<gm_structs::FirestoreFieldPathValue>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreFieldPathValue obj;
+        obj.field_path = gm::wire::codec::readValue<double>(_buf);
+        obj.value = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirestoreLoadBundleTaskProgress>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreLoadBundleTaskProgress& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.documents_loaded);
+        gm::wire::codec::writeValue(_buf, obj.total_documents);
+        gm::wire::codec::writeValue(_buf, obj.bytes_loaded);
+        gm::wire::codec::writeValue(_buf, obj.total_bytes);
+        gm::wire::codec::writeValue(_buf, obj.state);
+    }
+
+    template<>
+    inline gm_structs::FirestoreLoadBundleTaskProgress readValue<gm_structs::FirestoreLoadBundleTaskProgress>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirestoreLoadBundleTaskProgress obj;
+        obj.documents_loaded = gm::wire::codec::readValue<double>(_buf);
+        obj.total_documents = gm::wire::codec::readValue<double>(_buf);
+        obj.bytes_loaded = gm::wire::codec::readValue<double>(_buf);
+        obj.total_bytes = gm::wire::codec::readValue<double>(_buf);
+        obj.state = gm::wire::codec::readValue<gm_enums::FirestoreLoadBundleTaskState>(_buf);
+        return obj;
+    }
+
+    template<>
     inline void writeValue<gm_structs::FirestoreDocumentSnapshotInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreDocumentSnapshotInfo& obj)
     {
         gm::wire::codec::writeValue(_buf, obj.exists);
@@ -462,50 +800,305 @@ namespace gm::wire::codec
         return obj;
     }
 
+    template<>
+    inline void writeValue<gm_structs::FirebaseRemoteConfigBooleanInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigBooleanInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.value);
+        gm::wire::codec::writeValue(_buf, obj.source);
+        gm::wire::codec::writeValue(_buf, obj.conversion_successful);
+    }
+
+    template<>
+    inline gm_structs::FirebaseRemoteConfigBooleanInfo readValue<gm_structs::FirebaseRemoteConfigBooleanInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseRemoteConfigBooleanInfo obj;
+        obj.value = gm::wire::codec::readValue<bool>(_buf);
+        obj.source = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigValueSource>(_buf);
+        obj.conversion_successful = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseRemoteConfigLongInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigLongInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.value);
+        gm::wire::codec::writeValue(_buf, obj.source);
+        gm::wire::codec::writeValue(_buf, obj.conversion_successful);
+    }
+
+    template<>
+    inline gm_structs::FirebaseRemoteConfigLongInfo readValue<gm_structs::FirebaseRemoteConfigLongInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseRemoteConfigLongInfo obj;
+        obj.value = gm::wire::codec::readValue<double>(_buf);
+        obj.source = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigValueSource>(_buf);
+        obj.conversion_successful = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseRemoteConfigDoubleInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigDoubleInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.value);
+        gm::wire::codec::writeValue(_buf, obj.source);
+        gm::wire::codec::writeValue(_buf, obj.conversion_successful);
+    }
+
+    template<>
+    inline gm_structs::FirebaseRemoteConfigDoubleInfo readValue<gm_structs::FirebaseRemoteConfigDoubleInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseRemoteConfigDoubleInfo obj;
+        obj.value = gm::wire::codec::readValue<double>(_buf);
+        obj.source = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigValueSource>(_buf);
+        obj.conversion_successful = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseRemoteConfigStringInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigStringInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.value);
+        gm::wire::codec::writeValue(_buf, obj.source);
+        gm::wire::codec::writeValue(_buf, obj.conversion_successful);
+    }
+
+    template<>
+    inline gm_structs::FirebaseRemoteConfigStringInfo readValue<gm_structs::FirebaseRemoteConfigStringInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseRemoteConfigStringInfo obj;
+        obj.value = gm::wire::codec::readValue<std::string>(_buf);
+        obj.source = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigValueSource>(_buf);
+        obj.conversion_successful = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseRemoteConfigDataInfo>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseRemoteConfigDataInfo& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.bytes_copied);
+        gm::wire::codec::writeValue(_buf, obj.size);
+        gm::wire::codec::writeValue(_buf, obj.source);
+        gm::wire::codec::writeValue(_buf, obj.conversion_successful);
+    }
+
+    template<>
+    inline gm_structs::FirebaseRemoteConfigDataInfo readValue<gm_structs::FirebaseRemoteConfigDataInfo>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseRemoteConfigDataInfo obj;
+        obj.bytes_copied = gm::wire::codec::readValue<double>(_buf);
+        obj.size = gm::wire::codec::readValue<double>(_buf);
+        obj.source = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigValueSource>(_buf);
+        obj.conversion_successful = gm::wire::codec::readValue<bool>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseAppOptions>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAppOptions& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.app_id);
+        gm::wire::codec::writeValue(_buf, obj.api_key);
+        gm::wire::codec::writeValue(_buf, obj.messaging_sender_id);
+        gm::wire::codec::writeValue(_buf, obj.database_url);
+        gm::wire::codec::writeValue(_buf, obj.ga_tracking_id);
+        gm::wire::codec::writeValue(_buf, obj.storage_bucket);
+        gm::wire::codec::writeValue(_buf, obj.project_id);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAppOptions readValue<gm_structs::FirebaseAppOptions>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAppOptions obj;
+        obj.app_id = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.api_key = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.messaging_sender_id = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.database_url = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.ga_tracking_id = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.storage_bucket = gm::wire::codec::readOptional<std::string>(_buf);
+        obj.project_id = gm::wire::codec::readOptional<std::string>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseAuthResult>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAuthResult& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.user);
+        gm::wire::codec::writeValue(_buf, obj.credential);
+        gm::wire::codec::writeValue(_buf, obj.additional_user_info);
+    }
+
+    template<>
+    inline gm_structs::FirebaseAuthResult readValue<gm_structs::FirebaseAuthResult>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseAuthResult obj;
+        obj.user = gm::wire::codec::readOptional<std::uint64_t>(_buf);
+        obj.credential = gm::wire::codec::readOptional<std::uint64_t>(_buf);
+        obj.additional_user_info = gm::wire::codec::readValue<gm_structs::FirebaseAuthAdditionalUserInfo>(_buf);
+        return obj;
+    }
+
 }
 
 namespace gm::wire::details
 {
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseAuthUserInfo>
+    struct gm_struct_traits<gm_structs::FirebaseAnalyticsParameter>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 0;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDatabaseReferenceInfo>
+    struct gm_struct_traits<gm_structs::FirebaseAppCheckToken>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 1;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
+    struct gm_struct_traits<gm_structs::FirebaseAuthProviderUserInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 2;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirestoreDocumentSnapshotInfo>
+    struct gm_struct_traits<gm_structs::FirebaseAuthAdditionalUserInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 3;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirestoreQuerySnapshotInfo>
+    struct gm_struct_traits<gm_structs::FirebaseAuthUserInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 4;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    struct gm_struct_traits<gm_structs::FirebaseDatabaseReferenceInfo>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 5;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseDataSnapshotInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 6;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreTimestamp>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 7;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreGeoPoint>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 8;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreDocumentChange>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 9;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreFieldLookup>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 10;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreFieldPathValue>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 11;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreLoadBundleTaskProgress>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 12;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreDocumentSnapshotInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 13;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirestoreQuerySnapshotInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 14;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 15;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigBooleanInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 16;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigLongInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 17;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigDoubleInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 18;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigStringInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 19;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseRemoteConfigDataInfo>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 20;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseAppOptions>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 21;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseAuthResult>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 22;
     };
 
 }
@@ -522,8 +1115,8 @@ void firebase_analytics_set_consent(double ad_storage, double analytics_storage,
 void firebase_analytics_log_event(std::string_view name);
 void firebase_analytics_log_event_string(std::string_view name, std::string_view parameter_name, std::string_view parameter_value);
 void firebase_analytics_log_event_number(std::string_view name, std::string_view parameter_name, double parameter_value);
-void firebase_analytics_log_event_params(std::string_view name, const gm::wire::GMValue& params);
-void firebase_analytics_set_default_event_parameters(const gm::wire::GMValue& params);
+void firebase_analytics_log_event_params(std::string_view name, const std::vector<gm_structs::FirebaseAnalyticsParameter>& params);
+void firebase_analytics_set_default_event_parameters(const std::vector<gm_structs::FirebaseAnalyticsParameter>& params);
 gm_enums::FirebaseError firebase_analytics_log_apple_transaction(std::string_view transaction_id, const std::optional<gm::wire::GMFunction>& callback);
 void firebase_analytics_set_user_property(std::string_view name, std::string_view value);
 void firebase_analytics_set_user_id(std::string_view user_id);
@@ -681,7 +1274,7 @@ std::uint64_t firebase_database_snapshot_child(std::uint64_t ref, std::string_vi
 double firebase_database_snapshot_has_child(std::uint64_t ref, std::string_view path);
 double firebase_database_snapshot_has_children(std::uint64_t ref);
 double firebase_database_snapshot_children_count(std::uint64_t ref);
-gm::wire::DataStream firebase_database_snapshot_get_children(std::uint64_t ref);
+std::vector<std::uint64_t> firebase_database_snapshot_get_children(std::uint64_t ref);
 std::string firebase_database_snapshot_key(std::uint64_t ref);
 std::uint64_t firebase_database_snapshot_get_reference(std::uint64_t ref);
 gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(std::uint64_t snapshot);
@@ -724,7 +1317,7 @@ std::uint64_t firebase_firestore_document_ref_collection(std::uint64_t ref, std:
 gm_enums::FirebaseError firebase_firestore_document_ref_get(std::uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_set(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_set_merge(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_firestore_document_ref_set_merge_fields(std::uint64_t ref, const gm::wire::GMValue& data, const gm::wire::GMValue& fields, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_firestore_document_ref_set_merge_fields(std::uint64_t ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_update(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_delete(std::uint64_t ref, const std::optional<gm::wire::GMFunction>& callback);
 std::uint64_t firebase_firestore_document_ref_add_snapshot_listener(std::uint64_t ref, bool include_metadata_changes, const std::optional<gm::wire::GMFunction>& callback);
@@ -757,7 +1350,7 @@ bool firebase_firestore_query_is_valid(std::uint64_t ref);
 void firebase_firestore_query_release(std::uint64_t ref);
 double firebase_firestore_write_batch_set(std::uint64_t batch_ref, std::uint64_t document_ref, const gm::wire::GMValue& data);
 double firebase_firestore_write_batch_set_merge(std::uint64_t batch_ref, std::uint64_t document_ref, const gm::wire::GMValue& data);
-double firebase_firestore_write_batch_set_merge_fields(std::uint64_t batch_ref, std::uint64_t document_ref, const gm::wire::GMValue& data, const gm::wire::GMValue& fields);
+double firebase_firestore_write_batch_set_merge_fields(std::uint64_t batch_ref, std::uint64_t document_ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields);
 double firebase_firestore_write_batch_update(std::uint64_t batch_ref, std::uint64_t document_ref, const gm::wire::GMValue& data);
 double firebase_firestore_write_batch_delete(std::uint64_t batch_ref, std::uint64_t document_ref);
 gm_enums::FirebaseError firebase_firestore_write_batch_commit(std::uint64_t batch_ref, const std::optional<gm::wire::GMFunction>& callback);
@@ -777,12 +1370,12 @@ double firebase_firestore_field_value_blob(std::string_view data);
 double firebase_firestore_field_value_null();
 void firebase_firestore_field_value_release(std::uint64_t ref);
 gm_structs::FirestoreDocumentSnapshotInfo firebase_firestore_document_snapshot_get_info(std::uint64_t ref);
-gm::wire::DataStream firebase_firestore_document_snapshot_get(std::uint64_t ref, std::string_view field, double server_timestamp_behavior);
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(std::uint64_t ref, std::string_view field, double server_timestamp_behavior);
 gm::wire::DataStream firebase_firestore_document_snapshot_get_data(std::uint64_t ref, double server_timestamp_behavior);
 void firebase_firestore_document_snapshot_release(std::uint64_t ref);
 gm_structs::FirestoreQuerySnapshotInfo firebase_firestore_query_snapshot_get_info(std::uint64_t ref);
-gm::wire::DataStream firebase_firestore_query_snapshot_documents(std::uint64_t ref);
-gm::wire::DataStream firebase_firestore_query_snapshot_document_changes(std::uint64_t ref, bool include_metadata_changes);
+std::vector<std::uint64_t> firebase_firestore_query_snapshot_documents(std::uint64_t ref);
+std::vector<gm_structs::FirestoreDocumentChange> firebase_firestore_query_snapshot_document_changes(std::uint64_t ref, bool include_metadata_changes);
 void firebase_firestore_query_snapshot_release(std::uint64_t ref);
 void firebase_firestore_listener_registration_remove(std::uint64_t ref);
 std::uint64_t firebase_storage_get_instance();
@@ -943,7 +1536,7 @@ double firebase_ump_get_consent_form_status(std::uint64_t consent_ref);
 double firebase_ump_get_privacy_options_requirement_status(std::uint64_t consent_ref);
 double firebase_ump_can_request_ads(std::uint64_t consent_ref);
 void firebase_ump_reset(std::uint64_t consent_ref);
-gm_enums::FirebaseError firebase_ump_request_consent_info_update(std::uint64_t consent_ref, double debug_geography, double tag_for_under_age_of_consent, const gm::wire::GMValue& debug_device_ids, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_ump_request_consent_info_update(std::uint64_t consent_ref, double debug_geography, double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_load_consent_form(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_show_consent_form(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_load_and_show_consent_form_if_required(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
@@ -951,8 +1544,8 @@ gm_enums::FirebaseError firebase_ump_show_privacy_options_form(std::uint64_t con
 void firebase_analytics_notify_app_lifecycle_change(double state);
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(gm::wire::GMBuffer hashed_email);
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(gm::wire::GMBuffer hashed_phone);
-std::uint64_t firebase_auth_federated_oauth_provider_create(std::string_view provider_id, const gm::wire::GMValue& scopes, const gm::wire::GMValue& custom_parameters);
-void firebase_auth_federated_oauth_provider_set_data(std::uint64_t provider, std::string_view provider_id, const gm::wire::GMValue& scopes, const gm::wire::GMValue& custom_parameters);
+std::uint64_t firebase_auth_federated_oauth_provider_create(std::string_view provider_id, const std::vector<std::string_view>& scopes, const gm::wire::GMValue& custom_parameters);
+void firebase_auth_federated_oauth_provider_set_data(std::uint64_t provider, std::string_view provider_id, const std::vector<std::string_view>& scopes, const gm::wire::GMValue& custom_parameters);
 void firebase_auth_federated_oauth_provider_release(std::uint64_t provider);
 gm_enums::FirebaseError firebase_auth_sign_in_with_provider(std::uint64_t provider, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_auth_sign_in_with_custom_token_result(std::string_view custom_token, const std::optional<gm::wire::GMFunction>& callback);
@@ -961,7 +1554,7 @@ gm_enums::FirebaseError firebase_auth_sign_in_anonymously_result(const std::opti
 gm_enums::FirebaseError firebase_auth_sign_in_with_email_and_password_result(std::string_view email, std::string_view password, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_auth_create_user_with_email_and_password_result(std::string_view email, std::string_view password, const std::optional<gm::wire::GMFunction>& callback);
 double firebase_auth_user_provider_data_count(std::uint64_t user);
-gm::wire::DataStream firebase_auth_user_provider_data_at(std::uint64_t user, double index);
+std::optional<gm_structs::FirebaseAuthProviderUserInfo> firebase_auth_user_provider_data_at(std::uint64_t user, double index);
 gm_enums::FirebaseError firebase_auth_user_reauthenticate_with_provider(std::uint64_t user, std::uint64_t provider, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_auth_user_link_with_provider(std::uint64_t user, std::uint64_t provider, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_auth_user_reauthenticate_and_retrieve_data_result(std::uint64_t user, std::uint64_t credential, const std::optional<gm::wire::GMFunction>& callback);
@@ -982,7 +1575,7 @@ gm_enums::FirebaseError firebase_database_on_disconnect_set_value(std::uint64_t 
 gm_enums::FirebaseError firebase_database_on_disconnect_set_value_and_priority(std::uint64_t handler, const gm::wire::GMValue& value, const gm::wire::GMValue& priority, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_database_on_disconnect_update_children(std::uint64_t handler, const gm::wire::GMValue& values, const std::optional<gm::wire::GMFunction>& callback);
 void firebase_database_on_disconnect_release(std::uint64_t handler);
-double firebase_firestore_field_path_create(const gm::wire::GMValue& components);
+double firebase_firestore_field_path_create(const std::vector<std::string_view>& components);
 double firebase_firestore_field_path_document_id();
 bool firebase_firestore_field_path_is_valid(std::uint64_t field_path);
 std::string firebase_firestore_field_path_to_string(std::uint64_t field_path);
@@ -1007,8 +1600,8 @@ double firebase_firestore_filter_array_contains_field_path(std::uint64_t field_p
 double firebase_firestore_filter_array_contains_any_field_path(std::uint64_t field_path, const gm::wire::GMValue& values);
 double firebase_firestore_filter_in_field_path(std::uint64_t field_path, const gm::wire::GMValue& values);
 double firebase_firestore_filter_not_in_field_path(std::uint64_t field_path, const gm::wire::GMValue& values);
-double firebase_firestore_filter_and(const gm::wire::GMValue& filters);
-double firebase_firestore_filter_or(const gm::wire::GMValue& filters);
+double firebase_firestore_filter_and(const std::vector<double>& filters);
+double firebase_firestore_filter_or(const std::vector<double>& filters);
 void firebase_firestore_filter_release(std::uint64_t filter);
 std::uint64_t firebase_firestore_query_where_filter(std::uint64_t query, std::uint64_t filter);
 std::uint64_t firebase_firestore_query_where_equal_to_field_path(std::uint64_t query, std::uint64_t field_path, const gm::wire::GMValue& value);
@@ -1034,15 +1627,15 @@ void firebase_firestore_aggregate_snapshot_release(std::uint64_t snapshot);
 std::uint64_t firebase_firestore_add_snapshots_in_sync_listener(std::uint64_t firestore, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_load_bundle(std::uint64_t firestore, gm::wire::GMBuffer bundle, const std::optional<gm::wire::GMFunction>& progress_callback, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_named_query(std::uint64_t firestore, std::string_view name, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_firestore_document_ref_set_merge_field_paths(std::uint64_t document, const gm::wire::GMValue& data, const gm::wire::GMValue& field_paths, const std::optional<gm::wire::GMFunction>& callback);
-void firebase_firestore_write_batch_set_merge_field_paths(std::uint64_t batch, std::uint64_t document, const gm::wire::GMValue& data, const gm::wire::GMValue& field_paths);
+gm_enums::FirebaseError firebase_firestore_document_ref_set_merge_field_paths(std::uint64_t document, const gm::wire::GMValue& data, const std::vector<double>& field_paths, const std::optional<gm::wire::GMFunction>& callback);
+void firebase_firestore_write_batch_set_merge_field_paths(std::uint64_t batch, std::uint64_t document, const gm::wire::GMValue& data, const std::vector<double>& field_paths);
 std::string firebase_storage_metadata_md5_hash(std::uint64_t metadata);
 gm_enums::FirebaseError firebase_remote_config_ensure_initialized_info(std::uint64_t rc_ref, const std::optional<gm::wire::GMFunction>& callback);
-gm::wire::DataStream firebase_remote_config_get_boolean_with_info(std::uint64_t rc_ref, std::string_view key);
-gm::wire::DataStream firebase_remote_config_get_long_with_info(std::uint64_t rc_ref, std::string_view key);
-gm::wire::DataStream firebase_remote_config_get_double_with_info(std::uint64_t rc_ref, std::string_view key);
-gm::wire::DataStream firebase_remote_config_get_string_with_info(std::uint64_t rc_ref, std::string_view key);
-gm::wire::DataStream firebase_remote_config_get_data_with_info(std::uint64_t rc_ref, std::string_view key, gm::wire::GMBuffer out_buffer);
+std::optional<gm_structs::FirebaseRemoteConfigBooleanInfo> firebase_remote_config_get_boolean_with_info(std::uint64_t rc_ref, std::string_view key);
+std::optional<gm_structs::FirebaseRemoteConfigLongInfo> firebase_remote_config_get_long_with_info(std::uint64_t rc_ref, std::string_view key);
+std::optional<gm_structs::FirebaseRemoteConfigDoubleInfo> firebase_remote_config_get_double_with_info(std::uint64_t rc_ref, std::string_view key);
+std::optional<gm_structs::FirebaseRemoteConfigStringInfo> firebase_remote_config_get_string_with_info(std::uint64_t rc_ref, std::string_view key);
+std::optional<gm_structs::FirebaseRemoteConfigDataInfo> firebase_remote_config_get_data_with_info(std::uint64_t rc_ref, std::string_view key, gm::wire::GMBuffer out_buffer);
 double firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt);
 double firebase_firestore_field_value_type(std::uint64_t field_value);
 bool firebase_firestore_field_value_is_valid(std::uint64_t field_value);
@@ -1064,32 +1657,32 @@ std::string firebase_firestore_field_value_string_value(std::uint64_t field_valu
 double firebase_firestore_field_value_blob_size(std::uint64_t field_value);
 double firebase_firestore_field_value_blob_copy(std::uint64_t field_value, gm::wire::GMBuffer out_buffer);
 std::uint64_t firebase_firestore_field_value_reference_value(std::uint64_t field_value);
-gm::wire::DataStream firebase_firestore_field_value_timestamp_value(std::uint64_t field_value);
-gm::wire::DataStream firebase_firestore_field_value_geo_point_value(std::uint64_t field_value);
+std::optional<gm_structs::FirestoreTimestamp> firebase_firestore_field_value_timestamp_value(std::uint64_t field_value);
+std::optional<gm_structs::FirestoreGeoPoint> firebase_firestore_field_value_geo_point_value(std::uint64_t field_value);
 gm::wire::DataStream firebase_firestore_field_value_array_value(std::uint64_t field_value);
 gm::wire::DataStream firebase_firestore_field_value_map_value(std::uint64_t field_value);
 std::string firebase_firestore_field_value_to_string(std::uint64_t field_value);
 std::uint64_t firebase_firestore_query_get_firestore(std::uint64_t query);
 std::uint64_t firebase_firestore_document_ref_get_firestore(std::uint64_t document);
 std::string firebase_firestore_document_ref_to_string(std::uint64_t document);
-gm_enums::FirebaseError firebase_firestore_document_ref_update_field_paths(std::uint64_t document, const gm::wire::GMValue& entries, const std::optional<gm::wire::GMFunction>& callback);
-double firebase_firestore_write_batch_update_field_paths(std::uint64_t batch, std::uint64_t document, const gm::wire::GMValue& entries);
+gm_enums::FirebaseError firebase_firestore_document_ref_update_field_paths(std::uint64_t document, const std::vector<gm_structs::FirestoreFieldPathValue>& entries, const std::optional<gm::wire::GMFunction>& callback);
+double firebase_firestore_write_batch_update_field_paths(std::uint64_t batch, std::uint64_t document, const std::vector<gm_structs::FirestoreFieldPathValue>& entries);
 bool firebase_firestore_write_batch_is_valid(std::uint64_t batch);
 std::string firebase_firestore_settings_to_string(std::uint64_t firestore);
 bool firebase_firestore_document_snapshot_is_valid(std::uint64_t snapshot);
 std::string firebase_firestore_document_snapshot_to_string(std::uint64_t snapshot);
-gm::wire::DataStream firebase_firestore_document_snapshot_get_field_path(std::uint64_t snapshot, std::uint64_t field_path, double server_timestamp_behavior);
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(std::uint64_t snapshot, std::uint64_t field_path, double server_timestamp_behavior);
 bool firebase_firestore_query_snapshot_is_valid(std::uint64_t snapshot);
 std::uint64_t firebase_firestore_query_snapshot_get_query(std::uint64_t snapshot);
 bool firebase_firestore_listener_registration_is_valid(std::uint64_t listener);
 std::uint64_t firebase_app_get_default_handle();
 std::uint64_t firebase_app_get_instance(std::string_view name);
-gm::wire::DataStream firebase_app_get_apps();
-std::uint64_t firebase_app_initialize_with_options(const gm::wire::GMValue& options, std::string_view name);
+std::vector<std::uint64_t> firebase_app_get_apps();
+std::uint64_t firebase_app_initialize_with_options(const gm_structs::FirebaseAppOptions& options, std::string_view name);
 std::uint64_t firebase_app_initialize_from_json(std::string_view json_config, std::string_view name);
 std::string firebase_app_handle_get_name(std::uint64_t app);
-gm::wire::DataStream firebase_app_handle_get_options(std::uint64_t app);
-gm::wire::DataStream firebase_app_get_default_options();
+std::optional<gm_structs::FirebaseAppOptions> firebase_app_handle_get_options(std::uint64_t app);
+std::optional<gm_structs::FirebaseAppOptions> firebase_app_get_default_options();
 void firebase_app_release_handle(std::uint64_t app);
 void firebase_set_log_level(double level);
 double firebase_get_log_level();

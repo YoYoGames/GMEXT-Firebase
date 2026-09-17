@@ -27,10 +27,31 @@ namespace
 		return app_check;
 	}
 
-	void pushTokenStruct(const firebase::app_check::AppCheckToken& token, gm::wire::StructStream& out)
+	gm_structs::FirebaseAppCheckToken makeAppCheckToken(const firebase::app_check::AppCheckToken& token)
 	{
-		out.add("token", std::string_view{ token.token });
-		out.add("expire_time_millis", static_cast<double>(token.expire_time_millis));
+		gm_structs::FirebaseAppCheckToken out;
+		out.token = token.token;
+		out.expire_time_millis = static_cast<double>(token.expire_time_millis);
+		return out;
+	}
+
+	// Shared tail of every token Future: the token on success, undefined on
+	// failure - never an empty struct.
+	void completeTokenFuture(const std::optional<gm::wire::GMFunction>& callback,
+		const firebase::Future<firebase::app_check::AppCheckToken>& f)
+	{
+		if (f.error() != 0)
+			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
+
+		if (!callback.has_value())
+			return;
+
+		const double code = static_cast<double>(f.error());
+		const std::string_view message{ f.error_message() ? f.error_message() : "" };
+		if (f.error() == 0 && f.result() != nullptr)
+			callback->call(code, message, makeAppCheckToken(*f.result()));
+		else
+			callback->call(code, message, std::optional<gm_structs::FirebaseAppCheckToken>{});
 	}
 
 	// Heap-allocated so its address can double as the GM_FB_TYPE_APPCHECK_LISTENER
@@ -45,9 +66,7 @@ namespace
 
 		void OnAppCheckTokenChanged(const firebase::app_check::AppCheckToken& token) override
 		{
-			gm::wire::StructStream token_struct;
-			pushTokenStruct(token, token_struct);
-			callback.call(token_struct);
+			callback.call(makeAppCheckToken(token));
 		}
 
 	private:
@@ -138,17 +157,7 @@ FirebaseError firebase_app_check_get_token(double force_refresh, const std::opti
 	firebase::Future<firebase::app_check::AppCheckToken> future = app_check->GetAppCheckToken(force_refresh >= 0.5);
 	future.OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
-		if (!callback.has_value())
-			return;
-
-		gm::wire::StructStream token_struct;
-		if (f.error() == 0 && f.result() != nullptr)
-			pushTokenStruct(*f.result(), token_struct);
-
-		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, token_struct);
+		completeTokenFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -161,17 +170,7 @@ FirebaseError firebase_app_check_get_limited_use_token(const std::optional<gm::w
 	firebase::Future<firebase::app_check::AppCheckToken> future = app_check->GetLimitedUseAppCheckToken();
 	future.OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
-		if (!callback.has_value())
-			return;
-
-		gm::wire::StructStream token_struct;
-		if (f.error() == 0 && f.result() != nullptr)
-			pushTokenStruct(*f.result(), token_struct);
-
-		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, token_struct);
+		completeTokenFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -249,10 +248,7 @@ FirebaseError firebase_app_check_instance_get_token(uint64_t instance_ref, bool 
 {
     auto* instance = resolveAppCheck(instance_ref); if (!instance) return FirebaseError::InvalidHandle;
     instance->GetAppCheckToken(force_refresh).OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f){
-        if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
-        if (!callback) return; gm::wire::StructStream token;
-        if (f.error()==0 && f.result()) pushTokenStruct(*f.result(), token);
-        callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""}, token);
+        completeTokenFuture(callback, f);
     }); return FirebaseError::Ok;
 }
 
@@ -260,10 +256,7 @@ FirebaseError firebase_app_check_instance_get_limited_use_token(uint64_t instanc
 {
     auto* instance = resolveAppCheck(instance_ref); if (!instance) return FirebaseError::InvalidHandle;
     instance->GetLimitedUseAppCheckToken().OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f){
-        if (f.error()!=0) setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
-        if (!callback) return; gm::wire::StructStream token;
-        if (f.error()==0 && f.result()) pushTokenStruct(*f.result(), token);
-        callback->call((double)f.error(), std::string_view{f.error_message()?f.error_message():""}, token);
+        completeTokenFuture(callback, f);
     }); return FirebaseError::Ok;
 }
 

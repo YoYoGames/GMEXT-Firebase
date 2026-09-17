@@ -138,7 +138,7 @@ void firebase_ump_reset(uint64_t consent_ref)
 // makes debug_geography silently not apply on a real device.
 // callback(error_code: real, error_message: string)
 FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, double debug_geography,
-	double tag_for_under_age_of_consent, const GMValue& debug_device_ids,
+	double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids,
 	const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
@@ -161,23 +161,12 @@ FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, dou
 		return FirebaseError::InvalidArgument;
 	}
 
-	if (debug_device_ids.is<GMArrayView>())
+	// string[]? - the generated wrapper has already rejected anything that is
+	// not an array of strings or undefined.
+	if (debug_device_ids)
 	{
-		GMArrayView view = debug_device_ids.as<GMArrayView>();
-		for (const auto& element : view)
-		{
-			if (!element.is<std::string_view>())
-			{
-				setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_ump_request_consent_info_update: debug_device_ids must be an array of strings");
-				return FirebaseError::InvalidArgument;
-			}
-			params.debug_settings.debug_device_ids.push_back(std::string(element.as<std::string_view>()));
-		}
-	}
-	else if (debug_device_ids.kind() != GMKind::Undefined)
-	{
-		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_ump_request_consent_info_update: debug_device_ids must be an array of strings or undefined");
-		return FirebaseError::InvalidArgument;
+		for (std::string_view id : *debug_device_ids)
+			params.debug_settings.debug_device_ids.emplace_back(id);
 	}
 
 	consent_info->RequestConsentInfoUpdate(params).OnCompletion([callback](const firebase::Future<void>& f)

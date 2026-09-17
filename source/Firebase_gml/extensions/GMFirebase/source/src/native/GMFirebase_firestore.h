@@ -107,12 +107,15 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out);
 // a struct-typed value (DocumentSnapshot::Get/GetData return a StructStream
 // directly as their C++ return type; see GMFirebase_firestore_snapshot.cpp).
 // Composite value kinds that have no single GML primitive
-// (Timestamp/GeoPoint) are encoded as a small tagged struct
-// { type: "timestamp"|"geopoint", ... fields }; kReference is encoded as a
-// plain GM_FB_TYPE_FIRESTORE_DOC_REF ref (a real number), consistent with
-// every other reference-typed value in this extension.
+// (Timestamp/GeoPoint) travel as the generated FirestoreTimestamp /
+// FirestoreGeoPoint structs, which decode to real GML instances even when
+// nested inside a dynamic document; kReference is encoded as a plain
+// GM_FB_TYPE_FIRESTORE_DOC_REF ref (a real number), consistent with every
+// other reference-typed value in this extension.
 void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out);
 void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out);
+gm_structs::FirestoreTimestamp makeFirestoreTimestamp(const firebase::Timestamp& ts);
+gm_structs::FirestoreGeoPoint makeFirestoreGeoPoint(const firebase::firestore::GeoPoint& gp);
 
 // Inbound (GML -> C++): reconstructs a FieldValue from a decoded incoming
 // GMValue. Plain reals become FieldValue::Double() (GML has no separate
@@ -139,5 +142,7 @@ std::vector<firebase::firestore::FieldValue> gmValueToFieldValueVector(const gm:
 
 // Decodes an inbound gmval array of strings, for
 // firestore_document_ref_set_merge_fields/firestore_write_batch_set_merge_fields.
-std::vector<std::string> gmValueToStringVector(const gm::wire::GMValue& value);
-firebase::firestore::MapFieldPathValue gmValueToMapFieldPathValue(const gm::wire::GMValue& value);
+// The SDK's FieldPath and SetOptions::MergeFields take owning strings; the
+// generated string[] parameter is a vector of views into the call buffer.
+std::vector<std::string> toStringVector(const std::vector<std::string_view>& views);
+firebase::firestore::MapFieldPathValue gmToMapFieldPathValue(const std::vector<gm_structs::FirestoreFieldPathValue>& entries);

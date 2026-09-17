@@ -29,57 +29,28 @@ namespace
 		return false;
 	}
 
-	// Decodes a params: gmval argument shaped as an array of
-	// {name: string, value: <real|string|bool|array|struct>} entries into a
-	// firebase::analytics::Parameter vector, for the LogEvent/
-	// SetDefaultEventParameters overloads that take an arbitrary parameter
-	// list. `name_storage` must outlive `out` - Parameter's (const char*,
+	// Converts the FirebaseAnalyticsParameter[] argument (name plus a dynamic
+	// value, mirroring firebase::analytics::Parameter) into a Parameter vector
+	// for the LogEvent/SetDefaultEventParameters overloads that take an
+	// arbitrary parameter list. `name_storage` must outlive `out` - Parameter's (const char*,
 	// Variant) constructor stores the name pointer verbatim rather than
 	// copying it, so the owning strings are kept alive in a sibling vector
 	// reserved up-front to its final size so no reallocation ever invalidates
 	// a pointer already handed to `out`.
-	void gmValueToAnalyticsParameters(const gm::wire::GMValue& value,
+	void gmToAnalyticsParameters(const std::vector<gm_structs::FirebaseAnalyticsParameter>& params,
 		std::vector<std::string>& name_storage,
 		std::vector<firebase::analytics::Parameter>& out)
 	{
-		using gm::wire::GMArrayView;
-		using gm::wire::GMObjectView;
+		name_storage.reserve(name_storage.size() + params.size());
+		out.reserve(out.size() + params.size());
 
-		if (!value.is<GMArrayView>())
-			return;
-
-		auto view = value.as<GMArrayView>();
-		name_storage.reserve(name_storage.size() + view.size());
-		out.reserve(out.size() + view.size());
-
-		for (const auto& element : view)
+		for (const gm_structs::FirebaseAnalyticsParameter& p : params)
 		{
-			if (!element.is<GMObjectView>())
+			if (p.name.empty())
 				continue;
 
-			auto obj = element.as<GMObjectView>();
-			std::string_view name_view;
-			bool has_name = false;
-			firebase::Variant variant_value = firebase::Variant::Null();
-
-			for (const auto& pair : obj)
-			{
-				if (pair.first == "name" && pair.second.is<std::string_view>())
-				{
-					name_view = pair.second.as<std::string_view>();
-					has_name = true;
-				}
-				else if (pair.first == "value")
-				{
-					variant_value = gmValueToVariant(pair.second);
-				}
-			}
-
-			if (!has_name || name_view.empty())
-				continue;
-
-			name_storage.emplace_back(name_view);
-			out.emplace_back(name_storage.back().c_str(), variant_value);
+			name_storage.push_back(p.name);
+			out.emplace_back(name_storage.back().c_str(), gmValueToVariant(gmValueView(p.value)));
 		}
 	}
 }
@@ -165,22 +136,21 @@ void firebase_analytics_log_event_number(std::string_view name, std::string_view
 	firebase::analytics::LogEvent(std::string(name).c_str(), std::string(parameter_name).c_str(), parameter_value);
 }
 
-// params: array of {name: string, value: gmval}, see gmValueToAnalyticsParameters().
-void firebase_analytics_log_event_params(std::string_view name, const gm::wire::GMValue& params)
+void firebase_analytics_log_event_params(std::string_view name, const std::vector<gm_structs::FirebaseAnalyticsParameter>& params)
 {
 	if (!analyticsReady("firebase_analytics_log_event_params")) return;
 	std::vector<std::string> name_storage;
 	std::vector<firebase::analytics::Parameter> parameters;
-	gmValueToAnalyticsParameters(params, name_storage, parameters);
+	gmToAnalyticsParameters(params, name_storage, parameters);
 	firebase::analytics::LogEvent(std::string(name).c_str(), parameters);
 }
 
-void firebase_analytics_set_default_event_parameters(const gm::wire::GMValue& params)
+void firebase_analytics_set_default_event_parameters(const std::vector<gm_structs::FirebaseAnalyticsParameter>& params)
 {
 	if (!analyticsReady("firebase_analytics_set_default_event_parameters")) return;
 	std::vector<std::string> name_storage;
 	std::vector<firebase::analytics::Parameter> parameters;
-	gmValueToAnalyticsParameters(params, name_storage, parameters);
+	gmToAnalyticsParameters(params, name_storage, parameters);
 	firebase::analytics::SetDefaultEventParameters(parameters);
 }
 

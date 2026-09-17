@@ -553,3 +553,12 @@ firebase::Variant gmValueToVariant(const gm::wire::GMValue& value)
 		return firebase::Variant::Null();
 	}
 }
+
+gm::wire::GMValue gmValueView(const gm::wire::DataStream& stream)
+{
+	const std::vector<std::byte>& bytes = stream.getBuffer();
+	if (bytes.empty())
+		return gm::wire::GMValue{};
+	gm::byteio::BufferReader reader(const_cast<std::byte*>(bytes.data()), bytes.size());
+	return gm::wire::codec::readValue(reader);
+}

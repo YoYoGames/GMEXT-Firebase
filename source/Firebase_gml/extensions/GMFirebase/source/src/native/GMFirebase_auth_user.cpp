@@ -523,29 +523,27 @@ double firebase_auth_user_provider_data_count(uint64_t user_ref)
     return user ? static_cast<double>(user->provider_data().size()) : 0.0;
 }
 
-gm::wire::DataStream firebase_auth_user_provider_data_at(uint64_t user_ref, double index)
+std::optional<gm_structs::FirebaseAuthProviderUserInfo> firebase_auth_user_provider_data_at(uint64_t user_ref, double index)
 {
-    gm::wire::StructStream info;
     firebase::auth::User* user = nullptr;
     validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
-    if (user != nullptr)
-    {
-        auto providers = user->provider_data();
-        size_t i = index < 0.0 ? providers.size() : static_cast<size_t>(index);
-        if (i < providers.size())
-        {
-            const auto& p = providers[i];
-            info.add("uid", std::string_view{ p.uid() });
-            info.add("email", std::string_view{ p.email() });
-            info.add("display_name", std::string_view{ p.display_name() });
-            info.add("photo_url", std::string_view{ p.photo_url() });
-            info.add("provider_id", std::string_view{ p.provider_id() });
-            info.add("phone_number", std::string_view{ p.phone_number() });
-        }
-    }
-    gm::wire::DataStream out;
-    out << info;
-    return out;
+    if (user == nullptr)
+        return std::nullopt;
+
+    auto providers = user->provider_data();
+    size_t i = index < 0.0 ? providers.size() : static_cast<size_t>(index);
+    if (i >= providers.size())
+        return std::nullopt;
+
+    const auto& p = providers[i];
+    gm_structs::FirebaseAuthProviderUserInfo info;
+    info.uid = p.uid();
+    info.email = p.email();
+    info.display_name = p.display_name();
+    info.photo_url = p.photo_url();
+    info.provider_id = p.provider_id();
+    info.phone_number = p.phone_number();
+    return info;
 }
 
 namespace
@@ -567,9 +565,9 @@ namespace
         setFirebaseLastError(code, message ? message : "");
         if (!callback) return;
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResultStruct(user_ref, *f.result()));
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResult(user_ref, *f.result()));
         else
-            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<std::uint8_t>{});
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<gm_structs::FirebaseAuthResult>{});
     }
 }
 

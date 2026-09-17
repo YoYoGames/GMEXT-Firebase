@@ -34,26 +34,22 @@ namespace
 			setFirebaseLastError(error, error_message ? error_message : "");
 	}
 
-	// Builds the callback's complete argument list as a single ArrayStream:
-	// leading (error_code, error_message) scalars followed by the call
-	// result's arbitrarily-shaped firebase::Variant data, appended as
-	// whatever top-level element shape it actually is (scalar/array/struct)
-	// via pushVariantToArray. GMFunction::call_with_args() then treats each
-	// top-level element of this stream as one callback argument.
+	// callback(error_code, error_message, result). The result is the call's
+	// arbitrarily-shaped firebase::Variant, written through
+	// writeVariantToStream so it reaches GML as whatever it is (a real,
+	// string, array or struct), or undefined on failure.
 	void invokeCallableCallback(const std::optional<GMFunction>& callback,
 		const firebase::Future<firebase::functions::HttpsCallableResult>& f)
 	{
 		if (!callback.has_value()) return;
 
-		ArrayStream args;
-		args.push(static_cast<double>(f.error()));
-		args.push(std::string_view{ f.error_message() ? f.error_message() : "" });
+		DataStream result;
 		if (f.error() == 0 && f.result() != nullptr)
-			pushVariantToArray(f.result()->data(), args);
+			writeVariantToStream(f.result()->data(), result);
 		else
-			args << std::optional<std::uint8_t>{};
+			result << std::optional<std::uint8_t>{};
 
-		callback->call_with_args(args);
+		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, result);
 	}
 }
 

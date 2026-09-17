@@ -567,37 +567,33 @@ std::string firebase_app_get_name()
 
 namespace
 {
-    firebase::AppOptions gmValueToAppOptions(const gm::wire::GMValue& value)
+    // A field left undefined on the GML side keeps the SDK's default.
+    firebase::AppOptions gmToAppOptions(const gm_structs::FirebaseAppOptions& value)
     {
         firebase::AppOptions options;
-        if (!value.is<gm::wire::GMObjectView>()) return options;
-        auto obj = value.as<gm::wire::GMObjectView>();
-        for (const auto& kv : obj)
-        {
-            if (!kv.second.is<std::string_view>()) continue;
-            const std::string v(kv.second.as<std::string_view>());
-            if (kv.first == "app_id") options.set_app_id(v.c_str());
-            else if (kv.first == "api_key") options.set_api_key(v.c_str());
-            else if (kv.first == "messaging_sender_id") options.set_messaging_sender_id(v.c_str());
-            else if (kv.first == "database_url") options.set_database_url(v.c_str());
-            else if (kv.first == "ga_tracking_id") options.set_ga_tracking_id(v.c_str());
-            else if (kv.first == "storage_bucket") options.set_storage_bucket(v.c_str());
-            else if (kv.first == "project_id") options.set_project_id(v.c_str());
-        }
+        if (value.app_id) options.set_app_id(value.app_id->c_str());
+        if (value.api_key) options.set_api_key(value.api_key->c_str());
+        if (value.messaging_sender_id) options.set_messaging_sender_id(value.messaging_sender_id->c_str());
+        if (value.database_url) options.set_database_url(value.database_url->c_str());
+        if (value.ga_tracking_id) options.set_ga_tracking_id(value.ga_tracking_id->c_str());
+        if (value.storage_bucket) options.set_storage_bucket(value.storage_bucket->c_str());
+        if (value.project_id) options.set_project_id(value.project_id->c_str());
         return options;
     }
 
-    gm::wire::DataStream appOptionsToGM(const firebase::AppOptions& options)
+    // Every field is present on the way out: the SDK stores plain strings and
+    // reports an unset one as empty, so there is nothing to leave undefined.
+    gm_structs::FirebaseAppOptions appOptionsToGM(const firebase::AppOptions& options)
     {
-        gm::wire::StructStream s;
-        s.add("app_id", std::string_view{options.app_id() ? options.app_id() : ""});
-        s.add("api_key", std::string_view{options.api_key() ? options.api_key() : ""});
-        s.add("messaging_sender_id", std::string_view{options.messaging_sender_id() ? options.messaging_sender_id() : ""});
-        s.add("database_url", std::string_view{options.database_url() ? options.database_url() : ""});
-        s.add("ga_tracking_id", std::string_view{options.ga_tracking_id() ? options.ga_tracking_id() : ""});
-        s.add("storage_bucket", std::string_view{options.storage_bucket() ? options.storage_bucket() : ""});
-        s.add("project_id", std::string_view{options.project_id() ? options.project_id() : ""});
-        gm::wire::DataStream out; out << s; return out;
+        gm_structs::FirebaseAppOptions out;
+        out.app_id = std::string(options.app_id() ? options.app_id() : "");
+        out.api_key = std::string(options.api_key() ? options.api_key() : "");
+        out.messaging_sender_id = std::string(options.messaging_sender_id() ? options.messaging_sender_id() : "");
+        out.database_url = std::string(options.database_url() ? options.database_url() : "");
+        out.ga_tracking_id = std::string(options.ga_tracking_id() ? options.ga_tracking_id() : "");
+        out.storage_bucket = std::string(options.storage_bucket() ? options.storage_bucket() : "");
+        out.project_id = std::string(options.project_id() ? options.project_id() : "");
+        return out;
     }
 }
 
@@ -612,17 +608,17 @@ uint64_t firebase_app_get_instance(std::string_view name)
     return wrapFirebaseApp(n.empty() ? firebase::App::GetInstance() : firebase::App::GetInstance(n.c_str()));
 }
 
-gm::wire::DataStream firebase_app_get_apps()
+std::vector<std::uint64_t> firebase_app_get_apps()
 {
-    gm::wire::ArrayStream a;
+    std::vector<std::uint64_t> handles;
     for (auto* app : firebase::App::GetApps())
-        if (app) a.push(static_cast<double>(wrapFirebaseApp(app)));
-    gm::wire::DataStream out; out << a; return out;
+        if (app) handles.push_back(wrapFirebaseApp(app));
+    return handles;
 }
 
-uint64_t firebase_app_initialize_with_options(const gm::wire::GMValue& options_value, std::string_view name)
+uint64_t firebase_app_initialize_with_options(const gm_structs::FirebaseAppOptions& options_value, std::string_view name)
 {
-    auto options = gmValueToAppOptions(options_value);
+    auto options = gmToAppOptions(options_value);
     std::string n(name);
 
 #if defined(__ANDROID__)
@@ -694,15 +690,18 @@ std::string firebase_app_handle_get_name(uint64_t app_ref)
     auto* app = resolveFirebaseApp(app_ref); return app ? std::string(app->name()) : std::string();
 }
 
-gm::wire::DataStream firebase_app_handle_get_options(uint64_t app_ref)
+std::optional<gm_structs::FirebaseAppOptions> firebase_app_handle_get_options(uint64_t app_ref)
 {
     auto* app = resolveFirebaseApp(app_ref);
-    return app ? appOptionsToGM(app->options()) : gm::wire::DataStream{};
+    if (!app) return std::nullopt;
+    return appOptionsToGM(app->options());
 }
 
-gm::wire::DataStream firebase_app_get_default_options()
+std::optional<gm_structs::FirebaseAppOptions> firebase_app_get_default_options()
 {
-    auto* app = getFirebaseApp(); return app ? appOptionsToGM(app->options()) : gm::wire::DataStream{};
+    auto* app = getFirebaseApp();
+    if (!app) return std::nullopt;
+    return appOptionsToGM(app->options());
 }
 
 void firebase_app_release_handle(uint64_t app_ref)

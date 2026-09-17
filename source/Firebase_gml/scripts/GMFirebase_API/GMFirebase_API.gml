@@ -186,6 +186,13 @@ enum FirestoreDocumentChangeType
     Removed = 2
 }
 
+enum FirestoreLoadBundleTaskState
+{
+    Error = 0,
+    InProgress = 1,
+    Success = 2
+}
+
 enum FirebaseRemoteConfigLastFetchStatus
 {
     Success = 0,
@@ -198,6 +205,13 @@ enum FirebaseRemoteConfigFetchFailureReason
     Invalid = 0,
     Throttled = 1,
     Error = 2
+}
+
+enum FirebaseRemoteConfigValueSource
+{
+    StaticValue = 0,
+    RemoteValue = 1,
+    DefaultValue = 2
 }
 
 enum FirebaseUmpConsentStatus
@@ -232,6 +246,76 @@ enum FirebaseUmpConsentDebugGeography
 // #####################################################################
 // # Constructors
 // #####################################################################
+
+/**
+ * @returns {Struct.FirebaseAnalyticsParameter}
+ */
+function FirebaseAnalyticsParameter() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2925689187;
+
+    self.name = undefined;
+    self.value = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseAppCheckToken}
+ */
+function FirebaseAppCheckToken() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2607280334;
+
+    self.token = undefined;
+    self.expire_time_millis = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseAuthProviderUserInfo}
+ */
+function FirebaseAuthProviderUserInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 4291374416;
+
+    self.uid = undefined;
+    self.email = undefined;
+    self.display_name = undefined;
+    self.photo_url = undefined;
+    self.provider_id = undefined;
+    self.phone_number = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseAuthAdditionalUserInfo}
+ */
+function FirebaseAuthAdditionalUserInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 821614872;
+
+    self.provider_id = undefined;
+    self.user_name = undefined;
+    self.profile = undefined;
+    self.updated_credential = undefined;
+
+}
 
 /**
  * @returns {Struct.FirebaseAuthUserInfo}
@@ -301,6 +385,107 @@ function FirebaseDataSnapshotInfo() constructor
 }
 
 /**
+ * @returns {Struct.FirestoreTimestamp}
+ */
+function FirestoreTimestamp() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2609732746;
+
+    self.seconds = undefined;
+    self.nanoseconds = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirestoreGeoPoint}
+ */
+function FirestoreGeoPoint() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 3244324715;
+
+    self.latitude = undefined;
+    self.longitude = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirestoreDocumentChange}
+ */
+function FirestoreDocumentChange() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 286701835;
+
+    self.type = undefined;
+    self.document = undefined;
+    self.old_index = undefined;
+    self.new_index = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirestoreFieldLookup}
+ */
+function FirestoreFieldLookup() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2564053480;
+
+    self.exists = undefined;
+    self.value = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirestoreFieldPathValue}
+ */
+function FirestoreFieldPathValue() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 696662754;
+
+    self.field_path = undefined;
+    self.value = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirestoreLoadBundleTaskProgress}
+ */
+function FirestoreLoadBundleTaskProgress() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 868952080;
+
+    self.documents_loaded = undefined;
+    self.total_documents = undefined;
+    self.bytes_loaded = undefined;
+    self.total_bytes = undefined;
+    self.state = undefined;
+
+}
+
+/**
  * @returns {Struct.FirestoreDocumentSnapshotInfo}
  */
 function FirestoreDocumentSnapshotInfo() constructor
@@ -355,9 +540,410 @@ function FirebaseRemoteConfigInfo() constructor
 
 }
 
+/**
+ * @returns {Struct.FirebaseRemoteConfigBooleanInfo}
+ */
+function FirebaseRemoteConfigBooleanInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2980569540;
+
+    self.value = undefined;
+    self.source = undefined;
+    self.conversion_successful = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseRemoteConfigLongInfo}
+ */
+function FirebaseRemoteConfigLongInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 516067666;
+
+    self.value = undefined;
+    self.source = undefined;
+    self.conversion_successful = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseRemoteConfigDoubleInfo}
+ */
+function FirebaseRemoteConfigDoubleInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 1613081497;
+
+    self.value = undefined;
+    self.source = undefined;
+    self.conversion_successful = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseRemoteConfigStringInfo}
+ */
+function FirebaseRemoteConfigStringInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 1038331485;
+
+    self.value = undefined;
+    self.source = undefined;
+    self.conversion_successful = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseRemoteConfigDataInfo}
+ */
+function FirebaseRemoteConfigDataInfo() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 2171969480;
+
+    self.bytes_copied = undefined;
+    self.size = undefined;
+    self.source = undefined;
+    self.conversion_successful = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseAppOptions}
+ */
+function FirebaseAppOptions() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 1906593923;
+
+    self.app_id = undefined;
+    self.api_key = undefined;
+    self.messaging_sender_id = undefined;
+    self.database_url = undefined;
+    self.ga_tracking_id = undefined;
+    self.storage_bucket = undefined;
+    self.project_id = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseAuthResult}
+ */
+function FirebaseAuthResult() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 1859144699;
+
+    self.user = undefined;
+    self.credential = undefined;
+    self.additional_user_info = undefined;
+
+}
+
 // #####################################################################
 // # Codecs
 // #####################################################################
+
+/**
+ * @func __FirebaseAnalyticsParameter_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAnalyticsParameter} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAnalyticsParameter_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: name, type: String
+        if (!is_string(self.name)) show_error($"{_where} :: self.name expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.name));
+        buffer_write(_buffer, buffer_string, self.name);
+
+        // field: value, type: Any
+
+        __ext_core_buffer_marshal_value(_buffer, self.value);
+
+    }
+}
+
+/**
+ * @func __FirebaseAnalyticsParameter_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAnalyticsParameter}
+ * @ignore
+ */
+function __FirebaseAnalyticsParameter_decode(_buffer, _offset)
+{
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAnalyticsParameter();
+    with (_inst)
+    {
+        // field: name, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.name = buffer_read(_buffer, buffer_string);
+
+        // field: value, type: Any
+        self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseAppCheckToken_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAppCheckToken} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAppCheckToken_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: token, type: String
+        if (!is_string(self.token)) show_error($"{_where} :: self.token expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.token));
+        buffer_write(_buffer, buffer_string, self.token);
+
+        // field: expire_time_millis, type: Float64
+        if (!is_numeric(self.expire_time_millis)) show_error($"{_where} :: self.expire_time_millis expected number", true);
+        buffer_write(_buffer, buffer_f64, self.expire_time_millis);
+
+    }
+}
+
+/**
+ * @func __FirebaseAppCheckToken_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAppCheckToken}
+ * @ignore
+ */
+function __FirebaseAppCheckToken_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAppCheckToken();
+    with (_inst)
+    {
+        // field: token, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.token = buffer_read(_buffer, buffer_string);
+
+        // field: expire_time_millis, type: Float64
+        self.expire_time_millis = buffer_read(_buffer, buffer_f64);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseAuthProviderUserInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAuthProviderUserInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAuthProviderUserInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: uid, type: String
+        if (!is_string(self.uid)) show_error($"{_where} :: self.uid expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.uid));
+        buffer_write(_buffer, buffer_string, self.uid);
+
+        // field: email, type: String
+        if (!is_string(self.email)) show_error($"{_where} :: self.email expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.email));
+        buffer_write(_buffer, buffer_string, self.email);
+
+        // field: display_name, type: String
+        if (!is_string(self.display_name)) show_error($"{_where} :: self.display_name expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.display_name));
+        buffer_write(_buffer, buffer_string, self.display_name);
+
+        // field: photo_url, type: String
+        if (!is_string(self.photo_url)) show_error($"{_where} :: self.photo_url expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.photo_url));
+        buffer_write(_buffer, buffer_string, self.photo_url);
+
+        // field: provider_id, type: String
+        if (!is_string(self.provider_id)) show_error($"{_where} :: self.provider_id expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.provider_id));
+        buffer_write(_buffer, buffer_string, self.provider_id);
+
+        // field: phone_number, type: String
+        if (!is_string(self.phone_number)) show_error($"{_where} :: self.phone_number expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.phone_number));
+        buffer_write(_buffer, buffer_string, self.phone_number);
+
+    }
+}
+
+/**
+ * @func __FirebaseAuthProviderUserInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAuthProviderUserInfo}
+ * @ignore
+ */
+function __FirebaseAuthProviderUserInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAuthProviderUserInfo();
+    with (_inst)
+    {
+        // field: uid, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.uid = buffer_read(_buffer, buffer_string);
+
+        // field: email, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.email = buffer_read(_buffer, buffer_string);
+
+        // field: display_name, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.display_name = buffer_read(_buffer, buffer_string);
+
+        // field: photo_url, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.photo_url = buffer_read(_buffer, buffer_string);
+
+        // field: provider_id, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.provider_id = buffer_read(_buffer, buffer_string);
+
+        // field: phone_number, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.phone_number = buffer_read(_buffer, buffer_string);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseAuthAdditionalUserInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAuthAdditionalUserInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAuthAdditionalUserInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: provider_id, type: String
+        if (!is_string(self.provider_id)) show_error($"{_where} :: self.provider_id expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.provider_id));
+        buffer_write(_buffer, buffer_string, self.provider_id);
+
+        // field: user_name, type: String
+        if (!is_string(self.user_name)) show_error($"{_where} :: self.user_name expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.user_name));
+        buffer_write(_buffer, buffer_string, self.user_name);
+
+        // field: profile, type: Any
+
+        __ext_core_buffer_marshal_value(_buffer, self.profile);
+
+        // field: updated_credential, type: optional<UInt64>
+        if (is_undefined(self.updated_credential))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_numeric(self.updated_credential)) show_error($"{_where} :: self.updated_credential expected number", true);
+            buffer_write(_buffer, buffer_u64, self.updated_credential);
+        }
+
+    }
+}
+
+/**
+ * @func __FirebaseAuthAdditionalUserInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAuthAdditionalUserInfo}
+ * @ignore
+ */
+function __FirebaseAuthAdditionalUserInfo_decode(_buffer, _offset)
+{
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAuthAdditionalUserInfo();
+    with (_inst)
+    {
+        // field: provider_id, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.provider_id = buffer_read(_buffer, buffer_string);
+
+        // field: user_name, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.user_name = buffer_read(_buffer, buffer_string);
+
+        // field: profile, type: Any
+        self.profile = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
+
+        // field: updated_credential, type: optional<UInt64>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.updated_credential = buffer_read(_buffer, buffer_u64);
+        }
+        else
+        {
+            self.updated_credential = undefined;
+        }
+
+    }
+
+    return _inst;
+}
 
 /**
  * @func __FirebaseAuthUserInfo_encode(_inst, _buffer, _offset, _where)
@@ -658,6 +1244,341 @@ function __FirebaseDataSnapshotInfo_decode(_buffer, _offset)
 }
 
 /**
+ * @func __FirestoreTimestamp_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreTimestamp} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreTimestamp_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: seconds, type: Float64
+        if (!is_numeric(self.seconds)) show_error($"{_where} :: self.seconds expected number", true);
+        buffer_write(_buffer, buffer_f64, self.seconds);
+
+        // field: nanoseconds, type: Float64
+        if (!is_numeric(self.nanoseconds)) show_error($"{_where} :: self.nanoseconds expected number", true);
+        buffer_write(_buffer, buffer_f64, self.nanoseconds);
+
+    }
+}
+
+/**
+ * @func __FirestoreTimestamp_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreTimestamp}
+ * @ignore
+ */
+function __FirestoreTimestamp_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreTimestamp();
+    with (_inst)
+    {
+        // field: seconds, type: Float64
+        self.seconds = buffer_read(_buffer, buffer_f64);
+
+        // field: nanoseconds, type: Float64
+        self.nanoseconds = buffer_read(_buffer, buffer_f64);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirestoreGeoPoint_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreGeoPoint} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreGeoPoint_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: latitude, type: Float64
+        if (!is_numeric(self.latitude)) show_error($"{_where} :: self.latitude expected number", true);
+        buffer_write(_buffer, buffer_f64, self.latitude);
+
+        // field: longitude, type: Float64
+        if (!is_numeric(self.longitude)) show_error($"{_where} :: self.longitude expected number", true);
+        buffer_write(_buffer, buffer_f64, self.longitude);
+
+    }
+}
+
+/**
+ * @func __FirestoreGeoPoint_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreGeoPoint}
+ * @ignore
+ */
+function __FirestoreGeoPoint_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreGeoPoint();
+    with (_inst)
+    {
+        // field: latitude, type: Float64
+        self.latitude = buffer_read(_buffer, buffer_f64);
+
+        // field: longitude, type: Float64
+        self.longitude = buffer_read(_buffer, buffer_f64);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirestoreDocumentChange_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreDocumentChange} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreDocumentChange_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: type, type: enum FirestoreDocumentChangeType
+
+        if (!is_numeric(self.type)) show_error($"{_where} :: self.type expected number", true);
+        buffer_write(_buffer, buffer_u64, self.type);
+
+        // field: document, type: UInt64
+        if (!is_numeric(self.document)) show_error($"{_where} :: self.document expected number", true);
+        buffer_write(_buffer, buffer_u64, self.document);
+
+        // field: old_index, type: Float64
+        if (!is_numeric(self.old_index)) show_error($"{_where} :: self.old_index expected number", true);
+        buffer_write(_buffer, buffer_f64, self.old_index);
+
+        // field: new_index, type: Float64
+        if (!is_numeric(self.new_index)) show_error($"{_where} :: self.new_index expected number", true);
+        buffer_write(_buffer, buffer_f64, self.new_index);
+
+    }
+}
+
+/**
+ * @func __FirestoreDocumentChange_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreDocumentChange}
+ * @ignore
+ */
+function __FirestoreDocumentChange_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreDocumentChange();
+    with (_inst)
+    {
+        // field: type, type: enum FirestoreDocumentChangeType
+        self.type = buffer_read(_buffer, buffer_u64);
+
+        // field: document, type: UInt64
+        self.document = buffer_read(_buffer, buffer_u64);
+
+        // field: old_index, type: Float64
+        self.old_index = buffer_read(_buffer, buffer_f64);
+
+        // field: new_index, type: Float64
+        self.new_index = buffer_read(_buffer, buffer_f64);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirestoreFieldLookup_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreFieldLookup} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreFieldLookup_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: exists, type: Bool
+        if (!is_bool(self.exists)) show_error($"{_where} :: self.exists expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.exists);
+
+        // field: value, type: Any
+
+        __ext_core_buffer_marshal_value(_buffer, self.value);
+
+    }
+}
+
+/**
+ * @func __FirestoreFieldLookup_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreFieldLookup}
+ * @ignore
+ */
+function __FirestoreFieldLookup_decode(_buffer, _offset)
+{
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreFieldLookup();
+    with (_inst)
+    {
+        // field: exists, type: Bool
+        self.exists = buffer_read(_buffer, buffer_bool);
+
+        // field: value, type: Any
+        self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirestoreFieldPathValue_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreFieldPathValue} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreFieldPathValue_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: field_path, type: Float64
+        if (!is_numeric(self.field_path)) show_error($"{_where} :: self.field_path expected number", true);
+        buffer_write(_buffer, buffer_f64, self.field_path);
+
+        // field: value, type: Any
+
+        __ext_core_buffer_marshal_value(_buffer, self.value);
+
+    }
+}
+
+/**
+ * @func __FirestoreFieldPathValue_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreFieldPathValue}
+ * @ignore
+ */
+function __FirestoreFieldPathValue_decode(_buffer, _offset)
+{
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreFieldPathValue();
+    with (_inst)
+    {
+        // field: field_path, type: Float64
+        self.field_path = buffer_read(_buffer, buffer_f64);
+
+        // field: value, type: Any
+        self.value = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirestoreLoadBundleTaskProgress_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirestoreLoadBundleTaskProgress} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirestoreLoadBundleTaskProgress_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: documents_loaded, type: Float64
+        if (!is_numeric(self.documents_loaded)) show_error($"{_where} :: self.documents_loaded expected number", true);
+        buffer_write(_buffer, buffer_f64, self.documents_loaded);
+
+        // field: total_documents, type: Float64
+        if (!is_numeric(self.total_documents)) show_error($"{_where} :: self.total_documents expected number", true);
+        buffer_write(_buffer, buffer_f64, self.total_documents);
+
+        // field: bytes_loaded, type: Float64
+        if (!is_numeric(self.bytes_loaded)) show_error($"{_where} :: self.bytes_loaded expected number", true);
+        buffer_write(_buffer, buffer_f64, self.bytes_loaded);
+
+        // field: total_bytes, type: Float64
+        if (!is_numeric(self.total_bytes)) show_error($"{_where} :: self.total_bytes expected number", true);
+        buffer_write(_buffer, buffer_f64, self.total_bytes);
+
+        // field: state, type: enum FirestoreLoadBundleTaskState
+
+        if (!is_numeric(self.state)) show_error($"{_where} :: self.state expected number", true);
+        buffer_write(_buffer, buffer_u64, self.state);
+
+    }
+}
+
+/**
+ * @func __FirestoreLoadBundleTaskProgress_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirestoreLoadBundleTaskProgress}
+ * @ignore
+ */
+function __FirestoreLoadBundleTaskProgress_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirestoreLoadBundleTaskProgress();
+    with (_inst)
+    {
+        // field: documents_loaded, type: Float64
+        self.documents_loaded = buffer_read(_buffer, buffer_f64);
+
+        // field: total_documents, type: Float64
+        self.total_documents = buffer_read(_buffer, buffer_f64);
+
+        // field: bytes_loaded, type: Float64
+        self.bytes_loaded = buffer_read(_buffer, buffer_f64);
+
+        // field: total_bytes, type: Float64
+        self.total_bytes = buffer_read(_buffer, buffer_f64);
+
+        // field: state, type: enum FirestoreLoadBundleTaskState
+        self.state = buffer_read(_buffer, buffer_u64);
+
+    }
+
+    return _inst;
+}
+
+/**
  * @func __FirestoreDocumentSnapshotInfo_encode(_inst, _buffer, _offset, _where)
  * @param {Struct.FirestoreDocumentSnapshotInfo} _inst
  * @param {Id.Buffer} _buffer
@@ -855,6 +1776,589 @@ function __FirebaseRemoteConfigInfo_decode(_buffer, _offset)
     return _inst;
 }
 
+/**
+ * @func __FirebaseRemoteConfigBooleanInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseRemoteConfigBooleanInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseRemoteConfigBooleanInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: value, type: Bool
+        if (!is_bool(self.value)) show_error($"{_where} :: self.value expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.value);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+
+        if (!is_numeric(self.source)) show_error($"{_where} :: self.source expected number", true);
+        buffer_write(_buffer, buffer_u64, self.source);
+
+        // field: conversion_successful, type: Bool
+        if (!is_bool(self.conversion_successful)) show_error($"{_where} :: self.conversion_successful expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.conversion_successful);
+
+    }
+}
+
+/**
+ * @func __FirebaseRemoteConfigBooleanInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseRemoteConfigBooleanInfo}
+ * @ignore
+ */
+function __FirebaseRemoteConfigBooleanInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseRemoteConfigBooleanInfo();
+    with (_inst)
+    {
+        // field: value, type: Bool
+        self.value = buffer_read(_buffer, buffer_bool);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+        self.source = buffer_read(_buffer, buffer_u64);
+
+        // field: conversion_successful, type: Bool
+        self.conversion_successful = buffer_read(_buffer, buffer_bool);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseRemoteConfigLongInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseRemoteConfigLongInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseRemoteConfigLongInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: value, type: Float64
+        if (!is_numeric(self.value)) show_error($"{_where} :: self.value expected number", true);
+        buffer_write(_buffer, buffer_f64, self.value);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+
+        if (!is_numeric(self.source)) show_error($"{_where} :: self.source expected number", true);
+        buffer_write(_buffer, buffer_u64, self.source);
+
+        // field: conversion_successful, type: Bool
+        if (!is_bool(self.conversion_successful)) show_error($"{_where} :: self.conversion_successful expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.conversion_successful);
+
+    }
+}
+
+/**
+ * @func __FirebaseRemoteConfigLongInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseRemoteConfigLongInfo}
+ * @ignore
+ */
+function __FirebaseRemoteConfigLongInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseRemoteConfigLongInfo();
+    with (_inst)
+    {
+        // field: value, type: Float64
+        self.value = buffer_read(_buffer, buffer_f64);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+        self.source = buffer_read(_buffer, buffer_u64);
+
+        // field: conversion_successful, type: Bool
+        self.conversion_successful = buffer_read(_buffer, buffer_bool);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseRemoteConfigDoubleInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseRemoteConfigDoubleInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseRemoteConfigDoubleInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: value, type: Float64
+        if (!is_numeric(self.value)) show_error($"{_where} :: self.value expected number", true);
+        buffer_write(_buffer, buffer_f64, self.value);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+
+        if (!is_numeric(self.source)) show_error($"{_where} :: self.source expected number", true);
+        buffer_write(_buffer, buffer_u64, self.source);
+
+        // field: conversion_successful, type: Bool
+        if (!is_bool(self.conversion_successful)) show_error($"{_where} :: self.conversion_successful expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.conversion_successful);
+
+    }
+}
+
+/**
+ * @func __FirebaseRemoteConfigDoubleInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseRemoteConfigDoubleInfo}
+ * @ignore
+ */
+function __FirebaseRemoteConfigDoubleInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseRemoteConfigDoubleInfo();
+    with (_inst)
+    {
+        // field: value, type: Float64
+        self.value = buffer_read(_buffer, buffer_f64);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+        self.source = buffer_read(_buffer, buffer_u64);
+
+        // field: conversion_successful, type: Bool
+        self.conversion_successful = buffer_read(_buffer, buffer_bool);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseRemoteConfigStringInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseRemoteConfigStringInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseRemoteConfigStringInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: value, type: String
+        if (!is_string(self.value)) show_error($"{_where} :: self.value expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.value));
+        buffer_write(_buffer, buffer_string, self.value);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+
+        if (!is_numeric(self.source)) show_error($"{_where} :: self.source expected number", true);
+        buffer_write(_buffer, buffer_u64, self.source);
+
+        // field: conversion_successful, type: Bool
+        if (!is_bool(self.conversion_successful)) show_error($"{_where} :: self.conversion_successful expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.conversion_successful);
+
+    }
+}
+
+/**
+ * @func __FirebaseRemoteConfigStringInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseRemoteConfigStringInfo}
+ * @ignore
+ */
+function __FirebaseRemoteConfigStringInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseRemoteConfigStringInfo();
+    with (_inst)
+    {
+        // field: value, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.value = buffer_read(_buffer, buffer_string);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+        self.source = buffer_read(_buffer, buffer_u64);
+
+        // field: conversion_successful, type: Bool
+        self.conversion_successful = buffer_read(_buffer, buffer_bool);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseRemoteConfigDataInfo_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseRemoteConfigDataInfo} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseRemoteConfigDataInfo_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: bytes_copied, type: Float64
+        if (!is_numeric(self.bytes_copied)) show_error($"{_where} :: self.bytes_copied expected number", true);
+        buffer_write(_buffer, buffer_f64, self.bytes_copied);
+
+        // field: size, type: Float64
+        if (!is_numeric(self.size)) show_error($"{_where} :: self.size expected number", true);
+        buffer_write(_buffer, buffer_f64, self.size);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+
+        if (!is_numeric(self.source)) show_error($"{_where} :: self.source expected number", true);
+        buffer_write(_buffer, buffer_u64, self.source);
+
+        // field: conversion_successful, type: Bool
+        if (!is_bool(self.conversion_successful)) show_error($"{_where} :: self.conversion_successful expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.conversion_successful);
+
+    }
+}
+
+/**
+ * @func __FirebaseRemoteConfigDataInfo_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseRemoteConfigDataInfo}
+ * @ignore
+ */
+function __FirebaseRemoteConfigDataInfo_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseRemoteConfigDataInfo();
+    with (_inst)
+    {
+        // field: bytes_copied, type: Float64
+        self.bytes_copied = buffer_read(_buffer, buffer_f64);
+
+        // field: size, type: Float64
+        self.size = buffer_read(_buffer, buffer_f64);
+
+        // field: source, type: enum FirebaseRemoteConfigValueSource
+        self.source = buffer_read(_buffer, buffer_u64);
+
+        // field: conversion_successful, type: Bool
+        self.conversion_successful = buffer_read(_buffer, buffer_bool);
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseAppOptions_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAppOptions} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAppOptions_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: app_id, type: optional<String>
+        if (is_undefined(self.app_id))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.app_id)) show_error($"{_where} :: self.app_id expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.app_id));
+            buffer_write(_buffer, buffer_string, self.app_id);
+        }
+
+        // field: api_key, type: optional<String>
+        if (is_undefined(self.api_key))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.api_key)) show_error($"{_where} :: self.api_key expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.api_key));
+            buffer_write(_buffer, buffer_string, self.api_key);
+        }
+
+        // field: messaging_sender_id, type: optional<String>
+        if (is_undefined(self.messaging_sender_id))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.messaging_sender_id)) show_error($"{_where} :: self.messaging_sender_id expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.messaging_sender_id));
+            buffer_write(_buffer, buffer_string, self.messaging_sender_id);
+        }
+
+        // field: database_url, type: optional<String>
+        if (is_undefined(self.database_url))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.database_url)) show_error($"{_where} :: self.database_url expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.database_url));
+            buffer_write(_buffer, buffer_string, self.database_url);
+        }
+
+        // field: ga_tracking_id, type: optional<String>
+        if (is_undefined(self.ga_tracking_id))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.ga_tracking_id)) show_error($"{_where} :: self.ga_tracking_id expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.ga_tracking_id));
+            buffer_write(_buffer, buffer_string, self.ga_tracking_id);
+        }
+
+        // field: storage_bucket, type: optional<String>
+        if (is_undefined(self.storage_bucket))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.storage_bucket)) show_error($"{_where} :: self.storage_bucket expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.storage_bucket));
+            buffer_write(_buffer, buffer_string, self.storage_bucket);
+        }
+
+        // field: project_id, type: optional<String>
+        if (is_undefined(self.project_id))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_string(self.project_id)) show_error($"{_where} :: self.project_id expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.project_id));
+            buffer_write(_buffer, buffer_string, self.project_id);
+        }
+
+    }
+}
+
+/**
+ * @func __FirebaseAppOptions_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAppOptions}
+ * @ignore
+ */
+function __FirebaseAppOptions_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAppOptions();
+    with (_inst)
+    {
+        // field: app_id, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.app_id = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.app_id = undefined;
+        }
+
+        // field: api_key, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.api_key = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.api_key = undefined;
+        }
+
+        // field: messaging_sender_id, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.messaging_sender_id = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.messaging_sender_id = undefined;
+        }
+
+        // field: database_url, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.database_url = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.database_url = undefined;
+        }
+
+        // field: ga_tracking_id, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.ga_tracking_id = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.ga_tracking_id = undefined;
+        }
+
+        // field: storage_bucket, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.storage_bucket = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.storage_bucket = undefined;
+        }
+
+        // field: project_id, type: optional<String>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.project_id = buffer_read(_buffer, buffer_string);
+        }
+        else
+        {
+            self.project_id = undefined;
+        }
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseAuthResult_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseAuthResult} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseAuthResult_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: user, type: optional<UInt64>
+        if (is_undefined(self.user))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_numeric(self.user)) show_error($"{_where} :: self.user expected number", true);
+            buffer_write(_buffer, buffer_u64, self.user);
+        }
+
+        // field: credential, type: optional<UInt64>
+        if (is_undefined(self.credential))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_numeric(self.credential)) show_error($"{_where} :: self.credential expected number", true);
+            buffer_write(_buffer, buffer_u64, self.credential);
+        }
+
+        // field: additional_user_info, type: struct FirebaseAuthAdditionalUserInfo
+        if (self.additional_user_info.__uid != 821614872) show_error($"{_where} :: self.additional_user_info expected FirebaseAuthAdditionalUserInfo", true);
+        __FirebaseAuthAdditionalUserInfo_encode(self.additional_user_info, _buffer, buffer_tell(_buffer), _where);
+
+    }
+}
+
+/**
+ * @func __FirebaseAuthResult_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseAuthResult}
+ * @ignore
+ */
+function __FirebaseAuthResult_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseAuthResult();
+    with (_inst)
+    {
+        // field: user, type: optional<UInt64>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.user = buffer_read(_buffer, buffer_u64);
+        }
+        else
+        {
+            self.user = undefined;
+        }
+
+        // field: credential, type: optional<UInt64>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.credential = buffer_read(_buffer, buffer_u64);
+        }
+        else
+        {
+            self.credential = undefined;
+        }
+
+        // field: additional_user_info, type: struct FirebaseAuthAdditionalUserInfo
+        self.additional_user_info = __FirebaseAuthAdditionalUserInfo_decode(_buffer, buffer_tell(_buffer));
+
+    }
+
+    return _inst;
+}
+
 // #####################################################################
 // # Functions
 // #####################################################################
@@ -897,7 +2401,7 @@ function __FirebaseRemoteConfigInfo_decode(_buffer, _offset)
 
 /**
  * @param {String} _name
- * @param {Any} _params
+ * @param {Array[Struct.FirebaseAnalyticsParameter]} _params
  */
 function firebase_analytics_log_event_params(_name, _params)
 {
@@ -911,9 +2415,15 @@ function firebase_analytics_log_event_params(_name, _params)
     buffer_write(__args_buffer__, buffer_u32, string_byte_length(_name));
     buffer_write(__args_buffer__, buffer_string, _name);
 
-    // param: _params, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _params);
+    // param: _params, type: struct FirebaseAnalyticsParameter[]
+    if (!is_array(_params)) show_error($"{_GMFUNCTION_} :: _params expected array", true);
+    var __length__ = array_length(_params);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (_params[_i].__uid != 2925689187) show_error($"{_GMFUNCTION_} :: _params[_i] expected FirebaseAnalyticsParameter", true);
+        __FirebaseAnalyticsParameter_encode(_params[_i], __args_buffer__, buffer_tell(__args_buffer__), _GMFUNCTION_);
+    }
 
     var __return_value__ = __firebase_analytics_log_event_params(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -921,7 +2431,7 @@ function firebase_analytics_log_event_params(_name, _params)
 }
 
 /**
- * @param {Any} _params
+ * @param {Array[Struct.FirebaseAnalyticsParameter]} _params
  */
 function firebase_analytics_set_default_event_parameters(_params)
 {
@@ -930,9 +2440,15 @@ function firebase_analytics_set_default_event_parameters(_params)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _params, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _params);
+    // param: _params, type: struct FirebaseAnalyticsParameter[]
+    if (!is_array(_params)) show_error($"{_GMFUNCTION_} :: _params expected array", true);
+    var __length__ = array_length(_params);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (_params[_i].__uid != 2925689187) show_error($"{_GMFUNCTION_} :: _params[_i] expected FirebaseAnalyticsParameter", true);
+        __FirebaseAnalyticsParameter_encode(_params[_i], __args_buffer__, buffer_tell(__args_buffer__), _GMFUNCTION_);
+    }
 
     var __return_value__ = __firebase_analytics_set_default_event_parameters(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -5240,14 +6756,12 @@ function firebase_database_snapshot_children_count(_ref)
 
 /**
  * @param {Real} _ref
- * @returns {Any}
+ * @returns {Array[Real]}
  */
 function firebase_database_snapshot_get_children(_ref)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -5260,7 +6774,12 @@ function firebase_database_snapshot_get_children(_ref)
     var __return_value__ = __firebase_database_snapshot_get_children(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    var __length__ = buffer_read(__ret_buffer__, buffer_u32);
+    __result__ = array_create(__length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        __result__[_i] = buffer_read(__ret_buffer__, buffer_u64);
+    }
     return __result__;
 }
 
@@ -6407,7 +7926,7 @@ function firebase_firestore_document_ref_set_merge(_ref, _data, _callback)
 /**
  * @param {Real} _ref
  * @param {Any} _data
- * @param {Any} _fields
+ * @param {Array[String]} _fields
  * @param {Function} _callback
  * @returns {Enum.FirebaseError}
  */
@@ -6428,9 +7947,16 @@ function firebase_firestore_document_ref_set_merge_fields(_ref, _data, _fields, 
 
     __ext_core_buffer_marshal_value(__args_buffer__, _data);
 
-    // param: _fields, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _fields);
+    // param: _fields, type: String[]
+    if (!is_array(_fields)) show_error($"{_GMFUNCTION_} :: _fields expected array", true);
+    var __length__ = array_length(_fields);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_string(_fields[_i])) show_error($"{_GMFUNCTION_} :: _fields[_i] expected string", true);
+        buffer_write(__args_buffer__, buffer_u32, string_byte_length(_fields[_i]));
+        buffer_write(__args_buffer__, buffer_string, _fields[_i]);
+    }
 
     // param: _callback, type: optional<Function>
     if (is_undefined(_callback))
@@ -7491,7 +9017,7 @@ function firebase_firestore_write_batch_set_merge(_batch_ref, _document_ref, _da
  * @param {Real} _batch_ref
  * @param {Real} _document_ref
  * @param {Any} _data
- * @param {Any} _fields
+ * @param {Array[String]} _fields
  * @returns {Real}
  */
 function firebase_firestore_write_batch_set_merge_fields(_batch_ref, _document_ref, _data, _fields)
@@ -7513,9 +9039,16 @@ function firebase_firestore_write_batch_set_merge_fields(_batch_ref, _document_r
 
     __ext_core_buffer_marshal_value(__args_buffer__, _data);
 
-    // param: _fields, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _fields);
+    // param: _fields, type: String[]
+    if (!is_array(_fields)) show_error($"{_GMFUNCTION_} :: _fields expected array", true);
+    var __length__ = array_length(_fields);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_string(_fields[_i])) show_error($"{_GMFUNCTION_} :: _fields[_i] expected string", true);
+        buffer_write(__args_buffer__, buffer_u32, string_byte_length(_fields[_i]));
+        buffer_write(__args_buffer__, buffer_string, _fields[_i]);
+    }
 
     var __return_value__ = __firebase_firestore_write_batch_set_merge_fields(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -7773,14 +9306,12 @@ function firebase_firestore_document_snapshot_get_info(_ref)
  * @param {Real} _ref
  * @param {String} _field
  * @param {Real} _server_timestamp_behavior
- * @returns {Any}
+ * @returns {Struct.FirestoreFieldLookup}
  */
 function firebase_firestore_document_snapshot_get(_ref, _field, _server_timestamp_behavior)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -7802,7 +9333,7 @@ function firebase_firestore_document_snapshot_get(_ref, _field, _server_timestam
     var __return_value__ = __firebase_firestore_document_snapshot_get(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    __result__ = __FirestoreFieldLookup_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
     return __result__;
 }
 
@@ -7882,14 +9413,12 @@ function firebase_firestore_query_snapshot_get_info(_ref)
 
 /**
  * @param {Real} _ref
- * @returns {Any}
+ * @returns {Array[Real]}
  */
 function firebase_firestore_query_snapshot_documents(_ref)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -7902,21 +9431,24 @@ function firebase_firestore_query_snapshot_documents(_ref)
     var __return_value__ = __firebase_firestore_query_snapshot_documents(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    var __length__ = buffer_read(__ret_buffer__, buffer_u32);
+    __result__ = array_create(__length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        __result__[_i] = buffer_read(__ret_buffer__, buffer_u64);
+    }
     return __result__;
 }
 
 /**
  * @param {Real} _ref
  * @param {Bool} _include_metadata_changes
- * @returns {Any}
+ * @returns {Array[Struct.FirestoreDocumentChange]}
  */
 function firebase_firestore_query_snapshot_document_changes(_ref, _include_metadata_changes)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -7933,7 +9465,12 @@ function firebase_firestore_query_snapshot_document_changes(_ref, _include_metad
     var __return_value__ = __firebase_firestore_query_snapshot_document_changes(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    var __length__ = buffer_read(__ret_buffer__, buffer_u32);
+    __result__ = array_create(__length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        __result__[_i] = __FirestoreDocumentChange_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
     return __result__;
 }
 
@@ -11328,7 +12865,7 @@ function firebase_ump_reset(_consent_ref)
  * @param {Real} _consent_ref
  * @param {Real} _debug_geography
  * @param {Real} _tag_for_under_age_of_consent
- * @param {Any} _debug_device_ids
+ * @param {Array[String]} _debug_device_ids
  * @param {Function} _callback
  * @returns {Enum.FirebaseError}
  */
@@ -11353,9 +12890,24 @@ function firebase_ump_request_consent_info_update(_consent_ref, _debug_geography
     if (!is_numeric(_tag_for_under_age_of_consent)) show_error($"{_GMFUNCTION_} :: _tag_for_under_age_of_consent expected number", true);
     buffer_write(__args_buffer__, buffer_f64, _tag_for_under_age_of_consent);
 
-    // param: _debug_device_ids, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _debug_device_ids);
+    // param: _debug_device_ids, type: optional<String[]>
+    if (is_undefined(_debug_device_ids))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_array(_debug_device_ids)) show_error($"{_GMFUNCTION_} :: _debug_device_ids expected array", true);
+        var __length__ = array_length(_debug_device_ids);
+        buffer_write(__args_buffer__, buffer_u32, __length__);
+        for (var _i = 0; _i < __length__; ++_i)
+        {
+            if (!is_string(_debug_device_ids[_i])) show_error($"{_GMFUNCTION_} :: _debug_device_ids[_i] expected string", true);
+            buffer_write(__args_buffer__, buffer_u32, string_byte_length(_debug_device_ids[_i]));
+            buffer_write(__args_buffer__, buffer_string, _debug_device_ids[_i]);
+        }
+    }
 
     // param: _callback, type: optional<Function>
     if (is_undefined(_callback))
@@ -11597,7 +13149,7 @@ function firebase_analytics_initiate_on_device_conversion_measurement_hashed_pho
 
 /**
  * @param {String} _provider_id
- * @param {Any} _scopes
+ * @param {Array[String]} _scopes
  * @param {Any} _custom_parameters
  * @returns {Real}
  */
@@ -11613,9 +13165,16 @@ function firebase_auth_federated_oauth_provider_create(_provider_id, _scopes, _c
     buffer_write(__args_buffer__, buffer_u32, string_byte_length(_provider_id));
     buffer_write(__args_buffer__, buffer_string, _provider_id);
 
-    // param: _scopes, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _scopes);
+    // param: _scopes, type: String[]
+    if (!is_array(_scopes)) show_error($"{_GMFUNCTION_} :: _scopes expected array", true);
+    var __length__ = array_length(_scopes);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_string(_scopes[_i])) show_error($"{_GMFUNCTION_} :: _scopes[_i] expected string", true);
+        buffer_write(__args_buffer__, buffer_u32, string_byte_length(_scopes[_i]));
+        buffer_write(__args_buffer__, buffer_string, _scopes[_i]);
+    }
 
     // param: _custom_parameters, type: Any
 
@@ -11633,7 +13192,7 @@ function firebase_auth_federated_oauth_provider_create(_provider_id, _scopes, _c
 /**
  * @param {Real} _provider
  * @param {String} _provider_id
- * @param {Any} _scopes
+ * @param {Array[String]} _scopes
  * @param {Any} _custom_parameters
  */
 function firebase_auth_federated_oauth_provider_set_data(_provider, _provider_id, _scopes, _custom_parameters)
@@ -11652,9 +13211,16 @@ function firebase_auth_federated_oauth_provider_set_data(_provider, _provider_id
     buffer_write(__args_buffer__, buffer_u32, string_byte_length(_provider_id));
     buffer_write(__args_buffer__, buffer_string, _provider_id);
 
-    // param: _scopes, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _scopes);
+    // param: _scopes, type: String[]
+    if (!is_array(_scopes)) show_error($"{_GMFUNCTION_} :: _scopes expected array", true);
+    var __length__ = array_length(_scopes);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_string(_scopes[_i])) show_error($"{_GMFUNCTION_} :: _scopes[_i] expected string", true);
+        buffer_write(__args_buffer__, buffer_u32, string_byte_length(_scopes[_i]));
+        buffer_write(__args_buffer__, buffer_string, _scopes[_i]);
+    }
 
     // param: _custom_parameters, type: Any
 
@@ -11957,14 +13523,12 @@ function firebase_auth_user_provider_data_count(_user)
 /**
  * @param {Real} _user
  * @param {Real} _index
- * @returns {Any}
+ * @returns {Struct.FirebaseAuthProviderUserInfo}
  */
 function firebase_auth_user_provider_data_at(_user, _index)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -11981,7 +13545,14 @@ function firebase_auth_user_provider_data_at(_user, _index)
     var __return_value__ = __firebase_auth_user_provider_data_at(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseAuthProviderUserInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
@@ -12645,7 +14216,7 @@ function firebase_database_on_disconnect_release(_handler)
 }
 
 /**
- * @param {Any} _components
+ * @param {Array[String]} _components
  * @returns {Real}
  */
 function firebase_firestore_field_path_create(_components)
@@ -12655,9 +14226,16 @@ function firebase_firestore_field_path_create(_components)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _components, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _components);
+    // param: _components, type: String[]
+    if (!is_array(_components)) show_error($"{_GMFUNCTION_} :: _components expected array", true);
+    var __length__ = array_length(_components);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_string(_components[_i])) show_error($"{_GMFUNCTION_} :: _components[_i] expected string", true);
+        buffer_write(__args_buffer__, buffer_u32, string_byte_length(_components[_i]));
+        buffer_write(__args_buffer__, buffer_string, _components[_i]);
+    }
 
     var __return_value__ = __firebase_firestore_field_path_create(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -13237,7 +14815,7 @@ function firebase_firestore_filter_not_in_field_path(_field_path, _values)
 }
 
 /**
- * @param {Any} _filters
+ * @param {Array[Real]} _filters
  * @returns {Real}
  */
 function firebase_firestore_filter_and(_filters)
@@ -13247,9 +14825,15 @@ function firebase_firestore_filter_and(_filters)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _filters, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _filters);
+    // param: _filters, type: Float64[]
+    if (!is_array(_filters)) show_error($"{_GMFUNCTION_} :: _filters expected array", true);
+    var __length__ = array_length(_filters);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_numeric(_filters[_i])) show_error($"{_GMFUNCTION_} :: _filters[_i] expected number", true);
+        buffer_write(__args_buffer__, buffer_f64, _filters[_i]);
+    }
 
     var __return_value__ = __firebase_firestore_filter_and(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -13257,7 +14841,7 @@ function firebase_firestore_filter_and(_filters)
 }
 
 /**
- * @param {Any} _filters
+ * @param {Array[Real]} _filters
  * @returns {Real}
  */
 function firebase_firestore_filter_or(_filters)
@@ -13267,9 +14851,15 @@ function firebase_firestore_filter_or(_filters)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _filters, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _filters);
+    // param: _filters, type: Float64[]
+    if (!is_array(_filters)) show_error($"{_GMFUNCTION_} :: _filters expected array", true);
+    var __length__ = array_length(_filters);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_numeric(_filters[_i])) show_error($"{_GMFUNCTION_} :: _filters[_i] expected number", true);
+        buffer_write(__args_buffer__, buffer_f64, _filters[_i]);
+    }
 
     var __return_value__ = __firebase_firestore_filter_or(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -14061,7 +15651,7 @@ function firebase_firestore_named_query(_firestore, _name, _callback)
 /**
  * @param {Real} _document
  * @param {Any} _data
- * @param {Any} _field_paths
+ * @param {Array[Real]} _field_paths
  * @param {Function} _callback
  * @returns {Enum.FirebaseError}
  */
@@ -14082,9 +15672,15 @@ function firebase_firestore_document_ref_set_merge_field_paths(_document, _data,
 
     __ext_core_buffer_marshal_value(__args_buffer__, _data);
 
-    // param: _field_paths, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _field_paths);
+    // param: _field_paths, type: Float64[]
+    if (!is_array(_field_paths)) show_error($"{_GMFUNCTION_} :: _field_paths expected array", true);
+    var __length__ = array_length(_field_paths);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_numeric(_field_paths[_i])) show_error($"{_GMFUNCTION_} :: _field_paths[_i] expected number", true);
+        buffer_write(__args_buffer__, buffer_f64, _field_paths[_i]);
+    }
 
     // param: _callback, type: optional<Function>
     if (is_undefined(_callback))
@@ -14112,7 +15708,7 @@ function firebase_firestore_document_ref_set_merge_field_paths(_document, _data,
  * @param {Real} _batch
  * @param {Real} _document
  * @param {Any} _data
- * @param {Any} _field_paths
+ * @param {Array[Real]} _field_paths
  */
 function firebase_firestore_write_batch_set_merge_field_paths(_batch, _document, _data, _field_paths)
 {
@@ -14133,9 +15729,15 @@ function firebase_firestore_write_batch_set_merge_field_paths(_batch, _document,
 
     __ext_core_buffer_marshal_value(__args_buffer__, _data);
 
-    // param: _field_paths, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _field_paths);
+    // param: _field_paths, type: Float64[]
+    if (!is_array(_field_paths)) show_error($"{_GMFUNCTION_} :: _field_paths expected array", true);
+    var __length__ = array_length(_field_paths);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (!is_numeric(_field_paths[_i])) show_error($"{_GMFUNCTION_} :: _field_paths[_i] expected number", true);
+        buffer_write(__args_buffer__, buffer_f64, _field_paths[_i]);
+    }
 
     var __return_value__ = __firebase_firestore_write_batch_set_merge_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -14205,14 +15807,12 @@ function firebase_remote_config_ensure_initialized_info(_rc_ref, _callback)
 /**
  * @param {Real} _rc_ref
  * @param {String} _key
- * @returns {Any}
+ * @returns {Struct.FirebaseRemoteConfigBooleanInfo}
  */
 function firebase_remote_config_get_boolean_with_info(_rc_ref, _key)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14230,21 +15830,26 @@ function firebase_remote_config_get_boolean_with_info(_rc_ref, _key)
     var __return_value__ = __firebase_remote_config_get_boolean_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseRemoteConfigBooleanInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
 /**
  * @param {Real} _rc_ref
  * @param {String} _key
- * @returns {Any}
+ * @returns {Struct.FirebaseRemoteConfigLongInfo}
  */
 function firebase_remote_config_get_long_with_info(_rc_ref, _key)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14262,21 +15867,26 @@ function firebase_remote_config_get_long_with_info(_rc_ref, _key)
     var __return_value__ = __firebase_remote_config_get_long_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseRemoteConfigLongInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
 /**
  * @param {Real} _rc_ref
  * @param {String} _key
- * @returns {Any}
+ * @returns {Struct.FirebaseRemoteConfigDoubleInfo}
  */
 function firebase_remote_config_get_double_with_info(_rc_ref, _key)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14294,21 +15904,26 @@ function firebase_remote_config_get_double_with_info(_rc_ref, _key)
     var __return_value__ = __firebase_remote_config_get_double_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseRemoteConfigDoubleInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
 /**
  * @param {Real} _rc_ref
  * @param {String} _key
- * @returns {Any}
+ * @returns {Struct.FirebaseRemoteConfigStringInfo}
  */
 function firebase_remote_config_get_string_with_info(_rc_ref, _key)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14326,7 +15941,14 @@ function firebase_remote_config_get_string_with_info(_rc_ref, _key)
     var __return_value__ = __firebase_remote_config_get_string_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseRemoteConfigStringInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
@@ -14334,14 +15956,12 @@ function firebase_remote_config_get_string_with_info(_rc_ref, _key)
  * @param {Real} _rc_ref
  * @param {String} _key
  * @param {Id.Buffer} _out_buffer
- * @returns {Any}
+ * @returns {Struct.FirebaseRemoteConfigDataInfo}
  */
 function firebase_remote_config_get_data_with_info(_rc_ref, _key, _out_buffer)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14363,7 +15983,14 @@ function firebase_remote_config_get_data_with_info(_rc_ref, _key, _out_buffer)
     var __return_value__ = __firebase_remote_config_get_data_with_info(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseRemoteConfigDataInfo_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
@@ -14781,14 +16408,12 @@ function firebase_firestore_field_value_reference_value(_field_value)
 
 /**
  * @param {Real} _field_value
- * @returns {Any}
+ * @returns {Struct.FirestoreTimestamp}
  */
 function firebase_firestore_field_value_timestamp_value(_field_value)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14801,20 +16426,25 @@ function firebase_firestore_field_value_timestamp_value(_field_value)
     var __return_value__ = __firebase_firestore_field_value_timestamp_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirestoreTimestamp_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
 /**
  * @param {Real} _field_value
- * @returns {Any}
+ * @returns {Struct.FirestoreGeoPoint}
  */
 function firebase_firestore_field_value_geo_point_value(_field_value)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -14827,7 +16457,14 @@ function firebase_firestore_field_value_geo_point_value(_field_value)
     var __return_value__ = __firebase_firestore_field_value_geo_point_value(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirestoreGeoPoint_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
@@ -14973,7 +16610,7 @@ function firebase_firestore_document_ref_to_string(_document)
 
 /**
  * @param {Real} _document
- * @param {Any} _entries
+ * @param {Array[Struct.FirestoreFieldPathValue]} _entries
  * @param {Function} _callback
  * @returns {Enum.FirebaseError}
  */
@@ -14990,9 +16627,15 @@ function firebase_firestore_document_ref_update_field_paths(_document, _entries,
     if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
     buffer_write(__args_buffer__, buffer_u64, _document);
 
-    // param: _entries, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _entries);
+    // param: _entries, type: struct FirestoreFieldPathValue[]
+    if (!is_array(_entries)) show_error($"{_GMFUNCTION_} :: _entries expected array", true);
+    var __length__ = array_length(_entries);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (_entries[_i].__uid != 696662754) show_error($"{_GMFUNCTION_} :: _entries[_i] expected FirestoreFieldPathValue", true);
+        __FirestoreFieldPathValue_encode(_entries[_i], __args_buffer__, buffer_tell(__args_buffer__), _GMFUNCTION_);
+    }
 
     // param: _callback, type: optional<Function>
     if (is_undefined(_callback))
@@ -15019,7 +16662,7 @@ function firebase_firestore_document_ref_update_field_paths(_document, _entries,
 /**
  * @param {Real} _batch
  * @param {Real} _document
- * @param {Any} _entries
+ * @param {Array[Struct.FirestoreFieldPathValue]} _entries
  * @returns {Real}
  */
 function firebase_firestore_write_batch_update_field_paths(_batch, _document, _entries)
@@ -15037,9 +16680,15 @@ function firebase_firestore_write_batch_update_field_paths(_batch, _document, _e
     if (!is_numeric(_document)) show_error($"{_GMFUNCTION_} :: _document expected number", true);
     buffer_write(__args_buffer__, buffer_u64, _document);
 
-    // param: _entries, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _entries);
+    // param: _entries, type: struct FirestoreFieldPathValue[]
+    if (!is_array(_entries)) show_error($"{_GMFUNCTION_} :: _entries expected array", true);
+    var __length__ = array_length(_entries);
+    buffer_write(__args_buffer__, buffer_u32, __length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        if (_entries[_i].__uid != 696662754) show_error($"{_GMFUNCTION_} :: _entries[_i] expected FirestoreFieldPathValue", true);
+        __FirestoreFieldPathValue_encode(_entries[_i], __args_buffer__, buffer_tell(__args_buffer__), _GMFUNCTION_);
+    }
 
     var __return_value__ = __firebase_firestore_write_batch_update_field_paths(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
@@ -15130,14 +16779,12 @@ function firebase_firestore_document_snapshot_to_string(_snapshot)
  * @param {Real} _snapshot
  * @param {Real} _field_path
  * @param {Real} _server_timestamp_behavior
- * @returns {Any}
+ * @returns {Struct.FirestoreFieldLookup}
  */
 function firebase_firestore_document_snapshot_get_field_path(_snapshot, _field_path, _server_timestamp_behavior)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -15158,7 +16805,7 @@ function firebase_firestore_document_snapshot_get_field_path(_snapshot, _field_p
     var __return_value__ = __firebase_firestore_document_snapshot_get_field_path(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    __result__ = __FirestoreFieldLookup_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
     return __result__;
 }
 
@@ -15262,26 +16909,29 @@ function firebase_app_get_instance(_name)
 }
 
 /**
- * @returns {Any}
+ * @returns {Array[Real]}
  */
 function firebase_app_get_apps()
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
 
-    var __decoders__ = __GMFirebase_get_decoders();
-
     var __ret_buffer__ = __ext_core_get_ret_buffer();
 
     var __return_value__ = __firebase_app_get_apps(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    var __length__ = buffer_read(__ret_buffer__, buffer_u32);
+    __result__ = array_create(__length__);
+    for (var _i = 0; _i < __length__; ++_i)
+    {
+        __result__[_i] = buffer_read(__ret_buffer__, buffer_u64);
+    }
     return __result__;
 }
 
 /**
- * @param {Any} _options
+ * @param {Struct.FirebaseAppOptions} _options
  * @param {String} _name
  * @returns {Real}
  */
@@ -15292,9 +16942,9 @@ function firebase_app_initialize_with_options(_options, _name)
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
-    // param: _options, type: Any
-
-    __ext_core_buffer_marshal_value(__args_buffer__, _options);
+    // param: _options, type: struct FirebaseAppOptions
+    if (_options.__uid != 1906593923) show_error($"{_GMFUNCTION_} :: _options expected FirebaseAppOptions", true);
+    __FirebaseAppOptions_encode(_options, __args_buffer__, buffer_tell(__args_buffer__), _GMFUNCTION_);
 
     // param: _name, type: String
     if (!is_string(_name)) show_error($"{_GMFUNCTION_} :: _name expected string", true);
@@ -15351,14 +17001,12 @@ function firebase_app_handle_get_name(_app)
 
 /**
  * @param {Real} _app
- * @returns {Any}
+ * @returns {Struct.FirebaseAppOptions}
  */
 function firebase_app_handle_get_options(_app)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
-
-    var __decoders__ = __GMFirebase_get_decoders();
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
@@ -15371,26 +17019,38 @@ function firebase_app_handle_get_options(_app)
     var __return_value__ = __firebase_app_handle_get_options(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__), buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseAppOptions_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
 /**
- * @returns {Any}
+ * @returns {Struct.FirebaseAppOptions}
  */
 function firebase_app_get_default_options()
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
 
-    var __decoders__ = __GMFirebase_get_decoders();
-
     var __ret_buffer__ = __ext_core_get_ret_buffer();
 
     var __return_value__ = __firebase_app_get_default_options(buffer_get_address(__ret_buffer__), buffer_get_size(__ret_buffer__));
 
     var __result__ = undefined;
-    __result__ = __ext_core_buffer_unmarshal_value(__ret_buffer__, __decoders__);
+    if (buffer_read(__ret_buffer__, buffer_bool))
+    {
+        __result__ = __FirebaseAppOptions_decode(__ret_buffer__, buffer_tell(__ret_buffer__));
+    }
+    else
+    {
+        __result__ = undefined;
+    }
     return __result__;
 }
 
@@ -16778,12 +18438,29 @@ function firebase_auth_game_center_auth_provider_get_credential_last_result(_cal
 function __GMFirebase_get_decoders()
 {
     static __decoders__ = [
+        __FirebaseAnalyticsParameter_decode,
+        __FirebaseAppCheckToken_decode,
+        __FirebaseAuthProviderUserInfo_decode,
+        __FirebaseAuthAdditionalUserInfo_decode,
         __FirebaseAuthUserInfo_decode,
         __FirebaseDatabaseReferenceInfo_decode,
         __FirebaseDataSnapshotInfo_decode,
+        __FirestoreTimestamp_decode,
+        __FirestoreGeoPoint_decode,
+        __FirestoreDocumentChange_decode,
+        __FirestoreFieldLookup_decode,
+        __FirestoreFieldPathValue_decode,
+        __FirestoreLoadBundleTaskProgress_decode,
         __FirestoreDocumentSnapshotInfo_decode,
         __FirestoreQuerySnapshotInfo_decode,
-        __FirebaseRemoteConfigInfo_decode
+        __FirebaseRemoteConfigInfo_decode,
+        __FirebaseRemoteConfigBooleanInfo_decode,
+        __FirebaseRemoteConfigLongInfo_decode,
+        __FirebaseRemoteConfigDoubleInfo_decode,
+        __FirebaseRemoteConfigStringInfo_decode,
+        __FirebaseRemoteConfigDataInfo_decode,
+        __FirebaseAppOptions_decode,
+        __FirebaseAuthResult_decode
     ];
     return __decoders__;
 }
@@ -16803,4 +18480,4 @@ function __GMFirebase_is_available()
 // # Exports
 // #####################################################################
 
-#export FirebaseError, FirebaseAppCheckProvider, FirebaseAuthError, FirebaseLogLevel, FirebaseDatabaseError, FirestoreError, FirestoreSource, FirestoreDirection, FirestoreServerTimestampBehavior, FirestoreDocumentChangeType, FirebaseRemoteConfigLastFetchStatus, FirebaseRemoteConfigFetchFailureReason, FirebaseUmpConsentStatus, FirebaseUmpConsentFormStatus, FirebaseUmpPrivacyOptionsRequirementStatus, FirebaseUmpConsentDebugGeography, FirebaseAuthUserInfo, FirebaseDatabaseReferenceInfo, FirebaseDataSnapshotInfo, FirestoreDocumentSnapshotInfo, FirestoreQuerySnapshotInfo, FirebaseRemoteConfigInfo, firebase_analytics_log_event_params, firebase_analytics_set_default_event_parameters, firebase_analytics_log_apple_transaction, firebase_analytics_get_analytics_instance_id, firebase_analytics_get_session_id, firebase_analytics_set_log_callback, firebase_app_check_get_token, firebase_app_check_get_limited_use_token, firebase_app_check_add_listener, firebase_app_check_remove_listener, firebase_installations_get_id, firebase_installations_get_token, firebase_installations_delete, firebase_auth_current_user, firebase_auth_fetch_providers_for_email, firebase_auth_sign_in_with_custom_token, firebase_auth_sign_in_with_credential, firebase_auth_sign_in_and_retrieve_data_with_credential, firebase_auth_sign_in_anonymously, firebase_auth_sign_in_with_email_and_password, firebase_auth_create_user_with_email_and_password, firebase_auth_send_password_reset_email, firebase_auth_add_state_listener, firebase_auth_remove_state_listener, firebase_auth_add_id_token_listener, firebase_auth_remove_id_token_listener, firebase_auth_credential_provider, firebase_auth_credential_is_valid, firebase_auth_credential_release, firebase_auth_email_auth_provider_get_credential, firebase_auth_facebook_auth_provider_get_credential, firebase_auth_game_center_auth_provider_get_credential, firebase_auth_github_auth_provider_get_credential, firebase_auth_google_auth_provider_get_credential, firebase_auth_oauth_provider_get_credential, firebase_auth_oauth_provider_get_credential_with_nonce, firebase_auth_play_games_auth_provider_get_credential, firebase_auth_twitter_auth_provider_get_credential, firebase_auth_phone_verify_phone_number, firebase_auth_phone_get_credential, firebase_auth_phone_credential_sms_code, firebase_auth_phone_resending_token_release, firebase_auth_phone_listener_release, firebase_auth_user_get_info, firebase_auth_user_release, firebase_auth_user_is_valid, firebase_auth_user_uid, firebase_auth_user_email, firebase_auth_user_display_name, firebase_auth_user_photo_url, firebase_auth_user_provider_id, firebase_auth_user_phone_number, firebase_auth_user_is_email_verified, firebase_auth_user_is_anonymous, firebase_auth_user_creation_timestamp, firebase_auth_user_last_sign_in_timestamp, firebase_auth_user_get_token, firebase_auth_user_update_password, firebase_auth_user_update_profile, firebase_auth_user_send_email_verification, firebase_auth_user_send_email_verification_before_updating_email, firebase_auth_user_reauthenticate, firebase_auth_user_reauthenticate_and_retrieve_data, firebase_auth_user_link_with_credential, firebase_auth_user_unlink, firebase_auth_user_reload, firebase_auth_user_delete, firebase_database_get_instance, firebase_database_get_instance_for_url, firebase_database_get_url, firebase_database_get_reference, firebase_database_get_reference_at_path, firebase_database_get_reference_from_url, firebase_database_go_offline, firebase_database_go_online, firebase_database_purge_outstanding_writes, firebase_database_set_persistence_enabled, firebase_database_set_log_level, firebase_database_get_log_level, firebase_database_ref_order_by_child, firebase_database_ref_order_by_key, firebase_database_ref_order_by_value, firebase_database_ref_order_by_priority, firebase_database_ref_start_at, firebase_database_ref_start_at_key, firebase_database_ref_end_at, firebase_database_ref_end_at_key, firebase_database_ref_equal_to, firebase_database_ref_equal_to_key, firebase_database_ref_limit_to_first, firebase_database_ref_limit_to_last, firebase_database_ref_set_keep_synchronized, firebase_database_ref_get_value, firebase_database_ref_add_value_listener, firebase_database_ref_remove_value_listener, firebase_database_ref_remove_all_value_listeners, firebase_database_ref_add_child_listener, firebase_database_ref_remove_child_listener, firebase_database_ref_remove_all_child_listeners, firebase_database_query_order_by_child, firebase_database_query_order_by_key, firebase_database_query_order_by_value, firebase_database_query_order_by_priority, firebase_database_query_start_at, firebase_database_query_start_at_key, firebase_database_query_end_at, firebase_database_query_end_at_key, firebase_database_query_equal_to, firebase_database_query_equal_to_key, firebase_database_query_limit_to_first, firebase_database_query_limit_to_last, firebase_database_query_get_reference, firebase_database_query_set_keep_synchronized, firebase_database_query_is_valid, firebase_database_query_get_value, firebase_database_query_add_value_listener, firebase_database_query_remove_value_listener, firebase_database_query_remove_all_value_listeners, firebase_database_query_add_child_listener, firebase_database_query_remove_child_listener, firebase_database_query_remove_all_child_listeners, firebase_database_query_release, firebase_database_ref_get, firebase_database_ref_child, firebase_database_ref_push, firebase_database_ref_go_online, firebase_database_ref_go_offline, firebase_database_ref_set_value, firebase_database_ref_set_priority, firebase_database_ref_set_value_and_priority, firebase_database_ref_update_children, firebase_database_ref_remove_value, firebase_database_ref_run_transaction, firebase_database_ref_release, firebase_database_snapshot_exists, firebase_database_snapshot_is_valid, firebase_database_snapshot_child, firebase_database_snapshot_has_child, firebase_database_snapshot_has_children, firebase_database_snapshot_children_count, firebase_database_snapshot_get_children, firebase_database_snapshot_key, firebase_database_snapshot_get_reference, firebase_database_snapshot_get_info, firebase_database_snapshot_get_value, firebase_database_snapshot_get_priority, firebase_database_snapshot_release, firebase_firestore_get_instance, firebase_firestore_get_instance_for_database, firebase_firestore_settings_get_host, firebase_firestore_settings_set_host, firebase_firestore_settings_get_ssl_enabled, firebase_firestore_settings_set_ssl_enabled, firebase_firestore_settings_get_persistence_enabled, firebase_firestore_settings_set_persistence_enabled, firebase_firestore_settings_get_cache_size_bytes, firebase_firestore_settings_set_cache_size_bytes, firebase_firestore_collection, firebase_firestore_document, firebase_firestore_collection_group, firebase_firestore_batch, firebase_firestore_enable_network, firebase_firestore_disable_network, firebase_firestore_terminate, firebase_firestore_clear_persistence, firebase_firestore_wait_for_pending_writes, firebase_firestore_run_transaction, firebase_firestore_collection_ref_id, firebase_firestore_collection_ref_path, firebase_firestore_collection_ref_parent, firebase_firestore_collection_ref_document, firebase_firestore_collection_ref_document_path, firebase_firestore_collection_ref_add, firebase_firestore_collection_ref_is_valid, firebase_firestore_collection_ref_release, firebase_firestore_document_ref_id, firebase_firestore_document_ref_path, firebase_firestore_document_ref_parent, firebase_firestore_document_ref_collection, firebase_firestore_document_ref_get, firebase_firestore_document_ref_set, firebase_firestore_document_ref_set_merge, firebase_firestore_document_ref_set_merge_fields, firebase_firestore_document_ref_update, firebase_firestore_document_ref_delete, firebase_firestore_document_ref_add_snapshot_listener, firebase_firestore_document_ref_is_valid, firebase_firestore_document_ref_release, firebase_firestore_query_where_equal_to, firebase_firestore_query_where_not_equal_to, firebase_firestore_query_where_less_than, firebase_firestore_query_where_less_than_or_equal_to, firebase_firestore_query_where_greater_than, firebase_firestore_query_where_greater_than_or_equal_to, firebase_firestore_query_where_array_contains, firebase_firestore_query_where_array_contains_any, firebase_firestore_query_where_in, firebase_firestore_query_where_not_in, firebase_firestore_query_order_by, firebase_firestore_query_limit, firebase_firestore_query_limit_to_last, firebase_firestore_query_start_at_snapshot, firebase_firestore_query_start_at_values, firebase_firestore_query_start_after_snapshot, firebase_firestore_query_start_after_values, firebase_firestore_query_end_before_snapshot, firebase_firestore_query_end_before_values, firebase_firestore_query_end_at_snapshot, firebase_firestore_query_end_at_values, firebase_firestore_query_get, firebase_firestore_query_add_snapshot_listener, firebase_firestore_query_is_valid, firebase_firestore_query_release, firebase_firestore_write_batch_set, firebase_firestore_write_batch_set_merge, firebase_firestore_write_batch_set_merge_fields, firebase_firestore_write_batch_update, firebase_firestore_write_batch_delete, firebase_firestore_write_batch_commit, firebase_firestore_write_batch_release, firebase_firestore_field_value_array_union, firebase_firestore_field_value_array_remove, firebase_firestore_field_value_reference, firebase_firestore_field_value_release, firebase_firestore_document_snapshot_get_info, firebase_firestore_document_snapshot_get, firebase_firestore_document_snapshot_get_data, firebase_firestore_document_snapshot_release, firebase_firestore_query_snapshot_get_info, firebase_firestore_query_snapshot_documents, firebase_firestore_query_snapshot_document_changes, firebase_firestore_query_snapshot_release, firebase_firestore_listener_registration_remove, firebase_storage_get_instance, firebase_storage_get_instance_with_url, firebase_storage_url, firebase_storage_get_reference, firebase_storage_get_reference_path, firebase_storage_get_reference_from_url, firebase_storage_max_download_retry_time, firebase_storage_set_max_download_retry_time, firebase_storage_max_upload_retry_time, firebase_storage_set_max_upload_retry_time, firebase_storage_max_operation_retry_time, firebase_storage_set_max_operation_retry_time, firebase_storage_use_emulator, firebase_storage_ref_child, firebase_storage_ref_get_parent, firebase_storage_ref_bucket, firebase_storage_ref_full_path, firebase_storage_ref_name, firebase_storage_ref_is_valid, firebase_storage_ref_storage, firebase_storage_ref_delete, firebase_storage_ref_get_download_url, firebase_storage_ref_get_metadata, firebase_storage_ref_update_metadata, firebase_storage_ref_put_bytes, firebase_storage_ref_put_file, firebase_storage_ref_get_bytes, firebase_storage_ref_get_file, firebase_storage_ref_list, firebase_storage_metadata_create, firebase_storage_metadata_release, firebase_storage_metadata_is_valid, firebase_storage_metadata_bucket, firebase_storage_metadata_cache_control, firebase_storage_metadata_set_cache_control, firebase_storage_metadata_content_disposition, firebase_storage_metadata_set_content_disposition, firebase_storage_metadata_content_encoding, firebase_storage_metadata_set_content_encoding, firebase_storage_metadata_content_language, firebase_storage_metadata_set_content_language, firebase_storage_metadata_content_type, firebase_storage_metadata_set_content_type, firebase_storage_metadata_creation_time, firebase_storage_metadata_generation, firebase_storage_metadata_metadata_generation, firebase_storage_metadata_name, firebase_storage_metadata_path, firebase_storage_metadata_get_reference, firebase_storage_metadata_size_bytes, firebase_storage_metadata_updated_time, firebase_storage_metadata_custom_metadata_count, firebase_storage_metadata_custom_metadata_key_at, firebase_storage_metadata_get_custom_metadata, firebase_storage_metadata_set_custom_metadata, firebase_storage_controller_create, firebase_storage_controller_release, firebase_storage_controller_is_valid, firebase_storage_controller_pause, firebase_storage_controller_resume, firebase_storage_controller_cancel, firebase_storage_controller_is_paused, firebase_storage_controller_bytes_transferred, firebase_storage_controller_total_byte_count, firebase_storage_controller_get_reference, firebase_storage_list_result_release, firebase_storage_list_result_is_valid, firebase_storage_list_result_item_count, firebase_storage_list_result_item_at, firebase_storage_list_result_prefix_count, firebase_storage_list_result_prefix_at, firebase_storage_list_result_next_page_token, firebase_functions_get_instance, firebase_functions_get_instance_with_region, firebase_functions_use_functions_emulator, firebase_functions_get_https_callable, firebase_functions_get_https_callable_with_options, firebase_functions_get_https_callable_from_url, firebase_functions_get_https_callable_from_url_with_options, firebase_functions_callable_is_valid, firebase_functions_callable_call, firebase_functions_callable_call_with_data, firebase_remote_config_get_instance, firebase_remote_config_ensure_initialized, firebase_remote_config_set_config_settings, firebase_remote_config_get_config_settings_fetch_timeout, firebase_remote_config_get_config_settings_minimum_fetch_interval, firebase_remote_config_fetch, firebase_remote_config_fetch_with_expiration, firebase_remote_config_fetch_and_activate, firebase_remote_config_activate, firebase_remote_config_get_boolean, firebase_remote_config_get_long, firebase_remote_config_get_double, firebase_remote_config_get_string, firebase_remote_config_get_data_size, firebase_remote_config_get_data, firebase_remote_config_get_keys_by_prefix, firebase_remote_config_get_keys, firebase_remote_config_get_all, firebase_remote_config_set_defaults, firebase_remote_config_get_info, firebase_remote_config_add_config_update_listener, firebase_remote_config_remove_config_update_listener, firebase_messaging_request_permission, firebase_messaging_get_token, firebase_messaging_delete_token, firebase_messaging_subscribe, firebase_messaging_unsubscribe, firebase_messaging_message_raw_data_copy, firebase_ump_get_instance, firebase_ump_get_consent_status, firebase_ump_get_consent_form_status, firebase_ump_get_privacy_options_requirement_status, firebase_ump_can_request_ads, firebase_ump_reset, firebase_ump_request_consent_info_update, firebase_ump_load_consent_form, firebase_ump_show_consent_form, firebase_ump_load_and_show_consent_form_if_required, firebase_ump_show_privacy_options_form, firebase_analytics_initiate_on_device_conversion_measurement_hashed_email, firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone, firebase_auth_federated_oauth_provider_create, firebase_auth_federated_oauth_provider_set_data, firebase_auth_federated_oauth_provider_release, firebase_auth_sign_in_with_provider, firebase_auth_sign_in_with_custom_token_result, firebase_auth_sign_in_and_retrieve_data_with_credential_result, firebase_auth_sign_in_anonymously_result, firebase_auth_sign_in_with_email_and_password_result, firebase_auth_create_user_with_email_and_password_result, firebase_auth_user_provider_data_count, firebase_auth_user_provider_data_at, firebase_auth_user_reauthenticate_with_provider, firebase_auth_user_link_with_provider, firebase_auth_user_reauthenticate_and_retrieve_data_result, firebase_auth_user_link_with_credential_result, firebase_auth_user_update_phone_number_credential, firebase_database_ref_key, firebase_database_ref_is_root, firebase_database_ref_is_valid, firebase_database_ref_get_parent, firebase_database_ref_get_root, firebase_database_ref_get_database, firebase_database_ref_get_url, firebase_database_server_timestamp, firebase_database_ref_on_disconnect, firebase_database_on_disconnect_cancel, firebase_database_on_disconnect_remove_value, firebase_database_on_disconnect_set_value, firebase_database_on_disconnect_set_value_and_priority, firebase_database_on_disconnect_update_children, firebase_database_on_disconnect_release, firebase_firestore_field_path_create, firebase_firestore_field_path_is_valid, firebase_firestore_field_path_to_string, firebase_firestore_field_path_release, firebase_firestore_filter_equal_to, firebase_firestore_filter_not_equal_to, firebase_firestore_filter_less_than, firebase_firestore_filter_less_than_or_equal_to, firebase_firestore_filter_greater_than, firebase_firestore_filter_greater_than_or_equal_to, firebase_firestore_filter_array_contains, firebase_firestore_filter_array_contains_any, firebase_firestore_filter_in, firebase_firestore_filter_not_in, firebase_firestore_filter_equal_to_field_path, firebase_firestore_filter_not_equal_to_field_path, firebase_firestore_filter_less_than_field_path, firebase_firestore_filter_less_than_or_equal_to_field_path, firebase_firestore_filter_greater_than_field_path, firebase_firestore_filter_greater_than_or_equal_to_field_path, firebase_firestore_filter_array_contains_field_path, firebase_firestore_filter_array_contains_any_field_path, firebase_firestore_filter_in_field_path, firebase_firestore_filter_not_in_field_path, firebase_firestore_filter_and, firebase_firestore_filter_or, firebase_firestore_filter_release, firebase_firestore_query_where_filter, firebase_firestore_query_where_equal_to_field_path, firebase_firestore_query_where_not_equal_to_field_path, firebase_firestore_query_where_less_than_field_path, firebase_firestore_query_where_less_than_or_equal_to_field_path, firebase_firestore_query_where_greater_than_field_path, firebase_firestore_query_where_greater_than_or_equal_to_field_path, firebase_firestore_query_where_array_contains_field_path, firebase_firestore_query_where_array_contains_any_field_path, firebase_firestore_query_where_in_field_path, firebase_firestore_query_where_not_in_field_path, firebase_firestore_query_order_by_field_path, firebase_firestore_query_count, firebase_firestore_aggregate_query_get_query, firebase_firestore_aggregate_query_is_valid, firebase_firestore_aggregate_query_get, firebase_firestore_aggregate_query_release, firebase_firestore_aggregate_snapshot_count, firebase_firestore_aggregate_snapshot_get_query, firebase_firestore_aggregate_snapshot_is_valid, firebase_firestore_aggregate_snapshot_release, firebase_firestore_add_snapshots_in_sync_listener, firebase_firestore_load_bundle, firebase_firestore_named_query, firebase_firestore_document_ref_set_merge_field_paths, firebase_firestore_write_batch_set_merge_field_paths, firebase_storage_metadata_md5_hash, firebase_remote_config_ensure_initialized_info, firebase_remote_config_get_boolean_with_info, firebase_remote_config_get_long_with_info, firebase_remote_config_get_double_with_info, firebase_remote_config_get_string_with_info, firebase_remote_config_get_data_with_info, firebase_firestore_field_value_type, firebase_firestore_field_value_is_valid, firebase_firestore_field_value_is_null, firebase_firestore_field_value_is_boolean, firebase_firestore_field_value_is_integer, firebase_firestore_field_value_is_double, firebase_firestore_field_value_is_timestamp, firebase_firestore_field_value_is_string, firebase_firestore_field_value_is_blob, firebase_firestore_field_value_is_reference, firebase_firestore_field_value_is_geo_point, firebase_firestore_field_value_is_array, firebase_firestore_field_value_is_map, firebase_firestore_field_value_boolean_value, firebase_firestore_field_value_integer_value, firebase_firestore_field_value_double_value, firebase_firestore_field_value_string_value, firebase_firestore_field_value_blob_size, firebase_firestore_field_value_blob_copy, firebase_firestore_field_value_reference_value, firebase_firestore_field_value_timestamp_value, firebase_firestore_field_value_geo_point_value, firebase_firestore_field_value_array_value, firebase_firestore_field_value_map_value, firebase_firestore_field_value_to_string, firebase_firestore_query_get_firestore, firebase_firestore_document_ref_get_firestore, firebase_firestore_document_ref_to_string, firebase_firestore_document_ref_update_field_paths, firebase_firestore_write_batch_update_field_paths, firebase_firestore_write_batch_is_valid, firebase_firestore_settings_to_string, firebase_firestore_document_snapshot_is_valid, firebase_firestore_document_snapshot_to_string, firebase_firestore_document_snapshot_get_field_path, firebase_firestore_query_snapshot_is_valid, firebase_firestore_query_snapshot_get_query, firebase_firestore_listener_registration_is_valid, firebase_app_get_default_handle, firebase_app_get_instance, firebase_app_get_apps, firebase_app_initialize_with_options, firebase_app_initialize_from_json, firebase_app_handle_get_name, firebase_app_handle_get_options, firebase_app_get_default_options, firebase_app_release_handle, firebase_auth_get_app, firebase_database_get_app, firebase_database_get_instance_for_app, firebase_database_get_instance_for_app_url, firebase_firestore_get_app, firebase_firestore_get_instance_for_app, firebase_firestore_get_instance_for_app_database, firebase_storage_get_app, firebase_storage_get_instance_for_app, firebase_storage_get_instance_for_app_url, firebase_functions_get_app, firebase_functions_callable_get_functions, firebase_functions_get_instance_for_app, firebase_functions_get_instance_for_app_region, firebase_installations_get_app, firebase_remote_config_get_app, firebase_app_check_get_app, firebase_firestore_field_value_array, firebase_firestore_field_value_map, firebase_remote_config_get_instance_for_app, firebase_analytics_initialize_for_app, firebase_messaging_initialize_for_app, firebase_messaging_initialize_for_app_with_options, firebase_ump_get_instance_for_app, firebase_auth_get_current_instance_handle, firebase_auth_get_instance_for_app, firebase_auth_use_instance, firebase_auth_instance_get_app, firebase_installations_get_instance_handle, firebase_installations_get_instance_for_app, firebase_installations_instance_get_app, firebase_installations_instance_get_id, firebase_installations_instance_get_token, firebase_installations_instance_delete, firebase_app_check_get_instance_handle, firebase_app_check_get_instance_for_app, firebase_app_check_instance_get_app, firebase_app_check_instance_set_token_auto_refresh_enabled, firebase_app_check_instance_get_token, firebase_app_check_instance_get_limited_use_token, firebase_app_check_instance_add_listener, firebase_firestore_document_snapshot_metadata_to_string, firebase_firestore_query_snapshot_metadata_to_string, firebase_firestore_document_snapshot_exists, firebase_firestore_document_snapshot_id, firebase_firestore_document_snapshot_reference, firebase_firestore_document_snapshot_metadata_has_pending_writes, firebase_firestore_document_snapshot_metadata_is_from_cache, firebase_firestore_query_snapshot_size, firebase_firestore_query_snapshot_empty, firebase_firestore_query_snapshot_metadata_has_pending_writes, firebase_firestore_query_snapshot_metadata_is_from_cache, firebase_auth_game_center_auth_provider_get_credential_last_result
+#export FirebaseError, FirebaseAppCheckProvider, FirebaseAuthError, FirebaseLogLevel, FirebaseDatabaseError, FirestoreError, FirestoreSource, FirestoreDirection, FirestoreServerTimestampBehavior, FirestoreDocumentChangeType, FirestoreLoadBundleTaskState, FirebaseRemoteConfigLastFetchStatus, FirebaseRemoteConfigFetchFailureReason, FirebaseRemoteConfigValueSource, FirebaseUmpConsentStatus, FirebaseUmpConsentFormStatus, FirebaseUmpPrivacyOptionsRequirementStatus, FirebaseUmpConsentDebugGeography, FirebaseAnalyticsParameter, FirebaseAppCheckToken, FirebaseAuthProviderUserInfo, FirebaseAuthAdditionalUserInfo, FirebaseAuthUserInfo, FirebaseDatabaseReferenceInfo, FirebaseDataSnapshotInfo, FirestoreTimestamp, FirestoreGeoPoint, FirestoreDocumentChange, FirestoreFieldLookup, FirestoreFieldPathValue, FirestoreLoadBundleTaskProgress, FirestoreDocumentSnapshotInfo, FirestoreQuerySnapshotInfo, FirebaseRemoteConfigInfo, FirebaseRemoteConfigBooleanInfo, FirebaseRemoteConfigLongInfo, FirebaseRemoteConfigDoubleInfo, FirebaseRemoteConfigStringInfo, FirebaseRemoteConfigDataInfo, FirebaseAppOptions, FirebaseAuthResult, firebase_analytics_log_event_params, firebase_analytics_set_default_event_parameters, firebase_analytics_log_apple_transaction, firebase_analytics_get_analytics_instance_id, firebase_analytics_get_session_id, firebase_analytics_set_log_callback, firebase_app_check_get_token, firebase_app_check_get_limited_use_token, firebase_app_check_add_listener, firebase_app_check_remove_listener, firebase_installations_get_id, firebase_installations_get_token, firebase_installations_delete, firebase_auth_current_user, firebase_auth_fetch_providers_for_email, firebase_auth_sign_in_with_custom_token, firebase_auth_sign_in_with_credential, firebase_auth_sign_in_and_retrieve_data_with_credential, firebase_auth_sign_in_anonymously, firebase_auth_sign_in_with_email_and_password, firebase_auth_create_user_with_email_and_password, firebase_auth_send_password_reset_email, firebase_auth_add_state_listener, firebase_auth_remove_state_listener, firebase_auth_add_id_token_listener, firebase_auth_remove_id_token_listener, firebase_auth_credential_provider, firebase_auth_credential_is_valid, firebase_auth_credential_release, firebase_auth_email_auth_provider_get_credential, firebase_auth_facebook_auth_provider_get_credential, firebase_auth_game_center_auth_provider_get_credential, firebase_auth_github_auth_provider_get_credential, firebase_auth_google_auth_provider_get_credential, firebase_auth_oauth_provider_get_credential, firebase_auth_oauth_provider_get_credential_with_nonce, firebase_auth_play_games_auth_provider_get_credential, firebase_auth_twitter_auth_provider_get_credential, firebase_auth_phone_verify_phone_number, firebase_auth_phone_get_credential, firebase_auth_phone_credential_sms_code, firebase_auth_phone_resending_token_release, firebase_auth_phone_listener_release, firebase_auth_user_get_info, firebase_auth_user_release, firebase_auth_user_is_valid, firebase_auth_user_uid, firebase_auth_user_email, firebase_auth_user_display_name, firebase_auth_user_photo_url, firebase_auth_user_provider_id, firebase_auth_user_phone_number, firebase_auth_user_is_email_verified, firebase_auth_user_is_anonymous, firebase_auth_user_creation_timestamp, firebase_auth_user_last_sign_in_timestamp, firebase_auth_user_get_token, firebase_auth_user_update_password, firebase_auth_user_update_profile, firebase_auth_user_send_email_verification, firebase_auth_user_send_email_verification_before_updating_email, firebase_auth_user_reauthenticate, firebase_auth_user_reauthenticate_and_retrieve_data, firebase_auth_user_link_with_credential, firebase_auth_user_unlink, firebase_auth_user_reload, firebase_auth_user_delete, firebase_database_get_instance, firebase_database_get_instance_for_url, firebase_database_get_url, firebase_database_get_reference, firebase_database_get_reference_at_path, firebase_database_get_reference_from_url, firebase_database_go_offline, firebase_database_go_online, firebase_database_purge_outstanding_writes, firebase_database_set_persistence_enabled, firebase_database_set_log_level, firebase_database_get_log_level, firebase_database_ref_order_by_child, firebase_database_ref_order_by_key, firebase_database_ref_order_by_value, firebase_database_ref_order_by_priority, firebase_database_ref_start_at, firebase_database_ref_start_at_key, firebase_database_ref_end_at, firebase_database_ref_end_at_key, firebase_database_ref_equal_to, firebase_database_ref_equal_to_key, firebase_database_ref_limit_to_first, firebase_database_ref_limit_to_last, firebase_database_ref_set_keep_synchronized, firebase_database_ref_get_value, firebase_database_ref_add_value_listener, firebase_database_ref_remove_value_listener, firebase_database_ref_remove_all_value_listeners, firebase_database_ref_add_child_listener, firebase_database_ref_remove_child_listener, firebase_database_ref_remove_all_child_listeners, firebase_database_query_order_by_child, firebase_database_query_order_by_key, firebase_database_query_order_by_value, firebase_database_query_order_by_priority, firebase_database_query_start_at, firebase_database_query_start_at_key, firebase_database_query_end_at, firebase_database_query_end_at_key, firebase_database_query_equal_to, firebase_database_query_equal_to_key, firebase_database_query_limit_to_first, firebase_database_query_limit_to_last, firebase_database_query_get_reference, firebase_database_query_set_keep_synchronized, firebase_database_query_is_valid, firebase_database_query_get_value, firebase_database_query_add_value_listener, firebase_database_query_remove_value_listener, firebase_database_query_remove_all_value_listeners, firebase_database_query_add_child_listener, firebase_database_query_remove_child_listener, firebase_database_query_remove_all_child_listeners, firebase_database_query_release, firebase_database_ref_get, firebase_database_ref_child, firebase_database_ref_push, firebase_database_ref_go_online, firebase_database_ref_go_offline, firebase_database_ref_set_value, firebase_database_ref_set_priority, firebase_database_ref_set_value_and_priority, firebase_database_ref_update_children, firebase_database_ref_remove_value, firebase_database_ref_run_transaction, firebase_database_ref_release, firebase_database_snapshot_exists, firebase_database_snapshot_is_valid, firebase_database_snapshot_child, firebase_database_snapshot_has_child, firebase_database_snapshot_has_children, firebase_database_snapshot_children_count, firebase_database_snapshot_get_children, firebase_database_snapshot_key, firebase_database_snapshot_get_reference, firebase_database_snapshot_get_info, firebase_database_snapshot_get_value, firebase_database_snapshot_get_priority, firebase_database_snapshot_release, firebase_firestore_get_instance, firebase_firestore_get_instance_for_database, firebase_firestore_settings_get_host, firebase_firestore_settings_set_host, firebase_firestore_settings_get_ssl_enabled, firebase_firestore_settings_set_ssl_enabled, firebase_firestore_settings_get_persistence_enabled, firebase_firestore_settings_set_persistence_enabled, firebase_firestore_settings_get_cache_size_bytes, firebase_firestore_settings_set_cache_size_bytes, firebase_firestore_collection, firebase_firestore_document, firebase_firestore_collection_group, firebase_firestore_batch, firebase_firestore_enable_network, firebase_firestore_disable_network, firebase_firestore_terminate, firebase_firestore_clear_persistence, firebase_firestore_wait_for_pending_writes, firebase_firestore_run_transaction, firebase_firestore_collection_ref_id, firebase_firestore_collection_ref_path, firebase_firestore_collection_ref_parent, firebase_firestore_collection_ref_document, firebase_firestore_collection_ref_document_path, firebase_firestore_collection_ref_add, firebase_firestore_collection_ref_is_valid, firebase_firestore_collection_ref_release, firebase_firestore_document_ref_id, firebase_firestore_document_ref_path, firebase_firestore_document_ref_parent, firebase_firestore_document_ref_collection, firebase_firestore_document_ref_get, firebase_firestore_document_ref_set, firebase_firestore_document_ref_set_merge, firebase_firestore_document_ref_set_merge_fields, firebase_firestore_document_ref_update, firebase_firestore_document_ref_delete, firebase_firestore_document_ref_add_snapshot_listener, firebase_firestore_document_ref_is_valid, firebase_firestore_document_ref_release, firebase_firestore_query_where_equal_to, firebase_firestore_query_where_not_equal_to, firebase_firestore_query_where_less_than, firebase_firestore_query_where_less_than_or_equal_to, firebase_firestore_query_where_greater_than, firebase_firestore_query_where_greater_than_or_equal_to, firebase_firestore_query_where_array_contains, firebase_firestore_query_where_array_contains_any, firebase_firestore_query_where_in, firebase_firestore_query_where_not_in, firebase_firestore_query_order_by, firebase_firestore_query_limit, firebase_firestore_query_limit_to_last, firebase_firestore_query_start_at_snapshot, firebase_firestore_query_start_at_values, firebase_firestore_query_start_after_snapshot, firebase_firestore_query_start_after_values, firebase_firestore_query_end_before_snapshot, firebase_firestore_query_end_before_values, firebase_firestore_query_end_at_snapshot, firebase_firestore_query_end_at_values, firebase_firestore_query_get, firebase_firestore_query_add_snapshot_listener, firebase_firestore_query_is_valid, firebase_firestore_query_release, firebase_firestore_write_batch_set, firebase_firestore_write_batch_set_merge, firebase_firestore_write_batch_set_merge_fields, firebase_firestore_write_batch_update, firebase_firestore_write_batch_delete, firebase_firestore_write_batch_commit, firebase_firestore_write_batch_release, firebase_firestore_field_value_array_union, firebase_firestore_field_value_array_remove, firebase_firestore_field_value_reference, firebase_firestore_field_value_release, firebase_firestore_document_snapshot_get_info, firebase_firestore_document_snapshot_get, firebase_firestore_document_snapshot_get_data, firebase_firestore_document_snapshot_release, firebase_firestore_query_snapshot_get_info, firebase_firestore_query_snapshot_documents, firebase_firestore_query_snapshot_document_changes, firebase_firestore_query_snapshot_release, firebase_firestore_listener_registration_remove, firebase_storage_get_instance, firebase_storage_get_instance_with_url, firebase_storage_url, firebase_storage_get_reference, firebase_storage_get_reference_path, firebase_storage_get_reference_from_url, firebase_storage_max_download_retry_time, firebase_storage_set_max_download_retry_time, firebase_storage_max_upload_retry_time, firebase_storage_set_max_upload_retry_time, firebase_storage_max_operation_retry_time, firebase_storage_set_max_operation_retry_time, firebase_storage_use_emulator, firebase_storage_ref_child, firebase_storage_ref_get_parent, firebase_storage_ref_bucket, firebase_storage_ref_full_path, firebase_storage_ref_name, firebase_storage_ref_is_valid, firebase_storage_ref_storage, firebase_storage_ref_delete, firebase_storage_ref_get_download_url, firebase_storage_ref_get_metadata, firebase_storage_ref_update_metadata, firebase_storage_ref_put_bytes, firebase_storage_ref_put_file, firebase_storage_ref_get_bytes, firebase_storage_ref_get_file, firebase_storage_ref_list, firebase_storage_metadata_create, firebase_storage_metadata_release, firebase_storage_metadata_is_valid, firebase_storage_metadata_bucket, firebase_storage_metadata_cache_control, firebase_storage_metadata_set_cache_control, firebase_storage_metadata_content_disposition, firebase_storage_metadata_set_content_disposition, firebase_storage_metadata_content_encoding, firebase_storage_metadata_set_content_encoding, firebase_storage_metadata_content_language, firebase_storage_metadata_set_content_language, firebase_storage_metadata_content_type, firebase_storage_metadata_set_content_type, firebase_storage_metadata_creation_time, firebase_storage_metadata_generation, firebase_storage_metadata_metadata_generation, firebase_storage_metadata_name, firebase_storage_metadata_path, firebase_storage_metadata_get_reference, firebase_storage_metadata_size_bytes, firebase_storage_metadata_updated_time, firebase_storage_metadata_custom_metadata_count, firebase_storage_metadata_custom_metadata_key_at, firebase_storage_metadata_get_custom_metadata, firebase_storage_metadata_set_custom_metadata, firebase_storage_controller_create, firebase_storage_controller_release, firebase_storage_controller_is_valid, firebase_storage_controller_pause, firebase_storage_controller_resume, firebase_storage_controller_cancel, firebase_storage_controller_is_paused, firebase_storage_controller_bytes_transferred, firebase_storage_controller_total_byte_count, firebase_storage_controller_get_reference, firebase_storage_list_result_release, firebase_storage_list_result_is_valid, firebase_storage_list_result_item_count, firebase_storage_list_result_item_at, firebase_storage_list_result_prefix_count, firebase_storage_list_result_prefix_at, firebase_storage_list_result_next_page_token, firebase_functions_get_instance, firebase_functions_get_instance_with_region, firebase_functions_use_functions_emulator, firebase_functions_get_https_callable, firebase_functions_get_https_callable_with_options, firebase_functions_get_https_callable_from_url, firebase_functions_get_https_callable_from_url_with_options, firebase_functions_callable_is_valid, firebase_functions_callable_call, firebase_functions_callable_call_with_data, firebase_remote_config_get_instance, firebase_remote_config_ensure_initialized, firebase_remote_config_set_config_settings, firebase_remote_config_get_config_settings_fetch_timeout, firebase_remote_config_get_config_settings_minimum_fetch_interval, firebase_remote_config_fetch, firebase_remote_config_fetch_with_expiration, firebase_remote_config_fetch_and_activate, firebase_remote_config_activate, firebase_remote_config_get_boolean, firebase_remote_config_get_long, firebase_remote_config_get_double, firebase_remote_config_get_string, firebase_remote_config_get_data_size, firebase_remote_config_get_data, firebase_remote_config_get_keys_by_prefix, firebase_remote_config_get_keys, firebase_remote_config_get_all, firebase_remote_config_set_defaults, firebase_remote_config_get_info, firebase_remote_config_add_config_update_listener, firebase_remote_config_remove_config_update_listener, firebase_messaging_request_permission, firebase_messaging_get_token, firebase_messaging_delete_token, firebase_messaging_subscribe, firebase_messaging_unsubscribe, firebase_messaging_message_raw_data_copy, firebase_ump_get_instance, firebase_ump_get_consent_status, firebase_ump_get_consent_form_status, firebase_ump_get_privacy_options_requirement_status, firebase_ump_can_request_ads, firebase_ump_reset, firebase_ump_request_consent_info_update, firebase_ump_load_consent_form, firebase_ump_show_consent_form, firebase_ump_load_and_show_consent_form_if_required, firebase_ump_show_privacy_options_form, firebase_analytics_initiate_on_device_conversion_measurement_hashed_email, firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone, firebase_auth_federated_oauth_provider_create, firebase_auth_federated_oauth_provider_set_data, firebase_auth_federated_oauth_provider_release, firebase_auth_sign_in_with_provider, firebase_auth_sign_in_with_custom_token_result, firebase_auth_sign_in_and_retrieve_data_with_credential_result, firebase_auth_sign_in_anonymously_result, firebase_auth_sign_in_with_email_and_password_result, firebase_auth_create_user_with_email_and_password_result, firebase_auth_user_provider_data_count, firebase_auth_user_provider_data_at, firebase_auth_user_reauthenticate_with_provider, firebase_auth_user_link_with_provider, firebase_auth_user_reauthenticate_and_retrieve_data_result, firebase_auth_user_link_with_credential_result, firebase_auth_user_update_phone_number_credential, firebase_database_ref_key, firebase_database_ref_is_root, firebase_database_ref_is_valid, firebase_database_ref_get_parent, firebase_database_ref_get_root, firebase_database_ref_get_database, firebase_database_ref_get_url, firebase_database_server_timestamp, firebase_database_ref_on_disconnect, firebase_database_on_disconnect_cancel, firebase_database_on_disconnect_remove_value, firebase_database_on_disconnect_set_value, firebase_database_on_disconnect_set_value_and_priority, firebase_database_on_disconnect_update_children, firebase_database_on_disconnect_release, firebase_firestore_field_path_create, firebase_firestore_field_path_is_valid, firebase_firestore_field_path_to_string, firebase_firestore_field_path_release, firebase_firestore_filter_equal_to, firebase_firestore_filter_not_equal_to, firebase_firestore_filter_less_than, firebase_firestore_filter_less_than_or_equal_to, firebase_firestore_filter_greater_than, firebase_firestore_filter_greater_than_or_equal_to, firebase_firestore_filter_array_contains, firebase_firestore_filter_array_contains_any, firebase_firestore_filter_in, firebase_firestore_filter_not_in, firebase_firestore_filter_equal_to_field_path, firebase_firestore_filter_not_equal_to_field_path, firebase_firestore_filter_less_than_field_path, firebase_firestore_filter_less_than_or_equal_to_field_path, firebase_firestore_filter_greater_than_field_path, firebase_firestore_filter_greater_than_or_equal_to_field_path, firebase_firestore_filter_array_contains_field_path, firebase_firestore_filter_array_contains_any_field_path, firebase_firestore_filter_in_field_path, firebase_firestore_filter_not_in_field_path, firebase_firestore_filter_and, firebase_firestore_filter_or, firebase_firestore_filter_release, firebase_firestore_query_where_filter, firebase_firestore_query_where_equal_to_field_path, firebase_firestore_query_where_not_equal_to_field_path, firebase_firestore_query_where_less_than_field_path, firebase_firestore_query_where_less_than_or_equal_to_field_path, firebase_firestore_query_where_greater_than_field_path, firebase_firestore_query_where_greater_than_or_equal_to_field_path, firebase_firestore_query_where_array_contains_field_path, firebase_firestore_query_where_array_contains_any_field_path, firebase_firestore_query_where_in_field_path, firebase_firestore_query_where_not_in_field_path, firebase_firestore_query_order_by_field_path, firebase_firestore_query_count, firebase_firestore_aggregate_query_get_query, firebase_firestore_aggregate_query_is_valid, firebase_firestore_aggregate_query_get, firebase_firestore_aggregate_query_release, firebase_firestore_aggregate_snapshot_count, firebase_firestore_aggregate_snapshot_get_query, firebase_firestore_aggregate_snapshot_is_valid, firebase_firestore_aggregate_snapshot_release, firebase_firestore_add_snapshots_in_sync_listener, firebase_firestore_load_bundle, firebase_firestore_named_query, firebase_firestore_document_ref_set_merge_field_paths, firebase_firestore_write_batch_set_merge_field_paths, firebase_storage_metadata_md5_hash, firebase_remote_config_ensure_initialized_info, firebase_remote_config_get_boolean_with_info, firebase_remote_config_get_long_with_info, firebase_remote_config_get_double_with_info, firebase_remote_config_get_string_with_info, firebase_remote_config_get_data_with_info, firebase_firestore_field_value_type, firebase_firestore_field_value_is_valid, firebase_firestore_field_value_is_null, firebase_firestore_field_value_is_boolean, firebase_firestore_field_value_is_integer, firebase_firestore_field_value_is_double, firebase_firestore_field_value_is_timestamp, firebase_firestore_field_value_is_string, firebase_firestore_field_value_is_blob, firebase_firestore_field_value_is_reference, firebase_firestore_field_value_is_geo_point, firebase_firestore_field_value_is_array, firebase_firestore_field_value_is_map, firebase_firestore_field_value_boolean_value, firebase_firestore_field_value_integer_value, firebase_firestore_field_value_double_value, firebase_firestore_field_value_string_value, firebase_firestore_field_value_blob_size, firebase_firestore_field_value_blob_copy, firebase_firestore_field_value_reference_value, firebase_firestore_field_value_timestamp_value, firebase_firestore_field_value_geo_point_value, firebase_firestore_field_value_array_value, firebase_firestore_field_value_map_value, firebase_firestore_field_value_to_string, firebase_firestore_query_get_firestore, firebase_firestore_document_ref_get_firestore, firebase_firestore_document_ref_to_string, firebase_firestore_document_ref_update_field_paths, firebase_firestore_write_batch_update_field_paths, firebase_firestore_write_batch_is_valid, firebase_firestore_settings_to_string, firebase_firestore_document_snapshot_is_valid, firebase_firestore_document_snapshot_to_string, firebase_firestore_document_snapshot_get_field_path, firebase_firestore_query_snapshot_is_valid, firebase_firestore_query_snapshot_get_query, firebase_firestore_listener_registration_is_valid, firebase_app_get_default_handle, firebase_app_get_instance, firebase_app_get_apps, firebase_app_initialize_with_options, firebase_app_initialize_from_json, firebase_app_handle_get_name, firebase_app_handle_get_options, firebase_app_get_default_options, firebase_app_release_handle, firebase_auth_get_app, firebase_database_get_app, firebase_database_get_instance_for_app, firebase_database_get_instance_for_app_url, firebase_firestore_get_app, firebase_firestore_get_instance_for_app, firebase_firestore_get_instance_for_app_database, firebase_storage_get_app, firebase_storage_get_instance_for_app, firebase_storage_get_instance_for_app_url, firebase_functions_get_app, firebase_functions_callable_get_functions, firebase_functions_get_instance_for_app, firebase_functions_get_instance_for_app_region, firebase_installations_get_app, firebase_remote_config_get_app, firebase_app_check_get_app, firebase_firestore_field_value_array, firebase_firestore_field_value_map, firebase_remote_config_get_instance_for_app, firebase_analytics_initialize_for_app, firebase_messaging_initialize_for_app, firebase_messaging_initialize_for_app_with_options, firebase_ump_get_instance_for_app, firebase_auth_get_current_instance_handle, firebase_auth_get_instance_for_app, firebase_auth_use_instance, firebase_auth_instance_get_app, firebase_installations_get_instance_handle, firebase_installations_get_instance_for_app, firebase_installations_instance_get_app, firebase_installations_instance_get_id, firebase_installations_instance_get_token, firebase_installations_instance_delete, firebase_app_check_get_instance_handle, firebase_app_check_get_instance_for_app, firebase_app_check_instance_get_app, firebase_app_check_instance_set_token_auto_refresh_enabled, firebase_app_check_instance_get_token, firebase_app_check_instance_get_limited_use_token, firebase_app_check_instance_add_listener, firebase_firestore_document_snapshot_metadata_to_string, firebase_firestore_query_snapshot_metadata_to_string, firebase_firestore_document_snapshot_exists, firebase_firestore_document_snapshot_id, firebase_firestore_document_snapshot_reference, firebase_firestore_document_snapshot_metadata_has_pending_writes, firebase_firestore_document_snapshot_metadata_is_from_cache, firebase_firestore_query_snapshot_size, firebase_firestore_query_snapshot_empty, firebase_firestore_query_snapshot_metadata_has_pending_writes, firebase_firestore_query_snapshot_metadata_is_from_cache, firebase_auth_game_center_auth_provider_get_credential_last_result

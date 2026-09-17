@@ -147,8 +147,8 @@ bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out
 uint64_t wrapFirebaseAuthCredential(const firebase::auth::Credential& credential);
 bool firebase_auth_resolve_phone_credential(uint64_t ref, firebase::auth::PhoneAuthCredential& out);
 // `user_ref` is the handle for result.user, wrapped by the caller (which
-// knows the Auth it belongs to); written as 0 when result.user is not valid.
-gm::wire::StructStream makeFirebaseAuthResultStruct(uint64_t user_ref, const firebase::auth::AuthResult& result);
+// knows the Auth it belongs to); left absent when result.user is not valid.
+gm_structs::FirebaseAuthResult makeFirebaseAuthResult(uint64_t user_ref, const firebase::auth::AuthResult& result);
 
 // Core App
 #define GM_FB_TYPE_APP 0x80 // ptr: firebase::App*
@@ -342,3 +342,10 @@ void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
 // undefined (null) convert; a GML pointer has no Firebase form and is sent
 // as null with a logged warning.
 firebase::Variant gmValueToVariant(const gm::wire::GMValue& value);
+
+// A gmval field of a generated struct arrives as a gm::wire::DataStream
+// holding exactly one encoded value. This re-reads it as the GMValue view the
+// converters above take. The view borrows the stream's bytes, so the struct
+// must outlive every use of the result - fine for a parameter struct, whose
+// lifetime is the call.
+gm::wire::GMValue gmValueView(const gm::wire::DataStream& stream);

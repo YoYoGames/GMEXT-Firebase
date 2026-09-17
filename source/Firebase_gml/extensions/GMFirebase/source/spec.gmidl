@@ -101,17 +101,24 @@ function firebase_analytics_log_event_number(
 	parameter_value: real
 ): unit;
 
-// params: array of {name: string, value: <real|string|bool|array|struct>}.
+// One firebase::analytics::Parameter. value is any GML value the Variant
+// converter accepts (real, string, bool, array, struct, undefined for null).
+[global]
+class `[[FirebaseAnalyticsParameter]]` prototype Object
+{
+	[field] property name: string { get; set; }
+	[field] property value: gmval { get; set; }
+}
+
 [global, bind = typed_gml]
 function firebase_analytics_log_event_params(
 	name: string,
-	params: gmval
+	[type_hint=`FirebaseAnalyticsParameter[]`] params: gmval
 ): unit;
 
-// params: array of {name: string, value: <real|string|bool|array|struct>}.
 [global, bind = typed_gml]
 function firebase_analytics_set_default_event_parameters(
-	params: gmval
+	[type_hint=`FirebaseAnalyticsParameter[]`] params: gmval
 ): unit;
 
 [global, bind = typed_gml, type_hint=`FirebaseError`]
@@ -194,6 +201,14 @@ enum FirebaseAppCheckProvider
 	AppAttest = 3,
 }
 
+// firebase::app_check::AppCheckToken.
+[global]
+class `[[FirebaseAppCheckToken]]` prototype Object
+{
+	[field] property token: string { get; set; }
+	[field, type_hint=`real`] property expire_time_millis: gmval { get; set; }
+}
+
 // Call before firebase_app_initialize() - some platforms only honor the
 // provider factory if it is set before the underlying firebase::App exists.
 [global, bind = typed_gml]
@@ -211,20 +226,22 @@ function firebase_app_check_set_token_auto_refresh_enabled(
 	enabled: real
 ): unit;
 
-// callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
+// callback(error_code: real, error_message: string, token: FirebaseAppCheckToken)
+// - token is undefined when error_code is not 0.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_get_token(
 	force_refresh: real,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
+// callback(error_code: real, error_message: string, token: FirebaseAppCheckToken)
+// - token is undefined when error_code is not 0.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_get_limited_use_token(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// callback(token: {token: string, expire_time_millis: real}), fired on every
+// callback(token: FirebaseAppCheckToken), fired on every
 // token change. Returns a listener ref for firebase_app_check_remove_listener.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_app_check_add_listener(
@@ -393,7 +410,8 @@ function firebase_auth_current_user(): gmval;
 [global, bind = typed_gml]
 function firebase_auth_sign_out(): unit;
 
-// callback(error_code: real, error_message: string, providers: array of string)
+// callback(error_code: real, error_message: string, providers: string[])
+// - providers is empty when error_code is not 0.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_fetch_providers_for_email(
 	email: string,
@@ -621,6 +639,44 @@ function firebase_auth_phone_listener_release(
 // Explicit convenience materialization. Sign-in/current-user/listener paths
 // still return only the uint64 user handle. Call this when multiple user
 // properties are needed together and the one GML struct allocation is useful.
+// firebase::auth::UserInfoInterface - one entry of a user's provider data
+// (firebase_auth_user_provider_data_at). Distinct from FirebaseAuthUserInfo
+// below: a provider entry has none of the User-only fields.
+[global]
+class `[[FirebaseAuthProviderUserInfo]]` prototype Object
+{
+	[field] property uid: string { get; set; }
+	[field] property email: string { get; set; }
+	[field] property display_name: string { get; set; }
+	[field] property photo_url: string { get; set; }
+	[field] property provider_id: string { get; set; }
+	[field] property phone_number: string { get; set; }
+}
+
+// firebase::auth::AdditionalUserInfo. profile is the provider's raw profile
+// map (dynamic keys), updated_credential is undefined unless the provider
+// returned one.
+[global]
+class `[[FirebaseAuthAdditionalUserInfo]]` prototype Object
+{
+	[field] property provider_id: string { get; set; }
+	[field] property user_name: string { get; set; }
+	[field] property profile: gmval { get; set; }
+	[field, type_hint=`uint64?`] property updated_credential: gmval { get; set; }
+}
+
+// firebase::auth::AuthResult, delivered by every *_result and *_with_provider
+// callback. user is the Auth instance's live user view (see
+// firebase_auth_current_user), credential is undefined unless the provider
+// returned one; both credential handles need firebase_auth_credential_release.
+[global]
+class `[[FirebaseAuthResult]]` prototype Object
+{
+	[field, type_hint=`uint64?`] property user: gmval { get; set; }
+	[field, type_hint=`uint64?`] property credential: gmval { get; set; }
+	[field, type_hint=`FirebaseAuthAdditionalUserInfo`] property additional_user_info: gmval { get; set; }
+}
+
 [global]
 class `[[FirebaseAuthUserInfo]]` prototype Object
 {
@@ -1411,7 +1467,7 @@ function firebase_database_snapshot_children_count(
 // Query-defined iteration order. Each element is an independently owned
 // GM_FB_TYPE_DATA_SNAPSHOT ref and must be released separately with
 // firebase_database_snapshot_release().
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`uint64[]`]
 function firebase_database_snapshot_get_children(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
@@ -1516,6 +1572,75 @@ enum FirestoreDocumentChangeType
 	Added = 0,
 	Modified = 1,
 	Removed = 2,
+}
+
+// firebase::firestore::LoadBundleTaskProgress::State.
+[global, bind = typed_gml]
+enum FirestoreLoadBundleTaskState
+{
+	Error = 0,
+	InProgress = 1,
+	Success = 2,
+}
+
+// firebase::Timestamp as read out of a document or a FieldValue handle. To
+// write one, use firebase_firestore_field_value_timestamp().
+[global]
+class `[[FirestoreTimestamp]]` prototype Object
+{
+	[field, type_hint=`real`] property seconds: gmval { get; set; }
+	[field, type_hint=`real`] property nanoseconds: gmval { get; set; }
+}
+
+// firebase::firestore::GeoPoint as read out of a document or a FieldValue
+// handle. To write one, use firebase_firestore_field_value_geo_point().
+[global]
+class `[[FirestoreGeoPoint]]` prototype Object
+{
+	[field, type_hint=`real`] property latitude: gmval { get; set; }
+	[field, type_hint=`real`] property longitude: gmval { get; set; }
+}
+
+// firebase::firestore::DocumentChange. document is a newly registered
+// DocumentSnapshot ref (release it); old_index/new_index are -1 when the
+// SDK reports npos.
+[global]
+class `[[FirestoreDocumentChange]]` prototype Object
+{
+	[field, type_hint=`FirestoreDocumentChangeType`] property type: gmval { get; set; }
+	[field, type_hint=`uint64`] property document: gmval { get; set; }
+	[field, type_hint=`real`] property old_index: gmval { get; set; }
+	[field, type_hint=`real`] property new_index: gmval { get; set; }
+}
+
+// Result of DocumentSnapshot::Get(): exists distinguishes a missing field
+// from a field whose value is Firestore null (value is undefined in both
+// cases). See firebase_firestore_document_snapshot_get for the value rules.
+[global]
+class `[[FirestoreFieldLookup]]` prototype Object
+{
+	[field] property exists: bool { get; set; }
+	[field] property value: gmval { get; set; }
+}
+
+// One entry of a MapFieldPathValue update: a FieldPath handle (a real, from
+// firebase_firestore_field_path_create) and the value to write.
+[global]
+class `[[FirestoreFieldPathValue]]` prototype Object
+{
+	[field] property field_path: real { get; set; }
+	[field] property value: gmval { get; set; }
+}
+
+// firebase::firestore::LoadBundleTaskProgress.
+[global]
+class `[[FirestoreLoadBundleTaskProgress]]` prototype Object
+{
+	[field, type_hint=`real`] property documents_loaded: gmval { get; set; }
+	[field, type_hint=`real`] property total_documents: gmval { get; set; }
+	[field, type_hint=`real`] property bytes_loaded: gmval { get; set; }
+	[field, type_hint=`real`] property total_bytes: gmval { get; set; }
+	[field, type_hint=`FirestoreLoadBundleTaskState`] property state: gmval { get; set; }
 }
 
 // ============================================================
@@ -1765,13 +1890,13 @@ function firebase_firestore_document_ref_set_merge(
 ): gmval;
 
 // Same as firestore_document_ref_set_merge(), but only merges the listed
-// dotted field paths (SetOptions::MergeFields()). fields: array of string.
+// dotted field paths (SetOptions::MergeFields()).
 // callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_set_merge_fields(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
-	fields: gmval,
+	[type_hint=`string[]`] fields: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -2015,13 +2140,12 @@ function firebase_firestore_write_batch_set_merge(
 	data: gmval
 ): real;
 
-// fields: array of string.
 [global, bind = typed_gml]
 function firebase_firestore_write_batch_set_merge_fields(
 	[type_hint=`uint64`] batch_ref: gmval,
 	[type_hint=`uint64`] document_ref: gmval,
 	data: gmval,
-	fields: gmval
+	[type_hint=`string[]`] fields: gmval
 ): real;
 
 [global, bind = typed_gml]
@@ -2157,14 +2281,13 @@ function firebase_firestore_document_snapshot_get_info(
 ): gmval;
 
 // server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
-// Returns { exists: bool, value: <field value, or undefined if not exists> }.
-// A composite value kind with no single GML primitive is encoded as a small
-// tagged struct: { type: "timestamp", seconds: real, nanoseconds: real } or
-// { type: "geopoint", latitude: real, longitude: real }; a document reference
-// field is encoded as a plain uint64 DocumentReference ref (a real number),
-// the same as every other reference-typed handle in this extension; nested
-// arrays/maps recurse using the same rules.
-[global, bind = typed_gml]
+// Returns a FirestoreFieldLookup. Value rules, shared with every document
+// read in this extension: a timestamp is a FirestoreTimestamp instance, a
+// geopoint a FirestoreGeoPoint instance, a document reference a plain uint64
+// DocumentReference ref (a real number), the same as every other
+// reference-typed handle in this extension; nested arrays/maps recurse using
+// the same rules; Firestore null is undefined.
+[global, bind = typed_gml, type_hint=`FirestoreFieldLookup`]
 function firebase_firestore_document_snapshot_get(
 	[type_hint=`uint64`] ref: gmval,
 	field: string,
@@ -2211,16 +2334,14 @@ function firebase_firestore_query_snapshot_get_info(
 // Returns an array of uint64 DocumentSnapshot refs (each newly registered -
 // release every one with firestore_document_snapshot_release() when done),
 // in the query's result order.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`uint64[]`]
 function firebase_firestore_query_snapshot_documents(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// Returns an array of
-// { type: real (FirestoreDocumentChangeType), document: uint64 (a newly
-// registered DocumentSnapshot ref), old_index: real (-1 if n/a),
-// new_index: real (-1 if n/a) }.
-[global, bind = typed_gml]
+// Returns an array of FirestoreDocumentChange; each document is a newly
+// registered DocumentSnapshot ref to release.
+[global, bind = typed_gml, type_hint=`FirestoreDocumentChange[]`]
 function firebase_firestore_query_snapshot_document_changes(
 	[type_hint=`uint64`] ref: gmval,
 	include_metadata_changes: bool
@@ -2770,6 +2891,62 @@ class `[[FirebaseRemoteConfigInfo]]` prototype Object
 	[field, type_hint=`real`] property throttled_end_time: gmval { get; set; }
 }
 
+// firebase::remote_config::ValueSource - where a *_with_info getter's value
+// came from.
+[global, bind = typed_gml]
+enum FirebaseRemoteConfigValueSource
+{
+	StaticValue = 0,
+	RemoteValue = 1,
+	DefaultValue = 2,
+}
+
+// The *_with_info getters return the value together with the SDK's ValueInfo
+// (source, conversion_successful). One class per value type.
+[global]
+class `[[FirebaseRemoteConfigBooleanInfo]]` prototype Object
+{
+	[field] property value: bool { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigValueSource`] property source: gmval { get; set; }
+	[field] property conversion_successful: bool { get; set; }
+}
+
+[global]
+class `[[FirebaseRemoteConfigLongInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property value: gmval { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigValueSource`] property source: gmval { get; set; }
+	[field] property conversion_successful: bool { get; set; }
+}
+
+[global]
+class `[[FirebaseRemoteConfigDoubleInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property value: gmval { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigValueSource`] property source: gmval { get; set; }
+	[field] property conversion_successful: bool { get; set; }
+}
+
+[global]
+class `[[FirebaseRemoteConfigStringInfo]]` prototype Object
+{
+	[field] property value: string { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigValueSource`] property source: gmval { get; set; }
+	[field] property conversion_successful: bool { get; set; }
+}
+
+// firebase_remote_config_get_data_with_info: the bytes go into the caller's
+// buffer; size is the value's full length so a short buffer can be resized
+// and the call repeated.
+[global]
+class `[[FirebaseRemoteConfigDataInfo]]` prototype Object
+{
+	[field, type_hint=`real`] property bytes_copied: gmval { get; set; }
+	[field, type_hint=`real`] property size: gmval { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigValueSource`] property source: gmval { get; set; }
+	[field] property conversion_successful: bool { get; set; }
+}
+
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_remote_config_get_instance(): gmval;
 
@@ -2871,7 +3048,7 @@ function firebase_remote_config_get_data(
 	[type_hint=buffer] out_buffer: gmval
 ): real;
 
-// callback(keys: array of string) - single argument, a GML array.
+// callback(keys: string[]) - single argument.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_get_keys_by_prefix(
 	[type_hint=`uint64`] rc_ref: gmval,
@@ -2879,7 +3056,7 @@ function firebase_remote_config_get_keys_by_prefix(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// callback(keys: array of string) - single argument, a GML array.
+// callback(keys: string[]) - single argument.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_get_keys(
 	[type_hint=`uint64`] rc_ref: gmval,
@@ -2910,7 +3087,7 @@ function firebase_remote_config_get_info(
 	[type_hint=`uint64`] rc_ref: gmval
 ): gmval;
 
-// callback(error_code: real, error_message: string, updated_keys: array of string),
+// callback(error_code: real, error_message: string, updated_keys: string[]),
 // fired on every real-time config update. Returns a registration ref for
 // remote_config_remove_config_update_listener.
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3183,15 +3360,14 @@ function firebase_ump_reset(
 ): unit;
 
 // debug_geography: a FirebaseUmpConsentDebugGeography value.
-// debug_device_ids: a GML array of strings (may be `undefined` - treated as
-// empty). Any other value, or a non-string element, returns
-// FirebaseError.InvalidArgument. callback(error_code: real, error_message: string)
+// debug_device_ids: an array of strings, or undefined for none.
+// callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_request_consent_info_update(
 	[type_hint=`uint64`] consent_ref: gmval,
 	debug_geography: real,
 	tag_for_under_age_of_consent: real,
-	debug_device_ids: gmval,
+	[type_hint=`string[]?`] debug_device_ids: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -3250,13 +3426,14 @@ function firebase_analytics_initiate_on_device_conversion_measurement_hashed_pho
 ): unit;
 
 // ---- Auth: full AuthResult + Federated OAuth ----
-// AuthResult is materialized only on these explicit result callbacks as:
-// { user, credential, provider_id, user_name, profile, updated_credential }.
-// user/credential/updated_credential are packed uint64 handles (0 if absent).
+// The *_result and *_with_provider callbacks below deliver a FirebaseAuthResult
+// (declared with the User section) as their third argument, undefined when
+// error_code is not 0.
+// custom_parameters: a struct of string values with provider-defined keys.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_auth_federated_oauth_provider_create(
     provider_id: string,
-    scopes: gmval,
+    [type_hint=`string[]`] scopes: gmval,
     custom_parameters: gmval
 ): gmval;
 
@@ -3264,7 +3441,7 @@ function firebase_auth_federated_oauth_provider_create(
 function firebase_auth_federated_oauth_provider_set_data(
     [type_hint=`uint64`] provider: gmval,
     provider_id: string,
-    scopes: gmval,
+    [type_hint=`string[]`] scopes: gmval,
     custom_parameters: gmval
 ): unit;
 
@@ -3273,7 +3450,7 @@ function firebase_auth_federated_oauth_provider_release(
     [type_hint=`uint64`] provider: gmval
 ): unit;
 
-// callback(error_code, error_message, auth_result)
+// callback(error_code: real, error_message: string, result: FirebaseAuthResult)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_provider(
     [type_hint=`uint64`] provider: gmval,
@@ -3316,8 +3493,8 @@ function firebase_auth_user_provider_data_count(
     [type_hint=`uint64`] user: gmval
 ): real;
 
-// Returns {uid,email,display_name,photo_url,provider_id,phone_number}.
-[global, bind = typed_gml]
+// Returns undefined when the handle is invalid or index is out of range.
+[global, bind = typed_gml, type_hint=`FirebaseAuthProviderUserInfo?`]
 function firebase_auth_user_provider_data_at(
     [type_hint=`uint64`] user: gmval,
     index: real
@@ -3399,7 +3576,7 @@ function firebase_database_on_disconnect_release([type_hint=`uint64`] handler: g
 // FieldPath builder handles are exact GML reals so they can be placed directly
 // in gmval arrays/update-entry structs without a real() cast.
 [global, bind = typed_gml]
-function firebase_firestore_field_path_create(components: gmval): real;
+function firebase_firestore_field_path_create([type_hint=`string[]`] components: gmval): real;
 [global, bind = typed_gml]
 function firebase_firestore_field_path_document_id(): real;
 [global, bind = typed_gml]
@@ -3454,10 +3631,11 @@ function firebase_firestore_filter_in_field_path([type_hint=`uint64`] field_path
 [global, bind = typed_gml]
 function firebase_firestore_filter_not_in_field_path([type_hint=`uint64`] field_path: gmval, values: gmval): real;
 
+// filters: an array of filter handles (reals) from the firebase_firestore_filter_* builders.
 [global, bind = typed_gml]
-function firebase_firestore_filter_and(filters: gmval): real;
+function firebase_firestore_filter_and([type_hint=`double[]`] filters: gmval): real;
 [global, bind = typed_gml]
-function firebase_firestore_filter_or(filters: gmval): real;
+function firebase_firestore_filter_or([type_hint=`double[]`] filters: gmval): real;
 [global, bind = typed_gml]
 function firebase_firestore_filter_release([type_hint=`uint64`] filter: gmval): unit;
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3510,8 +3688,10 @@ function firebase_firestore_aggregate_snapshot_release([type_hint=`uint64`] snap
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_firestore_add_snapshots_in_sync_listener([type_hint=`uint64`] firestore: gmval, [type_hint=`func?`] callback: gmval): gmval;
 
-// bundle is the raw Firestore bundle bytes. progress_callback(progress_struct)
-// and callback(error_code,error_message,final_progress_struct).
+// bundle is the raw Firestore bundle bytes.
+// progress_callback(progress: FirestoreLoadBundleTaskProgress) and
+// callback(error_code, error_message, progress: FirestoreLoadBundleTaskProgress),
+// where progress is undefined if the SDK produced no result.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_load_bundle([type_hint=`uint64`] firestore: gmval, [type_hint=buffer] bundle: gmval, [type_hint=`func?`] progress_callback: gmval, [type_hint=`func?`] callback: gmval): gmval;
 
@@ -3519,29 +3699,30 @@ function firebase_firestore_load_bundle([type_hint=`uint64`] firestore: gmval, [
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_named_query([type_hint=`uint64`] firestore: gmval, name: string, [type_hint=`func?`] callback: gmval): gmval;
 
+// field_paths: an array of FieldPath handles (reals) from firebase_firestore_field_path_create.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
-function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval, [type_hint=`func?`] callback: gmval): gmval;
+function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, [type_hint=`double[]`] field_paths: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
-function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval): unit;
+function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, [type_hint=`double[]`] field_paths: gmval): unit;
 
 // ---- Storage ----
 [global, bind = typed_gml]
 function firebase_storage_metadata_md5_hash([type_hint=`uint64`] metadata: gmval): string;
 
 // ---- Remote Config ValueInfo ----
-// Scalar functions return {value, source, conversion_successful}.
+// Each *_with_info getter returns its FirebaseRemoteConfig*Info, or undefined
+// when rc_ref is invalid.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_ensure_initialized_info([type_hint=`uint64`] rc_ref: gmval, [type_hint=`func?`] callback: gmval): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigBooleanInfo?`]
 function firebase_remote_config_get_boolean_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigLongInfo?`]
 function firebase_remote_config_get_long_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigDoubleInfo?`]
 function firebase_remote_config_get_double_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigStringInfo?`]
 function firebase_remote_config_get_string_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
-// Returns {bytes_copied,size,source,conversion_successful}.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigDataInfo?`]
 function firebase_remote_config_get_data_with_info([type_hint=`uint64`] rc_ref: gmval, key: string, [type_hint=buffer] out_buffer: gmval): gmval;
 
 // ---- Messaging ----
@@ -3589,9 +3770,10 @@ function firebase_firestore_field_value_blob_size([type_hint=`uint64`] field_val
 function firebase_firestore_field_value_blob_copy([type_hint=`uint64`] field_value: gmval, [type_hint=buffer] out_buffer: gmval): real;
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_firestore_field_value_reference_value([type_hint=`uint64`] field_value: gmval): gmval;
-[global, bind = typed_gml]
+// Undefined unless the handle holds a value of that kind.
+[global, bind = typed_gml, type_hint=`FirestoreTimestamp?`]
 function firebase_firestore_field_value_timestamp_value([type_hint=`uint64`] field_value: gmval): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirestoreGeoPoint?`]
 function firebase_firestore_field_value_geo_point_value([type_hint=`uint64`] field_value: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_field_value_array_value([type_hint=`uint64`] field_value: gmval): gmval;
@@ -3606,11 +3788,11 @@ function firebase_firestore_query_get_firestore([type_hint=`uint64`] query: gmva
 function firebase_firestore_document_ref_get_firestore([type_hint=`uint64`] document: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_document_ref_to_string([type_hint=`uint64`] document: gmval): string;
-// entries = array of { field_path: FirebaseFirestoreFieldPathHandle, value: any }
+// entries: an array of FirestoreFieldPathValue.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
-function firebase_firestore_document_ref_update_field_paths([type_hint=`uint64`] document: gmval, entries: gmval, [type_hint=`func?`] callback: gmval): gmval;
+function firebase_firestore_document_ref_update_field_paths([type_hint=`uint64`] document: gmval, [type_hint=`FirestoreFieldPathValue[]`] entries: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
-function firebase_firestore_write_batch_update_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, entries: gmval): real;
+function firebase_firestore_write_batch_update_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, [type_hint=`FirestoreFieldPathValue[]`] entries: gmval): real;
 [global, bind = typed_gml]
 function firebase_firestore_write_batch_is_valid([type_hint=`uint64`] batch: gmval): bool;
 [global, bind = typed_gml]
@@ -3620,8 +3802,8 @@ function firebase_firestore_settings_to_string([type_hint=`uint64`] firestore: g
 function firebase_firestore_document_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
 [global, bind = typed_gml]
 function firebase_firestore_document_snapshot_to_string([type_hint=`uint64`] snapshot: gmval): string;
-// Returns { exists, value } like firebase_firestore_document_snapshot_get().
-[global, bind = typed_gml]
+// Returns a FirestoreFieldLookup like firebase_firestore_document_snapshot_get().
+[global, bind = typed_gml, type_hint=`FirestoreFieldLookup`]
 function firebase_firestore_document_snapshot_get_field_path([type_hint=`uint64`] snapshot: gmval, [type_hint=`uint64`] field_path: gmval, server_timestamp_behavior: real): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_query_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
@@ -3635,20 +3817,34 @@ function firebase_firestore_listener_registration_is_valid([type_hint=`uint64`] 
 function firebase_app_get_default_handle(): gmval;
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_app_get_instance(name: string): gmval;
-// Returns array<uint64 FirebaseAppHandle>.
-[global, bind = typed_gml]
+// firebase::AppOptions. Every field is optional on input - one left undefined
+// keeps the SDK default; on output every field is present, empty when unset
+// (the SDK does not distinguish). client_id/package_name are SDK-internal in 13.11.
+[global]
+class `[[FirebaseAppOptions]]` prototype Object
+{
+	[field, type_hint=`string?`] property app_id: gmval { get; set; }
+	[field, type_hint=`string?`] property api_key: gmval { get; set; }
+	[field, type_hint=`string?`] property messaging_sender_id: gmval { get; set; }
+	[field, type_hint=`string?`] property database_url: gmval { get; set; }
+	[field, type_hint=`string?`] property ga_tracking_id: gmval { get; set; }
+	[field, type_hint=`string?`] property storage_bucket: gmval { get; set; }
+	[field, type_hint=`string?`] property project_id: gmval { get; set; }
+}
+
+// Returns the handles of every initialised App.
+[global, bind = typed_gml, type_hint=`uint64[]`]
 function firebase_app_get_apps(): gmval;
-// options fields: app_id, api_key, messaging_sender_id, database_url,
-// ga_tracking_id, storage_bucket, project_id. (client_id/package_name are SDK-internal in 13.11.)
 [global, bind = typed_gml, type_hint=`uint64`]
-function firebase_app_initialize_with_options(options: gmval, name: string): gmval;
+function firebase_app_initialize_with_options([type_hint=`FirebaseAppOptions`] options: gmval, name: string): gmval;
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_app_initialize_from_json(json_config: string, name: string): gmval;
 [global, bind = typed_gml]
 function firebase_app_handle_get_name([type_hint=`uint64`] app: gmval): string;
-[global, bind = typed_gml]
+// Both return undefined when there is no such App.
+[global, bind = typed_gml, type_hint=`FirebaseAppOptions?`]
 function firebase_app_handle_get_options([type_hint=`uint64`] app: gmval): gmval;
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseAppOptions?`]
 function firebase_app_get_default_options(): gmval;
 [global, bind = typed_gml]
 function firebase_app_release_handle([type_hint=`uint64`] app: gmval): unit;
@@ -3749,10 +3945,12 @@ function firebase_app_check_get_instance_for_app([type_hint=`uint64`] app: gmval
 function firebase_app_check_instance_get_app([type_hint=`uint64`] app_check: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_app_check_instance_set_token_auto_refresh_enabled([type_hint=`uint64`] app_check: gmval, enabled: bool): unit;
+// callback(error_code: real, error_message: string, token: FirebaseAppCheckToken) - see firebase_app_check_get_token.
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_instance_get_token([type_hint=`uint64`] app_check: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_instance_get_limited_use_token([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): gmval;
+// callback(token: FirebaseAppCheckToken) - see firebase_app_check_add_listener.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_app_check_instance_add_listener([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]

@@ -7,6 +7,24 @@ using firebase::database::DataSnapshot;
 using firebase::database::Error;
 using gm_enums::FirebaseError;
 
+// FirebaseDatabaseError mirrors firebase::database::Error, the error_code every
+// database callback receives. See GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::None, firebase::database::kErrorNone);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::Disconnected, firebase::database::kErrorDisconnected);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::ExpiredToken, firebase::database::kErrorExpiredToken);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::InvalidToken, firebase::database::kErrorInvalidToken);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::MaxRetries, firebase::database::kErrorMaxRetries);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::NetworkError, firebase::database::kErrorNetworkError);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::OperationFailed, firebase::database::kErrorOperationFailed);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::OverriddenBySet, firebase::database::kErrorOverriddenBySet);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::PermissionDenied, firebase::database::kErrorPermissionDenied);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::Unavailable, firebase::database::kErrorUnavailable);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::UnknownError, firebase::database::kErrorUnknownError);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::WriteCanceled, firebase::database::kErrorWriteCanceled);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::InvalidVariantType, firebase::database::kErrorInvalidVariantType);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::ConflictingOperationInProgress, firebase::database::kErrorConflictingOperationInProgress);
+GM_FB_PIN_ENUM(gm_enums::FirebaseDatabaseError::TransactionAbortedByUser, firebase::database::kErrorTransactionAbortedByUser);
+
 // ============================================================
 // Value-copy registries (DatabaseReference / Query)
 // ============================================================
@@ -168,15 +186,21 @@ double firebase_database_set_log_level(uint64_t db_ref, gm_enums::FirebaseLogLev
 {
 	Database* db = resolve_database(db_ref);
 	if (db == nullptr) return 0;
-	db->set_log_level((firebase::LogLevel)(int)log_level);
+	firebase::LogLevel sdk_level;
+	if (!toSdkLogLevel(log_level, sdk_level))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database_set_log_level: log_level must be a FirebaseLogLevel value");
+		return 0;
+	}
+	db->set_log_level(sdk_level);
 	return 1;
 }
 
 gm_enums::FirebaseLogLevel firebase_database_get_log_level(uint64_t db_ref)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return (gm_enums::FirebaseLogLevel)0;
-	return (gm_enums::FirebaseLogLevel)(int)db->log_level();
+	if (db == nullptr) return gm_enums::FirebaseLogLevel::Verbose;
+	return static_cast<gm_enums::FirebaseLogLevel>(db->log_level());
 }
 
 // ============================================================
@@ -660,7 +684,6 @@ namespace
         if (!firebaseFutureArmed(future, function)) return FirebaseError::InvalidHandle;
         future.OnCompletion([callback](const firebase::Future<void>& f)
         {
-            setFirebaseLastError(static_cast<int>(f.error()), futureErrorMessage(f.error_message()));
             if (callback) callback->call(static_cast<double>(f.error()), futureErrorMessage(f.error_message()));
         });
         return FirebaseError::Ok;

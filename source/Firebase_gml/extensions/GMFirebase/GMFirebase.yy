@@ -73,15 +73,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_last_error_code",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_last_error_code",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_last_error_code",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_last_error_code",
+          "name": "__firebase_last_error_code",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -487,17 +490,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_app_check_set_provider_factory",
-          "argCount": 1,
+          "%Name": "__firebase_app_check_set_provider_factory",
+          "argCount": 2,
           "args": [
+            1,
             2
           ],
-          "documentation": "@param {Real} provider\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_app_check_set_provider_factory",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_app_check_set_provider_factory",
+          "name": "__firebase_app_check_set_provider_factory",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -3623,17 +3627,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_set_log_level",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_set_log_level",
+          "argCount": 2,
           "args": [
+            1,
             2
           ],
-          "documentation": "@param {Real} level\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_set_log_level",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_set_log_level",
+          "name": "__firebase_firestore_set_log_level",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -6688,6 +6693,24 @@
         },
         {
           "$GMExtensionFunction": "",
+          "%Name": "__firebase_functions_callable_release",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_functions_callable_release",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_functions_callable_release",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
           "%Name": "__firebase_functions_callable_call",
           "argCount": 4,
           "args": [
@@ -7927,12 +7950,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_ump_get_consent_status",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_ump_get_consent_status",
           "help": "",
           "hidden": true,
@@ -7945,12 +7970,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_ump_get_consent_form_status",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_ump_get_consent_form_status",
           "help": "",
           "hidden": true,
@@ -7963,12 +7990,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_ump_get_privacy_options_requirement_status",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status",
           "help": "",
           "hidden": true,
@@ -10808,32 +10837,36 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_set_log_level",
-          "argCount": 1,
+          "%Name": "__firebase_set_log_level",
+          "argCount": 2,
           "args": [
+            1,
             2
           ],
-          "documentation": "@param {Real} level\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_set_log_level",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_set_log_level",
+          "name": "__firebase_set_log_level",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_get_log_level",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_get_log_level",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_get_log_level",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_get_log_level",
+          "name": "__firebase_get_log_level",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2

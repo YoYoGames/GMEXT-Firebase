@@ -90,12 +90,6 @@ namespace
 		if (ref == 0) return nullptr;
 		return resolveController(ref);
 	}
-
-	void reportFutureError(int error, const char* error_message)
-	{
-		if (error != 0)
-			setFirebaseLastError(error, error_message ? error_message : "");
-	}
 }
 
 // ============================================================
@@ -311,7 +305,6 @@ FirebaseError firebase_storage_ref_delete(uint64_t ref, const std::optional<GMFu
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_delete")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -328,7 +321,6 @@ FirebaseError firebase_storage_ref_get_download_url(uint64_t ref, const std::opt
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_get_download_url")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		std::string url = (f.error() == 0 && f.result() != nullptr) ? *f.result() : std::string();
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::string_view{ url });
@@ -346,7 +338,6 @@ FirebaseError firebase_storage_ref_get_metadata(uint64_t ref, const std::optiona
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_get_metadata")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<firebase::storage::Metadata>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		uint64_t metadata_ref = (f.error() == 0 && f.result() != nullptr) ? registerStorageMetadata(*f.result()) : 0;
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, metadata_ref);
@@ -367,7 +358,6 @@ FirebaseError firebase_storage_ref_update_metadata(uint64_t ref, uint64_t metada
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_update_metadata")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<firebase::storage::Metadata>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		uint64_t out_ref = (f.error() == 0 && f.result() != nullptr) ? registerStorageMetadata(*f.result()) : 0;
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, out_ref);
@@ -400,7 +390,6 @@ FirebaseError firebase_storage_ref_put_bytes(uint64_t ref, GMBuffer data, uint64
 	}
 	future.OnCompletion([callback, listener](const firebase::Future<firebase::storage::Metadata>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		delete listener;
 		if (!callback.has_value()) return;
 		uint64_t out_ref = (f.error() == 0 && f.result() != nullptr) ? registerStorageMetadata(*f.result()) : 0;
@@ -433,7 +422,6 @@ FirebaseError firebase_storage_ref_put_file(uint64_t ref, std::string_view local
 	}
 	future.OnCompletion([callback, listener](const firebase::Future<firebase::storage::Metadata>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		delete listener;
 		if (!callback.has_value()) return;
 		uint64_t out_ref = (f.error() == 0 && f.result() != nullptr) ? registerStorageMetadata(*f.result()) : 0;
@@ -464,7 +452,6 @@ FirebaseError firebase_storage_ref_get_bytes(uint64_t ref, GMBuffer data,
 	}
 	future.OnCompletion([callback, listener](const firebase::Future<size_t>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		delete listener;
 		if (!callback.has_value()) return;
 		double bytes_read = (f.error() == 0 && f.result() != nullptr) ? static_cast<double>(*f.result()) : 0.0;
@@ -493,7 +480,6 @@ FirebaseError firebase_storage_ref_get_file(uint64_t ref, std::string_view local
 	}
 	future.OnCompletion([callback, listener](const firebase::Future<size_t>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		delete listener;
 		if (!callback.has_value()) return;
 		double bytes_read = (f.error() == 0 && f.result() != nullptr) ? static_cast<double>(*f.result()) : 0.0;
@@ -516,7 +502,6 @@ FirebaseError firebase_storage_ref_list(uint64_t ref, double max_results, std::s
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_list")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<firebase::storage::StorageListResult>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		uint64_t out_ref = (f.error() == 0 && f.result() != nullptr) ? registerStorageListResult(*f.result()) : 0;
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, out_ref);

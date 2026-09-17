@@ -219,7 +219,6 @@ FirebaseError firebase_auth_user_get_token(uint64_t user_ref, bool force_refresh
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -249,7 +248,6 @@ FirebaseError firebase_auth_user_update_password(uint64_t user_ref, std::string_
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -284,7 +282,6 @@ FirebaseError firebase_auth_user_update_profile(uint64_t user_ref, std::string_v
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -310,7 +307,6 @@ FirebaseError firebase_auth_user_send_email_verification(uint64_t user_ref, cons
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -333,7 +329,6 @@ FirebaseError firebase_auth_user_send_email_verification_before_updating_email(u
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -363,7 +358,6 @@ FirebaseError firebase_auth_user_reauthenticate(uint64_t user_ref, uint64_t cred
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -389,7 +383,6 @@ FirebaseError firebase_auth_user_reauthenticate_and_retrieve_data(uint64_t user_
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -421,7 +414,6 @@ FirebaseError firebase_auth_user_link_with_credential(uint64_t user_ref, uint64_
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -450,7 +442,6 @@ FirebaseError firebase_auth_user_unlink(uint64_t user_ref, std::string_view prov
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -482,7 +473,6 @@ FirebaseError firebase_auth_user_reload(uint64_t user_ref, const std::optional<g
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -504,7 +494,6 @@ FirebaseError firebase_auth_user_delete(uint64_t user_ref, const std::optional<g
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -562,7 +551,6 @@ namespace
     {
         const int code = f.error();
         const char* message = f.error_message();
-        setFirebaseLastError(code, message ? message : "");
         if (!callback) return;
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
             callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResult(user_ref, *f.result()));
@@ -648,7 +636,6 @@ FirebaseError firebase_auth_user_update_phone_number_credential(uint64_t user_re
     {
         const int code = f.error();
         const char* message = f.error_message();
-        setFirebaseLastError(code, message ? message : "");
         if (!callback) return;
         std::optional<uint64_t> out;
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)

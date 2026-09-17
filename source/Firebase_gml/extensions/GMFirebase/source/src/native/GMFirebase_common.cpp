@@ -207,16 +207,30 @@ void setFirebaseLastError(int code, const std::string& message)
 	g_firebase_last_error.message = message;
 }
 
-double firebase_last_error_code()
+gm_enums::FirebaseError firebase_last_error_code()
 {
 	std::lock_guard<std::mutex> lock(g_firebase_last_error_mutex);
-	return static_cast<double>(g_firebase_last_error.code);
+	return static_cast<gm_enums::FirebaseError>(g_firebase_last_error.code);
 }
 
 std::string firebase_last_error_message()
 {
 	std::lock_guard<std::mutex> lock(g_firebase_last_error_mutex);
 	return g_firebase_last_error.message;
+}
+
+bool toSdkLogLevel(gm_enums::FirebaseLogLevel level, firebase::LogLevel& out)
+{
+	switch (level)
+	{
+	case gm_enums::FirebaseLogLevel::Verbose: out = firebase::kLogLevelVerbose; return true;
+	case gm_enums::FirebaseLogLevel::Debug: out = firebase::kLogLevelDebug; return true;
+	case gm_enums::FirebaseLogLevel::Info: out = firebase::kLogLevelInfo; return true;
+	case gm_enums::FirebaseLogLevel::Warning: out = firebase::kLogLevelWarning; return true;
+	case gm_enums::FirebaseLogLevel::Error: out = firebase::kLogLevelError; return true;
+	case gm_enums::FirebaseLogLevel::Assert: out = firebase::kLogLevelAssert; return true;
+	default: return false;
+	}
 }
 
 std::string firebaseInitResultMessage(const char* what, firebase::InitResult result)

@@ -1,10 +1,24 @@
 #include "GMFirebase_ump.h"
-#include <climits>
-#include <cmath>
 
 using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
+
+// The four UMP enums mirror firebase::ump's. See GM_FB_PIN_ENUM in
+// GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseUmpConsentStatus::Unknown, firebase::ump::kConsentStatusUnknown);
+GM_FB_PIN_ENUM(FirebaseUmpConsentStatus::Required, firebase::ump::kConsentStatusRequired);
+GM_FB_PIN_ENUM(FirebaseUmpConsentStatus::NotRequired, firebase::ump::kConsentStatusNotRequired);
+GM_FB_PIN_ENUM(FirebaseUmpConsentStatus::Obtained, firebase::ump::kConsentStatusObtained);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormStatus::Unknown, firebase::ump::kConsentFormStatusUnknown);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormStatus::Unavailable, firebase::ump::kConsentFormStatusUnavailable);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormStatus::Available, firebase::ump::kConsentFormStatusAvailable);
+GM_FB_PIN_ENUM(FirebaseUmpPrivacyOptionsRequirementStatus::Unknown, firebase::ump::kPrivacyOptionsRequirementStatusUnknown);
+GM_FB_PIN_ENUM(FirebaseUmpPrivacyOptionsRequirementStatus::NotRequired, firebase::ump::kPrivacyOptionsRequirementStatusNotRequired);
+GM_FB_PIN_ENUM(FirebaseUmpPrivacyOptionsRequirementStatus::Required, firebase::ump::kPrivacyOptionsRequirementStatusRequired);
+GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::Disabled, firebase::ump::kConsentDebugGeographyDisabled);
+GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::EEA, firebase::ump::kConsentDebugGeographyEEA);
+GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::NonEEA, firebase::ump::kConsentDebugGeographyNonEEA);
 
 #if FIREBASE_PLATFORM_IOS
 // Defined in src/ios/GMFirebase_ios.mm: the runner's root view controller.
@@ -18,12 +32,6 @@ namespace
 		firebase::ump::ConsentInfo* out = nullptr;
 		validate_fb_ref_ptr(ref, GM_FB_TYPE_UMP_CONSENT_INFO, firebase::ump::ConsentInfo, out);
 		return out;
-	}
-
-	void reportFutureError(int error, const char* error_message)
-	{
-		if (error != 0)
-			setFirebaseLastError(error, error_message ? error_message : "");
 	}
 
 	void invokeVoidCallback(const std::optional<GMFunction>& callback, const firebase::Future<void>& f)
@@ -98,25 +106,25 @@ std::optional<uint64_t> firebase_ump_get_instance()
 	return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
 }
 
-double firebase_ump_get_consent_status(uint64_t consent_ref)
+FirebaseUmpConsentStatus firebase_ump_get_consent_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
-	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kConsentStatusUnknown);
-	return static_cast<double>(consent_info->GetConsentStatus());
+	if (consent_info == nullptr) return FirebaseUmpConsentStatus::Unknown;
+	return static_cast<FirebaseUmpConsentStatus>(consent_info->GetConsentStatus());
 }
 
-double firebase_ump_get_consent_form_status(uint64_t consent_ref)
+FirebaseUmpConsentFormStatus firebase_ump_get_consent_form_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
-	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kConsentFormStatusUnknown);
-	return static_cast<double>(consent_info->GetConsentFormStatus());
+	if (consent_info == nullptr) return FirebaseUmpConsentFormStatus::Unknown;
+	return static_cast<FirebaseUmpConsentFormStatus>(consent_info->GetConsentFormStatus());
 }
 
-double firebase_ump_get_privacy_options_requirement_status(uint64_t consent_ref)
+FirebaseUmpPrivacyOptionsRequirementStatus firebase_ump_get_privacy_options_requirement_status(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
-	if (consent_info == nullptr) return static_cast<double>(firebase::ump::kPrivacyOptionsRequirementStatusUnknown);
-	return static_cast<double>(consent_info->GetPrivacyOptionsRequirementStatus());
+	if (consent_info == nullptr) return FirebaseUmpPrivacyOptionsRequirementStatus::Unknown;
+	return static_cast<FirebaseUmpPrivacyOptionsRequirementStatus>(consent_info->GetPrivacyOptionsRequirementStatus());
 }
 
 double firebase_ump_can_request_ads(uint64_t consent_ref)
@@ -137,7 +145,7 @@ void firebase_ump_reset(uint64_t consent_ref)
 // treated as empty); anything else is rejected, because a dropped id is what
 // makes debug_geography silently not apply on a real device.
 // callback(error_code: real, error_message: string)
-FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, double debug_geography,
+FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, FirebaseUmpConsentDebugGeography debug_geography,
 	double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids,
 	const std::optional<GMFunction>& callback)
 {
@@ -147,11 +155,7 @@ FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, dou
 	firebase::ump::ConsentRequestParameters params;
 	params.tag_for_under_age_of_consent = (tag_for_under_age_of_consent >= 0.5);
 
-	// Only an integral value in int range may reach the cast; the switch's
-	// default then rejects anything outside the enum.
-	const bool geography_is_integral = std::isfinite(debug_geography) && debug_geography >= 0.0
-		&& debug_geography <= static_cast<double>(INT_MAX) && debug_geography == std::floor(debug_geography);
-	switch (static_cast<FirebaseUmpConsentDebugGeography>(geography_is_integral ? static_cast<int>(debug_geography) : -1))
+	switch (debug_geography)
 	{
 	case FirebaseUmpConsentDebugGeography::Disabled: params.debug_settings.debug_geography = firebase::ump::kConsentDebugGeographyDisabled; break;
 	case FirebaseUmpConsentDebugGeography::EEA: params.debug_settings.debug_geography = firebase::ump::kConsentDebugGeographyEEA; break;
@@ -171,7 +175,6 @@ FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, dou
 
 	consent_info->RequestConsentInfoUpdate(params).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeVoidCallback(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -185,7 +188,6 @@ FirebaseError firebase_ump_load_consent_form(uint64_t consent_ref, const std::op
 
 	consent_info->LoadConsentForm().OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeVoidCallback(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -205,7 +207,6 @@ FirebaseError firebase_ump_show_consent_form(uint64_t consent_ref, uint64_t form
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowConsentForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeVoidCallback(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -222,7 +223,6 @@ FirebaseError firebase_ump_load_and_show_consent_form_if_required(uint64_t conse
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->LoadAndShowConsentFormIfRequired(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeVoidCallback(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -239,7 +239,6 @@ FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint6
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowPrivacyOptionsForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeVoidCallback(callback, f);
 	});
 	return FirebaseError::Ok;

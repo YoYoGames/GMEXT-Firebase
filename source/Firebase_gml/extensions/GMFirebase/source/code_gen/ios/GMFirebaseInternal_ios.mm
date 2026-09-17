@@ -100,9 +100,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_app_get_name();
 }
-- (double)__EXT_NATIVE__firebase_last_error_code
+- (double)__EXT_NATIVE__firebase_last_error_code:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_last_error_code();
+    return __EXT_NATIVE__firebase_last_error_code(__ret_buffer, __ret_buffer_length);
 }
 - (char*)__EXT_NATIVE__firebase_last_error_message
 {
@@ -196,9 +196,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_phone(phone_number);
 }
-- (double)__EXT_NATIVE__firebase_app_check_set_provider_factory:(double)provider
+- (double)__EXT_NATIVE__firebase_app_check_set_provider_factory:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_app_check_set_provider_factory(provider);
+    return __EXT_NATIVE__firebase_app_check_set_provider_factory(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_app_check_debug_provider_set_debug_token:(char*)token
 {
@@ -856,9 +856,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_batch(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_set_log_level:(double)level
+- (double)__EXT_NATIVE__firebase_firestore_set_log_level:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_set_log_level(level);
+    return __EXT_NATIVE__firebase_firestore_set_log_level(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_enable_network:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -1508,6 +1508,10 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_functions_callable_is_valid(__arg_buffer, __arg_buffer_length);
 }
+- (double)__EXT_NATIVE__firebase_functions_callable_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_functions_callable_release(__arg_buffer, __arg_buffer_length);
+}
 - (double)__EXT_NATIVE__firebase_functions_callable_call:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1800,17 +1804,17 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_ump_get_instance(__ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_get_consent_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_get_consent_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_get_consent_status(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_get_consent_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_get_consent_form_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_get_consent_form_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_get_consent_form_status(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_get_consent_form_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_ump_can_request_ads:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2412,13 +2416,13 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_app_release_handle(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_set_log_level:(double)level
+- (double)__EXT_NATIVE__firebase_set_log_level:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_set_log_level(level);
+    return __EXT_NATIVE__firebase_set_log_level(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_get_log_level
+- (double)__EXT_NATIVE__firebase_get_log_level:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_get_log_level();
+    return __EXT_NATIVE__firebase_get_log_level(__ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_auth_get_app:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {

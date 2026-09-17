@@ -24,9 +24,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_get_name();
     }
-    public double __EXT_NATIVE__firebase_last_error_code()
+    public double __EXT_NATIVE__firebase_last_error_code(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_last_error_code();
+        return __EXT_JNI__firebase_last_error_code(__ret_buffer, __ret_buffer_length);
     }
     public String __EXT_NATIVE__firebase_last_error_message()
     {
@@ -120,9 +120,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_phone(phone_number);
     }
-    public double __EXT_NATIVE__firebase_app_check_set_provider_factory(double provider)
+    public double __EXT_NATIVE__firebase_app_check_set_provider_factory(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_app_check_set_provider_factory(provider);
+        return __EXT_JNI__firebase_app_check_set_provider_factory(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_app_check_debug_provider_set_debug_token(String token)
     {
@@ -780,9 +780,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_batch(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_set_log_level(double level)
+    public double __EXT_NATIVE__firebase_firestore_set_log_level(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_set_log_level(level);
+        return __EXT_JNI__firebase_firestore_set_log_level(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_enable_network(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -1432,6 +1432,10 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_functions_callable_is_valid(__arg_buffer, __arg_buffer_length);
     }
+    public double __EXT_NATIVE__firebase_functions_callable_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    {
+        return __EXT_JNI__firebase_functions_callable_release(__arg_buffer, __arg_buffer_length);
+    }
     public double __EXT_NATIVE__firebase_functions_callable_call(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
         return __EXT_JNI__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1724,17 +1728,17 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_ump_get_instance(__ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_get_consent_status(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_get_consent_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_get_consent_status(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_get_consent_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_get_consent_form_status(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_get_consent_form_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_get_consent_form_status(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_get_consent_form_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_get_privacy_options_requirement_status(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_get_privacy_options_requirement_status(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_ump_can_request_ads(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2336,13 +2340,13 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_release_handle(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_set_log_level(double level)
+    public double __EXT_NATIVE__firebase_set_log_level(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_set_log_level(level);
+        return __EXT_JNI__firebase_set_log_level(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_get_log_level()
+    public double __EXT_NATIVE__firebase_get_log_level(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_get_log_level();
+        return __EXT_JNI__firebase_get_log_level(__ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_auth_get_app(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {

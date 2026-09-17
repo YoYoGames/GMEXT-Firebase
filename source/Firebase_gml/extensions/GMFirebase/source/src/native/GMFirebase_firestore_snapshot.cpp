@@ -10,6 +10,33 @@ using namespace gm_structs;
 using namespace gm_enums;
 
 // ============================================================
+// Enum mirrors (see GM_FB_PIN_ENUM in GMFirebase_common.h)
+// ============================================================
+
+GM_FB_PIN_ENUM(FirestoreServerTimestampBehavior::None, firebase::firestore::DocumentSnapshot::ServerTimestampBehavior::kNone);
+GM_FB_PIN_ENUM(FirestoreServerTimestampBehavior::Estimate, firebase::firestore::DocumentSnapshot::ServerTimestampBehavior::kEstimate);
+GM_FB_PIN_ENUM(FirestoreServerTimestampBehavior::Previous, firebase::firestore::DocumentSnapshot::ServerTimestampBehavior::kPrevious);
+// The SDK's kDefault is an alias of kNone, not a fourth value.
+GM_FB_PIN_ENUM(FirestoreServerTimestampBehavior::None, firebase::firestore::DocumentSnapshot::ServerTimestampBehavior::kDefault);
+GM_FB_PIN_ENUM(FirestoreDocumentChangeType::Added, firebase::firestore::DocumentChange::Type::kAdded);
+GM_FB_PIN_ENUM(FirestoreDocumentChangeType::Modified, firebase::firestore::DocumentChange::Type::kModified);
+GM_FB_PIN_ENUM(FirestoreDocumentChangeType::Removed, firebase::firestore::DocumentChange::Type::kRemoved);
+
+// GML -> SDK. False for anything outside the enum; the caller records
+// InvalidArgument.
+static bool toSdkServerTimestampBehavior(FirestoreServerTimestampBehavior behavior, firebase::firestore::DocumentSnapshot::ServerTimestampBehavior& out)
+{
+	using Sdk = firebase::firestore::DocumentSnapshot::ServerTimestampBehavior;
+	switch (behavior)
+	{
+	case FirestoreServerTimestampBehavior::None: out = Sdk::kNone; return true;
+	case FirestoreServerTimestampBehavior::Estimate: out = Sdk::kEstimate; return true;
+	case FirestoreServerTimestampBehavior::Previous: out = Sdk::kPrevious; return true;
+	default: return false;
+	}
+}
+
+// ============================================================
 // Value-copy registries (declared extern in GMFirebase_firestore.h)
 // ============================================================
 
@@ -88,21 +115,26 @@ namespace
 
 // See GMFirebase_firestore.h's converter section for how composite value
 // kinds (Timestamp/GeoPoint/Reference/Array/Map) are encoded.
-gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(uint64_t ref, std::string_view field, double server_timestamp_behavior)
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(uint64_t ref, std::string_view field, FirestoreServerTimestampBehavior server_timestamp_behavior)
 {
 	firebase::firestore::DocumentSnapshot* snap = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
 	if (snap == nullptr)
 		return makeFieldLookup(nullptr);
 
-	auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
+	firebase::firestore::DocumentSnapshot::ServerTimestampBehavior stb;
+	if (!toSdkServerTimestampBehavior(server_timestamp_behavior, stb))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_snapshot_get: server_timestamp_behavior must be a FirestoreServerTimestampBehavior value");
+		return makeFieldLookup(nullptr);
+	}
 	std::string field_name(field);
 	firebase::firestore::FieldValue value = snap->Get(field_name.c_str(), stb);
 	return makeFieldLookup(&value);
 }
 
 // Returns the full field map as a struct, field name -> converted value.
-gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref, double server_timestamp_behavior)
+gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref, FirestoreServerTimestampBehavior server_timestamp_behavior)
 {
 	gm::wire::StructStream result;
 
@@ -110,10 +142,15 @@ gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref,
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
 	if (snap != nullptr)
 	{
-		auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
-		firebase::firestore::MapFieldValue data = snap->GetData(stb);
-		for (const auto& kv : data)
-			addFieldValueToStruct(kv.first.c_str(), kv.second, result);
+		firebase::firestore::DocumentSnapshot::ServerTimestampBehavior stb;
+		if (toSdkServerTimestampBehavior(server_timestamp_behavior, stb))
+		{
+			firebase::firestore::MapFieldValue data = snap->GetData(stb);
+			for (const auto& kv : data)
+				addFieldValueToStruct(kv.first.c_str(), kv.second, result);
+		}
+		else
+			setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_snapshot_get_data: server_timestamp_behavior must be a FirestoreServerTimestampBehavior value");
 	}
 
 	gm::wire::DataStream out;
@@ -251,7 +288,7 @@ std::string firebase_firestore_document_snapshot_to_string(uint64_t ref)
     return snap ? snap->ToString() : std::string();
 }
 
-gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(uint64_t ref, uint64_t field_path_ref, double server_timestamp_behavior)
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(uint64_t ref, uint64_t field_path_ref, FirestoreServerTimestampBehavior server_timestamp_behavior)
 {
     firebase::firestore::DocumentSnapshot* snap = nullptr;
     validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT, firebase::firestore::DocumentSnapshot, g_fs_doc_snapshot_map, snap);
@@ -260,7 +297,12 @@ gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_
     if (!snap || !path)
         return makeFieldLookup(nullptr);
 
-    auto stb = static_cast<firebase::firestore::DocumentSnapshot::ServerTimestampBehavior>(static_cast<int>(server_timestamp_behavior));
+    firebase::firestore::DocumentSnapshot::ServerTimestampBehavior stb;
+    if (!toSdkServerTimestampBehavior(server_timestamp_behavior, stb))
+    {
+        setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_snapshot_get_field_path: server_timestamp_behavior must be a FirestoreServerTimestampBehavior value");
+        return makeFieldLookup(nullptr);
+    }
     firebase::firestore::FieldValue value = snap->Get(*path, stb);
     return makeFieldLookup(&value);
 }

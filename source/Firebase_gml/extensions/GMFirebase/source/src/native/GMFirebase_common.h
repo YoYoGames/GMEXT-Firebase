@@ -31,11 +31,13 @@ firebase::App* resolveFirebaseApp(uint64_t ref);
 // Last Error State
 // ============================================================
 
-// Firebase's C++ SDK has no single unified result enum (unlike FMOD_RESULT),
-// so every module funnels both synchronous failures and Future<T> completion
-// errors through this. Guarded by a mutex because Future<T>::OnCompletion
-// callbacks can fire on Firebase's own background threads and may race a
-// firebase_last_error_*() read happening on the GML thread.
+// The synchronous error channel. Written only by a failure that happens
+// before the SDK is reached - an unresolved handle, a module used before its
+// initialize, a rejected argument - on the thread that made the call, and read
+// by GML right after that call returns. An SDK result is delivered to the
+// call's own callback and never lands here: a completion lambda or listener
+// override that writes this is a contract violation, not a race to lock
+// around. The code is always one of the GM_FB_ERROR_* values below.
 struct FirebaseLastError
 {
 	int code = 0;
@@ -43,7 +45,7 @@ struct FirebaseLastError
 };
 
 void setFirebaseLastError(int code, const std::string& message);
-double firebase_last_error_code();
+gm_enums::FirebaseError firebase_last_error_code();
 std::string firebase_last_error_message();
 
 // ============================================================
@@ -72,6 +74,29 @@ static_assert(static_cast<int>(gm_enums::FirebaseError::Unsupported) == GM_FB_ER
 // Play services on Android. Name it in the message rather than storing the raw
 // InitResult as the code, where 1 reads as kAuthErrorFailure.
 std::string firebaseInitResultMessage(const char* what, firebase::InitResult result);
+
+// ============================================================
+// Enum mirrors
+// ============================================================
+
+// Every GMIDL enum that mirrors an SDK enum is pinned to it here or in the
+// module that casts it, one static_assert per SDK enumerator. A value the SDK
+// renumbers or adds fails the build instead of silently repointing a GML
+// constant; when one fires, edit spec.gmidl and regenerate. GML -> SDK goes
+// through a switch on the generated symbols with a default that rejects the
+// rest; SDK -> GML is a static_cast the pins make safe.
+#define GM_FB_PIN_ENUM(gm_value, sdk_value) \
+	static_assert(static_cast<int>(gm_value) == static_cast<int>(sdk_value), #gm_value " drifted from " #sdk_value)
+
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Verbose, firebase::kLogLevelVerbose);
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Debug, firebase::kLogLevelDebug);
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Info, firebase::kLogLevelInfo);
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Warning, firebase::kLogLevelWarning);
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Error, firebase::kLogLevelError);
+GM_FB_PIN_ENUM(gm_enums::FirebaseLogLevel::Assert, firebase::kLogLevelAssert);
+
+// False for anything outside the enum; the caller records InvalidArgument.
+bool toSdkLogLevel(gm_enums::FirebaseLogLevel level, firebase::LogLevel& out);
 
 // ============================================================
 // Reference Layout

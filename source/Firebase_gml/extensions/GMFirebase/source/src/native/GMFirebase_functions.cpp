@@ -28,12 +28,6 @@ namespace
 		return out;
 	}
 
-	void reportFutureError(int error, const char* error_message)
-	{
-		if (error != 0)
-			setFirebaseLastError(error, error_message ? error_message : "");
-	}
-
 	// callback(error_code, error_message, result). The result is the call's
 	// arbitrarily-shaped firebase::Variant, written through
 	// writeVariantToStream so it reaches GML as whatever it is (a real,
@@ -147,6 +141,12 @@ double firebase_functions_callable_is_valid(uint64_t ref)
 	return self->is_valid() ? 1.0 : 0.0;
 }
 
+void firebase_functions_callable_release(uint64_t ref)
+{
+	if (resolveCallable(ref) == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_functions_callable_map);
+}
+
 // callback(error_code: real, error_message: string, data: gmval)
 FirebaseError firebase_functions_callable_call(uint64_t ref, const std::optional<GMFunction>& callback)
 {
@@ -157,7 +157,6 @@ FirebaseError firebase_functions_callable_call(uint64_t ref, const std::optional
 	if (!firebaseFutureArmed(future, "firebase_functions_callable_call")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeCallableCallback(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -176,7 +175,6 @@ FirebaseError firebase_functions_callable_call_with_data(uint64_t ref, const GMV
 	if (!firebaseFutureArmed(future, "firebase_functions_callable_call_with_data")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		invokeCallableCallback(callback, f);
 	});
 	return FirebaseError::Ok;

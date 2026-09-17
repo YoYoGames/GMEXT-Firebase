@@ -22,7 +22,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_app_initialize();
     public static native double __EXT_JNI__firebase_app_is_initialized();
     public static native String __EXT_JNI__firebase_app_get_name();
-    public static native double __EXT_JNI__firebase_last_error_code();
+    public static native double __EXT_JNI__firebase_last_error_code(ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native String __EXT_JNI__firebase_last_error_message();
     public static native double __EXT_JNI__firebase_analytics_initialize();
     public static native double __EXT_JNI__firebase_analytics_terminate();
@@ -46,7 +46,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_analytics_set_log_callback(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_email(String email_address);
     public static native double __EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_phone(String phone_number);
-    public static native double __EXT_JNI__firebase_app_check_set_provider_factory(double provider);
+    public static native double __EXT_JNI__firebase_app_check_set_provider_factory(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_app_check_debug_provider_set_debug_token(String token);
     public static native double __EXT_JNI__firebase_app_check_set_token_auto_refresh_enabled(double enabled);
     public static native double __EXT_JNI__firebase_app_check_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
@@ -211,7 +211,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_firestore_document(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_collection_group(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_batch(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_firestore_set_log_level(double level);
+    public static native double __EXT_JNI__firebase_firestore_set_log_level(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_enable_network(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_disable_network(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_terminate(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
@@ -374,6 +374,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_functions_get_https_callable_from_url(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_functions_get_https_callable_from_url_with_options(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_functions_callable_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length);
+    public static native double __EXT_JNI__firebase_functions_callable_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_functions_callable_call(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_functions_callable_call_with_data(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_remote_config_get_instance(ByteBuffer __ret_buffer, double __ret_buffer_length);
@@ -447,9 +448,9 @@ public final class GMFirebaseBridge {
     public static native String __EXT_JNI__firebase_messaging_message_notification_title_loc_args_at(double index);
     public static native String __EXT_JNI__firebase_messaging_message_notification_android_channel_id();
     public static native double __EXT_JNI__firebase_ump_get_instance(ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_ump_get_consent_status(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_ump_get_consent_form_status(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_ump_get_privacy_options_requirement_status(ByteBuffer __arg_buffer, double __arg_buffer_length);
+    public static native double __EXT_JNI__firebase_ump_get_consent_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_ump_get_consent_form_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_ump_get_privacy_options_requirement_status(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_ump_can_request_ads(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_ump_reset(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_ump_request_consent_info_update(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
@@ -600,8 +601,8 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_app_handle_get_options(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_app_get_default_options(ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_app_release_handle(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_set_log_level(double level);
-    public static native double __EXT_JNI__firebase_get_log_level();
+    public static native double __EXT_JNI__firebase_set_log_level(ByteBuffer __arg_buffer, double __arg_buffer_length);
+    public static native double __EXT_JNI__firebase_get_log_level(ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_auth_get_app(ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_get_app(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_database_get_instance_for_app(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);

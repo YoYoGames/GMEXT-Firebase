@@ -12,7 +12,7 @@ GMEXPORT double __EXT_NATIVE__GMFirebase_queue_buffer(char* __arg_buffer, double
 GMEXPORT double __EXT_NATIVE__firebase_app_initialize();
 GMEXPORT double __EXT_NATIVE__firebase_app_is_initialized();
 GMEXPORT char* __EXT_NATIVE__firebase_app_get_name();
-GMEXPORT double __EXT_NATIVE__firebase_last_error_code();
+GMEXPORT double __EXT_NATIVE__firebase_last_error_code(char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT char* __EXT_NATIVE__firebase_last_error_message();
 GMEXPORT double __EXT_NATIVE__firebase_analytics_initialize();
 GMEXPORT double __EXT_NATIVE__firebase_analytics_terminate();
@@ -36,7 +36,7 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_set_desktop_debug_mode(double e
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_log_callback(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_email(char* email_address);
 GMEXPORT double __EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_phone(char* phone_number);
-GMEXPORT double __EXT_NATIVE__firebase_app_check_set_provider_factory(double provider);
+GMEXPORT double __EXT_NATIVE__firebase_app_check_set_provider_factory(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_app_check_debug_provider_set_debug_token(char* token);
 GMEXPORT double __EXT_NATIVE__firebase_app_check_set_token_auto_refresh_enabled(double enabled);
 GMEXPORT double __EXT_NATIVE__firebase_app_check_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
@@ -201,7 +201,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_collection(char* __arg_buffer, 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_document(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_group(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_batch(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_firestore_set_log_level(double level);
+GMEXPORT double __EXT_NATIVE__firebase_firestore_set_log_level(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_enable_network(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_disable_network(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_terminate(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
@@ -364,6 +364,7 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_get_https_callable_with_options
 GMEXPORT double __EXT_NATIVE__firebase_functions_get_https_callable_from_url(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_functions_get_https_callable_from_url_with_options(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_functions_callable_is_valid(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_functions_callable_release(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call_with_data(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_instance(char* __ret_buffer, double __ret_buffer_length);
@@ -437,9 +438,9 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_message_notification_title_loc_
 GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_at(double index);
 GMEXPORT char* __EXT_NATIVE__firebase_messaging_message_notification_android_channel_id();
 GMEXPORT double __EXT_NATIVE__firebase_ump_get_instance(char* __ret_buffer, double __ret_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_status(char* __arg_buffer, double __arg_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_form_status(char* __arg_buffer, double __arg_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_form_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_ump_can_request_ads(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_ump_reset(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
@@ -590,8 +591,8 @@ GMEXPORT char* __EXT_NATIVE__firebase_app_handle_get_name(char* __arg_buffer, do
 GMEXPORT double __EXT_NATIVE__firebase_app_handle_get_options(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_app_get_default_options(char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_app_release_handle(char* __arg_buffer, double __arg_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_set_log_level(double level);
-GMEXPORT double __EXT_NATIVE__firebase_get_log_level();
+GMEXPORT double __EXT_NATIVE__firebase_set_log_level(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_get_log_level(char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_auth_get_app(char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_get_app(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_database_get_instance_for_app(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);

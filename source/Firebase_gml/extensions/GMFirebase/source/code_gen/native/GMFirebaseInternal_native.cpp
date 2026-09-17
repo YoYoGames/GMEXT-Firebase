@@ -45,10 +45,14 @@ GMEXPORT char* __EXT_NATIVE__firebase_app_get_name()
     return (char*)__result.c_str();
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_last_error_code()
+GMEXPORT double __EXT_NATIVE__firebase_last_error_code(char* __ret_buffer, double __ret_buffer_length)
 {
     auto&& __result = firebase_last_error_code();
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT char* __EXT_NATIVE__firebase_last_error_message()
@@ -254,9 +258,14 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_m
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_app_check_set_provider_factory(double provider)
+GMEXPORT double __EXT_NATIVE__firebase_app_check_set_provider_factory(char* __arg_buffer, double __arg_buffer_length)
 {
-    firebase_app_check_set_provider_factory(static_cast<double>(provider));
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: provider, type: enum FirebaseAppCheckProvider
+    gm_enums::FirebaseAppCheckProvider provider = gm::wire::codec::readValue<gm_enums::FirebaseAppCheckProvider>(__br);
+
+    firebase_app_check_set_provider_factory(provider);
     return 0;
 }
 
@@ -2910,9 +2919,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_batch(char* __arg_buffer, doubl
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_set_log_level(double level)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_set_log_level(char* __arg_buffer, double __arg_buffer_length)
 {
-    firebase_firestore_set_log_level(static_cast<double>(level));
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: level, type: enum FirebaseLogLevel
+    gm_enums::FirebaseLogLevel level = gm::wire::codec::readValue<gm_enums::FirebaseLogLevel>(__br);
+
+    firebase_firestore_set_log_level(level);
     return 0;
 }
 
@@ -3231,8 +3245,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_get(char* __arg_bu
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: source, type: Float64
-    double source = gm::wire::codec::readValue<double>(__br);
+    // field: source, type: enum FirestoreSource
+    gm_enums::FirestoreSource source = gm::wire::codec::readValue<gm_enums::FirestoreSource>(__br);
 
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
@@ -3641,8 +3655,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_order_by(char* __arg_buff
     // field: field, type: String
     std::string_view field = gm::wire::codec::readValue<std::string_view>(__br);
 
-    // field: direction, type: Float64
-    double direction = gm::wire::codec::readValue<double>(__br);
+    // field: direction, type: enum FirestoreDirection
+    gm_enums::FirestoreDirection direction = gm::wire::codec::readValue<gm_enums::FirestoreDirection>(__br);
 
     auto&& __result = firebase_firestore_query_order_by(ref, field, direction);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -3839,8 +3853,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_get(char* __arg_buffer, d
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: source, type: Float64
-    double source = gm::wire::codec::readValue<double>(__br);
+    // field: source, type: enum FirestoreSource
+    gm_enums::FirestoreSource source = gm::wire::codec::readValue<gm_enums::FirestoreSource>(__br);
 
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
@@ -4151,8 +4165,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get(char* __a
     // field: field, type: String
     std::string_view field = gm::wire::codec::readValue<std::string_view>(__br);
 
-    // field: server_timestamp_behavior, type: Float64
-    double server_timestamp_behavior = gm::wire::codec::readValue<double>(__br);
+    // field: server_timestamp_behavior, type: enum FirestoreServerTimestampBehavior
+    gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior = gm::wire::codec::readValue<gm_enums::FirestoreServerTimestampBehavior>(__br);
 
     auto&& __result = firebase_firestore_document_snapshot_get(ref, field, server_timestamp_behavior);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -4169,8 +4183,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_data(char
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: server_timestamp_behavior, type: Float64
-    double server_timestamp_behavior = gm::wire::codec::readValue<double>(__br);
+    // field: server_timestamp_behavior, type: enum FirestoreServerTimestampBehavior
+    gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior = gm::wire::codec::readValue<gm_enums::FirestoreServerTimestampBehavior>(__br);
 
     auto&& __result = firebase_firestore_document_snapshot_get_data(ref, server_timestamp_behavior);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -5452,6 +5466,17 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_callable_is_valid(char* __arg_b
     return static_cast<double>(__result);
 }
 
+GMEXPORT double __EXT_NATIVE__firebase_functions_callable_release(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: ref, type: UInt64
+    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    firebase_functions_callable_release(ref);
+    return 0;
+}
+
 GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
@@ -6304,7 +6329,7 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_get_instance(char* __ret_buffer, doub
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_status(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6312,10 +6337,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_status(char* __arg_buffer
     std::uint64_t consent_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
     auto&& __result = firebase_ump_get_consent_status(consent_ref);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseUmpConsentStatus
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_form_status(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_form_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6323,10 +6352,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_get_consent_form_status(char* __arg_b
     std::uint64_t consent_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
     auto&& __result = firebase_ump_get_consent_form_status(consent_ref);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseUmpConsentFormStatus
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_status(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6334,7 +6367,11 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_get_privacy_options_requirement_statu
     std::uint64_t consent_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
     auto&& __result = firebase_ump_get_privacy_options_requirement_status(consent_ref);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseUmpPrivacyOptionsRequirementStatus
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_ump_can_request_ads(char* __arg_buffer, double __arg_buffer_length)
@@ -6366,8 +6403,8 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __a
     // field: consent_ref, type: UInt64
     std::uint64_t consent_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: debug_geography, type: Float64
-    double debug_geography = gm::wire::codec::readValue<double>(__br);
+    // field: debug_geography, type: enum FirebaseUmpConsentDebugGeography
+    gm_enums::FirebaseUmpConsentDebugGeography debug_geography = gm::wire::codec::readValue<gm_enums::FirebaseUmpConsentDebugGeography>(__br);
 
     // field: tag_for_under_age_of_consent, type: Float64
     double tag_for_under_age_of_consent = gm::wire::codec::readValue<double>(__br);
@@ -7709,8 +7746,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_order_by_field_path(char*
     // field: field_path, type: UInt64
     std::uint64_t field_path = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: direction, type: Float64
-    double direction = gm::wire::codec::readValue<double>(__br);
+    // field: direction, type: enum FirestoreDirection
+    gm_enums::FirestoreDirection direction = gm::wire::codec::readValue<gm_enums::FirestoreDirection>(__br);
 
     auto&& __result = firebase_firestore_query_order_by_field_path(query, field_path, direction);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -7768,8 +7805,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_get(char* __arg
     // field: aggregate_query, type: UInt64
     std::uint64_t aggregate_query = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: source, type: Float64
-    double source = gm::wire::codec::readValue<double>(__br);
+    // field: source, type: enum FirestoreAggregateSource
+    gm_enums::FirestoreAggregateSource source = gm::wire::codec::readValue<gm_enums::FirestoreAggregateSource>(__br);
 
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
@@ -8548,8 +8585,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_field_pat
     // field: field_path, type: UInt64
     std::uint64_t field_path = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: server_timestamp_behavior, type: Float64
-    double server_timestamp_behavior = gm::wire::codec::readValue<double>(__br);
+    // field: server_timestamp_behavior, type: enum FirestoreServerTimestampBehavior
+    gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior = gm::wire::codec::readValue<gm_enums::FirestoreServerTimestampBehavior>(__br);
 
     auto&& __result = firebase_firestore_document_snapshot_get_field_path(snapshot, field_path, server_timestamp_behavior);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -8702,16 +8739,25 @@ GMEXPORT double __EXT_NATIVE__firebase_app_release_handle(char* __arg_buffer, do
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_set_log_level(double level)
+GMEXPORT double __EXT_NATIVE__firebase_set_log_level(char* __arg_buffer, double __arg_buffer_length)
 {
-    firebase_set_log_level(static_cast<double>(level));
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: level, type: enum FirebaseLogLevel
+    gm_enums::FirebaseLogLevel level = gm::wire::codec::readValue<gm_enums::FirebaseLogLevel>(__br);
+
+    firebase_set_log_level(level);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_get_log_level()
+GMEXPORT double __EXT_NATIVE__firebase_get_log_level(char* __ret_buffer, double __ret_buffer_length)
 {
     auto&& __result = firebase_get_log_level();
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseLogLevel
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_auth_get_app(char* __ret_buffer, double __ret_buffer_length)

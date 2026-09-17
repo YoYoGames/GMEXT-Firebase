@@ -709,14 +709,20 @@ void firebase_app_release_handle(uint64_t app_ref)
     unregisterFirebasePointer(app_ref, GM_FB_TYPE_APP);
 }
 
-void firebase_set_log_level(double level)
+void firebase_set_log_level(gm_enums::FirebaseLogLevel level)
 {
-    firebase::SetLogLevel(static_cast<firebase::LogLevel>(static_cast<int>(level)));
+    firebase::LogLevel sdk_level;
+    if (!toSdkLogLevel(level, sdk_level))
+    {
+        setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_set_log_level: level must be a FirebaseLogLevel value");
+        return;
+    }
+    firebase::SetLogLevel(sdk_level);
 }
 
-double firebase_get_log_level()
+gm_enums::FirebaseLogLevel firebase_get_log_level()
 {
-    return static_cast<double>(firebase::GetLogLevel());
+    return static_cast<gm_enums::FirebaseLogLevel>(firebase::GetLogLevel());
 }
 
 std::string firebase_get_sdk_version()

@@ -3,15 +3,14 @@
 // the AuthStateListener/IdTokenListener add/remove pair.
 //
 // Every Future<T>-returning SDK call below follows the same shape: fetch the
-// Auth instance, fire the call, and attach an OnCompletion lambda that (a)
-// funnels the result through setFirebaseLastError() for callers polling
-// firebase_last_error_code()/message(), and (b) - if a callback was supplied -
-// also calls it directly with (error_code, error_message, ...results). Doing
-// both means a GML caller can use whichever of the two error-reporting styles
-// fits their code. GMFunction::call() is documented as thread-safe (it just
-// appends to a mutex-guarded DispatchQueue), so it is called straight from
-// these completion lambdas - which may run on Firebase's own worker threads -
-// with no additional queueing of our own.
+// Auth instance, fire the call, and attach an OnCompletion lambda that calls
+// the GML callback, if one was supplied, with (error_code, error_message,
+// ...results) - and does nothing else. The SDK's result reaches GML through
+// that callback only; firebase_last_error_*() is written by the synchronous
+// guards alone and never from a completion. GMFunction::call() is documented
+// as thread-safe (it just appends to a mutex-guarded DispatchQueue), so it is
+// called straight from these completion lambdas - which may run on Firebase's
+// own worker threads - with no additional queueing of our own.
 //
 // The callback is only ever fired by that completion lambda. A failure before
 // the SDK call - no Auth instance, a handle that does not resolve - is
@@ -24,6 +23,100 @@
 using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
+
+// ============================================================
+// Enum mirrors (see GM_FB_PIN_ENUM in GMFirebase_common.h)
+// ============================================================
+
+// FirebaseAuthError is the error_code every auth callback receives. One line
+// per public SDK enumerator, so a value the SDK adds fails here until
+// spec.gmidl declares it. The last eight values in the spec (79..86,
+// InvalidEventHandler through TokenRefreshUnavailable) sit behind
+// INTERNAL_EXPERIMENTAL in the public auth/types.h and cannot be named here,
+// but the prebuilt SDK is compiled with that flag and its Android and iOS
+// error tables (common_android.cc, auth_ios.mm) do emit them - UserCancelled
+// (84) is what a dismissed federated sign-in returns - so the spec mirrors
+// their ordinals.
+GM_FB_PIN_ENUM(FirebaseAuthError::None, firebase::auth::kAuthErrorNone);
+GM_FB_PIN_ENUM(FirebaseAuthError::Unimplemented, firebase::auth::kAuthErrorUnimplemented);
+GM_FB_PIN_ENUM(FirebaseAuthError::Failure, firebase::auth::kAuthErrorFailure);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidCustomToken, firebase::auth::kAuthErrorInvalidCustomToken);
+GM_FB_PIN_ENUM(FirebaseAuthError::CustomTokenMismatch, firebase::auth::kAuthErrorCustomTokenMismatch);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidCredential, firebase::auth::kAuthErrorInvalidCredential);
+GM_FB_PIN_ENUM(FirebaseAuthError::UserDisabled, firebase::auth::kAuthErrorUserDisabled);
+GM_FB_PIN_ENUM(FirebaseAuthError::AccountExistsWithDifferentCredentials, firebase::auth::kAuthErrorAccountExistsWithDifferentCredentials);
+GM_FB_PIN_ENUM(FirebaseAuthError::OperationNotAllowed, firebase::auth::kAuthErrorOperationNotAllowed);
+GM_FB_PIN_ENUM(FirebaseAuthError::EmailAlreadyInUse, firebase::auth::kAuthErrorEmailAlreadyInUse);
+GM_FB_PIN_ENUM(FirebaseAuthError::RequiresRecentLogin, firebase::auth::kAuthErrorRequiresRecentLogin);
+GM_FB_PIN_ENUM(FirebaseAuthError::CredentialAlreadyInUse, firebase::auth::kAuthErrorCredentialAlreadyInUse);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidEmail, firebase::auth::kAuthErrorInvalidEmail);
+GM_FB_PIN_ENUM(FirebaseAuthError::WrongPassword, firebase::auth::kAuthErrorWrongPassword);
+GM_FB_PIN_ENUM(FirebaseAuthError::TooManyRequests, firebase::auth::kAuthErrorTooManyRequests);
+GM_FB_PIN_ENUM(FirebaseAuthError::UserNotFound, firebase::auth::kAuthErrorUserNotFound);
+GM_FB_PIN_ENUM(FirebaseAuthError::ProviderAlreadyLinked, firebase::auth::kAuthErrorProviderAlreadyLinked);
+GM_FB_PIN_ENUM(FirebaseAuthError::NoSuchProvider, firebase::auth::kAuthErrorNoSuchProvider);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidUserToken, firebase::auth::kAuthErrorInvalidUserToken);
+GM_FB_PIN_ENUM(FirebaseAuthError::UserTokenExpired, firebase::auth::kAuthErrorUserTokenExpired);
+GM_FB_PIN_ENUM(FirebaseAuthError::NetworkRequestFailed, firebase::auth::kAuthErrorNetworkRequestFailed);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidApiKey, firebase::auth::kAuthErrorInvalidApiKey);
+GM_FB_PIN_ENUM(FirebaseAuthError::AppNotAuthorized, firebase::auth::kAuthErrorAppNotAuthorized);
+GM_FB_PIN_ENUM(FirebaseAuthError::UserMismatch, firebase::auth::kAuthErrorUserMismatch);
+GM_FB_PIN_ENUM(FirebaseAuthError::WeakPassword, firebase::auth::kAuthErrorWeakPassword);
+GM_FB_PIN_ENUM(FirebaseAuthError::NoSignedInUser, firebase::auth::kAuthErrorNoSignedInUser);
+GM_FB_PIN_ENUM(FirebaseAuthError::ApiNotAvailable, firebase::auth::kAuthErrorApiNotAvailable);
+GM_FB_PIN_ENUM(FirebaseAuthError::ExpiredActionCode, firebase::auth::kAuthErrorExpiredActionCode);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidActionCode, firebase::auth::kAuthErrorInvalidActionCode);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidMessagePayload, firebase::auth::kAuthErrorInvalidMessagePayload);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidPhoneNumber, firebase::auth::kAuthErrorInvalidPhoneNumber);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingPhoneNumber, firebase::auth::kAuthErrorMissingPhoneNumber);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidRecipientEmail, firebase::auth::kAuthErrorInvalidRecipientEmail);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidSender, firebase::auth::kAuthErrorInvalidSender);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidVerificationCode, firebase::auth::kAuthErrorInvalidVerificationCode);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidVerificationId, firebase::auth::kAuthErrorInvalidVerificationId);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingVerificationCode, firebase::auth::kAuthErrorMissingVerificationCode);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingVerificationId, firebase::auth::kAuthErrorMissingVerificationId);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingEmail, firebase::auth::kAuthErrorMissingEmail);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingPassword, firebase::auth::kAuthErrorMissingPassword);
+GM_FB_PIN_ENUM(FirebaseAuthError::QuotaExceeded, firebase::auth::kAuthErrorQuotaExceeded);
+GM_FB_PIN_ENUM(FirebaseAuthError::RetryPhoneAuth, firebase::auth::kAuthErrorRetryPhoneAuth);
+GM_FB_PIN_ENUM(FirebaseAuthError::SessionExpired, firebase::auth::kAuthErrorSessionExpired);
+GM_FB_PIN_ENUM(FirebaseAuthError::AppNotVerified, firebase::auth::kAuthErrorAppNotVerified);
+GM_FB_PIN_ENUM(FirebaseAuthError::AppVerificationFailed, firebase::auth::kAuthErrorAppVerificationFailed);
+GM_FB_PIN_ENUM(FirebaseAuthError::CaptchaCheckFailed, firebase::auth::kAuthErrorCaptchaCheckFailed);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidAppCredential, firebase::auth::kAuthErrorInvalidAppCredential);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingAppCredential, firebase::auth::kAuthErrorMissingAppCredential);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidClientId, firebase::auth::kAuthErrorInvalidClientId);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidContinueUri, firebase::auth::kAuthErrorInvalidContinueUri);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingContinueUri, firebase::auth::kAuthErrorMissingContinueUri);
+GM_FB_PIN_ENUM(FirebaseAuthError::KeychainError, firebase::auth::kAuthErrorKeychainError);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingAppToken, firebase::auth::kAuthErrorMissingAppToken);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingIosBundleId, firebase::auth::kAuthErrorMissingIosBundleId);
+GM_FB_PIN_ENUM(FirebaseAuthError::NotificationNotForwarded, firebase::auth::kAuthErrorNotificationNotForwarded);
+GM_FB_PIN_ENUM(FirebaseAuthError::UnauthorizedDomain, firebase::auth::kAuthErrorUnauthorizedDomain);
+GM_FB_PIN_ENUM(FirebaseAuthError::WebContextAlreadyPresented, firebase::auth::kAuthErrorWebContextAlreadyPresented);
+GM_FB_PIN_ENUM(FirebaseAuthError::WebContextCancelled, firebase::auth::kAuthErrorWebContextCancelled);
+GM_FB_PIN_ENUM(FirebaseAuthError::DynamicLinkNotActivated, firebase::auth::kAuthErrorDynamicLinkNotActivated);
+GM_FB_PIN_ENUM(FirebaseAuthError::Cancelled, firebase::auth::kAuthErrorCancelled);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidProviderId, firebase::auth::kAuthErrorInvalidProviderId);
+GM_FB_PIN_ENUM(FirebaseAuthError::WebInternalError, firebase::auth::kAuthErrorWebInternalError);
+GM_FB_PIN_ENUM(FirebaseAuthError::WebStorateUnsupported, firebase::auth::kAuthErrorWebStorateUnsupported);
+GM_FB_PIN_ENUM(FirebaseAuthError::TenantIdMismatch, firebase::auth::kAuthErrorTenantIdMismatch);
+GM_FB_PIN_ENUM(FirebaseAuthError::UnsupportedTenantOperation, firebase::auth::kAuthErrorUnsupportedTenantOperation);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidLinkDomain, firebase::auth::kAuthErrorInvalidLinkDomain);
+GM_FB_PIN_ENUM(FirebaseAuthError::RejectedCredential, firebase::auth::kAuthErrorRejectedCredential);
+GM_FB_PIN_ENUM(FirebaseAuthError::PhoneNumberNotFound, firebase::auth::kAuthErrorPhoneNumberNotFound);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidTenantId, firebase::auth::kAuthErrorInvalidTenantId);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingClientIdentifier, firebase::auth::kAuthErrorMissingClientIdentifier);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingMultiFactorSession, firebase::auth::kAuthErrorMissingMultiFactorSession);
+GM_FB_PIN_ENUM(FirebaseAuthError::MissingMultiFactorInfo, firebase::auth::kAuthErrorMissingMultiFactorInfo);
+GM_FB_PIN_ENUM(FirebaseAuthError::InvalidMultiFactorSession, firebase::auth::kAuthErrorInvalidMultiFactorSession);
+GM_FB_PIN_ENUM(FirebaseAuthError::MultiFactorInfoNotFound, firebase::auth::kAuthErrorMultiFactorInfoNotFound);
+GM_FB_PIN_ENUM(FirebaseAuthError::AdminRestrictedOperation, firebase::auth::kAuthErrorAdminRestrictedOperation);
+GM_FB_PIN_ENUM(FirebaseAuthError::UnverifiedEmail, firebase::auth::kAuthErrorUnverifiedEmail);
+GM_FB_PIN_ENUM(FirebaseAuthError::SecondFactorAlreadyEnrolled, firebase::auth::kAuthErrorSecondFactorAlreadyEnrolled);
+GM_FB_PIN_ENUM(FirebaseAuthError::MaximumSecondFactorCountExceeded, firebase::auth::kAuthErrorMaximumSecondFactorCountExceeded);
+GM_FB_PIN_ENUM(FirebaseAuthError::UnsupportedFirstFactor, firebase::auth::kAuthErrorUnsupportedFirstFactor);
+GM_FB_PIN_ENUM(FirebaseAuthError::EmailChangeNeedsVerification, firebase::auth::kAuthErrorEmailChangeNeedsVerification);
 
 // ============================================================
 // Auth singleton
@@ -140,7 +233,6 @@ FirebaseError firebase_auth_fetch_providers_for_email(std::string_view email, co
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -170,7 +262,6 @@ FirebaseError firebase_auth_sign_in_with_custom_token(std::string_view custom_to
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -199,7 +290,6 @@ FirebaseError firebase_auth_sign_in_with_credential(uint64_t credential_ref, con
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -228,7 +318,6 @@ FirebaseError firebase_auth_sign_in_and_retrieve_data_with_credential(uint64_t c
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -253,7 +342,6 @@ FirebaseError firebase_auth_sign_in_anonymously(const std::optional<gm::wire::GM
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -280,7 +368,6 @@ FirebaseError firebase_auth_sign_in_with_email_and_password(std::string_view ema
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -307,7 +394,6 @@ FirebaseError firebase_auth_create_user_with_email_and_password(std::string_view
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -337,7 +423,6 @@ FirebaseError firebase_auth_send_password_reset_email(std::string_view email, co
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (callback)
 				callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""));
@@ -491,7 +576,6 @@ namespace
     {
         int code = f.error();
         const char* message = f.error_message();
-        setFirebaseLastError(code, message ? message : "");
         if (!callback) return;
 
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)

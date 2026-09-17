@@ -40,9 +40,6 @@ namespace
 	void completeTokenFuture(const std::optional<gm::wire::GMFunction>& callback,
 		const firebase::Future<firebase::app_check::AppCheckToken>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 		if (!callback.has_value())
 			return;
 
@@ -101,11 +98,11 @@ namespace
 // SDK, the developer chooses the Debug provider only from a development
 // configuration (a configuration-scoped #macro), never in a build they ship -
 // a debug token in a shipped binary is an App Check bypass.
-void firebase_app_check_set_provider_factory(double provider)
+void firebase_app_check_set_provider_factory(FirebaseAppCheckProvider provider)
 {
 	firebase::app_check::AppCheckProviderFactory* factory = nullptr;
 
-	switch (static_cast<FirebaseAppCheckProvider>(static_cast<int>(provider)))
+	switch (provider)
 	{
 	case FirebaseAppCheckProvider::Debug:
 		factory = firebase::app_check::DebugAppCheckProviderFactory::GetInstance();
@@ -120,7 +117,7 @@ void firebase_app_check_set_provider_factory(double provider)
 		factory = firebase::app_check::AppAttestProviderFactory::GetInstance();
 		break;
 	default:
-		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_app_check_set_provider_factory: unknown provider");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_app_check_set_provider_factory: provider must be a FirebaseAppCheckProvider value");
 		return;
 	}
 

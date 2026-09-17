@@ -162,9 +162,6 @@ FirebaseError firebase_analytics_log_apple_transaction(std::string_view transact
 	firebase::Future<void> future = firebase::analytics::LogAppleTransaction(std::string(transaction_id).c_str());
 	future.OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -227,9 +224,6 @@ FirebaseError firebase_analytics_get_analytics_instance_id(const std::optional<g
 	firebase::Future<std::string> future = firebase::analytics::GetAnalyticsInstanceId();
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 		if (!callback.has_value())
 			return;
 
@@ -247,9 +241,6 @@ FirebaseError firebase_analytics_get_session_id(const std::optional<gm::wire::GM
 	firebase::Future<int64_t> future = firebase::analytics::GetSessionId();
 	future.OnCompletion([callback](const firebase::Future<int64_t>& f)
 	{
-		if (f.error() != 0)
-			setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 		if (!callback.has_value())
 			return;
 

@@ -38,9 +38,6 @@ namespace
 	{
 		installations->GetId().OnCompletion([callback](const firebase::Future<std::string>& f)
 		{
-			if (f.error() != 0)
-				setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 			if (!callback.has_value())
 				return;
 
@@ -54,9 +51,6 @@ namespace
 	{
 		installations->GetToken(force_refresh).OnCompletion([callback](const firebase::Future<std::string>& f)
 		{
-			if (f.error() != 0)
-				setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 			if (!callback.has_value())
 				return;
 
@@ -70,9 +64,6 @@ namespace
 	{
 		installations->Delete().OnCompletion([callback](const firebase::Future<void>& f)
 		{
-			if (f.error() != 0)
-				setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
-
 			if (callback.has_value())
 				callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 		});

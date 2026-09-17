@@ -113,7 +113,15 @@ namespace gm_enums
         SecondFactorAlreadyEnrolled = 75,
         MaximumSecondFactorCountExceeded = 76,
         UnsupportedFirstFactor = 77,
-        EmailChangeNeedsVerification = 78
+        EmailChangeNeedsVerification = 78,
+        InvalidEventHandler = 79,
+        FederatedProviderAreadyInUse = 80,
+        InvalidAuthenticatedUserData = 81,
+        FederatedSignInUserInteractionFailure = 82,
+        MissingOrInvalidNonce = 83,
+        UserCancelled = 84,
+        UnsupportedPassthroughOperation = 85,
+        TokenRefreshUnavailable = 86
     };
 
     enum class FirebaseLogLevel : std::int64_t
@@ -169,8 +177,8 @@ namespace gm_enums
     enum class FirestoreSource : std::int64_t
     {
         Default = 0,
-        Cache = 1,
-        Server = 2
+        Server = 1,
+        Cache = 2
     };
 
     enum class FirestoreDirection : std::int64_t
@@ -221,6 +229,16 @@ namespace gm_enums
         DefaultValue = 2
     };
 
+    enum class FirebaseRemoteConfigError : std::int64_t
+    {
+        Unimplemented = -1,
+        None = 0,
+        ConfigUpdateStreamError = 1,
+        ConfigUpdateMessageInvalid = 2,
+        ConfigUpdateNotFetched = 3,
+        ConfigUpdateUnavailable = 4
+    };
+
     enum class FirebaseUmpConsentStatus : std::int64_t
     {
         Unknown = 0,
@@ -248,6 +266,11 @@ namespace gm_enums
         Disabled = 0,
         EEA = 1,
         NonEEA = 2
+    };
+
+    enum class FirestoreAggregateSource : std::int64_t
+    {
+        Server = 0
     };
 
 }
@@ -407,8 +430,8 @@ namespace gm_structs
     struct FirebaseRemoteConfigInfo
     {
         double fetch_time;
-        double last_fetch_status;
-        double last_fetch_failure_reason;
+        gm_enums::FirebaseRemoteConfigLastFetchStatus last_fetch_status;
+        gm_enums::FirebaseRemoteConfigFetchFailureReason last_fetch_failure_reason;
         double throttled_end_time;
     };
 
@@ -794,8 +817,8 @@ namespace gm::wire::codec
     {
         gm_structs::FirebaseRemoteConfigInfo obj;
         obj.fetch_time = gm::wire::codec::readValue<double>(_buf);
-        obj.last_fetch_status = gm::wire::codec::readValue<double>(_buf);
-        obj.last_fetch_failure_reason = gm::wire::codec::readValue<double>(_buf);
+        obj.last_fetch_status = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigLastFetchStatus>(_buf);
+        obj.last_fetch_failure_reason = gm::wire::codec::readValue<gm_enums::FirebaseRemoteConfigFetchFailureReason>(_buf);
         obj.throttled_end_time = gm::wire::codec::readValue<double>(_buf);
         return obj;
     }
@@ -1106,7 +1129,7 @@ namespace gm::wire::details
 double firebase_app_initialize();
 double firebase_app_is_initialized();
 std::string firebase_app_get_name();
-double firebase_last_error_code();
+gm_enums::FirebaseError firebase_last_error_code();
 std::string firebase_last_error_message();
 double firebase_analytics_initialize();
 void firebase_analytics_terminate();
@@ -1130,7 +1153,7 @@ void firebase_analytics_set_desktop_debug_mode(double enabled);
 void firebase_analytics_set_log_callback(const std::optional<gm::wire::GMFunction>& callback);
 void firebase_analytics_initiate_on_device_conversion_measurement_email(std::string_view email_address);
 void firebase_analytics_initiate_on_device_conversion_measurement_phone(std::string_view phone_number);
-void firebase_app_check_set_provider_factory(double provider);
+void firebase_app_check_set_provider_factory(gm_enums::FirebaseAppCheckProvider provider);
 void firebase_app_check_debug_provider_set_debug_token(std::string_view token);
 void firebase_app_check_set_token_auto_refresh_enabled(double enabled);
 gm_enums::FirebaseError firebase_app_check_get_token(double force_refresh, const std::optional<gm::wire::GMFunction>& callback);
@@ -1295,7 +1318,7 @@ std::uint64_t firebase_firestore_collection(std::uint64_t instance_ref, std::str
 std::uint64_t firebase_firestore_document(std::uint64_t instance_ref, std::string_view path);
 std::uint64_t firebase_firestore_collection_group(std::uint64_t instance_ref, std::string_view collection_id);
 std::uint64_t firebase_firestore_batch(std::uint64_t instance_ref);
-void firebase_firestore_set_log_level(double level);
+void firebase_firestore_set_log_level(gm_enums::FirebaseLogLevel level);
 gm_enums::FirebaseError firebase_firestore_enable_network(std::uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_disable_network(std::uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_terminate(std::uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback);
@@ -1314,7 +1337,7 @@ std::string firebase_firestore_document_ref_id(std::uint64_t ref);
 std::string firebase_firestore_document_ref_path(std::uint64_t ref);
 std::uint64_t firebase_firestore_document_ref_parent(std::uint64_t ref);
 std::uint64_t firebase_firestore_document_ref_collection(std::uint64_t ref, std::string_view path);
-gm_enums::FirebaseError firebase_firestore_document_ref_get(std::uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_firestore_document_ref_get(std::uint64_t ref, gm_enums::FirestoreSource source, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_set(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_set_merge(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_firestore_document_ref_set_merge_fields(std::uint64_t ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields, const std::optional<gm::wire::GMFunction>& callback);
@@ -1333,7 +1356,7 @@ std::uint64_t firebase_firestore_query_where_array_contains(std::uint64_t ref, s
 std::uint64_t firebase_firestore_query_where_array_contains_any(std::uint64_t ref, std::string_view field, const gm::wire::GMValue& values);
 std::uint64_t firebase_firestore_query_where_in(std::uint64_t ref, std::string_view field, const gm::wire::GMValue& values);
 std::uint64_t firebase_firestore_query_where_not_in(std::uint64_t ref, std::string_view field, const gm::wire::GMValue& values);
-std::uint64_t firebase_firestore_query_order_by(std::uint64_t ref, std::string_view field, double direction);
+std::uint64_t firebase_firestore_query_order_by(std::uint64_t ref, std::string_view field, gm_enums::FirestoreDirection direction);
 std::uint64_t firebase_firestore_query_limit(std::uint64_t ref, double limit);
 std::uint64_t firebase_firestore_query_limit_to_last(std::uint64_t ref, double limit);
 std::uint64_t firebase_firestore_query_start_at_snapshot(std::uint64_t ref, std::uint64_t snapshot_ref);
@@ -1344,7 +1367,7 @@ std::uint64_t firebase_firestore_query_end_before_snapshot(std::uint64_t ref, st
 std::uint64_t firebase_firestore_query_end_before_values(std::uint64_t ref, const gm::wire::GMValue& values);
 std::uint64_t firebase_firestore_query_end_at_snapshot(std::uint64_t ref, std::uint64_t snapshot_ref);
 std::uint64_t firebase_firestore_query_end_at_values(std::uint64_t ref, const gm::wire::GMValue& values);
-gm_enums::FirebaseError firebase_firestore_query_get(std::uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_firestore_query_get(std::uint64_t ref, gm_enums::FirestoreSource source, const std::optional<gm::wire::GMFunction>& callback);
 std::uint64_t firebase_firestore_query_add_snapshot_listener(std::uint64_t ref, bool include_metadata_changes, const std::optional<gm::wire::GMFunction>& callback);
 bool firebase_firestore_query_is_valid(std::uint64_t ref);
 void firebase_firestore_query_release(std::uint64_t ref);
@@ -1370,8 +1393,8 @@ double firebase_firestore_field_value_blob(std::string_view data);
 double firebase_firestore_field_value_null();
 void firebase_firestore_field_value_release(std::uint64_t ref);
 gm_structs::FirestoreDocumentSnapshotInfo firebase_firestore_document_snapshot_get_info(std::uint64_t ref);
-gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(std::uint64_t ref, std::string_view field, double server_timestamp_behavior);
-gm::wire::DataStream firebase_firestore_document_snapshot_get_data(std::uint64_t ref, double server_timestamp_behavior);
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get(std::uint64_t ref, std::string_view field, gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior);
+gm::wire::DataStream firebase_firestore_document_snapshot_get_data(std::uint64_t ref, gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior);
 void firebase_firestore_document_snapshot_release(std::uint64_t ref);
 gm_structs::FirestoreQuerySnapshotInfo firebase_firestore_query_snapshot_get_info(std::uint64_t ref);
 std::vector<std::uint64_t> firebase_firestore_query_snapshot_documents(std::uint64_t ref);
@@ -1458,6 +1481,7 @@ std::uint64_t firebase_functions_get_https_callable_with_options(std::uint64_t f
 std::uint64_t firebase_functions_get_https_callable_from_url(std::uint64_t functions_ref, std::string_view url);
 std::uint64_t firebase_functions_get_https_callable_from_url_with_options(std::uint64_t functions_ref, std::string_view url, double limited_use_app_check_token);
 double firebase_functions_callable_is_valid(std::uint64_t ref);
+void firebase_functions_callable_release(std::uint64_t ref);
 gm_enums::FirebaseError firebase_functions_callable_call(std::uint64_t ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_functions_callable_call_with_data(std::uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback);
 std::uint64_t firebase_remote_config_get_instance();
@@ -1531,12 +1555,12 @@ double firebase_messaging_message_notification_title_loc_args_count();
 std::string firebase_messaging_message_notification_title_loc_args_at(double index);
 std::string firebase_messaging_message_notification_android_channel_id();
 std::optional<std::uint64_t> firebase_ump_get_instance();
-double firebase_ump_get_consent_status(std::uint64_t consent_ref);
-double firebase_ump_get_consent_form_status(std::uint64_t consent_ref);
-double firebase_ump_get_privacy_options_requirement_status(std::uint64_t consent_ref);
+gm_enums::FirebaseUmpConsentStatus firebase_ump_get_consent_status(std::uint64_t consent_ref);
+gm_enums::FirebaseUmpConsentFormStatus firebase_ump_get_consent_form_status(std::uint64_t consent_ref);
+gm_enums::FirebaseUmpPrivacyOptionsRequirementStatus firebase_ump_get_privacy_options_requirement_status(std::uint64_t consent_ref);
 double firebase_ump_can_request_ads(std::uint64_t consent_ref);
 void firebase_ump_reset(std::uint64_t consent_ref);
-gm_enums::FirebaseError firebase_ump_request_consent_info_update(std::uint64_t consent_ref, double debug_geography, double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_ump_request_consent_info_update(std::uint64_t consent_ref, gm_enums::FirebaseUmpConsentDebugGeography debug_geography, double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_load_consent_form(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_show_consent_form(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_load_and_show_consent_form_if_required(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
@@ -1614,11 +1638,11 @@ std::uint64_t firebase_firestore_query_where_array_contains_field_path(std::uint
 std::uint64_t firebase_firestore_query_where_array_contains_any_field_path(std::uint64_t query, std::uint64_t field_path, const gm::wire::GMValue& values);
 std::uint64_t firebase_firestore_query_where_in_field_path(std::uint64_t query, std::uint64_t field_path, const gm::wire::GMValue& values);
 std::uint64_t firebase_firestore_query_where_not_in_field_path(std::uint64_t query, std::uint64_t field_path, const gm::wire::GMValue& values);
-std::uint64_t firebase_firestore_query_order_by_field_path(std::uint64_t query, std::uint64_t field_path, double direction);
+std::uint64_t firebase_firestore_query_order_by_field_path(std::uint64_t query, std::uint64_t field_path, gm_enums::FirestoreDirection direction);
 std::uint64_t firebase_firestore_query_count(std::uint64_t query);
 std::uint64_t firebase_firestore_aggregate_query_get_query(std::uint64_t aggregate_query);
 bool firebase_firestore_aggregate_query_is_valid(std::uint64_t aggregate_query);
-gm_enums::FirebaseError firebase_firestore_aggregate_query_get(std::uint64_t aggregate_query, double source, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_firestore_aggregate_query_get(std::uint64_t aggregate_query, gm_enums::FirestoreAggregateSource source, const std::optional<gm::wire::GMFunction>& callback);
 void firebase_firestore_aggregate_query_release(std::uint64_t aggregate_query);
 double firebase_firestore_aggregate_snapshot_count(std::uint64_t snapshot);
 std::uint64_t firebase_firestore_aggregate_snapshot_get_query(std::uint64_t snapshot);
@@ -1671,7 +1695,7 @@ bool firebase_firestore_write_batch_is_valid(std::uint64_t batch);
 std::string firebase_firestore_settings_to_string(std::uint64_t firestore);
 bool firebase_firestore_document_snapshot_is_valid(std::uint64_t snapshot);
 std::string firebase_firestore_document_snapshot_to_string(std::uint64_t snapshot);
-gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(std::uint64_t snapshot, std::uint64_t field_path, double server_timestamp_behavior);
+gm_structs::FirestoreFieldLookup firebase_firestore_document_snapshot_get_field_path(std::uint64_t snapshot, std::uint64_t field_path, gm_enums::FirestoreServerTimestampBehavior server_timestamp_behavior);
 bool firebase_firestore_query_snapshot_is_valid(std::uint64_t snapshot);
 std::uint64_t firebase_firestore_query_snapshot_get_query(std::uint64_t snapshot);
 bool firebase_firestore_listener_registration_is_valid(std::uint64_t listener);
@@ -1684,8 +1708,8 @@ std::string firebase_app_handle_get_name(std::uint64_t app);
 std::optional<gm_structs::FirebaseAppOptions> firebase_app_handle_get_options(std::uint64_t app);
 std::optional<gm_structs::FirebaseAppOptions> firebase_app_get_default_options();
 void firebase_app_release_handle(std::uint64_t app);
-void firebase_set_log_level(double level);
-double firebase_get_log_level();
+void firebase_set_log_level(gm_enums::FirebaseLogLevel level);
+gm_enums::FirebaseLogLevel firebase_get_log_level();
 std::uint64_t firebase_auth_get_app();
 std::uint64_t firebase_database_get_app(std::uint64_t database);
 std::uint64_t firebase_database_get_instance_for_app(std::uint64_t app);

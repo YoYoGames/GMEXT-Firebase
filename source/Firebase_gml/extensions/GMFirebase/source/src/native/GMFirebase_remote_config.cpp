@@ -7,6 +7,24 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// The four Remote Config enums mirror firebase::remote_config's. See
+// GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseRemoteConfigLastFetchStatus::Success, firebase::remote_config::kLastFetchStatusSuccess);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigLastFetchStatus::Failure, firebase::remote_config::kLastFetchStatusFailure);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigLastFetchStatus::Pending, firebase::remote_config::kLastFetchStatusPending);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigFetchFailureReason::Invalid, firebase::remote_config::kFetchFailureReasonInvalid);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigFetchFailureReason::Throttled, firebase::remote_config::kFetchFailureReasonThrottled);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigFetchFailureReason::Error, firebase::remote_config::kFetchFailureReasonError);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigValueSource::StaticValue, firebase::remote_config::kValueSourceStaticValue);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigValueSource::RemoteValue, firebase::remote_config::kValueSourceRemoteValue);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigValueSource::DefaultValue, firebase::remote_config::kValueSourceDefaultValue);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::Unimplemented, firebase::remote_config::kRemoteConfigErrorUnimplemented);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::None, firebase::remote_config::kRemoteConfigErrorNone);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::ConfigUpdateStreamError, firebase::remote_config::kRemoteConfigErrorConfigUpdateStreamError);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::ConfigUpdateMessageInvalid, firebase::remote_config::kRemoteConfigErrorConfigUpdateMessageInvalid);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::ConfigUpdateNotFetched, firebase::remote_config::kRemoteConfigErrorConfigUpdateNotFetched);
+GM_FB_PIN_ENUM(FirebaseRemoteConfigError::ConfigUpdateUnavailable, firebase::remote_config::kRemoteConfigErrorConfigUpdateUnavailable);
+
 namespace
 {
 	firebase::remote_config::RemoteConfig* resolveRemoteConfig(uint64_t rc_ref)
@@ -37,12 +55,6 @@ namespace
 		return true;
 	}
 
-	void reportFutureError(int error, const char* error_message)
-	{
-		if (error != 0)
-			setFirebaseLastError(error, error_message ? error_message : "");
-	}
-
 	// The config-update stream reports a bare RemoteConfigError with no text
 	// of its own, so the listener names the value itself.
 	const char* remoteConfigErrorMessage(firebase::remote_config::RemoteConfigError error)
@@ -63,8 +75,8 @@ namespace
 	{
 		FirebaseRemoteConfigInfo out;
 		out.fetch_time = static_cast<double>(info.fetch_time);
-		out.last_fetch_status = static_cast<double>(info.last_fetch_status);
-		out.last_fetch_failure_reason = static_cast<double>(info.last_fetch_failure_reason);
+		out.last_fetch_status = static_cast<FirebaseRemoteConfigLastFetchStatus>(info.last_fetch_status);
+		out.last_fetch_failure_reason = static_cast<FirebaseRemoteConfigFetchFailureReason>(info.last_fetch_failure_reason);
 		out.throttled_end_time = static_cast<double>(info.throttled_end_time);
 		return out;
 	}
@@ -102,7 +114,6 @@ FirebaseError firebase_remote_config_ensure_initialized(uint64_t rc_ref, const s
 
 	rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -122,7 +133,6 @@ FirebaseError firebase_remote_config_set_config_settings(uint64_t rc_ref, double
 
 	rc->SetConfigSettings(settings).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -151,7 +161,6 @@ FirebaseError firebase_remote_config_fetch(uint64_t rc_ref, const std::optional<
 
 	rc->Fetch().OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -170,7 +179,6 @@ FirebaseError firebase_remote_config_fetch_with_expiration(uint64_t rc_ref, doub
 
 	rc->Fetch(expiration_seconds).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -185,7 +193,6 @@ FirebaseError firebase_remote_config_fetch_and_activate(uint64_t rc_ref, const s
 
 	rc->FetchAndActivate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		bool activated = (f.error() == 0 && f.result() != nullptr) ? *f.result() : false;
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, activated);
@@ -201,7 +208,6 @@ FirebaseError firebase_remote_config_activate(uint64_t rc_ref, const std::option
 
 	rc->Activate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (!callback.has_value()) return;
 		bool activated = (f.error() == 0 && f.result() != nullptr) ? *f.result() : false;
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, activated);
@@ -352,7 +358,6 @@ FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue
 
 	rc->SetDefaults(entries.data(), entries.size()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
@@ -370,8 +375,8 @@ FirebaseRemoteConfigInfo firebase_remote_config_get_info(uint64_t rc_ref)
 	{
 		// A zero-initialised struct would read as kLastFetchStatusSuccess.
 		FirebaseRemoteConfigInfo failed{};
-		failed.last_fetch_status = static_cast<double>(FirebaseRemoteConfigLastFetchStatus::Failure);
-		failed.last_fetch_failure_reason = static_cast<double>(FirebaseRemoteConfigFetchFailureReason::Error);
+		failed.last_fetch_status = FirebaseRemoteConfigLastFetchStatus::Failure;
+		failed.last_fetch_failure_reason = FirebaseRemoteConfigFetchFailureReason::Error;
 		return failed;
 	}
 	return toGmInfo(rc->GetInfo());
@@ -390,11 +395,8 @@ uint64_t firebase_remote_config_add_config_update_listener(uint64_t rc_ref, cons
 	firebase::remote_config::ConfigUpdateListenerRegistration registration = rc->AddOnConfigUpdateListener(
 		[callback](firebase::remote_config::ConfigUpdate&& update, firebase::remote_config::RemoteConfigError error)
 	{
-		const char* message = remoteConfigErrorMessage(error);
-		if (error != firebase::remote_config::kRemoteConfigErrorNone)
-			setFirebaseLastError(static_cast<int>(error), message);
 		if (!callback.has_value()) return;
-
+		const char* message = remoteConfigErrorMessage(error);
 		callback->call(static_cast<double>(error), std::string_view{ message }, update.updated_keys);
 	});
 
@@ -434,7 +436,6 @@ FirebaseError firebase_remote_config_ensure_initialized_info(uint64_t rc_ref, co
     if (!rc) return FirebaseError::InvalidHandle;
     rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
     {
-        reportFutureError(f.error(), f.error_message());
         if (!callback) return;
         if (f.error() == 0 && f.result())
             callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, toGmInfo(*f.result()));

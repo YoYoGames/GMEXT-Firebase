@@ -50,11 +50,12 @@ enum FirebaseError
 	Unsupported = -1003,
 }
 
-// A FirebaseError value when the last failure happened before the SDK was
-// reached, otherwise the failing product's own error enum (FirebaseAuthError,
-// FirestoreError, ...).
-[global, bind = typed_gml]
-function firebase_last_error_code(): real;
+// The error of the last call that failed before reaching the SDK - an invalid
+// handle, an uninitialized module, a rejected argument. Set on the calling
+// thread, read after a synchronous return. An SDK result is only ever
+// delivered to that call's callback and never lands here.
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_last_error_code(): gmval;
 
 [global, bind = typed_gml]
 function firebase_last_error_message(): string;
@@ -213,7 +214,7 @@ class `[[FirebaseAppCheckToken]]` prototype Object
 // provider factory if it is set before the underlying firebase::App exists.
 [global, bind = typed_gml]
 function firebase_app_check_set_provider_factory(
-	provider: real
+	[type_hint=`FirebaseAppCheckProvider`] provider: gmval
 ): unit;
 
 [global, bind = typed_gml]
@@ -369,6 +370,17 @@ enum FirebaseAuthError
 	MaximumSecondFactorCountExceeded = 76,
 	UnsupportedFirstFactor = 77,
 	EmailChangeNeedsVerification = 78,
+	// The eight below are INTERNAL_EXPERIMENTAL in the public auth/types.h,
+	// but the prebuilt SDK's Android and iOS error tables emit them at these
+	// ordinals - UserCancelled is a dismissed federated sign-in.
+	InvalidEventHandler = 79,
+	FederatedProviderAreadyInUse = 80,
+	InvalidAuthenticatedUserData = 81,
+	FederatedSignInUserInteractionFailure = 82,
+	MissingOrInvalidNonce = 83,
+	UserCancelled = 84,
+	UnsupportedPassthroughOperation = 85,
+	TokenRefreshUnavailable = 86,
 }
 
 // ============================================================
@@ -1547,8 +1559,8 @@ enum FirestoreError
 enum FirestoreSource
 {
 	Default = 0,
-	Cache = 1,
-	Server = 2,
+	Server = 1,
+	Cache = 2,
 }
 
 [global, bind = typed_gml]
@@ -1730,10 +1742,9 @@ function firebase_firestore_batch(
 	[type_hint=`uint64`] instance_ref: gmval
 ): gmval;
 
-// level: a firebase::LogLevel ordinal (kLogLevelVerbose=0 .. kLogLevelAssert=6).
 [global, bind = typed_gml]
 function firebase_firestore_set_log_level(
-	level: real
+	[type_hint=`FirebaseLogLevel`] level: gmval
 ): unit;
 
 // callback(error_code: real, error_message: string)
@@ -1860,12 +1871,11 @@ function firebase_firestore_document_ref_collection(
 	path: string
 ): gmval;
 
-// source: a FirestoreSource value.
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_get(
 	[type_hint=`uint64`] ref: gmval,
-	source: real,
+	[type_hint=`FirestoreSource`] source: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -2019,12 +2029,11 @@ function firebase_firestore_query_where_not_in(
 	values: gmval
 ): gmval;
 
-// direction: a FirestoreDirection value.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_firestore_query_order_by(
 	[type_hint=`uint64`] ref: gmval,
 	field: string,
-	direction: real
+	[type_hint=`FirestoreDirection`] direction: gmval
 ): gmval;
 
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -2088,12 +2097,11 @@ function firebase_firestore_query_end_at_values(
 	values: gmval
 ): gmval;
 
-// source: a FirestoreSource value.
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_query_get(
 	[type_hint=`uint64`] ref: gmval,
-	source: real,
+	[type_hint=`FirestoreSource`] source: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -2280,7 +2288,6 @@ function firebase_firestore_document_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
 // Returns a FirestoreFieldLookup. Value rules, shared with every document
 // read in this extension: a timestamp is a FirestoreTimestamp instance, a
 // geopoint a FirestoreGeoPoint instance, a document reference a plain uint64
@@ -2291,16 +2298,15 @@ function firebase_firestore_document_snapshot_get_info(
 function firebase_firestore_document_snapshot_get(
 	[type_hint=`uint64`] ref: gmval,
 	field: string,
-	server_timestamp_behavior: real
+	[type_hint=`FirestoreServerTimestampBehavior`] server_timestamp_behavior: gmval
 ): gmval;
 
-// server_timestamp_behavior: a FirestoreServerTimestampBehavior value.
 // Returns the document's full field map as a struct, field name -> value,
 // using the same value encoding as firestore_document_snapshot_get().
 [global, bind = typed_gml]
 function firebase_firestore_document_snapshot_get_data(
 	[type_hint=`uint64`] ref: gmval,
-	server_timestamp_behavior: real
+	[type_hint=`FirestoreServerTimestampBehavior`] server_timestamp_behavior: gmval
 ): gmval;
 
 [global, bind = typed_gml]
@@ -2846,6 +2852,14 @@ function firebase_functions_callable_is_valid(
 	[type_hint=`uint64`] ref: gmval
 ): real;
 
+// Releases a reference returned by any firebase_functions_get_https_callable*
+// function. Every call to those returns its own reference, and each one must
+// be released.
+[global, bind = typed_gml]
+function firebase_functions_callable_release(
+	[type_hint=`uint64`] ref: gmval
+): unit;
+
 // callback(error_code: real, error_message: string, data: gmval)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_functions_callable_call(
@@ -2886,8 +2900,8 @@ enum FirebaseRemoteConfigFetchFailureReason
 class `[[FirebaseRemoteConfigInfo]]` prototype Object
 {
 	[field, type_hint=`real`] property fetch_time: gmval { get; set; }
-	[field, type_hint=`real`] property last_fetch_status: gmval { get; set; }
-	[field, type_hint=`real`] property last_fetch_failure_reason: gmval { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigLastFetchStatus`] property last_fetch_status: gmval { get; set; }
+	[field, type_hint=`FirebaseRemoteConfigFetchFailureReason`] property last_fetch_failure_reason: gmval { get; set; }
 	[field, type_hint=`real`] property throttled_end_time: gmval { get; set; }
 }
 
@@ -3087,9 +3101,22 @@ function firebase_remote_config_get_info(
 	[type_hint=`uint64`] rc_ref: gmval
 ): gmval;
 
-// callback(error_code: real, error_message: string, updated_keys: string[]),
-// fired on every real-time config update. Returns a registration ref for
-// remote_config_remove_config_update_listener.
+// firebase::remote_config::RemoteConfigError - the error_code the config-update
+// listener's callback receives.
+[global, bind = typed_gml]
+enum FirebaseRemoteConfigError
+{
+	Unimplemented = -1,
+	None = 0,
+	ConfigUpdateStreamError = 1,
+	ConfigUpdateMessageInvalid = 2,
+	ConfigUpdateNotFetched = 3,
+	ConfigUpdateUnavailable = 4,
+}
+
+// callback(error_code: FirebaseRemoteConfigError, error_message: string,
+// updated_keys: string[]), fired on every real-time config update. Returns a
+// registration ref for remote_config_remove_config_update_listener.
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_remote_config_add_config_update_listener(
 	[type_hint=`uint64`] rc_ref: gmval,
@@ -3334,20 +3361,20 @@ enum FirebaseUmpConsentDebugGeography
 [global, bind = typed_gml, type_hint=`uint64?`]
 function firebase_ump_get_instance(): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseUmpConsentStatus`]
 function firebase_ump_get_consent_status(
 	[type_hint=`uint64`] consent_ref: gmval
-): real;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseUmpConsentFormStatus`]
 function firebase_ump_get_consent_form_status(
 	[type_hint=`uint64`] consent_ref: gmval
-): real;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseUmpPrivacyOptionsRequirementStatus`]
 function firebase_ump_get_privacy_options_requirement_status(
 	[type_hint=`uint64`] consent_ref: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_ump_can_request_ads(
@@ -3359,13 +3386,12 @@ function firebase_ump_reset(
 	[type_hint=`uint64`] consent_ref: gmval
 ): unit;
 
-// debug_geography: a FirebaseUmpConsentDebugGeography value.
 // debug_device_ids: an array of strings, or undefined for none.
 // callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_request_consent_info_update(
 	[type_hint=`uint64`] consent_ref: gmval,
-	debug_geography: real,
+	[type_hint=`FirebaseUmpConsentDebugGeography`] debug_geography: gmval,
 	tag_for_under_age_of_consent: real,
 	[type_hint=`string[]?`] debug_device_ids: gmval,
 	[type_hint=`func?`] callback: gmval
@@ -3662,7 +3688,7 @@ function firebase_firestore_query_where_in_field_path([type_hint=`uint64`] query
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_firestore_query_where_not_in_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, values: gmval): gmval;
 [global, bind = typed_gml, type_hint=`uint64`]
-function firebase_firestore_query_order_by_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, direction: real): gmval;
+function firebase_firestore_query_order_by_field_path([type_hint=`uint64`] query: gmval, [type_hint=`uint64`] field_path: gmval, [type_hint=`FirestoreDirection`] direction: gmval): gmval;
 
 // ---- Firestore: aggregate Count() ----
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3671,9 +3697,16 @@ function firebase_firestore_query_count([type_hint=`uint64`] query: gmval): gmva
 function firebase_firestore_aggregate_query_get_query([type_hint=`uint64`] aggregate_query: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_aggregate_query_is_valid([type_hint=`uint64`] aggregate_query: gmval): bool;
-// source: AggregateSource.kServer = 0. callback(error_code,error_message,snapshot)
+// firebase::firestore::AggregateSource - an aggregate is only ever computed on
+// the server, so this is the SDK's one value.
+[global, bind = typed_gml]
+enum FirestoreAggregateSource
+{
+	Server = 0,
+}
+// callback(error_code,error_message,snapshot)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
-function firebase_firestore_aggregate_query_get([type_hint=`uint64`] aggregate_query: gmval, source: real, [type_hint=`func?`] callback: gmval): gmval;
+function firebase_firestore_aggregate_query_get([type_hint=`uint64`] aggregate_query: gmval, [type_hint=`FirestoreAggregateSource`] source: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_aggregate_query_release([type_hint=`uint64`] aggregate_query: gmval): unit;
 [global, bind = typed_gml]
@@ -3804,7 +3837,7 @@ function firebase_firestore_document_snapshot_is_valid([type_hint=`uint64`] snap
 function firebase_firestore_document_snapshot_to_string([type_hint=`uint64`] snapshot: gmval): string;
 // Returns a FirestoreFieldLookup like firebase_firestore_document_snapshot_get().
 [global, bind = typed_gml, type_hint=`FirestoreFieldLookup`]
-function firebase_firestore_document_snapshot_get_field_path([type_hint=`uint64`] snapshot: gmval, [type_hint=`uint64`] field_path: gmval, server_timestamp_behavior: real): gmval;
+function firebase_firestore_document_snapshot_get_field_path([type_hint=`uint64`] snapshot: gmval, [type_hint=`uint64`] field_path: gmval, [type_hint=`FirestoreServerTimestampBehavior`] server_timestamp_behavior: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_query_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3849,9 +3882,9 @@ function firebase_app_get_default_options(): gmval;
 [global, bind = typed_gml]
 function firebase_app_release_handle([type_hint=`uint64`] app: gmval): unit;
 [global, bind = typed_gml]
-function firebase_set_log_level(level: real): unit;
-[global, bind = typed_gml]
-function firebase_get_log_level(): real;
+function firebase_set_log_level([type_hint=`FirebaseLogLevel`] level: gmval): unit;
+[global, bind = typed_gml, type_hint=`FirebaseLogLevel`]
+function firebase_get_log_level(): gmval;
 
 // ---- Module -> App / explicit App-instance overloads ----
 [global, bind = typed_gml, type_hint=`uint64`]

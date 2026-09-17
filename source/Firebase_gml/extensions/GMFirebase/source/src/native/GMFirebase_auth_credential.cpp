@@ -78,7 +78,6 @@ namespace
 
         void OnVerificationFailed(const std::string& error) override
         {
-            setFirebaseLastError(static_cast<int>(firebase::auth::kAuthErrorFailure), error);
             if (on_verification_failed)
                 on_verification_failed->call(static_cast<double>(firebase::auth::kAuthErrorFailure), std::string_view{ error });
         }
@@ -206,7 +205,6 @@ FirebaseError firebase_auth_game_center_auth_provider_get_credential(const std::
 		{
 			int code = f.error();
 			const char* message = f.error_message();
-			setFirebaseLastError(code, message != nullptr ? message : "");
 
 			if (!callback)
 				return;
@@ -395,7 +393,6 @@ FirebaseError firebase_auth_game_center_auth_provider_get_credential_last_result
         {
             const int code = f.error();
             const char* message = f.error_message();
-            setFirebaseLastError(code, message != nullptr ? message : "");
             if (!callback) return;
 
             std::optional<uint64_t> credential_ref;

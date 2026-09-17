@@ -3,7 +3,10 @@ output/
 
 *.sh-e
 
-source/Firebase_gml/extensions/FirebaseSetup/iOSProjectFiles/GoogleService-Info.plist
+# Firebase credentials are staged from the extension options at build time, never committed.
+google-services.json
+google-services-desktop.json
+GoogleService-Info.plist
 
 source/Firebase_gml/extensions/FirebaseSetup/scriptUtils.bat.bak
 

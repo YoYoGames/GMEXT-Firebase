@@ -8,16 +8,19 @@ cmake_minimum_required(VERSION 3.18)
 #   * generator-owned src/CMakeLists.txt is NOT edited.
 #   * portable src/native/*.cpp is injected here for Android and the iOS native
 #     framework flavour, because Extension Generator does not add it there.
-#   * Windows, Android, macOS, iOS and tvOS all statically link the SDK's
-#     prebuilt libfirebase_*.a libraries directly into the extension here.
-#     Linux is the one exception: its prebuilt .a files are unusable inside a
-#     shared object (bad relocations), so Linux instead builds Firebase C++
-#     from source (see the LINUX section below).
-#   * iOS/tvOS static libraries still only wrap the platform's native Firebase
-#     Objective-C SDK. The final GameMaker Xcode/CocoaPods project must still
-#     add the matching Firebase Cocoapods (Firebase/Analytics, Firebase/Auth,
-#     etc.) so those underlying symbols are present -- but must NOT also add
-#     firebase*.xcframework, since that would duplicate what is linked here.
+#   * Windows, Android and macOS statically link the SDK's prebuilt
+#     libfirebase_*.a libraries directly into the extension here. Linux is the
+#     exception: its prebuilt .a files are unusable inside a shared object (bad
+#     relocations), so Linux builds Firebase C++ from source (see the LINUX
+#     section below).
+#   * iOS/tvOS get the SDK headers only. The extension archive is a STATIC
+#     library, so nothing linked here is merged into it; Firebase reaches the
+#     app through the firebase*.xcframework entries GMFirebase.yy lists under
+#     iosThirdPartyFrameworkEntries, which pre_build_step stages from the
+#     firebaseCppSdkPath option. The matching Firebase Cocoapods supply the
+#     underlying Objective-C SDK symbols.
+#   * The SDK version is pinned below (EXT_TP_FIREBASE_VERSION) and checked
+#     against the SDK's own version.h at configure time.
 # =============================================================================
 
 add_library(ext_third_party INTERFACE)
@@ -38,6 +41,13 @@ endfunction()
 # -----------------------------------------------------------------------------
 # Firebase SDK root
 # -----------------------------------------------------------------------------
+# The prebuilt Firebase C++ SDK this extension is built and tested against.
+# Bump it together with the Linux source tag derived from it below, the
+# Android BoM in GMFirebase.yy and the iOS pods.
+set(EXT_TP_FIREBASE_VERSION "13.11.0")
+set(_FIREBASE_SDK_DOWNLOAD_URL
+    "https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_${EXT_TP_FIREBASE_VERSION}.zip")
+
 get_filename_component(
   _FIREBASE_SDK_ROOT_DEFAULT
   "${CMAKE_CURRENT_LIST_DIR}/../../../../../Firebase_sdk"
@@ -57,10 +67,48 @@ else()
       CACHE PATH "Path to the Firebase C++ SDK root")
 endif()
 
-_ext_tp_require_file(
-  "${FIREBASE_SDK_ROOT}/include/firebase/app.h"
-  "Firebase C++ header"
-  FIREBASE_SDK_ROOT)
+if(NOT EXISTS "${FIREBASE_SDK_ROOT}/include/firebase/app.h")
+  message(FATAL_ERROR
+    "Firebase C++ SDK ${EXT_TP_FIREBASE_VERSION} not found at:\n"
+    "  ${FIREBASE_SDK_ROOT}\n"
+    "Download ${_FIREBASE_SDK_DOWNLOAD_URL}\n"
+    "and unpack it so that <root>/include/firebase/app.h exists. The default root is\n"
+    "<repo>/source/Firebase_sdk; pass -DFIREBASE_SDK_ROOT=<root> to use another location.")
+endif()
+
+# A different SDK version configures and links cleanly against these
+# headers and misbehaves at runtime, so the pin is enforced here rather than
+# left to the reader.
+set(_FIREBASE_SDK_VERSION_HEADER "${FIREBASE_SDK_ROOT}/include/firebase/version.h")
+file(STRINGS "${_FIREBASE_SDK_VERSION_HEADER}" _FIREBASE_SDK_VERSION_LINES
+  REGEX "^#define FIREBASE_VERSION_(MAJOR|MINOR|REVISION) ")
+foreach(_part MAJOR MINOR REVISION)
+  set(_FIREBASE_SDK_VERSION_${_part} "")
+  foreach(_line IN LISTS _FIREBASE_SDK_VERSION_LINES)
+    if(_line MATCHES "^#define FIREBASE_VERSION_${_part} +([0-9]+)")
+      set(_FIREBASE_SDK_VERSION_${_part} "${CMAKE_MATCH_1}")
+    endif()
+  endforeach()
+  if(_FIREBASE_SDK_VERSION_${_part} STREQUAL "")
+    message(FATAL_ERROR
+      "Could not read FIREBASE_VERSION_${_part} from:\n"
+      "  ${_FIREBASE_SDK_VERSION_HEADER}\n"
+      "This is not a Firebase C++ SDK ${EXT_TP_FIREBASE_VERSION} layout. Download\n"
+      "${_FIREBASE_SDK_DOWNLOAD_URL}")
+  endif()
+endforeach()
+set(_FIREBASE_SDK_VERSION_FOUND
+    "${_FIREBASE_SDK_VERSION_MAJOR}.${_FIREBASE_SDK_VERSION_MINOR}.${_FIREBASE_SDK_VERSION_REVISION}")
+
+if(NOT _FIREBASE_SDK_VERSION_FOUND STREQUAL EXT_TP_FIREBASE_VERSION)
+  message(FATAL_ERROR
+    "Firebase C++ SDK version mismatch: found ${_FIREBASE_SDK_VERSION_FOUND} at\n"
+    "  ${FIREBASE_SDK_ROOT}\n"
+    "but this extension is pinned to ${EXT_TP_FIREBASE_VERSION} (EXT_TP_FIREBASE_VERSION in\n"
+    "${CMAKE_CURRENT_LIST_FILE}).\n"
+    "Download ${_FIREBASE_SDK_DOWNLOAD_URL}\n"
+    "or bump the pin deliberately, together with the Android BoM and iOS pods in GMFirebase.yy.")
+endif()
 
 target_include_directories(ext_third_party
   INTERFACE "${FIREBASE_SDK_ROOT}/include")
@@ -72,6 +120,7 @@ set(EXT_TP_FIREBASE_MODULES
     CACHE STRING "Firebase product modules to link, semicolon-separated")
 
 message(STATUS "[third_party] FIREBASE_SDK_ROOT = ${FIREBASE_SDK_ROOT}")
+message(STATUS "[third_party] Firebase C++ SDK ${_FIREBASE_SDK_VERSION_FOUND}")
 message(STATUS "[third_party] EXT_TP_FIREBASE_MODULES = ${EXT_TP_FIREBASE_MODULES}")
 
 # -----------------------------------------------------------------------------
@@ -263,120 +312,16 @@ elseif(APPLE)
   # iOS / tvOS
   # ---------------------------------------------------------------------------
   if(_FIREBASE_IS_IOS OR _FIREBASE_IS_TVOS)
-    # Statically link the SDK's prebuilt libfirebase_*.a directly into the
-    # extension archive, mirroring Windows/Android/macOS. The extension
-    # generator's xcframework packager (extgen_xcframework_package.cmake)
-    # configures the device and simulator slices as two separate CMake runs:
-    #   device:    CMAKE_OSX_SYSROOT=iphoneos|appletvos      ARCHS=arm64
-    #   simulator: CMAKE_OSX_SYSROOT=iphonesimulator|appletvsimulator
-    #              ARCHS=arm64;x86_64 (iOS) or x86_64 (tvOS), built together
-    # so each requested architecture is resolved to its own prebuilt library
-    # directory below, and multiple simulator architectures requested in the
-    # same slice are merged into one fat library with lipo (the SDK ships one
-    # static library per simulator arch, not a combined one).
-    if(_FIREBASE_IS_IOS)
-      set(_FIREBASE_MOBILE_PLATFORM "ios")
-    else()
-      set(_FIREBASE_MOBILE_PLATFORM "tvos")
-    endif()
-
-    set(_FIREBASE_MOBILE_ROOT "${FIREBASE_SDK_ROOT}/libs/${_FIREBASE_MOBILE_PLATFORM}")
-
-    if(CMAKE_OSX_SYSROOT MATCHES "simulator")
-      set(_FIREBASE_MOBILE_IS_SIM TRUE)
-    else()
-      set(_FIREBASE_MOBILE_IS_SIM FALSE)
-    endif()
-
-    set(_FIREBASE_MOBILE_ARCHS "${CMAKE_OSX_ARCHITECTURES}")
-    if(NOT _FIREBASE_MOBILE_ARCHS)
-      set(_FIREBASE_MOBILE_ARCHS "arm64")
-    endif()
-
-    set(_FIREBASE_MOBILE_SRC_DIRS "")
-    foreach(_arch IN LISTS _FIREBASE_MOBILE_ARCHS)
-      if(NOT _FIREBASE_MOBILE_IS_SIM)
-        if(NOT _arch STREQUAL "arm64")
-          message(FATAL_ERROR
-            "[third_party] Firebase ${_FIREBASE_MOBILE_PLATFORM} device only ships arm64 libraries; requested arch=${_arch}")
-        endif()
-        list(APPEND _FIREBASE_MOBILE_SRC_DIRS "${_FIREBASE_MOBILE_ROOT}/device-arm64")
-      else()
-        if(_arch STREQUAL "arm64" AND _FIREBASE_IS_IOS)
-          list(APPEND _FIREBASE_MOBILE_SRC_DIRS "${_FIREBASE_MOBILE_ROOT}/simulator-arm64")
-        elseif(_arch STREQUAL "x86_64")
-          list(APPEND _FIREBASE_MOBILE_SRC_DIRS "${_FIREBASE_MOBILE_ROOT}/simulator-x86_64")
-        else()
-          message(FATAL_ERROR
-            "[third_party] Firebase ${_FIREBASE_MOBILE_PLATFORM} simulator has no prebuilt libraries for arch=${_arch}")
-        endif()
-      endif()
-    endforeach()
-
-    list(REMOVE_DUPLICATES _FIREBASE_MOBILE_SRC_DIRS)
-    list(LENGTH _FIREBASE_MOBILE_SRC_DIRS _FIREBASE_MOBILE_SRC_DIR_COUNT)
-
+    # Headers only. The extension archive is a STATIC library, so any
+    # libfirebase_*.a imported here would only be recorded as a usage
+    # requirement and never merged into it - the committed GMFirebase.zip
+    # holds the extension's own objects and nothing from Firebase. The
+    # firebase*.xcframework entries GMFirebase.yy lists under
+    # iosThirdPartyFrameworkEntries are what link Firebase into the game;
+    # pre_build_step stages them from the firebaseCppSdkPath option and fails
+    # when one is missing.
     message(STATUS
-      "[third_party] Firebase ${_FIREBASE_MOBILE_PLATFORM}: sysroot=${CMAKE_OSX_SYSROOT} archs=${_FIREBASE_MOBILE_ARCHS} simulator=${_FIREBASE_MOBILE_IS_SIM}")
-
-    if(_FIREBASE_MOBILE_SRC_DIR_COUNT GREATER 1)
-      # Multiple simulator architectures requested in a single Xcode
-      # multi-arch build: merge the per-arch prebuilt libraries into one fat
-      # library per module before importing.
-      find_program(_EXT_TP_LIPO lipo)
-      if(NOT _EXT_TP_LIPO)
-        message(FATAL_ERROR
-          "[third_party] lipo not found; required to merge Firebase ${_FIREBASE_MOBILE_PLATFORM} simulator libraries for archs: ${_FIREBASE_MOBILE_ARCHS}")
-      endif()
-
-      set(_FIREBASE_MOBILE_FAT_DIR
-          "${CMAKE_BINARY_DIR}/_firebase_fat/${_FIREBASE_MOBILE_PLATFORM}_simulator")
-      file(MAKE_DIRECTORY "${_FIREBASE_MOBILE_FAT_DIR}")
-    endif()
-
-    function(_ext_tp_apple_mobile_import _module)
-      if(_FIREBASE_MOBILE_SRC_DIR_COUNT GREATER 1)
-        set(_lib_path "${_FIREBASE_MOBILE_FAT_DIR}/lib${_module}.a")
-        set(_inputs "")
-        foreach(_dir IN LISTS _FIREBASE_MOBILE_SRC_DIRS)
-          set(_slice "${_dir}/lib${_module}.a")
-          _ext_tp_require_file(
-            "${_slice}"
-            "Firebase ${_FIREBASE_MOBILE_PLATFORM} library lib${_module}.a"
-            FIREBASE_SDK_ROOT)
-          list(APPEND _inputs "${_slice}")
-        endforeach()
-
-        execute_process(
-          COMMAND "${_EXT_TP_LIPO}" -create ${_inputs} -output "${_lib_path}"
-          RESULT_VARIABLE _lipo_result)
-        if(NOT _lipo_result EQUAL 0)
-          message(FATAL_ERROR
-            "[third_party] lipo failed merging lib${_module}.a for ${_FIREBASE_MOBILE_PLATFORM} simulator")
-        endif()
-      else()
-        list(GET _FIREBASE_MOBILE_SRC_DIRS 0 _dir)
-        set(_lib_path "${_dir}/lib${_module}.a")
-        _ext_tp_require_file(
-          "${_lib_path}"
-          "Firebase ${_FIREBASE_MOBILE_PLATFORM} library lib${_module}.a"
-          FIREBASE_SDK_ROOT)
-      endif()
-
-      add_library(${_module} STATIC IMPORTED GLOBAL)
-      set_target_properties(${_module} PROPERTIES IMPORTED_LOCATION "${_lib_path}")
-      target_link_libraries(ext_third_party INTERFACE ${_module})
-    endfunction()
-
-    foreach(_module IN LISTS EXT_TP_FIREBASE_MODULES)
-      _ext_tp_apple_mobile_import(firebase_${_module})
-    endforeach()
-
-    # firebase_app LAST.
-    _ext_tp_apple_mobile_import(firebase_app)
-
-    message(STATUS
-      "[third_party] Firebase ${_FIREBASE_MOBILE_PLATFORM}: statically linked libfirebase_*.a directly into the extension archive. The final GameMaker Xcode/CocoaPods project must still add the matching Firebase Cocoapods (Firebase/Analytics, Firebase/Auth, etc.) for the underlying Objective-C SDK symbols, but must NOT also add firebase*.xcframework -- that would duplicate what is linked here.")
+      "[third_party] Firebase iOS/tvOS: headers only; firebase*.xcframework is linked by the GameMaker project (see GMFirebase.yy iosThirdPartyFrameworkEntries)")
 
   # ---------------------------------------------------------------------------
   # macOS desktop
@@ -395,10 +340,9 @@ elseif(APPLE)
       endif()
     endforeach()
 
-    # libs/darwin/universal is a fat arm64+x86_64 archive: unlike iOS/tvOS,
-    # macOS has no device/simulator platform split, so a single fat static
-    # library is valid regardless of which arch(es) CMAKE_OSX_ARCHITECTURES
-    # requests -- no lipo merging needed here.
+    # libs/darwin/universal is a fat arm64+x86_64 archive: macOS has no
+    # device/simulator platform split, so the one static library is valid
+    # regardless of which arch(es) CMAKE_OSX_ARCHITECTURES requests.
     set(_FIREBASE_MAC_LIB_DIR
         "${FIREBASE_SDK_ROOT}/libs/darwin/universal")
 
@@ -495,7 +439,7 @@ elseif(UNIX)
   # virtual environments, and other filesystem objects.
   #
   # The source version must match the packaged Firebase C++ SDK version.
-  set(_FIREBASE_CPP_VERSION "v13.11.0")
+  set(_FIREBASE_CPP_VERSION "v${EXT_TP_FIREBASE_VERSION}")
 
   if(DEFINED ENV{HOME} AND NOT "$ENV{HOME}" STREQUAL "")
     set(_FIREBASE_CPP_SOURCE_ROOT_DEFAULT

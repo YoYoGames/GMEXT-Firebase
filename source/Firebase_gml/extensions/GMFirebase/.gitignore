@@ -1,0 +1,23 @@
+# =============================================================================
+# Files pre_build_step stages into this folder at build time - never committed.
+#
+# This file lives inside the extension folder on purpose: ProjectTool copies the
+# whole folder into the .yymps (no dotfile filter), so the rules travel with the
+# extension into every game project that imports it. The staged copies are the
+# developer's own credentials and SDK binaries, resolved from the extension
+# options (jsonFile, plistFile, firebaseCppSdkPath); pre_build_step clears and
+# re-stages them on every build, so nothing here is ever the source of truth.
+#
+# The extension's own compiled iOS archive, iOSSourceFromMac/GMFirebase.zip, is
+# deliberately not matched and stays tracked.
+# =============================================================================
+
+# Firebase credentials (Android: read by the google-services Gradle plugin;
+# iOS: bundled and read by [FIROptions defaultOptions])
+/AndroidSource/ProjectFiles/
+/iOSProjectFiles/
+
+# Firebase C++ SDK pieces staged from firebaseCppSdkPath
+/AndroidSource/libs-aar/
+/iOSSourceFromMac/firebase.zip
+/iOSSourceFromMac/firebase_*.zip

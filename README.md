@@ -69,6 +69,21 @@ Do not download from the **main branch** this branch is a work in place branch a
 
 ---
 
+## Requirements
+
+In order to compile the native extension you are required to download the [Firebase C++ SDK 13.11.0](https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_13.11.0.zip) and unpack it inside `source/Firebase_sdk/` (or point `FIREBASE_SDK_ROOT` at it when configuring). The one zip carries every platform:
+
+* `libs/windows/VS2019/` - Windows static libraries (MD and MT)
+* `libs/android/` - Android static libraries per ABI, the `*.pro` proguard files and `firebase_messaging_cpp.aar`
+* `libs/darwin/universal/` - macOS fat static libraries
+* `xcframeworks/` - the iOS xcframeworks the GameMaker project links
+
+Linux builds the same tag from source instead, because the prebuilt Linux archives cannot be embedded in a shared object. A configure against any other SDK version fails on purpose: the pin is `EXT_TP_FIREBASE_VERSION` in `source/Firebase_gml/extensions/GMFirebase/source/third_party/CMakeLists.txt`, and it moves together with the Android BoM and the iOS pods in `GMFirebase.yy`.
+
+At game-build time the extension option `firebaseCppSdkPath` (GMFirebase, in the IDE) must point at the same unpacked root: the Android build reads the proguard files and the messaging AAR from it, and the iOS build stages the xcframeworks from it.
+
+---
+
 ## Documentation
 
 * Check [the documentation](../../wiki)

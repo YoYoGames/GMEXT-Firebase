@@ -14,7 +14,7 @@
   "copyToTargets":12,
   "description":"",
   "exportToGame":true,
-  "extensionVersion":"0.0.1",
+  "extensionVersion":"3.1.0",
   "files":[
     {"$GMExtensionFile":"v1","%Name":"","constants":[],"copyToTargets":-1,"filename":"GMFirebaseCrashlytics.ext","final":"","functions":[
         {"$GMExtensionFunction":"","%Name":"firebase_crashlytics_set_collection_enabled","argCount":1,"args":[2,],"documentation":"@param {Real} enabled\r\n@returns {Real}","externalName":"__EXT_NATIVE__firebase_crashlytics_set_collection_enabled","help":"","hidden":false,"kind":4,"name":"firebase_crashlytics_set_collection_enabled","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":2,},

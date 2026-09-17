@@ -21,18 +21,23 @@ if exist "%~dp0\AndroidSource\libs-aar\firebase_messaging_cpp.aar" del /F /Q "%~
 :: Do not use dynamic labels for desktop platforms: GameMaker platform names can
 :: vary (Windows/Mac/Ubuntu/etc.). Android/iOS are handled explicitly; every
 :: other native non-web target uses the desktop Firebase JSON.
-if /I "%YYPLATFORM_name%"=="Android" (
-    call :setupAndroid "%~dp0"
-    exit /b %errorlevel%
-)
-if /I "%YYPLATFORM_name%"=="iOS" (
-    call :setupIOS "%~dp0"
-    exit /b %errorlevel%
-)
+:: The setup result has to leave the script from outside any parenthesised
+:: block: inside one, %errorlevel% is expanded before the call runs, and an
+:: "exit /b" after a call in the same block reaches cmd as 0 anyway.
+if /I "%YYPLATFORM_name%"=="Android" goto :stageAndroid
+if /I "%YYPLATFORM_name%"=="iOS" goto :stageIOS
 if /I "%YYPLATFORM_name%"=="tvOS" exit /b 0
 if /I "%YYPLATFORM_name%"=="HTML5" exit /b 0
 
 call :setupDesktop "%~dp0"
+exit /b %errorlevel%
+
+:stageAndroid
+call :setupAndroid "%~dp0"
+exit /b %errorlevel%
+
+:stageIOS
+call :setupIOS "%~dp0"
 exit /b %errorlevel%
 
 :: ######################################################################################

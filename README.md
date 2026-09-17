@@ -80,7 +80,7 @@ In order to compile the native extension you are required to download the [Fireb
 
 Linux builds the same tag from source instead, because the prebuilt Linux archives cannot be embedded in a shared object. A configure against any other SDK version fails on purpose: the pin is `EXT_TP_FIREBASE_VERSION` in `source/Firebase_gml/extensions/GMFirebase/source/third_party/CMakeLists.txt`, and it moves together with the Android BoM and the iOS pods in `GMFirebase.yy`.
 
-At game-build time the extension option `firebaseCppSdkPath` (GMFirebase, in the IDE) must point at the same unpacked root: the Android build reads the proguard files and the messaging AAR from it, and the iOS build stages the xcframeworks from it.
+At game-build time the extension option `firebaseCppSdkPath` (GMFirebase, in the IDE) must point at the same unpacked root: the Android build reads the proguard files and the messaging AAR from it, and the iOS build stages the xcframeworks from it. It defaults to `../Firebase_sdk`, relative to the project folder, which is that location for the demo project. The three credential options (`jsonFile`, `plistFile`, `desktopJsonFile`) default the same way to `../Firebase_private/google-services.json` and `../Firebase_private/GoogleService-Info.plist`; both folders are ignored by git, so put your own Firebase console files there or point the options elsewhere.
 
 ---
 

@@ -16,7 +16,7 @@
   "copyToTargets": -1,
   "description": "",
   "exportToGame": true,
-  "extensionVersion": "0.0.1",
+  "extensionVersion": "3.1.0",
   "files": [
     {
       "$GMExtensionFile": "v1",
@@ -12300,7 +12300,7 @@
     {
       "$GMExtensionOption": "",
       "%Name": "jsonFile",
-      "defaultValue": "",
+      "defaultValue": "../Firebase_private/google-services.json",
       "description": "Can be aquired from Firebase dashboard.",
       "displayName": "google-services (json)",
       "exportToINI": true,
@@ -12332,7 +12332,7 @@
     {
       "$GMExtensionOption": "",
       "%Name": "plistFile",
-      "defaultValue": "",
+      "defaultValue": "../Firebase_private/GoogleService-Info.plist",
       "description": "Can be aquired from Firebase dashboard.",
       "displayName": "GoogleService-Info (plist)",
       "exportToINI": true,
@@ -12496,7 +12496,7 @@
     {
       "$GMExtensionOption": "",
       "%Name": "firebaseCppSdkPath",
-      "defaultValue": "",
+      "defaultValue": "../Firebase_sdk",
       "description": "Root of the unpacked Firebase C++ SDK 13.11.0 (firebase_cpp_sdk_13.11.0.zip from https://dl.google.com/firebase/sdk/cpp/). Android reads its proguard files and the messaging AAR from libs/android; iOS stages xcframeworks/ from here.",
       "displayName": "Firebase C++ SDK path",
       "exportToINI": false,
@@ -12512,7 +12512,7 @@
     {
       "$GMExtensionOption": "",
       "%Name": "desktopJsonFile",
-      "defaultValue": "",
+      "defaultValue": "../Firebase_private/google-services.json",
       "description": "Firebase config JSON copied beside the Windows/macOS/Linux executable at build time.",
       "displayName": "google-services (desktop json)",
       "exportToINI": false,

@@ -60,27 +60,40 @@ packageLinuxFirebaseJson() {
         logError "GameMaker Linux asset ZIP does not exist: '$project_zip'."
     fi
 
-    local temp_folder="$YYoutputFolder/${project_name}___firebase_temp___"
-    rm -rf "$temp_folder"
-    mkdir -p "$temp_folder/assets"
-
     # Firebase C++ desktop searches the process current working directory for
     # google-services-desktop.json and then google-services.json. In a packaged
     # GameMaker Linux build the executable is at the project ZIP root, so stage
     # the Android JSON at the ZIP root beside the executable. Keep an assets
     # copy as well for GameMaker asset/debug workflows.
-    cp -f "$FIREBASE_JSON_SOURCE" "$temp_folder/google-services.json"
-    cp -f "$FIREBASE_JSON_SOURCE" "$temp_folder/assets/google-services.json"
-
-    pushd "$YYoutputFolder" >/dev/null
-    zipUpdate "$(basename "$temp_folder")" "$(basename "$project_zip")"
-    popd >/dev/null
-
-    rm -rf "$temp_folder"
+    addFirebaseJsonToZip "$project_zip" 1
 
     echo "[FirebaseSetup] Linux Firebase config added to GameMaker package ZIP:"
     echo "[FirebaseSetup]   $project_zip -> google-services.json"
     echo "[FirebaseSetup]   $project_zip -> assets/google-services.json (fallback)"
+}
+
+# Adds google-services.json to a GameMaker package ZIP under assets/, where the
+# asset compiler puts an Included File, and at the ZIP root too when asked.
+addFirebaseJsonToZip() {
+    local zip_path="$1"
+    local at_root="$2"
+    local zip_dir
+    zip_dir="$(dirname "$zip_path")"
+
+    local temp_folder="$zip_dir/$(basename "${zip_path%.*}")___firebase_temp___"
+    rm -rf "$temp_folder"
+    mkdir -p "$temp_folder/assets"
+
+    cp -f "$FIREBASE_JSON_SOURCE" "$temp_folder/assets/google-services.json"
+    if [ "$at_root" -eq 1 ]; then
+        cp -f "$FIREBASE_JSON_SOURCE" "$temp_folder/google-services.json"
+    fi
+
+    pushd "$zip_dir" >/dev/null
+    zipUpdate "$(basename "$temp_folder")" "$(basename "$zip_path")"
+    popd >/dev/null
+
+    rm -rf "$temp_folder"
 }
 
 # GameMaker's Linux package ZIP contains the executable at its root and normal
@@ -97,16 +110,44 @@ COPIED_NEXT_TO_EXE=0
 
 case "$YYPLATFORM_name" in
     macOS|Mac|MacOS|OSX)
-        # macOS executable(s) live inside <Game>.app/Contents/MacOS.
-        while IFS= read -r -d '' macos_dir; do
-            copyFirebaseJson "$macos_dir"
+        # This step runs before xcodebuild, so there is no <Game>.app yet. A YYC
+        # export is an Xcode project at this point, and its
+        # <Proj>/<Proj>/Supporting Files folder is what Xcode copies into
+        # <Game>.app/Contents/Resources - the directory getConfigSearchDir()
+        # reads on macOS. A VM export is a package ZIP (game.zip, or
+        # <project>.zip for a run) whose assets/ is where an Included File goes.
+        while IFS= read -r -d '' supporting_dir; do
+            copyFirebaseJson "$supporting_dir"
             COPIED_NEXT_TO_EXE=1
         done < <(
             find "$YYoutputFolder" \
+                -mindepth 3 -maxdepth 3 \
                 -type d \
-                -path "*.app/Contents/MacOS" \
+                -name "Supporting Files" \
                 -print0 2>/dev/null
         )
+
+        package_name="$YYprojectName"
+        if [ -z "$package_name" ] && [ -n "$YYprojectPath" ]; then
+            package_name="$(basename "${YYprojectPath%.*}")"
+        fi
+
+        package_zips=("$YYoutputFolder/game.zip")
+        if [ -n "$package_name" ] && [ "$package_name" != "game" ]; then
+            package_zips+=("$YYoutputFolder/${package_name}.zip")
+        fi
+
+        for package_zip in "${package_zips[@]}"; do
+            [ -f "$package_zip" ] || continue
+            addFirebaseJsonToZip "$package_zip" 0
+            echo "[FirebaseSetup] Desktop Firebase config added to package ZIP:"
+            echo "[FirebaseSetup]   $package_zip -> assets/google-services.json"
+            COPIED_NEXT_TO_EXE=1
+        done
+
+        if [ "$COPIED_NEXT_TO_EXE" -eq 0 ]; then
+            logWarning "No Xcode project (<Proj>/<Proj>/Supporting Files) or package ZIP (game.zip, ${package_name:-<project>}.zip) under '$YYoutputFolder'; the Firebase config was not staged into the macOS bundle."
+        fi
         ;;
 
     *)

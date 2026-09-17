@@ -124,13 +124,14 @@ namespace firebase { namespace auth { class Auth; class User; class Credential; 
 // GM_FB_TYPE_* ref for it. Defined in GMFirebase_auth.cpp.
 firebase::auth::Auth* getFirebaseAuth();
 
-// firebase::auth::User has no stable address of its own: Auth::current_user()
-// and every Future<User>/AuthResult::user hand the pimpl-style value back by
-// value, never by pointer. GM_FB_TYPE_AUTH_USER refs are heap copies minted by
-// this helper and registered under a 32-bit id; GML calls
-// firebase_auth_user_release() to unregister/delete one when done with it.
+// firebase::auth::User is a view of its Auth instance's single current user
+// (its only member is the AuthData*, and copies share it), so every User an
+// Auth hands out is the same one. The extension keeps one heap User per Auth
+// and this returns the same GM_FB_TYPE_AUTH_USER ref for every valid user
+// from that Auth, or 0 when `user` is not valid. Nothing is ever freed;
+// firebase_auth_user_release() is a no-op kept for API compatibility.
 // Defined in GMFirebase_auth_user.cpp.
-uint64_t wrapFirebaseUser(const firebase::auth::User& user);
+uint64_t wrapFirebaseUser(firebase::auth::Auth* auth, const firebase::auth::User& user);
 
 // GM_FB_TYPE_AUTH_CREDENTIAL's registry: entries are minted in
 // GMFirebase_auth_credential.cpp but looked up from GMFirebase_auth.cpp and
@@ -145,7 +146,9 @@ extern uint32_t g_auth_credential_index;
 bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out);
 uint64_t wrapFirebaseAuthCredential(const firebase::auth::Credential& credential);
 bool firebase_auth_resolve_phone_credential(uint64_t ref, firebase::auth::PhoneAuthCredential& out);
-gm::wire::StructStream makeFirebaseAuthResultStruct(const firebase::auth::AuthResult& result);
+// `user_ref` is the handle for result.user, wrapped by the caller (which
+// knows the Auth it belongs to); written as 0 when result.user is not valid.
+gm::wire::StructStream makeFirebaseAuthResultStruct(uint64_t user_ref, const firebase::auth::AuthResult& result);
 
 // Core App
 #define GM_FB_TYPE_APP 0x80 // ptr: firebase::App*
@@ -335,5 +338,7 @@ void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
 
 // Inbound (GML -> C++): reconstructs a firebase::Variant from a decoded
 // incoming GMValue, recursing through GMArrayView/GMObjectView for
-// vector/map values.
+// vector/map values. Reals, int32/int64, bools, strings, arrays, structs and
+// undefined (null) convert; a GML pointer has no Firebase form and is sent
+// as null with a logged warning.
 firebase::Variant gmValueToVariant(const gm::wire::GMValue& value);

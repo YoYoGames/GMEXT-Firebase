@@ -12,7 +12,7 @@
 // through the module-registry-map convention documented in
 // GMFirebase_common.h rather than validate_fb_ref_ptr.
 
-extern std::map<uint32_t, firebase::functions::HttpsCallableReference> g_functions_callable_map;
-extern uint32_t g_functions_callable_index;
+extern std::map<uint32_t, firebase::functions::HttpsCallableReference> g_firebase_functions_callable_map;
+extern uint32_t g_firebase_functions_callable_index;
 
 uint64_t registerFunctionsCallable(const firebase::functions::HttpsCallableReference& ref);

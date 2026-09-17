@@ -349,7 +349,11 @@ firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& val
 	using gm::wire::GMObjectView;
 	using firebase::firestore::FieldValue;
 
-	if (value.is<double>())
+	// Same kind dispatch as gmValueToVariant(): is<T>() is an exact-kind test
+	// and GML int32()/int64() values arrive as Int32/UInt64, not Double.
+	switch (value.kind())
+	{
+	case gm::wire::GMKind::Double:
 	{
 		double d = value.as<double>();
 		uint64_t as_ref = 0;
@@ -374,13 +378,19 @@ firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& val
 		return FieldValue::Double(d);
 	}
 
-	if (value.is<bool>())
+	case gm::wire::GMKind::Int32:
+		return FieldValue::Integer(value.as<std::int32_t>());
+
+	case gm::wire::GMKind::UInt64:
+		return FieldValue::Integer(static_cast<std::int64_t>(value.as<std::uint64_t>()));
+
+	case gm::wire::GMKind::Bool:
 		return FieldValue::Boolean(value.as<bool>());
 
-	if (value.is<std::string_view>())
+	case gm::wire::GMKind::String:
 		return FieldValue::String(std::string(value.as<std::string_view>()));
 
-	if (value.is<GMArrayView>())
+	case gm::wire::GMKind::Array:
 	{
 		std::vector<FieldValue> items;
 		auto view = value.as<GMArrayView>();
@@ -390,7 +400,7 @@ firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& val
 		return FieldValue::Array(std::move(items));
 	}
 
-	if (value.is<GMObjectView>())
+	case gm::wire::GMKind::Struct:
 	{
 		firebase::firestore::MapFieldValue map;
 		auto view = value.as<GMObjectView>();
@@ -399,7 +409,13 @@ firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& val
 		return FieldValue::Map(std::move(map));
 	}
 
-	return FieldValue::Null();
+	case gm::wire::GMKind::Undefined:
+		return FieldValue::Null();
+
+	default:
+		LOG_WARNING("gmValueToFieldValue: GML value kind %u cannot be sent to Firestore - sent as null", static_cast<unsigned>(value.kind()));
+		return FieldValue::Null();
+	}
 }
 
 firebase::firestore::MapFieldValue gmValueToMapFieldValue(const gm::wire::GMValue& value)

@@ -1,7 +1,5 @@
-// Exposes firebase::App::SetDefaultConfigPath(), otherwise hidden from
-// public consumers of the SDK header. Only affects this translation unit.
-#define INTERNAL_EXPERIMENTAL 1
 #include "GMFirebase_common.h"
+#include <fstream>
 
 #if FIREBASE_PLATFORM_WINDOWS
 #include <windows.h>
@@ -22,33 +20,38 @@ firebase::App* g_firebase_app = nullptr;
 #if FIREBASE_PLATFORM_DESKTOP
 namespace
 {
-	// On desktop, App::Create() with no arguments only auto-loads
-	// google-services(-desktop).json from the process's *current working
-	// directory*, not from wherever the config file is actually staged.
-	// post_build_step stages a copy beside the built executable on every
-	// desktop platform. On macOS specifically, GameMaker's own generated
-	// Xcode project *also* stages google-services.json as an Included File
-	// via a "Copy Files" build phase with dstSubfolderSpec=7 (Resources) --
-	// i.e. into <App>.app/Contents/Resources/, not Contents/MacOS/ where the
-	// executable itself lives (confirmed by inspecting the generated
+	// Where the staged google-services(-desktop).json lives. post_build_step
+	// stages a copy beside the built executable on every desktop platform. On
+	// macOS specifically, GameMaker's own generated Xcode project *also*
+	// stages google-services.json as an Included File via a "Copy Files"
+	// build phase with dstSubfolderSpec=7 (Resources) -- i.e. into
+	// <App>.app/Contents/Resources/, not Contents/MacOS/ where the executable
+	// itself lives (confirmed by inspecting the generated
 	// Firebase.xcodeproj/project.pbxproj). So on macOS the executable's own
-	// directory is the wrong place to point Firebase at; the bundle's
-	// Resources directory (via CFBundleCopyResourcesDirectoryURL) is the
-	// location that is actually guaranteed to contain the file.
+	// directory is the wrong place to look; the bundle's Resources directory
+	// (via CFBundleCopyResourcesDirectoryURL) is the location that is
+	// actually guaranteed to contain the file. UTF-8, with a trailing
+	// separator; empty when it cannot be determined.
 	std::string getConfigSearchDir()
 	{
 		TRACE("[GMFirebase] getConfigSearchDir() FIREBASE_PLATFORM_OSX=%d FIREBASE_PLATFORM_WINDOWS=%d FIREBASE_PLATFORM_LINUX=%d\n",
 			(int)FIREBASE_PLATFORM_OSX, (int)FIREBASE_PLATFORM_WINDOWS, (int)FIREBASE_PLATFORM_LINUX);
 
 #if FIREBASE_PLATFORM_WINDOWS
-		char path[MAX_PATH];
-		DWORD len = GetModuleFileNameA(nullptr, path, MAX_PATH);
-		TRACE("[GMFirebase] getConfigSearchDir() GetModuleFileNameA len=%lu\n", (unsigned long)len);
+		// The wide API: the A variant returns the ANSI code page, which is not
+		// UTF-8 and fails on any user directory with a non-ASCII character.
+		wchar_t path[MAX_PATH];
+		DWORD len = GetModuleFileNameW(nullptr, path, MAX_PATH);
+		TRACE("[GMFirebase] getConfigSearchDir() GetModuleFileNameW len=%lu\n", (unsigned long)len);
 		if (len == 0 || len == MAX_PATH) return std::string();
-		std::string full(path, len);
-		size_t slash = full.find_last_of("/\\");
-		if (slash == std::string::npos) return std::string();
-		std::string dir = full.substr(0, slash + 1);
+		std::wstring full(path, len);
+		size_t slash = full.find_last_of(L"/\\");
+		if (slash == std::wstring::npos) return std::string();
+		std::wstring wide_dir = full.substr(0, slash + 1);
+		int needed = WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), nullptr, 0, nullptr, nullptr);
+		if (needed <= 0) return std::string();
+		std::string dir(static_cast<size_t>(needed), '\0');
+		WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), &dir[0], needed, nullptr, nullptr);
 #elif FIREBASE_PLATFORM_OSX
 		CFBundleRef bundle = CFBundleGetMainBundle();
 		if (!bundle)
@@ -89,6 +92,64 @@ namespace
 		TRACE("[GMFirebase] getConfigSearchDir() dir=%s\n", dir.c_str());
 		return dir;
 	}
+
+	// Reads one staged config file. Capped at 512 KB, the SDK's own limit for
+	// the same file.
+	bool readConfigFile(const std::string& path, std::string& out)
+	{
+#if FIREBASE_PLATFORM_WINDOWS
+		int needed = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), static_cast<int>(path.size()), nullptr, 0);
+		if (needed <= 0) return false;
+		std::wstring wide_path(static_cast<size_t>(needed), L'\0');
+		MultiByteToWideChar(CP_UTF8, 0, path.c_str(), static_cast<int>(path.size()), &wide_path[0], needed);
+		std::ifstream file(wide_path.c_str(), std::ios::binary);
+#else
+		std::ifstream file(path.c_str(), std::ios::binary);
+#endif
+		if (!file) return false;
+		file.seekg(0, std::ios::end);
+		const std::streamoff length = file.tellg();
+		if (length < 0 || length > 512 * 1024) return false;
+		file.seekg(0, std::ios::beg);
+		out.assign(static_cast<size_t>(length), '\0');
+		return length == 0 || static_cast<bool>(file.read(&out[0], length));
+	}
+
+	// App::Create() with no arguments only looks for the config in the
+	// process's current working directory. The public way to point it at the
+	// staged file is to read that file and hand the SDK its contents; the
+	// filenames and their order are the SDK's own (app_desktop.cc).
+	firebase::App* createDesktopApp()
+	{
+		std::string dir = getConfigSearchDir();
+		if (dir.empty())
+		{
+			TRACE("[GMFirebase] getFirebaseApp() config directory unknown, using the SDK's working-directory search\n");
+			return firebase::App::Create();
+		}
+
+		static const char* const kConfigNames[] = { "google-services-desktop.json", "google-services.json" };
+		for (const char* name : kConfigNames)
+		{
+			const std::string path = dir + name;
+			std::string contents;
+			if (!readConfigFile(path, contents))
+				continue;
+
+			firebase::AppOptions options;
+			if (firebase::AppOptions::LoadFromJsonConfig(contents.c_str(), &options) == nullptr)
+			{
+				TRACE("[GMFirebase] %s is not a valid Firebase config\n", path.c_str());
+				continue;
+			}
+
+			TRACE("[GMFirebase] getFirebaseApp() loaded %s\n", path.c_str());
+			return firebase::App::Create(options);
+		}
+
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: no google-services-desktop.json or google-services.json in " + dir);
+		return nullptr;
+	}
 }
 #endif // FIREBASE_PLATFORM_DESKTOP
 
@@ -111,15 +172,12 @@ firebase::App* getFirebaseApp()
 	return nullptr;
 #else
 #if FIREBASE_PLATFORM_DESKTOP
-	std::string configDir = getConfigSearchDir();
-	if (!configDir.empty())
-	{
-		TRACE("[GMFirebase] getFirebaseApp() SetDefaultConfigPath(%s)\n", configDir.c_str());
-		firebase::App::SetDefaultConfigPath(configDir.c_str());
-	}
-#endif
+	g_firebase_app = createDesktopApp();
+#else
+	// iOS: the SDK reads GoogleService-Info.plist from the bundle itself.
 	TRACE( "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
 	g_firebase_app = firebase::App::Create();
+#endif
 	TRACE( "[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
 	return g_firebase_app;
 #endif
@@ -438,24 +496,34 @@ void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::S
 	}
 }
 
+// Dispatches on the wire kind rather than is<T>(), which is an exact-kind
+// test: GML marshals int32()/int64() values and every bitwise-op result as
+// Int32/UInt64, not Double, and those used to fall through to null.
 firebase::Variant gmValueToVariant(const gm::wire::GMValue& value)
 {
 	using gm::wire::GMArrayView;
+	using gm::wire::GMKind;
 	using gm::wire::GMObjectView;
 
-	if (value.is<double>())
+	switch (value.kind())
+	{
+	case GMKind::Double:
 		return firebase::Variant::FromDouble(value.as<double>());
 
-	if (value.is<bool>())
+	case GMKind::Int32:
+		return firebase::Variant::FromInt64(value.as<std::int32_t>());
+
+	case GMKind::UInt64:
+		// A GML int64 travels as its two's-complement buffer_u64.
+		return firebase::Variant::FromInt64(static_cast<std::int64_t>(value.as<std::uint64_t>()));
+
+	case GMKind::Bool:
 		return firebase::Variant::FromBool(value.as<bool>());
 
-	if (value.is<std::string_view>())
-	{
-		auto sv = value.as<std::string_view>();
-		return firebase::Variant::FromMutableString(std::string(sv));
-	}
+	case GMKind::String:
+		return firebase::Variant::FromMutableString(std::string(value.as<std::string_view>()));
 
-	if (value.is<GMArrayView>())
+	case GMKind::Array:
 	{
 		std::vector<firebase::Variant> items;
 		auto view = value.as<GMArrayView>();
@@ -465,7 +533,7 @@ firebase::Variant gmValueToVariant(const gm::wire::GMValue& value)
 		return firebase::Variant(items);
 	}
 
-	if (value.is<GMObjectView>())
+	case GMKind::Struct:
 	{
 		std::map<firebase::Variant, firebase::Variant> entries;
 		auto view = value.as<GMObjectView>();
@@ -474,5 +542,14 @@ firebase::Variant gmValueToVariant(const gm::wire::GMValue& value)
 		return firebase::Variant(entries);
 	}
 
-	return firebase::Variant::Null();
+	case GMKind::Undefined:
+		// GML undefined is Firebase null.
+		return firebase::Variant::Null();
+
+	default:
+		// Only a GML pointer can reach here; Firebase has no representation
+		// for it, and a silent null is how a wrong payload goes unnoticed.
+		LOG_WARNING("gmValueToVariant: GML value kind %u cannot be sent to Firebase - sent as null", static_cast<unsigned>(value.kind()));
+		return firebase::Variant::Null();
+	}
 }

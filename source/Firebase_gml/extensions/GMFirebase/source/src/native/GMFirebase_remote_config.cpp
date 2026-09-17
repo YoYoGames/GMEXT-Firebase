@@ -1,5 +1,6 @@
 #include "GMFirebase_remote_config.h"
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 
 using namespace gm::wire;
@@ -20,6 +21,20 @@ namespace
 		firebase::remote_config::ConfigUpdateListenerRegistration* out = nullptr;
 		validate_fb_ref_ptr(reg_ref, GM_FB_TYPE_RC_LISTENER_REG, firebase::remote_config::ConfigUpdateListenerRegistration, out);
 		return out;
+	}
+
+	// The SDK takes these as uint64_t; a negative or non-finite double cast to
+	// one is undefined behaviour and in practice lands near 2^64, which would
+	// disable fetching for the whole session with nothing logged.
+	bool toUnsigned64(double value, const char* function, const char* what, uint64_t& out)
+	{
+		if (!std::isfinite(value) || value < 0.0 || value >= 18446744073709551616.0)
+		{
+			setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, std::string(function) + ": " + what + " must be a non-negative number");
+			return false;
+		}
+		out = static_cast<uint64_t>(value);
+		return true;
 	}
 
 	void reportFutureError(int error, const char* error_message)
@@ -111,8 +126,9 @@ FirebaseError firebase_remote_config_set_config_settings(uint64_t rc_ref, double
 	if (rc == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::remote_config::ConfigSettings settings;
-	settings.fetch_timeout_in_milliseconds = static_cast<uint64_t>(fetch_timeout_ms);
-	settings.minimum_fetch_interval_in_milliseconds = static_cast<uint64_t>(minimum_fetch_interval_ms);
+	if (!toUnsigned64(fetch_timeout_ms, "firebase_remote_config_set_config_settings", "fetch_timeout_ms", settings.fetch_timeout_in_milliseconds)
+		|| !toUnsigned64(minimum_fetch_interval_ms, "firebase_remote_config_set_config_settings", "minimum_fetch_interval_ms", settings.minimum_fetch_interval_in_milliseconds))
+		return FirebaseError::InvalidArgument;
 
 	rc->SetConfigSettings(settings).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -158,7 +174,11 @@ FirebaseError firebase_remote_config_fetch_with_expiration(uint64_t rc_ref, doub
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return FirebaseError::InvalidHandle;
 
-	rc->Fetch(static_cast<uint64_t>(cache_expiration_in_seconds)).OnCompletion([callback](const firebase::Future<void>& f)
+	uint64_t expiration_seconds = 0;
+	if (!toUnsigned64(cache_expiration_in_seconds, "firebase_remote_config_fetch_with_expiration", "cache_expiration_in_seconds", expiration_seconds))
+		return FirebaseError::InvalidArgument;
+
+	rc->Fetch(expiration_seconds).OnCompletion([callback](const firebase::Future<void>& f)
 	{
 		reportFutureError(f.error(), f.error_message());
 		if (callback.has_value())
@@ -305,10 +325,11 @@ FirebaseError firebase_remote_config_get_all(uint64_t rc_ref, const std::optiona
 	return FirebaseError::Ok;
 }
 
-// defaults: a GML struct - {key: value, ...} - where each value is any
-// scalar/array/struct GML value; reconstructed per-key into a
-// firebase::Variant via gmValueToVariant and sent as a
-// ConfigKeyValueVariant array.
+// defaults: a GML struct - {key: value, ...} - where each value is a real,
+// string or bool; reconstructed per-key into a firebase::Variant via
+// gmValueToVariant and sent as a ConfigKeyValueVariant array. The SDK does
+// not accept aggregate Variants here (remote_config.h, SetDefaults), so an
+// array, struct or undefined value is rejected before the call.
 // callback(error_code: real, error_message: string)
 FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue& defaults, const std::optional<GMFunction>& callback)
 {
@@ -332,8 +353,14 @@ FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue
 
 	for (const auto& pair : view)
 	{
+		firebase::Variant variant = gmValueToVariant(pair.second);
+		if (variant.is_container_type() || variant.is_null())
+		{
+			setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_remote_config_set_defaults: value for key '" + std::string(pair.first) + "' must be a bool, number or string");
+			return FirebaseError::InvalidArgument;
+		}
 		key_storage.emplace_back(pair.first);
-		value_storage.push_back(gmValueToVariant(pair.second));
+		value_storage.push_back(std::move(variant));
 	}
 
 	std::vector<firebase::remote_config::ConfigKeyValueVariant> entries;
@@ -357,7 +384,14 @@ FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue
 FirebaseRemoteConfigInfo firebase_remote_config_get_info(uint64_t rc_ref)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
-	if (rc == nullptr) return FirebaseRemoteConfigInfo{};
+	if (rc == nullptr)
+	{
+		// A zero-initialised struct would read as kLastFetchStatusSuccess.
+		FirebaseRemoteConfigInfo failed{};
+		failed.last_fetch_status = static_cast<double>(FirebaseRemoteConfigLastFetchStatus::Failure);
+		failed.last_fetch_failure_reason = static_cast<double>(FirebaseRemoteConfigFetchFailureReason::Error);
+		return failed;
+	}
 	return toGmInfo(rc->GetInfo());
 }
 

@@ -1,4 +1,6 @@
 #include "GMFirebase_ump.h"
+#include <climits>
+#include <cmath>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -132,7 +134,9 @@ void firebase_ump_reset(uint64_t consent_ref)
 }
 
 // debug_device_ids: a GML array of strings (may be `undefined`/omitted -
-// treated as empty). callback(error_code: real, error_message: string)
+// treated as empty); anything else is rejected, because a dropped id is what
+// makes debug_geography silently not apply on a real device.
+// callback(error_code: real, error_message: string)
 FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, double debug_geography,
 	double tag_for_under_age_of_consent, const GMValue& debug_device_ids,
 	const std::optional<GMFunction>& callback)
@@ -142,16 +146,38 @@ FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, dou
 
 	firebase::ump::ConsentRequestParameters params;
 	params.tag_for_under_age_of_consent = (tag_for_under_age_of_consent >= 0.5);
-	params.debug_settings.debug_geography = static_cast<firebase::ump::ConsentDebugGeography>(static_cast<int>(debug_geography));
+
+	// Only an integral value in int range may reach the cast; the switch's
+	// default then rejects anything outside the enum.
+	const bool geography_is_integral = std::isfinite(debug_geography) && debug_geography >= 0.0
+		&& debug_geography <= static_cast<double>(INT_MAX) && debug_geography == std::floor(debug_geography);
+	switch (static_cast<FirebaseUmpConsentDebugGeography>(geography_is_integral ? static_cast<int>(debug_geography) : -1))
+	{
+	case FirebaseUmpConsentDebugGeography::Disabled: params.debug_settings.debug_geography = firebase::ump::kConsentDebugGeographyDisabled; break;
+	case FirebaseUmpConsentDebugGeography::EEA: params.debug_settings.debug_geography = firebase::ump::kConsentDebugGeographyEEA; break;
+	case FirebaseUmpConsentDebugGeography::NonEEA: params.debug_settings.debug_geography = firebase::ump::kConsentDebugGeographyNonEEA; break;
+	default:
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_ump_request_consent_info_update: debug_geography must be a FirebaseUmpConsentDebugGeography value");
+		return FirebaseError::InvalidArgument;
+	}
 
 	if (debug_device_ids.is<GMArrayView>())
 	{
 		GMArrayView view = debug_device_ids.as<GMArrayView>();
 		for (const auto& element : view)
 		{
-			if (element.is<std::string_view>())
-				params.debug_settings.debug_device_ids.push_back(std::string(element.as<std::string_view>()));
+			if (!element.is<std::string_view>())
+			{
+				setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_ump_request_consent_info_update: debug_device_ids must be an array of strings");
+				return FirebaseError::InvalidArgument;
+			}
+			params.debug_settings.debug_device_ids.push_back(std::string(element.as<std::string_view>()));
 		}
+	}
+	else if (debug_device_ids.kind() != GMKind::Undefined)
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_ump_request_consent_info_update: debug_device_ids must be an array of strings or undefined");
+		return FirebaseError::InvalidArgument;
 	}
 
 	consent_info->RequestConsentInfoUpdate(params).OnCompletion([callback](const firebase::Future<void>& f)

@@ -494,7 +494,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
 // before any other GMFirebase_* module function, on every platform.
 double firebase_app_initialize()
 {
-    fprintf(stderr, "[GMFirebase] firebase_app_initialize() called\n");
+    TRACE("[GMFirebase] firebase_app_initialize() called\n");
 
 #if defined(__ANDROID__)
     if (g_firebase_app != nullptr)
@@ -513,7 +513,7 @@ double firebase_app_initialize()
     if (g_firebase_app == nullptr)
     {
         setFirebaseLastError(
-            -1,
+            GM_FB_ERROR_NOT_INITIALIZED,
             "firebase_app_initialize: " +
                 (android_error.empty()
                     ? std::string("failed to create Android firebase::App")
@@ -523,9 +523,9 @@ double firebase_app_initialize()
 
     return 1.0;
 #else
-	fprintf(stderr, "[GMFirebase] firebase_app_initialize() calling getFirebaseApp()\n");
+	TRACE("[GMFirebase] firebase_app_initialize() calling getFirebaseApp()\n");
 	firebase::App* app = getFirebaseApp();
-	fprintf(stderr, "[GMFirebase] firebase_app_initialize() getFirebaseApp() returned %p\n", (void*)app);
+	TRACE("[GMFirebase] firebase_app_initialize() getFirebaseApp() returned %p\n", (void*)app);
 	if (app == nullptr)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: failed to create firebase::App");
@@ -635,7 +635,7 @@ uint64_t firebase_app_initialize_with_options(const gm::wire::GMValue& options_v
     if (!app)
     {
         setFirebaseLastError(
-            -1,
+            GM_FB_ERROR_NOT_INITIALIZED,
             "firebase_app_initialize_with_options: " +
                 (android_error.empty()
                     ? std::string("Firebase App::Create returned null")
@@ -673,7 +673,7 @@ uint64_t firebase_app_initialize_from_json(std::string_view json_config, std::st
     if (!app)
     {
         setFirebaseLastError(
-            -1,
+            GM_FB_ERROR_NOT_INITIALIZED,
             "firebase_app_initialize_from_json: " +
                 (android_error.empty()
                     ? std::string("Firebase App::Create returned null")

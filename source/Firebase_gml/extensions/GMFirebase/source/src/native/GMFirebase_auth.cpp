@@ -108,11 +108,11 @@ std::optional<uint64_t> firebase_auth_current_user()
 	if (auth == nullptr)
 		return std::nullopt;
 
-	firebase::auth::User user = auth->current_user();
-	if (!user.is_valid())
+	uint64_t user_ref = wrapFirebaseUser(auth, auth->current_user());
+	if (user_ref == 0)
 		return std::nullopt;
 
-	return wrapFirebaseUser(user);
+	return user_ref;
 }
 
 void firebase_auth_sign_out()
@@ -169,7 +169,7 @@ FirebaseError firebase_auth_sign_in_with_custom_token(std::string_view custom_to
 
 	std::string token_str(custom_token);
 	auth->SignInWithCustomToken(token_str.c_str()).OnCompletion(
-		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
+		[callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -180,7 +180,7 @@ FirebaseError firebase_auth_sign_in_with_custom_token(std::string_view custom_to
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(f.result()->user);
+				user_ref = wrapFirebaseUser(auth, f.result()->user);
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -198,7 +198,7 @@ FirebaseError firebase_auth_sign_in_with_credential(uint64_t credential_ref, con
 		return FirebaseError::InvalidHandle;
 
 	auth->SignInWithCredential(credential).OnCompletion(
-		[callback](const firebase::Future<firebase::auth::User>& f)
+		[callback, auth](const firebase::Future<firebase::auth::User>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -209,7 +209,7 @@ FirebaseError firebase_auth_sign_in_with_credential(uint64_t credential_ref, con
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(*f.result());
+				user_ref = wrapFirebaseUser(auth, *f.result());
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -227,7 +227,7 @@ FirebaseError firebase_auth_sign_in_and_retrieve_data_with_credential(uint64_t c
 		return FirebaseError::InvalidHandle;
 
 	auth->SignInAndRetrieveDataWithCredential(credential).OnCompletion(
-		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
+		[callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -238,7 +238,7 @@ FirebaseError firebase_auth_sign_in_and_retrieve_data_with_credential(uint64_t c
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(f.result()->user);
+				user_ref = wrapFirebaseUser(auth, f.result()->user);
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -252,7 +252,7 @@ FirebaseError firebase_auth_sign_in_anonymously(const std::optional<gm::wire::GM
 		return FirebaseError::NotInitialized;
 
 	auth->SignInAnonymously().OnCompletion(
-		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
+		[callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -263,7 +263,7 @@ FirebaseError firebase_auth_sign_in_anonymously(const std::optional<gm::wire::GM
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(f.result()->user);
+				user_ref = wrapFirebaseUser(auth, f.result()->user);
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -279,7 +279,7 @@ FirebaseError firebase_auth_sign_in_with_email_and_password(std::string_view ema
 	std::string email_str(email);
 	std::string password_str(password);
 	auth->SignInWithEmailAndPassword(email_str.c_str(), password_str.c_str()).OnCompletion(
-		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
+		[callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -290,7 +290,7 @@ FirebaseError firebase_auth_sign_in_with_email_and_password(std::string_view ema
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(f.result()->user);
+				user_ref = wrapFirebaseUser(auth, f.result()->user);
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -306,7 +306,7 @@ FirebaseError firebase_auth_create_user_with_email_and_password(std::string_view
 	std::string email_str(email);
 	std::string password_str(password);
 	auth->CreateUserWithEmailAndPassword(email_str.c_str(), password_str.c_str()).OnCompletion(
-		[callback](const firebase::Future<firebase::auth::AuthResult>& f)
+		[callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
 		{
 			int code = f.error();
 			const char* message = f.error_message();
@@ -317,7 +317,7 @@ FirebaseError firebase_auth_create_user_with_email_and_password(std::string_view
 
 			std::optional<uint64_t> user_ref;
 			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				user_ref = wrapFirebaseUser(f.result()->user);
+				user_ref = wrapFirebaseUser(auth, f.result()->user);
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), user_ref);
 		});
@@ -368,9 +368,9 @@ namespace
 			std::optional<uint64_t> user_ref;
 			if (auth != nullptr)
 			{
-				firebase::auth::User user = auth->current_user();
-				if (user.is_valid())
-					user_ref = wrapFirebaseUser(user);
+				uint64_t ref = wrapFirebaseUser(auth, auth->current_user());
+				if (ref != 0)
+					user_ref = ref;
 			}
 
 			callback_.call(user_ref);
@@ -390,9 +390,9 @@ namespace
 			std::optional<uint64_t> user_ref;
 			if (auth != nullptr)
 			{
-				firebase::auth::User user = auth->current_user();
-				if (user.is_valid())
-					user_ref = wrapFirebaseUser(user);
+				uint64_t ref = wrapFirebaseUser(auth, auth->current_user());
+				if (ref != 0)
+					user_ref = ref;
 			}
 
 			callback_.call(user_ref);
@@ -492,7 +492,7 @@ namespace
         return provider;
     }
 
-    void completeAuthResultFuture(const firebase::Future<firebase::auth::AuthResult>& f,
+    void completeAuthResultFuture(firebase::auth::Auth* auth, const firebase::Future<firebase::auth::AuthResult>& f,
         const std::optional<gm::wire::GMFunction>& callback)
     {
         int code = f.error();
@@ -501,16 +501,16 @@ namespace
         if (!callback) return;
 
         if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResultStruct(*f.result()));
+            callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, makeFirebaseAuthResultStruct(wrapFirebaseUser(auth, f.result()->user), *f.result()));
         else
             callback->call(static_cast<double>(code), std::string_view{ message ? message : "" }, std::optional<std::uint8_t>{});
     }
 }
 
-gm::wire::StructStream makeFirebaseAuthResultStruct(const firebase::auth::AuthResult& result)
+gm::wire::StructStream makeFirebaseAuthResultStruct(uint64_t user_ref, const firebase::auth::AuthResult& result)
 {
     gm::wire::StructStream out;
-    uint64_t user_ref = result.user.is_valid() ? wrapFirebaseUser(result.user) : 0;
+    if (!result.user.is_valid()) user_ref = 0;
     uint64_t credential_ref = result.credential.is_valid() ? wrapFirebaseAuthCredential(result.credential) : 0;
     uint64_t updated_credential_ref = result.additional_user_info.updated_credential.is_valid()
         ? wrapFirebaseAuthCredential(result.additional_user_info.updated_credential) : 0;
@@ -561,9 +561,9 @@ FirebaseError firebase_auth_sign_in_with_provider(uint64_t provider_ref, const s
     if (!auth) return FirebaseError::NotInitialized;
     auto* provider = resolveFederatedProvider(provider_ref);
     if (!provider) return FirebaseError::InvalidHandle;
-    auth->SignInWithProvider(provider).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->SignInWithProvider(provider).OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }
@@ -573,9 +573,9 @@ FirebaseError firebase_auth_sign_in_with_custom_token_result(std::string_view cu
     auto* auth = getFirebaseAuth();
     if (!auth) return FirebaseError::NotInitialized;
     std::string token(custom_token);
-    auth->SignInWithCustomToken(token.c_str()).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->SignInWithCustomToken(token.c_str()).OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }
@@ -586,9 +586,9 @@ FirebaseError firebase_auth_sign_in_and_retrieve_data_with_credential_result(uin
     if (!auth) return FirebaseError::NotInitialized;
     firebase::auth::Credential credential;
     if (!resolveFirebaseAuthCredential(credential_ref, credential)) return FirebaseError::InvalidHandle;
-    auth->SignInAndRetrieveDataWithCredential(credential).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->SignInAndRetrieveDataWithCredential(credential).OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }
@@ -597,9 +597,9 @@ FirebaseError firebase_auth_sign_in_anonymously_result(const std::optional<gm::w
 {
     auto* auth = getFirebaseAuth();
     if (!auth) return FirebaseError::NotInitialized;
-    auth->SignInAnonymously().OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->SignInAnonymously().OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }
@@ -610,9 +610,9 @@ FirebaseError firebase_auth_sign_in_with_email_and_password_result(std::string_v
     auto* auth = getFirebaseAuth();
     if (!auth) return FirebaseError::NotInitialized;
     std::string e(email), p(password);
-    auth->SignInWithEmailAndPassword(e.c_str(), p.c_str()).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->SignInWithEmailAndPassword(e.c_str(), p.c_str()).OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }
@@ -623,9 +623,9 @@ FirebaseError firebase_auth_create_user_with_email_and_password_result(std::stri
     auto* auth = getFirebaseAuth();
     if (!auth) return FirebaseError::NotInitialized;
     std::string e(email), p(password);
-    auth->CreateUserWithEmailAndPassword(e.c_str(), p.c_str()).OnCompletion([callback](const firebase::Future<firebase::auth::AuthResult>& f)
+    auth->CreateUserWithEmailAndPassword(e.c_str(), p.c_str()).OnCompletion([callback, auth](const firebase::Future<firebase::auth::AuthResult>& f)
     {
-        completeAuthResultFuture(f, callback);
+        completeAuthResultFuture(auth, f, callback);
     });
     return FirebaseError::Ok;
 }

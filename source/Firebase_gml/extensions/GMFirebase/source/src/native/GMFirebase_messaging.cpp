@@ -1,6 +1,8 @@
 #include "GMFirebase_messaging.h"
 #include <algorithm>
 #include <cstring>
+#include <deque>
+#include <mutex>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -24,6 +26,61 @@ using namespace gm_enums;
 
 namespace
 {
+	// The SDK's own PollableListener queues messages without a cap
+	// (messaging/src/common.cc), so a game that stops polling - a room
+	// transition, a long background stretch - would grow it for as long as the
+	// process runs. This does the same job with a ceiling: the oldest message
+	// is dropped once the queue is full, keeping the newest state, and the
+	// drop is logged.
+	class GmMessagingListener : public firebase::messaging::Listener
+	{
+	public:
+		static constexpr size_t kMaxQueuedMessages = 256;
+
+		void OnMessage(const firebase::messaging::Message& message) override
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			if (messages_.size() >= kMaxQueuedMessages)
+			{
+				messages_.pop_front();
+				LOG_WARNING("firebase_messaging: %zu messages queued and none polled - dropping the oldest", kMaxQueuedMessages);
+			}
+			messages_.push_back(message);
+		}
+
+		void OnTokenReceived(const char* token) override
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			token_ = token != nullptr ? token : "";
+			has_token_ = true;
+		}
+
+		bool pollMessage(firebase::messaging::Message& out)
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			if (messages_.empty()) return false;
+			out = messages_.front();
+			messages_.pop_front();
+			return true;
+		}
+
+		bool pollToken(std::string& out)
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			if (!has_token_) return false;
+			out.swap(token_);
+			token_.clear();
+			has_token_ = false;
+			return true;
+		}
+
+	private:
+		std::mutex mutex_;
+		std::deque<firebase::messaging::Message> messages_;
+		std::string token_;
+		bool has_token_ = false;
+	};
+
 	// Handed to the SDK by address at Initialize(), so it has to outlive every
 	// delivery: minted by the initialize entry points and deleted only after
 	// SetListener(nullptr) has returned, which the SDK serialises against any
@@ -31,7 +88,7 @@ namespace
 	// would instead be destroyed at process exit in whatever order the
 	// runtime chose, with the SDK's threads still able to deliver into it.
 	// Null doubles as "not initialised" for every guard below.
-	firebase::messaging::PollableListener* g_firebase_messaging_listener = nullptr;
+	GmMessagingListener* g_firebase_messaging_listener = nullptr;
 
 	// Most recently polled message/token, populated by
 	// firebase_messaging_poll_message()/firebase_messaging_poll_token() and read back by the
@@ -57,7 +114,7 @@ namespace
 		if (g_firebase_messaging_listener != nullptr)
 			return static_cast<double>(firebase::kInitResultSuccess);
 
-		auto* listener = new firebase::messaging::PollableListener();
+		auto* listener = new GmMessagingListener();
 		firebase::InitResult result = options != nullptr
 			? firebase::messaging::Initialize(*app, listener, *options)
 			: firebase::messaging::Initialize(*app, listener);
@@ -238,12 +295,7 @@ double firebase_messaging_poll_message()
 {
 	if (!messagingReady("firebase_messaging_poll_message")) return 0.0;
 
-	firebase::messaging::Message message;
-	if (!g_firebase_messaging_listener->PollMessage(&message))
-		return 0.0;
-
-	g_current_message = std::move(message);
-	return 1.0;
+	return g_firebase_messaging_listener->pollMessage(g_current_message) ? 1.0 : 0.0;
 }
 
 // Returns 1 and refreshes firebase_messaging_current_token() if a freshly-generated
@@ -252,15 +304,7 @@ double firebase_messaging_poll_token()
 {
 	if (!messagingReady("firebase_messaging_poll_token")) return 0.0;
 
-	std::string token;
-	GMF_DEPRECATED_PUSH()
-	bool got_token = g_firebase_messaging_listener->PollRegistrationToken(&token);
-	GMF_DEPRECATED_POP()
-	if (!got_token)
-		return 0.0;
-
-	g_current_token = std::move(token);
-	return 1.0;
+	return g_firebase_messaging_listener->pollToken(g_current_token) ? 1.0 : 0.0;
 }
 
 std::string firebase_messaging_current_token()

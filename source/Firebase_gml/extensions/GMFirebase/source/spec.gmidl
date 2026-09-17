@@ -383,7 +383,10 @@ function firebase_auth_use_emulator(
 ): unit;
 
 // Ref to the currently signed-in user, or `undefined` if nobody is signed in.
-// Release with firebase_auth_user_release() once done with it.
+// A user ref is a live view of this Auth instance's current user, not a
+// snapshot: it reports whoever is signed in now, firebase_auth_user_is_valid()
+// is false while nobody is, and the same ref comes back on every call and
+// from every sign-in result and listener event.
 [global, bind = typed_gml, type_hint=`uint64?`]
 function firebase_auth_current_user(): gmval;
 
@@ -639,6 +642,8 @@ function firebase_auth_user_get_info(
 	[type_hint=`uint64`] user: gmval
 ): gmval;
 
+// No-op kept for API compatibility: a user ref is the Auth instance's shared
+// view (see firebase_auth_current_user) and is never freed.
 [global, bind = typed_gml]
 function firebase_auth_user_release(
 	[type_hint=`uint64`] user_ref: gmval
@@ -2823,6 +2828,10 @@ function firebase_remote_config_activate(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
+// The getters below read the last *activated* config: fetch (or
+// fetch_and_activate) and then activate before reading, or they return the
+// defaults from set_defaults. The _with_info variants also report where the
+// value came from.
 [global, bind = typed_gml]
 function firebase_remote_config_get_boolean(
 	[type_hint=`uint64`] rc_ref: gmval,
@@ -2885,8 +2894,9 @@ function firebase_remote_config_get_all(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// defaults: a GML struct {key: value, ...}; each value may be any
-// real/string/bool/array/struct GML value.
+// defaults: a GML struct {key: value, ...}; each value must be a real, string
+// or bool - the SDK does not accept arrays or structs as defaults, and such a
+// value returns FirebaseError.InvalidArgument naming the key.
 // callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_set_defaults(
@@ -3172,8 +3182,10 @@ function firebase_ump_reset(
 	[type_hint=`uint64`] consent_ref: gmval
 ): unit;
 
+// debug_geography: a FirebaseUmpConsentDebugGeography value.
 // debug_device_ids: a GML array of strings (may be `undefined` - treated as
-// empty). callback(error_code: real, error_message: string)
+// empty). Any other value, or a non-string element, returns
+// FirebaseError.InvalidArgument. callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_request_consent_info_update(
 	[type_hint=`uint64`] consent_ref: gmval,

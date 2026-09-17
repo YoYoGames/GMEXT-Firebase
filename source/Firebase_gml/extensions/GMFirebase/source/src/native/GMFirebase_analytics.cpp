@@ -15,6 +15,20 @@ namespace
 		return value >= 0.5;
 	}
 
+	// firebase::analytics::Initialize() returns void and the SDK exposes no
+	// IsInitialized(), so the module tracks it. Every other analytics entry
+	// point asserts on it inside the SDK - LogAssert(), which aborts the
+	// process - so a call before initialize has to be rejected here. This is
+	// the exact path of the 2026-08-25 device crash in LogEvent().
+	bool g_analytics_initialized = false;
+
+	bool analyticsReady(const char* function)
+	{
+		if (g_analytics_initialized) return true;
+		setFirebaseLastError(-1, std::string(function) + ": call firebase_analytics_initialize() first");
+		return false;
+	}
+
 	// Decodes a params: gmval argument shaped as an array of
 	// {name: string, value: <real|string|bool|array|struct>} entries into a
 	// firebase::analytics::Parameter vector, for the LogEvent/
@@ -84,12 +98,15 @@ double firebase_analytics_initialize()
 	}
 
 	firebase::analytics::Initialize(*app);
+	g_analytics_initialized = true;
 	return 1.0;
 }
 
 void firebase_analytics_terminate()
 {
+	if (!g_analytics_initialized) return;
 	firebase::analytics::Terminate();
+	g_analytics_initialized = false;
 }
 
 // ============================================================
@@ -98,6 +115,7 @@ void firebase_analytics_terminate()
 
 void firebase_analytics_set_analytics_collection_enabled(double enabled)
 {
+	if (!analyticsReady("firebase_analytics_set_analytics_collection_enabled")) return;
 	firebase::analytics::SetAnalyticsCollectionEnabled(gmTruthy(enabled));
 }
 
@@ -108,6 +126,7 @@ void firebase_analytics_set_analytics_collection_enabled(double enabled)
 void firebase_analytics_set_consent(double ad_storage, double analytics_storage,
 	double ad_user_data, double ad_personalization)
 {
+	if (!analyticsReady("firebase_analytics_set_consent")) return;
 	using firebase::analytics::ConsentType;
 	using firebase::analytics::ConsentStatus;
 
@@ -130,22 +149,26 @@ void firebase_analytics_set_consent(double ad_storage, double analytics_storage,
 
 void firebase_analytics_log_event(std::string_view name)
 {
+	if (!analyticsReady("firebase_analytics_log_event")) return;
 	firebase::analytics::LogEvent(std::string(name).c_str());
 }
 
 void firebase_analytics_log_event_string(std::string_view name, std::string_view parameter_name, std::string_view parameter_value)
 {
+	if (!analyticsReady("firebase_analytics_log_event_string")) return;
 	firebase::analytics::LogEvent(std::string(name).c_str(), std::string(parameter_name).c_str(), std::string(parameter_value).c_str());
 }
 
 void firebase_analytics_log_event_number(std::string_view name, std::string_view parameter_name, double parameter_value)
 {
+	if (!analyticsReady("firebase_analytics_log_event_number")) return;
 	firebase::analytics::LogEvent(std::string(name).c_str(), std::string(parameter_name).c_str(), parameter_value);
 }
 
 // params: array of {name: string, value: gmval}, see gmValueToAnalyticsParameters().
 void firebase_analytics_log_event_params(std::string_view name, const gm::wire::GMValue& params)
 {
+	if (!analyticsReady("firebase_analytics_log_event_params")) return;
 	std::vector<std::string> name_storage;
 	std::vector<firebase::analytics::Parameter> parameters;
 	gmValueToAnalyticsParameters(params, name_storage, parameters);
@@ -154,6 +177,7 @@ void firebase_analytics_log_event_params(std::string_view name, const gm::wire::
 
 void firebase_analytics_set_default_event_parameters(const gm::wire::GMValue& params)
 {
+	if (!analyticsReady("firebase_analytics_set_default_event_parameters")) return;
 	std::vector<std::string> name_storage;
 	std::vector<firebase::analytics::Parameter> parameters;
 	gmValueToAnalyticsParameters(params, name_storage, parameters);
@@ -162,6 +186,13 @@ void firebase_analytics_set_default_event_parameters(const gm::wire::GMValue& pa
 
 double firebase_analytics_log_apple_transaction(std::string_view transaction_id, const std::optional<gm::wire::GMFunction>& callback)
 {
+	if (!analyticsReady("firebase_analytics_log_apple_transaction"))
+	{
+		if (callback.has_value())
+			callback->call(-1.0, firebase_last_error_message());
+		return 0.0;
+	}
+
 	firebase::Future<void> future = firebase::analytics::LogAppleTransaction(std::string(transaction_id).c_str());
 	future.OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -180,6 +211,7 @@ double firebase_analytics_log_apple_transaction(std::string_view transaction_id,
 
 void firebase_analytics_set_user_property(std::string_view name, std::string_view value)
 {
+	if (!analyticsReady("firebase_analytics_set_user_property")) return;
 	// SetUserProperty(name, nullptr) removes the property; an empty GML
 	// string is the closest reachable equivalent from script code, so map it
 	// to nullptr rather than an empty C string.
@@ -195,6 +227,7 @@ void firebase_analytics_set_user_property(std::string_view name, std::string_vie
 
 void firebase_analytics_set_user_id(std::string_view user_id)
 {
+	if (!analyticsReady("firebase_analytics_set_user_id")) return;
 	if (user_id.empty())
 	{
 		firebase::analytics::SetUserId(nullptr);
@@ -206,11 +239,13 @@ void firebase_analytics_set_user_id(std::string_view user_id)
 
 void firebase_analytics_set_session_timeout_duration(double milliseconds)
 {
+	if (!analyticsReady("firebase_analytics_set_session_timeout_duration")) return;
 	firebase::analytics::SetSessionTimeoutDuration(static_cast<int64_t>(milliseconds));
 }
 
 void firebase_analytics_reset_analytics_data()
 {
+	if (!analyticsReady("firebase_analytics_reset_analytics_data")) return;
 	firebase::analytics::ResetAnalyticsData();
 }
 
@@ -220,6 +255,13 @@ void firebase_analytics_reset_analytics_data()
 
 double firebase_analytics_get_analytics_instance_id(const std::optional<gm::wire::GMFunction>& callback)
 {
+	if (!analyticsReady("firebase_analytics_get_analytics_instance_id"))
+	{
+		if (callback.has_value())
+			callback->call(-1.0, firebase_last_error_message(), std::string_view{});
+		return 0.0;
+	}
+
 	firebase::Future<std::string> future = firebase::analytics::GetAnalyticsInstanceId();
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
@@ -237,6 +279,13 @@ double firebase_analytics_get_analytics_instance_id(const std::optional<gm::wire
 
 double firebase_analytics_get_session_id(const std::optional<gm::wire::GMFunction>& callback)
 {
+	if (!analyticsReady("firebase_analytics_get_session_id"))
+	{
+		if (callback.has_value())
+			callback->call(-1.0, firebase_last_error_message(), 0.0);
+		return 0.0;
+	}
+
 	firebase::Future<int64_t> future = firebase::analytics::GetSessionId();
 	future.OnCompletion([callback](const firebase::Future<int64_t>& f)
 	{
@@ -258,16 +307,19 @@ double firebase_analytics_get_session_id(const std::optional<gm::wire::GMFunctio
 
 void firebase_analytics_notify_app_lifecycle_termination()
 {
+	if (!analyticsReady("firebase_analytics_notify_app_lifecycle_termination")) return;
 	firebase::analytics::NotifyAppLifecycleChange(firebase::analytics::kTermination);
 }
 
 double firebase_analytics_is_desktop_initialized()
 {
+	if (!analyticsReady("firebase_analytics_is_desktop_initialized")) return 0.0;
 	return firebase::analytics::IsDesktopInitialized() ? 1.0 : 0.0;
 }
 
 void firebase_analytics_set_desktop_debug_mode(double enabled)
 {
+	if (!analyticsReady("firebase_analytics_set_desktop_debug_mode")) return;
 	firebase::analytics::SetDesktopDebugMode(gmTruthy(enabled));
 }
 
@@ -288,6 +340,7 @@ namespace
 
 void firebase_analytics_set_log_callback(const std::optional<gm::wire::GMFunction>& callback)
 {
+	if (!analyticsReady("firebase_analytics_set_log_callback")) return;
 	g_analytics_log_callback = callback;
 	if (callback.has_value())
 		firebase::analytics::SetLogCallback(CALLBACK_firebase_analytics_log);
@@ -301,11 +354,13 @@ void firebase_analytics_set_log_callback(const std::optional<gm::wire::GMFunctio
 
 void firebase_analytics_initiate_on_device_conversion_measurement_email(std::string_view email_address)
 {
+	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_email")) return;
 	firebase::analytics::InitiateOnDeviceConversionMeasurementWithEmailAddress(std::string(email_address).c_str());
 }
 
 void firebase_analytics_initiate_on_device_conversion_measurement_phone(std::string_view phone_number)
 {
+	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_phone")) return;
 	firebase::analytics::InitiateOnDeviceConversionMeasurementWithPhoneNumber(std::string(phone_number).c_str());
 }
 
@@ -315,12 +370,14 @@ void firebase_analytics_initiate_on_device_conversion_measurement_phone(std::str
 
 void firebase_analytics_notify_app_lifecycle_change(double state)
 {
+	if (!analyticsReady("firebase_analytics_notify_app_lifecycle_change")) return;
     firebase::analytics::NotifyAppLifecycleChange(
         static_cast<firebase::analytics::AppLifecycleState>(static_cast<int>(state)));
 }
 
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(GMBuffer hashed_email)
 {
+	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_hashed_email")) return;
     const auto* begin = static_cast<const unsigned char*>(hashed_email.data());
     std::vector<unsigned char> bytes(begin, begin + hashed_email.length());
     firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedEmailAddress(std::move(bytes));
@@ -328,6 +385,7 @@ void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(G
 
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(GMBuffer hashed_phone)
 {
+	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone")) return;
     const auto* begin = static_cast<const unsigned char*>(hashed_phone.data());
     std::vector<unsigned char> bytes(begin, begin + hashed_phone.length());
     firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber(std::move(bytes));
@@ -336,5 +394,7 @@ void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(G
 double firebase_analytics_initialize_for_app(uint64_t app_ref)
 {
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0.0;
-    firebase::analytics::Initialize(*app); return 1.0;
+    firebase::analytics::Initialize(*app);
+    g_analytics_initialized = true;
+    return 1.0;
 }

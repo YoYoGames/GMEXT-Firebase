@@ -20,13 +20,12 @@
 // GML has had a chance to register any callback at all), and the SDK
 // ships a ready-made firebase::messaging::PollableListener exactly for
 // this - PollMessage()/PollRegistrationToken() drain a small internal
-// queue the SDK itself buffers. We keep one static PollableListener alive
-// for the process lifetime and expose its poll methods plus per-field
+// queue the SDK itself buffers. The module owns one heap-allocated
+// PollableListener between firebase_messaging_initialize() and
+// firebase_messaging_terminate() and exposes its poll methods plus per-field
 // getters over the most recently polled message/token, which GML is
 // expected to call once per step from its own event loop.
 //
 // No other module in this extension needs this - GMFunction::call() is
 // itself thread-safe and every other Future<T>/Listener-based callback is
 // simply invoked directly from whatever thread the SDK fires it on.
-
-firebase::messaging::PollableListener& getMessagingListener();

@@ -11,6 +11,7 @@
 // explanation).
 #include "GMFirebase_common.h"
 #include "firebase/auth.h"
+#include <cmath>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -113,6 +114,7 @@ bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out
 
     if (gm_fb_ref_type(ref) == GM_FB_TYPE_AUTH_CREDENTIAL)
     {
+        std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
         auto it = g_auth_credential_map.find(gm_fb_ref_id(ref));
         if (it != g_auth_credential_map.end())
         {
@@ -122,6 +124,7 @@ bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out
     }
     else if (gm_fb_ref_type(ref) == GM_FB_TYPE_AUTH_PHONE_CREDENTIAL)
     {
+        std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
         auto it = g_auth_phone_credential_map.find(gm_fb_ref_id(ref));
         if (it != g_auth_phone_credential_map.end())
         {
@@ -270,6 +273,28 @@ uint64_t firebase_auth_phone_verify_phone_number(std::string_view phone_number, 
     firebase::auth::Auth* auth = getFirebaseAuth();
     if (auth == nullptr) return 0;
 
+    // credential.h: 0 disables SMS auto-retrieval, a positive value below 30 s
+    // is raised to 30 s by the SDK, and anything above 120 s throws an
+    // IllegalArgumentException out of the Android JNI call and terminates the
+    // app. The field is ignored on iOS, so without a clamp the same GML value
+    // works on one platform and crashes on the other.
+    if (!std::isfinite(timeout_ms) || timeout_ms < 0.0)
+    {
+        setFirebaseLastError(-1, "firebase_auth_phone_verify_phone_number: timeout_ms must be 0 (no auto-retrieval) or 30000..120000");
+        return 0;
+    }
+    uint32_t timeout_clamped = static_cast<uint32_t>(timeout_ms);
+    if (timeout_clamped > 0 && timeout_clamped < 30000)
+    {
+        LOG_WARNING("firebase_auth_phone_verify_phone_number: timeout_ms %u raised to the SDK minimum of 30000", timeout_clamped);
+        timeout_clamped = 30000;
+    }
+    else if (timeout_clamped > 120000)
+    {
+        LOG_WARNING("firebase_auth_phone_verify_phone_number: timeout_ms %u lowered to the SDK maximum of 120000", timeout_clamped);
+        timeout_clamped = 120000;
+    }
+
     auto* listener = new GMFirebasePhoneAuthListener(on_verification_completed, on_verification_failed, on_code_sent, on_timeout);
     uint64_t listener_ref = registerFirebasePointer(listener, GM_FB_TYPE_AUTH_PHONE_LISTENER);
     if (listener_ref == 0)
@@ -280,7 +305,7 @@ uint64_t firebase_auth_phone_verify_phone_number(std::string_view phone_number, 
 
     firebase::auth::PhoneAuthOptions options;
     options.phone_number = std::string(phone_number);
-    options.timeout_milliseconds = timeout_ms <= 0.0 ? 0u : static_cast<uint32_t>(timeout_ms);
+    options.timeout_milliseconds = timeout_clamped;
     options.ui_parent = nullptr; // Firebase uses the App's default Activity/UIView on mobile.
     options.force_resending_token = resolveResendToken(force_resending_token_ref);
     if (force_resending_token_ref != 0 && options.force_resending_token == nullptr)

@@ -190,6 +190,9 @@ namespace
 	uint32_t g_firebase_pointer_registry_index = 0;
 }
 
+// Shared by every module's value-copy registry; see GMFirebase_common.h.
+std::mutex g_firebase_value_registry_mutex;
+
 uint64_t registerFirebasePointer(void* pointer, uint8_t type_code)
 {
 	if (pointer == nullptr)

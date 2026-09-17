@@ -109,6 +109,7 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out)
 	{
 		if (gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_QUERY)
 		{
+			std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 			auto it = g_fs_query_map.find(gm_fb_ref_id(ref));
 			if (it != g_fs_query_map.end())
 			{
@@ -118,6 +119,7 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out)
 		}
 		else if (gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_COL_REF)
 		{
+			std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 			auto it = g_fs_col_ref_map.find(gm_fb_ref_id(ref));
 			if (it != g_fs_col_ref_map.end())
 			{
@@ -356,12 +358,14 @@ firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& val
 			uint8_t type = gm_fb_ref_type(as_ref);
 			if (type == GM_FB_TYPE_FIRESTORE_FIELD_VALUE)
 			{
+				std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 				auto it = g_fs_field_value_map.find(gm_fb_ref_id(as_ref));
 				if (it != g_fs_field_value_map.end())
 					return it->second;
 			}
 			else if (type == GM_FB_TYPE_FIRESTORE_DOC_REF)
 			{
+				std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 				auto it = g_fs_doc_ref_map.find(gm_fb_ref_id(as_ref));
 				if (it != g_fs_doc_ref_map.end())
 					return FieldValue::Reference(it->second);

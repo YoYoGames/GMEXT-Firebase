@@ -202,17 +202,32 @@ void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type);
 		output = static_cast<cpp_type*>(resolveFirebasePointer((ref), (type_code))); \
 	}
 
+// One lock for every value-copy registry in the extension. Entries are
+// inserted from Firebase completion and listener callbacks, which run on the
+// SDK's own threads, and searched/erased from the GML thread by the resolve
+// macros and the *_release functions - concurrent access to a std::map is
+// undefined behaviour. The maps are tiny and every operation under the lock is
+// a single lookup, so one process-wide mutex costs nothing and means no module
+// can forget its own. Never call back into the SDK or a GMFunction while
+// holding it. Defined in GMFirebase_common.cpp.
+extern std::mutex g_firebase_value_registry_mutex;
+
 // Payload is an index into a module-owned registry map; output is a pointer to
-// the stored value (never null on success - map entries are never null).
+// the stored value (never null on success - map entries are never null). The
+// pointer stays valid after the lock is dropped because std::map nodes are
+// stable across other inserts/erases, and the only erases are the GML-thread
+// *_release functions - the same thread that is about to use the pointer.
 #define validate_fb_ref_map(ref, type_code, cpp_type, map, output) \
 	{ \
-		auto _search = (map).find(gm_fb_ref_id(ref)); \
-		if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == (type_code) \
-			&& _search != (map).end()) \
+		output = nullptr; \
+		if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == (type_code)) \
 		{ \
-			output = &_search->second; \
+			std::lock_guard<std::mutex> _registry_lock(g_firebase_value_registry_mutex); \
+			auto _search = (map).find(gm_fb_ref_id(ref)); \
+			if (_search != (map).end()) \
+				output = &_search->second; \
 		} \
-		else gm_fb_ref_reject(output, nullptr) \
+		if (output == nullptr) gm_fb_ref_reject(output, nullptr) \
 	}
 
 // ============================================================
@@ -230,6 +245,9 @@ void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type);
 template <typename T>
 inline uint32_t registerFirebaseValue(T value, uint32_t& index, std::map<uint32_t, T>& map)
 {
+	// The index increment sits under the same lock as the insert so two SDK
+	// threads completing at once can never mint the same id.
+	std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 	uint32_t id = ++index;
 	// Keep 0 reserved for invalid/null and never reuse a live id. In normal
 	// operation ids are monotonic for the life of the process, which also means
@@ -244,6 +262,7 @@ inline uint32_t registerFirebaseValue(T value, uint32_t& index, std::map<uint32_
 template <typename T>
 inline bool unregisterFirebaseValue(uint32_t id, std::map<uint32_t, T>& map)
 {
+	std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 	return map.erase(id) != 0;
 }
 

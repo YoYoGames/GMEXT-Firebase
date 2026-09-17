@@ -73,22 +73,31 @@ namespace
 // PlayIntegrity and AppAttest provider factories - there is no reCAPTCHA
 // factory header under firebase/app_check/ to wrap, unlike some other
 // Firebase SDK surfaces (Web/Android) that expose one.
+//
+// The Debug provider is deliberately selectable at runtime rather than
+// compiled out of release builds. This extension ships as one prebuilt binary
+// that every game uses in both its development and its shipped builds, so a
+// build-type guard here would remove the only way to obtain App Check tokens
+// on desktop or an emulator during development. As with the Firebase Unity
+// SDK, the developer chooses the Debug provider only from a development
+// configuration (a configuration-scoped #macro), never in a build they ship -
+// a debug token in a shipped binary is an App Check bypass.
 void firebase_app_check_set_provider_factory(double provider)
 {
 	firebase::app_check::AppCheckProviderFactory* factory = nullptr;
 
-	switch (static_cast<int>(provider))
+	switch (static_cast<FirebaseAppCheckProvider>(static_cast<int>(provider)))
 	{
-	case 0: // Debug
+	case FirebaseAppCheckProvider::Debug:
 		factory = firebase::app_check::DebugAppCheckProviderFactory::GetInstance();
 		break;
-	case 1: // DeviceCheck
+	case FirebaseAppCheckProvider::DeviceCheck:
 		factory = firebase::app_check::DeviceCheckProviderFactory::GetInstance();
 		break;
-	case 2: // PlayIntegrity
+	case FirebaseAppCheckProvider::PlayIntegrity:
 		factory = firebase::app_check::PlayIntegrityProviderFactory::GetInstance();
 		break;
-	case 3: // AppAttest
+	case FirebaseAppCheckProvider::AppAttest:
 		factory = firebase::app_check::AppAttestProviderFactory::GetInstance();
 		break;
 	default:

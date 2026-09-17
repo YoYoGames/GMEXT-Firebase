@@ -3169,9 +3169,10 @@ function firebase_ump_load_consent_form(
 	[type_hint=`func?`] callback: gmval
 ): real;
 
-// form_parent: opaque platform form-parent handle (jobject/id/void* cast to
-// a uint64 - see GMFirebase_ump.h). Pass 0 on desktop, where the SDK's own
-// FormParent is a stub the SDK never dereferences.
+// form_parent: pass 0 to show the form over the game's own Activity (Android)
+// or root view controller (iOS); on desktop the value is unused. A non-zero
+// value is an opaque platform handle (jobject/id cast to a uint64) for callers
+// bridging their own - see GMFirebase_ump.h.
 // callback(error_code: real, error_message: string)
 [global, bind = typed_gml]
 function firebase_ump_show_consent_form(

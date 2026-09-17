@@ -108,7 +108,7 @@ bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out
 {
     if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT)
     {
-        setFirebaseLastError(-1, "invalid handle");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
         return false;
     }
 
@@ -133,7 +133,7 @@ bool resolveFirebaseAuthCredential(uint64_t ref, firebase::auth::Credential& out
         }
     }
 
-    setFirebaseLastError(-1, "invalid or stale auth credential handle");
+    setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid or stale auth credential handle");
     return false;
 }
 
@@ -159,7 +159,7 @@ void firebase_auth_credential_release(uint64_t credential_ref)
 {
     if (gm_fb_ref_ext(credential_ref) != GM_FIREBASE_EXT)
     {
-        setFirebaseLastError(-1, "invalid handle");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
         return;
     }
 
@@ -168,7 +168,7 @@ void firebase_auth_credential_release(uint64_t credential_ref)
     else if (gm_fb_ref_type(credential_ref) == GM_FB_TYPE_AUTH_PHONE_CREDENTIAL)
         unregisterFirebaseValue(gm_fb_ref_id(credential_ref), g_auth_phone_credential_map);
     else
-        setFirebaseLastError(-1, "invalid credential handle");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid credential handle");
 }
 
 // ============================================================
@@ -191,8 +191,16 @@ uint64_t firebase_auth_facebook_auth_provider_get_credential(std::string_view ac
 	return wrapFirebaseAuthCredential(firebase::auth::FacebookAuthProvider::GetCredential(token_str.c_str()));
 }
 
-void firebase_auth_game_center_auth_provider_get_credential(const std::optional<gm::wire::GMFunction>& callback)
+// Game Center exists in the SDK's iOS/tvOS sources only. The Android and
+// desktop builds (desktop is what macOS links) implement GetCredential() as a
+// FIREBASE_ASSERT_RETURN on a constant false, and that assert is not compiled
+// out of release builds - LogAssert() aborts the process, the same mechanism as
+// the analytics crash. So the call is refused before it reaches the SDK
+// anywhere else. On iOS the SDK itself completes with
+// kAuthErrorInvalidCredential when GameKit is not linked.
+FirebaseError firebase_auth_game_center_auth_provider_get_credential(const std::optional<gm::wire::GMFunction>& callback)
 {
+#if FIREBASE_PLATFORM_IOS || FIREBASE_PLATFORM_TVOS
 	firebase::auth::GameCenterAuthProvider::GetCredential().OnCompletion(
 		[callback](const firebase::Future<firebase::auth::Credential>& f)
 		{
@@ -209,6 +217,12 @@ void firebase_auth_game_center_auth_provider_get_credential(const std::optional<
 
 			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), credential_ref);
 		});
+	return FirebaseError::Ok;
+#else
+	(void)callback;
+	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED, "firebase_auth_game_center_auth_provider_get_credential: Game Center sign-in is only available on iOS and tvOS");
+	return FirebaseError::Unsupported;
+#endif
 }
 
 bool firebase_auth_game_center_auth_provider_is_player_authenticated()
@@ -280,7 +294,7 @@ uint64_t firebase_auth_phone_verify_phone_number(std::string_view phone_number, 
     // works on one platform and crashes on the other.
     if (!std::isfinite(timeout_ms) || timeout_ms < 0.0)
     {
-        setFirebaseLastError(-1, "firebase_auth_phone_verify_phone_number: timeout_ms must be 0 (no auto-retrieval) or 30000..120000");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_auth_phone_verify_phone_number: timeout_ms must be 0 (no auto-retrieval) or 30000..120000");
         return 0;
     }
     uint32_t timeout_clamped = static_cast<uint32_t>(timeout_ms);
@@ -337,7 +351,7 @@ void firebase_auth_phone_resending_token_release(uint64_t token_ref)
 {
     if (gm_fb_ref_ext(token_ref) != GM_FIREBASE_EXT || gm_fb_ref_type(token_ref) != GM_FB_TYPE_AUTH_PHONE_RESEND_TOKEN)
     {
-        setFirebaseLastError(-1, "invalid phone resend token handle");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid phone resend token handle");
         return;
     }
     unregisterFirebaseValue(gm_fb_ref_id(token_ref), g_auth_phone_resend_map);
@@ -372,8 +386,10 @@ std::string firebase_auth_play_games_auth_provider_id() { return firebase::auth:
 std::string firebase_auth_twitter_auth_provider_id() { return firebase::auth::TwitterAuthProvider::kProviderId; }
 std::string firebase_auth_yahoo_auth_provider_id() { return firebase::auth::YahooAuthProvider::kProviderId; }
 
-void firebase_auth_game_center_auth_provider_get_credential_last_result(const std::optional<gm::wire::GMFunction>& callback)
+// Same platform split as firebase_auth_game_center_auth_provider_get_credential.
+FirebaseError firebase_auth_game_center_auth_provider_get_credential_last_result(const std::optional<gm::wire::GMFunction>& callback)
 {
+#if FIREBASE_PLATFORM_IOS || FIREBASE_PLATFORM_TVOS
     firebase::auth::GameCenterAuthProvider::GetCredentialLastResult().OnCompletion(
         [callback](const firebase::Future<firebase::auth::Credential>& f)
         {
@@ -387,4 +403,10 @@ void firebase_auth_game_center_auth_provider_get_credential_last_result(const st
                 credential_ref = wrapFirebaseAuthCredential(*f.result());
             callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), credential_ref);
         });
+    return FirebaseError::Ok;
+#else
+    (void)callback;
+    setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED, "firebase_auth_game_center_auth_provider_get_credential_last_result: Game Center sign-in is only available on iOS and tvOS");
+    return FirebaseError::Unsupported;
+#endif
 }

@@ -66,14 +66,14 @@ uint64_t firebase_functions_get_instance()
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_functions: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions: no firebase::App - call firebase_app_initialize() first");
 		return 0;
 	}
 
 	firebase::functions::Functions* functions = firebase::functions::Functions::GetInstance(app);
 	if (functions == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_functions: Functions::GetInstance() returned null");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions: Functions::GetInstance() returned null");
 		return 0;
 	}
 
@@ -85,14 +85,14 @@ uint64_t firebase_functions_get_instance_with_region(std::string_view region)
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_functions: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions: no firebase::App - call firebase_app_initialize() first");
 		return 0;
 	}
 
 	firebase::functions::Functions* functions = firebase::functions::Functions::GetInstance(app, std::string(region).c_str());
 	if (functions == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_functions: Functions::GetInstance(region) returned null");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions: Functions::GetInstance(region) returned null");
 		return 0;
 	}
 
@@ -152,34 +152,38 @@ double firebase_functions_callable_is_valid(uint64_t ref)
 }
 
 // callback(error_code: real, error_message: string, data: gmval)
-double firebase_functions_callable_call(uint64_t ref, const std::optional<GMFunction>& callback)
+FirebaseError firebase_functions_callable_call(uint64_t ref, const std::optional<GMFunction>& callback)
 {
 	firebase::functions::HttpsCallableReference* self = resolveCallable(ref);
-	if (self == nullptr) return 0.0;
+	if (self == nullptr) return FirebaseError::InvalidHandle;
 
-	self->Call().OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
+	firebase::Future<firebase::functions::HttpsCallableResult> future = self->Call();
+	if (!firebaseFutureArmed(future, "firebase_functions_callable_call")) return FirebaseError::InvalidHandle;
+	future.OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
 	{
 		reportFutureError(f.error(), f.error_message());
 		invokeCallableCallback(callback, f);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // data: arbitrary GML value (real/string/bool/array/struct), reconstructed
 // into a firebase::Variant via gmValueToVariant before being sent.
 // callback(error_code: real, error_message: string, data: gmval)
-double firebase_functions_callable_call_with_data(uint64_t ref, const GMValue& data, const std::optional<GMFunction>& callback)
+FirebaseError firebase_functions_callable_call_with_data(uint64_t ref, const GMValue& data, const std::optional<GMFunction>& callback)
 {
 	firebase::functions::HttpsCallableReference* self = resolveCallable(ref);
-	if (self == nullptr) return 0.0;
+	if (self == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::Variant variant = gmValueToVariant(data);
-	self->Call(variant).OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
+	firebase::Future<firebase::functions::HttpsCallableResult> future = self->Call(variant);
+	if (!firebaseFutureArmed(future, "firebase_functions_callable_call_with_data")) return FirebaseError::InvalidHandle;
+	future.OnCompletion([callback](const firebase::Future<firebase::functions::HttpsCallableResult>& f)
 	{
 		reportFutureError(f.error(), f.error_message());
 		invokeCallableCallback(callback, f);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 uint64_t firebase_functions_get_app(uint64_t functions_ref)

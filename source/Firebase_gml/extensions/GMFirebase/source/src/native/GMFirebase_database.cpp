@@ -5,6 +5,7 @@ using firebase::database::DatabaseReference;
 using firebase::database::Query;
 using firebase::database::DataSnapshot;
 using firebase::database::Error;
+using gm_enums::FirebaseError;
 
 // ============================================================
 // Value-copy registries (DatabaseReference / Query)
@@ -65,7 +66,7 @@ uint64_t firebase_database_get_instance()
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase app is not initialized");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase app is not initialized");
 		return 0;
 	}
 
@@ -73,7 +74,7 @@ uint64_t firebase_database_get_instance()
 	Database* db = Database::GetInstance(app, &init_result);
 	if (db == nullptr || init_result != firebase::kInitResultSuccess)
 	{
-		setFirebaseLastError((int)init_result, "failed to get Realtime Database instance");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Realtime Database instance", init_result));
 		return 0;
 	}
 
@@ -85,7 +86,7 @@ uint64_t firebase_database_get_instance_for_url(std::string_view url)
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase app is not initialized");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase app is not initialized");
 		return 0;
 	}
 
@@ -94,7 +95,7 @@ uint64_t firebase_database_get_instance_for_url(std::string_view url)
 	Database* db = Database::GetInstance(app, url_str.c_str(), &init_result);
 	if (db == nullptr || init_result != firebase::kInitResultSuccess)
 	{
-		setFirebaseLastError((int)init_result, "failed to get Realtime Database instance for url");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Realtime Database instance for url", init_result));
 		return 0;
 	}
 
@@ -279,10 +280,12 @@ static double query_is_valid(Query* q)
 	return q->is_valid() ? 1 : 0;
 }
 
-static double query_get_value(Query* q, const std::optional<gm::wire::GMFunction>& callback)
+static FirebaseError query_get_value(Query* q, const char* function, const std::optional<gm::wire::GMFunction>& callback)
 {
-	if (q == nullptr) return 0;
-	q->GetValue().OnCompletion([callback](const firebase::Future<DataSnapshot>& future) {
+	if (q == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<DataSnapshot> pending = q->GetValue();
+	if (!firebaseFutureArmed(pending, function)) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<DataSnapshot>& future) {
 		if (!callback) return;
 		if (future.error() == firebase::database::kErrorNone && future.result() != nullptr)
 		{
@@ -294,7 +297,7 @@ static double query_get_value(Query* q, const std::optional<gm::wire::GMFunction
 			callback->call((double)future.error(), futureErrorMessage(future.error_message()), (uint64_t)0);
 		}
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
 static uint64_t query_add_value_listener(Query* q,
@@ -383,7 +386,7 @@ uint64_t firebase_database_ref_equal_to_key(uint64_t ref, const gm::wire::GMValu
 uint64_t firebase_database_ref_limit_to_first(uint64_t ref, double limit) { return query_limit_to_first(resolve_db_ref(ref), limit); }
 uint64_t firebase_database_ref_limit_to_last(uint64_t ref, double limit) { return query_limit_to_last(resolve_db_ref(ref), limit); }
 double firebase_database_ref_set_keep_synchronized(uint64_t ref, double keep_sync) { return query_set_keep_synchronized(resolve_db_ref(ref), keep_sync); }
-double firebase_database_ref_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_ref(ref), callback); }
+FirebaseError firebase_database_ref_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_ref(ref), "firebase_database_ref_get_value", callback); }
 uint64_t firebase_database_ref_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_ref(ref), on_value_changed, on_cancelled); }
 double firebase_database_ref_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_ref(ref), listener_ref); }
 double firebase_database_ref_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_ref(ref)); }
@@ -416,7 +419,7 @@ uint64_t firebase_database_query_limit_to_last(uint64_t ref, double limit) { ret
 uint64_t firebase_database_query_get_reference(uint64_t ref) { return query_get_reference(resolve_db_query(ref)); }
 double firebase_database_query_set_keep_synchronized(uint64_t ref, double keep_sync) { return query_set_keep_synchronized(resolve_db_query(ref), keep_sync); }
 double firebase_database_query_is_valid(uint64_t ref) { return query_is_valid(resolve_db_query(ref)); }
-double firebase_database_query_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_query(ref), callback); }
+FirebaseError firebase_database_query_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_query(ref), "firebase_database_query_get_value", callback); }
 uint64_t firebase_database_query_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_query(ref), on_value_changed, on_cancelled); }
 double firebase_database_query_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_query(ref), listener_ref); }
 double firebase_database_query_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_query(ref)); }
@@ -501,57 +504,67 @@ double firebase_database_ref_go_offline(uint64_t ref)
 	return 1;
 }
 
-double firebase_database_ref_set_value(uint64_t ref, const gm::wire::GMValue& value, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_set_value(uint64_t ref, const gm::wire::GMValue& value, const std::optional<gm::wire::GMFunction>& callback)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	r->SetValue(gmValueToVariant(value)).OnCompletion([callback](const firebase::Future<void>& future) {
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<void> pending = r->SetValue(gmValueToVariant(value));
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_value")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<void>& future) {
 		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
-double firebase_database_ref_set_priority(uint64_t ref, const gm::wire::GMValue& priority, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_set_priority(uint64_t ref, const gm::wire::GMValue& priority, const std::optional<gm::wire::GMFunction>& callback)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	r->SetPriority(gmValueToVariant(priority)).OnCompletion([callback](const firebase::Future<void>& future) {
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<void> pending = r->SetPriority(gmValueToVariant(priority));
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_priority")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<void>& future) {
 		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
-double firebase_database_ref_set_value_and_priority(uint64_t ref, const gm::wire::GMValue& value, const gm::wire::GMValue& priority, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_set_value_and_priority(uint64_t ref, const gm::wire::GMValue& value, const gm::wire::GMValue& priority, const std::optional<gm::wire::GMFunction>& callback)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	r->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority)).OnCompletion([callback](const firebase::Future<void>& future) {
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<void> pending = r->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority));
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_value_and_priority")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<void>& future) {
 		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
-double firebase_database_ref_update_children(uint64_t ref, const gm::wire::GMValue& values, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_update_children(uint64_t ref, const gm::wire::GMValue& values, const std::optional<gm::wire::GMFunction>& callback)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	r->UpdateChildren(gmValueToVariant(values)).OnCompletion([callback](const firebase::Future<void>& future) {
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<void> pending = r->UpdateChildren(gmValueToVariant(values));
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_update_children")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<void>& future) {
 		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
-double firebase_database_ref_remove_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_remove_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
-	r->RemoveValue().OnCompletion([callback](const firebase::Future<void>& future) {
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	firebase::Future<void> pending = r->RemoveValue();
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_remove_value")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([callback](const firebase::Future<void>& future) {
 		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
 	});
-	return 1;
+	return FirebaseError::Ok;
 }
 
-double firebase_database_ref_run_transaction(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_ref_run_transaction(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	// Intentional limitation. RunTransaction()'s handler is invoked synchronously
 	// (possibly multiple times, for optimistic-concurrency retries) directly
@@ -562,19 +575,15 @@ double firebase_database_ref_run_transaction(uint64_t ref, const std::optional<g
 	// (risking deadlock against the single-threaded GML step loop that is
 	// also responsible for draining the DispatchQueue the answer would
 	// arrive on) or a from-scratch mid-flight MutableData object model - both
-	// out of scope for this pass. This always fails with
-	// kErrorTransactionAbortedByUser so callers can detect it deterministically
-	// instead of hanging; use ref_get_value()+ref_set_value() (accepting the
+	// out of scope for this pass. The call never reaches the SDK, so it fails
+	// synchronously like every other pre-SDK failure and the callback is not
+	// touched; use ref_get_value()+ref_set_value() (accepting the
 	// non-atomicity) as a manual fallback for now.
 	(void)ref;
-	setFirebaseLastError((int)firebase::database::kErrorTransactionAbortedByUser,
+	(void)callback;
+	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED,
 		"RunTransaction is not supported by this extension - synchronous mid-transaction GML callbacks cannot be round-tripped across the wire");
-	if (callback)
-	{
-		callback->call((double)firebase::database::kErrorTransactionAbortedByUser,
-			std::string("RunTransaction is not supported by this extension"), (uint64_t)0);
-	}
-	return 0;
+	return FirebaseError::Unsupported;
 }
 
 double firebase_database_ref_release(uint64_t ref)
@@ -646,14 +655,15 @@ namespace
         return handler;
     }
 
-    double completeDisconnectFuture(firebase::Future<void> future, const std::optional<gm::wire::GMFunction>& callback)
+    FirebaseError completeDisconnectFuture(firebase::Future<void> future, const char* function, const std::optional<gm::wire::GMFunction>& callback)
     {
+        if (!firebaseFutureArmed(future, function)) return FirebaseError::InvalidHandle;
         future.OnCompletion([callback](const firebase::Future<void>& f)
         {
             setFirebaseLastError(static_cast<int>(f.error()), futureErrorMessage(f.error_message()));
             if (callback) callback->call(static_cast<double>(f.error()), futureErrorMessage(f.error_message()));
         });
-        return 1.0;
+        return FirebaseError::Ok;
     }
 }
 
@@ -665,38 +675,38 @@ uint64_t firebase_database_ref_on_disconnect(uint64_t ref)
     return handler ? registerFirebasePointer(handler, GM_FB_TYPE_DATABASE_ON_DISCONNECT) : 0;
 }
 
-double firebase_database_on_disconnect_cancel(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_on_disconnect_cancel(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
     auto* h = resolveOnDisconnect(handler_ref);
-    return h ? completeDisconnectFuture(h->Cancel(), callback) : 0.0;
+    return h ? completeDisconnectFuture(h->Cancel(), "firebase_database_on_disconnect_cancel", callback) : FirebaseError::InvalidHandle;
 }
 
-double firebase_database_on_disconnect_remove_value(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_database_on_disconnect_remove_value(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
     auto* h = resolveOnDisconnect(handler_ref);
-    return h ? completeDisconnectFuture(h->RemoveValue(), callback) : 0.0;
+    return h ? completeDisconnectFuture(h->RemoveValue(), "firebase_database_on_disconnect_remove_value", callback) : FirebaseError::InvalidHandle;
 }
 
-double firebase_database_on_disconnect_set_value(uint64_t handler_ref, const gm::wire::GMValue& value,
+FirebaseError firebase_database_on_disconnect_set_value(uint64_t handler_ref, const gm::wire::GMValue& value,
     const std::optional<gm::wire::GMFunction>& callback)
 {
     auto* h = resolveOnDisconnect(handler_ref);
-    return h ? completeDisconnectFuture(h->SetValue(gmValueToVariant(value)), callback) : 0.0;
+    return h ? completeDisconnectFuture(h->SetValue(gmValueToVariant(value)), "firebase_database_on_disconnect_set_value", callback) : FirebaseError::InvalidHandle;
 }
 
-double firebase_database_on_disconnect_set_value_and_priority(uint64_t handler_ref,
+FirebaseError firebase_database_on_disconnect_set_value_and_priority(uint64_t handler_ref,
     const gm::wire::GMValue& value, const gm::wire::GMValue& priority,
     const std::optional<gm::wire::GMFunction>& callback)
 {
     auto* h = resolveOnDisconnect(handler_ref);
-    return h ? completeDisconnectFuture(h->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority)), callback) : 0.0;
+    return h ? completeDisconnectFuture(h->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority)), "firebase_database_on_disconnect_set_value_and_priority", callback) : FirebaseError::InvalidHandle;
 }
 
-double firebase_database_on_disconnect_update_children(uint64_t handler_ref, const gm::wire::GMValue& values,
+FirebaseError firebase_database_on_disconnect_update_children(uint64_t handler_ref, const gm::wire::GMValue& values,
     const std::optional<gm::wire::GMFunction>& callback)
 {
     auto* h = resolveOnDisconnect(handler_ref);
-    return h ? completeDisconnectFuture(h->UpdateChildren(gmValueToVariant(values)), callback) : 0.0;
+    return h ? completeDisconnectFuture(h->UpdateChildren(gmValueToVariant(values)), "firebase_database_on_disconnect_update_children", callback) : FirebaseError::InvalidHandle;
 }
 
 void firebase_database_on_disconnect_release(uint64_t handler_ref)
@@ -717,7 +727,7 @@ uint64_t firebase_database_get_instance_for_app(uint64_t app_ref)
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     firebase::InitResult init_result = firebase::kInitResultSuccess;
     auto* db = Database::GetInstance(app, &init_result);
-    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError((int)init_result, "failed to get Realtime Database instance for app"); return 0; }
+    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Realtime Database instance for app", init_result)); return 0; }
     return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
 }
 
@@ -726,6 +736,6 @@ uint64_t firebase_database_get_instance_for_app_url(uint64_t app_ref, std::strin
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     std::string u(url); firebase::InitResult init_result = firebase::kInitResultSuccess;
     auto* db = Database::GetInstance(app, u.c_str(), &init_result);
-    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError((int)init_result, "failed to get Realtime Database instance for app/url"); return 0; }
+    if (!db || init_result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Realtime Database instance for app/url", init_result)); return 0; }
     return registerFirebasePointer(db, GM_FB_TYPE_DATABASE);
 }

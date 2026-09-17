@@ -144,9 +144,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_analytics_set_default_event_parameters(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_analytics_log_apple_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_analytics_log_apple_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_analytics_log_apple_transaction(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_analytics_log_apple_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_analytics_set_user_property:(char*)name arg1:(char*)value
 {
@@ -164,13 +164,13 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_analytics_reset_analytics_data();
 }
-- (double)__EXT_NATIVE__firebase_analytics_get_analytics_instance_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_analytics_get_analytics_instance_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_analytics_get_session_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_analytics_get_session_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_analytics_get_session_id(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_analytics_get_session_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_termination
 {
@@ -208,13 +208,13 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_app_check_set_token_auto_refresh_enabled(enabled);
 }
-- (double)__EXT_NATIVE__firebase_app_check_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_app_check_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_app_check_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_app_check_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_app_check_get_limited_use_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_app_check_get_limited_use_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_app_check_get_limited_use_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_app_check_get_limited_use_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_app_check_add_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -224,17 +224,17 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_app_check_remove_listener(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_get_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_get_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_get_id(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_get_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_delete(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_auth_get_auth
 {
@@ -264,37 +264,37 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_sign_out();
 }
-- (double)__EXT_NATIVE__firebase_auth_fetch_providers_for_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_fetch_providers_for_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_fetch_providers_for_email(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_fetch_providers_for_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_credential(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_anonymously(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_anonymously(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_send_password_reset_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_send_password_reset_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_send_password_reset_email(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_send_password_reset_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_auth_add_state_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -332,9 +332,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_facebook_auth_provider_get_credential(access_token, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_is_player_authenticated
 {
@@ -436,49 +436,49 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_user_last_sign_in_timestamp(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_update_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_update_password:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_update_password(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_update_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_update_profile:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_update_profile:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_update_profile(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_update_profile(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_send_email_verification(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_send_email_verification(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_reauthenticate(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_link_with_credential(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_link_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_unlink:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_unlink:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_unlink(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_unlink(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_reload:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_reload:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_reload(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_reload(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_delete(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_get_instance:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
@@ -580,9 +580,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_get_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_ref_add_value_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -668,9 +668,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_query_is_valid(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_query_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_query_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_query_get_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_query_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_query_add_value_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -720,29 +720,29 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_ref_go_offline(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_set_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_set_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_set_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_set_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_set_priority(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_set_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_set_value_and_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_set_value_and_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_set_value_and_priority(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_set_value_and_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_update_children:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_update_children:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_update_children(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_update_children(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_remove_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_remove_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_remove_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_remove_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_ref_run_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_ref_run_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_ref_run_transaction(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_ref_run_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_ref_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -860,29 +860,29 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_set_log_level(level);
 }
-- (double)__EXT_NATIVE__firebase_firestore_enable_network:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_enable_network:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_enable_network(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_enable_network(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_disable_network:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_disable_network:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_disable_network(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_disable_network(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_terminate:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_terminate:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_terminate(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_terminate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_clear_persistence:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_clear_persistence:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_clear_persistence(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_clear_persistence(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_wait_for_pending_writes:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_wait_for_pending_writes:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_run_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_run_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_run_transaction(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_run_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (char*)__EXT_NATIVE__firebase_firestore_collection_ref_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -904,9 +904,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_collection_ref_document_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_collection_ref_add:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_collection_ref_add:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_collection_ref_add(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_collection_ref_add(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_collection_ref_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -932,29 +932,29 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_document_ref_collection(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_get(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_set:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_set:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_set(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_set(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_update:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_update:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_update(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_update(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_delete(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_document_ref_add_snapshot_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -1052,9 +1052,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_query_end_at_values(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_query_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_query_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_query_get(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_query_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_query_add_snapshot_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -1088,9 +1088,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_write_batch_delete(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_write_batch_commit:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_write_batch_commit:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_write_batch_commit(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_write_batch_commit(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_write_batch_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -1268,41 +1268,41 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_storage_ref_storage(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_delete(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_get_download_url:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_get_download_url:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_get_download_url(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_get_download_url(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_get_metadata:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_get_metadata:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_get_metadata(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_get_metadata(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_update_metadata:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_update_metadata:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_update_metadata(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_update_metadata(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_put_bytes:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_put_bytes:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_put_bytes(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_put_bytes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_put_file:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_put_file:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_put_file(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_put_file(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_get_bytes:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_get_bytes:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_get_bytes(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_get_bytes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_get_file:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_get_file:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_get_file(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_get_file(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_storage_ref_list:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_storage_ref_list:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_storage_ref_list(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_storage_ref_list(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_storage_metadata_create:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
@@ -1508,25 +1508,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_functions_callable_is_valid(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_functions_callable_call:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_functions_callable_call:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_functions_callable_call_with_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_functions_callable_call_with_data:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_functions_callable_call_with_data(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_functions_callable_call_with_data(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_remote_config_get_instance:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_remote_config_get_instance(__ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_ensure_initialized:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_ensure_initialized:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_ensure_initialized(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_ensure_initialized(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_set_config_settings:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_set_config_settings:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_set_config_settings(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_set_config_settings(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_remote_config_get_config_settings_fetch_timeout:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -1536,21 +1536,21 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_remote_config_get_config_settings_minimum_fetch_interval(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_fetch:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_fetch:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_fetch(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_fetch(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_fetch_with_expiration:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_fetch_with_expiration:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_fetch_and_activate:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_fetch_and_activate:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_fetch_and_activate(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_fetch_and_activate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_activate:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_activate:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_activate(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_activate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_remote_config_get_boolean:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -1576,21 +1576,21 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_remote_config_get_data(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_get_keys_by_prefix:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_get_keys_by_prefix:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_get_keys:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_get_keys:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_get_keys(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_get_keys(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_get_all:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_get_all:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_get_all(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_get_all(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_set_defaults:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_set_defaults:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_remote_config_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -1628,25 +1628,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_messaging_set_delivery_metrics_export_to_big_query(enabled);
 }
-- (double)__EXT_NATIVE__firebase_messaging_request_permission:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_messaging_request_permission:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_messaging_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_delete_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_messaging_delete_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_delete_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_messaging_delete_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_subscribe:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_messaging_subscribe:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_subscribe(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_messaging_subscribe(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_unsubscribe:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_messaging_unsubscribe:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_unsubscribe(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_messaging_unsubscribe(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_messaging_poll_message
 {
@@ -1820,25 +1820,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_ump_reset(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_request_consent_info_update:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_request_consent_info_update:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_request_consent_info_update(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_request_consent_info_update(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_load_consent_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_load_consent_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_load_consent_form(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_load_consent_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_show_consent_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_show_consent_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_show_consent_form(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_show_consent_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_ump_show_privacy_options_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_ump_show_privacy_options_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change:(double)state
 {
@@ -1864,29 +1864,29 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_federated_oauth_provider_release(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_provider(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_anonymously_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_auth_user_provider_data_count:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -1896,25 +1896,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_user_provider_data_at(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_link_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_provider:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_link_with_provider(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_link_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_link_with_credential_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_link_with_credential_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_link_with_credential_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_auth_user_update_phone_number_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_user_update_phone_number_credential:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (char*)__EXT_NATIVE__firebase_database_ref_key:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -1952,25 +1952,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_ref_on_disconnect(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_on_disconnect_cancel:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_on_disconnect_cancel:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_on_disconnect_cancel(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_on_disconnect_cancel(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_on_disconnect_remove_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_on_disconnect_remove_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_on_disconnect_remove_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_on_disconnect_remove_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_on_disconnect_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_on_disconnect_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_on_disconnect_set_value(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_on_disconnect_set_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_database_on_disconnect_update_children:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_database_on_disconnect_update_children:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_database_on_disconnect_update_children(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_database_on_disconnect_update_children(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_database_on_disconnect_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2148,9 +2148,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_aggregate_query_is_valid(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_aggregate_query_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_aggregate_query_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_aggregate_query_get(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_aggregate_query_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_aggregate_query_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2176,17 +2176,17 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_add_snapshots_in_sync_listener(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_load_bundle:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_load_bundle:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_load_bundle(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_load_bundle(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_named_query:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_named_query:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_named_query(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_named_query(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_write_batch_set_merge_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2196,9 +2196,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_storage_metadata_md5_hash(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_remote_config_ensure_initialized_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_remote_config_ensure_initialized_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_remote_config_get_boolean_with_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -2336,9 +2336,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_firestore_document_ref_to_string(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_firestore_document_ref_update_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_document_ref_update_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_write_batch_update_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2552,17 +2552,17 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_installations_instance_get_app(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_instance_get_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_instance_get_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_instance_get_id(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_instance_get_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_instance_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_instance_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_instance_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_instance_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_installations_instance_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_installations_instance_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_installations_instance_delete(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_installations_instance_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_app_check_get_instance_handle:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
@@ -2580,13 +2580,13 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_app_check_instance_set_token_auto_refresh_enabled(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_app_check_instance_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_app_check_instance_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_app_check_instance_get_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_app_check_instance_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_app_check_instance_get_limited_use_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_app_check_instance_get_limited_use_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_app_check_instance_add_listener:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
@@ -2676,9 +2676,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_auth_yahoo_auth_provider_id();
 }
-- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__GMFirebase_invocation_handler:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {

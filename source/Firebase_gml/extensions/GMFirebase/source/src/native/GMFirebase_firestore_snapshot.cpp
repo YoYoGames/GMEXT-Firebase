@@ -112,7 +112,7 @@ void firebase_firestore_document_snapshot_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_doc_snapshot_map);
@@ -198,7 +198,7 @@ void firebase_firestore_query_snapshot_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_query_snapshot_map);

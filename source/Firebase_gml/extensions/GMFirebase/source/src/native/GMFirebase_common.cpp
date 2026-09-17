@@ -161,6 +161,16 @@ std::string firebase_last_error_message()
 	return g_firebase_last_error.message;
 }
 
+std::string firebaseInitResultMessage(const char* what, firebase::InitResult result)
+{
+	std::string message(what);
+	if (result == firebase::kInitResultFailedMissingDependency)
+		message += ": missing dependency (Google Play services)";
+	else
+		message += ": InitResult " + std::to_string(static_cast<int>(result));
+	return message;
+}
+
 // ============================================================
 // Reference Layout
 // ============================================================
@@ -197,7 +207,7 @@ uint64_t registerFirebasePointer(void* pointer, uint8_t type_code)
 {
 	if (pointer == nullptr)
 	{
-		setFirebaseLastError(-1, "cannot register null Firebase pointer");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "cannot register null Firebase pointer");
 		return 0;
 	}
 
@@ -222,7 +232,7 @@ void* resolveFirebasePointer(uint64_t ref, uint8_t expected_type)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != expected_type)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return nullptr;
 	}
 
@@ -230,7 +240,7 @@ void* resolveFirebasePointer(uint64_t ref, uint8_t expected_type)
 	const auto it = g_firebase_pointer_registry.find(gm_fb_ref_id(ref));
 	if (it == g_firebase_pointer_registry.end() || it->second.type != expected_type || it->second.pointer == nullptr)
 	{
-		setFirebaseLastError(-1, "invalid or stale handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid or stale handle");
 		return nullptr;
 	}
 
@@ -241,7 +251,7 @@ void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != expected_type)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return nullptr;
 	}
 
@@ -250,7 +260,7 @@ void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type)
 	const auto it = g_firebase_pointer_registry.find(id);
 	if (it == g_firebase_pointer_registry.end() || it->second.type != expected_type || it->second.pointer == nullptr)
 	{
-		setFirebaseLastError(-1, "invalid or stale handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid or stale handle");
 		return nullptr;
 	}
 

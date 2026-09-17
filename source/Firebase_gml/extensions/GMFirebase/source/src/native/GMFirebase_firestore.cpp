@@ -129,7 +129,7 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out)
 		}
 	}
 
-	setFirebaseLastError(-1, "invalid handle");
+	setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 	return false;
 }
 
@@ -528,7 +528,7 @@ void firebase_firestore_field_value_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_FIELD_VALUE)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_field_value_map);
@@ -543,7 +543,7 @@ uint64_t firebase_firestore_get_instance()
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_firestore_get_instance: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_firestore_get_instance: no firebase::App - call firebase_app_initialize() first");
 		return 0;
 	}
 
@@ -551,7 +551,7 @@ uint64_t firebase_firestore_get_instance()
 	firebase::firestore::Firestore* fs = firebase::firestore::Firestore::GetInstance(app, &init_result);
 	if (fs == nullptr || init_result != firebase::kInitResultSuccess)
 	{
-		setFirebaseLastError(-1, "firebase_firestore_get_instance: Firestore::GetInstance() failed");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_firestore_get_instance: Firestore::GetInstance() failed");
 		return 0;
 	}
 
@@ -563,7 +563,7 @@ uint64_t firebase_firestore_get_instance_for_database(std::string_view database_
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_firestore_get_instance_for_database: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_firestore_get_instance_for_database: no firebase::App - call firebase_app_initialize() first");
 		return 0;
 	}
 
@@ -572,7 +572,7 @@ uint64_t firebase_firestore_get_instance_for_database(std::string_view database_
 	firebase::firestore::Firestore* fs = firebase::firestore::Firestore::GetInstance(app, name.c_str(), &init_result);
 	if (fs == nullptr || init_result != firebase::kInitResultSuccess)
 	{
-		setFirebaseLastError(-1, "firebase_firestore_get_instance_for_database: Firestore::GetInstance() failed");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_firestore_get_instance_for_database: Firestore::GetInstance() failed");
 		return 0;
 	}
 
@@ -676,10 +676,10 @@ void firebase_firestore_set_log_level(double level)
 	firebase::firestore::Firestore::set_log_level(static_cast<firebase::LogLevel>(static_cast<int>(level)));
 }
 
-double firebase_firestore_enable_network(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_enable_network(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
-	if (fs == nullptr) return 0.0;
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
 	fs->EnableNetwork().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -688,13 +688,13 @@ double firebase_firestore_enable_network(uint64_t instance_ref, const std::optio
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_disable_network(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_disable_network(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
-	if (fs == nullptr) return 0.0;
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
 	fs->DisableNetwork().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -703,15 +703,15 @@ double firebase_firestore_disable_network(uint64_t instance_ref, const std::opti
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // After this future completes, `instance_ref` (and every ref derived from
 // it) must not be used again - the underlying Firestore* is destroyed.
-double firebase_firestore_terminate(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_terminate(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
-	if (fs == nullptr) return 0.0;
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
 	fs->Terminate().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -720,13 +720,13 @@ double firebase_firestore_terminate(uint64_t instance_ref, const std::optional<g
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_clear_persistence(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_clear_persistence(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
-	if (fs == nullptr) return 0.0;
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
 	fs->ClearPersistence().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -735,13 +735,13 @@ double firebase_firestore_clear_persistence(uint64_t instance_ref, const std::op
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_wait_for_pending_writes(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_wait_for_pending_writes(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
-	if (fs == nullptr) return 0.0;
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
 	fs->WaitForPendingWrites().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -750,7 +750,7 @@ double firebase_firestore_wait_for_pending_writes(uint64_t instance_ref, const s
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // ============================================================
@@ -764,18 +764,16 @@ double firebase_firestore_wait_for_pending_writes(uint64_t instance_ref, const s
 // Transaction& alive and re-entrant-safe for the duration of a GML callback
 // invocation, handling retries, and surfacing Get()'s out-parameter error
 // reporting - is a substantial piece of work of its own and was explicitly
-// not representable safely by the current asynchronous callback bridge. Callers get a clear, typed "not implemented"
-// error instead of a partially-working handle.
-double firebase_firestore_run_transaction(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
+// not representable safely by the current asynchronous callback bridge. The
+// call never reaches the SDK, so like every other pre-SDK failure it returns
+// synchronously and the callback is not touched.
+FirebaseError firebase_firestore_run_transaction(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	(void)instance_ref;
+	(void)callback;
 
-	const int code = firebase::firestore::kErrorUnimplemented;
-	const char* message = "firebase_firestore_run_transaction: a synchronous/retryable GML transaction handler is not safely representable by the current callback bridge.";
-	setFirebaseLastError(code, message);
-	if (callback.has_value())
-		callback->call((double)code, std::string_view{ message });
-	return 0.0;
+	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED, "firebase_firestore_run_transaction: a synchronous/retryable GML transaction handler is not safely representable by the current callback bridge.");
+	return FirebaseError::Unsupported;
 }
 
 // ============================================================
@@ -822,11 +820,11 @@ uint64_t firebase_firestore_collection_ref_document_path(uint64_t ref, std::stri
 	return registerFirestoreDocRef(col->Document(std::string(path)));
 }
 
-double firebase_firestore_collection_ref_add(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_collection_ref_add(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::CollectionReference* col = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_COL_REF, firebase::firestore::CollectionReference, g_fs_col_ref_map, col);
-	if (col == nullptr) return 0.0;
+	if (col == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::firestore::MapFieldValue map = gmValueToMapFieldValue(data);
 	col->Add(map).OnCompletion([callback](const firebase::Future<firebase::firestore::DocumentReference>& f)
@@ -842,7 +840,7 @@ double firebase_firestore_collection_ref_add(uint64_t ref, const gm::wire::GMVal
 
 		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, doc_ref);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 bool firebase_firestore_collection_ref_is_valid(uint64_t ref)
@@ -857,7 +855,7 @@ void firebase_firestore_collection_ref_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_COL_REF)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_col_ref_map);
@@ -899,11 +897,11 @@ uint64_t firebase_firestore_document_ref_collection(uint64_t ref, std::string_vi
 	return registerFirestoreColRef(doc->Collection(std::string(path)));
 }
 
-double firebase_firestore_document_ref_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	auto src = static_cast<firebase::firestore::Source>(static_cast<int>(source));
 	doc->Get(src).OnCompletion([callback](const firebase::Future<firebase::firestore::DocumentSnapshot>& f)
@@ -919,14 +917,14 @@ double firebase_firestore_document_ref_get(uint64_t ref, double source, const st
 
 		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, snapshot_ref);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_document_ref_set(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_set(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	doc->Set(gmValueToMapFieldValue(data)).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -935,14 +933,14 @@ double firebase_firestore_document_ref_set(uint64_t ref, const gm::wire::GMValue
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_document_ref_set_merge(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_set_merge(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	doc->Set(gmValueToMapFieldValue(data), firebase::firestore::SetOptions::Merge()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -951,14 +949,14 @@ double firebase_firestore_document_ref_set_merge(uint64_t ref, const gm::wire::G
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_document_ref_set_merge_fields(uint64_t ref, const gm::wire::GMValue& data, const gm::wire::GMValue& fields, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_set_merge_fields(uint64_t ref, const gm::wire::GMValue& data, const gm::wire::GMValue& fields, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	auto options = firebase::firestore::SetOptions::MergeFields(gmValueToStringVector(fields));
 	doc->Set(gmValueToMapFieldValue(data), options).OnCompletion([callback](const firebase::Future<void>& f)
@@ -968,14 +966,14 @@ double firebase_firestore_document_ref_set_merge_fields(uint64_t ref, const gm::
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_document_ref_update(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_update(uint64_t ref, const gm::wire::GMValue& data, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	doc->Update(gmValueToMapFieldValue(data)).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -984,14 +982,14 @@ double firebase_firestore_document_ref_update(uint64_t ref, const gm::wire::GMVa
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_firestore_document_ref_delete(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_delete(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return FirebaseError::InvalidHandle;
 
 	doc->Delete().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -1000,7 +998,7 @@ double firebase_firestore_document_ref_delete(uint64_t ref, const std::optional<
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // Returns a GM_FB_TYPE_FIRESTORE_LISTENER_REG ref for
@@ -1011,7 +1009,7 @@ uint64_t firebase_firestore_document_ref_add_snapshot_listener(uint64_t ref, boo
 {
 	if (!callback.has_value())
 	{
-		setFirebaseLastError(-1, "firebase_firestore_document_ref_add_snapshot_listener: a callback is required");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_ref_add_snapshot_listener: a callback is required");
 		return 0;
 	}
 
@@ -1050,7 +1048,7 @@ void firebase_firestore_document_ref_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_DOC_REF)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_doc_ref_map);
@@ -1220,10 +1218,10 @@ uint64_t firebase_firestore_query_end_at_values(uint64_t ref, const gm::wire::GM
 	return registerFirestoreQuery(q.EndAt(gmValueToFieldValueVector(values)));
 }
 
-double firebase_firestore_query_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_query_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Query q;
-	if (!resolveFirestoreQuery(ref, q)) return 0.0;
+	if (!resolveFirestoreQuery(ref, q)) return FirebaseError::InvalidHandle;
 
 	auto src = static_cast<firebase::firestore::Source>(static_cast<int>(source));
 	q.Get(src).OnCompletion([callback](const firebase::Future<firebase::firestore::QuerySnapshot>& f)
@@ -1239,7 +1237,7 @@ double firebase_firestore_query_get(uint64_t ref, double source, const std::opti
 
 		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, snapshot_ref);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // Returns a GM_FB_TYPE_FIRESTORE_LISTENER_REG ref for
@@ -1248,7 +1246,7 @@ uint64_t firebase_firestore_query_add_snapshot_listener(uint64_t ref, bool inclu
 {
 	if (!callback.has_value())
 	{
-		setFirebaseLastError(-1, "firebase_firestore_query_add_snapshot_listener: a callback is required");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_query_add_snapshot_listener: a callback is required");
 		return 0;
 	}
 
@@ -1285,7 +1283,7 @@ void firebase_firestore_query_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_QUERY)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_query_map);
@@ -1366,11 +1364,11 @@ double firebase_firestore_write_batch_delete(uint64_t batch_ref, uint64_t docume
 	return 1.0;
 }
 
-double firebase_firestore_write_batch_commit(uint64_t batch_ref, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_write_batch_commit(uint64_t batch_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return FirebaseError::InvalidHandle;
 
 	batch->Commit().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -1379,14 +1377,14 @@ double firebase_firestore_write_batch_commit(uint64_t batch_ref, const std::opti
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 void firebase_firestore_write_batch_release(uint64_t batch_ref)
 {
 	if (gm_fb_ref_ext(batch_ref) != GM_FIREBASE_EXT || gm_fb_ref_type(batch_ref) != GM_FB_TYPE_FIRESTORE_WRITE_BATCH)
 	{
-		setFirebaseLastError(-1, "invalid handle");
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
 	unregisterFirebaseValue(gm_fb_ref_id(batch_ref), g_fs_write_batch_map);
@@ -1496,7 +1494,7 @@ void firebase_firestore_field_path_release(uint64_t ref)
 {
     if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_FIELD_PATH)
         unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_field_path_map);
-    else setFirebaseLastError(-1, "invalid Firestore FieldPath handle");
+    else setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid Firestore FieldPath handle");
 }
 
 #define GM_FS_FILTER_STRING_ONE(fn_name, sdk_name) \
@@ -1550,7 +1548,7 @@ void firebase_firestore_filter_release(uint64_t ref)
 {
     if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_FILTER)
         unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_filter_map);
-    else setFirebaseLastError(-1, "invalid Firestore Filter handle");
+    else setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid Firestore Filter handle");
 }
 
 uint64_t firebase_firestore_query_where_filter(uint64_t ref, uint64_t filter_ref)
@@ -1606,9 +1604,9 @@ bool firebase_firestore_aggregate_query_is_valid(uint64_t ref)
     auto* q = resolveAggregateQuery(ref); return q && q->is_valid();
 }
 
-double firebase_firestore_aggregate_query_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_aggregate_query_get(uint64_t ref, double source, const std::optional<gm::wire::GMFunction>& callback)
 {
-    auto* q = resolveAggregateQuery(ref); if (!q) return 0.0;
+    auto* q = resolveAggregateQuery(ref); if (!q) return FirebaseError::InvalidHandle;
     q->Get(static_cast<firebase::firestore::AggregateSource>(static_cast<int>(source))).OnCompletion(
         [callback](const firebase::Future<firebase::firestore::AggregateQuerySnapshot>& f)
     {
@@ -1618,14 +1616,14 @@ double firebase_firestore_aggregate_query_get(uint64_t ref, double source, const
         if (f.error() == 0 && f.result()) result = registerFirestoreAggregateSnapshot(*f.result());
         callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, result);
     });
-    return 1.0;
+    return FirebaseError::Ok;
 }
 
 void firebase_firestore_aggregate_query_release(uint64_t ref)
 {
     if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_AGG_QUERY)
         unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_aggregate_query_map);
-    else setFirebaseLastError(-1, "invalid AggregateQuery handle");
+    else setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid AggregateQuery handle");
 }
 
 double firebase_firestore_aggregate_snapshot_count(uint64_t ref)
@@ -1644,7 +1642,7 @@ void firebase_firestore_aggregate_snapshot_release(uint64_t ref)
 {
     if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == GM_FB_TYPE_FIRESTORE_AGG_SNAPSHOT)
         unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_aggregate_snapshot_map);
-    else setFirebaseLastError(-1, "invalid AggregateQuerySnapshot handle");
+    else setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid AggregateQuerySnapshot handle");
 }
 
 uint64_t firebase_firestore_add_snapshots_in_sync_listener(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
@@ -1655,11 +1653,11 @@ uint64_t firebase_firestore_add_snapshots_in_sync_listener(uint64_t instance_ref
     return registerFirebasePointer(boxed, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
 }
 
-double firebase_firestore_load_bundle(uint64_t instance_ref, GMBuffer bundle,
+FirebaseError firebase_firestore_load_bundle(uint64_t instance_ref, GMBuffer bundle,
     const std::optional<gm::wire::GMFunction>& progress_callback,
     const std::optional<gm::wire::GMFunction>& callback)
 {
-    auto* fs = resolveFirestore(instance_ref); if (!fs) return 0.0;
+    auto* fs = resolveFirestore(instance_ref); if (!fs) return FirebaseError::InvalidHandle;
     std::string bytes(static_cast<const char*>(bundle.data()), static_cast<size_t>(bundle.length()));
     auto progress = [progress_callback](const firebase::firestore::LoadBundleTaskProgress& p)
     {
@@ -1674,12 +1672,12 @@ double firebase_firestore_load_bundle(uint64_t instance_ref, GMBuffer bundle,
         if (f.result()) callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, loadBundleProgressStruct(*f.result()));
         else callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::optional<std::uint8_t>{});
     });
-    return 1.0;
+    return FirebaseError::Ok;
 }
 
-double firebase_firestore_named_query(uint64_t instance_ref, std::string_view name, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_named_query(uint64_t instance_ref, std::string_view name, const std::optional<gm::wire::GMFunction>& callback)
 {
-    auto* fs = resolveFirestore(instance_ref); if (!fs) return 0.0;
+    auto* fs = resolveFirestore(instance_ref); if (!fs) return FirebaseError::InvalidHandle;
     fs->NamedQuery(std::string(name)).OnCompletion([callback](const firebase::Future<firebase::firestore::Query>& f)
     {
         setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
@@ -1688,23 +1686,23 @@ double firebase_firestore_named_query(uint64_t instance_ref, std::string_view na
         if (f.error() == 0 && f.result() && f.result()->is_valid()) result = registerFirestoreQuery(*f.result());
         callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, result);
     });
-    return 1.0;
+    return FirebaseError::Ok;
 }
 
 // SetOptions::MergeFieldPaths variants.
-double firebase_firestore_document_ref_set_merge_field_paths(uint64_t ref, const gm::wire::GMValue& data,
+FirebaseError firebase_firestore_document_ref_set_merge_field_paths(uint64_t ref, const gm::wire::GMValue& data,
     const gm::wire::GMValue& field_paths, const std::optional<gm::wire::GMFunction>& callback)
 {
     firebase::firestore::DocumentReference* doc = nullptr;
     validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-    if (!doc) return 0.0;
+    if (!doc) return FirebaseError::InvalidHandle;
     auto options = firebase::firestore::SetOptions::MergeFieldPaths(gmValueToFieldPathVector(field_paths));
     doc->Set(gmValueToMapFieldValue(data), options).OnCompletion([callback](const firebase::Future<void>& f)
     {
         setFirebaseLastError(f.error(), f.error_message() ? f.error_message() : "");
         if (callback) callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
     });
-    return 1.0;
+    return FirebaseError::Ok;
 }
 
 void firebase_firestore_write_batch_set_merge_field_paths(uint64_t batch_ref, uint64_t document_ref,
@@ -1829,14 +1827,14 @@ std::string firebase_firestore_document_ref_to_string(uint64_t ref)
     return doc ? doc->ToString() : std::string();
 }
 
-double firebase_firestore_document_ref_update_field_paths(uint64_t ref, const gm::wire::GMValue& entries, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_firestore_document_ref_update_field_paths(uint64_t ref, const gm::wire::GMValue& entries, const std::optional<gm::wire::GMFunction>& callback)
 {
     firebase::firestore::DocumentReference* doc=nullptr; validate_fb_ref_map(ref,GM_FB_TYPE_FIRESTORE_DOC_REF,firebase::firestore::DocumentReference,g_fs_doc_ref_map,doc);
-    if(!doc) return 0.0;
+    if(!doc) return FirebaseError::InvalidHandle;
     doc->Update(gmValueToMapFieldPathValue(entries)).OnCompletion([callback](const firebase::Future<void>& f){
         setFirebaseLastError(f.error(), f.error_message()?f.error_message():"");
         if(callback) callback->call(static_cast<double>(f.error()), std::string_view{f.error_message()?f.error_message():""});
-    }); return 1.0;
+    }); return FirebaseError::Ok;
 }
 
 double firebase_firestore_write_batch_update_field_paths(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& entries)
@@ -1866,7 +1864,7 @@ uint64_t firebase_firestore_get_instance_for_app(uint64_t app_ref)
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     firebase::InitResult result = firebase::kInitResultSuccess;
     auto* fs = firebase::firestore::Firestore::GetInstance(app, &result);
-    if (!fs || result != firebase::kInitResultSuccess) { setFirebaseLastError((int)result, "failed to get Firestore instance for app"); return 0; }
+    if (!fs || result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Firestore instance for app", result)); return 0; }
     return registerFirebasePointer(fs, GM_FB_TYPE_FIRESTORE);
 }
 
@@ -1875,7 +1873,7 @@ uint64_t firebase_firestore_get_instance_for_app_database(uint64_t app_ref, std:
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     firebase::InitResult result = firebase::kInitResultSuccess; std::string db(database_id);
     auto* fs = firebase::firestore::Firestore::GetInstance(app, db.c_str(), &result);
-    if (!fs || result != firebase::kInitResultSuccess) { setFirebaseLastError((int)result, "failed to get Firestore instance for app/database"); return 0; }
+    if (!fs || result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Firestore instance for app/database", result)); return 0; }
     return registerFirebasePointer(fs, GM_FB_TYPE_FIRESTORE);
 }
 

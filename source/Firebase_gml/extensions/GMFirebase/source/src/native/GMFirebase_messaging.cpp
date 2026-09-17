@@ -48,15 +48,8 @@ namespace
 	bool messagingReady(const char* function)
 	{
 		if (g_firebase_messaging_listener != nullptr) return true;
-		setFirebaseLastError(-1, std::string(function) + ": call firebase_messaging_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, std::string(function) + ": call firebase_messaging_initialize() first");
 		return false;
-	}
-
-	// callback(error_code: real, error_message: string)
-	void rejectVoidCallback(const std::optional<GMFunction>& callback)
-	{
-		if (callback.has_value())
-			callback->call(-1.0, firebase_last_error_message());
 	}
 
 	double messagingInitialize(firebase::App* app, const firebase::messaging::MessagingOptions* options, const char* function)
@@ -70,7 +63,7 @@ namespace
 			: firebase::messaging::Initialize(*app, listener);
 		if (result != firebase::kInitResultSuccess)
 		{
-			setFirebaseLastError(static_cast<int>(result), std::string(function) + ": Initialize() failed");
+			setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage((std::string(function) + ": Initialize() failed").c_str(), result));
 			// On Android the SDK stores the listener before the checks that can
 			// fail, so unset it before the object goes away.
 			firebase::messaging::SetListener(nullptr);
@@ -92,7 +85,7 @@ double firebase_messaging_initialize()
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
 		return -1.0;
 	}
 
@@ -148,13 +141,10 @@ void firebase_messaging_set_delivery_metrics_export_to_big_query(double enabled)
 // ============================================================
 
 // callback(error_code: real, error_message: string)
-double firebase_messaging_request_permission(const std::optional<GMFunction>& callback)
+FirebaseError firebase_messaging_request_permission(const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_request_permission"))
-	{
-		rejectVoidCallback(callback);
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::messaging::RequestPermission().OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -163,18 +153,14 @@ double firebase_messaging_request_permission(const std::optional<GMFunction>& ca
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // callback(error_code: real, error_message: string, token: string)
-double firebase_messaging_get_token(const std::optional<GMFunction>& callback)
+FirebaseError firebase_messaging_get_token(const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_get_token"))
-	{
-		if (callback.has_value())
-			callback->call(-1.0, firebase_last_error_message(), std::string_view{});
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	GMF_DEPRECATED_PUSH()
 	firebase::Future<std::string> future = firebase::messaging::GetToken();
@@ -187,17 +173,14 @@ double firebase_messaging_get_token(const std::optional<GMFunction>& callback)
 		std::string token = (f.error() == 0 && f.result() != nullptr) ? *f.result() : std::string();
 		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::string_view{ token });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // callback(error_code: real, error_message: string)
-double firebase_messaging_delete_token(const std::optional<GMFunction>& callback)
+FirebaseError firebase_messaging_delete_token(const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_delete_token"))
-	{
-		rejectVoidCallback(callback);
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	GMF_DEPRECATED_PUSH()
 	firebase::Future<void> future = firebase::messaging::DeleteToken();
@@ -209,17 +192,14 @@ double firebase_messaging_delete_token(const std::optional<GMFunction>& callback
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // callback(error_code: real, error_message: string)
-double firebase_messaging_subscribe(std::string_view topic, const std::optional<GMFunction>& callback)
+FirebaseError firebase_messaging_subscribe(std::string_view topic, const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_subscribe"))
-	{
-		rejectVoidCallback(callback);
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::messaging::Subscribe(std::string(topic).c_str()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -228,17 +208,14 @@ double firebase_messaging_subscribe(std::string_view topic, const std::optional<
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // callback(error_code: real, error_message: string)
-double firebase_messaging_unsubscribe(std::string_view topic, const std::optional<GMFunction>& callback)
+FirebaseError firebase_messaging_unsubscribe(std::string_view topic, const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_unsubscribe"))
-	{
-		rejectVoidCallback(callback);
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::messaging::Unsubscribe(std::string(topic).c_str()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -247,7 +224,7 @@ double firebase_messaging_unsubscribe(std::string_view topic, const std::optiona
 		if (callback.has_value())
 			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // ============================================================
@@ -497,7 +474,7 @@ double firebase_messaging_initialize_with_options(double suppress_notification_p
     firebase::App* app = getFirebaseApp();
     if (app == nullptr)
     {
-        setFirebaseLastError(-1, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
+        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
         return -1.0;
     }
     firebase::messaging::MessagingOptions options;

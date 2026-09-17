@@ -34,6 +34,25 @@ function firebase_app_get_name(): string;
 // Utility
 // ============================================================
 
+// What every asynchronous call returns. Ok means the call reached the SDK and
+// the callback will fire exactly once with the SDK's own result; any other
+// value means the call failed before the SDK was involved and the callback
+// will not fire at all. Kept in their own negative band so they can never be
+// mistaken for a product's error enum (the SDK's are all zero or positive
+// except the two Unimplemented values, which are -1).
+[global, bind = typed_gml]
+enum FirebaseError
+{
+	Ok = 0,
+	InvalidHandle = -1000,
+	NotInitialized = -1001,
+	InvalidArgument = -1002,
+	Unsupported = -1003,
+}
+
+// A FirebaseError value when the last failure happened before the SDK was
+// reached, otherwise the failing product's own error enum (FirebaseAuthError,
+// FirestoreError, ...).
 [global, bind = typed_gml]
 function firebase_last_error_code(): real;
 
@@ -95,11 +114,11 @@ function firebase_analytics_set_default_event_parameters(
 	params: gmval
 ): unit;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_analytics_log_apple_transaction(
 	transaction_id: string,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_analytics_set_user_property(
@@ -121,16 +140,16 @@ function firebase_analytics_set_session_timeout_duration(
 function firebase_analytics_reset_analytics_data(): unit;
 
 // callback(error_code: real, error_message: string, instance_id: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_analytics_get_analytics_instance_id(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, session_id: real)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_analytics_get_session_id(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Desktop-only diagnostics; no-op on iOS/Android (see firebase/analytics.h).
 [global, bind = typed_gml]
@@ -193,17 +212,17 @@ function firebase_app_check_set_token_auto_refresh_enabled(
 ): unit;
 
 // callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_get_token(
 	force_refresh: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, token: {token: string, expire_time_millis: real})
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_app_check_get_limited_use_token(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(token: {token: string, expire_time_millis: real}), fired on every
 // token change. Returns a listener ref for firebase_app_check_remove_listener.
@@ -222,23 +241,23 @@ function firebase_app_check_remove_listener(
 // ============================================================
 
 // callback(error_code: real, error_message: string, id: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_installations_get_id(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, token: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_installations_get_token(
 	force_refresh: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_installations_delete(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // ============================================================
 // Auth - error codes
@@ -372,11 +391,11 @@ function firebase_auth_current_user(): gmval;
 function firebase_auth_sign_out(): unit;
 
 // callback(error_code: real, error_message: string, providers: array of string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_fetch_providers_for_email(
 	email: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // ============================================================
 // Sign-in / sign-up
@@ -386,49 +405,49 @@ function firebase_auth_fetch_providers_for_email(
 // `user` is a GM_FB_TYPE_AUTH_USER ref (see firebase_auth_user_* below);
 // release it with firebase_auth_user_release() once done with it.
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_custom_token(
 	custom_token: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_credential(
 	[type_hint=`uint64`] credential_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_and_retrieve_data_with_credential(
 	[type_hint=`uint64`] credential_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_anonymously(
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_email_and_password(
 	email: string,
 	password: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_create_user_with_email_and_password(
 	email: string,
 	password: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_send_password_reset_email(
 	email: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // ============================================================
 // AuthStateListener / IdTokenListener
@@ -500,10 +519,10 @@ function firebase_auth_facebook_auth_provider_get_credential(
 ): gmval;
 
 // callback(error_code: real, error_message: string, credential: uint64 or undefined)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_game_center_auth_provider_get_credential(
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_auth_game_center_auth_provider_is_player_authenticated(): bool;
@@ -683,93 +702,93 @@ function firebase_auth_user_last_sign_in_timestamp(
 ): real;
 
 // callback(error_code: real, error_message: string, token: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_get_token(
 	[type_hint=`uint64`] user_ref: gmval,
 	force_refresh: bool,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_update_password(
 	[type_hint=`uint64`] user_ref: gmval,
 	password: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string). An empty display_name/
 // photo_url clears that field rather than leaving it unchanged - re-supply
 // the current value (see firebase_auth_user_display_name()/photo_url() above)
 // to only touch one field.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_update_profile(
 	[type_hint=`uint64`] user_ref: gmval,
 	display_name: string,
 	photo_url: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_send_email_verification(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_send_email_verification_before_updating_email(
 	[type_hint=`uint64`] user_ref: gmval,
 	new_email: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_reauthenticate(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`uint64`] credential_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string, user: uint64 or undefined)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_reauthenticate_and_retrieve_data(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`uint64`] credential_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string, user: uint64 or undefined)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_link_with_credential(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`uint64`] credential_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string, user: uint64 or undefined)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_unlink(
 	[type_hint=`uint64`] user_ref: gmval,
 	provider_id: string,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_reload(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_delete(
 	[type_hint=`uint64`] user_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // ============================================================
 // Realtime Database - enums
@@ -989,11 +1008,11 @@ function firebase_database_ref_set_keep_synchronized(
 ): real;
 
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_get_value(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // on_value_changed(snapshot_ref: uint64)
 // on_cancelled(error_code: real, error_message: string)
@@ -1139,11 +1158,11 @@ function firebase_database_query_is_valid(
 ): real;
 
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_query_get_value(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_database_query_add_value_listener(
@@ -1255,48 +1274,49 @@ function firebase_database_ref_go_offline(
 // value: real|string|bool|array|struct (converted through the same
 // firebase::Variant mapping described in GMFirebase_common.h).
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_set_value(
 	[type_hint=`uint64`] ref: gmval,
 	value: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_set_priority(
 	[type_hint=`uint64`] ref: gmval,
 	priority: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_set_value_and_priority(
 	[type_hint=`uint64`] ref: gmval,
 	value: gmval,
 	priority: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // values: struct mapping child paths to the value each should be set to
 // (Firebase's own UpdateChildren semantics - a multi-location patch update).
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_update_children(
 	[type_hint=`uint64`] ref: gmval,
 	values: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_remove_value(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
-// Intentional limitation - reports FirebaseDatabaseError.TransactionAbortedByUser until a safe synchronous GML transaction bridge exists.
+// Intentional limitation - returns FirebaseError.Unsupported without touching
+// the callback, until a safe synchronous GML transaction bridge exists.
 //
 // firebase::database::DatabaseReference::RunTransaction() invokes its
 // DoTransaction handler synchronously - possibly multiple times, retrying on
@@ -1313,12 +1333,12 @@ function firebase_database_ref_remove_value(
 // mid-transaction round trip (or a queued-retry emulation built on top of
 // get_value+set_value) that cannot be represented safely by the current asynchronous GMFunction bridge.
 // callback(error_code: real, error_message: string, snapshot_ref: uint64) -
-// snapshot_ref is always 0.
-[global, bind = typed_gml]
+// never fired today.
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_run_transaction(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Frees the value-copy registry slot for a *_ref handle. Does not touch the
 // underlying database location.
@@ -1587,49 +1607,50 @@ function firebase_firestore_set_log_level(
 ): unit;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_enable_network(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_disable_network(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string). instance_ref (and every
 // ref derived from it) must not be used again once this completes.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_terminate(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_clear_persistence(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_wait_for_pending_writes(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
-// Intentional limitation - reports FirestoreError.Unimplemented until a safe synchronous GML transaction bridge exists.
+// Intentional limitation - returns FirebaseError.Unsupported without touching
+// the callback, until a safe synchronous GML transaction bridge exists.
 // See GMFirebase_firestore.cpp's firestore_run_transaction() for why.
-// callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+// callback(error_code: real, error_message: string) - never fired today.
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_run_transaction(
 	[type_hint=`uint64`] instance_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // ============================================================
 // CollectionReference
@@ -1667,12 +1688,12 @@ function firebase_firestore_collection_ref_document_path(
 // data: struct of field name -> value (real|string|bool|array|struct, or a
 // firestore_field_value_*() ref for an explicit-typed/sentinel value).
 // callback(error_code: real, error_message: string, document_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_collection_ref_add(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_firestore_collection_ref_is_valid(
@@ -1711,59 +1732,59 @@ function firebase_firestore_document_ref_collection(
 
 // source: a FirestoreSource value.
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_get(
 	[type_hint=`uint64`] ref: gmval,
 	source: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // data: struct of field name -> value. Overwrites the whole document (or
 // creates it if missing).
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_set(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Same as firestore_document_ref_set(), but merges into any existing document
 // instead of overwriting it (SetOptions::Merge()).
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_set_merge(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Same as firestore_document_ref_set_merge(), but only merges the listed
 // dotted field paths (SetOptions::MergeFields()). fields: array of string.
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_set_merge_fields(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	fields: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // data: struct of field name -> value. Fails if the document does not exist.
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_update(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_delete(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Fires once immediately with the current cached/server value, then again on
 // every subsequent change, until firestore_listener_registration_remove() is
@@ -1939,12 +1960,12 @@ function firebase_firestore_query_end_at_values(
 
 // source: a FirestoreSource value.
 // callback(error_code: real, error_message: string, snapshot_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_query_get(
 	[type_hint=`uint64`] ref: gmval,
 	source: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Fires once immediately with the current cached/server results, then again
 // on every subsequent change, until firestore_listener_registration_remove()
@@ -2012,11 +2033,11 @@ function firebase_firestore_write_batch_delete(
 ): real;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_write_batch_commit(
 	[type_hint=`uint64`] batch_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_firestore_write_batch_release(
@@ -2331,40 +2352,40 @@ function firebase_storage_ref_storage(
 ): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_delete(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, url: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_get_download_url(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, metadata_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_get_metadata(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, metadata_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_update_metadata(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`uint64`] metadata_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // metadata_ref/controller_ref: pass 0 for "not provided" - controller_ref
 // must come from storage_controller_create() if you want to pause/resume/
 // cancel or poll progress mid-transfer.
 // progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
 // callback(error_code: real, error_message: string, metadata_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_put_bytes(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=buffer] data: gmval,
@@ -2372,10 +2393,10 @@ function firebase_storage_ref_put_bytes(
 	[type_hint=`func?`] progress_callback: gmval,
 	[type_hint=`uint64`] controller_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // See storage_ref_put_bytes for metadata_ref/controller_ref/callback shapes.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_put_file(
 	[type_hint=`uint64`] ref: gmval,
 	local_path: string,
@@ -2383,40 +2404,40 @@ function firebase_storage_ref_put_file(
 	[type_hint=`func?`] progress_callback: gmval,
 	[type_hint=`uint64`] controller_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // data: a GML buffer pre-sized to the maximum number of bytes to download;
 // the SDK writes directly into it. controller_ref: pass 0 for "not
 // provided". progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
 // callback(error_code: real, error_message: string, bytes_read: real)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_get_bytes(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=buffer] data: gmval,
 	[type_hint=`func?`] progress_callback: gmval,
 	[type_hint=`uint64`] controller_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, bytes_read: real)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_get_file(
 	[type_hint=`uint64`] ref: gmval,
 	local_path: string,
 	[type_hint=`func?`] progress_callback: gmval,
 	[type_hint=`uint64`] controller_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // page_token: pass "" for the first page.
 // callback(error_code: real, error_message: string, list_result_ref: uint64)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_list(
 	[type_hint=`uint64`] ref: gmval,
 	max_results: real,
 	page_token: string,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // ---- Metadata ----
 
@@ -2700,20 +2721,20 @@ function firebase_functions_callable_is_valid(
 ): real;
 
 // callback(error_code: real, error_message: string, data: gmval)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_functions_callable_call(
 	[type_hint=`uint64`] ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // data: arbitrary GML value (real/string/bool/array/struct) sent as the
 // call's params. callback(error_code: real, error_message: string, data: gmval)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_functions_callable_call_with_data(
 	[type_hint=`uint64`] ref: gmval,
 	data: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // ============================================================
 // Remote Config
@@ -2748,20 +2769,20 @@ class `[[FirebaseRemoteConfigInfo]]` prototype Object
 function firebase_remote_config_get_instance(): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_ensure_initialized(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_set_config_settings(
 	[type_hint=`uint64`] rc_ref: gmval,
 	fetch_timeout_ms: real,
 	minimum_fetch_interval_ms: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_remote_config_get_config_settings_fetch_timeout(
@@ -2774,33 +2795,33 @@ function firebase_remote_config_get_config_settings_minimum_fetch_interval(
 ): real;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_fetch(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_fetch_with_expiration(
 	[type_hint=`uint64`] rc_ref: gmval,
 	cache_expiration_in_seconds: real,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, activated: bool)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_fetch_and_activate(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, activated: bool)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_activate(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_remote_config_get_boolean(
@@ -2842,37 +2863,37 @@ function firebase_remote_config_get_data(
 ): real;
 
 // callback(keys: array of string) - single argument, a GML array.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_get_keys_by_prefix(
 	[type_hint=`uint64`] rc_ref: gmval,
 	prefix: string,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(keys: array of string) - single argument, a GML array.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_get_keys(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(values: struct) - single argument, a GML struct with one field
 // per remote config key.
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_get_all(
 	[type_hint=`uint64`] rc_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // defaults: a GML struct {key: value, ...}; each value may be any
 // real/string/bool/array/struct GML value.
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_remote_config_set_defaults(
 	[type_hint=`uint64`] rc_ref: gmval,
 	defaults: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 [global, bind = typed_gml, type_hint=`FirebaseRemoteConfigInfo`]
 function firebase_remote_config_get_info(
@@ -2926,36 +2947,36 @@ function firebase_messaging_set_delivery_metrics_export_to_big_query(
 ): unit;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_request_permission(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string, token: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_get_token(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_delete_token(
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_subscribe(
 	topic: string,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_unsubscribe(
 	topic: string,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // Returns 1 and refreshes the current-message getters below if a message
 // was pending; 0 otherwise.
@@ -3153,49 +3174,49 @@ function firebase_ump_reset(
 
 // debug_device_ids: a GML array of strings (may be `undefined` - treated as
 // empty). callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_request_consent_info_update(
 	[type_hint=`uint64`] consent_ref: gmval,
 	debug_geography: real,
 	tag_for_under_age_of_consent: real,
 	debug_device_ids: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_load_consent_form(
 	[type_hint=`uint64`] consent_ref: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // form_parent: pass 0 to show the form over the game's own Activity (Android)
 // or root view controller (iOS); on desktop the value is unused. A non-zero
 // value is an opaque platform handle (jobject/id cast to a uint64) for callers
 // bridging their own - see GMFirebase_ump.h.
 // callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_show_consent_form(
 	[type_hint=`uint64`] consent_ref: gmval,
 	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // See ump_show_consent_form for form_parent. callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_load_and_show_consent_form_if_required(
 	[type_hint=`uint64`] consent_ref: gmval,
 	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 // See ump_show_consent_form for form_parent. callback(error_code: real, error_message: string)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_show_privacy_options_form(
 	[type_hint=`uint64`] consent_ref: gmval,
 	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
-): real;
+): gmval;
 
 
 // ============================================================
@@ -3241,42 +3262,42 @@ function firebase_auth_federated_oauth_provider_release(
 ): unit;
 
 // callback(error_code, error_message, auth_result)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_provider(
     [type_hint=`uint64`] provider: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_custom_token_result(
     custom_token: string,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_and_retrieve_data_with_credential_result(
     [type_hint=`uint64`] credential: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_anonymously_result(
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_sign_in_with_email_and_password_result(
     email: string,
     password: string,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_create_user_with_email_and_password_result(
     email: string,
     password: string,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 [global, bind = typed_gml]
 function firebase_auth_user_provider_data_count(
@@ -3290,41 +3311,41 @@ function firebase_auth_user_provider_data_at(
     index: real
 ): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_reauthenticate_with_provider(
     [type_hint=`uint64`] user: gmval,
     [type_hint=`uint64`] provider: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_link_with_provider(
     [type_hint=`uint64`] user: gmval,
     [type_hint=`uint64`] provider: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_reauthenticate_and_retrieve_data_result(
     [type_hint=`uint64`] user: gmval,
     [type_hint=`uint64`] credential: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_link_with_credential_result(
     [type_hint=`uint64`] user: gmval,
     [type_hint=`uint64`] credential: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // callback(error_code, error_message, updated_user)
-[global, bind = typed_gml]
+[global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_auth_user_update_phone_number_credential(
     [type_hint=`uint64`] user: gmval,
     [type_hint=`uint64`] phone_credential: gmval,
     [type_hint=`func?`] callback: gmval
-): unit;
+): gmval;
 
 // ---- Realtime Database ----
 [global, bind = typed_gml]
@@ -3349,16 +3370,16 @@ function firebase_database_server_timestamp(): gmval;
 
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_database_ref_on_disconnect([type_hint=`uint64`] ref: gmval): gmval;
-[global, bind = typed_gml]
-function firebase_database_on_disconnect_cancel([type_hint=`uint64`] handler: gmval, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_database_on_disconnect_remove_value([type_hint=`uint64`] handler: gmval, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_database_on_disconnect_set_value([type_hint=`uint64`] handler: gmval, value: gmval, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_database_on_disconnect_set_value_and_priority([type_hint=`uint64`] handler: gmval, value: gmval, priority: gmval, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_database_on_disconnect_update_children([type_hint=`uint64`] handler: gmval, values: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_database_on_disconnect_cancel([type_hint=`uint64`] handler: gmval, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_database_on_disconnect_remove_value([type_hint=`uint64`] handler: gmval, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_database_on_disconnect_set_value([type_hint=`uint64`] handler: gmval, value: gmval, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_database_on_disconnect_set_value_and_priority([type_hint=`uint64`] handler: gmval, value: gmval, priority: gmval, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_database_on_disconnect_update_children([type_hint=`uint64`] handler: gmval, values: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_database_on_disconnect_release([type_hint=`uint64`] handler: gmval): unit;
 
@@ -3461,8 +3482,8 @@ function firebase_firestore_aggregate_query_get_query([type_hint=`uint64`] aggre
 [global, bind = typed_gml]
 function firebase_firestore_aggregate_query_is_valid([type_hint=`uint64`] aggregate_query: gmval): bool;
 // source: AggregateSource.kServer = 0. callback(error_code,error_message,snapshot)
-[global, bind = typed_gml]
-function firebase_firestore_aggregate_query_get([type_hint=`uint64`] aggregate_query: gmval, source: real, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_aggregate_query_get([type_hint=`uint64`] aggregate_query: gmval, source: real, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_aggregate_query_release([type_hint=`uint64`] aggregate_query: gmval): unit;
 [global, bind = typed_gml]
@@ -3479,15 +3500,15 @@ function firebase_firestore_add_snapshots_in_sync_listener([type_hint=`uint64`] 
 
 // bundle is the raw Firestore bundle bytes. progress_callback(progress_struct)
 // and callback(error_code,error_message,final_progress_struct).
-[global, bind = typed_gml]
-function firebase_firestore_load_bundle([type_hint=`uint64`] firestore: gmval, [type_hint=buffer] bundle: gmval, [type_hint=`func?`] progress_callback: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_load_bundle([type_hint=`uint64`] firestore: gmval, [type_hint=buffer] bundle: gmval, [type_hint=`func?`] progress_callback: gmval, [type_hint=`func?`] callback: gmval): gmval;
 
 // callback(error_code,error_message,query_handle_or_undefined)
-[global, bind = typed_gml]
-function firebase_firestore_named_query([type_hint=`uint64`] firestore: gmval, name: string, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_named_query([type_hint=`uint64`] firestore: gmval, name: string, [type_hint=`func?`] callback: gmval): gmval;
 
-[global, bind = typed_gml]
-function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, field_paths: gmval): unit;
 
@@ -3497,8 +3518,8 @@ function firebase_storage_metadata_md5_hash([type_hint=`uint64`] metadata: gmval
 
 // ---- Remote Config ValueInfo ----
 // Scalar functions return {value, source, conversion_successful}.
-[global, bind = typed_gml]
-function firebase_remote_config_ensure_initialized_info([type_hint=`uint64`] rc_ref: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_remote_config_ensure_initialized_info([type_hint=`uint64`] rc_ref: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_remote_config_get_boolean_with_info([type_hint=`uint64`] rc_ref: gmval, key: string): gmval;
 [global, bind = typed_gml]
@@ -3574,8 +3595,8 @@ function firebase_firestore_document_ref_get_firestore([type_hint=`uint64`] docu
 [global, bind = typed_gml]
 function firebase_firestore_document_ref_to_string([type_hint=`uint64`] document: gmval): string;
 // entries = array of { field_path: FirebaseFirestoreFieldPathHandle, value: any }
-[global, bind = typed_gml]
-function firebase_firestore_document_ref_update_field_paths([type_hint=`uint64`] document: gmval, entries: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_document_ref_update_field_paths([type_hint=`uint64`] document: gmval, entries: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_write_batch_update_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, entries: gmval): real;
 [global, bind = typed_gml]
@@ -3700,12 +3721,12 @@ function firebase_installations_get_instance_handle(): gmval;
 function firebase_installations_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_installations_instance_get_app([type_hint=`uint64`] installations: gmval): gmval;
-[global, bind = typed_gml]
-function firebase_installations_instance_get_id([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_installations_instance_get_token([type_hint=`uint64`] installations: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_installations_instance_delete([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_installations_instance_get_id([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_installations_instance_get_token([type_hint=`uint64`] installations: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_installations_instance_delete([type_hint=`uint64`] installations: gmval, [type_hint=`func?`] callback: gmval): gmval;
 
 // ---- App Check explicit instance API ----
 [global, bind = typed_gml, type_hint=`uint64`]
@@ -3716,10 +3737,10 @@ function firebase_app_check_get_instance_for_app([type_hint=`uint64`] app: gmval
 function firebase_app_check_instance_get_app([type_hint=`uint64`] app_check: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_app_check_instance_set_token_auto_refresh_enabled([type_hint=`uint64`] app_check: gmval, enabled: bool): unit;
-[global, bind = typed_gml]
-function firebase_app_check_instance_get_token([type_hint=`uint64`] app_check: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): real;
-[global, bind = typed_gml]
-function firebase_app_check_instance_get_limited_use_token([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): real;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_app_check_instance_get_token([type_hint=`uint64`] app_check: gmval, force_refresh: bool, [type_hint=`func?`] callback: gmval): gmval;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_app_check_instance_get_limited_use_token([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml, type_hint=`uint64`]
 function firebase_app_check_instance_add_listener([type_hint=`uint64`] app_check: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
@@ -3771,5 +3792,5 @@ function firebase_auth_twitter_auth_provider_id(): string;
 [global, bind = typed_gml]
 function firebase_auth_yahoo_auth_provider_id(): string;
 // callback(error_code, error_message, credential_handle_or_undefined)
-[global, bind = typed_gml]
-function firebase_auth_game_center_auth_provider_get_credential_last_result([type_hint=`func?`] callback: gmval): unit;
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_auth_game_center_auth_provider_get_credential_last_result([type_hint=`func?`] callback: gmval): gmval;

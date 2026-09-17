@@ -125,7 +125,7 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_set_default_event_parameters(ch
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_analytics_log_apple_transaction(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_analytics_log_apple_transaction(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -140,7 +140,11 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_log_apple_transaction(char* __a
     }
 
     auto&& __result = firebase_analytics_log_apple_transaction(transaction_id, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_user_property(char* name, char* value)
@@ -167,7 +171,7 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_reset_analytics_data()
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -179,10 +183,14 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(char*
     }
 
     auto&& __result = firebase_analytics_get_analytics_instance_id(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_analytics_get_session_id(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_analytics_get_session_id(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -194,7 +202,11 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_get_session_id(char* __arg_buff
     }
 
     auto&& __result = firebase_analytics_get_session_id(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_termination()
@@ -260,7 +272,7 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_set_token_auto_refresh_enabled(
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_app_check_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_app_check_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -275,10 +287,14 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_get_token(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_app_check_get_token(force_refresh, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_app_check_get_limited_use_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_app_check_get_limited_use_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -290,7 +306,11 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_get_limited_use_token(char* __a
     }
 
     auto&& __result = firebase_app_check_get_limited_use_token(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_app_check_add_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -323,7 +343,7 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_remove_listener(char* __arg_buf
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_get_id(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_get_id(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -335,10 +355,14 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_get_id(char* __arg_buffer, 
     }
 
     auto&& __result = firebase_installations_get_id(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -353,10 +377,14 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_get_token(char* __arg_buffe
     }
 
     auto&& __result = firebase_installations_get_token(force_refresh, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_delete(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_delete(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -368,7 +396,11 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_delete(char* __arg_buffer, 
     }
 
     auto&& __result = firebase_installations_delete(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_auth_get_auth()
@@ -418,7 +450,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_out()
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_fetch_providers_for_email(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_fetch_providers_for_email(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -432,11 +464,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_fetch_providers_for_email(char* __ar
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_fetch_providers_for_email(email, callback);
+    auto&& __result = firebase_auth_fetch_providers_for_email(email, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -450,11 +486,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(char* __ar
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_with_custom_token(custom_token, callback);
+    auto&& __result = firebase_auth_sign_in_with_custom_token(custom_token, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_credential(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_credential(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -468,11 +508,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_credential(char* __arg_
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_with_credential(credential_ref, callback);
+    auto&& __result = firebase_auth_sign_in_with_credential(credential_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -486,11 +530,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_crede
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_and_retrieve_data_with_credential(credential_ref, callback);
+    auto&& __result = firebase_auth_sign_in_and_retrieve_data_with_credential(credential_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -501,11 +549,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously(char* __arg_buff
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_anonymously(callback);
+    auto&& __result = firebase_auth_sign_in_anonymously(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -522,11 +574,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(char
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_with_email_and_password(email, password, callback);
+    auto&& __result = firebase_auth_sign_in_with_email_and_password(email, password, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -543,11 +599,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_create_user_with_email_and_password(email, password, callback);
+    auto&& __result = firebase_auth_create_user_with_email_and_password(email, password, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_send_password_reset_email(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_send_password_reset_email(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -561,7 +621,11 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_send_password_reset_email(char* __ar
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_send_password_reset_email(email, callback);
+    auto&& __result = firebase_auth_send_password_reset_email(email, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
@@ -671,7 +735,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_facebook_auth_provider_get_credentia
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -682,7 +746,11 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_creden
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_game_center_auth_provider_get_credential(callback);
+    auto&& __result = firebase_auth_game_center_auth_provider_get_credential(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
@@ -1023,7 +1091,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_last_sign_in_timestamp(char* __
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1040,11 +1108,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_get_token(char* __arg_buffer, d
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_get_token(user_ref, force_refresh, callback);
+    auto&& __result = firebase_auth_user_get_token(user_ref, force_refresh, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_password(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_password(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1061,11 +1133,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_password(char* __arg_buf
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_update_password(user_ref, password, callback);
+    auto&& __result = firebase_auth_user_update_password(user_ref, password, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_profile(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_profile(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1085,11 +1161,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_profile(char* __arg_buff
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_update_profile(user_ref, display_name, photo_url, callback);
+    auto&& __result = firebase_auth_user_update_profile(user_ref, display_name, photo_url, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1103,11 +1183,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification(char* _
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_send_email_verification(user_ref, callback);
+    auto&& __result = firebase_auth_user_send_email_verification(user_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1124,11 +1208,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_send_email_verification_before_
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_send_email_verification_before_updating_email(user_ref, new_email, callback);
+    auto&& __result = firebase_auth_user_send_email_verification_before_updating_email(user_ref, new_email, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1145,11 +1233,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate(char* __arg_buff
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_reauthenticate(user_ref, credential_ref, callback);
+    auto&& __result = firebase_auth_user_reauthenticate(user_ref, credential_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1166,11 +1258,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_dat
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_reauthenticate_and_retrieve_data(user_ref, credential_ref, callback);
+    auto&& __result = firebase_auth_user_reauthenticate_and_retrieve_data(user_ref, credential_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1187,11 +1283,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential(char* __ar
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_link_with_credential(user_ref, credential_ref, callback);
+    auto&& __result = firebase_auth_user_link_with_credential(user_ref, credential_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_unlink(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_unlink(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1208,11 +1308,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_unlink(char* __arg_buffer, doub
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_unlink(user_ref, provider_id, callback);
+    auto&& __result = firebase_auth_user_unlink(user_ref, provider_id, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_reload(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_reload(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1226,11 +1330,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_reload(char* __arg_buffer, doub
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_reload(user_ref, callback);
+    auto&& __result = firebase_auth_user_reload(user_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_delete(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_delete(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1244,7 +1352,11 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_delete(char* __arg_buffer, doub
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_delete(user_ref, callback);
+    auto&& __result = firebase_auth_user_delete(user_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
@@ -1637,7 +1749,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(char* 
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -1652,7 +1764,11 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_get_value(char* __arg_buffer
     }
 
     auto&& __result = firebase_database_ref_get_value(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_ref_add_value_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -2040,7 +2156,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_query_is_valid(char* __arg_buffe
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_query_get_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_query_get_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2055,7 +2171,11 @@ GMEXPORT double __EXT_NATIVE__firebase_database_query_get_value(char* __arg_buff
     }
 
     auto&& __result = firebase_database_query_get_value(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_query_add_value_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -2268,7 +2388,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_go_offline(char* __arg_buffe
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2286,10 +2406,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value(char* __arg_buffer
     }
 
     auto&& __result = firebase_database_ref_set_value(ref, value, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_priority(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_priority(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2307,10 +2431,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_priority(char* __arg_buf
     }
 
     auto&& __result = firebase_database_ref_set_priority(ref, priority, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value_and_priority(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value_and_priority(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2331,10 +2459,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_value_and_priority(char*
     }
 
     auto&& __result = firebase_database_ref_set_value_and_priority(ref, value, priority, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_update_children(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_update_children(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2352,10 +2484,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_update_children(char* __arg_
     }
 
     auto&& __result = firebase_database_ref_update_children(ref, values, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_remove_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_remove_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2370,10 +2506,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_remove_value(char* __arg_buf
     }
 
     auto&& __result = firebase_database_ref_remove_value(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_ref_run_transaction(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_ref_run_transaction(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2388,7 +2528,11 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_run_transaction(char* __arg_
     }
 
     auto&& __result = firebase_database_ref_run_transaction(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_ref_release(char* __arg_buffer, double __arg_buffer_length)
@@ -2772,7 +2916,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_set_log_level(double level)
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_enable_network(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_enable_network(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2787,10 +2931,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_enable_network(char* __arg_buff
     }
 
     auto&& __result = firebase_firestore_enable_network(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_disable_network(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_disable_network(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2805,10 +2953,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_disable_network(char* __arg_buf
     }
 
     auto&& __result = firebase_firestore_disable_network(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_terminate(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_terminate(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2823,10 +2975,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_terminate(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_firestore_terminate(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_clear_persistence(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_clear_persistence(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2841,10 +2997,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_clear_persistence(char* __arg_b
     }
 
     auto&& __result = firebase_firestore_clear_persistence(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2859,10 +3019,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(char* _
     }
 
     auto&& __result = firebase_firestore_wait_for_pending_writes(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_run_transaction(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_run_transaction(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2877,7 +3041,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_run_transaction(char* __arg_buf
     }
 
     auto&& __result = firebase_firestore_run_transaction(instance_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT char* __EXT_NATIVE__firebase_firestore_collection_ref_id(char* __arg_buffer, double __arg_buffer_length)
@@ -2952,7 +3120,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_ref_document_path(ch
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_ref_add(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_ref_add(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -2970,7 +3138,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_ref_add(char* __arg_
     }
 
     auto&& __result = firebase_firestore_collection_ref_add(ref, data, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_collection_ref_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -3052,7 +3224,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_collection(char* _
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_get(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3070,10 +3242,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_get(char* __arg_bu
     }
 
     auto&& __result = firebase_firestore_document_ref_get(ref, source, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3091,10 +3267,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set(char* __arg_bu
     }
 
     auto&& __result = firebase_firestore_document_ref_set(ref, data, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3112,10 +3292,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge(char* __
     }
 
     auto&& __result = firebase_firestore_document_ref_set_merge(ref, data, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3136,10 +3320,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(c
     }
 
     auto&& __result = firebase_firestore_document_ref_set_merge_fields(ref, data, fields, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3157,10 +3345,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update(char* __arg
     }
 
     auto&& __result = firebase_firestore_document_ref_update(ref, data, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_delete(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_delete(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3175,7 +3367,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_delete(char* __arg
     }
 
     auto&& __result = firebase_firestore_document_ref_delete(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_add_snapshot_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -3636,7 +3832,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_end_at_values(char* __arg
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_query_get(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_query_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3654,7 +3850,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_get(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_firestore_query_get(ref, source, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_query_add_snapshot_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -3789,7 +3989,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_delete(char* __arg_
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_commit(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_commit(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -3804,7 +4004,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_commit(char* __arg_
     }
 
     auto&& __result = firebase_firestore_write_batch_commit(batch_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_release(char* __arg_buffer, double __arg_buffer_length)
@@ -4327,7 +4531,7 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_storage(char* __arg_buffer, d
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_delete(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_delete(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4342,10 +4546,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_delete(char* __arg_buffer, do
     }
 
     auto&& __result = firebase_storage_ref_delete(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_download_url(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_download_url(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4360,10 +4568,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_download_url(char* __arg_
     }
 
     auto&& __result = firebase_storage_ref_get_download_url(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_metadata(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_metadata(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4378,10 +4590,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_metadata(char* __arg_buff
     }
 
     auto&& __result = firebase_storage_ref_get_metadata(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_update_metadata(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_update_metadata(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4399,10 +4615,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_update_metadata(char* __arg_b
     }
 
     auto&& __result = firebase_storage_ref_update_metadata(ref, metadata_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_bytes(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_bytes(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4434,10 +4654,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_bytes(char* __arg_buffer,
     }
 
     auto&& __result = firebase_storage_ref_put_bytes(ref, data, metadata_ref, progress_callback, controller_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_file(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_file(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4468,10 +4692,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_file(char* __arg_buffer, 
     }
 
     auto&& __result = firebase_storage_ref_put_file(ref, local_path, metadata_ref, progress_callback, controller_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_bytes(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_bytes(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4500,10 +4728,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_bytes(char* __arg_buffer,
     }
 
     auto&& __result = firebase_storage_ref_get_bytes(ref, data, progress_callback, controller_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_file(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_file(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4531,10 +4763,14 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_file(char* __arg_buffer, 
     }
 
     auto&& __result = firebase_storage_ref_get_file(ref, local_path, progress_callback, controller_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_storage_ref_list(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_list(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -4555,7 +4791,11 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_list(char* __arg_buffer, doub
     }
 
     auto&& __result = firebase_storage_ref_list(ref, max_results, page_token, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_create(char* __ret_buffer, double __ret_buffer_length)
@@ -5212,7 +5452,7 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_callable_is_valid(char* __arg_b
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5227,10 +5467,14 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call(char* __arg_buffe
     }
 
     auto&& __result = firebase_functions_callable_call(ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call_with_data(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call_with_data(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5248,7 +5492,11 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_callable_call_with_data(char* _
     }
 
     auto&& __result = firebase_functions_callable_call_with_data(ref, data, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_instance(char* __ret_buffer, double __ret_buffer_length)
@@ -5261,7 +5509,7 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_instance(char* __ret_bu
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5276,10 +5524,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized(char* __
     }
 
     auto&& __result = firebase_remote_config_ensure_initialized(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_config_settings(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_config_settings(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5300,7 +5552,11 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_config_settings(char* _
     }
 
     auto&& __result = firebase_remote_config_set_config_settings(rc_ref, fetch_timeout_ms, minimum_fetch_interval_ms, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_config_settings_fetch_timeout(char* __arg_buffer, double __arg_buffer_length)
@@ -5325,7 +5581,7 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_config_settings_minimum
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5340,10 +5596,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_remote_config_fetch(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5361,10 +5621,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(char*
     }
 
     auto&& __result = firebase_remote_config_fetch_with_expiration(rc_ref, cache_expiration_in_seconds, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_and_activate(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_and_activate(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5379,10 +5643,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_fetch_and_activate(char* __
     }
 
     auto&& __result = firebase_remote_config_fetch_and_activate(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_activate(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_activate(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5397,7 +5665,11 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_activate(char* __arg_buffer
     }
 
     auto&& __result = firebase_remote_config_activate(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_boolean(char* __arg_buffer, double __arg_buffer_length)
@@ -5489,7 +5761,7 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_data(char* __arg_buffer
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5507,10 +5779,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(char* __
     }
 
     auto&& __result = firebase_remote_config_get_keys_by_prefix(rc_ref, prefix, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5525,10 +5801,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_keys(char* __arg_buffer
     }
 
     auto&& __result = firebase_remote_config_get_keys(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_all(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_all(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5543,10 +5823,14 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_all(char* __arg_buffer,
     }
 
     auto&& __result = firebase_remote_config_get_all(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_defaults(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_defaults(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5564,7 +5848,11 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_defaults(char* __arg_bu
     }
 
     auto&& __result = firebase_remote_config_set_defaults(rc_ref, defaults, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -5651,7 +5939,7 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_set_delivery_metrics_export_to_
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_messaging_request_permission(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_messaging_request_permission(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5663,10 +5951,14 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_request_permission(char* __arg_
     }
 
     auto&& __result = firebase_messaging_request_permission(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_messaging_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_messaging_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5678,10 +5970,14 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_get_token(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_messaging_get_token(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_messaging_delete_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_messaging_delete_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5693,10 +5989,14 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_delete_token(char* __arg_buffer
     }
 
     auto&& __result = firebase_messaging_delete_token(callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_messaging_subscribe(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_messaging_subscribe(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5711,10 +6011,14 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_subscribe(char* __arg_buffer, d
     }
 
     auto&& __result = firebase_messaging_subscribe(topic, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_messaging_unsubscribe(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_messaging_unsubscribe(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -5729,7 +6033,11 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_unsubscribe(char* __arg_buffer,
     }
 
     auto&& __result = firebase_messaging_unsubscribe(topic, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_message()
@@ -6051,7 +6359,7 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_reset(char* __arg_buffer, double __ar
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6075,10 +6383,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __a
     }
 
     auto&& __result = firebase_ump_request_consent_info_update(consent_ref, debug_geography, tag_for_under_age_of_consent, debug_device_ids, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_load_consent_form(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_load_consent_form(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6093,10 +6405,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_load_consent_form(char* __arg_buffer,
     }
 
     auto&& __result = firebase_ump_load_consent_form(consent_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_show_consent_form(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_show_consent_form(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6114,10 +6430,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_show_consent_form(char* __arg_buffer,
     }
 
     auto&& __result = firebase_ump_show_consent_form(consent_ref, form_parent, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6135,10 +6455,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_require
     }
 
     auto&& __result = firebase_ump_load_and_show_consent_form_if_required(consent_ref, form_parent, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_ump_show_privacy_options_form(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_ump_show_privacy_options_form(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6156,7 +6480,11 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_show_privacy_options_form(char* __arg
     }
 
     auto&& __result = firebase_ump_show_privacy_options_form(consent_ref, form_parent, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(double state)
@@ -6241,7 +6569,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_federated_oauth_provider_release(cha
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_provider(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_provider(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6255,11 +6583,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_provider(char* __arg_bu
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_with_provider(provider, callback);
+    auto&& __result = firebase_auth_sign_in_with_provider(provider, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6273,11 +6605,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(cha
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_with_custom_token_result(custom_token, callback);
+    auto&& __result = firebase_auth_sign_in_with_custom_token_result(custom_token, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6291,11 +6627,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_crede
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_and_retrieve_data_with_credential_result(credential, callback);
+    auto&& __result = firebase_auth_sign_in_and_retrieve_data_with_credential_result(credential, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6306,32 +6646,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(char* __a
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_sign_in_anonymously_result(callback);
+    auto&& __result = firebase_auth_sign_in_anonymously_result(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(char* __arg_buffer, double __arg_buffer_length)
-{
-    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
-
-    // field: email, type: String
-    std::string_view email = gm::wire::codec::readValue<std::string_view>(__br);
-
-    // field: password, type: String
-    std::string_view password = gm::wire::codec::readValue<std::string_view>(__br);
-
-    // field: callback, type: optional<Function>
-    std::optional<gm::wire::GMFunction> callback = std::nullopt;
-    if (gm::wire::codec::readValue<bool>(__br))
-    {
-        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
-    }
-
-    firebase_auth_sign_in_with_email_and_password_result(email, password, callback);
-    return 0;
-}
-
-GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6348,7 +6671,36 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_create_user_with_email_and_password_result(email, password, callback);
+    auto&& __result = firebase_auth_sign_in_with_email_and_password_result(email, password, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: email, type: String
+    std::string_view email = gm::wire::codec::readValue<std::string_view>(__br);
+
+    // field: password, type: String
+    std::string_view password = gm::wire::codec::readValue<std::string_view>(__br);
+
+    // field: callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
+    auto&& __result = firebase_auth_create_user_with_email_and_password_result(email, password, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
@@ -6381,7 +6733,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_provider_data_at(char* __arg_bu
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6398,11 +6750,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(ch
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_reauthenticate_with_provider(user, provider, callback);
+    auto&& __result = firebase_auth_user_reauthenticate_with_provider(user, provider, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_provider(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_provider(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6419,11 +6775,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_provider(char* __arg_
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_link_with_provider(user, provider, callback);
+    auto&& __result = firebase_auth_user_link_with_provider(user, provider, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6440,11 +6800,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_dat
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_reauthenticate_and_retrieve_data_result(user, credential, callback);
+    auto&& __result = firebase_auth_user_reauthenticate_and_retrieve_data_result(user, credential, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6461,11 +6825,15 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_link_with_credential_result(cha
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_link_with_credential_result(user, credential, callback);
+    auto&& __result = firebase_auth_user_link_with_credential_result(user, credential, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6482,7 +6850,11 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_user_update_phone_number_credential(user, phone_credential, callback);
+    auto&& __result = firebase_auth_user_update_phone_number_credential(user, phone_credential, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 
@@ -6602,7 +6974,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_on_disconnect(char* __arg_bu
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_cancel(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_cancel(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6617,10 +6989,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_cancel(char* __arg
     }
 
     auto&& __result = firebase_database_on_disconnect_cancel(handler, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_remove_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_remove_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6635,10 +7011,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_remove_value(char*
     }
 
     auto&& __result = firebase_database_on_disconnect_remove_value(handler, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6656,10 +7036,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value(char* __
     }
 
     auto&& __result = firebase_database_on_disconnect_set_value(handler, value, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6680,10 +7064,14 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_prio
     }
 
     auto&& __result = firebase_database_on_disconnect_set_value_and_priority(handler, value, priority, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_update_children(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_update_children(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -6701,7 +7089,11 @@ GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_update_children(ch
     }
 
     auto&& __result = firebase_database_on_disconnect_update_children(handler, values, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_on_disconnect_release(char* __arg_buffer, double __arg_buffer_length)
@@ -7369,7 +7761,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_is_valid(char* 
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_get(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7387,7 +7779,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_get(char* __arg
     }
 
     auto&& __result = firebase_firestore_aggregate_query_get(aggregate_query, source, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_aggregate_query_release(char* __arg_buffer, double __arg_buffer_length)
@@ -7471,7 +7867,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_add_snapshots_in_sync_listener(
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_load_bundle(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_load_bundle(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7497,10 +7893,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_load_bundle(char* __arg_buffer,
     }
 
     auto&& __result = firebase_firestore_load_bundle(firestore, bundle, progress_callback, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_named_query(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_named_query(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7518,10 +7918,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_named_query(char* __arg_buffer,
     }
 
     auto&& __result = firebase_firestore_named_query(firestore, name, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7542,7 +7946,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_pa
     }
 
     auto&& __result = firebase_firestore_document_ref_set_merge_field_paths(document, data, field_paths, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_set_merge_field_paths(char* __arg_buffer, double __arg_buffer_length)
@@ -7577,7 +7985,7 @@ GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_md5_hash(char* __arg_buff
     return (char*)__result.c_str();
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -7592,7 +8000,11 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(cha
     }
 
     auto&& __result = firebase_remote_config_ensure_initialized_info(rc_ref, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_boolean_with_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -8038,7 +8450,7 @@ GMEXPORT char* __EXT_NATIVE__firebase_firestore_document_ref_to_string(char* __a
     return (char*)__result.c_str();
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8056,7 +8468,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths
     }
 
     auto&& __result = firebase_firestore_document_ref_update_field_paths(document, entries, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_update_field_paths(char* __arg_buffer, double __arg_buffer_length)
@@ -8741,7 +9157,7 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_app(char* __ar
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_id(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_id(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8756,10 +9172,14 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_id(char* __arg
     }
 
     auto&& __result = firebase_installations_instance_get_id(installations, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8777,10 +9197,14 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_instance_get_token(char* __
     }
 
     auto&& __result = firebase_installations_instance_get_token(installations, force_refresh, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_installations_instance_delete(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_installations_instance_delete(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8795,7 +9219,11 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_instance_delete(char* __arg
     }
 
     auto&& __result = firebase_installations_instance_delete(installations, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_app_check_get_instance_handle(char* __ret_buffer, double __ret_buffer_length)
@@ -8852,7 +9280,7 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_set_token_auto_refresh
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8870,10 +9298,14 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_token(char* __arg_
     }
 
     auto&& __result = firebase_app_check_instance_get_token(app_check, force_refresh, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8888,7 +9320,11 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(
     }
 
     auto&& __result = firebase_app_check_instance_get_limited_use_token(app_check, callback);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_app_check_instance_add_listener(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -9111,7 +9547,7 @@ GMEXPORT char* __EXT_NATIVE__firebase_auth_yahoo_auth_provider_id()
     return (char*)__result.c_str();
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -9122,7 +9558,11 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_creden
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    firebase_auth_game_center_auth_provider_get_credential_last_result(callback);
+    auto&& __result = firebase_auth_game_center_auth_provider_get_credential_last_result(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
 

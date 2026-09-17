@@ -528,7 +528,7 @@ double firebase_app_initialize()
 	fprintf(stderr, "[GMFirebase] firebase_app_initialize() getFirebaseApp() returned %p\n", (void*)app);
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_app_initialize: failed to create firebase::App");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: failed to create firebase::App");
 		return 0.0;
 	}
 	return 1.0;
@@ -644,7 +644,7 @@ uint64_t firebase_app_initialize_with_options(const gm::wire::GMValue& options_v
     }
 #else
     firebase::App* app = n.empty() ? firebase::App::Create(options) : firebase::App::Create(options, n.c_str());
-    if (!app) { setFirebaseLastError(-1, "firebase_app_initialize_with_options: Firebase App::Create returned null"); return 0; }
+    if (!app) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize_with_options: Firebase App::Create returned null"); return 0; }
 #endif
 
     if (n.empty() || n == firebase::kDefaultAppName) g_firebase_app = app;
@@ -657,7 +657,7 @@ uint64_t firebase_app_initialize_from_json(std::string_view json_config, std::st
     firebase::AppOptions options;
     if (!firebase::AppOptions::LoadFromJsonConfig(json.c_str(), &options))
     {
-        setFirebaseLastError(-1, "firebase_app_initialize_from_json: invalid Firebase JSON configuration");
+        setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_app_initialize_from_json: invalid Firebase JSON configuration");
         return 0;
     }
 
@@ -682,7 +682,7 @@ uint64_t firebase_app_initialize_from_json(std::string_view json_config, std::st
     }
 #else
     firebase::App* app = n.empty() ? firebase::App::Create(options) : firebase::App::Create(options, n.c_str());
-    if (!app) { setFirebaseLastError(-1, "firebase_app_initialize_from_json: Firebase App::Create returned null"); return 0; }
+    if (!app) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize_from_json: Firebase App::Create returned null"); return 0; }
 #endif
 
     if (n.empty() || n == firebase::kDefaultAppName) g_firebase_app = app;

@@ -68,9 +68,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_analytics_set_default_event_parameters(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_analytics_log_apple_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_analytics_log_apple_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_analytics_log_apple_transaction(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_analytics_log_apple_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_analytics_set_user_property(String name, String value)
     {
@@ -88,13 +88,13 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_analytics_reset_analytics_data();
     }
-    public double __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_analytics_get_analytics_instance_id(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_analytics_get_analytics_instance_id(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_analytics_get_analytics_instance_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_analytics_get_session_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_analytics_get_session_id(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_analytics_get_session_id(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_analytics_get_session_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_termination()
     {
@@ -132,13 +132,13 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_check_set_token_auto_refresh_enabled(enabled);
     }
-    public double __EXT_NATIVE__firebase_app_check_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_app_check_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_app_check_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_app_check_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_app_check_get_limited_use_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_app_check_get_limited_use_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_app_check_get_limited_use_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_app_check_get_limited_use_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_app_check_add_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -148,17 +148,17 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_check_remove_listener(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_get_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_get_id(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_get_id(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_get_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_delete(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_delete(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_delete(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_auth_get_auth()
     {
@@ -188,37 +188,37 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_sign_out();
     }
-    public double __EXT_NATIVE__firebase_auth_fetch_providers_for_email(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_fetch_providers_for_email(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_fetch_providers_for_email(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_fetch_providers_for_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_custom_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_custom_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_credential(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_anonymously(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_anonymously(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_anonymously(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_anonymously(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_email_and_password(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_email_and_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_create_user_with_email_and_password(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_create_user_with_email_and_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_send_password_reset_email(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_send_password_reset_email(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_send_password_reset_email(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_send_password_reset_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_auth_add_state_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -256,9 +256,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_facebook_auth_provider_get_credential(access_token, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_game_center_auth_provider_get_credential(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_game_center_auth_provider_get_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_auth_game_center_auth_provider_is_player_authenticated()
     {
@@ -360,49 +360,49 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_user_last_sign_in_timestamp(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_update_password(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_update_password(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_update_password(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_update_password(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_update_profile(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_update_profile(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_update_profile(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_update_profile(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_send_email_verification(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_send_email_verification(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_send_email_verification(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_send_email_verification(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_send_email_verification_before_updating_email(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_send_email_verification_before_updating_email(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_reauthenticate(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_reauthenticate(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_reauthenticate(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_reauthenticate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_link_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_link_with_credential(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_link_with_credential(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_link_with_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_unlink(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_unlink(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_unlink(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_unlink(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_reload(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_reload(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_reload(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_reload(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_delete(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_delete(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_delete(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_database_get_instance(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -504,9 +504,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_ref_set_keep_synchronized(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_get_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_database_ref_add_value_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -592,9 +592,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_query_is_valid(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_query_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_query_get_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_query_get_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_query_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_database_query_add_value_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -644,29 +644,29 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_ref_go_offline(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_set_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_set_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_set_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_set_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_set_priority(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_set_priority(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_set_priority(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_set_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_set_value_and_priority(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_set_value_and_priority(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_set_value_and_priority(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_set_value_and_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_update_children(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_update_children(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_update_children(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_update_children(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_remove_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_remove_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_remove_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_remove_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_ref_run_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_ref_run_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_ref_run_transaction(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_ref_run_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_database_ref_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -784,29 +784,29 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_set_log_level(level);
     }
-    public double __EXT_NATIVE__firebase_firestore_enable_network(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_enable_network(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_enable_network(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_enable_network(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_disable_network(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_disable_network(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_disable_network(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_disable_network(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_terminate(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_terminate(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_terminate(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_terminate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_clear_persistence(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_clear_persistence(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_clear_persistence(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_clear_persistence(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_wait_for_pending_writes(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_wait_for_pending_writes(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_wait_for_pending_writes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_run_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_run_transaction(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_run_transaction(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_run_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public String __EXT_NATIVE__firebase_firestore_collection_ref_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -828,9 +828,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_collection_ref_document_path(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_collection_ref_add(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_collection_ref_add(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_collection_ref_add(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_collection_ref_add(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_collection_ref_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -856,29 +856,29 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_document_ref_collection(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_get(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_get(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_get(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_set(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_set(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_set(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_set(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_set_merge(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_set_merge(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_set_merge_fields(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_set_merge_fields(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_update(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_update(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_update(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_update(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_delete(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_delete(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_delete(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_document_ref_add_snapshot_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -976,9 +976,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_query_end_at_values(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_query_get(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_query_get(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_query_get(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_query_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_query_add_snapshot_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -1012,9 +1012,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_write_batch_delete(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_write_batch_commit(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_write_batch_commit(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_write_batch_commit(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_write_batch_commit(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_write_batch_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1192,41 +1192,41 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_storage_ref_storage(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_delete(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_delete(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_delete(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_get_download_url(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_get_download_url(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_get_download_url(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_get_download_url(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_get_metadata(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_get_metadata(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_get_metadata(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_get_metadata(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_update_metadata(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_update_metadata(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_update_metadata(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_update_metadata(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_put_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_put_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_put_bytes(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_put_bytes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_put_file(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_put_file(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_put_file(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_put_file(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_get_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_get_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_get_bytes(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_get_bytes(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_get_file(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_get_file(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_get_file(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_get_file(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_storage_ref_list(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_storage_ref_list(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_storage_ref_list(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_storage_ref_list(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_storage_metadata_create(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -1432,25 +1432,25 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_functions_callable_is_valid(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_functions_callable_call(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_functions_callable_call(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_functions_callable_call(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_functions_callable_call_with_data(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_functions_callable_call_with_data(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_functions_callable_call_with_data(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_functions_callable_call_with_data(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_instance(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
         return __EXT_JNI__firebase_remote_config_get_instance(__ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_ensure_initialized(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_ensure_initialized(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_ensure_initialized(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_ensure_initialized(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_set_config_settings(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_set_config_settings(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_set_config_settings(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_set_config_settings(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_config_settings_fetch_timeout(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1460,21 +1460,21 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_remote_config_get_config_settings_minimum_fetch_interval(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_fetch(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_fetch(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_fetch(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_fetch(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_fetch_with_expiration(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_fetch_with_expiration(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_fetch_with_expiration(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_fetch_and_activate(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_fetch_and_activate(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_fetch_and_activate(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_fetch_and_activate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_activate(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_activate(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_activate(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_activate(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_boolean(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1500,21 +1500,21 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_remote_config_get_data(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_get_keys_by_prefix(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_get_keys_by_prefix(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_get_keys(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_get_keys(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_get_keys(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_get_keys(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_get_all(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_get_all(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_get_all(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_get_all(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_set_defaults(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_set_defaults(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -1552,25 +1552,25 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_messaging_set_delivery_metrics_export_to_big_query(enabled);
     }
-    public double __EXT_NATIVE__firebase_messaging_request_permission(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_messaging_request_permission(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_messaging_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_messaging_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_messaging_delete_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_messaging_delete_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_messaging_delete_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_messaging_delete_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_messaging_subscribe(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_messaging_subscribe(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_messaging_subscribe(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_messaging_subscribe(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_messaging_unsubscribe(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_messaging_unsubscribe(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_messaging_unsubscribe(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_messaging_unsubscribe(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_messaging_poll_message()
     {
@@ -1744,25 +1744,25 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_ump_reset(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_request_consent_info_update(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_request_consent_info_update(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_request_consent_info_update(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_request_consent_info_update(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_load_consent_form(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_load_consent_form(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_load_consent_form(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_load_consent_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_show_consent_form(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_show_consent_form(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_show_consent_form(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_show_consent_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_load_and_show_consent_form_if_required(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_load_and_show_consent_form_if_required(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_ump_show_privacy_options_form(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_ump_show_privacy_options_form(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(double state)
     {
@@ -1788,29 +1788,29 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_federated_oauth_provider_release(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_provider(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_custom_token_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_custom_token_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_anonymously_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_anonymously_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_anonymously_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_sign_in_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_sign_in_with_email_and_password_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_create_user_with_email_and_password_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_create_user_with_email_and_password_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_auth_user_provider_data_count(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1820,25 +1820,25 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_user_provider_data_at(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_reauthenticate_with_provider(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_reauthenticate_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_link_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_link_with_provider(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_link_with_provider(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_link_with_provider(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_link_with_credential_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_link_with_credential_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_link_with_credential_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_link_with_credential_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_user_update_phone_number_credential(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_user_update_phone_number_credential(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_user_update_phone_number_credential(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public String __EXT_NATIVE__firebase_database_ref_key(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -1876,25 +1876,25 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_database_ref_on_disconnect(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_on_disconnect_cancel(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_on_disconnect_cancel(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_on_disconnect_cancel(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_on_disconnect_cancel(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_on_disconnect_remove_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_on_disconnect_remove_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_on_disconnect_remove_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_on_disconnect_remove_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_on_disconnect_set_value(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_on_disconnect_set_value(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_on_disconnect_set_value(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_on_disconnect_set_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_on_disconnect_set_value_and_priority(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_on_disconnect_set_value_and_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_database_on_disconnect_update_children(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_database_on_disconnect_update_children(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_database_on_disconnect_update_children(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_database_on_disconnect_update_children(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_database_on_disconnect_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2072,9 +2072,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_aggregate_query_is_valid(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_aggregate_query_get(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_aggregate_query_get(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_aggregate_query_get(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_aggregate_query_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_aggregate_query_release(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2100,17 +2100,17 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_add_snapshots_in_sync_listener(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_load_bundle(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_load_bundle(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_load_bundle(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_load_bundle(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_named_query(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_named_query(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_named_query(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_named_query(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_set_merge_field_paths(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_set_merge_field_paths(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_write_batch_set_merge_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2120,9 +2120,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_storage_metadata_md5_hash(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_remote_config_ensure_initialized_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_remote_config_ensure_initialized_info(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_remote_config_ensure_initialized_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_remote_config_get_boolean_with_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -2260,9 +2260,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_document_ref_to_string(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_document_ref_update_field_paths(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_document_ref_update_field_paths(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_write_batch_update_field_paths(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2476,17 +2476,17 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_installations_instance_get_app(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_instance_get_id(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_instance_get_id(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_instance_get_id(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_instance_get_id(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_instance_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_instance_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_instance_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_instance_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_installations_instance_delete(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_installations_instance_delete(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_installations_instance_delete(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_installations_instance_delete(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_app_check_get_instance_handle(ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -2504,13 +2504,13 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_app_check_instance_set_token_auto_refresh_enabled(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_app_check_instance_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_app_check_instance_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_app_check_instance_get_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_app_check_instance_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_app_check_instance_get_limited_use_token(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_app_check_instance_get_limited_use_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_app_check_instance_add_listener(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
@@ -2600,8 +2600,8 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_auth_yahoo_auth_provider_id();
     }
-    public double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_auth_game_center_auth_provider_get_credential_last_result(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_auth_game_center_auth_provider_get_credential_last_result(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
 }

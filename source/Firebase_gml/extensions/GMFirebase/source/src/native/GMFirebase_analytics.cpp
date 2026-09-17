@@ -25,7 +25,7 @@ namespace
 	bool analyticsReady(const char* function)
 	{
 		if (g_analytics_initialized) return true;
-		setFirebaseLastError(-1, std::string(function) + ": call firebase_analytics_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, std::string(function) + ": call firebase_analytics_initialize() first");
 		return false;
 	}
 
@@ -93,7 +93,7 @@ double firebase_analytics_initialize()
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
-		setFirebaseLastError(-1, "firebase_analytics_initialize: no firebase::App - call firebase_app_initialize() first");
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_analytics_initialize: no firebase::App - call firebase_app_initialize() first");
 		return 0.0;
 	}
 
@@ -184,14 +184,10 @@ void firebase_analytics_set_default_event_parameters(const gm::wire::GMValue& pa
 	firebase::analytics::SetDefaultEventParameters(parameters);
 }
 
-double firebase_analytics_log_apple_transaction(std::string_view transaction_id, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_analytics_log_apple_transaction(std::string_view transaction_id, const std::optional<gm::wire::GMFunction>& callback)
 {
 	if (!analyticsReady("firebase_analytics_log_apple_transaction"))
-	{
-		if (callback.has_value())
-			callback->call(-1.0, firebase_last_error_message());
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::Future<void> future = firebase::analytics::LogAppleTransaction(std::string(transaction_id).c_str());
 	future.OnCompletion([callback](const firebase::Future<void>& f)
@@ -202,7 +198,7 @@ double firebase_analytics_log_apple_transaction(std::string_view transaction_id,
 		if (callback.has_value())
 			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // ============================================================
@@ -253,14 +249,10 @@ void firebase_analytics_reset_analytics_data()
 // Async getters
 // ============================================================
 
-double firebase_analytics_get_analytics_instance_id(const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_analytics_get_analytics_instance_id(const std::optional<gm::wire::GMFunction>& callback)
 {
 	if (!analyticsReady("firebase_analytics_get_analytics_instance_id"))
-	{
-		if (callback.has_value())
-			callback->call(-1.0, firebase_last_error_message(), std::string_view{});
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::Future<std::string> future = firebase::analytics::GetAnalyticsInstanceId();
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
@@ -274,17 +266,13 @@ double firebase_analytics_get_analytics_instance_id(const std::optional<gm::wire
 		std::string_view id = (f.error() == 0 && f.result() != nullptr) ? std::string_view{ *f.result() } : std::string_view{};
 		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, id);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
-double firebase_analytics_get_session_id(const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_analytics_get_session_id(const std::optional<gm::wire::GMFunction>& callback)
 {
 	if (!analyticsReady("firebase_analytics_get_session_id"))
-	{
-		if (callback.has_value())
-			callback->call(-1.0, firebase_last_error_message(), 0.0);
-		return 0.0;
-	}
+		return FirebaseError::NotInitialized;
 
 	firebase::Future<int64_t> future = firebase::analytics::GetSessionId();
 	future.OnCompletion([callback](const firebase::Future<int64_t>& f)
@@ -298,7 +286,7 @@ double firebase_analytics_get_session_id(const std::optional<gm::wire::GMFunctio
 		double session_id = (f.error() == 0 && f.result() != nullptr) ? static_cast<double>(*f.result()) : 0.0;
 		callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, session_id);
 	});
-	return 1.0;
+	return FirebaseError::Ok;
 }
 
 // ============================================================

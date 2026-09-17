@@ -47,6 +47,33 @@ double firebase_last_error_code();
 std::string firebase_last_error_message();
 
 // ============================================================
+// Extension-originated error codes
+// ============================================================
+
+// Everything the extension reports on its own behalf - a handle that does not
+// resolve, a module used before its initialize, a GML argument the SDK would
+// reject, a platform that cannot do the call - uses these. They are the
+// integer twins of gm_enums::FirebaseError, which is what every asynchronous
+// entry point returns instead of touching its callback when the call never
+// reached the SDK; the static_asserts keep the two in step. Every SDK error
+// enum is zero or positive except the two Unimplemented values at -1, so
+// nothing in this band can be read as an SDK result by mistake.
+#define GM_FB_ERROR_INVALID_HANDLE (-1000)
+#define GM_FB_ERROR_NOT_INITIALIZED (-1001)
+#define GM_FB_ERROR_INVALID_ARGUMENT (-1002)
+#define GM_FB_ERROR_UNSUPPORTED (-1003)
+
+static_assert(static_cast<int>(gm_enums::FirebaseError::InvalidHandle) == GM_FB_ERROR_INVALID_HANDLE, "FirebaseError.InvalidHandle drifted from GM_FB_ERROR_INVALID_HANDLE");
+static_assert(static_cast<int>(gm_enums::FirebaseError::NotInitialized) == GM_FB_ERROR_NOT_INITIALIZED, "FirebaseError.NotInitialized drifted from GM_FB_ERROR_NOT_INITIALIZED");
+static_assert(static_cast<int>(gm_enums::FirebaseError::InvalidArgument) == GM_FB_ERROR_INVALID_ARGUMENT, "FirebaseError.InvalidArgument drifted from GM_FB_ERROR_INVALID_ARGUMENT");
+static_assert(static_cast<int>(gm_enums::FirebaseError::Unsupported) == GM_FB_ERROR_UNSUPPORTED, "FirebaseError.Unsupported drifted from GM_FB_ERROR_UNSUPPORTED");
+
+// The one InitResult failure the SDK defines is a missing dependency - Google
+// Play services on Android. Name it in the message rather than storing the raw
+// InitResult as the code, where 1 reads as kAuthErrorFailure.
+std::string firebaseInitResultMessage(const char* what, firebase::InitResult result);
+
+// ============================================================
 // Reference Layout
 // ============================================================
 
@@ -184,7 +211,7 @@ gm::wire::StructStream makeFirebaseAuthResultStruct(const firebase::auth::AuthRe
 // every call site already checks for that sentinel before touching the handle.
 #define gm_fb_ref_reject(output, sentinel) \
 	{ \
-		setFirebaseLastError(-1, "invalid handle"); \
+		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle"); \
 		output = (sentinel); \
 	}
 
@@ -229,6 +256,23 @@ extern std::mutex g_firebase_value_registry_mutex;
 		} \
 		if (output == nullptr) gm_fb_ref_reject(output, nullptr) \
 	}
+
+// Future<T>::OnCompletion() is a silent no-op on an invalid Future, and the SDK
+// hands one back instead of failing when a User is no longer signed in (every
+// User method, all three platforms) or a Database, Storage or Functions
+// reference is invalid (a bad URL, a stale handler). Check before attaching:
+// false has already recorded the last error, and the caller returns
+// FirebaseError::InvalidHandle without touching its callback, the same as any
+// other failure that never reached the SDK.
+template <typename T>
+inline bool firebaseFutureArmed(const firebase::Future<T>& future, const char* function)
+{
+	if (future.status() != firebase::kFutureStatusInvalid)
+		return true;
+
+	setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, std::string(function) + ": the underlying object is not valid (user signed out, or an invalid reference)");
+	return false;
+}
 
 // ============================================================
 // Generic value-copy registry helpers

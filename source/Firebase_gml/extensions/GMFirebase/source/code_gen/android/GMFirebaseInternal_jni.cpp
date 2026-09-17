@@ -20,6 +20,12 @@ static jmethodID g_mid_GetExtensionOption = nullptr;
 extern "C" jint JNI_OnLoad(JavaVM* vm, void*) { g_vm = vm; return JNI_VERSION_1_6; }
 
 static void throwIAE(JNIEnv* env, const char* msg) {
+    // FindClass aborts the process outright if an exception is already pending,
+    // so log and clear whatever is in flight before raising our own.
+    if (env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
     jclass iae = env->FindClass("java/lang/IllegalArgumentException");
     if (iae) env->ThrowNew(iae, msg);
 }
@@ -65,7 +71,7 @@ static const char* __JNI_JAVA__GetExtensionOption(const char* extName, const cha
     tls_result.clear();
 
     ScopedEnv scoped;
-    if (!g_bridgeClass || !g_mid_GetExtensionOption) {
+    if (!scoped.env || !g_bridgeClass || !g_mid_GetExtensionOption) {
         return nullptr;
     }
 
@@ -254,8 +260,8 @@ static jdouble __JNI_WRAPPER__firebase_analytics_set_default_event_parameters_B1
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_analytics_log_apple_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_analytics_log_apple_transaction_0FFC6D026386(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_analytics_log_apple_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_analytics_log_apple_transaction_84916953D647(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -263,7 +269,13 @@ static jdouble __JNI_WRAPPER__firebase_analytics_log_apple_transaction_0FFC6D026
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_analytics_log_apple_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_analytics_log_apple_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -298,8 +310,8 @@ static jdouble __JNI_WRAPPER__firebase_analytics_reset_analytics_data_DEB605C9CA
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_analytics_get_analytics_instance_id JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_analytics_get_analytics_instance_id_AA1EC9E83398(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_analytics_get_analytics_instance_id JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_analytics_get_analytics_instance_id_0A020A9BC0E3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -307,12 +319,18 @@ static jdouble __JNI_WRAPPER__firebase_analytics_get_analytics_instance_id_AA1EC
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_analytics_get_analytics_instance_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_analytics_get_analytics_instance_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_analytics_get_session_id JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_analytics_get_session_id_A4AB942D602C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_analytics_get_session_id JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_analytics_get_session_id_56BBCA91ABD6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -320,7 +338,13 @@ static jdouble __JNI_WRAPPER__firebase_analytics_get_session_id_A4AB942D602C(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_analytics_get_session_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_analytics_get_session_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -396,8 +420,8 @@ static jdouble __JNI_WRAPPER__firebase_app_check_set_token_auto_refresh_enabled_
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_app_check_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_app_check_get_token_1444DEB81766(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_app_check_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_app_check_get_token_3AC673903C92(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -405,12 +429,18 @@ static jdouble __JNI_WRAPPER__firebase_app_check_get_token_1444DEB81766(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_app_check_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_app_check_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_app_check_get_limited_use_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_app_check_get_limited_use_token_E61CC96B15A2(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_app_check_get_limited_use_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_app_check_get_limited_use_token_903C8833E67B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -418,7 +448,13 @@ static jdouble __JNI_WRAPPER__firebase_app_check_get_limited_use_token_E61CC96B1
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_app_check_get_limited_use_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_app_check_get_limited_use_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -454,8 +490,8 @@ static jdouble __JNI_WRAPPER__firebase_app_check_remove_listener_AE6FF45417E3(JN
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_get_id JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_get_id_D476421F026B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_get_id JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_get_id_7ED70480CF5A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -463,12 +499,18 @@ static jdouble __JNI_WRAPPER__firebase_installations_get_id_D476421F026B(JNIEnv*
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_get_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_get_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_get_token_E465C5E9A920(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_get_token_20D74684C02B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -476,12 +518,18 @@ static jdouble __JNI_WRAPPER__firebase_installations_get_token_E465C5E9A920(JNIE
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_delete_ECD2B16D403F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_delete_05CE1BD8672D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -489,7 +537,13 @@ static jdouble __JNI_WRAPPER__firebase_installations_delete_ECD2B16D403F(JNIEnv*
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -551,8 +605,8 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_out_F5E40F27DD06(JNIEnv* /* env
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_fetch_providers_for_email JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_fetch_providers_for_email_1F4ED31C1680(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_fetch_providers_for_email JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_fetch_providers_for_email_441DF77D14C8(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -560,12 +614,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_fetch_providers_for_email_1F4ED31C16
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_fetch_providers_for_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_fetch_providers_for_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_custom_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_AC142E0F09D2(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_custom_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_82F147DEE528(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -573,12 +633,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_AC142E0F09
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_custom_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_custom_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_credential_7213EC016E6B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_credential_C1AEC3B079DA(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -586,12 +652,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_credential_7213EC016E6B
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_and_retrieve_data_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_5FAB6247162B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_and_retrieve_data_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_A54D5202BD82(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -599,12 +671,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_crede
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_anonymously JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_5F2B6520C27D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_anonymously JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_024B7AABE3BE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -612,12 +690,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_5F2B6520C27D(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_anonymously((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_anonymously((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_email_and_password JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_70B1E9AB8379(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_email_and_password JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_ED0F113DA298(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -625,12 +709,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_70B1
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_create_user_with_email_and_password JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_4C124CA61074(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_create_user_with_email_and_password JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_4728E4E87055(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -638,12 +728,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_create_user_with_email_and_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_create_user_with_email_and_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_send_password_reset_email JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_send_password_reset_email_944C25B02D40(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_send_password_reset_email JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_send_password_reset_email_1D38E3218DF1(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -651,7 +747,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_send_password_reset_email_944C25B02D
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_send_password_reset_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_send_password_reset_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -788,8 +890,8 @@ static jdouble __JNI_WRAPPER__firebase_auth_facebook_auth_provider_get_credentia
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_game_center_auth_provider_get_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_B53F602C5817(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_game_center_auth_provider_get_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_48C59931012F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -797,7 +899,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_creden
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -1159,8 +1267,8 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_last_sign_in_timestamp_8CA53566
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_get_token_19C43586C996(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_get_token_E73D5F782264(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1168,12 +1276,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_get_token_19C43586C996(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_update_password JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_update_password_2E5CB54C946F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_update_password JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_update_password_E7C385B59B28(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1181,12 +1295,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_update_password_2E5CB54C946F(JN
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_update_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_update_password((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_update_profile JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_update_profile_C93B748EBA2E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_update_profile JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_update_profile_1C757AB87CDD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1194,12 +1314,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_update_profile_C93B748EBA2E(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_update_profile((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_update_profile((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_send_email_verification JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_DAF52215E524(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_send_email_verification JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_CF56B64D267A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1207,12 +1333,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_DAF5221
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_send_email_verification((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_send_email_verification((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_send_email_verification_before_updating_email JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_before_updating_email_4EA2DB356B53(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_send_email_verification_before_updating_email JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_before_updating_email_555E6CCD55F2(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1220,12 +1352,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_send_email_verification_before_
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_send_email_verification_before_updating_email((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_reauthenticate JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_935CAB1306B5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_reauthenticate JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_AB5C354D3B3B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1233,12 +1371,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_935CAB1306B5(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_reauthenticate_and_retrieve_data JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_2EFCC1F1F55C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_reauthenticate_and_retrieve_data JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_8687F5430758(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1246,12 +1390,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_dat
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_link_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_3FDD85A29A0F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_link_with_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_D2EC3B41E87A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1259,12 +1409,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_3FDD85A29A
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_unlink JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_unlink_D733545CC0E4(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_unlink JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_unlink_2C394FBF544B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1272,12 +1428,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_unlink_D733545CC0E4(JNIEnv* env
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_unlink((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_unlink((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_reload JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_reload_C74A3B321B84(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_reload JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_reload_57B90BC2B4C6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1285,12 +1447,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_reload_C74A3B321B84(JNIEnv* env
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_reload((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_reload((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_delete_865FB55F0884(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_delete_65CAABC91671(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1298,7 +1466,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_delete_865FB55F0884(JNIEnv* env
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -1725,8 +1899,8 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_set_keep_synchronized_3D299E
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_get_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_get_value_39C07FC7E58F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_get_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_get_value_775629E0BC5F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -1734,7 +1908,13 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_get_value_39C07FC7E58F(JNIEn
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_get_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_get_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -2101,8 +2281,8 @@ static jdouble __JNI_WRAPPER__firebase_database_query_is_valid_42B36EEBAED4(JNIE
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_query_get_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_query_get_value_1E3C381F9EBC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_query_get_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_query_get_value_85B94D06631B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2110,7 +2290,13 @@ static jdouble __JNI_WRAPPER__firebase_database_query_get_value_1E3C381F9EBC(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_query_get_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_query_get_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -2300,8 +2486,8 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_go_offline_2296B94C26D7(JNIE
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_set_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_6387FE44796C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_set_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_C1B5C67D105D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2309,12 +2495,18 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_6387FE44796C(JNIEn
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_set_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_set_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_set_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_set_priority_621378085285(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_set_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_set_priority_29058A6381C5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2322,12 +2514,18 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_set_priority_621378085285(JN
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_set_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_set_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_set_value_and_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_and_priority_1DF26B726CDC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_set_value_and_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_and_priority_06768DD3EBA6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2335,12 +2533,18 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_set_value_and_priority_1DF26
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_set_value_and_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_set_value_and_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_update_children JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_update_children_C9BD9A846508(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_update_children JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_update_children_C6ECABFAFC81(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2348,12 +2552,18 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_update_children_C9BD9A846508
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_update_children((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_update_children((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_remove_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_remove_value_14F64148DD65(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_remove_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_remove_value_E7D420C895B0(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2361,12 +2571,18 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_remove_value_14F64148DD65(JN
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_remove_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_remove_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_ref_run_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_ref_run_transaction_0B545808EEFF(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_ref_run_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_ref_run_transaction_A5B677C4CA03(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2374,7 +2590,13 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_run_transaction_0B545808EEFF
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_ref_run_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_ref_run_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -2812,8 +3034,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_set_log_level_1675AC22F476(JNIE
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_enable_network JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_enable_network_8C7240161407(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_enable_network JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_enable_network_F882DB77BD22(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2821,12 +3043,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_enable_network_8C7240161407(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_enable_network((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_enable_network((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_disable_network JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_disable_network_902059D9BC92(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_disable_network JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_disable_network_D22CBB74C444(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2834,12 +3062,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_disable_network_902059D9BC92(JN
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_disable_network((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_disable_network((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_terminate JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_terminate_99F54499CFE4(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_terminate JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_terminate_91F9D7FD9A71(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2847,12 +3081,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_terminate_99F54499CFE4(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_terminate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_terminate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_clear_persistence JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_clear_persistence_41AE0C8DD7BB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_clear_persistence JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_clear_persistence_74C12FCF7A8A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2860,12 +3100,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_clear_persistence_41AE0C8DD7BB(
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_clear_persistence((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_clear_persistence((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_wait_for_pending_writes JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_wait_for_pending_writes_BC7FD917B473(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_wait_for_pending_writes JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_wait_for_pending_writes_EE5268F58DD9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2873,12 +3119,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_wait_for_pending_writes_BC7FD91
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_wait_for_pending_writes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_wait_for_pending_writes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_run_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_run_transaction_4ADB5897B0C1(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_run_transaction JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_run_transaction_4767574361D5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2886,7 +3138,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_run_transaction_4ADB5897B0C1(JN
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_run_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_run_transaction((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -2975,8 +3233,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_collection_ref_document_path_BE
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_collection_ref_add JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_collection_ref_add_4091745E936C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_collection_ref_add JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_collection_ref_add_C7142E2DB993(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -2984,7 +3242,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_collection_ref_add_4091745E936C
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_collection_ref_add((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_collection_ref_add((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -3080,8 +3344,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_collection_E67AED6
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_get JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_get_E43DA76A3D8E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_get JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_get_DF3526C82EFB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3089,12 +3353,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_get_E43DA76A3D8E(J
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_set JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_EE135228CCB5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_set JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_C661EA75D7B0(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3102,12 +3372,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_EE135228CCB5(J
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_set_merge JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_177D854F85B5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_set_merge JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_1E29FA78F390(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3115,12 +3391,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_177D854F
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_set_merge_fields JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_fields_51DD38555117(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_set_merge_fields JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_fields_D35D33FEE85F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3128,12 +3410,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_fields_5
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge_fields((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_update JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_BF5CF6BE44D5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_update JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_0B26EB4FAD13(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3141,12 +3429,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_BF5CF6BE44D
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_update((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_update((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_delete_00475B5F1FE3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_delete_BB4378151455(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3154,7 +3448,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_delete_00475B5F1FE
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -3602,8 +3902,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_query_end_at_values_F149C71F23C
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_query_get JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_query_get_95AFC99942B3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_query_get JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_query_get_57DDABF55A59(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3611,7 +3911,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_query_get_95AFC99942B3(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_query_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_query_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -3725,8 +4031,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_write_batch_delete_37ED52EA241E
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_write_batch_commit JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_write_batch_commit_957CCC12B257(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_write_batch_commit JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_write_batch_commit_8E9A4126B904(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -3734,7 +4040,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_write_batch_commit_957CCC12B257
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_write_batch_commit((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_write_batch_commit((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -4328,8 +4640,8 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_storage_6109F7FCC46D(JNIEnv* 
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_delete_231E0E552745(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_delete_39229A6414B3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4337,12 +4649,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_delete_231E0E552745(JNIEnv* e
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_get_download_url JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_get_download_url_54FF6A0BA9A5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_get_download_url JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_get_download_url_F1065D802BF0(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4350,12 +4668,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_download_url_54FF6A0BA9A5
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_get_download_url((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_get_download_url((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_get_metadata JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_get_metadata_712F54C0799E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_get_metadata JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_get_metadata_070760B07940(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4363,12 +4687,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_metadata_712F54C0799E(JNI
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_get_metadata((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_get_metadata((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_update_metadata JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_update_metadata_14050D06BE4C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_update_metadata JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_update_metadata_DF88C107AFC6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4376,12 +4706,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_update_metadata_14050D06BE4C(
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_update_metadata((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_update_metadata((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_put_bytes JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_put_bytes_EC3A62493635(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_put_bytes JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_put_bytes_F45A97E97BCC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4389,12 +4725,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_put_bytes_EC3A62493635(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_put_bytes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_put_bytes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_put_file JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_put_file_E75CF84590C1(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_put_file JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_put_file_07A1F39B7CF3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4402,12 +4744,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_put_file_E75CF84590C1(JNIEnv*
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_put_file((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_put_file((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_get_bytes JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_get_bytes_C213E7507B00(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_get_bytes JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_get_bytes_9F91050DC3BF(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4415,12 +4763,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_bytes_C213E7507B00(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_get_bytes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_get_bytes((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_get_file JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_get_file_3D7FAA51C8BF(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_get_file JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_get_file_77C22696A56E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4428,12 +4782,18 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_file_3D7FAA51C8BF(JNIEnv*
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_get_file((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_get_file((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_storage_ref_list JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_storage_ref_list_C854ECA3D0BD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_storage_ref_list JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_list_3344C48A2D53(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -4441,7 +4801,13 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_list_C854ECA3D0BD(JNIEnv* env
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_storage_ref_list((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_list((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5168,8 +5534,8 @@ static jdouble __JNI_WRAPPER__firebase_functions_callable_is_valid_2C0A432A48FE(
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_functions_callable_call JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_functions_callable_call_3A1E935935CF(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_functions_callable_call JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_functions_callable_call_6F95CE1A5106(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5177,12 +5543,18 @@ static jdouble __JNI_WRAPPER__firebase_functions_callable_call_3A1E935935CF(JNIE
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_functions_callable_call((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_functions_callable_call((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_functions_callable_call_with_data JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_functions_callable_call_with_data_266C21E25765(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_functions_callable_call_with_data JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_functions_callable_call_with_data_F71AB74FD089(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5190,7 +5562,13 @@ static jdouble __JNI_WRAPPER__firebase_functions_callable_call_with_data_266C21E
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_functions_callable_call_with_data((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_functions_callable_call_with_data((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5207,8 +5585,8 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_instance_83F16E05303C(J
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_ensure_initialized JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_B4172B81716C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_ensure_initialized JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_3726F8B57421(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5216,12 +5594,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_B4172B81
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_ensure_initialized((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_ensure_initialized((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_set_config_settings JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_set_config_settings_2D22B4F75A6D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_set_config_settings JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_set_config_settings_937F683BDEBE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5229,7 +5613,13 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_set_config_settings_2D22B4F
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_set_config_settings((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_set_config_settings((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5259,8 +5649,8 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_config_settings_minimum
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_fetch JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_28A59D0ED8FC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_fetch JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_1E0AAAE5C477(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5268,12 +5658,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_28A59D0ED8FC(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_fetch((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_fetch((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_fetch_with_expiration JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_with_expiration_143E65DC0B59(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_fetch_with_expiration JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_with_expiration_D3109E2F2EB6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5281,12 +5677,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_with_expiration_143E6
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_fetch_with_expiration((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_fetch_with_expiration((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_fetch_and_activate JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_and_activate_DDF96F11E547(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_fetch_and_activate JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_and_activate_6C7C57A45F1E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5294,12 +5696,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_fetch_and_activate_DDF96F11
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_fetch_and_activate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_fetch_and_activate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_activate JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_activate_8DF6C2CE4F2D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_activate JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_activate_817C5AABAD36(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5307,7 +5715,13 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_activate_8DF6C2CE4F2D(JNIEn
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_activate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_activate((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5390,8 +5804,8 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_data_0B2A93DE9782(JNIEn
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_get_keys_by_prefix JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_by_prefix_A7A5163B1E36(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_get_keys_by_prefix JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_by_prefix_36C93D5C1B1A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5399,12 +5813,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_by_prefix_A7A5163B
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_get_keys_by_prefix((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_get_keys JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_8DD1AAA544C5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_get_keys JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_DCA141849879(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5412,12 +5832,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_keys_8DD1AAA544C5(JNIEn
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_get_keys((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_get_keys((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_get_all JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_get_all_FBA3ED15433F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_get_all JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_get_all_27C90884171E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5425,12 +5851,18 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_get_all_FBA3ED15433F(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_get_all((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_get_all((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_remote_config_set_defaults JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_set_defaults_3E3E3C6292A1(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_set_defaults JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_set_defaults_9F57C32EF766(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5438,7 +5870,13 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_set_defaults_3E3E3C6292A1(J
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_set_defaults((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_set_defaults((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5535,8 +5973,8 @@ static jdouble __JNI_WRAPPER__firebase_messaging_set_delivery_metrics_export_to_
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_request_permission JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_request_permission_901C6B89A6DC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_request_permission JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_request_permission_E017D8E24A8C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5544,12 +5982,18 @@ static jdouble __JNI_WRAPPER__firebase_messaging_request_permission_901C6B89A6DC
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_request_permission((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_request_permission((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_get_token_55EA7FCB6DB3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_get_token_D6213087DF0C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5557,12 +6001,18 @@ static jdouble __JNI_WRAPPER__firebase_messaging_get_token_55EA7FCB6DB3(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_delete_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_delete_token_12D594F0BA74(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_delete_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_delete_token_BFBAE7CEFC30(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5570,12 +6020,18 @@ static jdouble __JNI_WRAPPER__firebase_messaging_delete_token_12D594F0BA74(JNIEn
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_delete_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_delete_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_subscribe JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_subscribe_3DB4BA9C321A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_subscribe JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_subscribe_F8C12E71B5FE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5583,12 +6039,18 @@ static jdouble __JNI_WRAPPER__firebase_messaging_subscribe_3DB4BA9C321A(JNIEnv* 
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_subscribe((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_subscribe((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_unsubscribe JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_unsubscribe_5E9DFE1A987E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_unsubscribe JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_unsubscribe_F6836B511890(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5596,7 +6058,13 @@ static jdouble __JNI_WRAPPER__firebase_messaging_unsubscribe_5E9DFE1A987E(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_unsubscribe((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_unsubscribe((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -5970,8 +6438,8 @@ static jdouble __JNI_WRAPPER__firebase_ump_reset_E2B63E302CD2(JNIEnv* env, jclas
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_ump_request_consent_info_update JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_ump_request_consent_info_update_1EBF874E3AA7(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_ump_request_consent_info_update JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_ump_request_consent_info_update_14884DE2EA2A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5979,12 +6447,18 @@ static jdouble __JNI_WRAPPER__firebase_ump_request_consent_info_update_1EBF874E3
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_ump_request_consent_info_update((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_ump_request_consent_info_update((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_ump_load_consent_form JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_ump_load_consent_form_789E8E4BD5C9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_ump_load_consent_form JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_ump_load_consent_form_6CD3CF615998(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -5992,12 +6466,18 @@ static jdouble __JNI_WRAPPER__firebase_ump_load_consent_form_789E8E4BD5C9(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_ump_load_consent_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_ump_load_consent_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_ump_show_consent_form JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_ump_show_consent_form_65F9144184F6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_ump_show_consent_form JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_ump_show_consent_form_0243E9B9948A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6005,12 +6485,18 @@ static jdouble __JNI_WRAPPER__firebase_ump_show_consent_form_65F9144184F6(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_ump_show_consent_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_ump_show_consent_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_ump_load_and_show_consent_form_if_required JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_required_8797B0025906(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_ump_load_and_show_consent_form_if_required JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_required_FAD8767BA390(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6018,12 +6504,18 @@ static jdouble __JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_require
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_ump_show_privacy_options_form JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_ump_show_privacy_options_form_7B774A97A9A9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_ump_show_privacy_options_form JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_ump_show_privacy_options_form_43B11E093DAB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6031,7 +6523,13 @@ static jdouble __JNI_WRAPPER__firebase_ump_show_privacy_options_form_7B774A97A9A
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_ump_show_privacy_options_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_ump_show_privacy_options_form((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -6113,8 +6611,8 @@ static jdouble __JNI_WRAPPER__firebase_auth_federated_oauth_provider_release_502
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_provider_F2EDC2F610A8(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_provider_523E90443ECD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6122,12 +6620,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_provider_F2EDC2F610A8(J
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_custom_token_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_result_7D11AA603906(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_custom_token_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_result_1A8FC3F37F3F(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6135,12 +6639,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_result_7D1
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_and_retrieve_data_with_credential_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_result_78BB6457DB20(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_and_retrieve_data_with_credential_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_result_478FADE8BAB4(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6148,12 +6658,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_crede
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_anonymously_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_result_1FC69F986A83(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_anonymously_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_result_2D4C4DDA3F39(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6161,12 +6677,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_anonymously_result_1FC69F986
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_anonymously_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_anonymously_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_sign_in_with_email_and_password_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_result_2495FA885D60(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_sign_in_with_email_and_password_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_result_EE0DBFBD01F6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6174,12 +6696,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_resu
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_create_user_with_email_and_password_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_result_CA038FEAFF9B(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_create_user_with_email_and_password_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_result_7C4BA9044FBC(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6187,7 +6715,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -6223,8 +6757,8 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_provider_data_at_4BA24292134A(J
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_reauthenticate_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_with_provider_A12185BB2061(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_reauthenticate_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_with_provider_A019830DB875(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6232,12 +6766,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_with_provider_A1
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_link_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_provider_1600D1235B3E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_link_with_provider JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_provider_FF8EABD47FE8(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6245,12 +6785,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_provider_1600D1235B3E
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_provider((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_reauthenticate_and_retrieve_data_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_result_AE971A84F6D8(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_reauthenticate_and_retrieve_data_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_result_56B603FCDDDD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6258,12 +6804,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_dat
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_link_with_credential_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_result_94130CA9F9F9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_link_with_credential_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_result_5203BC9A8EAD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6271,12 +6823,18 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_link_with_credential_result_941
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_credential_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_link_with_credential_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_auth_user_update_phone_number_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_user_update_phone_number_credential_B461DF1EEC40(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_user_update_phone_number_credential JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_user_update_phone_number_credential_35DBFB6057DA(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6284,7 +6842,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_user_update_phone_number_credential_
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_user_update_phone_number_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_user_update_phone_number_credential((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -6431,8 +6995,8 @@ static jdouble __JNI_WRAPPER__firebase_database_ref_on_disconnect_67F1FC71AA26(J
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_on_disconnect_cancel JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_cancel_350430E37E46(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_on_disconnect_cancel JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_cancel_7C4A8A1E005D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6440,12 +7004,18 @@ static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_cancel_350430E37E4
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_cancel((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_cancel((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_on_disconnect_remove_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_remove_value_09AB574BDF42(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_on_disconnect_remove_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_remove_value_DB40DE49A5F7(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6453,12 +7023,18 @@ static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_remove_value_09AB5
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_remove_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_remove_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_on_disconnect_set_value JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_8C9879B58318(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_on_disconnect_set_value JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_1E624839CBB6(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6466,12 +7042,18 @@ static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_8C9879B5
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_set_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_set_value((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_on_disconnect_set_value_and_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_and_priority_579CBA4F1826(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_on_disconnect_set_value_and_priority JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_and_priority_B151FE22D351(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6479,12 +7061,18 @@ static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_set_value_and_prio
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_set_value_and_priority((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_database_on_disconnect_update_children JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_update_children_A4E6CC040DCB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_database_on_disconnect_update_children JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_update_children_576B51B00D08(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6492,7 +7080,13 @@ static jdouble __JNI_WRAPPER__firebase_database_on_disconnect_update_children_A4
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_update_children((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_database_on_disconnect_update_children((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -7147,8 +7741,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_aggregate_query_is_valid_701C9C
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_aggregate_query_get JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_aggregate_query_get_A891133DDF7C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_aggregate_query_get JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_aggregate_query_get_E44755B5761D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7156,7 +7750,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_aggregate_query_get_A891133DDF7
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_aggregate_query_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_aggregate_query_get((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -7250,8 +7850,8 @@ static jdouble __JNI_WRAPPER__firebase_firestore_add_snapshots_in_sync_listener_
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_load_bundle JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_load_bundle_6F8D65398ECE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_load_bundle JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_load_bundle_5FA222001CAD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7259,12 +7859,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_load_bundle_6F8D65398ECE(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_load_bundle((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_load_bundle((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_named_query JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_named_query_98C64523899C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_named_query JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_named_query_F2F6C25C481D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7272,12 +7878,18 @@ static jdouble __JNI_WRAPPER__firebase_firestore_named_query_98C64523899C(JNIEnv
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_named_query((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_named_query((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_document_ref_set_merge_field_paths JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_field_paths_2F412371666C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_set_merge_field_paths JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_field_paths_C125F8D34A7E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7285,7 +7897,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_set_merge_field_pa
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_set_merge_field_paths((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -7316,8 +7934,8 @@ static jstring __JNI_WRAPPER__firebase_storage_metadata_md5_hash_24B290EF9EC3(JN
     return __j;
 }
 
-// firebase_remote_config_ensure_initialized_info JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_info_6EF9AB530C06(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_remote_config_ensure_initialized_info JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_info_6100686A7469(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7325,7 +7943,13 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_ensure_initialized_info_6EF
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_remote_config_ensure_initialized_info((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_ensure_initialized_info((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -7840,8 +8464,8 @@ static jstring __JNI_WRAPPER__firebase_firestore_document_ref_to_string_0EA5138C
     return __j;
 }
 
-// firebase_firestore_document_ref_update_field_paths JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_field_paths_5A964EA55C68(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_document_ref_update_field_paths JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_field_paths_052100E392BE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -7849,7 +8473,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_document_ref_update_field_paths
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_document_ref_update_field_paths((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -8669,8 +9299,8 @@ static jdouble __JNI_WRAPPER__firebase_installations_instance_get_app_7B69B5ED6E
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_instance_get_id JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_instance_get_id_27FC03CDF6A9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_instance_get_id JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_instance_get_id_C744EE731F1D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8678,12 +9308,18 @@ static jdouble __JNI_WRAPPER__firebase_installations_instance_get_id_27FC03CDF6A
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_instance_get_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_instance_get_id((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_instance_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_instance_get_token_79D8273A16CA(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_instance_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_instance_get_token_1CD7B4998BA4(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8691,12 +9327,18 @@ static jdouble __JNI_WRAPPER__firebase_installations_instance_get_token_79D8273A
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_instance_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_instance_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_installations_instance_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_installations_instance_delete_C2FC60CDEC3C(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_installations_instance_delete JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_installations_instance_delete_9542B08A3E83(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8704,7 +9346,13 @@ static jdouble __JNI_WRAPPER__firebase_installations_instance_delete_C2FC60CDEC3
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_installations_instance_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_installations_instance_delete((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -8772,8 +9420,8 @@ static jdouble __JNI_WRAPPER__firebase_app_check_instance_set_token_auto_refresh
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_app_check_instance_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_token_1D174591A0B2(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_app_check_instance_get_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_token_5BD459ACEAC9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8781,12 +9429,18 @@ static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_token_1D174591A0B2
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_app_check_instance_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_app_check_instance_get_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_app_check_instance_get_limited_use_token JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_limited_use_token_1D108E674710(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_app_check_instance_get_limited_use_token JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_limited_use_token_B076A1C18910(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8794,7 +9448,13 @@ static jdouble __JNI_WRAPPER__firebase_app_check_instance_get_limited_use_token_
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_app_check_instance_get_limited_use_token((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -9049,8 +9709,8 @@ static jstring __JNI_WRAPPER__firebase_auth_yahoo_auth_provider_id_80664E2E07B3(
     return __j;
 }
 
-// firebase_auth_game_center_auth_provider_get_credential_last_result JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_last_result_2C2EFE07EC4E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_auth_game_center_auth_provider_get_credential_last_result JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_last_result_732C88E58E26(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -9058,7 +9718,13 @@ static jdouble __JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_creden
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_auth_game_center_auth_provider_get_credential_last_result((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -9077,8 +9743,14 @@ extern "C" {
                 "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;"
             );
             if (!g_mid_GetExtensionOption) {
-                throwIAE(env, "Failed to bind __EXT_JAVA__GetExtensionOption");
-                return;
+                // Log and carry on: this runs from the bridge's <clinit>, so
+                // throwing here becomes ExceptionInInitializerError and takes
+                // the whole app down over a lookup helper. Extension options
+                // just read back empty (see ExtUtils::GetExtensionOption).
+                // The usual cause is R8 shrinking the method away -- the keep
+                // rules live in ExtensionCore's <YYAndroidProguard> block.
+                env->ExceptionDescribe();
+                env->ExceptionClear();
             }
         }
 
@@ -9106,13 +9778,13 @@ extern "C" {
             { "__EXT_JNI__firebase_analytics_log_event_number", "(Ljava/lang/String;Ljava/lang/String;D)D", (void*)__JNI_WRAPPER__firebase_analytics_log_event_number_CD66711ABE84 },
             { "__EXT_JNI__firebase_analytics_log_event_params", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_log_event_params_1025C48B430D },
             { "__EXT_JNI__firebase_analytics_set_default_event_parameters", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_set_default_event_parameters_B11E75DD8692 },
-            { "__EXT_JNI__firebase_analytics_log_apple_transaction", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_log_apple_transaction_0FFC6D026386 },
+            { "__EXT_JNI__firebase_analytics_log_apple_transaction", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_log_apple_transaction_84916953D647 },
             { "__EXT_JNI__firebase_analytics_set_user_property", "(Ljava/lang/String;Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_analytics_set_user_property_22B7BABAF04F },
             { "__EXT_JNI__firebase_analytics_set_user_id", "(Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_analytics_set_user_id_656BC15C41C9 },
             { "__EXT_JNI__firebase_analytics_set_session_timeout_duration", "(D)D", (void*)__JNI_WRAPPER__firebase_analytics_set_session_timeout_duration_A3C1354A8B00 },
             { "__EXT_JNI__firebase_analytics_reset_analytics_data", "()D", (void*)__JNI_WRAPPER__firebase_analytics_reset_analytics_data_DEB605C9CAD2 },
-            { "__EXT_JNI__firebase_analytics_get_analytics_instance_id", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_get_analytics_instance_id_AA1EC9E83398 },
-            { "__EXT_JNI__firebase_analytics_get_session_id", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_get_session_id_A4AB942D602C },
+            { "__EXT_JNI__firebase_analytics_get_analytics_instance_id", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_get_analytics_instance_id_0A020A9BC0E3 },
+            { "__EXT_JNI__firebase_analytics_get_session_id", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_get_session_id_56BBCA91ABD6 },
             { "__EXT_JNI__firebase_analytics_notify_app_lifecycle_termination", "()D", (void*)__JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_termination_200D35A3AFA8 },
             { "__EXT_JNI__firebase_analytics_is_desktop_initialized", "()D", (void*)__JNI_WRAPPER__firebase_analytics_is_desktop_initialized_F1A09438951E },
             { "__EXT_JNI__firebase_analytics_set_desktop_debug_mode", "(D)D", (void*)__JNI_WRAPPER__firebase_analytics_set_desktop_debug_mode_2E60848C3F37 },
@@ -9122,13 +9794,13 @@ extern "C" {
             { "__EXT_JNI__firebase_app_check_set_provider_factory", "(D)D", (void*)__JNI_WRAPPER__firebase_app_check_set_provider_factory_7BBDC859B2A1 },
             { "__EXT_JNI__firebase_app_check_debug_provider_set_debug_token", "(Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_app_check_debug_provider_set_debug_token_E21A3EABCCA7 },
             { "__EXT_JNI__firebase_app_check_set_token_auto_refresh_enabled", "(D)D", (void*)__JNI_WRAPPER__firebase_app_check_set_token_auto_refresh_enabled_0A2BECD6BB67 },
-            { "__EXT_JNI__firebase_app_check_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_token_1444DEB81766 },
-            { "__EXT_JNI__firebase_app_check_get_limited_use_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_limited_use_token_E61CC96B15A2 },
+            { "__EXT_JNI__firebase_app_check_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_token_3AC673903C92 },
+            { "__EXT_JNI__firebase_app_check_get_limited_use_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_limited_use_token_903C8833E67B },
             { "__EXT_JNI__firebase_app_check_add_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_add_listener_686EBB06E834 },
             { "__EXT_JNI__firebase_app_check_remove_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_remove_listener_AE6FF45417E3 },
-            { "__EXT_JNI__firebase_installations_get_id", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_id_D476421F026B },
-            { "__EXT_JNI__firebase_installations_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_token_E465C5E9A920 },
-            { "__EXT_JNI__firebase_installations_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_delete_ECD2B16D403F },
+            { "__EXT_JNI__firebase_installations_get_id", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_id_7ED70480CF5A },
+            { "__EXT_JNI__firebase_installations_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_token_20D74684C02B },
+            { "__EXT_JNI__firebase_installations_delete", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_delete_05CE1BD8672D },
             { "__EXT_JNI__firebase_auth_get_auth", "()D", (void*)__JNI_WRAPPER__firebase_auth_get_auth_8182A8988FC6 },
             { "__EXT_JNI__firebase_auth_language_code", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_auth_language_code_14C2CD532B29 },
             { "__EXT_JNI__firebase_auth_set_language_code", "(Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_auth_set_language_code_4D2AEDE70536 },
@@ -9136,14 +9808,14 @@ extern "C" {
             { "__EXT_JNI__firebase_auth_use_emulator", "(Ljava/lang/String;D)D", (void*)__JNI_WRAPPER__firebase_auth_use_emulator_252B285789C7 },
             { "__EXT_JNI__firebase_auth_current_user", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_current_user_7B796B3887DC },
             { "__EXT_JNI__firebase_auth_sign_out", "()D", (void*)__JNI_WRAPPER__firebase_auth_sign_out_F5E40F27DD06 },
-            { "__EXT_JNI__firebase_auth_fetch_providers_for_email", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_fetch_providers_for_email_1F4ED31C1680 },
-            { "__EXT_JNI__firebase_auth_sign_in_with_custom_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_AC142E0F09D2 },
-            { "__EXT_JNI__firebase_auth_sign_in_with_credential", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_credential_7213EC016E6B },
-            { "__EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_5FAB6247162B },
-            { "__EXT_JNI__firebase_auth_sign_in_anonymously", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_anonymously_5F2B6520C27D },
-            { "__EXT_JNI__firebase_auth_sign_in_with_email_and_password", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_70B1E9AB8379 },
-            { "__EXT_JNI__firebase_auth_create_user_with_email_and_password", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_4C124CA61074 },
-            { "__EXT_JNI__firebase_auth_send_password_reset_email", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_send_password_reset_email_944C25B02D40 },
+            { "__EXT_JNI__firebase_auth_fetch_providers_for_email", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_fetch_providers_for_email_441DF77D14C8 },
+            { "__EXT_JNI__firebase_auth_sign_in_with_custom_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_82F147DEE528 },
+            { "__EXT_JNI__firebase_auth_sign_in_with_credential", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_credential_C1AEC3B079DA },
+            { "__EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_A54D5202BD82 },
+            { "__EXT_JNI__firebase_auth_sign_in_anonymously", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_anonymously_024B7AABE3BE },
+            { "__EXT_JNI__firebase_auth_sign_in_with_email_and_password", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_ED0F113DA298 },
+            { "__EXT_JNI__firebase_auth_create_user_with_email_and_password", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_4728E4E87055 },
+            { "__EXT_JNI__firebase_auth_send_password_reset_email", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_send_password_reset_email_1D38E3218DF1 },
             { "__EXT_JNI__firebase_auth_add_state_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_add_state_listener_7D14C19C37C9 },
             { "__EXT_JNI__firebase_auth_remove_state_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_remove_state_listener_6340879501B7 },
             { "__EXT_JNI__firebase_auth_add_id_token_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_add_id_token_listener_6190655110DF },
@@ -9153,7 +9825,7 @@ extern "C" {
             { "__EXT_JNI__firebase_auth_credential_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_credential_release_11E254EB232D },
             { "__EXT_JNI__firebase_auth_email_auth_provider_get_credential", "(Ljava/lang/String;Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_email_auth_provider_get_credential_CDBC3277C8D8 },
             { "__EXT_JNI__firebase_auth_facebook_auth_provider_get_credential", "(Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_facebook_auth_provider_get_credential_AE2FF785466B },
-            { "__EXT_JNI__firebase_auth_game_center_auth_provider_get_credential", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_B53F602C5817 },
+            { "__EXT_JNI__firebase_auth_game_center_auth_provider_get_credential", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_48C59931012F },
             { "__EXT_JNI__firebase_auth_game_center_auth_provider_is_player_authenticated", "()D", (void*)__JNI_WRAPPER__firebase_auth_game_center_auth_provider_is_player_authenticated_AE7DD74FCA2B },
             { "__EXT_JNI__firebase_auth_github_auth_provider_get_credential", "(Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_github_auth_provider_get_credential_109D046DCDBB },
             { "__EXT_JNI__firebase_auth_google_auth_provider_get_credential", "(Ljava/lang/String;Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_google_auth_provider_get_credential_C8740BDEDDFC },
@@ -9179,17 +9851,17 @@ extern "C" {
             { "__EXT_JNI__firebase_auth_user_is_anonymous", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_is_anonymous_AC45A964DAA0 },
             { "__EXT_JNI__firebase_auth_user_creation_timestamp", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_creation_timestamp_A939E413DE57 },
             { "__EXT_JNI__firebase_auth_user_last_sign_in_timestamp", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_last_sign_in_timestamp_8CA535661918 },
-            { "__EXT_JNI__firebase_auth_user_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_get_token_19C43586C996 },
-            { "__EXT_JNI__firebase_auth_user_update_password", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_password_2E5CB54C946F },
-            { "__EXT_JNI__firebase_auth_user_update_profile", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_profile_C93B748EBA2E },
-            { "__EXT_JNI__firebase_auth_user_send_email_verification", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_send_email_verification_DAF52215E524 },
-            { "__EXT_JNI__firebase_auth_user_send_email_verification_before_updating_email", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_send_email_verification_before_updating_email_4EA2DB356B53 },
-            { "__EXT_JNI__firebase_auth_user_reauthenticate", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_935CAB1306B5 },
-            { "__EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_2EFCC1F1F55C },
-            { "__EXT_JNI__firebase_auth_user_link_with_credential", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_credential_3FDD85A29A0F },
-            { "__EXT_JNI__firebase_auth_user_unlink", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_unlink_D733545CC0E4 },
-            { "__EXT_JNI__firebase_auth_user_reload", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reload_C74A3B321B84 },
-            { "__EXT_JNI__firebase_auth_user_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_delete_865FB55F0884 },
+            { "__EXT_JNI__firebase_auth_user_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_get_token_E73D5F782264 },
+            { "__EXT_JNI__firebase_auth_user_update_password", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_password_E7C385B59B28 },
+            { "__EXT_JNI__firebase_auth_user_update_profile", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_profile_1C757AB87CDD },
+            { "__EXT_JNI__firebase_auth_user_send_email_verification", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_send_email_verification_CF56B64D267A },
+            { "__EXT_JNI__firebase_auth_user_send_email_verification_before_updating_email", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_send_email_verification_before_updating_email_555E6CCD55F2 },
+            { "__EXT_JNI__firebase_auth_user_reauthenticate", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_AB5C354D3B3B },
+            { "__EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_8687F5430758 },
+            { "__EXT_JNI__firebase_auth_user_link_with_credential", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_credential_D2EC3B41E87A },
+            { "__EXT_JNI__firebase_auth_user_unlink", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_unlink_2C394FBF544B },
+            { "__EXT_JNI__firebase_auth_user_reload", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reload_57B90BC2B4C6 },
+            { "__EXT_JNI__firebase_auth_user_delete", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_delete_65CAABC91671 },
             { "__EXT_JNI__firebase_database_get_instance", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_get_instance_E012BAB78F13 },
             { "__EXT_JNI__firebase_database_get_instance_for_url", "(Ljava/lang/String;Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_get_instance_for_url_AA402A086355 },
             { "__EXT_JNI__firebase_database_get_url", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_database_get_url_AB0FD4CF0E5C },
@@ -9215,7 +9887,7 @@ extern "C" {
             { "__EXT_JNI__firebase_database_ref_limit_to_first", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_limit_to_first_33FA6D01FF12 },
             { "__EXT_JNI__firebase_database_ref_limit_to_last", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_limit_to_last_7AC92139557F },
             { "__EXT_JNI__firebase_database_ref_set_keep_synchronized", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_keep_synchronized_3D299E1FC584 },
-            { "__EXT_JNI__firebase_database_ref_get_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_get_value_39C07FC7E58F },
+            { "__EXT_JNI__firebase_database_ref_get_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_get_value_775629E0BC5F },
             { "__EXT_JNI__firebase_database_ref_add_value_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_add_value_listener_5CC2955D1FFC },
             { "__EXT_JNI__firebase_database_ref_remove_value_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_remove_value_listener_34EF2B23B886 },
             { "__EXT_JNI__firebase_database_ref_remove_all_value_listeners", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_remove_all_value_listeners_84E6BD2A4F81 },
@@ -9237,7 +9909,7 @@ extern "C" {
             { "__EXT_JNI__firebase_database_query_get_reference", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_get_reference_4566160FAC70 },
             { "__EXT_JNI__firebase_database_query_set_keep_synchronized", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_set_keep_synchronized_DBA9B2D27FE4 },
             { "__EXT_JNI__firebase_database_query_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_is_valid_42B36EEBAED4 },
-            { "__EXT_JNI__firebase_database_query_get_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_get_value_1E3C381F9EBC },
+            { "__EXT_JNI__firebase_database_query_get_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_get_value_85B94D06631B },
             { "__EXT_JNI__firebase_database_query_add_value_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_add_value_listener_092447255C9C },
             { "__EXT_JNI__firebase_database_query_remove_value_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_remove_value_listener_191DC3A85472 },
             { "__EXT_JNI__firebase_database_query_remove_all_value_listeners", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_query_remove_all_value_listeners_F82109E6DF60 },
@@ -9250,12 +9922,12 @@ extern "C" {
             { "__EXT_JNI__firebase_database_ref_push", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_push_DD6E69FEFA8F },
             { "__EXT_JNI__firebase_database_ref_go_online", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_go_online_20AD9C4642B0 },
             { "__EXT_JNI__firebase_database_ref_go_offline", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_go_offline_2296B94C26D7 },
-            { "__EXT_JNI__firebase_database_ref_set_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_value_6387FE44796C },
-            { "__EXT_JNI__firebase_database_ref_set_priority", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_priority_621378085285 },
-            { "__EXT_JNI__firebase_database_ref_set_value_and_priority", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_value_and_priority_1DF26B726CDC },
-            { "__EXT_JNI__firebase_database_ref_update_children", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_update_children_C9BD9A846508 },
-            { "__EXT_JNI__firebase_database_ref_remove_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_remove_value_14F64148DD65 },
-            { "__EXT_JNI__firebase_database_ref_run_transaction", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_run_transaction_0B545808EEFF },
+            { "__EXT_JNI__firebase_database_ref_set_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_value_C1B5C67D105D },
+            { "__EXT_JNI__firebase_database_ref_set_priority", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_priority_29058A6381C5 },
+            { "__EXT_JNI__firebase_database_ref_set_value_and_priority", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_set_value_and_priority_06768DD3EBA6 },
+            { "__EXT_JNI__firebase_database_ref_update_children", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_update_children_C6ECABFAFC81 },
+            { "__EXT_JNI__firebase_database_ref_remove_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_remove_value_E7D420C895B0 },
+            { "__EXT_JNI__firebase_database_ref_run_transaction", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_run_transaction_A5B677C4CA03 },
             { "__EXT_JNI__firebase_database_ref_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_release_5E8A7CF6417F },
             { "__EXT_JNI__firebase_database_snapshot_exists", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_snapshot_exists_6FBEDF960DD0 },
             { "__EXT_JNI__firebase_database_snapshot_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_snapshot_is_valid_299D71CCCD6D },
@@ -9285,30 +9957,30 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_collection_group", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_group_6E0EBAE930B8 },
             { "__EXT_JNI__firebase_firestore_batch", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_batch_17F7D87DA11C },
             { "__EXT_JNI__firebase_firestore_set_log_level", "(D)D", (void*)__JNI_WRAPPER__firebase_firestore_set_log_level_1675AC22F476 },
-            { "__EXT_JNI__firebase_firestore_enable_network", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_enable_network_8C7240161407 },
-            { "__EXT_JNI__firebase_firestore_disable_network", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_disable_network_902059D9BC92 },
-            { "__EXT_JNI__firebase_firestore_terminate", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_terminate_99F54499CFE4 },
-            { "__EXT_JNI__firebase_firestore_clear_persistence", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_clear_persistence_41AE0C8DD7BB },
-            { "__EXT_JNI__firebase_firestore_wait_for_pending_writes", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_wait_for_pending_writes_BC7FD917B473 },
-            { "__EXT_JNI__firebase_firestore_run_transaction", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_run_transaction_4ADB5897B0C1 },
+            { "__EXT_JNI__firebase_firestore_enable_network", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_enable_network_F882DB77BD22 },
+            { "__EXT_JNI__firebase_firestore_disable_network", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_disable_network_D22CBB74C444 },
+            { "__EXT_JNI__firebase_firestore_terminate", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_terminate_91F9D7FD9A71 },
+            { "__EXT_JNI__firebase_firestore_clear_persistence", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_clear_persistence_74C12FCF7A8A },
+            { "__EXT_JNI__firebase_firestore_wait_for_pending_writes", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_wait_for_pending_writes_EE5268F58DD9 },
+            { "__EXT_JNI__firebase_firestore_run_transaction", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_run_transaction_4767574361D5 },
             { "__EXT_JNI__firebase_firestore_collection_ref_id", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_id_7D81F3599C68 },
             { "__EXT_JNI__firebase_firestore_collection_ref_path", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_path_E7FEF51D63B1 },
             { "__EXT_JNI__firebase_firestore_collection_ref_parent", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_parent_82758E8B6FBD },
             { "__EXT_JNI__firebase_firestore_collection_ref_document", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_document_EE483652A5E3 },
             { "__EXT_JNI__firebase_firestore_collection_ref_document_path", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_document_path_BE501F37FA8E },
-            { "__EXT_JNI__firebase_firestore_collection_ref_add", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_add_4091745E936C },
+            { "__EXT_JNI__firebase_firestore_collection_ref_add", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_add_C7142E2DB993 },
             { "__EXT_JNI__firebase_firestore_collection_ref_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_is_valid_D150E4A3BD78 },
             { "__EXT_JNI__firebase_firestore_collection_ref_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_collection_ref_release_CC314DA6DC55 },
             { "__EXT_JNI__firebase_firestore_document_ref_id", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_id_C799FB7A1F1D },
             { "__EXT_JNI__firebase_firestore_document_ref_path", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_path_9C2D67A23BCF },
             { "__EXT_JNI__firebase_firestore_document_ref_parent", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_parent_4029F184EE21 },
             { "__EXT_JNI__firebase_firestore_document_ref_collection", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_collection_E67AED69501A },
-            { "__EXT_JNI__firebase_firestore_document_ref_get", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_get_E43DA76A3D8E },
-            { "__EXT_JNI__firebase_firestore_document_ref_set", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_EE135228CCB5 },
-            { "__EXT_JNI__firebase_firestore_document_ref_set_merge", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_177D854F85B5 },
-            { "__EXT_JNI__firebase_firestore_document_ref_set_merge_fields", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_fields_51DD38555117 },
-            { "__EXT_JNI__firebase_firestore_document_ref_update", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_update_BF5CF6BE44D5 },
-            { "__EXT_JNI__firebase_firestore_document_ref_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_delete_00475B5F1FE3 },
+            { "__EXT_JNI__firebase_firestore_document_ref_get", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_get_DF3526C82EFB },
+            { "__EXT_JNI__firebase_firestore_document_ref_set", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_C661EA75D7B0 },
+            { "__EXT_JNI__firebase_firestore_document_ref_set_merge", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_1E29FA78F390 },
+            { "__EXT_JNI__firebase_firestore_document_ref_set_merge_fields", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_fields_D35D33FEE85F },
+            { "__EXT_JNI__firebase_firestore_document_ref_update", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_update_0B26EB4FAD13 },
+            { "__EXT_JNI__firebase_firestore_document_ref_delete", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_delete_BB4378151455 },
             { "__EXT_JNI__firebase_firestore_document_ref_add_snapshot_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_add_snapshot_listener_81084CD0B674 },
             { "__EXT_JNI__firebase_firestore_document_ref_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_is_valid_87F9070BDAF4 },
             { "__EXT_JNI__firebase_firestore_document_ref_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_release_B6901593D32A },
@@ -9333,7 +10005,7 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_query_end_before_values", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_end_before_values_330990EB6CF0 },
             { "__EXT_JNI__firebase_firestore_query_end_at_snapshot", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_end_at_snapshot_396F3A05C4FC },
             { "__EXT_JNI__firebase_firestore_query_end_at_values", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_end_at_values_F149C71F23CE },
-            { "__EXT_JNI__firebase_firestore_query_get", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_get_95AFC99942B3 },
+            { "__EXT_JNI__firebase_firestore_query_get", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_get_57DDABF55A59 },
             { "__EXT_JNI__firebase_firestore_query_add_snapshot_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_add_snapshot_listener_FD3E8413B397 },
             { "__EXT_JNI__firebase_firestore_query_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_is_valid_E8D39076F5BB },
             { "__EXT_JNI__firebase_firestore_query_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_release_FB244AFE7D9F },
@@ -9342,7 +10014,7 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_write_batch_set_merge_fields", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_set_merge_fields_6C4E7C9C3AAF },
             { "__EXT_JNI__firebase_firestore_write_batch_update", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_update_2F9189ADC7A2 },
             { "__EXT_JNI__firebase_firestore_write_batch_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_delete_37ED52EA241E },
-            { "__EXT_JNI__firebase_firestore_write_batch_commit", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_commit_957CCC12B257 },
+            { "__EXT_JNI__firebase_firestore_write_batch_commit", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_commit_8E9A4126B904 },
             { "__EXT_JNI__firebase_firestore_write_batch_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_release_4E6BA30F57E1 },
             { "__EXT_JNI__firebase_firestore_field_value_delete", "()D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_delete_B564781AA691 },
             { "__EXT_JNI__firebase_firestore_field_value_server_timestamp", "()D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_server_timestamp_76CBBE81E8FC },
@@ -9387,15 +10059,15 @@ extern "C" {
             { "__EXT_JNI__firebase_storage_ref_name", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_storage_ref_name_B519DEF325AA },
             { "__EXT_JNI__firebase_storage_ref_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_is_valid_0CA54D3966AE },
             { "__EXT_JNI__firebase_storage_ref_storage", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_storage_6109F7FCC46D },
-            { "__EXT_JNI__firebase_storage_ref_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_delete_231E0E552745 },
-            { "__EXT_JNI__firebase_storage_ref_get_download_url", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_download_url_54FF6A0BA9A5 },
-            { "__EXT_JNI__firebase_storage_ref_get_metadata", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_metadata_712F54C0799E },
-            { "__EXT_JNI__firebase_storage_ref_update_metadata", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_update_metadata_14050D06BE4C },
-            { "__EXT_JNI__firebase_storage_ref_put_bytes", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_bytes_EC3A62493635 },
-            { "__EXT_JNI__firebase_storage_ref_put_file", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_file_E75CF84590C1 },
-            { "__EXT_JNI__firebase_storage_ref_get_bytes", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_bytes_C213E7507B00 },
-            { "__EXT_JNI__firebase_storage_ref_get_file", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_file_3D7FAA51C8BF },
-            { "__EXT_JNI__firebase_storage_ref_list", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_list_C854ECA3D0BD },
+            { "__EXT_JNI__firebase_storage_ref_delete", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_delete_39229A6414B3 },
+            { "__EXT_JNI__firebase_storage_ref_get_download_url", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_download_url_F1065D802BF0 },
+            { "__EXT_JNI__firebase_storage_ref_get_metadata", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_metadata_070760B07940 },
+            { "__EXT_JNI__firebase_storage_ref_update_metadata", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_update_metadata_DF88C107AFC6 },
+            { "__EXT_JNI__firebase_storage_ref_put_bytes", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_bytes_F45A97E97BCC },
+            { "__EXT_JNI__firebase_storage_ref_put_file", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_file_07A1F39B7CF3 },
+            { "__EXT_JNI__firebase_storage_ref_get_bytes", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_bytes_9F91050DC3BF },
+            { "__EXT_JNI__firebase_storage_ref_get_file", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_file_77C22696A56E },
+            { "__EXT_JNI__firebase_storage_ref_list", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_list_3344C48A2D53 },
             { "__EXT_JNI__firebase_storage_metadata_create", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_metadata_create_A752D68874E9 },
             { "__EXT_JNI__firebase_storage_metadata_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_metadata_release_A031B2EFB7F1 },
             { "__EXT_JNI__firebase_storage_metadata_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_metadata_is_valid_4E612A4D9EF9 },
@@ -9447,27 +10119,27 @@ extern "C" {
             { "__EXT_JNI__firebase_functions_get_https_callable_from_url", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_get_https_callable_from_url_14DE88B34A5E },
             { "__EXT_JNI__firebase_functions_get_https_callable_from_url_with_options", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_get_https_callable_from_url_with_options_CE664DD424FC },
             { "__EXT_JNI__firebase_functions_callable_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_callable_is_valid_2C0A432A48FE },
-            { "__EXT_JNI__firebase_functions_callable_call", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_callable_call_3A1E935935CF },
-            { "__EXT_JNI__firebase_functions_callable_call_with_data", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_callable_call_with_data_266C21E25765 },
+            { "__EXT_JNI__firebase_functions_callable_call", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_callable_call_6F95CE1A5106 },
+            { "__EXT_JNI__firebase_functions_callable_call_with_data", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_functions_callable_call_with_data_F71AB74FD089 },
             { "__EXT_JNI__firebase_remote_config_get_instance", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_instance_83F16E05303C },
-            { "__EXT_JNI__firebase_remote_config_ensure_initialized", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_ensure_initialized_B4172B81716C },
-            { "__EXT_JNI__firebase_remote_config_set_config_settings", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_config_settings_2D22B4F75A6D },
+            { "__EXT_JNI__firebase_remote_config_ensure_initialized", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_ensure_initialized_3726F8B57421 },
+            { "__EXT_JNI__firebase_remote_config_set_config_settings", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_config_settings_937F683BDEBE },
             { "__EXT_JNI__firebase_remote_config_get_config_settings_fetch_timeout", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_config_settings_fetch_timeout_C7576889DF43 },
             { "__EXT_JNI__firebase_remote_config_get_config_settings_minimum_fetch_interval", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_config_settings_minimum_fetch_interval_562737BC1B8E },
-            { "__EXT_JNI__firebase_remote_config_fetch", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_28A59D0ED8FC },
-            { "__EXT_JNI__firebase_remote_config_fetch_with_expiration", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_with_expiration_143E65DC0B59 },
-            { "__EXT_JNI__firebase_remote_config_fetch_and_activate", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_and_activate_DDF96F11E547 },
-            { "__EXT_JNI__firebase_remote_config_activate", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_activate_8DF6C2CE4F2D },
+            { "__EXT_JNI__firebase_remote_config_fetch", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_1E0AAAE5C477 },
+            { "__EXT_JNI__firebase_remote_config_fetch_with_expiration", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_with_expiration_D3109E2F2EB6 },
+            { "__EXT_JNI__firebase_remote_config_fetch_and_activate", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_fetch_and_activate_6C7C57A45F1E },
+            { "__EXT_JNI__firebase_remote_config_activate", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_activate_817C5AABAD36 },
             { "__EXT_JNI__firebase_remote_config_get_boolean", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_boolean_AECD52DCF478 },
             { "__EXT_JNI__firebase_remote_config_get_long", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_long_2060B17AF42F },
             { "__EXT_JNI__firebase_remote_config_get_double", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_double_DA94001B9922 },
             { "__EXT_JNI__firebase_remote_config_get_string", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_remote_config_get_string_B7320A1E334D },
             { "__EXT_JNI__firebase_remote_config_get_data_size", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_data_size_5D04FDDFCFDC },
             { "__EXT_JNI__firebase_remote_config_get_data", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_data_0B2A93DE9782 },
-            { "__EXT_JNI__firebase_remote_config_get_keys_by_prefix", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_keys_by_prefix_A7A5163B1E36 },
-            { "__EXT_JNI__firebase_remote_config_get_keys", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_keys_8DD1AAA544C5 },
-            { "__EXT_JNI__firebase_remote_config_get_all", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_all_FBA3ED15433F },
-            { "__EXT_JNI__firebase_remote_config_set_defaults", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_defaults_3E3E3C6292A1 },
+            { "__EXT_JNI__firebase_remote_config_get_keys_by_prefix", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_keys_by_prefix_36C93D5C1B1A },
+            { "__EXT_JNI__firebase_remote_config_get_keys", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_keys_DCA141849879 },
+            { "__EXT_JNI__firebase_remote_config_get_all", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_all_27C90884171E },
+            { "__EXT_JNI__firebase_remote_config_set_defaults", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_defaults_9F57C32EF766 },
             { "__EXT_JNI__firebase_remote_config_get_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_info_BB876723B8F9 },
             { "__EXT_JNI__firebase_remote_config_add_config_update_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_add_config_update_listener_C469CAE510D9 },
             { "__EXT_JNI__firebase_remote_config_remove_config_update_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_remove_config_update_listener_BC5A26A96B09 },
@@ -9477,11 +10149,11 @@ extern "C" {
             { "__EXT_JNI__firebase_messaging_is_token_registration_on_init_enabled", "()D", (void*)__JNI_WRAPPER__firebase_messaging_is_token_registration_on_init_enabled_BE68D2B9EBA0 },
             { "__EXT_JNI__firebase_messaging_delivery_metrics_export_to_big_query_enabled", "()D", (void*)__JNI_WRAPPER__firebase_messaging_delivery_metrics_export_to_big_query_enabled_497E4A6029DB },
             { "__EXT_JNI__firebase_messaging_set_delivery_metrics_export_to_big_query", "(D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_delivery_metrics_export_to_big_query_8336AABA3767 },
-            { "__EXT_JNI__firebase_messaging_request_permission", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_request_permission_901C6B89A6DC },
-            { "__EXT_JNI__firebase_messaging_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_get_token_55EA7FCB6DB3 },
-            { "__EXT_JNI__firebase_messaging_delete_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_delete_token_12D594F0BA74 },
-            { "__EXT_JNI__firebase_messaging_subscribe", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_subscribe_3DB4BA9C321A },
-            { "__EXT_JNI__firebase_messaging_unsubscribe", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_unsubscribe_5E9DFE1A987E },
+            { "__EXT_JNI__firebase_messaging_request_permission", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_request_permission_E017D8E24A8C },
+            { "__EXT_JNI__firebase_messaging_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_get_token_D6213087DF0C },
+            { "__EXT_JNI__firebase_messaging_delete_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_delete_token_BFBAE7CEFC30 },
+            { "__EXT_JNI__firebase_messaging_subscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_subscribe_F8C12E71B5FE },
+            { "__EXT_JNI__firebase_messaging_unsubscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_unsubscribe_F6836B511890 },
             { "__EXT_JNI__firebase_messaging_poll_message", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_message_087D97D27BC3 },
             { "__EXT_JNI__firebase_messaging_poll_token", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_token_A683A48E0727 },
             { "__EXT_JNI__firebase_messaging_current_token", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_current_token_E1DC4B4DA756 },
@@ -9525,30 +10197,30 @@ extern "C" {
             { "__EXT_JNI__firebase_ump_get_privacy_options_requirement_status", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_get_privacy_options_requirement_status_008F1FD4AEDB },
             { "__EXT_JNI__firebase_ump_can_request_ads", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_can_request_ads_1F12E29FF7FE },
             { "__EXT_JNI__firebase_ump_reset", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_reset_E2B63E302CD2 },
-            { "__EXT_JNI__firebase_ump_request_consent_info_update", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_request_consent_info_update_1EBF874E3AA7 },
-            { "__EXT_JNI__firebase_ump_load_consent_form", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_load_consent_form_789E8E4BD5C9 },
-            { "__EXT_JNI__firebase_ump_show_consent_form", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_consent_form_65F9144184F6 },
-            { "__EXT_JNI__firebase_ump_load_and_show_consent_form_if_required", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_required_8797B0025906 },
-            { "__EXT_JNI__firebase_ump_show_privacy_options_form", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_privacy_options_form_7B774A97A9A9 },
+            { "__EXT_JNI__firebase_ump_request_consent_info_update", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_request_consent_info_update_14884DE2EA2A },
+            { "__EXT_JNI__firebase_ump_load_consent_form", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_load_consent_form_6CD3CF615998 },
+            { "__EXT_JNI__firebase_ump_show_consent_form", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_consent_form_0243E9B9948A },
+            { "__EXT_JNI__firebase_ump_load_and_show_consent_form_if_required", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_required_FAD8767BA390 },
+            { "__EXT_JNI__firebase_ump_show_privacy_options_form", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_privacy_options_form_43B11E093DAB },
             { "__EXT_JNI__firebase_analytics_notify_app_lifecycle_change", "(D)D", (void*)__JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_change_3C025E179BCF },
             { "__EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email_56601A82470D },
             { "__EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone_123B0E9FC2D4 },
             { "__EXT_JNI__firebase_auth_federated_oauth_provider_create", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_federated_oauth_provider_create_26B31F3D6018 },
             { "__EXT_JNI__firebase_auth_federated_oauth_provider_set_data", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_federated_oauth_provider_set_data_0839531734C5 },
             { "__EXT_JNI__firebase_auth_federated_oauth_provider_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_federated_oauth_provider_release_502A5E97302F },
-            { "__EXT_JNI__firebase_auth_sign_in_with_provider", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_provider_F2EDC2F610A8 },
-            { "__EXT_JNI__firebase_auth_sign_in_with_custom_token_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_result_7D11AA603906 },
-            { "__EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_result_78BB6457DB20 },
-            { "__EXT_JNI__firebase_auth_sign_in_anonymously_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_anonymously_result_1FC69F986A83 },
-            { "__EXT_JNI__firebase_auth_sign_in_with_email_and_password_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_result_2495FA885D60 },
-            { "__EXT_JNI__firebase_auth_create_user_with_email_and_password_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_result_CA038FEAFF9B },
+            { "__EXT_JNI__firebase_auth_sign_in_with_provider", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_provider_523E90443ECD },
+            { "__EXT_JNI__firebase_auth_sign_in_with_custom_token_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_custom_token_result_1A8FC3F37F3F },
+            { "__EXT_JNI__firebase_auth_sign_in_and_retrieve_data_with_credential_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_and_retrieve_data_with_credential_result_478FADE8BAB4 },
+            { "__EXT_JNI__firebase_auth_sign_in_anonymously_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_anonymously_result_2D4C4DDA3F39 },
+            { "__EXT_JNI__firebase_auth_sign_in_with_email_and_password_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_sign_in_with_email_and_password_result_EE0DBFBD01F6 },
+            { "__EXT_JNI__firebase_auth_create_user_with_email_and_password_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_create_user_with_email_and_password_result_7C4BA9044FBC },
             { "__EXT_JNI__firebase_auth_user_provider_data_count", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_provider_data_count_522CFA3CC4B9 },
             { "__EXT_JNI__firebase_auth_user_provider_data_at", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_provider_data_at_4BA24292134A },
-            { "__EXT_JNI__firebase_auth_user_reauthenticate_with_provider", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_with_provider_A12185BB2061 },
-            { "__EXT_JNI__firebase_auth_user_link_with_provider", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_provider_1600D1235B3E },
-            { "__EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_result_AE971A84F6D8 },
-            { "__EXT_JNI__firebase_auth_user_link_with_credential_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_credential_result_94130CA9F9F9 },
-            { "__EXT_JNI__firebase_auth_user_update_phone_number_credential", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_phone_number_credential_B461DF1EEC40 },
+            { "__EXT_JNI__firebase_auth_user_reauthenticate_with_provider", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_with_provider_A019830DB875 },
+            { "__EXT_JNI__firebase_auth_user_link_with_provider", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_provider_FF8EABD47FE8 },
+            { "__EXT_JNI__firebase_auth_user_reauthenticate_and_retrieve_data_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_reauthenticate_and_retrieve_data_result_56B603FCDDDD },
+            { "__EXT_JNI__firebase_auth_user_link_with_credential_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_link_with_credential_result_5203BC9A8EAD },
+            { "__EXT_JNI__firebase_auth_user_update_phone_number_credential", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_user_update_phone_number_credential_35DBFB6057DA },
             { "__EXT_JNI__firebase_database_ref_key", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_database_ref_key_0C0E4238EA0C },
             { "__EXT_JNI__firebase_database_ref_is_root", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_is_root_046C02BC7276 },
             { "__EXT_JNI__firebase_database_ref_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_is_valid_AF6BF2E9046E },
@@ -9558,11 +10230,11 @@ extern "C" {
             { "__EXT_JNI__firebase_database_ref_get_url", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_database_ref_get_url_EC17684F24FB },
             { "__EXT_JNI__firebase_database_server_timestamp", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_server_timestamp_BACA8FA84891 },
             { "__EXT_JNI__firebase_database_ref_on_disconnect", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_ref_on_disconnect_67F1FC71AA26 },
-            { "__EXT_JNI__firebase_database_on_disconnect_cancel", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_cancel_350430E37E46 },
-            { "__EXT_JNI__firebase_database_on_disconnect_remove_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_remove_value_09AB574BDF42 },
-            { "__EXT_JNI__firebase_database_on_disconnect_set_value", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_set_value_8C9879B58318 },
-            { "__EXT_JNI__firebase_database_on_disconnect_set_value_and_priority", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_set_value_and_priority_579CBA4F1826 },
-            { "__EXT_JNI__firebase_database_on_disconnect_update_children", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_update_children_A4E6CC040DCB },
+            { "__EXT_JNI__firebase_database_on_disconnect_cancel", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_cancel_7C4A8A1E005D },
+            { "__EXT_JNI__firebase_database_on_disconnect_remove_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_remove_value_DB40DE49A5F7 },
+            { "__EXT_JNI__firebase_database_on_disconnect_set_value", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_set_value_1E624839CBB6 },
+            { "__EXT_JNI__firebase_database_on_disconnect_set_value_and_priority", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_set_value_and_priority_B151FE22D351 },
+            { "__EXT_JNI__firebase_database_on_disconnect_update_children", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_update_children_576B51B00D08 },
             { "__EXT_JNI__firebase_database_on_disconnect_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_database_on_disconnect_release_FDE69CCA9003 },
             { "__EXT_JNI__firebase_firestore_field_path_create", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_path_create_807E9ED4AD4A },
             { "__EXT_JNI__firebase_firestore_field_path_document_id", "()D", (void*)__JNI_WRAPPER__firebase_firestore_field_path_document_id_F8471A8E1916 },
@@ -9607,19 +10279,19 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_query_count", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_count_B6FF6FD99085 },
             { "__EXT_JNI__firebase_firestore_aggregate_query_get_query", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_query_get_query_662C4A13AA57 },
             { "__EXT_JNI__firebase_firestore_aggregate_query_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_query_is_valid_701C9C6D9D1D },
-            { "__EXT_JNI__firebase_firestore_aggregate_query_get", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_query_get_A891133DDF7C },
+            { "__EXT_JNI__firebase_firestore_aggregate_query_get", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_query_get_E44755B5761D },
             { "__EXT_JNI__firebase_firestore_aggregate_query_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_query_release_0FE784505115 },
             { "__EXT_JNI__firebase_firestore_aggregate_snapshot_count", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_snapshot_count_09B005022981 },
             { "__EXT_JNI__firebase_firestore_aggregate_snapshot_get_query", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_snapshot_get_query_BCAA259F8733 },
             { "__EXT_JNI__firebase_firestore_aggregate_snapshot_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_snapshot_is_valid_511A78DF16A8 },
             { "__EXT_JNI__firebase_firestore_aggregate_snapshot_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_aggregate_snapshot_release_AB5BBABE7A4E },
             { "__EXT_JNI__firebase_firestore_add_snapshots_in_sync_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_add_snapshots_in_sync_listener_6973F69E1EFF },
-            { "__EXT_JNI__firebase_firestore_load_bundle", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_load_bundle_6F8D65398ECE },
-            { "__EXT_JNI__firebase_firestore_named_query", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_named_query_98C64523899C },
-            { "__EXT_JNI__firebase_firestore_document_ref_set_merge_field_paths", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_field_paths_2F412371666C },
+            { "__EXT_JNI__firebase_firestore_load_bundle", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_load_bundle_5FA222001CAD },
+            { "__EXT_JNI__firebase_firestore_named_query", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_named_query_F2F6C25C481D },
+            { "__EXT_JNI__firebase_firestore_document_ref_set_merge_field_paths", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_set_merge_field_paths_C125F8D34A7E },
             { "__EXT_JNI__firebase_firestore_write_batch_set_merge_field_paths", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_set_merge_field_paths_D137D7FD76D2 },
             { "__EXT_JNI__firebase_storage_metadata_md5_hash", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_storage_metadata_md5_hash_24B290EF9EC3 },
-            { "__EXT_JNI__firebase_remote_config_ensure_initialized_info", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_ensure_initialized_info_6EF9AB530C06 },
+            { "__EXT_JNI__firebase_remote_config_ensure_initialized_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_ensure_initialized_info_6100686A7469 },
             { "__EXT_JNI__firebase_remote_config_get_boolean_with_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_boolean_with_info_52D73BC15A10 },
             { "__EXT_JNI__firebase_remote_config_get_long_with_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_long_with_info_399527789B22 },
             { "__EXT_JNI__firebase_remote_config_get_double_with_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_double_with_info_3F9167973BAE },
@@ -9654,7 +10326,7 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_query_get_firestore", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_query_get_firestore_DA5CA5AAE39A },
             { "__EXT_JNI__firebase_firestore_document_ref_get_firestore", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_get_firestore_ACE86A298E84 },
             { "__EXT_JNI__firebase_firestore_document_ref_to_string", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_to_string_0EA5138C8BDB },
-            { "__EXT_JNI__firebase_firestore_document_ref_update_field_paths", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_update_field_paths_5A964EA55C68 },
+            { "__EXT_JNI__firebase_firestore_document_ref_update_field_paths", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_ref_update_field_paths_052100E392BE },
             { "__EXT_JNI__firebase_firestore_write_batch_update_field_paths", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_update_field_paths_01A0982BD5E8 },
             { "__EXT_JNI__firebase_firestore_write_batch_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_write_batch_is_valid_599AFAFC9E47 },
             { "__EXT_JNI__firebase_firestore_settings_to_string", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_settings_to_string_F7969888F836 },
@@ -9708,15 +10380,15 @@ extern "C" {
             { "__EXT_JNI__firebase_installations_get_instance_handle", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_instance_handle_ABB14A64F7F2 },
             { "__EXT_JNI__firebase_installations_get_instance_for_app", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_get_instance_for_app_D6CBA7FC6CA5 },
             { "__EXT_JNI__firebase_installations_instance_get_app", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_get_app_7B69B5ED6EF0 },
-            { "__EXT_JNI__firebase_installations_instance_get_id", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_get_id_27FC03CDF6A9 },
-            { "__EXT_JNI__firebase_installations_instance_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_get_token_79D8273A16CA },
-            { "__EXT_JNI__firebase_installations_instance_delete", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_delete_C2FC60CDEC3C },
+            { "__EXT_JNI__firebase_installations_instance_get_id", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_get_id_C744EE731F1D },
+            { "__EXT_JNI__firebase_installations_instance_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_get_token_1CD7B4998BA4 },
+            { "__EXT_JNI__firebase_installations_instance_delete", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_installations_instance_delete_9542B08A3E83 },
             { "__EXT_JNI__firebase_app_check_get_instance_handle", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_instance_handle_EC9D9C3437AC },
             { "__EXT_JNI__firebase_app_check_get_instance_for_app", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_get_instance_for_app_61ED37D926C6 },
             { "__EXT_JNI__firebase_app_check_instance_get_app", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_get_app_9342B67476BB },
             { "__EXT_JNI__firebase_app_check_instance_set_token_auto_refresh_enabled", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_set_token_auto_refresh_enabled_4C4F03F63026 },
-            { "__EXT_JNI__firebase_app_check_instance_get_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_get_token_1D174591A0B2 },
-            { "__EXT_JNI__firebase_app_check_instance_get_limited_use_token", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_get_limited_use_token_1D108E674710 },
+            { "__EXT_JNI__firebase_app_check_instance_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_get_token_5BD459ACEAC9 },
+            { "__EXT_JNI__firebase_app_check_instance_get_limited_use_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_get_limited_use_token_B076A1C18910 },
             { "__EXT_JNI__firebase_app_check_instance_add_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_app_check_instance_add_listener_0B82D99B96F0 },
             { "__EXT_JNI__firebase_firestore_document_snapshot_metadata_to_string", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_document_snapshot_metadata_to_string_595CBE6A042C },
             { "__EXT_JNI__firebase_firestore_query_snapshot_metadata_to_string", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_firestore_query_snapshot_metadata_to_string_F4942CDF6CF6 },
@@ -9739,7 +10411,7 @@ extern "C" {
             { "__EXT_JNI__firebase_auth_play_games_auth_provider_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_auth_play_games_auth_provider_id_649A77B11D3F },
             { "__EXT_JNI__firebase_auth_twitter_auth_provider_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_auth_twitter_auth_provider_id_0A072293DEC4 },
             { "__EXT_JNI__firebase_auth_yahoo_auth_provider_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_auth_yahoo_auth_provider_id_80664E2E07B3 },
-            { "__EXT_JNI__firebase_auth_game_center_auth_provider_get_credential_last_result", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_last_result_2C2EFE07EC4E },
+            { "__EXT_JNI__firebase_auth_game_center_auth_provider_get_credential_last_result", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_game_center_auth_provider_get_credential_last_result_732C88E58E26 },
         };
 
         env->RegisterNatives(bridgeClass, methods, sizeof(methods)/sizeof(methods[0]));

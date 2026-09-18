@@ -75,4 +75,11 @@
     firebase_firestore_field_value_release(_updated);
     firebase_firestore_field_value_release(_delete);
 
-    show_debug_message($"UPDATE started = {_started}");
+    show_debug_message($"UPDATE started = {_started == FirebaseError.Ok}");
+
+    if (_started != FirebaseError.Ok)
+    {
+        show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
+    }
+
+    firebase_firestore_document_ref_release(player_ref);

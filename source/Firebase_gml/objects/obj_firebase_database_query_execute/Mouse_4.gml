@@ -197,9 +197,9 @@ var _started = firebase_database_query_get_value(
 // CHECK IF REQUEST ACTUALLY STARTED
 // ----------------------------------------------------
 
-show_debug_message($"[GET] started = {_started}");
+show_debug_message($"[GET] started = {_started == FirebaseError.Ok}");
 
-if (!_started)
+if (_started != FirebaseError.Ok)
 {
     show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
 

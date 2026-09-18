@@ -1,5 +1,5 @@
 {
-  "$GMExtension":"",
+  "$GMExtension":"v1",
   "%Name":"GMFirebaseCrashlytics",
   "androidactivityinject":null,
   "androidclassname":"GMFirebaseCrashlytics",
@@ -49,8 +49,10 @@
   "iosSystemFrameworkEntries":[],
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
+  "maccodeinjection":"",
   "maccompilerflags":"",
   "maclinkerflags":"-ObjC",
+  "macProps":false,
   "macsourcedir":"",
   "name":"GMFirebaseCrashlytics",
   "options":[

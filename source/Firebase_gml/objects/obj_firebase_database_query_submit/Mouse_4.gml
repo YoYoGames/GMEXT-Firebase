@@ -1,6 +1,5 @@
 
 var _score = irandom_range(1,9999)
-show_message_async(_score)
 
 var _db = firebase_database_get_instance();
 var _ref_scores = firebase_database_get_reference_at_path(_db,"scores");
@@ -31,4 +30,5 @@ firebase_database_ref_set_value(
 );
 
 firebase_database_ref_release(_ref_score);
+firebase_database_ref_release(_ref_scores);
 

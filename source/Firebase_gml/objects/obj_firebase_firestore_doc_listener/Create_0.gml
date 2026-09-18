@@ -1,9 +1,3 @@
-event_inherited();
-
-text = "Doc Read"
-
-
-
 event_inherited()
 
 text = "Doc Listener"
@@ -12,18 +6,18 @@ player_listener = 0
 
 function firestore_demo_listener_start()
 {
+    if (player_listener != 0)
+    {
+        show_debug_message("Listener already active");
+        return;
+    }
+
 	var firestore = firebase_firestore_get_instance();
 
 	var player_ref = firebase_firestore_document(
 	        firestore,
 	        "players/USER_123"
 	    );
-	
-    if (player_listener != 0)
-    {
-        show_debug_message("Listener already active");
-        return;
-    }
 
 
     player_listener =
@@ -98,6 +92,8 @@ function firestore_demo_listener_start()
             }
         );
 
+    firebase_firestore_document_ref_release(player_ref);
+
 
     show_debug_message(
         $"Listener = {player_listener}"
@@ -110,13 +106,6 @@ function firestore_demo_listener_start()
 
 function firestore_demo_listener_stop()
 {
-	var firestore = firebase_firestore_get_instance();
-
-	var player_ref = firebase_firestore_document(
-	        firestore,
-	        "players/USER_123"
-	    );
-	
     if (player_listener == 0)
         return;
 

@@ -1,5 +1,5 @@
 {
-  "$GMExtension":"",
+  "$GMExtension":"v1",
   "%Name":"GMFirebaseInAppMessaging",
   "androidactivityinject":null,
   "androidclassname":"GMFirebaseInAppMessaging",
@@ -46,8 +46,10 @@
   "iosSystemFrameworkEntries":[],
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
+  "maccodeinjection":"",
   "maccompilerflags":"",
   "maclinkerflags":"-ObjC",
+  "macProps":false,
   "macsourcedir":"",
   "name":"GMFirebaseInAppMessaging",
   "options":[],

@@ -175,11 +175,11 @@ var _started = firebase_firestore_query_get(
 
 
 show_debug_message(
-    $"Query started = {_started}"
+    $"Query started = {_started == FirebaseError.Ok}"
 );
 
 
-if (!_started)
+if (_started != FirebaseError.Ok)
 {
     show_debug_message(
         $"[ERROR] {firebase_last_error_code()}: "

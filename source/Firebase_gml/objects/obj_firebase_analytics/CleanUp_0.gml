@@ -1,2 +1,5 @@
 
-firebase_analytics_terminate();
+if (initialized)
+{
+    firebase_analytics_terminate();
+}

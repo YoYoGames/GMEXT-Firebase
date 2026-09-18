@@ -50,7 +50,13 @@ var scores = firebase_firestore_collection(
 
 
     firebase_firestore_field_value_release(_timestamp);
+    firebase_firestore_collection_ref_release(scores);
 
-    show_debug_message($"ADD started = {_started}");
+    show_debug_message($"ADD started = {_started == FirebaseError.Ok}");
+
+    if (_started != FirebaseError.Ok)
+    {
+        show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
+    }
 
 

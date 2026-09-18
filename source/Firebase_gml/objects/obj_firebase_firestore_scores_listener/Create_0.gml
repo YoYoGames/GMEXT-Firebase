@@ -52,90 +52,98 @@ firebase_firestore_query_release(
 listener_query = _query;
 
 
-show_debug_message(
-    "=== START SCORES LISTENER ==="
-);
+function on_scores_changed(_error, _message, _snapshot)
+{
+    if (_error != 0)
+    {
+        show_debug_message(
+            $"[LISTENER ERROR] {_message}"
+        );
+
+        return;
+    }
 
 
-listener_ref =
-    firebase_firestore_query_add_snapshot_listener(
-        listener_query,
-
-        false,
-
-        function(_error, _message, _snapshot)
-        {
-            if (_error != 0)
-            {
-                show_debug_message(
-                    $"[LISTENER ERROR] {_message}"
-                );
-
-                return;
-            }
-
-
-            show_debug_message("");
-            show_debug_message(
-                "=== SCORES CHANGED ==="
-            );
-
-
-            var _documents =
-                firebase_firestore_query_snapshot_documents(
-                    _snapshot
-                );
-
-
-            show_debug_message(
-                $"Latest scores: {array_length(_documents)}"
-            );
-
-
-            for (
-                var i = 0;
-                i < array_length(_documents);
-                i++
-            )
-            {
-                var _doc =
-                    _documents[i];
-
-                var _id =
-                    firebase_firestore_document_snapshot_id(
-                        _doc
-                    );
-
-                var _data =
-                    firebase_firestore_document_snapshot_get_data(
-                        _doc,
-                        FirestoreServerTimestampBehavior.Estimate
-                    );
-
-
-                show_debug_message(
-                    $"#{i + 1} "
-                    + $"[{_id}] "
-                    + $"{_data.user} "
-                    + $"score={_data.score} "
-                    + $"mode={_data.mode}"
-                );
-
-
-                firebase_firestore_document_snapshot_release(
-                    _doc
-                );
-            }
-
-
-            firebase_firestore_query_snapshot_release(
-                _snapshot
-            );
-        }
+    show_debug_message("");
+    show_debug_message(
+        "=== SCORES CHANGED ==="
     );
 
 
-show_debug_message(
-    $"Listener = {listener_ref}"
-);
+    var _documents =
+        firebase_firestore_query_snapshot_documents(
+            _snapshot
+        );
 
+
+    show_debug_message(
+        $"Latest scores: {array_length(_documents)}"
+    );
+
+
+    for (
+        var i = 0;
+        i < array_length(_documents);
+        i++
+    )
+    {
+        var _doc =
+            _documents[i];
+
+        var _id =
+            firebase_firestore_document_snapshot_id(
+                _doc
+            );
+
+        var _data =
+            firebase_firestore_document_snapshot_get_data(
+                _doc,
+                FirestoreServerTimestampBehavior.Estimate
+            );
+
+
+        show_debug_message(
+            $"#{i + 1} "
+            + $"[{_id}] "
+            + $"{_data.user} "
+            + $"score={_data.score} "
+            + $"mode={_data.mode}"
+        );
+
+
+        firebase_firestore_document_snapshot_release(
+            _doc
+        );
+    }
+
+
+    firebase_firestore_query_snapshot_release(
+        _snapshot
+    );
+}
+
+
+function scores_listener_start()
+{
+    show_debug_message(
+        "=== START SCORES LISTENER ==="
+    );
+
+
+    listener_ref =
+        firebase_firestore_query_add_snapshot_listener(
+            listener_query,
+
+            false,
+
+            on_scores_changed
+        );
+
+
+    show_debug_message(
+        $"Listener = {listener_ref}"
+    );
+}
+
+
+scores_listener_start();

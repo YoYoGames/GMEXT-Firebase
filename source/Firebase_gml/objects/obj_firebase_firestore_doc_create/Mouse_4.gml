@@ -150,5 +150,11 @@ firebase_firestore_field_value_release(_guild_value);
 firebase_firestore_field_value_release(_null);
 
 firebase_firestore_document_ref_release(_guild_ref);
+firebase_firestore_document_ref_release(player_ref);
 
-show_debug_message($"CREATE started = {_started}");
+show_debug_message($"CREATE started = {_started == FirebaseError.Ok}");
+
+if (_started != FirebaseError.Ok)
+{
+    show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
+}

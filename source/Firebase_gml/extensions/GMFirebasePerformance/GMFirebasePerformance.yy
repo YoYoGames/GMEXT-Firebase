@@ -1,5 +1,5 @@
 {
-  "$GMExtension":"",
+  "$GMExtension":"v1",
   "%Name":"GMFirebasePerformance",
   "androidactivityinject":null,
   "androidclassname":"GMFirebasePerformance",
@@ -51,8 +51,10 @@
   "iosSystemFrameworkEntries":[],
   "iosThirdPartyFrameworkEntries":[],
   "license":"",
+  "maccodeinjection":"",
   "maccompilerflags":"",
   "maclinkerflags":"-ObjC",
+  "macProps":false,
   "macsourcedir":"",
   "name":"GMFirebasePerformance",
   "options":[],

@@ -20,3 +20,5 @@
             );
         }
     );
+
+    firebase_firestore_document_ref_release(player_ref);

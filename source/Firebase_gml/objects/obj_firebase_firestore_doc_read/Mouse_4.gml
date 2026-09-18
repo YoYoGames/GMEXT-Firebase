@@ -110,7 +110,14 @@
         }
     );
 
-    show_debug_message($"READ started = {_started}");
+    show_debug_message($"READ started = {_started == FirebaseError.Ok}");
+
+    if (_started != FirebaseError.Ok)
+    {
+        show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
+    }
+
+    firebase_firestore_document_ref_release(player_ref);
 
 
 

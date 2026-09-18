@@ -1,5 +1,7 @@
 
-if (!firebase_analytics_initialize())
+initialized = firebase_analytics_initialize();
+
+if (!initialized)
 {
     show_debug_message("Analytics initialization failed");
     exit;

@@ -13,6 +13,7 @@ firebase_database_ref_set_value(_player_presence, {online: true,connected: fireb
 
 
 var _disconnect = firebase_database_ref_on_disconnect(_player_presence);
+firebase_database_ref_release(_player_presence);
 
 firebase_database_on_disconnect_remove_value(
     _disconnect,
@@ -24,6 +25,14 @@ firebase_database_on_disconnect_remove_value(
                 "Player will disappear on disconnect"
             );
         }
+        else
+        {
+            show_debug_message(
+                $"Realtime DB: on_disconnect_remove_value failed ({_error}) {_message}"
+            );
+        }
     }
 );
+
+firebase_database_on_disconnect_release(_disconnect);
 

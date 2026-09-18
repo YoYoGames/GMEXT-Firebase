@@ -13,9 +13,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # =============================================================================
 # GameMaker iOS integration (optional)
 # =============================================================================
-# Leave empty and pass -DEXT_GM_XCODEPROJ=<path> at configure time, or put a local .xcodeproj
-# path here to hard-override it.
-set(EXT_GM_XCODEPROJ_OVERRIDE "" CACHE STRING "" FORCE)
+# The GameMaker-exported demo project on the build Mac. GameMaker exports to
+# ~/GameMakerStudio2/GM_IOS/<Project>/<Project>/<Project>.xcodeproj (CMake expands the leading
+# ~), and its Pods/ folder after `pod install` supplies the Firebase headers the three
+# platform-SDK wrappers compile against; the integrate_gamemaker target reads it too. Leave
+# empty to pass -DEXT_GM_XCODEPROJ=<path> at configure time instead.
+set(EXT_GM_XCODEPROJ_OVERRIDE "~/GameMakerStudio2/GM_IOS/Firebase/Firebase/Firebase.xcodeproj" CACHE FILEPATH "" FORCE)
 set(EXT_GM_APP_TARGET_OVERRIDE "" CACHE STRING "" FORCE)
 
 # =============================================================================

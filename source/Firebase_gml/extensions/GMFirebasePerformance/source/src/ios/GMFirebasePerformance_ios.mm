@@ -35,7 +35,7 @@ namespace
                 length:value.size()
                 encoding:NSUTF8StringEncoding];
 
-        return result ?: @"";
+        return result != nil ? result : @"";
     }
 
 

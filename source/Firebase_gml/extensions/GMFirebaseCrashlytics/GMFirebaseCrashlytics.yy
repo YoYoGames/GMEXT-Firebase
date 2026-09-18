@@ -47,7 +47,9 @@
   "iosplistinject":null,
   "iosProps":true,
   "iosSystemFrameworkEntries":[],
-  "iosThirdPartyFrameworkEntries":[],
+  "iosThirdPartyFrameworkEntries":[
+    {"$GMExtensionFrameworkEntry":"","%Name":"GMFirebaseCrashlytics.xcframework","embed":0,"name":"GMFirebaseCrashlytics.xcframework","resourceType":"GMExtensionFrameworkEntry","resourceVersion":"2.0","weakReference":false,},
+  ],
   "license":"",
   "maccodeinjection":"",
   "maccompilerflags":"",

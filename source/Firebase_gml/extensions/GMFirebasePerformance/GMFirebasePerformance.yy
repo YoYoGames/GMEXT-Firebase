@@ -49,7 +49,9 @@
   "iosplistinject":null,
   "iosProps":true,
   "iosSystemFrameworkEntries":[],
-  "iosThirdPartyFrameworkEntries":[],
+  "iosThirdPartyFrameworkEntries":[
+    {"$GMExtensionFrameworkEntry":"","%Name":"GMFirebasePerformance.xcframework","embed":0,"name":"GMFirebasePerformance.xcframework","resourceType":"GMExtensionFrameworkEntry","resourceVersion":"2.0","weakReference":false,},
+  ],
   "license":"",
   "maccodeinjection":"",
   "maccompilerflags":"",

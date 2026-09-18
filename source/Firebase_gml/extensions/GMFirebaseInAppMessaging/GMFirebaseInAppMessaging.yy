@@ -44,7 +44,9 @@
   "iosplistinject":null,
   "iosProps":true,
   "iosSystemFrameworkEntries":[],
-  "iosThirdPartyFrameworkEntries":[],
+  "iosThirdPartyFrameworkEntries":[
+    {"$GMExtensionFrameworkEntry":"","%Name":"GMFirebaseInAppMessaging.xcframework","embed":0,"name":"GMFirebaseInAppMessaging.xcframework","resourceType":"GMExtensionFrameworkEntry","resourceVersion":"2.0","weakReference":false,},
+  ],
   "license":"",
   "maccodeinjection":"",
   "maccompilerflags":"",

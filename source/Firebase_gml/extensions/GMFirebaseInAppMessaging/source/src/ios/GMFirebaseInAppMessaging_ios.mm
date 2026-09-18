@@ -31,7 +31,7 @@ namespace
                 length:value.size()
                 encoding:NSUTF8StringEncoding];
 
-        return result ?: @"";
+        return result != nil ? result : @"";
     }
 
 
@@ -146,7 +146,7 @@ namespace
                 initWithData:jsonData
                 encoding:NSUTF8StringEncoding];
 
-        return toString(json ?: @"{}");
+        return toString(json != nil ? json : @"{}");
     }
 
 

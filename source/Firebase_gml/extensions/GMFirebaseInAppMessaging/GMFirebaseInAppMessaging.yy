@@ -39,7 +39,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"",
-  "ioscodeinjection":"<YYIosCocoaPods>\r\n\r\n    # Keep the same Firebase Apple version as the rest of GMFirebase.\r\npod 'FirebaseInAppMessaging', '12.17.0-beta'\r\n\r\n</YYIosCocoaPods>\r\n\r\n\r\n<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseInAppMessaging_disableDataCollection}'>\r\n        <key>FirebaseInAppMessagingAutomaticDataCollectionEnabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n",
+  "ioscodeinjection":"<YYIosCocoaPods>\r\n\r\n    # Keep the same Firebase Apple version as the rest of GMFirebase.\r\npod 'FirebaseInAppMessaging', '12.19.0-beta'\r\n\r\n</YYIosCocoaPods>\r\n\r\n\r\n<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseInAppMessaging_disableDataCollection}'>\r\n        <key>FirebaseInAppMessagingAutomaticDataCollectionEnabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n",
   "iosdelegatename":"",
   "iosplistinject":null,
   "iosProps":true,

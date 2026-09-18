@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <map>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -349,6 +350,41 @@ FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue
 		entries.push_back({ key_storage[i].c_str(), value_storage[i] });
 
 	rc->SetDefaults(entries.data(), entries.size()).OnCompletion([callback](const firebase::Future<void>& f)
+	{
+		completeFuture(callback, f);
+	});
+	return FirebaseError::Ok;
+}
+
+// callback(error_code: real, error_message: string)
+FirebaseError firebase_remote_config_set_custom_signals(uint64_t rc_ref, const GMValue& signals, const std::optional<GMFunction>& callback)
+{
+	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
+	if (rc == nullptr) return FirebaseError::InvalidHandle;
+
+	if (!signals.is<GMObjectView>())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_remote_config_set_custom_signals: signals must be a struct");
+		return FirebaseError::InvalidArgument;
+	}
+
+	// The SDK takes string, int64 and double, and null to remove a signal
+	// (remote_config_desktop.cc validates exactly that set); a bool would be
+	// rejected there on desktop and dropped with a log on iOS, so it is
+	// refused here like a container is.
+	std::map<std::string, firebase::Variant> entries;
+	for (const auto& pair : signals.as<GMObjectView>())
+	{
+		firebase::Variant variant = gmValueToVariant(pair.second);
+		if (variant.is_container_type() || variant.is_bool())
+		{
+			setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_remote_config_set_custom_signals: value for key '" + std::string(pair.first) + "' must be a number, a string, or undefined to remove the signal");
+			return FirebaseError::InvalidArgument;
+		}
+		entries.emplace(std::string(pair.first), std::move(variant));
+	}
+
+	rc->SetCustomSignals(entries).OnCompletion([callback](const firebase::Future<void>& f)
 	{
 		completeFuture(callback, f);
 	});

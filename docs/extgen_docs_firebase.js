@@ -2846,6 +2846,15 @@
  */
 
 /**
+ * @function_partial firebase_remote_config_set_custom_signals
+ * @param {Real} rc_ref
+ * @param {Any} signals
+ * @param {Function} [callback]
+ * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_remote_config_get_info
  * @param {Real} rc_ref
  * @returns {Struct.FirebaseRemoteConfigInfo}
@@ -2879,6 +2888,18 @@
  */
 
 /**
+ * @function_partial firebase_messaging_set_registration_on_init_enabled
+ * @param {Real} enabled
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_is_registration_on_init_enabled
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_messaging_set_token_registration_on_init_enabled
  * @param {Real} enabled
  * @function_end
@@ -2904,6 +2925,20 @@
 
 /**
  * @function_partial firebase_messaging_request_permission
+ * @param {Function} [callback]
+ * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_register
+ * @param {Function} [callback]
+ * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_unregister
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -2942,6 +2977,24 @@
 /**
  * @function_partial firebase_messaging_poll_message
  * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_poll_registration
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_poll_unregistration
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_messaging_current_installation_id
+ * @returns {String}
  * @function_end
  */
 

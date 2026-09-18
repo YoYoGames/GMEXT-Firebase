@@ -128,10 +128,6 @@ setupDesktop() {
     echo "[FirebaseSetup] Desktop Firebase config resolved: $FILE_PATH"
 }
 
-setupHTML5() {
-    echo "[FirebaseSetup] HTML5: no native Firebase C++ staging required."
-}
-
 scriptInit
 
 optionGetValue "versionStable" RUNTIME_VERSION_STABLE

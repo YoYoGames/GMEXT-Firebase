@@ -1524,6 +1524,10 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
+    public double __EXT_NATIVE__firebase_remote_config_set_custom_signals(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    {
+        return __EXT_JNI__firebase_remote_config_set_custom_signals(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    }
     public double __EXT_NATIVE__firebase_remote_config_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
         return __EXT_JNI__firebase_remote_config_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1543,6 +1547,14 @@ public class GMFirebaseInternal extends RunnerSocial {
     public double __EXT_NATIVE__firebase_messaging_terminate()
     {
         return __EXT_JNI__firebase_messaging_terminate();
+    }
+    public double __EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled(double enabled)
+    {
+        return __EXT_JNI__firebase_messaging_set_registration_on_init_enabled(enabled);
+    }
+    public double __EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled()
+    {
+        return __EXT_JNI__firebase_messaging_is_registration_on_init_enabled();
     }
     public double __EXT_NATIVE__firebase_messaging_set_token_registration_on_init_enabled(double enabled)
     {
@@ -1564,6 +1576,14 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
+    public double __EXT_NATIVE__firebase_messaging_register(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    {
+        return __EXT_JNI__firebase_messaging_register(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    }
+    public double __EXT_NATIVE__firebase_messaging_unregister(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
+    {
+        return __EXT_JNI__firebase_messaging_unregister(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+    }
     public double __EXT_NATIVE__firebase_messaging_get_token(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
         return __EXT_JNI__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1583,6 +1603,18 @@ public class GMFirebaseInternal extends RunnerSocial {
     public double __EXT_NATIVE__firebase_messaging_poll_message()
     {
         return __EXT_JNI__firebase_messaging_poll_message();
+    }
+    public double __EXT_NATIVE__firebase_messaging_poll_registration()
+    {
+        return __EXT_JNI__firebase_messaging_poll_registration();
+    }
+    public double __EXT_NATIVE__firebase_messaging_poll_unregistration()
+    {
+        return __EXT_JNI__firebase_messaging_poll_unregistration();
+    }
+    public String __EXT_NATIVE__firebase_messaging_current_installation_id()
+    {
+        return __EXT_JNI__firebase_messaging_current_installation_id();
     }
     public double __EXT_NATIVE__firebase_messaging_poll_token()
     {

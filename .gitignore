@@ -1,4 +1,4 @@
-source/Firebase_gml/options/extensions/*
+source/Firebase_gml/options/
 output/
 
 *.sh-e
@@ -24,3 +24,7 @@ source/Firebase_cloud/
 
 source/Firebase_gml/node_modules/
 source/Firebase_gml/.gm-cli-cache/
+cache/
+.DS_Store
+*.user
+**/.claude/

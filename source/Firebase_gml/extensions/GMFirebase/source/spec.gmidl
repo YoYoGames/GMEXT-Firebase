@@ -3101,6 +3101,19 @@ function firebase_remote_config_set_defaults(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
+// signals: a GML struct {key: value, ...} of custom signals sent with every
+// fetch for Remote Config targeting; each value must be a real or string, and
+// undefined removes that signal. Merges with the signals already set. A bool,
+// array or struct value returns FirebaseError.InvalidArgument naming the key;
+// the SDK's own limits (key length, signal count) fail in the callback.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_remote_config_set_custom_signals(
+	[type_hint=`uint64`] rc_ref: gmval,
+	signals: gmval,
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
 [global, bind = typed_gml, type_hint=`FirebaseRemoteConfigInfo`]
 function firebase_remote_config_get_info(
 	[type_hint=`uint64`] rc_ref: gmval
@@ -3149,11 +3162,24 @@ function firebase_messaging_initialize(): real;
 [global, bind = typed_gml]
 function firebase_messaging_terminate(): unit;
 
+// Whether Initialize() registers this app instance with FCM on its own.
+// Recorded before firebase_messaging_initialize() and applied during it, which
+// is how a consent flow keeps the first launch unregistered.
+[global, bind = typed_gml]
+function firebase_messaging_set_registration_on_init_enabled(
+	enabled: real
+): unit;
+
+[global, bind = typed_gml]
+function firebase_messaging_is_registration_on_init_enabled(): real;
+
+// Deprecated: use firebase_messaging_set_registration_on_init_enabled().
 [global, bind = typed_gml]
 function firebase_messaging_set_token_registration_on_init_enabled(
 	enabled: real
 ): unit;
 
+// Deprecated: use firebase_messaging_is_registration_on_init_enabled().
 [global, bind = typed_gml]
 function firebase_messaging_is_token_registration_on_init_enabled(): real;
 
@@ -3171,12 +3197,33 @@ function firebase_messaging_request_permission(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
+// Registers this app instance with FCM: creates the Firebase Installation ID
+// if there is none and sends it to the backend. The callback reports the
+// outcome; the installation id itself arrives through
+// firebase_messaging_poll_registration(), also when already registered.
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_messaging_register(
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+// Unregisters this app instance from FCM. The installation id is kept
+// (firebase_installations_delete() removes it); the unregistered id arrives
+// through firebase_messaging_poll_unregistration().
+// callback(error_code: real, error_message: string)
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_messaging_unregister(
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+// Deprecated: use firebase_messaging_register().
 // callback(error_code: real, error_message: string, token: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_get_token(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
+// Deprecated: use firebase_messaging_unregister().
 // callback(error_code: real, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_delete_token(
@@ -3202,11 +3249,31 @@ function firebase_messaging_unsubscribe(
 [global, bind = typed_gml]
 function firebase_messaging_poll_message(): real;
 
+// Returns 1 and refreshes firebase_messaging_current_installation_id() if a
+// registration with FCM completed since the last poll (after
+// firebase_messaging_register(), or on init when registration-on-init is
+// enabled); 0 otherwise.
+[global, bind = typed_gml]
+function firebase_messaging_poll_registration(): real;
+
+// Returns 1 and refreshes firebase_messaging_current_installation_id() if an
+// unregistration completed since the last poll; 0 otherwise.
+[global, bind = typed_gml]
+function firebase_messaging_poll_unregistration(): real;
+
+// The Firebase Installation ID the most recent successful poll above
+// delivered - the id to target this app instance with for direct-send
+// messages.
+[global, bind = typed_gml]
+function firebase_messaging_current_installation_id(): string;
+
+// Deprecated: use firebase_messaging_poll_registration().
 // Returns 1 and refreshes messaging_current_token() if a freshly-generated
 // registration token was pending; 0 otherwise.
 [global, bind = typed_gml]
 function firebase_messaging_poll_token(): real;
 
+// Deprecated: use firebase_messaging_current_installation_id().
 [global, bind = typed_gml]
 function firebase_messaging_current_token(): string;
 

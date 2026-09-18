@@ -21,9 +21,10 @@
 // one heap-allocated firebase::messaging::Listener between
 // firebase_messaging_initialize() and firebase_messaging_terminate() that
 // queues messages up to a fixed cap (the SDK's own PollableListener has
-// none) and holds the latest registration token, and exposes poll functions
-// plus per-field getters over the most recently polled message/token, which
-// GML is expected to call once per step from its own event loop.
+// none) and holds the latest registration token, installation id and
+// unregistered id, and exposes poll functions plus per-field getters over the
+// most recently polled message/token/id, which GML is expected to call once
+// per step from its own event loop.
 //
 // No other module in this extension needs this - GMFunction::call() is
 // itself thread-safe and every other Future<T>/Listener-based callback is

@@ -8,11 +8,12 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
-// Firebase C++ SDK deprecated the token-based FCM registration API in favor of
-// an Installation-ID-based model (Register()/Unregister()/OnRegistrationReceived),
-// but that model doesn't hand back the ID synchronously the way GetToken()/DeleteToken()
-// did. Keeping the deprecated calls preserves this extension's existing token-based
-// GML API contract; these macros just silence -Werror,-Wdeprecated-declarations at the call sites.
+// Firebase C++ SDK 13.12 deprecated the token-based FCM registration API in
+// favor of the Installation-ID model (Register()/Unregister() and
+// OnRegistrationReceived()), which this file exposes alongside. The token
+// functions stay for the GML API that already exists; these macros silence
+// -Werror,-Wdeprecated-declarations at the two SDK calls that remain, and go
+// when firebase_messaging_get_token()/_delete_token() do.
 #if defined(__clang__) || defined(__GNUC__)
 #define GMF_DEPRECATED_PUSH() _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #define GMF_DEPRECATED_POP() _Pragma("GCC diagnostic pop")
@@ -55,6 +56,24 @@ namespace
 			has_token_ = true;
 		}
 
+		// The SDK fires these with the Firebase Installation ID after Register()
+		// and Unregister() complete (and on init when registration-on-init is
+		// enabled). Like the token, only the latest of each is kept: the id is
+		// state, not a stream.
+		void OnRegistrationReceived(const char* installation_id) override
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			registration_ = installation_id != nullptr ? installation_id : "";
+			has_registration_ = true;
+		}
+
+		void OnUnregistrationReceived(const char* installation_id) override
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			unregistration_ = installation_id != nullptr ? installation_id : "";
+			has_unregistration_ = true;
+		}
+
 		bool pollMessage(firebase::messaging::Message& out)
 		{
 			std::lock_guard<std::mutex> lock(mutex_);
@@ -67,18 +86,41 @@ namespace
 		bool pollToken(std::string& out)
 		{
 			std::lock_guard<std::mutex> lock(mutex_);
-			if (!has_token_) return false;
-			out.swap(token_);
-			token_.clear();
-			has_token_ = false;
-			return true;
+			return take(token_, has_token_, out);
+		}
+
+		bool pollRegistration(std::string& out)
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			return take(registration_, has_registration_, out);
+		}
+
+		bool pollUnregistration(std::string& out)
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			return take(unregistration_, has_unregistration_, out);
 		}
 
 	private:
+		// Hands a pending value to the caller and clears the slot; the mutex is
+		// the caller's.
+		static bool take(std::string& slot, bool& pending, std::string& out)
+		{
+			if (!pending) return false;
+			out.swap(slot);
+			slot.clear();
+			pending = false;
+			return true;
+		}
+
 		std::mutex mutex_;
 		std::deque<firebase::messaging::Message> messages_;
 		std::string token_;
 		bool has_token_ = false;
+		std::string registration_;
+		bool has_registration_ = false;
+		std::string unregistration_;
+		bool has_unregistration_ = false;
 	};
 
 	// Handed to the SDK by address at Initialize(), so it has to outlive every
@@ -98,6 +140,7 @@ namespace
 	// back, never concurrently with itself.
 	firebase::messaging::Message g_current_message;
 	std::string g_current_token;
+	std::string g_current_installation_id;
 
 	// The SDK asserts (and aborts) inside RequestPermission/GetToken/
 	// DeleteToken/Subscribe/Unsubscribe when Initialize() has not run, so
@@ -162,25 +205,33 @@ void firebase_messaging_terminate()
 	g_firebase_messaging_listener = nullptr;
 	g_current_message = firebase::messaging::Message();
 	g_current_token.clear();
+	g_current_installation_id.clear();
 }
 
-// The four setters/getters below are deliberately not gated on initialisation:
+// The setters/getters below are deliberately not gated on initialisation:
 // the SDK records them as pending state before Initialize() and applies them
-// during it, which is how FCM's consent flow disables token registration
-// before the first init.
+// during it, which is how FCM's consent flow disables registration before
+// the first init. The token-named pair is the same SDK state under its
+// pre-13.12 name (Android forwards one to the other, iOS reads the same
+// autoInitEnabled), so both call the current entry points.
+void firebase_messaging_set_registration_on_init_enabled(double enabled)
+{
+	firebase::messaging::SetRegistrationOnInitEnabled(enabled >= 0.5);
+}
+
+double firebase_messaging_is_registration_on_init_enabled()
+{
+	return firebase::messaging::IsRegistrationOnInitEnabled() ? 1.0 : 0.0;
+}
+
 void firebase_messaging_set_token_registration_on_init_enabled(double enabled)
 {
-	GMF_DEPRECATED_PUSH()
-	firebase::messaging::SetTokenRegistrationOnInitEnabled(enabled >= 0.5);
-	GMF_DEPRECATED_POP()
+	firebase::messaging::SetRegistrationOnInitEnabled(enabled >= 0.5);
 }
 
 double firebase_messaging_is_token_registration_on_init_enabled()
 {
-	GMF_DEPRECATED_PUSH()
-	bool enabled = firebase::messaging::IsTokenRegistrationOnInitEnabled();
-	GMF_DEPRECATED_POP()
-	return enabled ? 1.0 : 0.0;
+	return firebase::messaging::IsRegistrationOnInitEnabled() ? 1.0 : 0.0;
 }
 
 double firebase_messaging_delivery_metrics_export_to_big_query_enabled()
@@ -204,6 +255,35 @@ FirebaseError firebase_messaging_request_permission(const std::optional<GMFuncti
 		return FirebaseError::NotInitialized;
 
 	firebase::messaging::RequestPermission().OnCompletion([callback](const firebase::Future<void>& f)
+	{
+		completeFuture(callback, f);
+	});
+	return FirebaseError::Ok;
+}
+
+// callback(error_code: real, error_message: string)
+// The installation id itself reaches GML through OnRegistrationReceived ->
+// firebase_messaging_poll_registration(), which the SDK fires on completion
+// whether or not the app was already registered.
+FirebaseError firebase_messaging_register(const std::optional<GMFunction>& callback)
+{
+	if (!messagingReady("firebase_messaging_register"))
+		return FirebaseError::NotInitialized;
+
+	firebase::messaging::Register().OnCompletion([callback](const firebase::Future<void>& f)
+	{
+		completeFuture(callback, f);
+	});
+	return FirebaseError::Ok;
+}
+
+// callback(error_code: real, error_message: string)
+FirebaseError firebase_messaging_unregister(const std::optional<GMFunction>& callback)
+{
+	if (!messagingReady("firebase_messaging_unregister"))
+		return FirebaseError::NotInitialized;
+
+	firebase::messaging::Unregister().OnCompletion([callback](const firebase::Future<void>& f)
 	{
 		completeFuture(callback, f);
 	});
@@ -280,6 +360,29 @@ double firebase_messaging_poll_message()
 	if (!messagingReady("firebase_messaging_poll_message")) return 0.0;
 
 	return g_firebase_messaging_listener->pollMessage(g_current_message) ? 1.0 : 0.0;
+}
+
+// Returns 1 and refreshes firebase_messaging_current_installation_id() if a
+// registration completed since the last poll; 0 otherwise.
+double firebase_messaging_poll_registration()
+{
+	if (!messagingReady("firebase_messaging_poll_registration")) return 0.0;
+
+	return g_firebase_messaging_listener->pollRegistration(g_current_installation_id) ? 1.0 : 0.0;
+}
+
+// Returns 1 and refreshes firebase_messaging_current_installation_id() if an
+// unregistration completed since the last poll; 0 otherwise.
+double firebase_messaging_poll_unregistration()
+{
+	if (!messagingReady("firebase_messaging_poll_unregistration")) return 0.0;
+
+	return g_firebase_messaging_listener->pollUnregistration(g_current_installation_id) ? 1.0 : 0.0;
+}
+
+std::string firebase_messaging_current_installation_id()
+{
+	return g_current_installation_id;
 }
 
 // Returns 1 and refreshes firebase_messaging_current_token() if a freshly-generated

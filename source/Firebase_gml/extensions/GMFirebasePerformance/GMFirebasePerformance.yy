@@ -44,7 +44,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"",
-  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebasePerformance_disableDataCollection}'>\r\n        <key>firebase_performance_collection_enabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebasePerformance', '12.17.0'\r\n\r\n</YYIosCocoaPods>\r\n",
+  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebasePerformance_disableDataCollection}'>\r\n        <key>firebase_performance_collection_enabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebasePerformance', '12.19.0'\r\n\r\n</YYIosCocoaPods>\r\n",
   "iosdelegatename":"",
   "iosplistinject":null,
   "iosProps":true,

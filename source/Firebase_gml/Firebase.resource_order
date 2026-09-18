@@ -51,6 +51,7 @@
     {"name":"obj_firebase_authentication_token","order":6,"path":"objects/obj_firebase_authentication_token/obj_firebase_authentication_token.yy",},
     {"name":"obj_firebase_cloud_messaging_get_token","order":1,"path":"objects/obj_firebase_cloud_messaging_get_token/obj_firebase_cloud_messaging_get_token.yy",},
     {"name":"obj_firebase_cloud_messaging","order":2,"path":"objects/obj_firebase_cloud_messaging/obj_firebase_cloud_messaging.yy",},
+    {"name":"obj_firebase_cloud_messaging_register","order":3,"path":"objects/obj_firebase_cloud_messaging_register/obj_firebase_cloud_messaging_register.yy",},
     {"name":"obj_firebase_crashlytics_crash","order":7,"path":"objects/obj_firebase_crashlytics_crash/obj_firebase_crashlytics_crash.yy",},
     {"name":"obj_firebase_crashlytics_delete_unsent_reports","order":9,"path":"objects/obj_firebase_crashlytics_delete_unsent_reports/obj_firebase_crashlytics_delete_unsent_reports.yy",},
     {"name":"obj_firebase_crashlytics_log","order":4,"path":"objects/obj_firebase_crashlytics_log/obj_firebase_crashlytics_log.yy",},

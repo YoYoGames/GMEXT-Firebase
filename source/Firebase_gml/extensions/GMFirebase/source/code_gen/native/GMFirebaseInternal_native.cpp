@@ -5891,6 +5891,31 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_defaults(char* __arg_bu
     return 0;
 }
 
+GMEXPORT double __EXT_NATIVE__firebase_remote_config_set_custom_signals(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: rc_ref, type: UInt64
+    std::uint64_t rc_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: signals, type: Any
+    gm::wire::GMValue signals = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    // field: callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
+    auto&& __result = firebase_remote_config_set_custom_signals(rc_ref, signals, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
 GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
@@ -5951,6 +5976,18 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_terminate()
     return 0;
 }
 
+GMEXPORT double __EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled(double enabled)
+{
+    firebase_messaging_set_registration_on_init_enabled(static_cast<double>(enabled));
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled()
+{
+    auto&& __result = firebase_messaging_is_registration_on_init_enabled();
+    return static_cast<double>(__result);
+}
+
 GMEXPORT double __EXT_NATIVE__firebase_messaging_set_token_registration_on_init_enabled(double enabled)
 {
     firebase_messaging_set_token_registration_on_init_enabled(static_cast<double>(enabled));
@@ -5987,6 +6024,44 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_request_permission(char* __arg_
     }
 
     auto&& __result = firebase_messaging_request_permission(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_register(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
+    auto&& __result = firebase_messaging_register(callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_unregister(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
+    auto&& __result = firebase_messaging_unregister(callback);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
     // return: __result, type: enum FirebaseError
@@ -6080,6 +6155,25 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_message()
 {
     auto&& __result = firebase_messaging_poll_message();
     return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_registration()
+{
+    auto&& __result = firebase_messaging_poll_registration();
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_unregistration()
+{
+    auto&& __result = firebase_messaging_poll_unregistration();
+    return static_cast<double>(__result);
+}
+
+GMEXPORT char* __EXT_NATIVE__firebase_messaging_current_installation_id()
+{
+    static std::string __result;
+    __result = firebase_messaging_current_installation_id();
+    return (char*)__result.c_str();
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_poll_token()

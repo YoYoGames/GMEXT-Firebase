@@ -3,7 +3,7 @@
   "%Name": "GMFirebase",
   "androidactivityinject": null,
   "androidclassname": "GMFirebase",
-  "androidcodeinjection": "\u003CYYAndroidGradleDependencies\u003E\r\n\r\n    implementation platform(\u0027com.google.firebase:firebase-bom:34.17.0\u0027)\r\n\r\n\r\n    // Firebase modules\r\n    implementation \u0027com.google.firebase:firebase-analytics\u0027\r\n\r\n    implementation \u0027com.google.firebase:firebase-appcheck\u0027\r\n    implementation \u0027com.google.firebase:firebase-appcheck-debug\u0027\r\n    implementation \u0027com.google.firebase:firebase-appcheck-playintegrity\u0027\r\n\r\n    implementation \u0027com.google.firebase:firebase-auth\u0027\r\n    implementation \u0027com.google.firebase:firebase-database\u0027\r\n    implementation \u0027com.google.firebase:firebase-firestore\u0027\r\n    implementation \u0027com.google.firebase:firebase-functions\u0027\r\n    implementation \u0027com.google.firebase:firebase-installations\u0027\r\n    implementation \u0027com.google.firebase:firebase-messaging\u0027\r\n    implementation \u0027com.google.firebase:firebase-config\u0027\r\n    implementation \u0027com.google.firebase:firebase-storage\u0027\r\n\r\n\r\n    // Firebase C\u002B\u002B Messaging Java bridge.\r\n    // The pre-build script places the AAR in libs-aar/.\r\n    implementation files(\u0027libs-aar/firebase_messaging_cpp.aar\u0027)\r\n\r\n\r\n    // Firebase C\u002B\u002B 13.11 dependency.\r\n    implementation \u0027com.google.flatbuffers:flatbuffers-java:25.2.10\u0027\r\n\r\n\r\n    // GameMaker / AGP compatibility.\r\n    implementation \u0027androidx.core:core:1.16.0\u0027\r\n\r\n\r\n    // UMP / Google Play Services\r\n    implementation \u0027com.google.android.ump:user-messaging-platform:4.0.0\u0027\r\n    implementation \u0027com.google.android.gms:play-services-base:18.10.0\u0027\r\n\r\n\u003C/YYAndroidGradleDependencies\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidTopLevelGradleBuildscriptDependencies\u003E\r\n\r\n    classpath \u0027com.google.gms:google-services:4.5.0\u0027\r\n\r\n\u003C/YYAndroidTopLevelGradleBuildscriptDependencies\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidGradleEnd\u003E\r\n\r\n    apply plugin: \u0027com.google.gms.google-services\u0027\r\n\r\n\r\n    configurations.all\r\n    {\r\n        resolutionStrategy\r\n        {\r\n            force \u0027androidx.core:core:1.16.0\u0027\r\n            force \u0027androidx.core:core-ktx:1.16.0\u0027\r\n        }\r\n    }\r\n\r\n\r\n    // Firebase C\u002B\u002B SDK root.\r\n    def firebaseCppSdkPath =\r\n        $/${YYEXTOPT_GMFirebase_firebaseCppSdkPath}/$\r\n\r\n\r\n    def firebaseCppProguardDir =\r\n        new File(firebaseCppSdkPath, \u0022libs/android\u0022)\r\n\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022app.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022analytics.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022app_check.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022auth.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022database.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022firestore.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022functions.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022installations.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022messaging.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022remote_config.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022storage.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022ump.pro\u0022))\r\n\r\n\u003C/YYAndroidGradleEnd\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidManifestApplicationInject\u003E\r\n\r\n    \u003CtoExpand condition=\u0027${YYEXTOPT_GMFirebase_disableDataCollection}\u0027\u003E\r\n        \u003Cmeta-data\r\n            android:name=\u0022firebase_analytics_collection_enabled\u0022\r\n            android:value=\u0022false\u0022 /\u003E\r\n        \u003Cmeta-data\r\n            android:name=\u0022firebase_messaging_auto_init_enabled\u0022\r\n            android:value=\u0022false\u0022 /\u003E\r\n    \u003C/toExpand\u003E\r\n\r\n\u003C/YYAndroidManifestApplicationInject\u003E",
+  "androidcodeinjection": "\u003CYYAndroidGradleDependencies\u003E\r\n\r\n    implementation platform(\u0027com.google.firebase:firebase-bom:34.19.0\u0027)\r\n\r\n\r\n    // Firebase modules\r\n    implementation \u0027com.google.firebase:firebase-analytics\u0027\r\n\r\n    implementation \u0027com.google.firebase:firebase-appcheck\u0027\r\n    implementation \u0027com.google.firebase:firebase-appcheck-debug\u0027\r\n    implementation \u0027com.google.firebase:firebase-appcheck-playintegrity\u0027\r\n\r\n    implementation \u0027com.google.firebase:firebase-auth\u0027\r\n    implementation \u0027com.google.firebase:firebase-database\u0027\r\n    implementation \u0027com.google.firebase:firebase-firestore\u0027\r\n    implementation \u0027com.google.firebase:firebase-functions\u0027\r\n    implementation \u0027com.google.firebase:firebase-installations\u0027\r\n    implementation \u0027com.google.firebase:firebase-messaging\u0027\r\n    implementation \u0027com.google.firebase:firebase-config\u0027\r\n    implementation \u0027com.google.firebase:firebase-storage\u0027\r\n\r\n\r\n    // Firebase C\u002B\u002B Messaging Java bridge.\r\n    // The pre-build script places the AAR in libs-aar/.\r\n    implementation files(\u0027libs-aar/firebase_messaging_cpp.aar\u0027)\r\n\r\n\r\n    // Firebase C\u002B\u002B 13.13 dependency.\r\n    implementation \u0027com.google.flatbuffers:flatbuffers-java:25.2.10\u0027\r\n\r\n\r\n    // GameMaker / AGP compatibility.\r\n    implementation \u0027androidx.core:core:1.16.0\u0027\r\n\r\n\r\n    // UMP / Google Play Services\r\n    implementation \u0027com.google.android.ump:user-messaging-platform:4.0.0\u0027\r\n    implementation \u0027com.google.android.gms:play-services-base:18.10.0\u0027\r\n\r\n\u003C/YYAndroidGradleDependencies\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidTopLevelGradleBuildscriptDependencies\u003E\r\n\r\n    classpath \u0027com.google.gms:google-services:4.5.0\u0027\r\n\r\n\u003C/YYAndroidTopLevelGradleBuildscriptDependencies\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidGradleEnd\u003E\r\n\r\n    apply plugin: \u0027com.google.gms.google-services\u0027\r\n\r\n\r\n    configurations.all\r\n    {\r\n        resolutionStrategy\r\n        {\r\n            force \u0027androidx.core:core:1.16.0\u0027\r\n            force \u0027androidx.core:core-ktx:1.16.0\u0027\r\n        }\r\n    }\r\n\r\n\r\n    // Firebase C\u002B\u002B SDK root.\r\n    def firebaseCppSdkPath =\r\n        $/${YYEXTOPT_GMFirebase_firebaseCppSdkPath}/$\r\n\r\n\r\n    def firebaseCppProguardDir =\r\n        new File(firebaseCppSdkPath, \u0022libs/android\u0022)\r\n\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022app.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022analytics.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022app_check.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022auth.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022database.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022firestore.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022functions.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022installations.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022messaging.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022remote_config.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022storage.pro\u0022))\r\n\r\n    android.buildTypes.release.proguardFile(\r\n        new File(firebaseCppProguardDir, \u0022ump.pro\u0022))\r\n\r\n\u003C/YYAndroidGradleEnd\u003E\r\n\r\n\r\n\r\n\u003CYYAndroidManifestApplicationInject\u003E\r\n\r\n    \u003CtoExpand condition=\u0027${YYEXTOPT_GMFirebase_disableDataCollection}\u0027\u003E\r\n        \u003Cmeta-data\r\n            android:name=\u0022firebase_analytics_collection_enabled\u0022\r\n            android:value=\u0022false\u0022 /\u003E\r\n        \u003Cmeta-data\r\n            android:name=\u0022firebase_messaging_auto_init_enabled\u0022\r\n            android:value=\u0022false\u0022 /\u003E\r\n    \u003C/toExpand\u003E\r\n\r\n\u003C/YYAndroidManifestApplicationInject\u003E",
   "androidinject": null,
   "androidmanifestinject": null,
   "androidPermissions": [
@@ -7131,6 +7131,26 @@
         },
         {
           "$GMExtensionFunction": "",
+          "%Name": "__firebase_remote_config_set_custom_signals",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_remote_config_set_custom_signals",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_remote_config_set_custom_signals",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
           "%Name": "__firebase_remote_config_get_info",
           "argCount": 4,
           "args": [
@@ -7219,6 +7239,38 @@
         },
         {
           "$GMExtensionFunction": "",
+          "%Name": "firebase_messaging_set_registration_on_init_enabled",
+          "argCount": 1,
+          "args": [
+            2
+          ],
+          "documentation": "@param {Real} enabled\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled",
+          "help": "",
+          "hidden": false,
+          "kind": 4,
+          "name": "firebase_messaging_set_registration_on_init_enabled",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "firebase_messaging_is_registration_on_init_enabled",
+          "argCount": 0,
+          "args": [],
+          "documentation": "@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled",
+          "help": "",
+          "hidden": false,
+          "kind": 4,
+          "name": "firebase_messaging_is_registration_on_init_enabled",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
           "%Name": "firebase_messaging_set_token_registration_on_init_enabled",
           "argCount": 1,
           "args": [
@@ -7297,6 +7349,46 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_messaging_request_permission",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_messaging_register",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_register",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_messaging_register",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_messaging_unregister",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_unregister",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_messaging_unregister",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -7395,6 +7487,51 @@
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "firebase_messaging_poll_registration",
+          "argCount": 0,
+          "args": [],
+          "documentation": "@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_poll_registration",
+          "help": "",
+          "hidden": false,
+          "kind": 4,
+          "name": "firebase_messaging_poll_registration",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "firebase_messaging_poll_unregistration",
+          "argCount": 0,
+          "args": [],
+          "documentation": "@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_poll_unregistration",
+          "help": "",
+          "hidden": false,
+          "kind": 4,
+          "name": "firebase_messaging_poll_unregistration",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "firebase_messaging_current_installation_id",
+          "argCount": 0,
+          "args": [],
+          "documentation": "@returns {String}",
+          "externalName": "__EXT_NATIVE__firebase_messaging_current_installation_id",
+          "help": "",
+          "hidden": false,
+          "kind": 4,
+          "name": "firebase_messaging_current_installation_id",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 1
         },
         {
           "$GMExtensionFunction": "",
@@ -12169,7 +12306,7 @@
   "installdir": "",
   "iosCocoaPodDependencies": "",
   "iosCocoaPods": "",
-  "ioscodeinjection": "\u003CYYIosCocoaPods\u003E\npod \u0027FirebaseCore\u0027, \u002712.17.0\u0027\n\npod \u0027FirebaseAnalytics\u0027, \u002712.17.0\u0027\npod \u0027FirebaseAppCheck\u0027, \u002712.17.0\u0027\npod \u0027FirebaseAuth\u0027, \u002712.17.0\u0027\npod \u0027FirebaseDatabase\u0027, \u002712.17.0\u0027\npod \u0027FirebaseFirestore\u0027, \u002712.17.0\u0027\npod \u0027FirebaseFunctions\u0027, \u002712.17.0\u0027\npod \u0027FirebaseInstallations\u0027, \u002712.17.0\u0027\npod \u0027FirebaseMessaging\u0027, \u002712.17.0\u0027\npod \u0027FirebaseRemoteConfig\u0027, \u002712.17.0\u0027\npod \u0027FirebaseStorage\u0027, \u002712.17.0\u0027\n\npod \u0027GoogleUserMessagingPlatform\u0027, \u00272.3.0\u0027\n\u003C/YYIosCocoaPods\u003E\n\n\n\u003CYYIosPlist\u003E\n\n    \u003CtoExpand condition=\u0027${YYEXTOPT_GMFirebase_disableDataCollection}\u0027\u003E\n        \u003Ckey\u003EFIREBASE_ANALYTICS_COLLECTION_ENABLED\u003C/key\u003E\n        \u003Cfalse/\u003E\n        \u003Ckey\u003EFirebaseMessagingAutoInitEnabled\u003C/key\u003E\n        \u003Cfalse/\u003E\n    \u003C/toExpand\u003E\n\n\u003C/YYIosPlist\u003E",
+  "ioscodeinjection": "\u003CYYIosCocoaPods\u003E\npod \u0027FirebaseCore\u0027, \u002712.19.0\u0027\n\npod \u0027FirebaseAnalytics\u0027, \u002712.19.0\u0027\npod \u0027FirebaseAppCheck\u0027, \u002712.19.0\u0027\npod \u0027FirebaseAuth\u0027, \u002712.19.0\u0027\npod \u0027FirebaseDatabase\u0027, \u002712.19.0\u0027\npod \u0027FirebaseFirestore\u0027, \u002712.19.0\u0027\npod \u0027FirebaseFunctions\u0027, \u002712.19.0\u0027\npod \u0027FirebaseInstallations\u0027, \u002712.19.0\u0027\npod \u0027FirebaseMessaging\u0027, \u002712.19.0\u0027\npod \u0027FirebaseRemoteConfig\u0027, \u002712.19.0\u0027\npod \u0027FirebaseStorage\u0027, \u002712.19.0\u0027\n\npod \u0027GoogleUserMessagingPlatform\u0027, \u00272.3.0\u0027\n\u003C/YYIosCocoaPods\u003E\n\n\n\u003CYYIosPlist\u003E\n\n    \u003CtoExpand condition=\u0027${YYEXTOPT_GMFirebase_disableDataCollection}\u0027\u003E\n        \u003Ckey\u003EFIREBASE_ANALYTICS_COLLECTION_ENABLED\u003C/key\u003E\n        \u003Cfalse/\u003E\n        \u003Ckey\u003EFirebaseMessagingAutoInitEnabled\u003C/key\u003E\n        \u003Cfalse/\u003E\n    \u003C/toExpand\u003E\n\n\u003C/YYIosPlist\u003E",
   "iosdelegatename": "",
   "iosplistinject": null,
   "iosProps": true,
@@ -12362,38 +12499,6 @@
       "listItems": [],
       "name": "plistFile",
       "optType": 3,
-      "resourceType": "GMExtensionOption",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMExtensionOption": "",
-      "%Name": "__extOptLabel3",
-      "defaultValue": "HTML5 OPTIONS:",
-      "description": "",
-      "displayName": "",
-      "exportToINI": false,
-      "extensionId": null,
-      "guid": "c9006835-7026-44ee-9b1b-d105dd429f40",
-      "hidden": false,
-      "listItems": [],
-      "name": "__extOptLabel3",
-      "optType": 5,
-      "resourceType": "GMExtensionOption",
-      "resourceVersion": "2.0"
-    },
-    {
-      "$GMExtensionOption": "",
-      "%Name": "html5Config",
-      "defaultValue": "{}",
-      "description": "",
-      "displayName": "Firebase Config Struct",
-      "exportToINI": false,
-      "extensionId": null,
-      "guid": "11a17746-f032-4539-a629-d472bdf4c265",
-      "hidden": false,
-      "listItems": [],
-      "name": "html5Config",
-      "optType": 2,
       "resourceType": "GMExtensionOption",
       "resourceVersion": "2.0"
     },

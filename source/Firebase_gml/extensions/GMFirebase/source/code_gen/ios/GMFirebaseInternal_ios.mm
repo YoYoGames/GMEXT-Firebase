@@ -1600,6 +1600,10 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_remote_config_set_defaults(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
+- (double)__EXT_NATIVE__firebase_remote_config_set_custom_signals:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_remote_config_set_custom_signals(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
 - (double)__EXT_NATIVE__firebase_remote_config_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_remote_config_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1619,6 +1623,14 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 - (double)__EXT_NATIVE__firebase_messaging_terminate
 {
     return __EXT_NATIVE__firebase_messaging_terminate();
+}
+- (double)__EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled:(double)enabled
+{
+    return __EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled(enabled);
+}
+- (double)__EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled
+{
+    return __EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled();
 }
 - (double)__EXT_NATIVE__firebase_messaging_set_token_registration_on_init_enabled:(double)enabled
 {
@@ -1640,6 +1652,14 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_messaging_request_permission(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
+- (double)__EXT_NATIVE__firebase_messaging_register:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_messaging_register(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_messaging_unregister:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_messaging_unregister(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
 - (double)__EXT_NATIVE__firebase_messaging_get_token:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_messaging_get_token(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
@@ -1659,6 +1679,18 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 - (double)__EXT_NATIVE__firebase_messaging_poll_message
 {
     return __EXT_NATIVE__firebase_messaging_poll_message();
+}
+- (double)__EXT_NATIVE__firebase_messaging_poll_registration
+{
+    return __EXT_NATIVE__firebase_messaging_poll_registration();
+}
+- (double)__EXT_NATIVE__firebase_messaging_poll_unregistration
+{
+    return __EXT_NATIVE__firebase_messaging_poll_unregistration();
+}
+- (char*)__EXT_NATIVE__firebase_messaging_current_installation_id
+{
+    return __EXT_NATIVE__firebase_messaging_current_installation_id();
 }
 - (double)__EXT_NATIVE__firebase_messaging_poll_token
 {

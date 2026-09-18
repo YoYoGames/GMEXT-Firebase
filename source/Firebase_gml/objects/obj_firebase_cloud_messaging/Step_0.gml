@@ -1,6 +1,27 @@
 
 // ------------------------------------------------------------
-// CLOUD MESSAGING - POLL TOKEN
+// CLOUD MESSAGING - POLL REGISTRATION
+// ------------------------------------------------------------
+
+// Fires after firebase_messaging_register() completes, and on init when
+// registration-on-init is enabled. The id is the Firebase Installation ID
+// to target this app instance with.
+
+while (firebase_messaging_poll_registration())
+{
+    var _installation_id = firebase_messaging_current_installation_id();
+    show_debug_message($"FCM registered: {_installation_id}");
+}
+
+while (firebase_messaging_poll_unregistration())
+{
+    var _installation_id = firebase_messaging_current_installation_id();
+    show_debug_message($"FCM unregistered: {_installation_id}");
+}
+
+
+// ------------------------------------------------------------
+// CLOUD MESSAGING - POLL TOKEN (deprecated by the SDK, still delivered)
 // ------------------------------------------------------------
 
 while (firebase_messaging_poll_token())

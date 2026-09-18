@@ -71,7 +71,7 @@ Do not download from the **main branch** this branch is a work in place branch a
 
 ## Requirements
 
-In order to compile the native extension you are required to download the [Firebase C++ SDK 13.11.0](https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_13.11.0.zip) and unpack it inside `source/Firebase_sdk/` (or point `FIREBASE_SDK_ROOT` at it when configuring). The one zip carries every platform:
+In order to compile the native extension you are required to download the [Firebase C++ SDK 13.13.0](https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_13.13.0.zip) and unpack it inside `source/Firebase_sdk/` (or point `FIREBASE_SDK_ROOT` at it when configuring). The one zip carries every platform:
 
 * `libs/windows/VS2019/` - Windows static libraries (MD and MT)
 * `libs/android/` - Android static libraries per ABI, the `*.pro` proguard files and `firebase_messaging_cpp.aar`

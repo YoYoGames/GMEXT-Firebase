@@ -5924,6 +5924,25 @@ static jdouble __JNI_WRAPPER__firebase_remote_config_set_defaults_9F57C32EF766(J
     return static_cast<jdouble>(__ret);
 }
 
+// firebase_remote_config_set_custom_signals JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_remote_config_set_custom_signals_E86AECEB25CB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_remote_config_set_custom_signals((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
 // firebase_remote_config_get_info JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
 static jdouble __JNI_WRAPPER__firebase_remote_config_get_info_BB876723B8F9(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
@@ -5989,6 +6008,20 @@ static jdouble __JNI_WRAPPER__firebase_messaging_terminate_A4EFB58D3377(JNIEnv* 
     return static_cast<jdouble>(__ret);
 }
 
+// firebase_messaging_set_registration_on_init_enabled JNI wrapper signature: (D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_set_registration_on_init_enabled_20C7BE6A9A89(JNIEnv* /* env */, jclass /* GMFirebaseBridge */, jdouble enabled)
+{
+    double __ret = __EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled(static_cast<double>(enabled));
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_is_registration_on_init_enabled JNI wrapper signature: ()D
+static jdouble __JNI_WRAPPER__firebase_messaging_is_registration_on_init_enabled_EEB0861613BC(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
+{
+    double __ret = __EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled();
+    return static_cast<jdouble>(__ret);
+}
+
 // firebase_messaging_set_token_registration_on_init_enabled JNI wrapper signature: (D)D
 static jdouble __JNI_WRAPPER__firebase_messaging_set_token_registration_on_init_enabled_5F0836B360E1(JNIEnv* /* env */, jclass /* GMFirebaseBridge */, jdouble enabled)
 {
@@ -6033,6 +6066,44 @@ static jdouble __JNI_WRAPPER__firebase_messaging_request_permission_E017D8E24A8C
         return 0.0;
     }
     double __ret = __EXT_NATIVE__firebase_messaging_request_permission((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_register JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_register_2A503CC3814A(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_register((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_unregister JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_unregister_05DCDD89BAFD(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_unregister((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -6117,6 +6188,28 @@ static jdouble __JNI_WRAPPER__firebase_messaging_poll_message_087D97D27BC3(JNIEn
 {
     double __ret = __EXT_NATIVE__firebase_messaging_poll_message();
     return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_poll_registration JNI wrapper signature: ()D
+static jdouble __JNI_WRAPPER__firebase_messaging_poll_registration_764031C64618(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
+{
+    double __ret = __EXT_NATIVE__firebase_messaging_poll_registration();
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_poll_unregistration JNI wrapper signature: ()D
+static jdouble __JNI_WRAPPER__firebase_messaging_poll_unregistration_0687D0EE9782(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
+{
+    double __ret = __EXT_NATIVE__firebase_messaging_poll_unregistration();
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_messaging_current_installation_id JNI wrapper signature: ()Ljava/lang/String;
+static jstring __JNI_WRAPPER__firebase_messaging_current_installation_id_803F8F3EA89A(JNIEnv* env, jclass /* GMFirebaseBridge */)
+{
+    const char* __out = __EXT_NATIVE__firebase_messaging_current_installation_id();
+    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
+    return __j;
 }
 
 // firebase_messaging_poll_token JNI wrapper signature: ()D
@@ -10216,21 +10309,29 @@ extern "C" {
             { "__EXT_JNI__firebase_remote_config_get_keys", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_keys_DCA141849879 },
             { "__EXT_JNI__firebase_remote_config_get_all", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_all_27C90884171E },
             { "__EXT_JNI__firebase_remote_config_set_defaults", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_defaults_9F57C32EF766 },
+            { "__EXT_JNI__firebase_remote_config_set_custom_signals", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_set_custom_signals_E86AECEB25CB },
             { "__EXT_JNI__firebase_remote_config_get_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_info_BB876723B8F9 },
             { "__EXT_JNI__firebase_remote_config_add_config_update_listener", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_add_config_update_listener_C469CAE510D9 },
             { "__EXT_JNI__firebase_remote_config_remove_config_update_listener", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_remove_config_update_listener_BC5A26A96B09 },
             { "__EXT_JNI__firebase_messaging_initialize", "()D", (void*)__JNI_WRAPPER__firebase_messaging_initialize_736AD75959D0 },
             { "__EXT_JNI__firebase_messaging_terminate", "()D", (void*)__JNI_WRAPPER__firebase_messaging_terminate_A4EFB58D3377 },
+            { "__EXT_JNI__firebase_messaging_set_registration_on_init_enabled", "(D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_registration_on_init_enabled_20C7BE6A9A89 },
+            { "__EXT_JNI__firebase_messaging_is_registration_on_init_enabled", "()D", (void*)__JNI_WRAPPER__firebase_messaging_is_registration_on_init_enabled_EEB0861613BC },
             { "__EXT_JNI__firebase_messaging_set_token_registration_on_init_enabled", "(D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_token_registration_on_init_enabled_5F0836B360E1 },
             { "__EXT_JNI__firebase_messaging_is_token_registration_on_init_enabled", "()D", (void*)__JNI_WRAPPER__firebase_messaging_is_token_registration_on_init_enabled_BE68D2B9EBA0 },
             { "__EXT_JNI__firebase_messaging_delivery_metrics_export_to_big_query_enabled", "()D", (void*)__JNI_WRAPPER__firebase_messaging_delivery_metrics_export_to_big_query_enabled_497E4A6029DB },
             { "__EXT_JNI__firebase_messaging_set_delivery_metrics_export_to_big_query", "(D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_delivery_metrics_export_to_big_query_8336AABA3767 },
             { "__EXT_JNI__firebase_messaging_request_permission", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_request_permission_E017D8E24A8C },
+            { "__EXT_JNI__firebase_messaging_register", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_register_2A503CC3814A },
+            { "__EXT_JNI__firebase_messaging_unregister", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_unregister_05DCDD89BAFD },
             { "__EXT_JNI__firebase_messaging_get_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_get_token_D6213087DF0C },
             { "__EXT_JNI__firebase_messaging_delete_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_delete_token_BFBAE7CEFC30 },
             { "__EXT_JNI__firebase_messaging_subscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_subscribe_F8C12E71B5FE },
             { "__EXT_JNI__firebase_messaging_unsubscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_unsubscribe_F6836B511890 },
             { "__EXT_JNI__firebase_messaging_poll_message", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_message_087D97D27BC3 },
+            { "__EXT_JNI__firebase_messaging_poll_registration", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_registration_764031C64618 },
+            { "__EXT_JNI__firebase_messaging_poll_unregistration", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_unregistration_0687D0EE9782 },
+            { "__EXT_JNI__firebase_messaging_current_installation_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_current_installation_id_803F8F3EA89A },
             { "__EXT_JNI__firebase_messaging_poll_token", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_token_A683A48E0727 },
             { "__EXT_JNI__firebase_messaging_current_token", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_current_token_E1DC4B4DA756 },
             { "__EXT_JNI__firebase_messaging_message_from", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_from_94B3AA4685E4 },

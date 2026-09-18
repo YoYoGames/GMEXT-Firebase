@@ -3,8 +3,8 @@ set(SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # =============================================================================
 # Deployment target
 # Unset elsewhere, so it defaults to the host's newest SDK - mismatches the
-# GameMaker app's own target and crashes the linker. Firebase Cocoapods 12.17.0
-# (what C++ SDK 13.11.0 pairs with) requires iOS and tvOS 15.0.
+# GameMaker app's own target and crashes the linker. Firebase Cocoapods 12.19.0
+# (what C++ SDK 13.13.0 pairs with) requires iOS and tvOS 15.0.
 # =============================================================================
 set_target_properties(${PROJECT_NAME} PROPERTIES
   XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "15.0"

@@ -44,7 +44,7 @@ endfunction()
 # The prebuilt Firebase C++ SDK this extension is built and tested against.
 # Bump it together with the Linux source tag derived from it below, the
 # Android BoM in GMFirebase.yy and the iOS pods.
-set(EXT_TP_FIREBASE_VERSION "13.11.0")
+set(EXT_TP_FIREBASE_VERSION "13.13.0")
 set(_FIREBASE_SDK_DOWNLOAD_URL
     "https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_${EXT_TP_FIREBASE_VERSION}.zip")
 
@@ -159,10 +159,16 @@ endif()
 # WINDOWS - keep the existing working static-library layout/config mapping.
 # =============================================================================
 if(WIN32)
-  set(EXT_TP_FIREBASE_WINDOWS_CRT
-      "MD"
-      CACHE STRING "Windows CRT variant to link against: MD or MT")
-  set_property(CACHE EXT_TP_FIREBASE_WINDOWS_CRT PROPERTY STRINGS "MD" "MT")
+  # The SDK ships one archive set per CRT, so the one to link follows the
+  # runtime the presets select through CMAKE_MSVC_RUNTIME_LIBRARY (the CMake
+  # default is the DLL runtime when it is unset). A separate knob here would
+  # let the two disagree and link archives built against the other CRT.
+  if(DEFINED CMAKE_MSVC_RUNTIME_LIBRARY
+     AND NOT CMAKE_MSVC_RUNTIME_LIBRARY MATCHES "DLL")
+    set(_FIREBASE_WIN_CRT "MT")
+  else()
+    set(_FIREBASE_WIN_CRT "MD")
+  endif()
 
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(_FIREBASE_WIN_ARCH "x64")
@@ -171,10 +177,10 @@ if(WIN32)
   endif()
 
   set(_FIREBASE_WIN_LIB_DIR
-      "${FIREBASE_SDK_ROOT}/libs/windows/VS2019/${EXT_TP_FIREBASE_WINDOWS_CRT}/${_FIREBASE_WIN_ARCH}")
+      "${FIREBASE_SDK_ROOT}/libs/windows/VS2019/${_FIREBASE_WIN_CRT}/${_FIREBASE_WIN_ARCH}")
 
   message(STATUS
-    "[third_party] Firebase Windows CRT=${EXT_TP_FIREBASE_WINDOWS_CRT} arch=${_FIREBASE_WIN_ARCH}")
+    "[third_party] Firebase Windows CRT=${_FIREBASE_WIN_CRT} arch=${_FIREBASE_WIN_ARCH}")
 
   # Product libraries first.
   foreach(_module IN LISTS EXT_TP_FIREBASE_MODULES)
@@ -469,9 +475,20 @@ elseif(UNIX)
 
     file(MAKE_DIRECTORY "${_FIREBASE_CPP_SOURCE_PARENT}")
 
-    # Remove an incomplete checkout from a previously interrupted clone.
+    # Remove an incomplete checkout from a previously interrupted clone - but
+    # only in the cache directory this file owns. A user-supplied root that
+    # exists without a checkout is anything at all (a typo, a home directory),
+    # and deleting it to make room for the clone is not this build's call.
     if(EXISTS "${FIREBASE_CPP_SOURCE_ROOT}")
-      file(REMOVE_RECURSE "${FIREBASE_CPP_SOURCE_ROOT}")
+      if(FIREBASE_CPP_SOURCE_ROOT STREQUAL _FIREBASE_CPP_SOURCE_ROOT_DEFAULT)
+        file(REMOVE_RECURSE "${FIREBASE_CPP_SOURCE_ROOT}")
+      else()
+        message(FATAL_ERROR
+          "FIREBASE_CPP_SOURCE_ROOT exists but holds no Firebase C++ source checkout:\n"
+          "  ${FIREBASE_CPP_SOURCE_ROOT}\n"
+          "Remove it, or point FIREBASE_CPP_SOURCE_ROOT at a directory that does not exist\n"
+          "yet to have ${_FIREBASE_CPP_VERSION} cloned there.")
+      endif()
     endif()
 
     execute_process(

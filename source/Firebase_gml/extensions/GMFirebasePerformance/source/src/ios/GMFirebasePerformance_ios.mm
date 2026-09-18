@@ -39,6 +39,17 @@ namespace
     }
 
 
+    // The SDK stores attribute and metric names trimmed and looks them up as
+    // given, so the read-back below has to use the trimmed key, as on Android.
+    static NSString *trimmedNSString(
+        std::string_view value)
+    {
+        return
+            [toNSString(value)
+                stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+
+
     static std::uint64_t handle(
         double value)
     {
@@ -271,8 +282,13 @@ namespace
     if (item == nil)
         return false;
 
-    [item setValue:toNSString(value) forAttribute:toNSString(key)];
-    return true;
+    // The SDK validates the write itself and only logs a rejection (too many
+    // attributes, a long key, a stopped trace), so the result is read back.
+    NSString *attribute = trimmedNSString(key);
+    NSString *expected = trimmedNSString(value);
+
+    [item setValue:expected forAttribute:attribute];
+    return [expected isEqualToString:[item valueForAttribute:attribute]];
 }
 
 
@@ -286,8 +302,10 @@ namespace
     if (item == nil)
         return false;
 
-    [item removeAttribute:toNSString(key)];
-    return true;
+    NSString *attribute = trimmedNSString(key);
+
+    [item removeAttribute:attribute];
+    return [item valueForAttribute:attribute] == nil;
 }
 
 
@@ -303,8 +321,11 @@ namespace
     if (item == nil)
         return false;
 
-    [item setIntValue:toInt64(value) forMetric:toNSString(name)];
-    return true;
+    NSString *metric = trimmedNSString(name);
+    std::int64_t expected = toInt64(value);
+
+    [item setIntValue:expected forMetric:metric];
+    return [item valueForIntMetric:metric] == expected;
 }
 
 
@@ -320,8 +341,12 @@ namespace
     if (item == nil)
         return false;
 
-    [item incrementMetric:toNSString(name) byInt:toInt64(increment_by)];
-    return true;
+    NSString *metric = trimmedNSString(name);
+    std::int64_t by = toInt64(increment_by);
+    std::int64_t before = [item valueForIntMetric:metric];
+
+    [item incrementMetric:metric byInt:by];
+    return [item valueForIntMetric:metric] == before + by;
 }
 
 
@@ -433,8 +458,11 @@ namespace
     if (item == nil)
         return false;
 
-    [item setValue:toNSString(value) forAttribute:toNSString(key)];
-    return true;
+    NSString *attribute = trimmedNSString(key);
+    NSString *expected = trimmedNSString(value);
+
+    [item setValue:expected forAttribute:attribute];
+    return [expected isEqualToString:[item valueForAttribute:attribute]];
 }
 
 
@@ -448,8 +476,10 @@ namespace
     if (item == nil)
         return false;
 
-    [item removeAttribute:toNSString(key)];
-    return true;
+    NSString *attribute = trimmedNSString(key);
+
+    [item removeAttribute:attribute];
+    return [item valueForAttribute:attribute] == nil;
 }
 
 

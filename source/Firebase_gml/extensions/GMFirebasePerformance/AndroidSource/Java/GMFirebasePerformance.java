@@ -3,6 +3,8 @@ package ${YYAndroidPackageName};
 
 import ${YYAndroidPackageName}.enums.*;
 
+import android.util.Log;
+
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.HttpMetric;
 import com.google.firebase.perf.metrics.Trace;
@@ -13,27 +15,53 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.lang.String;
 import java.nio.ByteBuffer;
 
-public final class GMFirebasePerformance extends GMFirebasePerformanceInternal 
+public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 {
+    private static final String TAG = "GMFirebasePerformance";
+
+    private static volatile boolean loggedNotInitialized = false;
+
     private final AtomicLong nextHandle = new AtomicLong(1L);
     private final ConcurrentHashMap<Long, Trace> traces =
         new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Long, HttpMetric> httpMetrics =
         new ConcurrentHashMap<>();
 
+    // Null when there is no default FirebaseApp: setters no-op, getters return
+    // false, starts return 0. Mirrors the iOS helper.
     private FirebasePerformance performance()
     {
-        return FirebasePerformance.getInstance();
+        try
+        {
+            return FirebasePerformance.getInstance();
+        }
+        catch (RuntimeException error)
+        {
+            if (!loggedNotInitialized)
+            {
+                loggedNotInitialized = true;
+                Log.e(TAG, "Firebase default app not initialized; is GMFirebase in the project?", error);
+            }
+            return null;
+        }
     }
 
     public void firebase_performance_set_collection_enabled(boolean enabled)
     {
-        performance().setPerformanceCollectionEnabled(enabled);
+        FirebasePerformance instance = performance();
+        if (instance == null)
+            return;
+
+        instance.setPerformanceCollectionEnabled(enabled);
     }
 
     public boolean firebase_performance_is_collection_enabled()
     {
-        return performance().isPerformanceCollectionEnabled();
+        FirebasePerformance instance = performance();
+        if (instance == null)
+            return false;
+
+        return instance.isPerformanceCollectionEnabled();
     }
 
     public double firebase_performance_trace_start(String name)
@@ -41,9 +69,13 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
         if (name == null || name.isEmpty())
             return 0.0;
 
+        FirebasePerformance instance = performance();
+        if (instance == null)
+            return 0.0;
+
         try
         {
-            Trace trace = performance().newTrace(name);
+            Trace trace = instance.newTrace(name);
             trace.start();
 
             long handle = nextHandle.getAndIncrement();
@@ -66,6 +98,10 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
         return true;
     }
 
+    // The SDK validates attribute and metric writes itself and only logs a
+    // rejection (too many attributes, a long key, a stopped trace), so the
+    // result is read back through the public getters. Keys are trimmed first
+    // because the SDK stores them trimmed and looks them up as given.
     public boolean firebase_performance_trace_put_attribute(
         double trace,
         String key,
@@ -77,11 +113,11 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.putAttribute(
-                key != null ? key : "",
-                value != null ? value : ""
-            );
-            return true;
+            String k = trimmed(key);
+            String v = trimmed(value);
+
+            item.putAttribute(k, v);
+            return v.equals(item.getAttribute(k));
         }
         catch (Exception error)
         {
@@ -99,8 +135,10 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.removeAttribute(key != null ? key : "");
-            return true;
+            String k = trimmed(key);
+
+            item.removeAttribute(k);
+            return item.getAttribute(k) == null;
         }
         catch (Exception error)
         {
@@ -119,11 +157,11 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.putMetric(
-                name != null ? name : "",
-                toLong(value)
-            );
-            return true;
+            String n = trimmed(name);
+            long v = toLong(value);
+
+            item.putMetric(n, v);
+            return item.getLongMetric(n) == v;
         }
         catch (Exception error)
         {
@@ -142,11 +180,12 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.incrementMetric(
-                name != null ? name : "",
-                toLong(increment_by)
-            );
-            return true;
+            String n = trimmed(name);
+            long by = toLong(increment_by);
+            long before = item.getLongMetric(n);
+
+            item.incrementMetric(n, by);
+            return item.getLongMetric(n) == before + by;
         }
         catch (Exception error)
         {
@@ -159,9 +198,13 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
         if (url == null || url.isEmpty() || method == null)
             return 0.0;
 
+        FirebasePerformance instance = performance();
+        if (instance == null)
+            return 0.0;
+
         try
         {
-            HttpMetric metric = performance().newHttpMetric(
+            HttpMetric metric = instance.newHttpMetric(
                 url,
                 httpMethod(method)
             );
@@ -239,11 +282,11 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.putAttribute(
-                key != null ? key : "",
-                value != null ? value : ""
-            );
-            return true;
+            String k = trimmed(key);
+            String v = trimmed(value);
+
+            item.putAttribute(k, v);
+            return v.equals(item.getAttribute(k));
         }
         catch (Exception error)
         {
@@ -261,8 +304,10 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
 
         try
         {
-            item.removeAttribute(key != null ? key : "");
-            return true;
+            String k = trimmed(key);
+
+            item.removeAttribute(k);
+            return item.getAttribute(k) == null;
         }
         catch (Exception error)
         {
@@ -286,6 +331,11 @@ public final class GMFirebasePerformance extends GMFirebasePerformanceInternal
             return 0L;
 
         return (long)value;
+    }
+
+    private static String trimmed(String value)
+    {
+        return value != null ? value.trim() : "";
     }
 
     private static long toLong(double value)

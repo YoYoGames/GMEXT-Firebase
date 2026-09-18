@@ -3,7 +3,7 @@
   "%Name":"GMFirebasePerformance",
   "androidactivityinject":null,
   "androidclassname":"GMFirebasePerformance",
-  "androidcodeinjection":"<YYAndroidManifestApplicationInject>\r\n\r\n    <meta-data\r\n        android:name=\"firebase_performance_collection_enabled\"\r\n        android:value=\"true\" />\r\n\r\n</YYAndroidManifestApplicationInject>\r\n\r\n\r\n<YYAndroidGradleDependencies>\r\n\r\n    implementation 'com.google.firebase:firebase-perf'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n    classpath 'com.google.firebase:perf-plugin:2.0.2'\r\n\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n\r\n<YYAndroidGradleEnd>\r\n\r\n    apply plugin: 'com.google.firebase.firebase-perf'\r\n\r\n</YYAndroidGradleEnd>\r\n",
+  "androidcodeinjection":"<YYAndroidManifestApplicationInject>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebasePerformance_disableDataCollection}'>\r\n        <meta-data\r\n            android:name=\"firebase_performance_collection_enabled\"\r\n            android:value=\"false\" />\r\n    </toExpand>\r\n\r\n</YYAndroidManifestApplicationInject>\r\n\r\n\r\n<YYAndroidGradleDependencies>\r\n\r\n    implementation 'com.google.firebase:firebase-perf'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n    classpath 'com.google.firebase:perf-plugin:2.0.2'\r\n\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n\r\n<YYAndroidGradleEnd>\r\n\r\n    apply plugin: 'com.google.firebase.firebase-perf'\r\n\r\n</YYAndroidGradleEnd>\r\n",
   "androidinject":null,
   "androidmanifestinject":null,
   "androidPermissions":[],
@@ -12,7 +12,7 @@
   "author":"",
   "classname":"GMFirebasePerformance",
   "copyToTargets":12,
-  "description":"",
+  "description":"Firebase Performance Monitoring for Android and iOS. Requires the GMFirebase extension in the same project: it supplies the Firebase BoM, the google-services plugin and the credentials on Android, and firebase_app_initialize() configures the default app on iOS.",
   "exportToGame":true,
   "extensionVersion":"3.1.0",
   "files":[
@@ -44,7 +44,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"",
-  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <key>firebase_performance_collection_enabled</key>\r\n    <true/>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebasePerformance', '12.17.0'\r\n\r\n</YYIosCocoaPods>\r\n",
+  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebasePerformance_disableDataCollection}'>\r\n        <key>firebase_performance_collection_enabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebasePerformance', '12.17.0'\r\n\r\n</YYIosCocoaPods>\r\n",
   "iosdelegatename":"",
   "iosplistinject":null,
   "iosProps":true,
@@ -57,7 +57,9 @@
   "macProps":false,
   "macsourcedir":"",
   "name":"GMFirebasePerformance",
-  "options":[],
+  "options":[
+    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with Performance collection off until firebase_performance_set_collection_enabled(true) is called (consent flows).","displayName":"","exportToINI":false,"extensionId":null,"guid":"42ab8356-5b29-4a37-8a5a-f8fd36e3155b","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+  ],
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{

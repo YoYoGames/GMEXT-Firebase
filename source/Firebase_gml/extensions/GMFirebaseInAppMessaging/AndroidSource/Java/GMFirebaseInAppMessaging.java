@@ -34,6 +34,8 @@ public class GMFirebaseInAppMessaging
     private static final String TAG =
         "GMFirebaseInAppMessaging";
 
+    private static volatile boolean loggedNotInitialized = false;
+
     private volatile GMFunction impressionCallback = null;
     private volatile GMFunction clickCallback = null;
     private volatile GMFunction dismissCallback = null;
@@ -75,20 +77,55 @@ public class GMFirebaseInAppMessaging
     }
 
 
+    // Null when there is no default FirebaseApp: setters no-op, getters return
+    // false. Mirrors the iOS helper.
     private FirebaseInAppMessaging fiam()
     {
-        return FirebaseInAppMessaging.getInstance();
+        try
+        {
+            return FirebaseInAppMessaging.getInstance();
+        }
+        catch (RuntimeException error)
+        {
+            if (!loggedNotInitialized)
+            {
+                loggedNotInitialized = true;
+                Log.e(TAG, "Firebase default app not initialized; is GMFirebase in the project?", error);
+            }
+            return null;
+        }
     }
 
 
+    // FIAM keeps its developer listeners in plain HashMaps and iterates them
+    // on delivery, so every add/remove runs on the main thread, where the SDK
+    // itself mutates them. onResume already arrives there; the GML setters
+    // post.
     private void installNativeListeners(String reason)
     {
-        if (!bridgeEnabled)
-            return;
+        runOnGameThread(() -> installNativeListenersOnMain(reason));
+    }
+
+
+    private void removeNativeListeners(String reason)
+    {
+        runOnGameThread(() -> removeNativeListenersOnMain(reason));
+    }
+
+
+    private void installNativeListenersOnMain(String reason)
+    {
+        synchronized (callbackLock)
+        {
+            if (!bridgeEnabled)
+                return;
+        }
 
         try
         {
             FirebaseInAppMessaging instance = fiam();
+            if (instance == null)
+                return;
 
             // FIAM can clear developer listeners when the Activity goes to the
             // background. Remove-before-add prevents duplicates on every resume.
@@ -111,11 +148,14 @@ public class GMFirebaseInAppMessaging
     }
 
 
-    private void removeNativeListeners(String reason)
+    private void removeNativeListenersOnMain(String reason)
     {
         try
         {
             FirebaseInAppMessaging instance = fiam();
+            if (instance == null)
+                return;
+
             instance.removeImpressionListener(this);
             instance.removeClickListener(this);
             instance.removeDismissListener(this);
@@ -129,6 +169,17 @@ public class GMFirebaseInAppMessaging
     }
 
 
+    // Posted rather than called: an event already queued on the handler with
+    // the previous function is delivered before the function is released.
+    private static void releaseLater(GMFunction function)
+    {
+        if (function == null)
+            return;
+
+        MAIN_HANDLER.post(function::release);
+    }
+
+
     // -------------------------------------------------------------------------
     // Runtime controls
     // -------------------------------------------------------------------------
@@ -136,26 +187,42 @@ public class GMFirebaseInAppMessaging
     public void firebase_in_app_messaging_set_automatic_data_collection_enabled(
         boolean enabled)
     {
-        fiam().setAutomaticDataCollectionEnabled(enabled);
+        FirebaseInAppMessaging instance = fiam();
+        if (instance == null)
+            return;
+
+        instance.setAutomaticDataCollectionEnabled(enabled);
     }
 
 
     public boolean firebase_in_app_messaging_is_automatic_data_collection_enabled()
     {
-        return fiam().isAutomaticDataCollectionEnabled();
+        FirebaseInAppMessaging instance = fiam();
+        if (instance == null)
+            return false;
+
+        return instance.isAutomaticDataCollectionEnabled();
     }
 
 
     public void firebase_in_app_messaging_set_messages_suppressed(
         boolean suppressed)
     {
-        fiam().setMessagesSuppressed(suppressed);
+        FirebaseInAppMessaging instance = fiam();
+        if (instance == null)
+            return;
+
+        instance.setMessagesSuppressed(suppressed);
     }
 
 
     public boolean firebase_in_app_messaging_are_messages_suppressed()
     {
-        return fiam().areMessagesSuppressed();
+        FirebaseInAppMessaging instance = fiam();
+        if (instance == null)
+            return false;
+
+        return instance.areMessagesSuppressed();
     }
 
 
@@ -165,7 +232,11 @@ public class GMFirebaseInAppMessaging
         if (event_name == null || event_name.isEmpty())
             return;
 
-        fiam().triggerEvent(event_name);
+        FirebaseInAppMessaging instance = fiam();
+        if (instance == null)
+            return;
+
+        instance.triggerEvent(event_name);
     }
 
 
@@ -177,15 +248,18 @@ public class GMFirebaseInAppMessaging
         GMFunction callback)
     {
         MessageInfo pending;
+        GMFunction previous;
 
         synchronized (callbackLock)
         {
             bridgeEnabled = true;
+            previous = impressionCallback;
             impressionCallback = callback;
             pending = pendingImpression;
             pendingImpression = null;
         }
 
+        releaseLater(previous);
         installNativeListeners("set_impression_callback");
 
         if (callback != null && pending != null)
@@ -200,15 +274,18 @@ public class GMFirebaseInAppMessaging
         GMFunction callback)
     {
         ClickInfo pending;
+        GMFunction previous;
 
         synchronized (callbackLock)
         {
             bridgeEnabled = true;
+            previous = clickCallback;
             clickCallback = callback;
             pending = pendingClick;
             pendingClick = null;
         }
 
+        releaseLater(previous);
         installNativeListeners("set_click_callback");
 
         if (callback != null && pending != null)
@@ -223,15 +300,18 @@ public class GMFirebaseInAppMessaging
         GMFunction callback)
     {
         MessageInfo pending;
+        GMFunction previous;
 
         synchronized (callbackLock)
         {
             bridgeEnabled = true;
+            previous = dismissCallback;
             dismissCallback = callback;
             pending = pendingDismiss;
             pendingDismiss = null;
         }
 
+        releaseLater(previous);
         installNativeListeners("set_dismiss_callback");
 
         if (callback != null && pending != null)
@@ -246,15 +326,18 @@ public class GMFirebaseInAppMessaging
         GMFunction callback)
     {
         DisplayErrorInfo pending;
+        GMFunction previous;
 
         synchronized (callbackLock)
         {
             bridgeEnabled = true;
+            previous = displayErrorCallback;
             displayErrorCallback = callback;
             pending = pendingDisplayError;
             pendingDisplayError = null;
         }
 
+        releaseLater(previous);
         installNativeListeners("set_display_error_callback");
 
         if (callback != null && pending != null)
@@ -267,9 +350,19 @@ public class GMFirebaseInAppMessaging
 
     public void firebase_in_app_messaging_clear_callbacks()
     {
+        GMFunction impression;
+        GMFunction click;
+        GMFunction dismiss;
+        GMFunction displayError;
+
         synchronized (callbackLock)
         {
             bridgeEnabled = false;
+
+            impression = impressionCallback;
+            click = clickCallback;
+            dismiss = dismissCallback;
+            displayError = displayErrorCallback;
 
             impressionCallback = null;
             clickCallback = null;
@@ -283,6 +376,11 @@ public class GMFirebaseInAppMessaging
         }
 
         removeNativeListeners("clear_callbacks");
+
+        releaseLater(impression);
+        releaseLater(click);
+        releaseLater(dismiss);
+        releaseLater(displayError);
     }
 
 

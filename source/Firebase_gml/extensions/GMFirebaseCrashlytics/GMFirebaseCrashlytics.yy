@@ -3,7 +3,7 @@
   "%Name":"GMFirebaseCrashlytics",
   "androidactivityinject":null,
   "androidclassname":"GMFirebaseCrashlytics",
-  "androidcodeinjection":"<YYAndroidManifestApplicationInject>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseCrashlytics_disableDataCollection}'>\r\n        <meta-data\r\n            android:name=\"firebase_crashlytics_collection_enabled\"\r\n            android:value=\"false\" />\r\n    </toExpand>\r\n\r\n</YYAndroidManifestApplicationInject>\r\n\r\n\r\n<YYAndroidGradleDependencies>\r\n\r\n    implementation 'com.google.firebase:firebase-crashlytics'\r\n    implementation 'com.google.firebase:firebase-crashlytics-ndk'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n    classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.7'\r\n\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n\r\n<YYAndroidGradleEnd>\r\n\r\n    apply plugin: 'com.google.firebase.crashlytics'\r\n\r\n    android {\r\n        buildTypes {\r\n            release {\r\n                firebaseCrashlytics {\r\n                    nativeSymbolUploadEnabled true\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n</YYAndroidGradleEnd>\r\n",
+  "androidcodeinjection":"<YYAndroidManifestApplicationInject>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseCrashlytics_disableDataCollection}'>\r\n        <meta-data\r\n            android:name=\"firebase_crashlytics_collection_enabled\"\r\n            android:value=\"false\" />\r\n    </toExpand>\r\n\r\n</YYAndroidManifestApplicationInject>\r\n\r\n\r\n<YYAndroidGradleDependencies>\r\n\r\n    implementation 'com.google.firebase:firebase-crashlytics'\r\n    implementation 'com.google.firebase:firebase-crashlytics-ndk'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n    classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.7'\r\n\r\n</YYAndroidTopLevelGradleBuildscriptDependencies>\r\n\r\n\r\n<YYAndroidProguard>\r\n\r\n# record_error groups by this exception type; keep its name in reports.\r\n-keepnames class ${YYAndroidPackageName}.GMFirebaseCrashlytics$RecordedError\r\n\r\n</YYAndroidProguard>\r\n\r\n\r\n<YYAndroidGradleEnd>\r\n\r\n    apply plugin: 'com.google.firebase.crashlytics'\r\n\r\n    android {\r\n        buildTypes {\r\n            release {\r\n                firebaseCrashlytics {\r\n                    nativeSymbolUploadEnabled true\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n</YYAndroidGradleEnd>\r\n",
   "androidinject":null,
   "androidmanifestinject":null,
   "androidPermissions":[],
@@ -12,7 +12,7 @@
   "author":"",
   "classname":"GMFirebaseCrashlytics",
   "copyToTargets":12,
-  "description":"",
+  "description":"Firebase Crashlytics for Android and iOS. Requires the GMFirebase extension in the same project: it supplies the Firebase BoM, the google-services plugin and the credentials on Android, and firebase_app_initialize() configures the default app on iOS.",
   "exportToGame":true,
   "extensionVersion":"3.1.0",
   "files":[
@@ -56,7 +56,7 @@
   "macsourcedir":"",
   "name":"GMFirebaseCrashlytics",
   "options":[
-    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"","displayName":"","exportToINI":false,"extensionId":null,"guid":"05f03caf-1195-47ab-8049-2a79b619ba9e","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with Crashlytics collection off until firebase_crashlytics_set_collection_enabled(true) is called (consent flows).","displayName":"","exportToINI":false,"extensionId":null,"guid":"05f03caf-1195-47ab-8049-2a79b619ba9e","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",

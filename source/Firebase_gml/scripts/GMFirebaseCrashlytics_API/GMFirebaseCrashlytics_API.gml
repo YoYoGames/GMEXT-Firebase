@@ -96,3 +96,8 @@ function __GMFirebaseCrashlytics_is_available()
     static __available__ = extension_exists("GMFirebaseCrashlytics");
     return __available__;
 }
+// #####################################################################
+// # Exports
+// #####################################################################
+
+#export firebase_crashlytics_check_for_unsent_reports

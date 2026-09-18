@@ -203,17 +203,10 @@ FirebaseError firebase_auth_game_center_auth_provider_get_credential(const std::
 	firebase::auth::GameCenterAuthProvider::GetCredential().OnCompletion(
 		[callback](const firebase::Future<firebase::auth::Credential>& f)
 		{
-			int code = f.error();
-			const char* message = f.error_message();
-
-			if (!callback)
-				return;
-
-			std::optional<uint64_t> credential_ref;
-			if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-				credential_ref = wrapFirebaseAuthCredential(*f.result());
-
-			callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), credential_ref);
+			completeFuture(callback, f, [](const firebase::auth::Credential& credential) -> std::optional<uint64_t>
+			{
+				return wrapFirebaseAuthCredential(credential);
+			});
 		});
 	return FirebaseError::Ok;
 #else
@@ -391,14 +384,10 @@ FirebaseError firebase_auth_game_center_auth_provider_get_credential_last_result
     firebase::auth::GameCenterAuthProvider::GetCredentialLastResult().OnCompletion(
         [callback](const firebase::Future<firebase::auth::Credential>& f)
         {
-            const int code = f.error();
-            const char* message = f.error_message();
-            if (!callback) return;
-
-            std::optional<uint64_t> credential_ref;
-            if (code == firebase::auth::kAuthErrorNone && f.result() != nullptr)
-                credential_ref = wrapFirebaseAuthCredential(*f.result());
-            callback->call(static_cast<double>(code), std::string(message != nullptr ? message : ""), credential_ref);
+            completeFuture(callback, f, [](const firebase::auth::Credential& credential) -> std::optional<uint64_t>
+            {
+                return wrapFirebaseAuthCredential(credential);
+            });
         });
     return FirebaseError::Ok;
 #else

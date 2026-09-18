@@ -144,3 +144,8 @@ function __GMFirebaseInAppMessaging_is_available()
     static __available__ = extension_exists("GMFirebaseInAppMessaging");
     return __available__;
 }
+// #####################################################################
+// # Exports
+// #####################################################################
+
+#export firebase_in_app_messaging_set_impression_callback, firebase_in_app_messaging_set_click_callback, firebase_in_app_messaging_set_dismiss_callback, firebase_in_app_messaging_set_display_error_callback

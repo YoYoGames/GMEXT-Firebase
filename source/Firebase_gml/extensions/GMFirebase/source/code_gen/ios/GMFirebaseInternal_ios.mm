@@ -1248,6 +1248,10 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_storage_ref_get_parent(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
+- (double)__EXT_NATIVE__firebase_storage_ref_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_storage_ref_release(__arg_buffer, __arg_buffer_length);
+}
 - (char*)__EXT_NATIVE__firebase_storage_ref_bucket:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
     return __EXT_NATIVE__firebase_storage_ref_bucket(__arg_buffer, __arg_buffer_length);

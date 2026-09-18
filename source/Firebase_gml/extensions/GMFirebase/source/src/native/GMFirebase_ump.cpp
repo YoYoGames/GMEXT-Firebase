@@ -34,12 +34,6 @@ namespace
 		return out;
 	}
 
-	void invokeVoidCallback(const std::optional<GMFunction>& callback, const firebase::Future<void>& f)
-	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
-	}
-
 	// A non-zero form_parent is a caller-supplied platform handle and is used
 	// as-is. Zero means "use the game's own parent": the activity the App was
 	// created with on Android (the same object the SDK's ConsentInfo captured
@@ -175,7 +169,7 @@ FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, Fir
 
 	consent_info->RequestConsentInfoUpdate(params).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		invokeVoidCallback(callback, f);
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -188,7 +182,7 @@ FirebaseError firebase_ump_load_consent_form(uint64_t consent_ref, const std::op
 
 	consent_info->LoadConsentForm().OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		invokeVoidCallback(callback, f);
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -207,7 +201,7 @@ FirebaseError firebase_ump_show_consent_form(uint64_t consent_ref, uint64_t form
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowConsentForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		invokeVoidCallback(callback, f);
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -223,7 +217,7 @@ FirebaseError firebase_ump_load_and_show_consent_form_if_required(uint64_t conse
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->LoadAndShowConsentFormIfRequired(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		invokeVoidCallback(callback, f);
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -239,7 +233,7 @@ FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint6
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowPrivacyOptionsForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		invokeVoidCallback(callback, f);
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }

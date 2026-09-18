@@ -4584,6 +4584,19 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_parent_2A549385AEF6(JNIEn
     return static_cast<jdouble>(__ret);
 }
 
+// firebase_storage_ref_release JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_ref_release_1A36613D0742(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_ref_release((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
 // firebase_storage_ref_bucket JNI wrapper signature: (Ljava/nio/ByteBuffer;D)Ljava/lang/String;
 static jstring __JNI_WRAPPER__firebase_storage_ref_bucket_6F60AC449AE3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
@@ -10115,6 +10128,7 @@ extern "C" {
             { "__EXT_JNI__firebase_storage_use_emulator", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_use_emulator_E0441016764B },
             { "__EXT_JNI__firebase_storage_ref_child", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_child_CEFE6118E895 },
             { "__EXT_JNI__firebase_storage_ref_get_parent", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_parent_2A549385AEF6 },
+            { "__EXT_JNI__firebase_storage_ref_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_release_1A36613D0742 },
             { "__EXT_JNI__firebase_storage_ref_bucket", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_storage_ref_bucket_6F60AC449AE3 },
             { "__EXT_JNI__firebase_storage_ref_full_path", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_storage_ref_full_path_E5219EFF693C },
             { "__EXT_JNI__firebase_storage_ref_name", "(Ljava/nio/ByteBuffer;D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_storage_ref_name_B519DEF325AA },

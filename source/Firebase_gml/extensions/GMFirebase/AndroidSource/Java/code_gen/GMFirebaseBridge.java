@@ -309,6 +309,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_storage_use_emulator(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_child(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_get_parent(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_storage_ref_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native String __EXT_JNI__firebase_storage_ref_bucket(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native String __EXT_JNI__firebase_storage_ref_full_path(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native String __EXT_JNI__firebase_storage_ref_name(ByteBuffer __arg_buffer, double __arg_buffer_length);

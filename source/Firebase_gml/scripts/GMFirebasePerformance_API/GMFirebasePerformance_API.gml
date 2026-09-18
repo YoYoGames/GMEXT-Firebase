@@ -117,3 +117,8 @@ function __GMFirebasePerformance_is_available()
     static __available__ = extension_exists("GMFirebasePerformance");
     return __available__;
 }
+// #####################################################################
+// # Exports
+// #####################################################################
+
+#export FirebasePerformanceHttpMethod, firebase_performance_http_metric_start

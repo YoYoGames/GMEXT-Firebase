@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 #include <native/GMFirebaseInternal_native.h>
@@ -175,6 +176,12 @@ bool firebase_auth_resolve_phone_credential(uint64_t ref, firebase::auth::PhoneA
 // knows the Auth it belongs to); left absent when result.user is not valid.
 gm_structs::FirebaseAuthResult makeFirebaseAuthResult(uint64_t user_ref, const firebase::auth::AuthResult& result);
 
+// GM_FB_TYPE_AUTH_FEDERATED_PROVIDER handles are minted in GMFirebase_auth.cpp
+// and consumed by both the Auth and the User sign-in paths. Defined in
+// GMFirebase_auth.cpp; null (with the last error set) for anything else.
+namespace firebase { namespace auth { class FederatedOAuthProvider; } }
+firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provider_ref);
+
 // Core App
 #define GM_FB_TYPE_APP 0x80 // ptr: firebase::App*
 
@@ -336,6 +343,49 @@ inline bool unregisterFirebaseValue(uint32_t id, std::map<uint32_t, T>& map)
 {
 	std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
 	return map.erase(id) != 0;
+}
+
+// ============================================================
+// Future completion
+// ============================================================
+//
+// Every asynchronous entry point ends the same way: the Future completes on
+// an SDK thread and the callback gets the error code, the error message and,
+// when the GML contract carries the result, one value made from it. That
+// ending is written here once. A module whose payload needs more than one
+// conversion (a listener to free first, a DataStream that must hold a value
+// either way) does that in its own lambda and still comes through here for
+// the code and the message.
+
+// error_message() is null on success on some platforms.
+inline std::string_view futureErrorMessage(const firebase::FutureBase& f)
+{
+	const char* message = f.error_message();
+	return std::string_view{ message ? message : "" };
+}
+
+// callback(error_code, error_message) - a Future<void>, or a Future whose
+// result the GML contract does not carry.
+template <typename T>
+inline void completeFuture(const std::optional<gm::wire::GMFunction>& callback, const firebase::Future<T>& f)
+{
+	if (!callback.has_value()) return;
+	callback->call(static_cast<double>(f.error()), futureErrorMessage(f));
+}
+
+// callback(error_code, error_message, value). convert runs on success with a
+// non-null result; every other outcome sends a default-constructed value of
+// convert's declared return type - 0, an empty string, an absent optional -
+// so the argument's wire kind never depends on the outcome. Declare the
+// return type on the convert when the failure value has to be an absent
+// optional rather than a zero.
+template <typename T, typename Convert>
+inline void completeFuture(const std::optional<gm::wire::GMFunction>& callback, const firebase::Future<T>& f, Convert&& convert)
+{
+	if (!callback.has_value()) return;
+	using Value = std::decay_t<decltype(convert(*f.result()))>;
+	Value value = (f.error() == 0 && f.result() != nullptr) ? Value(convert(*f.result())) : Value{};
+	callback->call(static_cast<double>(f.error()), futureErrorMessage(f), value);
 }
 
 // ============================================================

@@ -1,9 +1,18 @@
 
+if (image_ref != 0)
+{
+    show_debug_message("Upload already running");
+    exit;
+}
+
 var _storage = firebase_storage_get_instance();
-var _image = firebase_storage_get_reference_path(_storage,"players/USER_123/img_close.png");	
-	
-firebase_storage_ref_put_file(
-	    _image,
+
+// Kept alive until the callback: on desktop the SDK's retry thread reads the
+// reference it was started on.
+image_ref = firebase_storage_get_reference_path(_storage,"players/USER_123/img_close.png");
+
+var _result = firebase_storage_ref_put_file(
+	    image_ref,
 	    working_directory + "img_close.png",
 	    0,          // no custom metadata
 	    function(
@@ -33,21 +42,32 @@ firebase_storage_ref_put_file(
 	        if (_error != 0)
 	        {
 	            show_debug_message(_message);
-	            return;
 	        }
-
-	        show_debug_message(
-	            "Upload complete"
-	        );
-
-	        // The callback owns this returned
-	        // metadata handle.
-	        if (_metadata != 0)
+	        else
 	        {
-	            firebase_storage_metadata_release(
-	                _metadata
+	            show_debug_message(
+	                "Upload complete"
 	            );
+
+	            // The callback owns this returned
+	            // metadata handle.
+	            if (_metadata != 0)
+	            {
+	                firebase_storage_metadata_release(
+	                    _metadata
+	                );
+	            }
 	        }
+
+	        firebase_storage_ref_release(image_ref);
+	        image_ref = 0;
 	    }
 	);
 
+if (_result != FirebaseError.Ok)
+{
+    show_debug_message($"[ERROR] {firebase_last_error_code()}: {firebase_last_error_message()}");
+
+    firebase_storage_ref_release(image_ref);
+    image_ref = 0;
+}

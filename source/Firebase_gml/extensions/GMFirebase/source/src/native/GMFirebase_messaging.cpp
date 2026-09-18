@@ -205,8 +205,7 @@ FirebaseError firebase_messaging_request_permission(const std::optional<GMFuncti
 
 	firebase::messaging::RequestPermission().OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -222,9 +221,7 @@ FirebaseError firebase_messaging_get_token(const std::optional<GMFunction>& call
 	GMF_DEPRECATED_POP()
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		if (!callback.has_value()) return;
-		std::string token = (f.error() == 0 && f.result() != nullptr) ? *f.result() : std::string();
-		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::string_view{ token });
+		completeFuture(callback, f, [](const std::string& token) { return std::string_view{ token }; });
 	});
 	return FirebaseError::Ok;
 }
@@ -240,8 +237,7 @@ FirebaseError firebase_messaging_delete_token(const std::optional<GMFunction>& c
 	GMF_DEPRECATED_POP()
 	future.OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -254,8 +250,7 @@ FirebaseError firebase_messaging_subscribe(std::string_view topic, const std::op
 
 	firebase::messaging::Subscribe(std::string(topic).c_str()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -268,8 +263,7 @@ FirebaseError firebase_messaging_unsubscribe(std::string_view topic, const std::
 
 	firebase::messaging::Unsubscribe(std::string(topic).c_str()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }

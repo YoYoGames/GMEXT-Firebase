@@ -528,6 +528,11 @@ public class GMExtWire
             super.writeTo(dst);
         }
 
+        /** What writeTo() emits: the tag and count header, then the payload. */
+        public int serializedLength() {
+            return Byte.BYTES + Short.BYTES + length();
+        }
+
         @Override
         protected void serializeTo(DataStream dst) {
             dst.buf.writeI8(tag);
@@ -537,10 +542,19 @@ public class GMExtWire
 
         @Override
         public void buildFrom(ByteBuffer src) {
-            byte srcTag = src.get();
+            // Consume the collection header (tag + count) and keep only the payload, so a later
+            // writeTo() re-emits the header exactly once. Mirrors C++ parseCollectionHeader().
+            ByteBuffer r = src.asReadOnlyBuffer().order(ORDER);
+            r.rewind();
+
+            byte srcTag = r.get();
             if (tag != srcTag)
                 throw new IllegalArgumentException("Incompatible 'tag' when building from ByteBuffer.");
-            super.buildFrom(src);
+
+            count = r.getShort();
+
+            buf.clear();
+            buf.writeBytes(r);
         }
     }
 
@@ -796,7 +810,9 @@ public class GMExtWire
                 if (packed.length() == 0) return 0.0;
             }
 
-            int need = packed.length();
+            // writeTo() puts the array header in front of the payload, so the size
+            // reported back has to count it or the caller's buffer ends 3 bytes short.
+            int need = packed.serializedLength();
             if (need > output.remaining()) return - (double) need;
 
             packed.writeTo(output);
@@ -969,7 +985,41 @@ public class GMExtWire
         return v.asObject();
     }
 
-    // Reads a pointer from the buffer and create a GMFunction wrapper for it. 
+    // ---- Owned-stream readers ----
+    // Mirror the C++ readValue<DataStream/ArrayStream/StructStream>: snapshot the raw bytes of
+    // exactly ONE value so a struct field can be re-emitted verbatim on the write path.
+
+    private static ByteBuffer sliceOneValue(ByteBuffer b) {
+        order(b);
+        int start = b.position();
+        readGMValue(b);                 // advance past exactly one value
+        int end = b.position();
+
+        ByteBuffer slice = b.duplicate().order(ORDER);
+        slice.position(start);
+        slice.limit(end);
+        return slice.slice().order(ORDER);
+    }
+
+    public static DataStream readDataStream(ByteBuffer b) {
+        DataStream ds = new DataStream();
+        ds.buildFrom(sliceOneValue(b));
+        return ds;
+    }
+
+    public static ArrayStream readArrayStream(ByteBuffer b) {
+        ArrayStream as = new ArrayStream();
+        as.buildFrom(sliceOneValue(b));
+        return as;
+    }
+
+    public static StructStream readStructStream(ByteBuffer b) {
+        StructStream ss = new StructStream();
+        ss.buildFrom(sliceOneValue(b));
+        return ss;
+    }
+
+    // Reads a pointer from the buffer and create a GMFunction wrapper for it.
     public static GMFunction readGMFunction(ByteBuffer b, GMDispatcher dispatcher) {
         long ref = readI64(b);
         return new GMFunction(ref, dispatcher);

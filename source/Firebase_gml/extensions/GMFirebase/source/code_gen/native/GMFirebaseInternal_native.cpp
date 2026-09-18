@@ -4483,6 +4483,17 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_parent(char* __arg_buffer
     return 0;
 }
 
+GMEXPORT double __EXT_NATIVE__firebase_storage_ref_release(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: ref, type: UInt64
+    std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_storage_ref_release(ref);
+    return static_cast<double>(__result);
+}
+
 GMEXPORT char* __EXT_NATIVE__firebase_storage_ref_bucket(char* __arg_buffer, double __arg_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};

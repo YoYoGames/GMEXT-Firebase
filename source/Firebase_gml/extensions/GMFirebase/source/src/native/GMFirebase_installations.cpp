@@ -38,11 +38,7 @@ namespace
 	{
 		installations->GetId().OnCompletion([callback](const firebase::Future<std::string>& f)
 		{
-			if (!callback.has_value())
-				return;
-
-			std::string_view id = (f.error() == 0 && f.result() != nullptr) ? std::string_view{ *f.result() } : std::string_view{};
-			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, id);
+			completeFuture(callback, f, [](const std::string& id) { return std::string_view{ id }; });
 		});
 		return FirebaseError::Ok;
 	}
@@ -51,11 +47,7 @@ namespace
 	{
 		installations->GetToken(force_refresh).OnCompletion([callback](const firebase::Future<std::string>& f)
 		{
-			if (!callback.has_value())
-				return;
-
-			std::string_view token = (f.error() == 0 && f.result() != nullptr) ? std::string_view{ *f.result() } : std::string_view{};
-			callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" }, token);
+			completeFuture(callback, f, [](const std::string& token) { return std::string_view{ token }; });
 		});
 		return FirebaseError::Ok;
 	}
@@ -64,8 +56,7 @@ namespace
 	{
 		installations->Delete().OnCompletion([callback](const firebase::Future<void>& f)
 		{
-			if (callback.has_value())
-				callback->call((double)f.error(), std::string_view{ f.error_message() ? f.error_message() : "" });
+			completeFuture(callback, f);
 		});
 		return FirebaseError::Ok;
 	}

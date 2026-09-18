@@ -114,8 +114,7 @@ FirebaseError firebase_remote_config_ensure_initialized(uint64_t rc_ref, const s
 
 	rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -133,8 +132,7 @@ FirebaseError firebase_remote_config_set_config_settings(uint64_t rc_ref, double
 
 	rc->SetConfigSettings(settings).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -161,8 +159,7 @@ FirebaseError firebase_remote_config_fetch(uint64_t rc_ref, const std::optional<
 
 	rc->Fetch().OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -179,8 +176,7 @@ FirebaseError firebase_remote_config_fetch_with_expiration(uint64_t rc_ref, doub
 
 	rc->Fetch(expiration_seconds).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -193,9 +189,7 @@ FirebaseError firebase_remote_config_fetch_and_activate(uint64_t rc_ref, const s
 
 	rc->FetchAndActivate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		if (!callback.has_value()) return;
-		bool activated = (f.error() == 0 && f.result() != nullptr) ? *f.result() : false;
-		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, activated);
+		completeFuture(callback, f, [](bool activated) { return activated; });
 	});
 	return FirebaseError::Ok;
 }
@@ -208,9 +202,7 @@ FirebaseError firebase_remote_config_activate(uint64_t rc_ref, const std::option
 
 	rc->Activate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		if (!callback.has_value()) return;
-		bool activated = (f.error() == 0 && f.result() != nullptr) ? *f.result() : false;
-		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, activated);
+		completeFuture(callback, f, [](bool activated) { return activated; });
 	});
 	return FirebaseError::Ok;
 }
@@ -358,8 +350,7 @@ FirebaseError firebase_remote_config_set_defaults(uint64_t rc_ref, const GMValue
 
 	rc->SetDefaults(entries.data(), entries.size()).OnCompletion([callback](const firebase::Future<void>& f)
 	{
-		if (callback.has_value())
-			callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" });
+		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
 }
@@ -436,11 +427,10 @@ FirebaseError firebase_remote_config_ensure_initialized_info(uint64_t rc_ref, co
     if (!rc) return FirebaseError::InvalidHandle;
     rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
     {
-        if (!callback) return;
-        if (f.error() == 0 && f.result())
-            callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, toGmInfo(*f.result()));
-        else
-            callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, std::optional<std::uint8_t>{});
+        completeFuture(callback, f, [](const firebase::remote_config::ConfigInfo& info) -> std::optional<FirebaseRemoteConfigInfo>
+        {
+            return toGmInfo(info);
+        });
     });
     return FirebaseError::Ok;
 }

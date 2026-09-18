@@ -70,11 +70,6 @@ static Query* resolve_db_query(uint64_t ref)
 	return q;
 }
 
-static std::string futureErrorMessage(const char* message)
-{
-	return message != nullptr ? std::string(message) : std::string();
-}
-
 // ============================================================
 // Database
 // ============================================================
@@ -310,16 +305,7 @@ static FirebaseError query_get_value(Query* q, const char* function, const std::
 	firebase::Future<DataSnapshot> pending = q->GetValue();
 	if (!firebaseFutureArmed(pending, function)) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<DataSnapshot>& future) {
-		if (!callback) return;
-		if (future.error() == firebase::database::kErrorNone && future.result() != nullptr)
-		{
-			uint64_t snapshot_ref = registerDatabaseSnapshot(*future.result());
-			callback->call((double)future.error(), futureErrorMessage(future.error_message()), snapshot_ref);
-		}
-		else
-		{
-			callback->call((double)future.error(), futureErrorMessage(future.error_message()), (uint64_t)0);
-		}
+		completeFuture(callback, future, registerDatabaseSnapshot);
 	});
 	return FirebaseError::Ok;
 }
@@ -535,7 +521,7 @@ FirebaseError firebase_database_ref_set_value(uint64_t ref, const gm::wire::GMVa
 	firebase::Future<void> pending = r->SetValue(gmValueToVariant(value));
 	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_value")) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<void>& future) {
-		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
+		completeFuture(callback, future);
 	});
 	return FirebaseError::Ok;
 }
@@ -547,7 +533,7 @@ FirebaseError firebase_database_ref_set_priority(uint64_t ref, const gm::wire::G
 	firebase::Future<void> pending = r->SetPriority(gmValueToVariant(priority));
 	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_priority")) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<void>& future) {
-		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
+		completeFuture(callback, future);
 	});
 	return FirebaseError::Ok;
 }
@@ -559,7 +545,7 @@ FirebaseError firebase_database_ref_set_value_and_priority(uint64_t ref, const g
 	firebase::Future<void> pending = r->SetValueAndPriority(gmValueToVariant(value), gmValueToVariant(priority));
 	if (!firebaseFutureArmed(pending, "firebase_database_ref_set_value_and_priority")) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<void>& future) {
-		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
+		completeFuture(callback, future);
 	});
 	return FirebaseError::Ok;
 }
@@ -571,7 +557,7 @@ FirebaseError firebase_database_ref_update_children(uint64_t ref, const gm::wire
 	firebase::Future<void> pending = r->UpdateChildren(gmValueToVariant(values));
 	if (!firebaseFutureArmed(pending, "firebase_database_ref_update_children")) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<void>& future) {
-		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
+		completeFuture(callback, future);
 	});
 	return FirebaseError::Ok;
 }
@@ -583,7 +569,7 @@ FirebaseError firebase_database_ref_remove_value(uint64_t ref, const std::option
 	firebase::Future<void> pending = r->RemoveValue();
 	if (!firebaseFutureArmed(pending, "firebase_database_ref_remove_value")) return FirebaseError::InvalidHandle;
 	pending.OnCompletion([callback](const firebase::Future<void>& future) {
-		if (callback) callback->call((double)future.error(), futureErrorMessage(future.error_message()));
+		completeFuture(callback, future);
 	});
 	return FirebaseError::Ok;
 }
@@ -684,7 +670,7 @@ namespace
         if (!firebaseFutureArmed(future, function)) return FirebaseError::InvalidHandle;
         future.OnCompletion([callback](const firebase::Future<void>& f)
         {
-            if (callback) callback->call(static_cast<double>(f.error()), futureErrorMessage(f.error_message()));
+            completeFuture(callback, f);
         });
         return FirebaseError::Ok;
     }

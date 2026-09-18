@@ -1416,6 +1416,7 @@ void firebase_storage_set_max_operation_retry_time(std::uint64_t storage_ref, do
 void firebase_storage_use_emulator(std::uint64_t storage_ref, std::string_view host, double port);
 std::uint64_t firebase_storage_ref_child(std::uint64_t ref, std::string_view path);
 std::uint64_t firebase_storage_ref_get_parent(std::uint64_t ref);
+double firebase_storage_ref_release(std::uint64_t ref);
 std::string firebase_storage_ref_bucket(std::uint64_t ref);
 std::string firebase_storage_ref_full_path(std::uint64_t ref);
 std::string firebase_storage_ref_name(std::uint64_t ref);

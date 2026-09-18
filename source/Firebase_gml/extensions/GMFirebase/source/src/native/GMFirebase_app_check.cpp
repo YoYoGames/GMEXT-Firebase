@@ -40,15 +40,10 @@ namespace
 	void completeTokenFuture(const std::optional<gm::wire::GMFunction>& callback,
 		const firebase::Future<firebase::app_check::AppCheckToken>& f)
 	{
-		if (!callback.has_value())
-			return;
-
-		const double code = static_cast<double>(f.error());
-		const std::string_view message{ f.error_message() ? f.error_message() : "" };
-		if (f.error() == 0 && f.result() != nullptr)
-			callback->call(code, message, makeAppCheckToken(*f.result()));
-		else
-			callback->call(code, message, std::optional<gm_structs::FirebaseAppCheckToken>{});
+		completeFuture(callback, f, [](const firebase::app_check::AppCheckToken& token) -> std::optional<gm_structs::FirebaseAppCheckToken>
+		{
+			return makeAppCheckToken(token);
+		});
 	}
 
 	// Heap-allocated so its address can double as the GM_FB_TYPE_APPCHECK_LISTENER

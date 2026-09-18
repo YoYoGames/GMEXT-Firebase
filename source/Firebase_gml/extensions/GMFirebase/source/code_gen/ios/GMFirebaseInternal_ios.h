@@ -293,6 +293,7 @@
 - (double)__EXT_NATIVE__firebase_storage_use_emulator:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_storage_ref_child:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_storage_ref_get_parent:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
+- (double)__EXT_NATIVE__firebase_storage_ref_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (char*)__EXT_NATIVE__firebase_storage_ref_bucket:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (char*)__EXT_NATIVE__firebase_storage_ref_full_path:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (char*)__EXT_NATIVE__firebase_storage_ref_name:(char*)__arg_buffer arg1:(double)__arg_buffer_length;

@@ -43,7 +43,7 @@ namespace
 		else
 			result << std::optional<std::uint8_t>{};
 
-		callback->call(static_cast<double>(f.error()), std::string_view{ f.error_message() ? f.error_message() : "" }, result);
+		callback->call(static_cast<double>(f.error()), futureErrorMessage(f), result);
 	}
 }
 

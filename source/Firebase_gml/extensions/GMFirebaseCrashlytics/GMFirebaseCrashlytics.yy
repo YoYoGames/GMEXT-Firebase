@@ -42,7 +42,7 @@
   "installdir":"",
   "iosCocoaPodDependencies":"",
   "iosCocoaPods":"",
-  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseCrashlytics_disableDataCollection}'>\r\n        <key>FirebaseCrashlyticsCollectionEnabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebaseCrashlytics', '12.17.0'\r\n\r\n</YYIosCocoaPods>\r\n\r\n\r\n<YYIosScriptPhase>\r\n\r\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\"\r\n\r\n</YYIosScriptPhase>\r\n",
+  "ioscodeinjection":"<YYIosPlist>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseCrashlytics_disableDataCollection}'>\r\n        <key>FirebaseCrashlyticsCollectionEnabled</key>\r\n        <false/>\r\n    </toExpand>\r\n\r\n</YYIosPlist>\r\n\r\n\r\n<YYIosCocoaPods>\r\n\r\n    pod 'FirebaseCrashlytics', '12.17.0'\r\n\r\n</YYIosCocoaPods>\r\n\r\n\r\n<YYIosScriptPhase>\r\n\r\n    \"${PODS_ROOT}/FirebaseCrashlytics/run\"\r\n\r\n</YYIosScriptPhase>\r\n\r\n\r\n<YYIosBuildSettingsInjection>\r\n\r\n    DEBUG_INFORMATION_FORMAT = \"dwarf-with-dsym\";\r\n\r\n</YYIosBuildSettingsInjection>\r\n",
   "iosdelegatename":"",
   "iosplistinject":null,
   "iosProps":true,

@@ -365,9 +365,10 @@
  * address - an iOS feature that matches the player to an ad they saw without the address leaving
  * the device, for measuring the ads that brought players to the game.
  *
- * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
- * library linked into the iOS build, which this version of the extension does not do, so the call
- * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
+ * It is iOS-only: on Android, Windows, macOS and Linux the call does nothing. The
+ * `GoogleAdsOnDeviceConversion` framework it needs comes with the `FirebaseAnalytics` pod the
+ * extension pins, so nothing has to be added to the iOS build. It does nothing before
+ * ${function.firebase_analytics_initialize}.
  *
  * @param {String} email_address The player's email address, domain included.
  * @function_end
@@ -380,9 +381,8 @@
  * This function is ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}
  * for a phone number.
  *
- * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
- * library linked into the iOS build, which this version of the extension does not do, so the call
- * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
+ * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
+ * It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {String} phone_number The player's phone number in E.164 format (`"+14155552671"`).
  * @function_end
@@ -409,9 +409,8 @@
  * for an email address the game has already normalised and SHA-256 hashed, as Google's on-device
  * measurement guide describes, passed as the raw 32 bytes of the hash.
  *
- * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
- * library linked into the iOS build, which this version of the extension does not do, so the call
- * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
+ * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
+ * It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {Buffer} hashed_email A buffer holding the hash's bytes.
  * @function_end
@@ -425,9 +424,8 @@
  * for a phone number the game has already normalised to E.164 and SHA-256 hashed, passed as the
  * raw 32 bytes of the hash.
  *
- * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
- * library linked into the iOS build, which this version of the extension does not do, so the call
- * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
+ * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
+ * It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {Buffer} hashed_phone A buffer holding the hash's bytes.
  * @function_end
@@ -474,10 +472,19 @@
  * ### Platforms
  *
  * Analytics works fully on Android and iOS. On Windows the SDK loads Google Analytics from a
- * `google_analytics.dll` placed beside the game's executable - a library the Firebase C++ SDK
- * package does not include - and runs every call as a no-op without it;
- * ${function.firebase_analytics_is_desktop_initialized} says which. On macOS and Linux every call
- * is a no-op. On all three, ${function.firebase_analytics_get_analytics_instance_id} and
+ * `google_analytics.dll` beside the game's executable and runs every call as a no-op without it;
+ * ${function.firebase_analytics_is_desktop_initialized} says which. The SDK package does not
+ * include that DLL: the README says where to download it (the SDK repository, at the tag matching
+ * the pinned version) and where to put it (`libs/windows/` under the SDK root), and the Windows
+ * build step copies it beside the executable from there. The SDK checks the DLL's hash against a
+ * list compiled into the pinned library, so a DLL from another SDK version is refused and Analytics
+ * stays a no-op - ${function.firebase_analytics_set_log_callback} shows the "Hash mismatch for
+ * Analytics DLL." line when that happens. One flow cannot load it at all: a Run from the IDE (VM)
+ * executes the game inside the runtime's own runner, whose folder is the runtime's, and the SDK
+ * only looks beside the running executable - so on an IDE run
+ * ${function.firebase_analytics_is_desktop_initialized} reads `0` and Analytics is the stub, while a
+ * packaged or YYC build is its own executable and loads the DLL. On macOS and Linux every call is a
+ * no-op. On all three, ${function.firebase_analytics_get_analytics_instance_id} and
  * ${function.firebase_analytics_get_session_id} answer with placeholder ids,
  * ${function.firebase_analytics_set_consent} does nothing, and the functions in the Desktop
  * section are Windows-only. Game code need not branch: the calls are safe everywhere.

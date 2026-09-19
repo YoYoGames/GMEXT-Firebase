@@ -1310,7 +1310,7 @@ The three platform-SDK extensions have one option each.</p>
 <td><strong>Firebase C++ SDK path</strong></td>
 <td>Folder</td>
 <td><code>../Firebase_sdk</code></td>
-<td>The root of an unpacked Firebase C++ SDK - the version the extension was built against, which <a href="app.html#firebase_get_sdk_version">firebase_get_sdk_version</a> reports and the README names. The Android build reads the SDK's ProGuard rules and its <code>firebase_messaging_cpp.aar</code> from <code>libs/android/</code>; the iOS build stages the frameworks from <code>xcframeworks/</code>. Not used by desktop builds.</td>
+<td>The root of an unpacked Firebase C++ SDK - the version the extension was built against, which <a href="app.html#firebase_get_sdk_version">firebase_get_sdk_version</a> reports and the README names. The Android build reads the SDK's ProGuard rules and its <code>firebase_messaging_cpp.aar</code> from <code>libs/android/</code>; the iOS build stages the frameworks from <code>xcframeworks/</code>; the Windows build copies <code>libs/windows/google_analytics.dll</code> beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of <a href="analytics.html">Analytics</a>). macOS and Linux builds do not read it.</td>
 </tr>
 <tr>
 <td><strong>google-services (desktop json)</strong></td>

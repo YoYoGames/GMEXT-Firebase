@@ -20,6 +20,48 @@ firebase::App* g_firebase_app = nullptr;
 #if FIREBASE_PLATFORM_DESKTOP
 namespace
 {
+#if FIREBASE_PLATFORM_WINDOWS
+	// UTF-8 directory of a loaded module (the executable for nullptr), with a
+	// trailing separator; empty when it cannot be determined. The wide API: the
+	// A variant returns the ANSI code page, which is not UTF-8 and fails on any
+	// user directory with a non-ASCII character.
+	std::string moduleDirectory(HMODULE module)
+	{
+		wchar_t path[MAX_PATH];
+		DWORD len = GetModuleFileNameW(module, path, MAX_PATH);
+		TRACE("[GMFirebase] moduleDirectory() GetModuleFileNameW len=%lu\n", (unsigned long)len);
+		if (len == 0 || len == MAX_PATH) return std::string();
+		std::wstring full(path, len);
+		size_t slash = full.find_last_of(L"/\\");
+		if (slash == std::wstring::npos) return std::string();
+		std::wstring wide_dir = full.substr(0, slash + 1);
+		int needed = WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), nullptr, 0, nullptr, nullptr);
+		if (needed <= 0) return std::string();
+		std::string dir(static_cast<size_t>(needed), '\0');
+		WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), &dir[0], needed, nullptr, nullptr);
+		return dir;
+	}
+
+	// The directory GMFirebase.dll itself was loaded from. GameMaker copies the
+	// extension beside the game's data in every flow - an IDE run, a package, a
+	// YYC build - and post_build_step stages the config into that same folder.
+	// The executable's directory is not that folder on an IDE (VM) run: the
+	// process is the runtime's own Runner.exe, so GetModuleFileNameW(nullptr)
+	// names the runtime folder, which holds nothing of the game's.
+	const char s_module_anchor = 0;
+	std::string getExtensionDir()
+	{
+		HMODULE module = nullptr;
+		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+			reinterpret_cast<LPCWSTR>(&s_module_anchor), &module))
+		{
+			TRACE("[GMFirebase] getExtensionDir() GetModuleHandleExW failed (%lu)\n", (unsigned long)GetLastError());
+			return std::string();
+		}
+		return moduleDirectory(module);
+	}
+#endif
+
 	// Where the staged google-services(-desktop).json lives. post_build_step
 	// stages a copy beside the built executable on every desktop platform. On
 	// macOS specifically, GameMaker's own generated Xcode project *also*
@@ -31,27 +73,16 @@ namespace
 	// directory is the wrong place to look; the bundle's Resources directory
 	// (via CFBundleCopyResourcesDirectoryURL) is the location that is
 	// actually guaranteed to contain the file. UTF-8, with a trailing
-	// separator; empty when it cannot be determined.
+	// separator; empty when it cannot be determined. On Windows this is the
+	// second candidate after getExtensionDir().
 	std::string getConfigSearchDir()
 	{
 		TRACE("[GMFirebase] getConfigSearchDir() FIREBASE_PLATFORM_OSX=%d FIREBASE_PLATFORM_WINDOWS=%d FIREBASE_PLATFORM_LINUX=%d\n",
 			(int)FIREBASE_PLATFORM_OSX, (int)FIREBASE_PLATFORM_WINDOWS, (int)FIREBASE_PLATFORM_LINUX);
 
 #if FIREBASE_PLATFORM_WINDOWS
-		// The wide API: the A variant returns the ANSI code page, which is not
-		// UTF-8 and fails on any user directory with a non-ASCII character.
-		wchar_t path[MAX_PATH];
-		DWORD len = GetModuleFileNameW(nullptr, path, MAX_PATH);
-		TRACE("[GMFirebase] getConfigSearchDir() GetModuleFileNameW len=%lu\n", (unsigned long)len);
-		if (len == 0 || len == MAX_PATH) return std::string();
-		std::wstring full(path, len);
-		size_t slash = full.find_last_of(L"/\\");
-		if (slash == std::wstring::npos) return std::string();
-		std::wstring wide_dir = full.substr(0, slash + 1);
-		int needed = WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), nullptr, 0, nullptr, nullptr);
-		if (needed <= 0) return std::string();
-		std::string dir(static_cast<size_t>(needed), '\0');
-		WideCharToMultiByte(CP_UTF8, 0, wide_dir.c_str(), static_cast<int>(wide_dir.size()), &dir[0], needed, nullptr, nullptr);
+		std::string dir = moduleDirectory(nullptr);
+		if (dir.empty()) return dir;
 #elif FIREBASE_PLATFORM_OSX
 		CFBundleRef bundle = CFBundleGetMainBundle();
 		if (!bundle)
@@ -121,33 +152,45 @@ namespace
 	// filenames and their order are the SDK's own (app_desktop.cc).
 	firebase::App* createDesktopApp()
 	{
-		std::string dir = getConfigSearchDir();
-		if (dir.empty())
+		std::vector<std::string> dirs;
+#if FIREBASE_PLATFORM_WINDOWS
+		const std::string extension_dir = getExtensionDir();
+		if (!extension_dir.empty()) dirs.push_back(extension_dir);
+#endif
+		const std::string exe_dir = getConfigSearchDir();
+		if (!exe_dir.empty() && (dirs.empty() || dirs.front() != exe_dir)) dirs.push_back(exe_dir);
+		if (dirs.empty())
 		{
 			TRACE("[GMFirebase] getFirebaseApp() config directory unknown, using the SDK's working-directory search\n");
 			return firebase::App::Create();
 		}
 
 		static const char* const kConfigNames[] = { "google-services-desktop.json", "google-services.json" };
-		for (const char* name : kConfigNames)
+		std::string searched;
+		for (const std::string& dir : dirs)
 		{
-			const std::string path = dir + name;
-			std::string contents;
-			if (!readConfigFile(path, contents))
-				continue;
-
-			firebase::AppOptions options;
-			if (firebase::AppOptions::LoadFromJsonConfig(contents.c_str(), &options) == nullptr)
+			for (const char* name : kConfigNames)
 			{
-				TRACE("[GMFirebase] %s is not a valid Firebase config\n", path.c_str());
-				continue;
-			}
+				const std::string path = dir + name;
+				std::string contents;
+				if (!readConfigFile(path, contents))
+					continue;
 
-			TRACE("[GMFirebase] getFirebaseApp() loaded %s\n", path.c_str());
-			return firebase::App::Create(options);
+				firebase::AppOptions options;
+				if (firebase::AppOptions::LoadFromJsonConfig(contents.c_str(), &options) == nullptr)
+				{
+					TRACE("[GMFirebase] %s is not a valid Firebase config\n", path.c_str());
+					continue;
+				}
+
+				TRACE("[GMFirebase] getFirebaseApp() loaded %s\n", path.c_str());
+				return firebase::App::Create(options);
+			}
+			if (!searched.empty()) searched += " or ";
+			searched += dir;
 		}
 
-		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: no google-services-desktop.json or google-services.json in " + dir);
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: no google-services-desktop.json or google-services.json in " + searched);
 		return nullptr;
 	}
 }

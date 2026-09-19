@@ -3,7 +3,7 @@
   "%Name":"GMFirebaseInAppMessaging",
   "androidactivityinject":null,
   "androidclassname":"GMFirebaseInAppMessaging",
-  "androidcodeinjection":"<YYAndroidGradleDependencies>\r\n\r\n    // The main GMFirebase extension already supplies:\r\n    // - Firebase BoM 34.17.0\r\n    // - Firebase Analytics\r\n    //\r\n    // The Display artifact includes FIAM's headless SDK transitively.\r\n    implementation 'com.google.firebase:firebase-inappmessaging-display'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidManifestApplicationInject>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseInAppMessaging_disableDataCollection}'>\r\n        <meta-data\r\n            android:name=\"firebase_inapp_messaging_auto_data_collection_enabled\"\r\n            android:value=\"false\" />\r\n    </toExpand>\r\n\r\n</YYAndroidManifestApplicationInject>\r\n",
+  "androidcodeinjection":"<YYAndroidGradleDependencies>\r\n\r\n    // The main GMFirebase extension already supplies:\r\n    // - the Firebase BoM\r\n    // - Firebase Analytics\r\n    //\r\n    // The Display artifact includes FIAM's headless SDK transitively.\r\n    implementation 'com.google.firebase:firebase-inappmessaging-display'\r\n\r\n</YYAndroidGradleDependencies>\r\n\r\n\r\n<YYAndroidManifestApplicationInject>\r\n\r\n    <toExpand condition='${YYEXTOPT_GMFirebaseInAppMessaging_disableDataCollection}'>\r\n        <meta-data\r\n            android:name=\"firebase_inapp_messaging_auto_data_collection_enabled\"\r\n            android:value=\"false\" />\r\n    </toExpand>\r\n\r\n</YYAndroidManifestApplicationInject>\r\n",
   "androidinject":null,
   "androidmanifestinject":null,
   "androidPermissions":[],

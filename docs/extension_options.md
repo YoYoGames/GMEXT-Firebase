@@ -31,7 +31,7 @@ The three platform-SDK extensions have one option each.
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| **Firebase C++ SDK path** | Folder | `../Firebase_sdk` | The root of an unpacked Firebase C++ SDK - the version the extension was built against, which ${function.firebase_get_sdk_version} reports and the README names. The Android build reads the SDK's ProGuard rules and its `firebase_messaging_cpp.aar` from `libs/android/`; the iOS build stages the frameworks from `xcframeworks/`. Not used by desktop builds. |
+| **Firebase C++ SDK path** | Folder | `../Firebase_sdk` | The root of an unpacked Firebase C++ SDK - the version the extension was built against, which ${function.firebase_get_sdk_version} reports and the README names. The Android build reads the SDK's ProGuard rules and its `firebase_messaging_cpp.aar` from `libs/android/`; the iOS build stages the frameworks from `xcframeworks/`; the Windows build copies `libs/windows/google_analytics.dll` beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of ${module.analytics}). macOS and Linux builds do not read it. |
 | **google-services (desktop json)** | File | `../Firebase_private/google-services.json` | The Firebase configuration for Windows, macOS and Linux builds - the Android `google-services.json` does the job. The build step copies it beside the executable (into the app bundle's resources on macOS), which is where ${function.firebase_app_initialize} looks for it on desktop. |
 
 All four file and folder paths are resolved relative to the project folder, so the defaults point at

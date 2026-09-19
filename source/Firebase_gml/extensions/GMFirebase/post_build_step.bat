@@ -52,6 +52,14 @@ for %%P in (macOS Mac MacOS OSX) do if /I "%YYPLATFORM_name%"=="%%P" set "GMF_IS
 if defined GMF_IS_MAC call :packageMacFirebaseJson
 if errorlevel 1 exit /b %errorlevel%
 
+:: Windows: the Firebase C++ SDK loads Google Analytics from a google_analytics.dll
+:: beside the executable (hash-checked against the list compiled into the pinned
+:: library) and runs Analytics as a stub without it. The SDK zip does not carry the
+:: DLL; the README says where to download it. It lives at libs\windows\ under the
+:: SDK root and is copied wherever the desktop JSON goes. Absent is not an error.
+set "GMF_ANALYTICS_DLL="
+if /I "%YYPLATFORM_name%"=="Windows" call :resolveWindowsAnalyticsDll
+
 set "GMF_SOURCE=%FIREBASE_JSON_SOURCE%"
 set "GMF_OUTPUT=%YYoutputFolder%"
 set "GMF_PROJECT=%YYprojectName%"
@@ -64,6 +72,7 @@ set "GMF_PLATFORM=%YYPLATFORM_name%"
 powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command ^
   "$ErrorActionPreference='Stop';" ^
   "$src=$env:GMF_SOURCE;" ^
+  "$dll=$env:GMF_ANALYTICS_DLL;" ^
   "$out=$env:GMF_OUTPUT;" ^
   "$project=$env:GMF_PROJECT;" ^
   "$platform=$env:GMF_PLATFORM;" ^
@@ -74,6 +83,11 @@ powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command ^
   "  $dst=Join-Path $dir 'google-services.json';" ^
   "  Copy-Item -LiteralPath $src -Destination $dst -Force;" ^
   "  Write-Host ('[FirebaseSetup] Desktop Firebase config copied: ' + $dst);" ^
+  "  if (-not [string]::IsNullOrWhiteSpace($dll)) {" ^
+  "    $dlldst=Join-Path $dir 'google_analytics.dll';" ^
+  "    Copy-Item -LiteralPath $dll -Destination $dlldst -Force;" ^
+  "    Write-Host ('[FirebaseSetup] Windows Analytics DLL copied: ' + $dlldst);" ^
+  "  }" ^
   "};" ^
   "if ($platform -match '^(macOS|Mac|MacOS|OSX)$') {" ^
   "  Get-ChildItem -LiteralPath $out -Directory -Recurse -Depth 2 -Filter 'Supporting Files' -ErrorAction SilentlyContinue | ForEach-Object {" ^
@@ -100,10 +114,40 @@ if errorlevel 1 (
 )
 
 set "GMF_SOURCE="
+set "GMF_ANALYTICS_DLL="
 set "GMF_OUTPUT="
 set "GMF_PROJECT="
 set "GMF_PLATFORM="
 
+exit /b 0
+
+:: ----------------------------------------------------------------------------------------------------
+:: Sets GMF_ANALYTICS_DLL to <firebaseCppSdkPath>\libs\windows\google_analytics.dll when
+:: that file exists, and leaves it empty otherwise. pathResolve rather than
+:: pathResolveExisting on purpose: a missing SDK root or DLL is a note here, not a
+:: failed build - Analytics simply runs as the SDK's stub.
+:resolveWindowsAnalyticsDll
+    call %Utils% optionGetValue "firebaseCppSdkPath" GMF_SDK_OPTION
+    if not defined GMF_SDK_OPTION (
+        echo [FirebaseSetup] NOTE: Extension option 'firebaseCppSdkPath' is empty; google_analytics.dll not staged, Analytics runs as the stub on Windows.
+        exit /b 0
+    )
+
+    call %Utils% pathResolve "%YYprojectDir%" "%GMF_SDK_OPTION%" GMF_SDK_ROOT
+    set "GMF_SDK_OPTION="
+
+    set "GMF_DLL_CANDIDATE=%GMF_SDK_ROOT%\libs\windows\google_analytics.dll"
+    set "GMF_SDK_ROOT="
+    if not exist "%GMF_DLL_CANDIDATE%" (
+        echo [FirebaseSetup] NOTE: google_analytics.dll not found at %GMF_DLL_CANDIDATE%; Analytics runs as the stub on Windows ^(see README^).
+        set "GMF_DLL_CANDIDATE="
+        exit /b 0
+    )
+
+    set "GMF_ANALYTICS_DLL=%GMF_DLL_CANDIDATE%"
+    set "GMF_DLL_CANDIDATE="
+    echo [FirebaseSetup] Windows Analytics DLL resolved:
+    echo [FirebaseSetup]   %GMF_ANALYTICS_DLL%
 exit /b 0
 
 :: ----------------------------------------------------------------------------------------------------

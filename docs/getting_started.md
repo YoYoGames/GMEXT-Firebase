@@ -12,7 +12,7 @@ you use those products, and always alongside GMFirebase.
 | Platform | GMFirebase | Crashlytics, Performance, In-App Messaging |
 |---|---|---|
 | Android, iOS | Every module | Yes |
-| Windows, macOS, Linux | Authentication, Cloud Firestore, Realtime Database, Cloud Storage, Remote Config, Cloud Functions and App Check; Analytics on Windows only. Cloud Messaging, Installations and the User Messaging Platform are stubs on desktop - their functions return without doing anything | No |
+| Windows, macOS, Linux | Authentication, Cloud Firestore, Realtime Database, Cloud Storage, Remote Config, Cloud Functions and App Check; Analytics on Windows only, with the `google_analytics.dll` the ${module.analytics} page describes. Cloud Messaging, Installations and the User Messaging Platform are stubs on desktop - their functions return without doing anything | No |
 
 [[Note: Firebase describes its desktop support as a beta meant for development workflows rather than
 shipped builds. It works, and the extension ships real desktop binaries, but that is Google's stated

@@ -7759,13 +7759,14 @@ synchronously inside the SDK's own retry loop, and the extension's callback brid
 GML function to that contract, so the call never reaches the SDK: it returns
 <code>FirebaseError.Unsupported</code> at once, <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> says the same, and the
 callback is never called.</p>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>For an atomic write of several documents that does not depend on reading them
 first, use a write batch (<a href="firestore.html#firebase_firestore_batch">firebase_firestore_batch</a>). For a counter, use
 <a href="firestore.html#firebase_firestore_field_value_increment_integer">firebase_firestore_field_value_increment_integer</a>, which the server applies
 atomically. A read-then-write that must be atomic has to run in a Cloud Function
 (<a href="functions.html">Cloud Functions</a>).</p>
-</blockquote>
+</div>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>

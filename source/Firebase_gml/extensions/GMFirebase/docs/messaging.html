@@ -2864,10 +2864,11 @@ manifest or plist key, or failing that the default of on. The desktop stub alway
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_set_token_registration_on_init_enabled">firebase_messaging_set_token_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_set_token_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a>, which sets the same SDK state under its current name; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#settokenregistrationoninitenabled">firebase::messaging::SetTokenRegistrationOnInitEnabled</a></p>
 <p>This function is <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a> under the
 setting's old name; both write the same stored setting.</p>
@@ -2902,10 +2903,11 @@ setting's old name; both write the same stored setting.</p>
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_is_token_registration_on_init_enabled">firebase_messaging_is_token_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_is_token_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled</a>, which reads the same SDK state under its current name; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#istokenregistrationoninitenabled">firebase::messaging::IsTokenRegistrationOnInitEnabled</a></p>
 <p>This function is <a href="messaging.html#firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled</a> under the
 setting's old name; both read the same stored setting.</p>
@@ -3214,10 +3216,11 @@ the callback fires at once with <code>0</code>.</p>
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_get_token">firebase_messaging_get_token<a class="headerlink" href="#firebase_messaging_get_token" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a>, which registers the installation and delivers its Firebase Installation ID through <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#gettoken">firebase::messaging::GetToken</a></p>
 <p>This function creates the installation's Firebase Installation ID if there is none, sends the app
 and device details to Firebase, and hands the callback the registration token: the string that
@@ -3292,10 +3295,11 @@ or refreshes one. On Windows, macOS and Linux the callback fires at once with <c
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_delete_token">firebase_messaging_delete_token<a class="headerlink" href="#firebase_messaging_delete_token" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a>, which unregisters the installation and delivers its id through <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deletetoken">firebase::messaging::DeleteToken</a></p>
 <p>This function deletes the installation's registration token, so that no more messages reach this
 device until a new one is generated. The Firebase Installation ID stays on the device;
@@ -3634,10 +3638,11 @@ to this device alone. It is an empty string until a poll has returned <code>1</c
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_poll_token">firebase_messaging_poll_token<a class="headerlink" href="#firebase_messaging_poll_token" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>, which reports each completed registration with its Firebase Installation ID; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#ontokenreceived">firebase::messaging::Listener::OnTokenReceived</a></p>
 <p>This function checks whether the SDK generated or refreshed a registration token since the last
 poll and, when it has, makes <a href="messaging.html#firebase_messaging_current_token">firebase_messaging_current_token</a> return it. Call it once
@@ -3659,10 +3664,11 @@ way.</p>
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_current_token">firebase_messaging_current_token<a class="headerlink" href="#firebase_messaging_current_token" title="Permanent link">&para;</a></h1>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>This function has been superseded by <a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a>, which returns the Firebase Installation ID the last registration poll delivered; the SDK has deprecated the
 token API, and we recommend that you only use this function for legacy support.</p>
-</blockquote>
+</div>
 <p>This function returns the registration token the last successful
 <a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a> delivered. It is an empty string until a poll has
 returned <code>1</code>, and again after <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>

@@ -1770,11 +1770,12 @@ reads the <code>APP_CHECK_DEBUG_TOKEN</code> environment variable, or generates 
 launch and prints it to the debug log with the console link to register it at; a token set here
 or in the variable survives launches, which is the usual choice for a development machine. On
 Android and iOS the platform SDK manages the debug token itself.</p>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>A debug token is a secret: it lets anything that presents it pass as the game.
 Keep it out of source control and out of shipped builds, and delete it from the console when
 it is no longer needed.</p>
-</blockquote>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>

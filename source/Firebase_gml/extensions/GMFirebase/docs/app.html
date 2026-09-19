@@ -1727,11 +1727,12 @@ a configuration file that could not be found or read.</p>
 test on its return is correct here. The asynchronous functions of this extension return
 <a href="app.html#firebaseerror">FirebaseError</a> instead, where <code>FirebaseError.Ok</code> is <code>0</code> - see the notes on this page.</p>
 </div>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>On iOS the <code>GMFirebaseCrashlytics</code>, <code>GMFirebasePerformance</code> and <code>GMFirebaseInAppMessaging</code>
 extensions depend on this call having configured the default app; their functions are no-ops until
 it has run. On Android the default app is configured at launch and those three work either way.</p>
-</blockquote>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>

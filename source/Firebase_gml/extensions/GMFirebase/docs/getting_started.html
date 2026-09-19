@@ -1109,11 +1109,12 @@ firebase_auth_get_auth();</code></pre>
 uses. Each module has its own initialise function (<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>,
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a>, <a href="firestore.html#firebase_firestore_get_instance">firebase_firestore_get_instance</a> and so on);
 see <a href="app.html">App</a> for the list. Nothing needs to be shut down at the end of the game.</p>
-<blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
 <p>On iOS the three platform-SDK extensions (Crashlytics, Performance Monitoring, In-App
 Messaging) do nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run, because that call is what
 configures the default app on that platform. Call it first, then use them.</p>
-</blockquote>
+</div>
 <h1 id="results-and-callbacks">Results and callbacks<a class="headerlink" href="#results-and-callbacks" title="Permanent link">&para;</a></h1>
 <p>Everything that talks to a Firebase server is asynchronous. Such a function takes a callback as its
 last argument and returns a <a href="app.html#firebaseerror">FirebaseError</a> at once:</p>

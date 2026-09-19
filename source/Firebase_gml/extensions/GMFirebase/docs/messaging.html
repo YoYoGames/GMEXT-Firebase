@@ -1,0 +1,4579 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="guides_cloud_storage.html">
+      
+      
+        <link rel="next" href="guides_cloud_messaging.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Cloud Messaging - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cloud-messaging" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Cloud Messaging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="messaging.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cloud-messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Messaging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Messaging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiving
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiving messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The notification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_terminate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_terminate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_is_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_is_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_token_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_token_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_is_token_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_is_token_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_delivery_metrics_export_to_big_query_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_delivery_metrics_export_to_big_query_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_delivery_metrics_export_to_big_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_delivery_metrics_export_to_big_query
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_request_permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_request_permission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_unregister" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_unregister
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_delete_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_delete_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_subscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_unsubscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_unsubscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_message
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_registration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_unregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_unregistration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_current_installation_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_current_installation_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_current_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_current_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_to
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_collapse_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_collapse_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_message_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_message_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_message_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_message_type
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_original_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_original_priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_time_to_live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_time_to_live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_sent_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_sent_time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_error_description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_error_description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_link
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_opened" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_opened
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_data_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_data_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_data_key_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_data_key_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_get_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_get_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_raw_data_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_raw_data_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_raw_data_copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_raw_data_copy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_has_notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_has_notification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_icon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_icon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_sound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_badge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_badge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_tag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_color" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_color
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_click_action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_click_action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_args_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_args_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_args_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_args_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_args_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_args_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_args_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_args_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_android_channel_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_android_channel_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_for_app_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_for_app_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cloud-messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Messaging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Messaging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiving
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and permission
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Topics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Receiving messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The notification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deprecated
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_terminate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_terminate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_is_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_is_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_token_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_token_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_is_token_registration_on_init_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_is_token_registration_on_init_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_delivery_metrics_export_to_big_query_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_delivery_metrics_export_to_big_query_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_set_delivery_metrics_export_to_big_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_set_delivery_metrics_export_to_big_query
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_request_permission" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_request_permission
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_unregister" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_unregister
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_delete_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_delete_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_subscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_unsubscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_unsubscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_message
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_registration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_unregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_unregistration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_current_installation_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_current_installation_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_poll_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_poll_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_current_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_current_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_to
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_collapse_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_collapse_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_message_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_message_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_message_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_message_type
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_original_priority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_original_priority
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_time_to_live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_time_to_live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_sent_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_sent_time
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_error_description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_error_description
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_link
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_opened" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_opened
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_data_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_data_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_data_key_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_data_key_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_get_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_get_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_raw_data_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_raw_data_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_raw_data_copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_raw_data_copy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_has_notification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_has_notification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_icon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_icon
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_sound
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_badge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_badge
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_tag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_tag
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_color" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_color
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_click_action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_click_action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_args_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_args_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_body_loc_args_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_body_loc_args_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_args_count" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_args_count
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_title_loc_args_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_title_loc_args_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_message_notification_android_channel_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_message_notification_android_channel_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_messaging_initialize_for_app_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_messaging_initialize_for_app_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="cloud-messaging"><strong>Cloud Messaging</strong><a class="headerlink" href="#cloud-messaging" title="Permanent link">&para;</a></h1>
+<p>This module covers Firebase Cloud Messaging: push messages from a server or the Firebase console
+to the devices a game is installed on - a notification the operating system shows while the game
+is closed, a data payload the game acts on, or both - addressed to one installation, to a topic
+every interested installation subscribes to, or to an audience the console picks. Everything
+starts with <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a>, after <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>.</p>
+<h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
+<p>Cloud Messaging works on Android and iOS. On Windows, macOS and Linux the SDK ships a stub, and
+the extension keeps it callable so that the same game code runs everywhere: initialisation
+succeeds, every callback fires at once with <code>0</code> and the message <code>"Successfully completed as a
+stub."</code>, <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a> delivers the id <code>"StubRegistrationId"</code> and
+<a href="messaging.html#firebase_messaging_get_token">firebase_messaging_get_token</a> the token <code>"StubToken"</code>, the settings read as their
+defaults, and no message ever arrives.</p>
+<h3 id="receiving">Receiving<a class="headerlink" href="#receiving" title="Permanent link">&para;</a></h3>
+<p>The SDK delivers on its own threads, at any moment, so this module does not call the game back
+for messages: it queues them, and the game polls once per step -
+<a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> in a <code>while</code> loop, then the
+<code>firebase_messaging_message_*</code> getters on the message the poll made current. Registration events
+work the same way through <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a> and
+<a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>. The queue keeps 256 messages; the oldest is
+dropped beyond that.</p>
+<p>A message has a data part - key/value strings the sender attached - and, optionally, a
+notification part the system shows. While the game is in the foreground every message reaches the
+poll and nothing is shown. While it is in the background or closed, a message with a notification
+is shown by the system and reaches the game when the player taps it, with
+<a href="messaging.html#firebase_messaging_message_notification_opened">firebase_messaging_message_notification_opened</a> set; a data-only message reaches the
+game on the platform's terms - at once on Android when its priority is high, otherwise when the
+platform next lets the game run.</p>
+<h3 id="registration-and-consent">Registration and consent<a class="headerlink" href="#registration-and-consent" title="Permanent link">&para;</a></h3>
+<p>An installation of the game is known to Firebase by its Firebase Installation ID, created and
+registered with the backend at the first <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> unless
+registration on init is off. That registration is data collection under the privacy laws that
+need consent first; the <code>disableDataCollection</code> extension option (see <a href="extension_options.html">Extension Options</a>)
+ships the game with it off, and <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a>
+turns it on for good once the player agrees. Showing notifications needs the player's permission
+too: on iOS the SDK asks at initialisation (or at <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>
+when the prompt is held back), on Android the game asks with <code>os_request_permission</code> for
+<code>android.permission.POST_NOTIFICATIONS</code>, which the extension declares.</p>
+<h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
+<p>Every asynchronous function returns <a href="app.html#firebaseerror">FirebaseError</a> at once and delivers its outcome to
+a callback. The callback's <code>error_code</code> is Cloud Messaging's own code, a plain number:</p>
+<ul>
+<li><code>0</code> - success.</li>
+<li><code>1</code> - <code>FailedToRegisterForRemoteNotifications</code>: the iOS device could not register with APNs.</li>
+<li><code>2</code> - <code>InvalidTopicName</code>: the topic name has characters outside <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>, <code>%</code>, or is longer than 900.</li>
+<li><code>3</code> - <code>NoRegistrationToken</code>: a topic call was made with registration disabled and no registration done.</li>
+<li><code>4</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
+</ul>
+<h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
+<p>Android needs nothing beyond the credential file. iOS needs an APNs authentication key from the
+Apple Developer site uploaded under <strong>Project settings &gt; Cloud Messaging</strong> for the iOS app, and
+the Push Notifications capability on the app id. Messages are sent from <strong>Engage &gt; Messaging</strong>
+in the console - a test message to one device, a campaign to an audience or a topic - or from a
+server through the FCM HTTP v1 API. <a href="guides_cloud_messaging.html">Cloud Messaging Guide</a> walks through it.</p>
+<h2 id="initialisation">Initialisation<a class="headerlink" href="#initialisation" title="Permanent link">&para;</a></h2>
+<p>Starting and stopping the module:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a></li>
+<li><a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a></li>
+<li><a href="messaging.html#firebase_messaging_initialize_for_app">firebase_messaging_initialize_for_app</a></li>
+<li><a href="messaging.html#firebase_messaging_initialize_for_app_with_options">firebase_messaging_initialize_for_app_with_options</a></li>
+<li><a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a></li>
+</ul>
+<h2 id="registration-and-permission">Registration and permission<a class="headerlink" href="#registration-and-permission" title="Permanent link">&para;</a></h2>
+<p>Registering the installation with the backend, the id that identifies it, the consent
+setting, the notification permission, and the BigQuery export:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a></li>
+<li><a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a></li>
+<li><a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a></li>
+<li><a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a></li>
+<li><a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a></li>
+<li><a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a></li>
+<li><a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a></li>
+<li><a href="messaging.html#firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled</a></li>
+<li><a href="messaging.html#firebase_messaging_set_delivery_metrics_export_to_big_query">firebase_messaging_set_delivery_metrics_export_to_big_query</a></li>
+<li><a href="messaging.html#firebase_messaging_delivery_metrics_export_to_big_query_enabled">firebase_messaging_delivery_metrics_export_to_big_query_enabled</a></li>
+</ul>
+<h2 id="topics">Topics<a class="headerlink" href="#topics" title="Permanent link">&para;</a></h2>
+<p>Joining and leaving the topics a server broadcasts to:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_subscribe">firebase_messaging_subscribe</a></li>
+<li><a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a></li>
+</ul>
+<h2 id="receiving-messages">Receiving messages<a class="headerlink" href="#receiving-messages" title="Permanent link">&para;</a></h2>
+<p>Polling the queue, and reading the current message's envelope and data payload:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a></li>
+<li><a href="messaging.html#firebase_messaging_message_from">firebase_messaging_message_from</a></li>
+<li><a href="messaging.html#firebase_messaging_message_to">firebase_messaging_message_to</a></li>
+<li><a href="messaging.html#firebase_messaging_message_collapse_key">firebase_messaging_message_collapse_key</a></li>
+<li><a href="messaging.html#firebase_messaging_message_message_id">firebase_messaging_message_message_id</a></li>
+<li><a href="messaging.html#firebase_messaging_message_message_type">firebase_messaging_message_message_type</a></li>
+<li><a href="messaging.html#firebase_messaging_message_priority">firebase_messaging_message_priority</a></li>
+<li><a href="messaging.html#firebase_messaging_message_original_priority">firebase_messaging_message_original_priority</a></li>
+<li><a href="messaging.html#firebase_messaging_message_time_to_live">firebase_messaging_message_time_to_live</a></li>
+<li><a href="messaging.html#firebase_messaging_message_sent_time">firebase_messaging_message_sent_time</a></li>
+<li><a href="messaging.html#firebase_messaging_message_error">firebase_messaging_message_error</a></li>
+<li><a href="messaging.html#firebase_messaging_message_error_description">firebase_messaging_message_error_description</a></li>
+<li><a href="messaging.html#firebase_messaging_message_link">firebase_messaging_message_link</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_opened">firebase_messaging_message_notification_opened</a></li>
+<li><a href="messaging.html#firebase_messaging_message_data_count">firebase_messaging_message_data_count</a></li>
+<li><a href="messaging.html#firebase_messaging_message_data_key_at">firebase_messaging_message_data_key_at</a></li>
+<li><a href="messaging.html#firebase_messaging_message_get_data">firebase_messaging_message_get_data</a></li>
+<li><a href="messaging.html#firebase_messaging_message_raw_data_size">firebase_messaging_message_raw_data_size</a></li>
+<li><a href="messaging.html#firebase_messaging_message_raw_data_copy">firebase_messaging_message_raw_data_copy</a></li>
+</ul>
+<h2 id="the-notification">The notification<a class="headerlink" href="#the-notification" title="Permanent link">&para;</a></h2>
+<p>Reading the notification part of the current message - what the system showed, or would
+have shown, the player:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_message_has_notification">firebase_messaging_message_has_notification</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_title">firebase_messaging_message_notification_title</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_body">firebase_messaging_message_notification_body</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_icon">firebase_messaging_message_notification_icon</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_sound">firebase_messaging_message_notification_sound</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_badge">firebase_messaging_message_notification_badge</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_tag">firebase_messaging_message_notification_tag</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_color">firebase_messaging_message_notification_color</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_click_action">firebase_messaging_message_notification_click_action</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_body_loc_key">firebase_messaging_message_notification_body_loc_key</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_body_loc_args_count">firebase_messaging_message_notification_body_loc_args_count</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_body_loc_args_at">firebase_messaging_message_notification_body_loc_args_at</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_title_loc_key">firebase_messaging_message_notification_title_loc_key</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_title_loc_args_count">firebase_messaging_message_notification_title_loc_args_count</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_title_loc_args_at">firebase_messaging_message_notification_title_loc_args_at</a></li>
+<li><a href="messaging.html#firebase_messaging_message_notification_android_channel_id">firebase_messaging_message_notification_android_channel_id</a></li>
+</ul>
+<h2 id="deprecated">Deprecated<a class="headerlink" href="#deprecated" title="Permanent link">&para;</a></h2>
+<p>The token-based registration API the SDK deprecated in favour of the Firebase Installation ID.
+Each function still works and names its replacement:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_get_token">firebase_messaging_get_token</a></li>
+<li><a href="messaging.html#firebase_messaging_delete_token">firebase_messaging_delete_token</a></li>
+<li><a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a></li>
+<li><a href="messaging.html#firebase_messaging_current_token">firebase_messaging_current_token</a></li>
+<li><a href="messaging.html#firebase_messaging_set_token_registration_on_init_enabled">firebase_messaging_set_token_registration_on_init_enabled</a></li>
+<li><a href="messaging.html#firebase_messaging_is_token_registration_on_init_enabled">firebase_messaging_is_token_registration_on_init_enabled</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_initialize">firebase_messaging_initialize<a class="headerlink" href="#firebase_messaging_initialize" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize">firebase::messaging::Initialize</a></p>
+<p>This function starts Cloud Messaging for the default Firebase App and must be called once, after
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> and before any other function of this module. The SDK aborts
+the game when a messaging call reaches it uninitialised, so every function here that would reach
+it refuses first with <code>FirebaseError.NotInitialized</code>, and the poll functions return <code>0</code>. From this
+call on the SDK can deliver messages and registration events at any time; the game collects them
+with <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a>, <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>
+and <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a> once per step.</p>
+<p>On iOS this call shows the system's notification permission prompt at once and registers the
+device with APNs; <a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a> holds the prompt back for
+a <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a> of the game's choosing. On Android the
+notification permission is the game's to request with <code>os_request_permission</code> (the extension
+declares <code>android.permission.POST_NOTIFICATIONS</code>), and the call returns <code>1</code> when Google Play
+services are missing on the device. A second call does nothing and returns <code>0</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The return is the SDK's init result, where <code>0</code> is success - the opposite of
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a>. Compare it with <code>0</code> rather than testing it for truth.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_initialize()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the default app does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller, after firebase_app_initialize()
+if (firebase_messaging_initialize() != 0)
+{
+    show_debug_message($"Messaging unavailable: {firebase_last_error_message()}");
+    exit;
+}
+
+if (os_type == os_android)
+{
+    var _permission = "android.permission.POST_NOTIFICATIONS";
+    if (os_check_permission(_permission) != os_permission_granted)
+    {
+        os_request_permission(_permission);
+    }
+}</code></pre>
+The above code initialises Cloud Messaging and, on Android, asks for the notification permission
+the way the platform wants it; the answer arrives in the Async System event as a
+<code>"permission_request_result"</code>. On iOS the initialisation itself has shown the system prompt, so
+nothing more is needed there.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_terminate">firebase_messaging_terminate<a class="headerlink" href="#firebase_messaging_terminate" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#terminate">firebase::messaging::Terminate</a></p>
+<p>This function shuts Cloud Messaging down: the SDK stops delivering to the game, the queued messages
+and the last polled message, installation id and token are dropped, and the module is back to its
+uninitialised state, where the poll functions return <code>0</code> and the getters empty strings. On Android
+the platform's messaging service keeps running underneath. The module can be initialised again
+afterwards. There is no need to call it when the game exits.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_terminate()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_set_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#setregistrationoninitenabled">firebase::messaging::SetRegistrationOnInitEnabled</a></p>
+<p>This function turns automatic registration at initialisation on or off. On - the default -
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> registers the installation and creates its Firebase
+Installation ID by itself, which sends a new identity to Firebase before the player has agreed to
+anything. A game that needs consent first ships with the <code>disableDataCollection</code> extension option
+(see <a href="extension_options.html">Extension Options</a>), which puts the platform's opt-out into the Android manifest and
+the iOS <code>Info.plist</code> so that the first launch does not register, and calls this function with <code>1</code>
+once the player has agreed; turning it on triggers the registration at once. The setting is
+stored on the device and overrides the manifest and plist keys from then on, so the call is
+needed once. Turning it off at runtime does not undo a registration that already happened at
+this launch - only the option prevents the first one - and holds from the next launch. It can be
+called before <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a>. The desktop stub ignores it.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_set_registration_on_init_enabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to register at initialisation, <code>0</code> not to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_is_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#isregistrationoninitenabled">firebase::messaging::IsRegistrationOnInitEnabled</a></p>
+<p>This function returns whether the SDK registers the installation at initialisation - the stored
+setting of <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a>, or failing that the
+manifest or plist key, or failing that the default of on. The desktop stub always returns <code>1</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_is_registration_on_init_enabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when registration on init is enabled, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_set_token_registration_on_init_enabled">firebase_messaging_set_token_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_set_token_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a>, which sets the same SDK state under its current name; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#settokenregistrationoninitenabled">firebase::messaging::SetTokenRegistrationOnInitEnabled</a></p>
+<p>This function is <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a> under the
+setting's old name; both write the same stored setting.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_set_token_registration_on_init_enabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to register at initialisation, <code>0</code> not to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_is_token_registration_on_init_enabled">firebase_messaging_is_token_registration_on_init_enabled<a class="headerlink" href="#firebase_messaging_is_token_registration_on_init_enabled" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled</a>, which reads the same SDK state under its current name; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#istokenregistrationoninitenabled">firebase::messaging::IsTokenRegistrationOnInitEnabled</a></p>
+<p>This function is <a href="messaging.html#firebase_messaging_is_registration_on_init_enabled">firebase_messaging_is_registration_on_init_enabled</a> under the
+setting's old name; both read the same stored setting.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_is_token_registration_on_init_enabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when registration on init is enabled, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_delivery_metrics_export_to_big_query_enabled">firebase_messaging_delivery_metrics_export_to_big_query_enabled<a class="headerlink" href="#firebase_messaging_delivery_metrics_export_to_big_query_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deliverymetricsexporttobigqueryenabled">firebase::messaging::DeliveryMetricsExportToBigQueryEnabled</a></p>
+<p>This function returns whether delivery data is exported to BigQuery, on Android. It returns <code>0</code>
+on every other platform.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_delivery_metrics_export_to_big_query_enabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when the export is on, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_set_delivery_metrics_export_to_big_query">firebase_messaging_set_delivery_metrics_export_to_big_query<a class="headerlink" href="#firebase_messaging_set_delivery_metrics_export_to_big_query" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#setdeliverymetricsexporttobigquery">firebase::messaging::SetDeliveryMetricsExportToBigQuery</a></p>
+<p>This function turns the export of message delivery data to BigQuery on or off, on Android: with
+it on, each message's delivery events are written to the BigQuery dataset the project links in
+the console (Project settings &gt; Integrations), for analysis of what was sent, delivered and
+opened. It is off by default; the manifest key <code>delivery_metrics_exported_to_big_query_enabled</code>
+also turns it on, and this call overrides the key. The function does nothing on other
+platforms.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_set_delivery_metrics_export_to_big_query(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to export delivery metrics, <code>0</code> not to.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_request_permission">firebase_messaging_request_permission<a class="headerlink" href="#firebase_messaging_request_permission" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#requestpermission">firebase::messaging::RequestPermission</a></p>
+<p>This function asks the player for permission to show notifications, on iOS: the system prompt
+appears, unless it was answered before, and the device registers with APNs. The callback fires
+when that registration has completed or failed with <code>FailedToRegisterForRemoteNotifications</code>
+(code <code>1</code>) - not when the prompt is answered, so a player who declines still gets a successful
+callback and simply sees no notifications. <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> already
+does all of this on iOS unless the prompt was held back with
+<a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a>.</p>
+<p>On Android the call does nothing and the callback fires at once with <code>0</code>; the notification
+permission is requested with <code>os_request_permission("android.permission.POST_NOTIFICATIONS")</code>
+and its answer arrives in the Async System event. On Windows, macOS and Linux the callback also
+fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_request_permission(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the device has registered for notifications, or could not.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_register">firebase_messaging_register<a class="headerlink" href="#firebase_messaging_register" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#register">firebase::messaging::Register</a></p>
+<p>This function registers this installation of the game with the Cloud Messaging backend so that
+messages can reach it: it creates the Firebase Installation ID if there is none yet and sends the
+app and device details to Firebase. The id itself does not come to the callback; the SDK delivers
+it through <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a> and
+<a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a>, and does so even when the game was already
+registered. With registration on init enabled - the default - the SDK registers on its own at
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a>, and this call is for a game that shipped with the
+<code>disableDataCollection</code> option and registers once the player has consented. On Windows, macOS
+and Linux the callback fires at once with <code>0</code> and the id delivered is the stub's
+<code>"StubRegistrationId"</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_register(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the registration has completed or failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// The consent screen's "Allow notifications" button
+firebase_messaging_set_registration_on_init_enabled(1);
+var _result = firebase_messaging_register(function(_error, _message)
+{
+    if (_error != 0) show_debug_message($"Registration failed ({_error}): {_message}");
+});
+
+// Step Event of the persistent controller
+while (firebase_messaging_poll_registration())
+{
+    show_debug_message($"Registered as {firebase_messaging_current_installation_id()}");
+}</code></pre>
+The above code is the consent flow for a game built with <code>disableDataCollection</code>: the setting
+is turned on so that later launches register by themselves, this launch registers explicitly, and
+the installation id arrives through the poll in the Step event rather than in the callback.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_unregister">firebase_messaging_unregister<a class="headerlink" href="#firebase_messaging_unregister" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#unregister">firebase::messaging::Unregister</a></p>
+<p>This function unregisters this installation from the Cloud Messaging backend, so that no more
+messages reach it; the id it was registered under arrives through
+<a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>. The Firebase Installation ID itself stays on
+the device - <a href="installations.html#firebase_installations_delete">firebase_installations_delete</a> removes it. On Windows, macOS and Linux
+the callback fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_unregister(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the unregistration has completed or failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_get_token">firebase_messaging_get_token<a class="headerlink" href="#firebase_messaging_get_token" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a>, which registers the installation and delivers its Firebase Installation ID through <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#gettoken">firebase::messaging::GetToken</a></p>
+<p>This function creates the installation's Firebase Installation ID if there is none, sends the app
+and device details to Firebase, and hands the callback the registration token: the string that
+the console's test-message dialog and the older server APIs address a single device by. The
+token also arrives through <a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a> whenever the SDK generates
+or refreshes one. On Windows, macOS and Linux the callback fires at once with <code>0</code> and the stub's
+<code>"StubToken"</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_get_token(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the registration token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>token</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The registration token, or an empty string on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_delete_token">firebase_messaging_delete_token<a class="headerlink" href="#firebase_messaging_delete_token" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a>, which unregisters the installation and delivers its id through <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deletetoken">firebase::messaging::DeleteToken</a></p>
+<p>This function deletes the installation's registration token, so that no more messages reach this
+device until a new one is generated. The Firebase Installation ID stays on the device;
+<a href="installations.html#firebase_installations_delete">firebase_installations_delete</a> removes it. On Windows, macOS and Linux the callback
+fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_delete_token(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the token has been deleted or the deletion failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_subscribe">firebase_messaging_subscribe<a class="headerlink" href="#firebase_messaging_subscribe" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#subscribe">firebase::messaging::Subscribe</a></p>
+<p>This function subscribes this installation to a topic, so that every message a server sends to
+the topic reaches it: the way to address every player, or every player of a region, a language
+or a guild, without keeping a list of devices. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code> and
+<code>%</code>; anything else fails with <code>InvalidTopicName</code> (code <code>2</code>). The subscription needs the
+installation to be registered: made before the registration at initialisation has completed, it
+waits for it; with registration on init disabled and no <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a>
+done, it fails with <code>NoRegistrationToken</code> (code <code>3</code>). A subscription is kept by the backend
+across launches until <a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a>. On Windows, macOS and Linux
+the callback fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_subscribe(topic, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>topic</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The topic name, without a <code>/topics/</code> prefix.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the subscription has been made or failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// After the player picks a language and a region
+firebase_messaging_subscribe($"news-{language}", function(_error, _message)
+{
+    if (_error != 0) show_debug_message($"Subscribe failed ({_error}): {_message}");
+});
+firebase_messaging_subscribe($"events-{region}", undefined);</code></pre>
+The above code puts the installation on two topics, so that a message sent from the console or a
+server to <code>news-en</code> or <code>events-eu</code> reaches every player who chose them. The second call passes no
+callback because nothing depends on its outcome.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_unsubscribe">firebase_messaging_unsubscribe<a class="headerlink" href="#firebase_messaging_unsubscribe" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#unsubscribe">firebase::messaging::Unsubscribe</a></p>
+<p>This function removes this installation from a topic, so that messages sent to it no longer
+arrive. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code> and
+<code>%</code>; anything else fails with <code>InvalidTopicName</code> (code <code>2</code>). On Windows, macOS and Linux the callback fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_unsubscribe(topic, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>topic</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The topic name, without a <code>/topics/</code> prefix.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the subscription has been removed or the removal failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_poll_message">firebase_messaging_poll_message<a class="headerlink" href="#firebase_messaging_poll_message" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onmessage">firebase::messaging::Listener::OnMessage</a></p>
+<p>This function takes the oldest message waiting in the queue, if there is one, and makes it the
+current message that the <code>firebase_messaging_message_*</code> getters read. Call it in a <code>while</code> loop
+once per step, until it returns <code>0</code>, so that a burst of messages is handled in the step it
+arrived. A game that stops polling - a long loading screen, a room with no controller - keeps at
+most 256 messages queued, after which the oldest is dropped with a warning in the debug log. The
+current message stays readable until the next poll that returns <code>1</code> or
+<a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_poll_message()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when a message was taken from the queue and is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Step Event of the persistent controller
+while (firebase_messaging_poll_message())
+{
+    var _kind = firebase_messaging_message_get_data("kind");
+    switch (_kind)
+    {
+        case "gift":
+            inventory_add(firebase_messaging_message_get_data("item"),
+                          real(firebase_messaging_message_get_data("amount")));
+            break;
+        case "event":
+            if (firebase_messaging_message_notification_opened())
+            {
+                room_goto(rm_event);
+            }
+            break;
+    }
+}</code></pre>
+The above code drains the queue every step and acts on the <code>kind</code> key the server put in each
+message's data. A message with a notification that the player tapped while the game was in the
+background arrives here with <code>notification_opened</code> set, which the code uses to take the player
+straight to the event.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_poll_registration">firebase_messaging_poll_registration<a class="headerlink" href="#firebase_messaging_poll_registration" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onregistrationreceived">firebase::messaging::Listener::OnRegistrationReceived</a></p>
+<p>This function checks whether a registration has completed since the last poll - after
+<a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a>, or at initialisation when registration on init is
+enabled - and, when one has, makes <a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a> return
+its Firebase Installation ID. Call it once per step. Each completed registration is reported once,
+and only the latest is kept between polls.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_poll_registration()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when a registration was pending and its id is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration<a class="headerlink" href="#firebase_messaging_poll_unregistration" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onunregistrationreceived">firebase::messaging::Listener::OnUnregistrationReceived</a></p>
+<p>This function checks whether an <a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a> has completed since
+the last poll and, when one has, makes <a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a>
+return the id that was unregistered. Call it once per step; each completed unregistration is
+reported once.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_poll_unregistration()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when an unregistration was pending and its id is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_current_installation_id">firebase_messaging_current_installation_id<a class="headerlink" href="#firebase_messaging_current_installation_id" title="Permanent link">&para;</a></h1>
+<p>This function returns the Firebase Installation ID that the last successful
+<a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a> or <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>
+delivered: the identifier of this installation of the game, which a server uses to send a message
+to this device alone. It is an empty string until a poll has returned <code>1</code>, and again after
+<a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_current_installation_id()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The installation id, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_poll_token">firebase_messaging_poll_token<a class="headerlink" href="#firebase_messaging_poll_token" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>, which reports each completed registration with its Firebase Installation ID; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#ontokenreceived">firebase::messaging::Listener::OnTokenReceived</a></p>
+<p>This function checks whether the SDK generated or refreshed a registration token since the last
+poll and, when it has, makes <a href="messaging.html#firebase_messaging_current_token">firebase_messaging_current_token</a> return it. Call it once
+per step; only the latest token is kept between polls. Android and iOS still deliver tokens this
+way.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_poll_token()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when a token was pending and is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_current_token">firebase_messaging_current_token<a class="headerlink" href="#firebase_messaging_current_token" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>This function has been superseded by <a href="messaging.html#firebase_messaging_current_installation_id">firebase_messaging_current_installation_id</a>, which returns the Firebase Installation ID the last registration poll delivered; the SDK has deprecated the
+token API, and we recommend that you only use this function for legacy support.</p>
+</blockquote>
+<p>This function returns the registration token the last successful
+<a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a> delivered. It is an empty string until a poll has
+returned <code>1</code>, and again after <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_current_token()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The registration token, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_from">firebase_messaging_message_from<a class="headerlink" href="#firebase_messaging_message_from" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#from">firebase::messaging::Message::from</a></p>
+<p>This function returns the sender's authenticated id: the project's sender ID for a message sent to this device, or <code>/topics/&lt;name&gt;</code> for a message sent to a topic. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_from()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The sender id.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_to">firebase_messaging_message_to<a class="headerlink" href="#firebase_messaging_message_to" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#to">firebase::messaging::Message::to</a></p>
+<p>This function returns the recipient as the sender addressed it - a token, a topic or a project id - which is often empty on a message sent from the console. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_to()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The recipient, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_collapse_key">firebase_messaging_message_collapse_key<a class="headerlink" href="#firebase_messaging_message_collapse_key" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#collapse_key">firebase::messaging::Message::collapse_key</a></p>
+<p>This function returns the collapse key, when the sender set one: while the device is offline, messages that share a key are collapsed so that only the latest is delivered when it comes back. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_collapse_key()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The collapse key, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_message_id">firebase_messaging_message_message_id<a class="headerlink" href="#firebase_messaging_message_message_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#message_id">firebase::messaging::Message::message_id</a></p>
+<p>This function returns the message's id, set by the sender or by Firebase. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_message_id()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The message id.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_message_type">firebase_messaging_message_message_type<a class="headerlink" href="#firebase_messaging_message_message_type" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#message_type">firebase::messaging::Message::message_type</a></p>
+<p>This function returns an empty string for an ordinary message; <code>"deleted_messages"</code> when the backend dropped queued messages because too many - a hundred - piled up while the device was offline, in which case the game should ask its own server what it missed; <code>"send_event"</code> and <code>"send_error"</code> concern upstream messages, which this extension does not send. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_message_type()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The message type, or an empty string for an ordinary message.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_priority">firebase_messaging_message_priority<a class="headerlink" href="#firebase_messaging_message_priority" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#priority">firebase::messaging::Message::priority</a></p>
+<p>This function returns the priority the message was delivered with: <code>"high"</code>, which can wake the device and reaches the game at once, or <code>"normal"</code>, which saves battery and may be delayed. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_priority()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><code>"high"</code> or <code>"normal"</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_original_priority">firebase_messaging_message_original_priority<a class="headerlink" href="#firebase_messaging_message_original_priority" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#original_priority">firebase::messaging::Message::original_priority</a></p>
+<p>This function returns the priority the sender asked for, which differs from <a href="messaging.html#firebase_messaging_message_priority">firebase_messaging_message_priority</a> when the platform lowered it - Android does so for an app whose high-priority messages did not produce notifications the player saw. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_original_priority()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p><code>"high"</code> or <code>"normal"</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_time_to_live">firebase_messaging_message_time_to_live<a class="headerlink" href="#firebase_messaging_message_time_to_live" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#time_to_live">firebase::messaging::Message::time_to_live</a></p>
+<p>This function returns how long, in seconds, the message was to be kept for the device while it
+was offline before being dropped - up to four weeks, which is the default. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_time_to_live()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The time to live in seconds.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_sent_time">firebase_messaging_message_sent_time<a class="headerlink" href="#firebase_messaging_message_sent_time" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#sent_time">firebase::messaging::Message::sent_time</a></p>
+<p>This function returns when the message was sent, in milliseconds since the Unix epoch - the way
+to tell a message that waited out an offline stretch from a fresh one. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_sent_time()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The send time in milliseconds since the Unix epoch, or <code>0</code> when the platform did not provide it.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_error">firebase_messaging_message_error<a class="headerlink" href="#firebase_messaging_message_error" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#error">firebase::messaging::Message::error</a></p>
+<p>This function returns the error code of a <code>send_error</code> message about an upstream message, which this extension never sends, so it reads as an empty string. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_error()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The error code, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_error_description">firebase_messaging_message_error_description<a class="headerlink" href="#firebase_messaging_message_error_description" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#error_description">firebase::messaging::Message::error_description</a></p>
+<p>This function returns the description that goes with <a href="messaging.html#firebase_messaging_message_error">firebase_messaging_message_error</a>, empty for the same reason. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_error_description()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The description, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_link">firebase_messaging_message_link<a class="headerlink" href="#firebase_messaging_message_link" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#link">firebase::messaging::Message::link</a></p>
+<p>This function returns the link into the game the message carried, when the sender attached one. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_link()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The link, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_opened">firebase_messaging_message_notification_opened<a class="headerlink" href="#firebase_messaging_message_notification_opened" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#notification_opened">firebase::messaging::Message::notification_opened</a></p>
+<p>This function returns whether the message reached the game because the player tapped its
+notification: the game was in the background or not running, the system showed the notification
+in its tray, and the tap brought the game up with this message, data payload included. A message
+delivered while the game was in the foreground reads <code>0</code>. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_opened()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when the player opened the message's notification, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_data_count">firebase_messaging_message_data_count<a class="headerlink" href="#firebase_messaging_message_data_count" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data">firebase::messaging::Message::data</a></p>
+<p>This function returns how many key/value pairs the message's data payload holds: the custom
+strings the sender attached, which is where a game puts what it acts on, since the notification
+part is for the player's eyes. Keys beginning with <code>google.</code>, <code>gcm.</code> or <code>goog</code> are the platform's.
+Walk them with <a href="messaging.html#firebase_messaging_message_data_key_at">firebase_messaging_message_data_key_at</a> and
+<a href="messaging.html#firebase_messaging_message_get_data">firebase_messaging_message_get_data</a>. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_data_count()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of data pairs.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_data_key_at">firebase_messaging_message_data_key_at<a class="headerlink" href="#firebase_messaging_message_data_key_at" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data">firebase::messaging::Message::data</a></p>
+<p>This function returns the key of one data pair by position; the pairs come in key order. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_data_key_at(index)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The pair's position, from <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The key, or an empty string when the position is out of range.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_get_data">firebase_messaging_message_get_data<a class="headerlink" href="#firebase_messaging_message_get_data" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data">firebase::messaging::Message::data</a></p>
+<p>This function returns the value stored under a data key. Every value is a string, whatever the
+sender typed; convert with <code>real</code> or <code>json_parse</code> as needed. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_get_data(key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The data key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The value, or an empty string when the key is not present.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_raw_data_size">firebase_messaging_message_raw_data_size<a class="headerlink" href="#firebase_messaging_message_raw_data_size" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#raw_data">firebase::messaging::Message::raw_data</a></p>
+<p>This function returns the size in bytes of the message's binary payload. Messages sent through
+the console or the HTTP API carry none, so it reads <code>0</code> in practice. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_raw_data_size()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The payload size in bytes.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_raw_data_copy">firebase_messaging_message_raw_data_copy<a class="headerlink" href="#firebase_messaging_message_raw_data_copy" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#raw_data">firebase::messaging::Message::raw_data</a></p>
+<p>This function copies the message's binary payload into a buffer the game created, from the
+buffer's start and up to its size; size the buffer from
+<a href="messaging.html#firebase_messaging_message_raw_data_size">firebase_messaging_message_raw_data_size</a>. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_raw_data_copy(out_buffer)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>out_buffer</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>The buffer to copy into.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of bytes copied.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_has_notification">firebase_messaging_message_has_notification<a class="headerlink" href="#firebase_messaging_message_has_notification" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#notification">firebase::messaging::Message::notification</a></p>
+<p>This function returns whether the message carries a notification part - the title, body and
+presentation fields the operating system shows in its tray - as opposed to a data-only message.
+Every <code>firebase_messaging_message_notification_*</code> getter reads as an empty string or <code>0</code> when
+there is none. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_has_notification()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when the message has a notification, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_title">firebase_messaging_message_notification_title<a class="headerlink" href="#firebase_messaging_message_notification_title" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title">firebase::messaging::Notification::title</a></p>
+<p>This function returns the notification's title. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_title()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The title, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_body">firebase_messaging_message_notification_body<a class="headerlink" href="#firebase_messaging_message_notification_body" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body">firebase::messaging::Notification::body</a></p>
+<p>This function returns the notification's body text. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_body()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The body, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_icon">firebase_messaging_message_notification_icon<a class="headerlink" href="#firebase_messaging_message_notification_icon" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#icon">firebase::messaging::Notification::icon</a></p>
+<p>This function returns the name of the drawable resource the sender chose as the notification's icon, on Android. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_icon()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The icon, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_sound">firebase_messaging_message_notification_sound<a class="headerlink" href="#firebase_messaging_message_notification_sound" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#sound">firebase::messaging::Notification::sound</a></p>
+<p>This function returns the sound the sender chose: <code>"default"</code>, or the name of a sound file bundled with the game. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_sound()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The sound, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_badge">firebase_messaging_message_notification_badge<a class="headerlink" href="#firebase_messaging_message_notification_badge" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#badge">firebase::messaging::Notification::badge</a></p>
+<p>This function returns the badge count the sender set for the app icon, on iOS. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_badge()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The badge, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_tag">firebase_messaging_message_notification_tag<a class="headerlink" href="#firebase_messaging_message_notification_tag" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#tag">firebase::messaging::Notification::tag</a></p>
+<p>This function returns the notification's tag, on Android: notifications with the same tag replace each other in the tray instead of stacking. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_tag()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The tag, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_color">firebase_messaging_message_notification_color<a class="headerlink" href="#firebase_messaging_message_notification_color" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#color">firebase::messaging::Notification::color</a></p>
+<p>This function returns the icon colour the sender set, as <code>#rrggbb</code>, on Android. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_color()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The color, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_click_action">firebase_messaging_message_notification_click_action<a class="headerlink" href="#firebase_messaging_message_notification_click_action" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#click_action">firebase::messaging::Notification::click_action</a></p>
+<p>This function returns what a tap on the notification does: the intent action on Android, the APNs category on iOS. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_click_action()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The click action, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_body_loc_key">firebase_messaging_message_notification_body_loc_key<a class="headerlink" href="#firebase_messaging_message_notification_body_loc_key" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_key">firebase::messaging::Notification::body_loc_key</a></p>
+<p>This function returns the key of the body text in the game's string resources (<code>loc-key</code> on iOS), for a notification the sender localised on the device rather than in the message. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_body_loc_key()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The body loc key, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_body_loc_args_count">firebase_messaging_message_notification_body_loc_args_count<a class="headerlink" href="#firebase_messaging_message_notification_body_loc_args_count" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_args">firebase::messaging::Notification::body_loc_args</a></p>
+<p>This function returns how many format arguments go with
+<a href="messaging.html#firebase_messaging_message_notification_body_loc_key">firebase_messaging_message_notification_body_loc_key</a> - the values to substitute into the
+localised body. It is <code>0</code> when there are none or the message has no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_body_loc_args_count()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of arguments.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_body_loc_args_at">firebase_messaging_message_notification_body_loc_args_at<a class="headerlink" href="#firebase_messaging_message_notification_body_loc_args_at" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_args">firebase::messaging::Notification::body_loc_args</a></p>
+<p>This function returns one of the format arguments for the localised body, by position. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_body_loc_args_at(index)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The argument's position, from <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The argument, or an empty string when the position is out of range or the message has no notification part.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_title_loc_key">firebase_messaging_message_notification_title_loc_key<a class="headerlink" href="#firebase_messaging_message_notification_title_loc_key" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_key">firebase::messaging::Notification::title_loc_key</a></p>
+<p>This function returns the key of the title in the game's string resources (<code>title-loc-key</code> on iOS), for a notification the sender localised on the device. It is an empty string when the message carries no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_title_loc_key()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The title loc key, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_title_loc_args_count">firebase_messaging_message_notification_title_loc_args_count<a class="headerlink" href="#firebase_messaging_message_notification_title_loc_args_count" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_args">firebase::messaging::Notification::title_loc_args</a></p>
+<p>This function returns how many format arguments go with
+<a href="messaging.html#firebase_messaging_message_notification_title_loc_key">firebase_messaging_message_notification_title_loc_key</a> - the values to substitute into the
+localised title. It is <code>0</code> when there are none or the message has no notification part. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_title_loc_args_count()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of arguments.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_title_loc_args_at">firebase_messaging_message_notification_title_loc_args_at<a class="headerlink" href="#firebase_messaging_message_notification_title_loc_args_at" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_args">firebase::messaging::Notification::title_loc_args</a></p>
+<p>This function returns one of the format arguments for the localised title, by position. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_title_loc_args_at(index)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>index</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The argument's position, from <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The argument, or an empty string when the position is out of range or the message has no notification part.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_message_notification_android_channel_id">firebase_messaging_message_notification_android_channel_id<a class="headerlink" href="#firebase_messaging_message_notification_android_channel_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/android-notification-params#channel_id">firebase::messaging::AndroidNotificationParams::channel_id</a></p>
+<p>This function returns the Android notification channel the sender addressed, when the message
+set one; the channel decides the importance, sound and vibration the system gives the
+notification. It is an empty string on other platforms and when no channel was set. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_message_notification_android_channel_id()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The channel id, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options<a class="headerlink" href="#firebase_messaging_initialize_with_options" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize_1">firebase::messaging::Initialize</a></p>
+<p>This function is <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> with the one option the SDK has: on iOS,
+<code>suppress_notification_permission_prompt</code> set to <code>1</code> keeps the system permission prompt from
+appearing at initialisation, so that the game can explain why it wants to notify the player and
+call <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a> at the right moment. A prompt the player
+has already answered is not shown again either way. The option does nothing on Android.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_initialize_with_options(suppress_notification_permission_prompt)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>suppress_notification_permission_prompt</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>0</code> to show it now.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the default app does not exist.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_initialize_for_app">firebase_messaging_initialize_for_app<a class="headerlink" href="#firebase_messaging_initialize_for_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize">firebase::messaging::Initialize</a></p>
+<p>This function is <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> for another Firebase App, created with
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
+Cloud Messaging is initialised once per game, for one app: once any of the initialise functions
+has succeeded, the others do nothing and return <code>0</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_initialize_for_app(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the app handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_messaging_initialize_for_app_with_options">firebase_messaging_initialize_for_app_with_options<a class="headerlink" href="#firebase_messaging_initialize_for_app_with_options" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize_1">firebase::messaging::Initialize</a></p>
+<p>This function is <a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a> for another Firebase App.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_messaging_initialize_for_app_with_options(app, suppress_notification_permission_prompt)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+<tr>
+<td>suppress_notification_permission_prompt</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>0</code> to show it now.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the app handle is not valid.</p>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

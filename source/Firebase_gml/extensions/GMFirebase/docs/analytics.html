@@ -1,0 +1,3205 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="app.html">
+      
+      
+        <link rel="next" href="auth.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Analytics - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analytics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analytics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="analytics.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events and parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-and-consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection and consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-and-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users and sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desktop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-device-conversion-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-device conversion measurement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_terminate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_terminate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_analytics_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_analytics_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_consent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_number
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_params
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_default_event_parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_default_event_parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_apple_transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_apple_transaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_user_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_user_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_user_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_user_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_session_timeout_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_session_timeout_duration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_reset_analytics_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_reset_analytics_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_get_analytics_instance_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_get_analytics_instance_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_get_session_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_get_session_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_notify_app_lifecycle_termination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_notify_app_lifecycle_termination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_is_desktop_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_is_desktop_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_desktop_debug_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_desktop_debug_mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_log_callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_log_callback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_phone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_phone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_notify_app_lifecycle_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_notify_app_lifecycle_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_hashed_email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initialize_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initialize_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseanalyticsparameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAnalyticsParameter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Analytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-and-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events and parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-and-consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection and consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-and-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users and sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Desktop
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-device-conversion-measurement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-device conversion measurement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_terminate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_terminate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_analytics_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_analytics_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_consent
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_number
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_event_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_event_params
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_default_event_parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_default_event_parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_log_apple_transaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_log_apple_transaction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_user_property" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_user_property
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_user_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_user_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_session_timeout_duration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_session_timeout_duration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_reset_analytics_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_reset_analytics_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_get_analytics_instance_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_get_analytics_instance_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_get_session_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_get_session_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_notify_app_lifecycle_termination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_notify_app_lifecycle_termination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_is_desktop_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_is_desktop_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_desktop_debug_mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_desktop_debug_mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_set_log_callback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_set_log_callback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_phone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_phone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_notify_app_lifecycle_change" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_notify_app_lifecycle_change
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_email" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_hashed_email
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_analytics_initialize_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_analytics_initialize_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseanalyticsparameter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAnalyticsParameter
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="analytics"><strong>Analytics</strong><a class="headerlink" href="#analytics" title="Permanent link">&para;</a></h1>
+<p>This module covers Google Analytics for Firebase: events the game logs - a level finished, a
+purchase, an achievement - with parameters, user properties that group players, and the
+sessions and audiences the console builds from them, feeding the other products' targeting
+(Remote Config conditions, Cloud Messaging audiences, In-App Messaging triggers). The platform
+SDK collects a set of events on its own - first open, session start, app update, screen views
+on the platform's terms - and the module adds the game's. Everything starts with
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>, after <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>.</p>
+<h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
+<p>Analytics works fully on Android and iOS. On Windows the SDK loads Google Analytics from a
+<code>google_analytics.dll</code> placed beside the game's executable - a library the Firebase C++ SDK
+package does not include - and runs every call as a no-op without it;
+<a href="analytics.html#firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized</a> says which. On macOS and Linux every call
+is a no-op. On all three, <a href="analytics.html#firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id</a> and
+<a href="analytics.html#firebase_analytics_get_session_id">firebase_analytics_get_session_id</a> answer with placeholder ids,
+<a href="analytics.html#firebase_analytics_set_consent">firebase_analytics_set_consent</a> does nothing, and the functions in the Desktop
+section are Windows-only. Game code need not branch: the calls are safe everywhere.</p>
+<h3 id="events-and-parameters">Events and parameters<a class="headerlink" href="#events-and-parameters" title="Permanent link">&para;</a></h3>
+<p>An event has a name and up to 25 parameters, each a number or a string (or, for the
+e-commerce <code>items</code> parameter, an array of structs); a game may log up to 500 distinct event
+names, and the recommended names Google publishes get purpose-built reports in the console.
+Names are 1 to 40 letters, digits and underscores starting with a letter, case-sensitive, with
+the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes reserved; string values are up to 100 characters.
+Events are queued on the device and uploaded in batches, so nothing here is asynchronous
+except the two id fetches and the Apple transaction.</p>
+<h3 id="consent">Consent<a class="headerlink" href="#consent" title="Permanent link">&para;</a></h3>
+<p>Collection is on by default from the first launch on Android and iOS, before any code runs.
+A game that needs consent first ships with the <code>disableDataCollection</code> extension option (see
+<a href="extension_options.html">Extension Options</a>), which turns collection off in the manifest and the <code>Info.plist</code>,
+and calls <a href="analytics.html#firebase_analytics_set_analytics_collection_enabled">firebase_analytics_set_analytics_collection_enabled</a> with <code>1</code> once the
+player has agreed; <a href="analytics.html#firebase_analytics_set_consent">firebase_analytics_set_consent</a> sets the finer-grained consent
+mode signals for advertising. Both are stored on the device.</p>
+<h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
+<p>Analytics is enabled on the project when it is created, or afterwards under <strong>Analytics</strong> in
+the console; the credential file carries what the SDK needs. Events appear in <strong>Analytics &gt;
+Events</strong> hours after they are logged, or at once in <strong>DebugView</strong> for a device in debug mode.
+Custom parameters and user properties are registered under <strong>Analytics &gt; Custom definitions</strong>
+before they show in reports.</p>
+<h2 id="initialisation">Initialisation<a class="headerlink" href="#initialisation" title="Permanent link">&para;</a></h2>
+<p>Starting and stopping the module:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a></li>
+<li><a href="analytics.html#firebase_analytics_initialize_for_app">firebase_analytics_initialize_for_app</a></li>
+<li><a href="analytics.html#firebase_analytics_terminate">firebase_analytics_terminate</a></li>
+</ul>
+<h2 id="collection-and-consent">Collection and consent<a class="headerlink" href="#collection-and-consent" title="Permanent link">&para;</a></h2>
+<p>Turning collection on or off, the consent mode signals, and the reset:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_set_analytics_collection_enabled">firebase_analytics_set_analytics_collection_enabled</a></li>
+<li><a href="analytics.html#firebase_analytics_set_consent">firebase_analytics_set_consent</a></li>
+<li><a href="analytics.html#firebase_analytics_reset_analytics_data">firebase_analytics_reset_analytics_data</a></li>
+</ul>
+<h2 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h2>
+<p>Logging events, with none, one or many parameters, the parameters every event carries, and
+Apple purchases:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_log_event">firebase_analytics_log_event</a></li>
+<li><a href="analytics.html#firebase_analytics_log_event_string">firebase_analytics_log_event_string</a></li>
+<li><a href="analytics.html#firebase_analytics_log_event_number">firebase_analytics_log_event_number</a></li>
+<li><a href="analytics.html#firebase_analytics_log_event_params">firebase_analytics_log_event_params</a></li>
+<li><a href="analytics.html#firebase_analytics_set_default_event_parameters">firebase_analytics_set_default_event_parameters</a></li>
+<li><a href="analytics.html#firebase_analytics_log_apple_transaction">firebase_analytics_log_apple_transaction</a></li>
+</ul>
+<h2 id="users-and-sessions">Users and sessions<a class="headerlink" href="#users-and-sessions" title="Permanent link">&para;</a></h2>
+<p>Describing the player, and the ids of the installation and the session:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_set_user_property">firebase_analytics_set_user_property</a></li>
+<li><a href="analytics.html#firebase_analytics_set_user_id">firebase_analytics_set_user_id</a></li>
+<li><a href="analytics.html#firebase_analytics_set_session_timeout_duration">firebase_analytics_set_session_timeout_duration</a></li>
+<li><a href="analytics.html#firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id</a></li>
+<li><a href="analytics.html#firebase_analytics_get_session_id">firebase_analytics_get_session_id</a></li>
+</ul>
+<h2 id="desktop">Desktop<a class="headerlink" href="#desktop" title="Permanent link">&para;</a></h2>
+<p>The Windows library's own controls; no-ops elsewhere:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized</a></li>
+<li><a href="analytics.html#firebase_analytics_set_desktop_debug_mode">firebase_analytics_set_desktop_debug_mode</a></li>
+<li><a href="analytics.html#firebase_analytics_set_log_callback">firebase_analytics_set_log_callback</a></li>
+<li><a href="analytics.html#firebase_analytics_notify_app_lifecycle_termination">firebase_analytics_notify_app_lifecycle_termination</a></li>
+<li><a href="analytics.html#firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change</a></li>
+</ul>
+<h2 id="on-device-conversion-measurement">On-device conversion measurement<a class="headerlink" href="#on-device-conversion-measurement" title="Permanent link">&para;</a></h2>
+<p>Matching a player to the ad that brought them, on the device; not linked in this version:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a></li>
+<li><a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_phone">firebase_analytics_initiate_on_device_conversion_measurement_phone</a></li>
+<li><a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_hashed_email">firebase_analytics_initiate_on_device_conversion_measurement_hashed_email</a></li>
+<li><a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone">firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone</a></li>
+</ul>
+<h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
+<p>The following structs are used by this module:</p>
+<ul>
+<li><a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initialize">firebase_analytics_initialize<a class="headerlink" href="#firebase_analytics_initialize" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initialize">firebase::analytics::Initialize</a></p>
+<p>This function starts Google Analytics for the default Firebase App and must be called once,
+after <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> and before any other function of this module. The SDK
+aborts the game when an analytics call reaches it uninitialised, so every function here refuses
+first: the calls that return <a href="app.html#firebaseerror">FirebaseError</a> return <code>FirebaseError.NotInitialized</code>,
+the others do nothing and set <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>. On Android and iOS the
+platform SDK is already collecting from launch - the automatic events, screen views, the
+session - and this call connects the module to it. On Windows it loads <code>google_analytics.dll</code>
+from the game's folder; see the Platforms section of <a href="analytics.html">Analytics</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initialize()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when the module is initialised, <code>0</code> when the default app does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller, after firebase_app_initialize()
+if (!firebase_analytics_initialize())
+{
+    show_debug_message($"Analytics unavailable: {firebase_last_error_message()}");
+    exit;
+}
+firebase_analytics_set_user_property("player_class", save_data.player_class);
+firebase_analytics_log_event("game_start");</code></pre>
+The above code initialises Analytics, tags the player with a property every later event
+carries, and logs the first event of the session.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_terminate">firebase_analytics_terminate<a class="headerlink" href="#firebase_analytics_terminate" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#terminate">firebase::analytics::Terminate</a></p>
+<p>This function shuts the module down: the functions refuse again until the next
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>. The platform SDK keeps collecting its automatic
+events underneath on Android and iOS. There is no need to call it when the game exits.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_terminate()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_analytics_collection_enabled">firebase_analytics_set_analytics_collection_enabled<a class="headerlink" href="#firebase_analytics_set_analytics_collection_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setanalyticscollectionenabled">firebase::analytics::SetAnalyticsCollectionEnabled</a></p>
+<p>This function turns collection on or off for this game on this device: off, nothing is logged
+or uploaded - not the automatic events either - until it is turned on again. The setting is
+stored on the device and holds across launches, so a consent screen needs the call once. It is
+the runtime half of the <code>disableDataCollection</code> extension option (see
+<a href="extension_options.html">Extension Options</a>): a game built with the option ships with collection off from the
+first launch, and calls this function with <code>1</code> once the player has agreed. By default
+collection is on. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_analytics_collection_enabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to collect, <code>0</code> to stop.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// The consent screen's buttons
+if (player_accepted)
+{
+    firebase_analytics_set_analytics_collection_enabled(1);
+    firebase_analytics_set_consent(1, 1, 1, 1);
+}
+else
+{
+    firebase_analytics_set_consent(0, 1, 0, 0);
+}</code></pre>
+The above code is a consent screen for a game built with <code>disableDataCollection</code>: acceptance
+turns collection on and grants every consent type, refusal keeps analytics storage - the
+game's own measurement - and denies the advertising ones.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_consent">firebase_analytics_set_consent<a class="headerlink" href="#firebase_analytics_set_consent" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setconsent">firebase::analytics::SetConsent</a></p>
+<p>This function sets the player's consent for the four purposes Google's consent mode defines,
+which decide how Analytics and Google Ads may use the data this device sends: <code>ad_storage</code>
+(advertising cookies and identifiers), <code>analytics_storage</code> (analytics identifiers, which also
+decides whether the game's own measurement is tied to a device), <code>ad_user_data</code> (sending user
+data to Google for advertising) and <code>ad_personalization</code> (personalised advertising). All four
+are set on every call - there is no "leave unchanged" - and the settings are stored on the
+device across launches. By default every type is granted. A game that shows no ads and only
+measures itself typically grants <code>analytics_storage</code> alone. On Windows, macOS and Linux the
+call does nothing. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_consent(ad_storage, analytics_storage, ad_user_data, ad_personalization)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ad_storage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to grant, <code>0</code> to deny storage for advertising.</td>
+</tr>
+<tr>
+<td>analytics_storage</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to grant, <code>0</code> to deny storage for analytics.</td>
+</tr>
+<tr>
+<td>ad_user_data</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to grant, <code>0</code> to deny sending user data for advertising.</td>
+</tr>
+<tr>
+<td>ad_personalization</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to grant, <code>0</code> to deny personalised advertising.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_log_event">firebase_analytics_log_event<a class="headerlink" href="#firebase_analytics_log_event" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#logevent_4">firebase::analytics::LogEvent</a></p>
+<p>This function logs an event with no parameters - a thing that happened, counted. A game may use up to 500 distinct event names; Google's recommended names (<code>level_start</code>,
+<code>level_end</code>, <code>post_score</code>, <code>unlock_achievement</code>, <code>purchase</code>, ...) get reports of their own in the
+console, and any other name is a custom event. Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes are reserved. Events
+are batched on the device and uploaded in the background, on Android and iOS typically within
+an hour or when the game goes to the background. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_log_event(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The event's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_log_event_string">firebase_analytics_log_event_string<a class="headerlink" href="#firebase_analytics_log_event_string" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#logevent">firebase::analytics::LogEvent</a></p>
+<p>This function logs an event with one string parameter, such as <code>level_start</code> with <code>level_name</code>. A game may use up to 500 distinct event names; Google's recommended names (<code>level_start</code>,
+<code>level_end</code>, <code>post_score</code>, <code>unlock_achievement</code>, <code>purchase</code>, ...) get reports of their own in the
+console, and any other name is a custom event. Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes are reserved. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_log_event_string(name, parameter_name, parameter_value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The event's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>parameter_name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>parameter_value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's value, up to 100 characters.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_log_event_number">firebase_analytics_log_event_number<a class="headerlink" href="#firebase_analytics_log_event_number" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#logevent_1">firebase::analytics::LogEvent</a></p>
+<p>This function logs an event with one numeric parameter, such as <code>post_score</code> with <code>score</code>. A game may use up to 500 distinct event names; Google's recommended names (<code>level_start</code>,
+<code>level_end</code>, <code>post_score</code>, <code>unlock_achievement</code>, <code>purchase</code>, ...) get reports of their own in the
+console, and any other name is a custom event. Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes are reserved. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_log_event_number(name, parameter_name, parameter_value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The event's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>parameter_name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>parameter_value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The parameter's value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_log_event_params">firebase_analytics_log_event_params<a class="headerlink" href="#firebase_analytics_log_event_params" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#logevent_6">firebase::analytics::LogEvent</a></p>
+<p>This function logs an event with any number of parameters, up to 25, each a <a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a>
+holding a name and a number or string value - or, for the <code>items</code> parameter of the e-commerce
+events, an array of structs, one per item. A parameter with an empty name is skipped. A game may use up to 500 distinct event names; Google's recommended names (<code>level_start</code>,
+<code>level_end</code>, <code>post_score</code>, <code>unlock_achievement</code>, <code>purchase</code>, ...) get reports of their own in the
+console, and any other name is a custom event. Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes are reserved. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_log_event_params(name, params)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The event's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>params</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a> of <a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a></td>
+<td>An array of <a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a> structs, up to 25.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">firebase_analytics_log_event_params("level_end", [
+    { name: "level_name", value: room_get_name(room) },
+    { name: "success", value: won ? 1 : 0 },
+    { name: "duration_seconds", value: round(level_time / 1000000) },
+    { name: "deaths", value: deaths }
+]);</code></pre>
+The above code logs Google's recommended <code>level_end</code> event with its <code>level_name</code> and <code>success</code>
+parameters plus two of the game's own, as an array of name/value structs.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_default_event_parameters">firebase_analytics_set_default_event_parameters<a class="headerlink" href="#firebase_analytics_set_default_event_parameters" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setdefaulteventparameters_1">firebase::analytics::SetDefaultEventParameters</a></p>
+<p>This function adds parameters to every event logged from now on, the automatic ones included -
+a build number, a platform variant, the player's chosen difficulty - without repeating them on
+each call. The parameters are merged into the set already there, stored on the device across
+launches, and a parameter given on an event itself wins over a default of the same name. The
+same limits as event parameters apply. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_default_event_parameters(params)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>params</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a> of <a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a></td>
+<td>An array of <a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a> structs, up to 25.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_log_apple_transaction">firebase_analytics_log_apple_transaction<a class="headerlink" href="#firebase_analytics_log_apple_transaction" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#logappletransaction">firebase::analytics::LogAppleTransaction</a></p>
+<p>This function logs an in-app purchase made through StoreKit 2 on iOS as an Analytics purchase
+event, by the transaction's id: the SDK looks the transaction up in the device's purchase
+history and logs its product and price, and logs nothing when no transaction with that id is
+found. On every other platform the callback fires at once with <code>0</code>.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_log_apple_transaction(transaction_id, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>transaction_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The StoreKit 2 transaction id, as a string.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the transaction has been logged, or could not be.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise the SDK's error code.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_user_property">firebase_analytics_set_user_property<a class="headerlink" href="#firebase_analytics_set_user_property" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setuserproperty">firebase::analytics::SetUserProperty</a></p>
+<p>This function sets a property of the player - a class, a tier, a chosen difficulty - that every
+event logged from then on carries, so that the console can compare groups of players. A game
+may have up to 25 user properties; each has to be registered once under <strong>Analytics &gt; Custom
+definitions</strong> in the console before it appears in reports. An empty value removes the property.
+Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> and <code>ga_</code> prefixes are reserved. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_user_property(name, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The property's name: 1 to 40 letters, digits and underscores, starting with a letter.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value, a short string; an empty string removes the property.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_user_id">firebase_analytics_set_user_id<a class="headerlink" href="#firebase_analytics_set_user_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setuserid">firebase::analytics::SetUserId</a></p>
+<p>This function sets the id Analytics uses to recognise the same player across devices - the
+game's own account id, such as the <a href="auth.html#firebase_auth_user_uid">firebase_auth_user_uid</a> of the signed-in user,
+never an email address or a name. An empty string removes it. Google's privacy policy governs
+its use. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_user_id(user_id)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The player's id, up to 256 characters; an empty string removes it.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_session_timeout_duration">firebase_analytics_set_session_timeout_duration<a class="headerlink" href="#firebase_analytics_set_session_timeout_duration" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setsessiontimeoutduration">firebase::analytics::SetSessionTimeoutDuration</a></p>
+<p>This function sets how long the game may stay in the background before the next event starts a
+new session rather than continuing the old one. The default is 30 minutes. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_session_timeout_duration(milliseconds)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>milliseconds</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The idle time that ends a session, in milliseconds.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_reset_analytics_data">firebase_analytics_reset_analytics_data<a class="headerlink" href="#firebase_analytics_reset_analytics_data" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#resetanalyticsdata">firebase::analytics::ResetAnalyticsData</a></p>
+<p>This function clears every piece of analytics data the SDK holds for this game on this device
+and gives it a new app instance id, so that nothing logged afterwards can be tied to what came
+before - the call to make when a player deletes their account or withdraws consent. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_reset_analytics_data()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id<a class="headerlink" href="#firebase_analytics_get_analytics_instance_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#getanalyticsinstanceid">firebase::analytics::GetAnalyticsInstanceId</a></p>
+<p>This function fetches the app instance id: the identifier Analytics gave this installation of
+the game, which is what the exported data (BigQuery's <code>user_pseudo_id</code>) and the Measurement
+Protocol identify a device by. It changes after <a href="analytics.html#firebase_analytics_reset_analytics_data">firebase_analytics_reset_analytics_data</a>.
+On Windows, macOS and Linux the callback receives a placeholder id.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_get_analytics_instance_id(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the id.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise the SDK's error code.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The app instance id, or an empty string on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_get_session_id">firebase_analytics_get_session_id<a class="headerlink" href="#firebase_analytics_get_session_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#getsessionid">firebase::analytics::GetSessionId</a></p>
+<p>This function fetches the id of the current session - the number Analytics stamps on every
+event of the session as <code>ga_session_id</code>, useful to join the game's own logs to the console's.
+It fails when collection is off or no session is running. On Windows, macOS and Linux the
+callback receives a placeholder id.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_get_session_id(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the id.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise the SDK's error code.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>session_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The session id, or <code>0</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_notify_app_lifecycle_termination">firebase_analytics_notify_app_lifecycle_termination<a class="headerlink" href="#firebase_analytics_notify_app_lifecycle_termination" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#notifyapplifecyclechange">firebase::analytics::NotifyAppLifecycleChange</a></p>
+<p>This function tells the Windows Analytics library that the game is about to exit, so that it
+uploads the events still batched on the device before the process ends; the call blocks until
+the upload is done or fails. Call it from the Game End event of the controller that owns the
+module. It does nothing on other platforms, where the platform SDK handles termination itself.
+<a href="analytics.html#firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change</a> is the general form. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_notify_app_lifecycle_termination()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized<a class="headerlink" href="#firebase_analytics_is_desktop_initialized" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#isdesktopinitialized">firebase::analytics::IsDesktopInitialized</a></p>
+<p>This function returns whether the Windows Analytics library was found and started: <code>1</code> when
+<code>google_analytics.dll</code> was loaded from the game's folder at
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> and initialised, <code>0</code> when it was not - in which case
+every call on Windows is a no-op. It returns <code>0</code> on every other platform.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_is_desktop_initialized()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when Analytics is live on Windows, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_desktop_debug_mode">firebase_analytics_set_desktop_debug_mode<a class="headerlink" href="#firebase_analytics_set_desktop_debug_mode" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setdesktopdebugmode">firebase::analytics::SetDesktopDebugMode</a></p>
+<p>This function turns debug mode on or off for the Windows library: on, events are uploaded at
+once and marked as debug events, so that they appear in the console's <strong>DebugView</strong> as they
+happen instead of in the reports hours later. It does nothing on other platforms - Android and
+iOS enable DebugView from the platform's side, with <code>adb shell setprop debug.firebase.analytics.app</code>
+and the <code>-FIRDebugEnabled</code> launch argument. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_desktop_debug_mode(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> for debug mode, <code>0</code> for normal operation.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_set_log_callback">firebase_analytics_set_log_callback<a class="headerlink" href="#firebase_analytics_set_log_callback" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setlogcallback">firebase::analytics::SetLogCallback</a></p>
+<p>This function routes the Windows Analytics library's own log messages to a GML function - the
+way to see why <code>google_analytics.dll</code> did not load or an event was refused. Pass <code>undefined</code> to
+stop. It does nothing on other platforms. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_log_callback(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with each message, or <code>undefined</code> to stop.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires for each message the library logs.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>level</td>
+<td><a href="app.html#firebaseloglevel">FirebaseLogLevel</a></td>
+<td>The message's level.</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The message.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email<a class="headerlink" href="#firebase_analytics_initiate_on_device_conversion_measurement_email" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initiateondeviceconversionmeasurementwithemailaddress">firebase::analytics::InitiateOnDeviceConversionMeasurementWithEmailAddress</a></p>
+<p>This function starts on-device conversion measurement for a player identified by email
+address - an iOS feature that matches the player to an ad they saw without the address leaving
+the device, for measuring the ads that brought players to the game.</p>
+<blockquote>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initiate_on_device_conversion_measurement_email(email_address)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>email_address</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The player's email address, domain included.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initiate_on_device_conversion_measurement_phone">firebase_analytics_initiate_on_device_conversion_measurement_phone<a class="headerlink" href="#firebase_analytics_initiate_on_device_conversion_measurement_phone" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initiateondeviceconversionmeasurementwithphonenumber">firebase::analytics::InitiateOnDeviceConversionMeasurementWithPhoneNumber</a></p>
+<p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>
+for a phone number.</p>
+<blockquote>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initiate_on_device_conversion_measurement_phone(phone_number)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>phone_number</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The player's phone number in E.164 format (<code>"+14155552671"</code>).</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change<a class="headerlink" href="#firebase_analytics_notify_app_lifecycle_change" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#notifyapplifecyclechange">firebase::analytics::NotifyAppLifecycleChange</a></p>
+<p>This function tells the Windows Analytics library about a change of the game's lifecycle state.
+The SDK defines two states: <code>0</code>, unknown, and <code>1</code>, termination - which is what
+<a href="analytics.html#firebase_analytics_notify_app_lifecycle_termination">firebase_analytics_notify_app_lifecycle_termination</a> sends. It does nothing on other
+platforms. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_notify_app_lifecycle_change(state)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>state</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The lifecycle state: <code>1</code> for termination.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initiate_on_device_conversion_measurement_hashed_email">firebase_analytics_initiate_on_device_conversion_measurement_hashed_email<a class="headerlink" href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_email" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initiateondeviceconversionmeasurementwithhashedemailaddress">firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedEmailAddress</a></p>
+<p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>
+for an email address the game has already normalised and SHA-256 hashed, as Google's on-device
+measurement guide describes, passed as the raw 32 bytes of the hash.</p>
+<blockquote>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(hashed_email)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hashed_email</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>A buffer holding the hash's bytes.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone">firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone<a class="headerlink" href="#firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initiateondeviceconversionmeasurementwithhashedphonenumber">firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber</a></p>
+<p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_phone">firebase_analytics_initiate_on_device_conversion_measurement_phone</a>
+for a phone number the game has already normalised to E.164 and SHA-256 hashed, passed as the
+raw 32 bytes of the hash.</p>
+<blockquote>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(hashed_phone)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hashed_phone</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>A buffer holding the hash's bytes.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_analytics_initialize_for_app">firebase_analytics_initialize_for_app<a class="headerlink" href="#firebase_analytics_initialize_for_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initialize">firebase::analytics::Initialize</a></p>
+<p>This function is <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> for another Firebase App, created
+with <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or
+<a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>. Analytics is initialised once per game, for one
+app.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_analytics_initialize_for_app(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when the module is initialised, <code>0</code> when the app handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseanalyticsparameter">FirebaseAnalyticsParameter<a class="headerlink" href="#firebaseanalyticsparameter" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/analytics/parameter">firebase::analytics::Parameter</a></p>
+<p>One event parameter, for <a href="analytics.html#firebase_analytics_log_event_params">firebase_analytics_log_event_params</a> and
+<a href="analytics.html#firebase_analytics_set_default_event_parameters">firebase_analytics_set_default_event_parameters</a>: a name and a value. Written as a
+struct literal, <code>{ name: "score", value: 1200 }</code>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_log_event_params">firebase_analytics_log_event_params</a></li>
+<li><a href="analytics.html#firebase_analytics_set_default_event_parameters">firebase_analytics_set_default_event_parameters</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's name: 1 to 40 letters, digits and underscores, starting with a letter; <code>firebase_</code>, <code>google_</code> and <code>ga_</code> are reserved.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Any</a></td>
+<td>A number, a string of up to 100 characters, or - for the <code>items</code> parameter of e-commerce events - an array of structs.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

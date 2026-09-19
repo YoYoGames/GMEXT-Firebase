@@ -1,0 +1,2143 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="ump.html">
+      
+      
+        <link rel="next" href="guides_crashlytics.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Crashlytics - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#crashlytics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Crashlytics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="crashlytics.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crashlytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crashlytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Crashlytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symbols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Symbols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_is_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_is_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_did_crash_on_previous_execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_did_crash_on_previous_execution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_user_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_user_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_real
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_bool
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_record_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_record_error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_check_for_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_check_for_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_send_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_send_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_delete_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_delete_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_test_crash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_test_crash
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#crashlytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Crashlytics
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Crashlytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symbols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Symbols
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_is_collection_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_is_collection_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_did_crash_on_previous_execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_did_crash_on_previous_execution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_log
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_user_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_user_id
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_real
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_set_custom_key_bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_set_custom_key_bool
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_record_error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_record_error
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_check_for_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_check_for_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_send_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_send_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_delete_unsent_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_delete_unsent_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_crashlytics_test_crash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_crashlytics_test_crash
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="crashlytics"><strong>Crashlytics</strong><a class="headerlink" href="#crashlytics" title="Permanent link">&para;</a></h1>
+<p>This module covers Firebase Crashlytics: crash reporting for Android and iOS. Once the
+extension is in the project every crash of the game's process - a native crash in the runner,
+an uncaught exception in platform code - is written to the device as it happens and uploaded
+when the game next starts, symbolicated, grouped into issues and shown in the console with the
+device, the OS, the app version and whatever context the game attached. The module is that
+context and the consent switch: nothing in it has to be called for crashes to be reported.</p>
+<p>A GML runtime error is not a crash to Crashlytics: the runner shows its own dialog and ends the
+game itself. <a href="crashlytics.html#firebase_crashlytics_record_error">firebase_crashlytics_record_error</a> is how the game reports those, and
+its own caught errors, as non-fatal issues.</p>
+<h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
+<p>The module is the <code>GMFirebaseCrashlytics</code> extension, built for Android and iOS only; in a
+Windows, macOS or Linux build every function returns <code>undefined</code> at once and no callback ever
+fires. On Android the SDK is active from process start, before any GML runs, and the NDK
+library reports native crashes too. On iOS the SDK starts when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>
+configures the default app, so a crash before that call is not reported and every function
+here does nothing until it has run.</p>
+<h3 id="symbols">Symbols<a class="headerlink" href="#symbols" title="Permanent link">&para;</a></h3>
+<p>Reports are only readable with the build's symbols, and the extension arranges their upload:
+on Android the Crashlytics Gradle plugin, with native symbol upload on for release builds; on
+iOS a <code>dwarf-with-dsym</code> build setting and a run-script phase that uploads the dSYM. The
+run-script phase has to run after the app is built; see <a href="guides_crashlytics.html">Crashlytics Guide</a> for the
+Xcode step that makes sure it does.</p>
+<h3 id="consent">Consent<a class="headerlink" href="#consent" title="Permanent link">&para;</a></h3>
+<p>Crash reports are personal data. A game that asks before collecting ships with the
+<code>disableDataCollection</code> option on (see <a href="extension_options.html">Extension Options</a>), which stores crashes on the
+device without sending them, and then either turns automatic reporting on for good with
+<a href="crashlytics.html#firebase_crashlytics_set_collection_enabled">firebase_crashlytics_set_collection_enabled</a> once the player agrees, or asks each
+time with <a href="crashlytics.html#firebase_crashlytics_check_for_unsent_reports">firebase_crashlytics_check_for_unsent_reports</a>,
+<a href="crashlytics.html#firebase_crashlytics_send_unsent_reports">firebase_crashlytics_send_unsent_reports</a> and
+<a href="crashlytics.html#firebase_crashlytics_delete_unsent_reports">firebase_crashlytics_delete_unsent_reports</a>.</p>
+<h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
+<p>Open <strong>Crashlytics</strong> under <strong>Run</strong> in the console, enable it for the app and, on the screen that
+waits for a first crash, produce one with <a href="crashlytics.html#firebase_crashlytics_test_crash">firebase_crashlytics_test_crash</a> from a
+build running on a device without the debugger; the report arrives when the game is started
+again. From then on issues appear as they are uploaded.</p>
+<h2 id="collection">Collection<a class="headerlink" href="#collection" title="Permanent link">&para;</a></h2>
+<p>Turning automatic reporting on and off, and handling the reports kept while it is off:</p>
+<ul>
+<li><a href="crashlytics.html#firebase_crashlytics_set_collection_enabled">firebase_crashlytics_set_collection_enabled</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_is_collection_enabled">firebase_crashlytics_is_collection_enabled</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_check_for_unsent_reports">firebase_crashlytics_check_for_unsent_reports</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_send_unsent_reports">firebase_crashlytics_send_unsent_reports</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_delete_unsent_reports">firebase_crashlytics_delete_unsent_reports</a></li>
+</ul>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
+<p>What the game attaches to its reports:</p>
+<ul>
+<li><a href="crashlytics.html#firebase_crashlytics_log">firebase_crashlytics_log</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_set_user_id">firebase_crashlytics_set_user_id</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_set_custom_key_string">firebase_crashlytics_set_custom_key_string</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_set_custom_key_real">firebase_crashlytics_set_custom_key_real</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_set_custom_key_bool">firebase_crashlytics_set_custom_key_bool</a></li>
+</ul>
+<h2 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h2>
+<p>Non-fatal errors, the previous run, and the test crash:</p>
+<ul>
+<li><a href="crashlytics.html#firebase_crashlytics_record_error">firebase_crashlytics_record_error</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_did_crash_on_previous_execution">firebase_crashlytics_did_crash_on_previous_execution</a></li>
+<li><a href="crashlytics.html#firebase_crashlytics_test_crash">firebase_crashlytics_test_crash</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_set_collection_enabled">firebase_crashlytics_set_collection_enabled<a class="headerlink" href="#firebase_crashlytics_set_collection_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#setCrashlyticsCollectionEnabled%28boolean%29">FirebaseCrashlytics.setCrashlyticsCollectionEnabled(boolean) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-setcrashlyticscollectionenabled:">FIRCrashlytics setCrashlyticsCollectionEnabled: (iOS)</a></p>
+<p>This function turns automatic crash reporting on or off. It overrides the
+<code>disableDataCollection</code> extension option (see <a href="extension_options.html">Extension Options</a>) and persists across
+launches, so a consent screen calls it once: a game shipped with the option on calls
+<code>firebase_crashlytics_set_collection_enabled(true)</code> when the player agrees, and from then on
+every crash is reported. While collection is off, crashes are still written to the device and
+kept; <a href="crashlytics.html#firebase_crashlytics_check_for_unsent_reports">firebase_crashlytics_check_for_unsent_reports</a>,
+<a href="crashlytics.html#firebase_crashlytics_send_unsent_reports">firebase_crashlytics_send_unsent_reports</a> and
+<a href="crashlytics.html#firebase_crashlytics_delete_unsent_reports">firebase_crashlytics_delete_unsent_reports</a> deal with them. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_set_collection_enabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to report crashes automatically, <code>false</code> to keep them on the device.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_is_collection_enabled">firebase_crashlytics_is_collection_enabled<a class="headerlink" href="#firebase_crashlytics_is_collection_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#isCrashlyticsCollectionEnabled%28%29">FirebaseCrashlytics.isCrashlyticsCollectionEnabled() (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-iscrashlyticscollectionenabled">FIRCrashlytics isCrashlyticsCollectionEnabled (iOS)</a></p>
+<p>This function returns whether automatic crash reporting is on: the value set with
+<a href="crashlytics.html#firebase_crashlytics_set_collection_enabled">firebase_crashlytics_set_collection_enabled</a>, or the <code>disableDataCollection</code>
+option's when nothing has been set. It returns <code>false</code> on iOS before
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_is_collection_enabled()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
+</blockquote>
+<p><code>true</code> when crashes are reported automatically, <code>false</code> otherwise.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_did_crash_on_previous_execution">firebase_crashlytics_did_crash_on_previous_execution<a class="headerlink" href="#firebase_crashlytics_did_crash_on_previous_execution" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#didCrashOnPreviousExecution%28%29">FirebaseCrashlytics.didCrashOnPreviousExecution() (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-didcrashduringpreviousexecution">FIRCrashlytics didCrashDuringPreviousExecution (iOS)</a></p>
+<p>This function returns whether the previous run of the game ended in a crash Crashlytics
+recorded. A game uses it to react at launch - offer to send the report when automatic
+reporting is off, skip straight to the menu rather than resume, or reset a setting that
+might be the cause. It returns <code>false</code> on iOS before <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>
+has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_did_crash_on_previous_execution()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
+</blockquote>
+<p><code>true</code> when the previous run crashed, <code>false</code> otherwise.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_log">firebase_crashlytics_log<a class="headerlink" href="#firebase_crashlytics_log" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#log%28java.lang.String%29">FirebaseCrashlytics.log(java.lang.String) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-log:">FIRCrashlytics log: (iOS)</a></p>
+<p>This function adds a line to the session's log, the breadcrumb trail that is attached to the
+next crash or non-fatal report and shown with it in the console: what the game was doing
+before it fell over. Log the events that place a crash - room changes, level starts, the
+start and end of loading, a purchase flow's steps - not every frame; the SDK keeps the last
+64 KB of a session and drops the oldest lines beyond that. The line goes nowhere unless a
+report follows. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_log(message)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The line to log.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Room Start
+firebase_crashlytics_log($"room start: {room_get_name(room)}");
+firebase_crashlytics_set_custom_key_string("room", room_get_name(room));</code></pre>
+The above code leaves a breadcrumb at every room start and keeps the current room in a custom
+key, so that a report says both where the player had been and where they were.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_set_user_id">firebase_crashlytics_set_user_id<a class="headerlink" href="#firebase_crashlytics_set_user_id" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#setUserId%28java.lang.String%29">FirebaseCrashlytics.setUserId(java.lang.String) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-setuserid:">FIRCrashlytics setUserID: (iOS)</a></p>
+<p>This function attaches an identifier to the session's reports, so that a player's crash can be
+found from a support request - the console lets you search reports by it. Use an id that
+means something to you and nothing to anyone else: the Authentication user id
+(<a href="auth.html#firebase_auth_user_uid">firebase_auth_user_uid</a> is the usual one), never a name or an e-mail address. An
+empty string clears it. The id is part of what a player's data request covers. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_set_user_id(user_id)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>user_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The identifier, or an empty string for none.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_set_custom_key_string">firebase_crashlytics_set_custom_key_string<a class="headerlink" href="#firebase_crashlytics_set_custom_key_string" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#setCustomKey%28java.lang.String,java.lang.String%29">FirebaseCrashlytics.setCustomKey(java.lang.String,java.lang.String) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-setcustomvalue:forkey:">FIRCrashlytics setCustomValue:forKey: (iOS)</a></p>
+<p>This function sets a custom key on the session: a name-value pair sent with every report from
+now on and shown in the console with it, for the state a crash needs explaining with - the
+level, the difficulty, whether a save was loaded, the graphics preset. Setting a key again
+replaces its value. The SDK keeps up to 64 keys per session, each name and value up to 1 KB;
+beyond that, new keys are dropped. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_set_custom_key_string(key, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The key's name.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_set_custom_key_real">firebase_crashlytics_set_custom_key_real<a class="headerlink" href="#firebase_crashlytics_set_custom_key_real" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#setCustomKey%28java.lang.String,double%29">FirebaseCrashlytics.setCustomKey(java.lang.String,double) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-setcustomvalue:forkey:">FIRCrashlytics setCustomValue:forKey: (iOS)</a></p>
+<p>This function sets a custom key on the session: a name-value pair sent with every report from
+now on and shown in the console with it, for the state a crash needs explaining with - the
+level, the difficulty, whether a save was loaded, the graphics preset. Setting a key again
+replaces its value. The SDK keeps up to 64 keys per session, each name and value up to 1 KB;
+beyond that, new keys are dropped. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_set_custom_key_real(key, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The key's name.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The value, stored as a double.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_set_custom_key_bool">firebase_crashlytics_set_custom_key_bool<a class="headerlink" href="#firebase_crashlytics_set_custom_key_bool" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#setCustomKey%28java.lang.String,boolean%29">FirebaseCrashlytics.setCustomKey(java.lang.String,boolean) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-setcustomvalue:forkey:">FIRCrashlytics setCustomValue:forKey: (iOS)</a></p>
+<p>This function sets a custom key on the session: a name-value pair sent with every report from
+now on and shown in the console with it, for the state a crash needs explaining with - the
+level, the difficulty, whether a save was loaded, the graphics preset. Setting a key again
+replaces its value. The SDK keeps up to 64 keys per session, each name and value up to 1 KB;
+beyond that, new keys are dropped.
+The value reaches the console as <code>true</code> or <code>false</code> on both platforms. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_set_custom_key_bool(key, value)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The key's name.</td>
+</tr>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>The value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_record_error">firebase_crashlytics_record_error<a class="headerlink" href="#firebase_crashlytics_record_error" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#recordException%28java.lang.Throwable,com.google.firebase.crashlytics.CustomKeysAndValues%29">FirebaseCrashlytics.recordException(java.lang.Throwable,com.google.firebase.crashlytics.CustomKeysAndValues) (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-recorderror:">FIRCrashlytics recordError: (iOS)</a></p>
+<p>This function records a non-fatal error: something the game caught and survived - a failed
+save, a server reply it could not parse, a state it should never be in - reported to the
+console as an issue of its own, with the session's log, custom keys and user id attached.
+The console groups these by <code>domain</code> and <code>code</code>, so give every distinct kind of error its own
+pair and keep <code>message</code> for the particulars (on Android the pair becomes the reported
+exception's frame, on iOS the <code>NSError</code> domain and code). Non-fatal reports are batched and
+sent with the next launch; the SDK keeps the most recent eight of a session. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_record_error(domain, code, message)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>domain</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>What part of the game the error belongs to, e.g. <code>"save"</code> or <code>"backend"</code>; an empty string is reported as <code>GMFirebaseCrashlytics</code>.</td>
+</tr>
+<tr>
+<td>code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>A number telling this kind of error from the domain's others.</td>
+</tr>
+<tr>
+<td>message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The particulars: what happened, with the values that matter.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">try
+{
+    load_save(slot);
+}
+catch (_e)
+{
+    firebase_crashlytics_record_error("save", 1, $"{_e.message} (slot {slot})");
+    start_new_game();
+}</code></pre>
+The above code reports a save file that failed to load as a non-fatal error and carries on, so
+the console shows how often it happens and on which saves, without the player losing their
+session.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_check_for_unsent_reports">firebase_crashlytics_check_for_unsent_reports<a class="headerlink" href="#firebase_crashlytics_check_for_unsent_reports" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#checkForUnsentReports%28%29">FirebaseCrashlytics.checkForUnsentReports() (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-checkforunsentreportswithcompletion:">FIRCrashlytics checkForUnsentReportsWithCompletion: (iOS)</a></p>
+<p>This function asks whether crash reports are waiting on the device - the ones written while
+automatic reporting was off. It is the first step of an ask-before-sending flow: check, and when
+there are reports ask the player, then <a href="crashlytics.html#firebase_crashlytics_send_unsent_reports">firebase_crashlytics_send_unsent_reports</a> or
+<a href="crashlytics.html#firebase_crashlytics_delete_unsent_reports">firebase_crashlytics_delete_unsent_reports</a>. With automatic reporting on there is
+nothing to ask about; the SDK sends reports at launch by itself. On iOS the SDK answers the
+question once per run: a second call fails with a message saying so, and the extension
+reports it as a failure rather than as "no reports". The callback fires with <code>success</code> <code>false</code>
+and a message, at once, on iOS before <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run and on
+Android when the default Firebase App does not exist.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_check_for_unsent_reports(callback)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the answer.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the answer.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>success</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the question was answered, <code>false</code> when it could not be.</td>
+</tr>
+<tr>
+<td>has_unsent_reports</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when reports are waiting on the device; <code>false</code> otherwise, and always when <code>success</code> is <code>false</code>.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>Why the question could not be answered, or an empty string.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">firebase_crashlytics_check_for_unsent_reports(function(_success, _has_reports, _error)
+{
+    if (!_success || !_has_reports) exit;
+    // The last run crashed and the report is still on the device: ask
+    if (show_question("The game crashed last time. Send the crash report to help fix it?"))
+    {
+        firebase_crashlytics_send_unsent_reports();
+    }
+    else
+    {
+        firebase_crashlytics_delete_unsent_reports();
+    }
+});</code></pre>
+The above code is the ask-before-sending flow for a game shipped with <code>disableDataCollection</code>
+on: it runs at launch, and only when a report is actually waiting does the player see a
+question.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_send_unsent_reports">firebase_crashlytics_send_unsent_reports<a class="headerlink" href="#firebase_crashlytics_send_unsent_reports" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#sendUnsentReports%28%29">FirebaseCrashlytics.sendUnsentReports() (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-sendunsentreports">FIRCrashlytics sendUnsentReports (iOS)</a></p>
+<p>This function uploads the crash reports waiting on the device, for a game that keeps
+automatic reporting off and asks first (see
+<a href="crashlytics.html#firebase_crashlytics_check_for_unsent_reports">firebase_crashlytics_check_for_unsent_reports</a>). With automatic reporting on it has
+nothing to do. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_send_unsent_reports()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_delete_unsent_reports">firebase_crashlytics_delete_unsent_reports<a class="headerlink" href="#firebase_crashlytics_delete_unsent_reports" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase SDK:</strong> <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/crashlytics/FirebaseCrashlytics#deleteUnsentReports%28%29">FirebaseCrashlytics.deleteUnsentReports() (Android)</a>, <a href="https://firebase.google.com/docs/reference/ios/firebasecrashlytics/api/reference/Classes/FIRCrashlytics#-deleteunsentreports">FIRCrashlytics deleteUnsentReports (iOS)</a></p>
+<p>This function discards the crash reports waiting on the device without sending them - the
+player's "no" in an ask-before-sending flow. On iOS it does nothing until <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has run.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_delete_unsent_reports()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_crashlytics_test_crash">firebase_crashlytics_test_crash<a class="headerlink" href="#firebase_crashlytics_test_crash" title="Permanent link">&para;</a></h1>
+<p>This function crashes the game on purpose - it throws an unhandled exception on the platform's
+main thread - to check that Crashlytics is wired up: the console's setup screen waits for a
+first report, and this is how to send one. Run the build from the device, not under the
+debugger (Crashlytics on iOS does not record a crash while Xcode is attached), let it crash,
+then start the game again: reports are uploaded at the next launch. It has no place in a
+shipped build.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_crashlytics_test_crash()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,4448 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="guides_cloud_messaging.html">
+      
+      
+        <link rel="next" href="guides_remote_config.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Remote Config - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#remote-config" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Remote Config
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="remote_config.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#remote-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaults-and-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defaults and fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-time updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_ensure_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_ensure_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_config_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_config_settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_config_settings_fetch_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_config_settings_fetch_timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_config_settings_minimum_fetch_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_config_settings_minimum_fetch_interval
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch_with_expiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch_with_expiration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch_and_activate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch_and_activate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_activate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_activate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_boolean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_long
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_double" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_double
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_keys_by_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_keys_by_prefix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_all
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_defaults
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_custom_signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_custom_signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_add_config_update_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_add_config_update_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_remove_config_update_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_remove_config_update_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_ensure_initialized_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_ensure_initialized_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_boolean_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_boolean_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_long_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_long_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_double_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_double_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_string_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_string_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiglastfetchstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigLastFetchStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigfetchfailurereason" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigFetchFailureReason
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigvaluesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigValueSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigbooleaninfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigBooleanInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiglonginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigLongInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigdoubleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigDoubleInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigstringinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigStringInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigdatainfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigDataInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#remote-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remote Config
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defaults-and-fetching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defaults and fetching
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reading-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#real-time-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real-time updates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_ensure_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_ensure_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_config_settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_config_settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_config_settings_fetch_timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_config_settings_fetch_timeout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_config_settings_minimum_fetch_interval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_config_settings_minimum_fetch_interval
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch_with_expiration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch_with_expiration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_fetch_and_activate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_fetch_and_activate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_activate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_activate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_boolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_boolean
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_long" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_long
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_double" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_double
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_string" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_string
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_keys_by_prefix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_keys_by_prefix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_all" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_all
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_defaults
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_set_custom_signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_set_custom_signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_add_config_update_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_add_config_update_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_remove_config_update_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_remove_config_update_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_ensure_initialized_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_ensure_initialized_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_boolean_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_boolean_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_long_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_long_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_double_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_double_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_string_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_string_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_data_with_info" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_data_with_info
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_remote_config_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_remote_config_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiglastfetchstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigLastFetchStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigfetchfailurereason" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigFetchFailureReason
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigvaluesource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigValueSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigbooleaninfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigBooleanInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfiglonginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigLongInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigdoubleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigDoubleInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigstringinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigStringInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseremoteconfigdatainfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseRemoteConfigDataInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="remote-config"><strong>Remote Config</strong><a class="headerlink" href="#remote-config" title="Permanent link">&para;</a></h1>
+<p>This module covers Firebase Remote Config: parameters set in the Firebase console - a number, a
+string, a boolean, a block of JSON - that the game reads at runtime, so that balance, feature
+flags, event dates and text can change without a new build, and take different values for
+different players through the console's conditions and the game's own custom signals.
+Everything starts from the handle of <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</p>
+<h3 id="values">Values<a class="headerlink" href="#values" title="Permanent link">&para;</a></h3>
+<p>A parameter's value goes through three places. A fetch (<a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a>)
+downloads the current values into a holding area; an activation
+(<a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a>) makes them the values the getters return and
+stores them on the device; <a href="remote_config.html#firebase_remote_config_fetch_and_activate">firebase_remote_config_fetch_and_activate</a> does both. At
+launch the getters return what was activated last time, then the defaults set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, then the type's static value - <code>0</code>, <code>false</code> or
+an empty string - so a read never fails, and a game that sets defaults for every key it uses is
+configured from the first frame whatever the network does.</p>
+<p>Every value is text in the console; the typed getters convert it, and the <code>*_with_info</code> getters
+say whether the conversion worked and where the value came from.</p>
+<h3 id="fetching">Fetching<a class="headerlink" href="#fetching" title="Permanent link">&para;</a></h3>
+<p>The stored values are considered fresh for the minimum fetch interval - 12 hours by default -
+and a fetch within it completes at once without touching the network. That interval is what
+keeps a released game under the backend's throttling; during development
+<a href="remote_config.html#firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings</a> brings it to <code>0</code>. On Android and iOS
+<a href="remote_config.html#firebase_remote_config_add_config_update_listener">firebase_remote_config_add_config_update_listener</a> fetches a change the moment it is
+published, leaving only the activation to the game.</p>
+<p>Every asynchronous function returns <a href="app.html#firebaseerror">FirebaseError</a> at once and delivers its outcome
+to a callback, whose <code>error_code</code> is <code>0</code> on success and <code>1</code> on failure - the reason is in
+<a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a>. The real-time listener is the exception: its
+<code>error_code</code> is a <a href="remote_config.html#firebaseremoteconfigerror">FirebaseRemoteConfigError</a>.</p>
+<h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
+<p>Parameters are created and published under <strong>Run &gt; Remote Config</strong> in the Firebase console; a
+change reaches the game once it is published, and once the game fetches. Conditions target
+parameters by app, platform, version, language, country, user property, percentage of players,
+and the custom signals set with <a href="remote_config.html#firebase_remote_config_set_custom_signals">firebase_remote_config_set_custom_signals</a>.
+<a href="guides_remote_config.html">Remote Config Guide</a> walks through it.</p>
+<h2 id="instance">Instance<a class="headerlink" href="#instance" title="Permanent link">&para;</a></h2>
+<p>The instance, its initialisation, and the fetch settings:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_instance_for_app">firebase_remote_config_get_instance_for_app</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_app">firebase_remote_config_get_app</a></li>
+<li><a href="remote_config.html#firebase_remote_config_ensure_initialized">firebase_remote_config_ensure_initialized</a></li>
+<li><a href="remote_config.html#firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_config_settings_fetch_timeout">firebase_remote_config_get_config_settings_fetch_timeout</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_config_settings_minimum_fetch_interval">firebase_remote_config_get_config_settings_minimum_fetch_interval</a></li>
+</ul>
+<h2 id="defaults-and-fetching">Defaults and fetching<a class="headerlink" href="#defaults-and-fetching" title="Permanent link">&para;</a></h2>
+<p>Setting the defaults, fetching and activating values, reading the fetch state, and
+describing the player for the console's conditions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch_with_expiration">firebase_remote_config_fetch_with_expiration</a></li>
+<li><a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch_and_activate">firebase_remote_config_fetch_and_activate</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_set_custom_signals">firebase_remote_config_set_custom_signals</a></li>
+</ul>
+<h2 id="reading-values">Reading values<a class="headerlink" href="#reading-values" title="Permanent link">&para;</a></h2>
+<p>Reading a parameter by type, with or without its source, and listing the keys:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_boolean">firebase_remote_config_get_boolean</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_long">firebase_remote_config_get_long</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_double">firebase_remote_config_get_double</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_string">firebase_remote_config_get_string</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_data_size">firebase_remote_config_get_data_size</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_data">firebase_remote_config_get_data</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_long_with_info">firebase_remote_config_get_long_with_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_double_with_info">firebase_remote_config_get_double_with_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_string_with_info">firebase_remote_config_get_string_with_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_data_with_info">firebase_remote_config_get_data_with_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_keys">firebase_remote_config_get_keys</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_keys_by_prefix">firebase_remote_config_get_keys_by_prefix</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_all">firebase_remote_config_get_all</a></li>
+</ul>
+<h2 id="real-time-updates">Real-time updates<a class="headerlink" href="#real-time-updates" title="Permanent link">&para;</a></h2>
+<p>Being told when a new version is published:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_add_config_update_listener">firebase_remote_config_add_config_update_listener</a></li>
+<li><a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a></li>
+</ul>
+<h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
+<p>The following structs are used by this module:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigbooleaninfo">FirebaseRemoteConfigBooleanInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfiglonginfo">FirebaseRemoteConfigLongInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigdoubleinfo">FirebaseRemoteConfigDoubleInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigstringinfo">FirebaseRemoteConfigStringInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigdatainfo">FirebaseRemoteConfigDataInfo</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfiglastfetchstatus">FirebaseRemoteConfigLastFetchStatus</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigfetchfailurereason">FirebaseRemoteConfigFetchFailureReason</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigerror">FirebaseRemoteConfigError</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_instance">firebase_remote_config_get_instance<a class="headerlink" href="#firebase_remote_config_get_instance" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getinstance">firebase::remote_config::RemoteConfig::GetInstance</a></p>
+<p>This function returns a handle to Remote Config for the default Firebase App, creating the
+instance on first use. The same handle comes back on every call, it lives as long as the game,
+and there is nothing to release. It returns <code>0</code> when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not
+succeeded, with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set to <code>FirebaseError.NotInitialized</code>.</p>
+<p>The instance loads the values it activated last time from the device, so the game reads the
+previous session's configuration at once and the current one after a fetch and an activation;
+see the Values section of <a href="remote_config.html">Remote Config</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_instance()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The Remote Config handle, or <code>0</code> when the default app does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller, after firebase_app_initialize()
+config = firebase_remote_config_get_instance();
+firebase_remote_config_set_defaults(config, {
+    daily_reward: 100,
+    hard_mode_enabled: false,
+    welcome_text: "Welcome back!"
+}, undefined);
+
+firebase_remote_config_fetch_and_activate(config, function(_error, _message, _activated)
+{
+    if (_error != 0)
+    {
+        show_debug_message($"Remote Config fetch failed: {_message}");
+    }
+    daily_reward = firebase_remote_config_get_long(config, "daily_reward");
+    hard_mode = firebase_remote_config_get_boolean(config, "hard_mode_enabled");
+    welcome_text = firebase_remote_config_get_string(config, "welcome_text");
+});</code></pre>
+The above code is the whole Remote Config flow: defaults so that every key has a value from the
+first frame, one fetch-and-activate at start-up, and the values read in the callback - which reads
+the fetched values on success and the defaults or the previous session's values on failure, so
+the game is configured either way.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_ensure_initialized">firebase_remote_config_ensure_initialized<a class="headerlink" href="#firebase_remote_config_ensure_initialized" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#ensureinitialized">firebase::remote_config::RemoteConfig::EnsureInitialized</a></p>
+<p>This function waits for the instance to have loaded its stored values from the device and calls
+back when it has. The value getters and the defaults call work before that, but on Android and
+iOS they block the game until the load is done; a game that reads values in its first frames can
+wait for this callback instead. The instance is loaded within a moment of
+<a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>, so the callback comes quickly.
+<a href="remote_config.html#firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info</a> is the same call with the fetch
+state delivered too.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_ensure_initialized(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the instance has loaded its stored values.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings<a class="headerlink" href="#firebase_remote_config_set_config_settings" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#setconfigsettings">firebase::remote_config::RemoteConfig::SetConfigSettings</a></p>
+<p>This function sets the two settings a fetch obeys. <code>fetch_timeout_ms</code> is how long a fetch waits
+to connect to the backend before failing; the default is 60 seconds. <code>minimum_fetch_interval_ms</code>
+is how recent the stored values have to be for <a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a> to skip
+the network and complete at once with what it has; the default is 12 hours, which keeps a
+released game under the backend's throttling limit. During development set the interval to <code>0</code>
+so that every fetch reaches the backend and a change published in the console shows up on the
+next fetch - and put it back before release, because a game that fetches too often gets
+throttled (<code>FirebaseRemoteConfigFetchFailureReason.Throttled</code> in
+<a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a>). Both values must be zero or positive; a negative
+or non-finite one is refused with <code>FirebaseError.InvalidArgument</code>.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_set_config_settings(rc_ref, fetch_timeout_ms, minimum_fetch_interval_ms, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>fetch_timeout_ms</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The connection timeout of a fetch, in milliseconds.</td>
+</tr>
+<tr>
+<td>minimum_fetch_interval_ms</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>How old the stored values may be before a fetch goes to the backend, in milliseconds.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the settings have been applied.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Development builds see console changes on every fetch
+if (debug_mode)
+{
+    firebase_remote_config_set_config_settings(config, 60000, 0, undefined);
+}</code></pre>
+The above code drops the minimum fetch interval to zero in debug builds only, keeping the
+60-second connection timeout, so that testing sees each published change without the release
+build ever fetching more often than the default.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_config_settings_fetch_timeout">firebase_remote_config_get_config_settings_fetch_timeout<a class="headerlink" href="#firebase_remote_config_get_config_settings_fetch_timeout" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/config-settings#fetch_timeout_in_milliseconds">firebase::remote_config::ConfigSettings</a></p>
+<p>This function returns how long a fetch waits to connect to the backend before failing, as set with <a href="remote_config.html#firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings</a>
+or the default.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_config_settings_fetch_timeout(rc_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The fetch timeout in milliseconds, or <code>0</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_config_settings_minimum_fetch_interval">firebase_remote_config_get_config_settings_minimum_fetch_interval<a class="headerlink" href="#firebase_remote_config_get_config_settings_minimum_fetch_interval" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/config-settings#minimum_fetch_interval_in_milliseconds">firebase::remote_config::ConfigSettings</a></p>
+<p>This function returns how old the stored values may be before a fetch goes to the backend rather than completing with what it has, as set with <a href="remote_config.html#firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings</a>
+or the default.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_config_settings_minimum_fetch_interval(rc_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The minimum fetch interval in milliseconds, or <code>0</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_fetch">firebase_remote_config_fetch<a class="headerlink" href="#firebase_remote_config_fetch" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#fetch">firebase::remote_config::RemoteConfig::Fetch</a></p>
+<p>This function fetches the current parameter values from the backend into a holding area - the
+values the game reads do not change until <a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a> moves them
+over, which lets the game pick a moment (a loading screen, the next session) when a change will
+not disturb play. When the stored values are younger than the minimum fetch interval (12 hours
+by default), the call completes at once without touching the network. The callback's
+<code>error_code</code> is <code>1</code> for a fetch that failed; <a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a> says
+why, and <code>Throttled</code> there means the game has fetched too often and must wait until the info's
+<code>throttled_end_time</code>. <a href="remote_config.html#firebase_remote_config_fetch_and_activate">firebase_remote_config_fetch_and_activate</a> does both steps in
+one call.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_fetch(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the fetch has completed or failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_fetch_with_expiration">firebase_remote_config_fetch_with_expiration<a class="headerlink" href="#firebase_remote_config_fetch_with_expiration" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#fetch_1">firebase::remote_config::RemoteConfig::Fetch</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a> with its own freshness limit instead of
+the instance's minimum fetch interval: stored values younger than <code>cache_expiration_in_seconds</code>
+are kept and the call completes at once; <code>0</code> always goes to the backend. A negative or
+non-finite value is refused with <code>FirebaseError.InvalidArgument</code>.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_fetch_with_expiration(rc_ref, cache_expiration_in_seconds, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>cache_expiration_in_seconds</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>How old the stored values may be, in seconds; <code>0</code> to fetch regardless.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the fetch has completed or failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_fetch_and_activate">firebase_remote_config_fetch_and_activate<a class="headerlink" href="#firebase_remote_config_fetch_and_activate" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#fetchandactivate">firebase::remote_config::RemoteConfig::FetchAndActivate</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a> followed by
+<a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a>: the usual call at start-up, after which the getters
+return the current values. The minimum fetch interval applies to the fetch, so within 12 hours
+of the last one (by default) the call completes at once with <code>activated</code> <code>false</code> and the stored
+values stay - which is the intended behaviour for a released game. On a failed fetch
+<code>error_code</code> is <code>1</code> and the getters keep returning what they returned before.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_fetch_and_activate(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the fetch and the activation have completed, or the fetch failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>activated</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when this call activated newly fetched values, <code>false</code> when there were none or on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_activate">firebase_remote_config_activate<a class="headerlink" href="#firebase_remote_config_activate" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#activate">firebase::remote_config::RemoteConfig::Activate</a></p>
+<p>This function makes the values of the last successful fetch the ones the getters return, and
+stores them on the device for the next launch. The callback's <code>activated</code> is <code>false</code> when there
+was nothing new to activate - no fetch since the last activation, or a fetch that brought the
+same version - which is not an error.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_activate(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the activation has completed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>activated</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when fetched values were activated, <code>false</code> when there were none to activate or on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// A real-time update arrived: apply it at the next room change
+listener = firebase_remote_config_add_config_update_listener(config, function(_error, _message, _keys)
+{
+    if (_error == FirebaseRemoteConfigError.None) config_pending = true;
+});
+
+// Room Start Event
+if (config_pending)
+{
+    config_pending = false;
+    firebase_remote_config_activate(config, function(_error, _message, _activated)
+    {
+        if (_activated) apply_config();
+    });
+}</code></pre>
+The above code lets the SDK fetch a published change in the background and defers the
+activation to a room start, so that values never change mid-level; <code>apply_config</code> re-reads the
+getters once the new values are live.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_boolean">firebase_remote_config_get_boolean<a class="headerlink" href="#firebase_remote_config_get_boolean" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getboolean">firebase::remote_config::RemoteConfig::GetBoolean</a></p>
+<p>This function returns a parameter's value as a boolean. A console value of <code>true</code>, <code>1</code>, <code>t</code>,
+<code>yes</code>, <code>y</code> or <code>on</code> (in any case) reads as <code>1</code>; <code>false</code>, <code>0</code>, <code>f</code>, <code>no</code>, <code>n</code>, <code>off</code> and an empty
+value read as <code>0</code>; anything else fails the conversion and reads as <code>0</code>, which
+<a href="remote_config.html#firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info</a> can tell apart. The value comes from the last activation, or the default set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_boolean(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> for a true value, otherwise <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_long">firebase_remote_config_get_long<a class="headerlink" href="#firebase_remote_config_get_long" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getlong">firebase::remote_config::RemoteConfig::GetLong</a></p>
+<p>This function returns a parameter's value as a whole number. A value that is not one - <code>1.5</code>,
+<code>abc</code>, empty - fails the conversion and reads as <code>0</code>, which
+<a href="remote_config.html#firebase_remote_config_get_long_with_info">firebase_remote_config_get_long_with_info</a> can tell apart. The value comes from the last activation, or the default set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_long(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The value, or <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_double">firebase_remote_config_get_double<a class="headerlink" href="#firebase_remote_config_get_double" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getdouble">firebase::remote_config::RemoteConfig::GetDouble</a></p>
+<p>This function returns a parameter's value as a number, whole or decimal. A value that is not a
+number fails the conversion and reads as <code>0</code>, which
+<a href="remote_config.html#firebase_remote_config_get_double_with_info">firebase_remote_config_get_double_with_info</a> can tell apart. The value comes from the last activation, or the default set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_double(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The value, or <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_string">firebase_remote_config_get_string<a class="headerlink" href="#firebase_remote_config_get_string" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getstring">firebase::remote_config::RemoteConfig::GetString</a></p>
+<p>This function returns a parameter's value as text - the form every value has in the console, so
+the conversion cannot fail. A JSON parameter arrives here too, ready for <code>json_parse</code>. The value comes from the last activation, or the default set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_string(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The value, or an empty string.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_data_size">firebase_remote_config_get_data_size<a class="headerlink" href="#firebase_remote_config_get_data_size" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getdata">firebase::remote_config::RemoteConfig::GetData</a></p>
+<p>This function returns the size in bytes of a parameter's value as raw data - the bytes of the
+same text <a href="remote_config.html#firebase_remote_config_get_string">firebase_remote_config_get_string</a> returns - to size the buffer for
+<a href="remote_config.html#firebase_remote_config_get_data">firebase_remote_config_get_data</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_data_size(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The size in bytes, or <code>0</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_data">firebase_remote_config_get_data<a class="headerlink" href="#firebase_remote_config_get_data" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getdata">firebase::remote_config::RemoteConfig::GetData</a></p>
+<p>This function copies a parameter's value as raw bytes into a buffer the game created, from the
+buffer's start and up to its size, and returns how many bytes it wrote. Size the buffer with
+<a href="remote_config.html#firebase_remote_config_get_data_size">firebase_remote_config_get_data_size</a>. The bytes are the UTF-8 of the value's text;
+this is the way to take a large value straight into a buffer without a GML string in between. The value comes from the last activation, or the default set with
+<a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_data(rc_ref, key, out_buffer)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+<tr>
+<td>out_buffer</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>The buffer to copy into.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of bytes copied.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_keys_by_prefix">firebase_remote_config_get_keys_by_prefix<a class="headerlink" href="#firebase_remote_config_get_keys_by_prefix" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getkeysbyprefix">firebase::remote_config::RemoteConfig::GetKeysByPrefix</a></p>
+<p>This function hands the callback an array of the parameter keys that start with a prefix - a
+naming convention such as <code>level_3_</code> groups a set of parameters the game can then read in a loop.
+An empty prefix gives every key. The callback is called with that one argument before the function returns - it
+is the shape the value takes, not a wait - so the result can be used right away, and the
+function's return only says whether the callback was called.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_keys_by_prefix(rc_ref, prefix, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The start of the keys wanted.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the array of keys, as its one argument.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the callback was called, otherwise the reason it was not.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_keys">firebase_remote_config_get_keys<a class="headerlink" href="#firebase_remote_config_get_keys" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getkeys">firebase::remote_config::RemoteConfig::GetKeys</a></p>
+<p>This function hands the callback an array of every parameter key the instance knows: the
+activated values' keys and the defaults' keys together. The callback is called with that one argument before the function returns - it
+is the shape the value takes, not a wait - so the result can be used right away, and the
+function's return only says whether the callback was called.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_keys(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the array of keys, as its one argument.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the callback was called, otherwise the reason it was not.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_all">firebase_remote_config_get_all<a class="headerlink" href="#firebase_remote_config_get_all" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getall">firebase::remote_config::RemoteConfig::GetAll</a></p>
+<p>This function hands the callback a struct with one member per parameter key - the activated
+value where there is one, the default otherwise. Each value is typed from its text: a whole
+number or a decimal becomes a number, <code>true</code>/<code>false</code> a boolean, anything else a string - so a
+version string like <code>"1.0"</code> arrives as the number <code>1</code> here, and a value that must stay text is
+read with <a href="remote_config.html#firebase_remote_config_get_string">firebase_remote_config_get_string</a> instead. The callback is called with that one argument before the function returns - it
+is the shape the value takes, not a wait - so the result can be used right away, and the
+function's return only says whether the callback was called.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_all(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the struct of key to value, as its one argument.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the callback was called, otherwise the reason it was not.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">firebase_remote_config_get_all(config, function(_values)
+{
+    var _keys = variable_struct_get_names(_values);
+    for (var _i = 0; _i &lt; array_length(_keys); _i++)
+    {
+        show_debug_message($"{_keys[_i]} = {_values[$ _keys[_i]]}");
+    }
+});</code></pre>
+The above code lists every parameter with its value, which is the quickest way to see what a
+build is running with.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_set_defaults">firebase_remote_config_set_defaults<a class="headerlink" href="#firebase_remote_config_set_defaults" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#setdefaults">firebase::remote_config::RemoteConfig::SetDefaults</a></p>
+<p>This function sets the value each parameter has until a fetched value is activated for it - and
+keeps, for a parameter the console does not define at all. Pass a struct with one member per
+key; each value is a number, a string or a boolean, and its type decides which getter reads it
+back naturally. The call replaces every default set before, so set them all at once, right after
+<a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a> and before the first read. A member that is an
+array, a struct or <code>undefined</code> is refused with <code>FirebaseError.InvalidArgument</code> and nothing is
+set. The defaults are not stored on the device: set them at every launch.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_set_defaults(rc_ref, defaults, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>defaults</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Any</a></td>
+<td>A struct of key to number, string or boolean.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the defaults have been applied.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_set_custom_signals">firebase_remote_config_set_custom_signals<a class="headerlink" href="#firebase_remote_config_set_custom_signals" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#setcustomsignals">firebase::remote_config::RemoteConfig::SetCustomSignals</a></p>
+<p>This function sets custom signals: key/value pairs about this player or device that the console's
+conditions can target, so that a parameter can take one value for, say, players past level 20 or
+on a given server region without the game knowing the rule. Pass a struct with one member per
+signal; a value is a number or a string, and <code>undefined</code> removes the signal. The call merges with
+the signals set before rather than replacing them, and the signals are sent with every fetch
+from then on. Up to 100 signals may be set, with keys and string values limited to a few hundred
+characters; beyond that the callback reports failure. A boolean, an array or a struct value is refused
+with <code>FirebaseError.InvalidArgument</code> and nothing is set.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_set_custom_signals(rc_ref, signals, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>signals</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Any</a></td>
+<td>A struct of key to number or string, or <code>undefined</code> to remove that signal.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the signals have been applied or refused.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Before the fetch, describe the player for the console's conditions
+firebase_remote_config_set_custom_signals(config, {
+    player_level: level,
+    region: server_region,
+    beta_tester: undefined   // no longer in the beta: remove the signal
+}, function(_error, _message)
+{
+    firebase_remote_config_fetch_and_activate(config, on_config_ready);
+});</code></pre>
+The above code sets two signals and removes a third, then fetches once they are in place so
+that the backend evaluates the console's conditions against them.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_info">firebase_remote_config_get_info<a class="headerlink" href="#firebase_remote_config_get_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getinfo">firebase::remote_config::RemoteConfig::GetInfo</a></p>
+<p>This function returns the state of the last fetch as a <a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a>: when
+it completed, whether it succeeded, is still running or failed, why it failed, and - after a
+<code>Throttled</code> failure - when the backend will accept a fetch again. For a handle that is not valid
+the struct reads <code>Failure</code> / <code>Error</code> with the times at <code>0</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_info(rc_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></p>
+</blockquote>
+<p>The last fetch's state.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_add_config_update_listener">firebase_remote_config_add_config_update_listener<a class="headerlink" href="#firebase_remote_config_add_config_update_listener" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#addonconfigupdatelistener">firebase::remote_config::RemoteConfig::AddOnConfigUpdateListener</a></p>
+<p>This function starts listening for changes published in the console: the SDK keeps a connection
+to the backend, fetches a new version as soon as it is published, and calls the listener with
+the keys whose value changed - the fetch is done, and the game only has to
+<a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a> when it is ready for the change. Real-time updates
+work on Android and iOS; on Windows, macOS and Linux the listener is accepted and never called,
+and a game that wants fresh values there fetches on its own schedule. The listener stays until
+<a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a>; the connection closes when the
+last listener is removed.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_add_config_update_listener(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call on each update.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A listener handle to remove with <a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a>, or <code>0</code> when the handle is not valid.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires each time a new version has been fetched, or the connection failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="remote_config.html#firebaseremoteconfigerror">FirebaseRemoteConfigError</a></td>
+<td><code>FirebaseRemoteConfigError.None</code> when an update was fetched, otherwise the reason.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>A description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>updated_keys</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a> of <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The keys whose value, source or metadata changed since the activated version, including keys added and removed; empty on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener<a class="headerlink" href="#firebase_remote_config_remove_config_update_listener" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/config-update-listener-registration#remove">firebase::remote_config::ConfigUpdateListenerRegistration::Remove</a></p>
+<p>This function removes a real-time listener and frees its handle. When it was the last one, the
+connection to the backend is closed; adding a listener again reopens it.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_remove_config_update_listener(reg_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>reg_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The listener handle from <a href="remote_config.html#firebase_remote_config_add_config_update_listener">firebase_remote_config_add_config_update_listener</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when a listener was removed, <code>0</code> when the handle was not one.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info<a class="headerlink" href="#firebase_remote_config_ensure_initialized_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#ensureinitialized">firebase::remote_config::RemoteConfig::EnsureInitialized</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_ensure_initialized">firebase_remote_config_ensure_initialized</a> with the callback also
+receiving a <a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a>: when the last fetch happened and how it went, as
+<a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a> would report it.</p>
+<p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_ensure_initialized_info(rc_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the instance has loaded its stored values.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, <code>1</code> on failure.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>info</td>
+<td><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></td>
+<td>The state of the last fetch, or <code>undefined</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info<a class="headerlink" href="#firebase_remote_config_get_boolean_with_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getboolean_1">firebase::remote_config::RemoteConfig::GetBoolean</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_get_boolean">firebase_remote_config_get_boolean</a> returning a <a href="remote_config.html#firebaseremoteconfigbooleaninfo">FirebaseRemoteConfigBooleanInfo</a>: the value together with where it came
+from - a fetched value, the default, or the static value for a parameter nobody defined - and
+whether the conversion succeeded. It is the way to tell a genuine <code>0</code> or empty string from a
+missing or malformed parameter.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_boolean_with_info(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfigbooleaninfo">FirebaseRemoteConfigBooleanInfo</a></p>
+</blockquote>
+<p>The value with its source, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_long_with_info">firebase_remote_config_get_long_with_info<a class="headerlink" href="#firebase_remote_config_get_long_with_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getlong_1">firebase::remote_config::RemoteConfig::GetLong</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_get_long">firebase_remote_config_get_long</a> returning a <a href="remote_config.html#firebaseremoteconfiglonginfo">FirebaseRemoteConfigLongInfo</a>: the value together with where it came
+from - a fetched value, the default, or the static value for a parameter nobody defined - and
+whether the conversion succeeded. It is the way to tell a genuine <code>0</code> or empty string from a
+missing or malformed parameter.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_long_with_info(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfiglonginfo">FirebaseRemoteConfigLongInfo</a></p>
+</blockquote>
+<p>The value with its source, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_double_with_info">firebase_remote_config_get_double_with_info<a class="headerlink" href="#firebase_remote_config_get_double_with_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getdouble_1">firebase::remote_config::RemoteConfig::GetDouble</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_get_double">firebase_remote_config_get_double</a> returning a <a href="remote_config.html#firebaseremoteconfigdoubleinfo">FirebaseRemoteConfigDoubleInfo</a>: the value together with where it came
+from - a fetched value, the default, or the static value for a parameter nobody defined - and
+whether the conversion succeeded. It is the way to tell a genuine <code>0</code> or empty string from a
+missing or malformed parameter.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_double_with_info(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfigdoubleinfo">FirebaseRemoteConfigDoubleInfo</a></p>
+</blockquote>
+<p>The value with its source, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_string_with_info">firebase_remote_config_get_string_with_info<a class="headerlink" href="#firebase_remote_config_get_string_with_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getstring_1">firebase::remote_config::RemoteConfig::GetString</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_get_string">firebase_remote_config_get_string</a> returning a <a href="remote_config.html#firebaseremoteconfigstringinfo">FirebaseRemoteConfigStringInfo</a>: the value together with where it came
+from - a fetched value, the default, or the static value for a parameter nobody defined - and
+whether the conversion succeeded. It is the way to tell a genuine <code>0</code> or empty string from a
+missing or malformed parameter.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_string_with_info(rc_ref, key)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfigstringinfo">FirebaseRemoteConfigStringInfo</a></p>
+</blockquote>
+<p>The value with its source, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_data_with_info">firebase_remote_config_get_data_with_info<a class="headerlink" href="#firebase_remote_config_get_data_with_info" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getdata_1">firebase::remote_config::RemoteConfig::GetData</a></p>
+<p>This function is <a href="remote_config.html#firebase_remote_config_get_data">firebase_remote_config_get_data</a> returning a
+<a href="remote_config.html#firebaseremoteconfigdatainfo">FirebaseRemoteConfigDataInfo</a>: how many bytes were copied, the value's full size, where
+the value came from and whether the conversion succeeded. When <code>bytes_copied</code> is less than <code>size</code>
+the buffer was too small.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_data_with_info(rc_ref, key, out_buffer)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rc_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+<tr>
+<td>key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The parameter's key.</td>
+</tr>
+<tr>
+<td>out_buffer</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>The buffer to copy into.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="remote_config.html#firebaseremoteconfigdatainfo">FirebaseRemoteConfigDataInfo</a></p>
+</blockquote>
+<p>The copy's result with the value's source, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_app">firebase_remote_config_get_app<a class="headerlink" href="#firebase_remote_config_get_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#app">firebase::remote_config::RemoteConfig::app</a></p>
+<p>This function returns a handle to the Firebase App a Remote Config instance belongs to. Release
+it with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_app(remote_config)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>remote_config</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The Remote Config handle from <a href="remote_config.html#firebase_remote_config_get_instance">firebase_remote_config_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>An app handle, or <code>0</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_remote_config_get_instance_for_app">firebase_remote_config_get_instance_for_app<a class="headerlink" href="#firebase_remote_config_get_instance_for_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getinstance">firebase::remote_config::RemoteConfig::GetInstance</a></p>
+<p>This function returns a handle to Remote Config for another Firebase App, created with
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
+It returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when the app handle is not valid or
+the instance could not be created.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_remote_config_get_instance_for_app(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The Remote Config handle, or <code>0</code> on failure.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfiglastfetchstatus">FirebaseRemoteConfigLastFetchStatus<a class="headerlink" href="#firebaseremoteconfiglastfetchstatus" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/remote-config#lastfetchstatus">firebase::remote_config::LastFetchStatus</a></p>
+<p>How the last fetch went, in <a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a>.</p>
+<p>These constants are referenced by the following structs:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Success</code></td>
+<td>The last fetch succeeded and its values are ready to activate, if that has not been done.</td>
+</tr>
+<tr>
+<td><code>Failure</code></td>
+<td>The last fetch failed; <code>last_fetch_failure_reason</code> says why.</td>
+</tr>
+<tr>
+<td><code>Pending</code></td>
+<td>A fetch is in progress.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigfetchfailurereason">FirebaseRemoteConfigFetchFailureReason<a class="headerlink" href="#firebaseremoteconfigfetchfailurereason" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/remote-config#fetchfailurereason">firebase::remote_config::FetchFailureReason</a></p>
+<p>Why the last fetch failed, in <a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a>.</p>
+<p>These constants are referenced by the following structs:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Invalid</code></td>
+<td>No fetch has failed.</td>
+</tr>
+<tr>
+<td><code>Throttled</code></td>
+<td>The backend refused the fetch because the game fetches too often; <code>throttled_end_time</code> says when it will accept one again.</td>
+</tr>
+<tr>
+<td><code>Error</code></td>
+<td>The fetch failed for another reason - no network, a timeout, a backend error.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource<a class="headerlink" href="#firebaseremoteconfigvaluesource" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/remote-config#valuesource">firebase::remote_config::ValueSource</a></p>
+<p>Where a value came from, in the <code>*_with_info</code> structs.</p>
+<p>These constants are referenced by the following structs:</p>
+<ul>
+<li><a href="remote_config.html#firebaseremoteconfigbooleaninfo">FirebaseRemoteConfigBooleanInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfiglonginfo">FirebaseRemoteConfigLongInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigdoubleinfo">FirebaseRemoteConfigDoubleInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigstringinfo">FirebaseRemoteConfigStringInfo</a></li>
+<li><a href="remote_config.html#firebaseremoteconfigdatainfo">FirebaseRemoteConfigDataInfo</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StaticValue</code></td>
+<td>Neither a fetched value nor a default exists for the key, so the type's static value was returned: <code>0</code>, <code>false</code> or an empty string.</td>
+</tr>
+<tr>
+<td><code>RemoteValue</code></td>
+<td>The value was fetched from the backend and activated.</td>
+</tr>
+<tr>
+<td><code>DefaultValue</code></td>
+<td>No fetched value exists for the key, so the default from <a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a> was returned.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigerror">FirebaseRemoteConfigError<a class="headerlink" href="#firebaseremoteconfigerror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/remote-config#remoteconfigerror">firebase::remote_config::RemoteConfigError</a></p>
+<p>The <code>error_code</code> a real-time listener receives. The fetch and activation callbacks do not use
+it: their <code>error_code</code> is <code>0</code> or <code>1</code>, with the reason in <a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_add_config_update_listener">firebase_remote_config_add_config_update_listener</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unimplemented</code></td>
+<td>Real-time updates are not available on this platform.</td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td>An update was fetched.</td>
+</tr>
+<tr>
+<td><code>ConfigUpdateStreamError</code></td>
+<td>The SDK could not connect to the backend.</td>
+</tr>
+<tr>
+<td><code>ConfigUpdateMessageInvalid</code></td>
+<td>The backend sent a message the SDK could not parse.</td>
+</tr>
+<tr>
+<td><code>ConfigUpdateNotFetched</code></td>
+<td>An update was announced but the SDK could not fetch the new version.</td>
+</tr>
+<tr>
+<td><code>ConfigUpdateUnavailable</code></td>
+<td>The real-time update service is unavailable.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfiginfo">FirebaseRemoteConfigInfo<a class="headerlink" href="#firebaseremoteconfiginfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/config-info">firebase::remote_config::ConfigInfo</a></p>
+<p>The state of the last fetch, from <a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a> and
+<a href="remote_config.html#firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_info">firebase_remote_config_get_info</a></li>
+<li><a href="remote_config.html#firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fetch_time</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>When the last fetch completed, in milliseconds since the Unix epoch; <code>0</code> when none has been attempted.</td>
+</tr>
+<tr>
+<td>last_fetch_status</td>
+<td><a href="remote_config.html#firebaseremoteconfiglastfetchstatus">FirebaseRemoteConfigLastFetchStatus</a></td>
+<td>Whether the last fetch succeeded, failed or is still running.</td>
+</tr>
+<tr>
+<td>last_fetch_failure_reason</td>
+<td><a href="remote_config.html#firebaseremoteconfigfetchfailurereason">FirebaseRemoteConfigFetchFailureReason</a></td>
+<td>Why the last fetch failed; <code>Invalid</code> while none has.</td>
+</tr>
+<tr>
+<td>throttled_end_time</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>After a <code>Throttled</code> failure, when the backend will accept a fetch again, in milliseconds since the Unix epoch.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigbooleaninfo">FirebaseRemoteConfigBooleanInfo<a class="headerlink" href="#firebaseremoteconfigbooleaninfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/value-info">firebase::remote_config::ValueInfo</a></p>
+<p>A parameter's boolean value with where it came from, from <a href="remote_config.html#firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td>The value, converted as <a href="remote_config.html#firebase_remote_config_get_boolean">firebase_remote_config_get_boolean</a> converts it.</td>
+</tr>
+<tr>
+<td>source</td>
+<td><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></td>
+<td>Whether the value was fetched, is the default, or is the static value of a parameter nobody defined.</td>
+</tr>
+<tr>
+<td>conversion_successful</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the parameter's text converted to this type, <code>false</code> when it did not and <code>value</code> is the static value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfiglonginfo">FirebaseRemoteConfigLongInfo<a class="headerlink" href="#firebaseremoteconfiglonginfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/value-info">firebase::remote_config::ValueInfo</a></p>
+<p>A parameter's whole-number value with where it came from, from <a href="remote_config.html#firebase_remote_config_get_long_with_info">firebase_remote_config_get_long_with_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_long_with_info">firebase_remote_config_get_long_with_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The value, converted as <a href="remote_config.html#firebase_remote_config_get_long">firebase_remote_config_get_long</a> converts it.</td>
+</tr>
+<tr>
+<td>source</td>
+<td><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></td>
+<td>Whether the value was fetched, is the default, or is the static value of a parameter nobody defined.</td>
+</tr>
+<tr>
+<td>conversion_successful</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the parameter's text converted to this type, <code>false</code> when it did not and <code>value</code> is the static value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigdoubleinfo">FirebaseRemoteConfigDoubleInfo<a class="headerlink" href="#firebaseremoteconfigdoubleinfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/value-info">firebase::remote_config::ValueInfo</a></p>
+<p>A parameter's number value with where it came from, from <a href="remote_config.html#firebase_remote_config_get_double_with_info">firebase_remote_config_get_double_with_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_double_with_info">firebase_remote_config_get_double_with_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The value, converted as <a href="remote_config.html#firebase_remote_config_get_double">firebase_remote_config_get_double</a> converts it.</td>
+</tr>
+<tr>
+<td>source</td>
+<td><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></td>
+<td>Whether the value was fetched, is the default, or is the static value of a parameter nobody defined.</td>
+</tr>
+<tr>
+<td>conversion_successful</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the parameter's text converted to this type, <code>false</code> when it did not and <code>value</code> is the static value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigstringinfo">FirebaseRemoteConfigStringInfo<a class="headerlink" href="#firebaseremoteconfigstringinfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/value-info">firebase::remote_config::ValueInfo</a></p>
+<p>A parameter's string value with where it came from, from <a href="remote_config.html#firebase_remote_config_get_string_with_info">firebase_remote_config_get_string_with_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_string_with_info">firebase_remote_config_get_string_with_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The value, converted as <a href="remote_config.html#firebase_remote_config_get_string">firebase_remote_config_get_string</a> converts it.</td>
+</tr>
+<tr>
+<td>source</td>
+<td><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></td>
+<td>Whether the value was fetched, is the default, or is the static value of a parameter nobody defined.</td>
+</tr>
+<tr>
+<td>conversion_successful</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the parameter's text converted to this type, <code>false</code> when it did not and <code>value</code> is the static value.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseremoteconfigdatainfo">FirebaseRemoteConfigDataInfo<a class="headerlink" href="#firebaseremoteconfigdatainfo" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/remote-config/value-info">firebase::remote_config::ValueInfo</a></p>
+<p>The result of copying a parameter's raw bytes, from <a href="remote_config.html#firebase_remote_config_get_data_with_info">firebase_remote_config_get_data_with_info</a>.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="remote_config.html#firebase_remote_config_get_data_with_info">firebase_remote_config_get_data_with_info</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bytes_copied</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>How many bytes were written into the buffer.</td>
+</tr>
+<tr>
+<td>size</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The value's full size in bytes; larger than <code>bytes_copied</code> when the buffer was too small.</td>
+</tr>
+<tr>
+<td>source</td>
+<td><a href="remote_config.html#firebaseremoteconfigvaluesource">FirebaseRemoteConfigValueSource</a></td>
+<td>Whether the value was fetched, is the default, or is the static value of a parameter nobody defined.</td>
+</tr>
+<tr>
+<td>conversion_successful</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the value could be read as bytes.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

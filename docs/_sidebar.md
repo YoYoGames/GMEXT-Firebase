@@ -1,0 +1,29 @@
+* ### [Firebase](home)
+* ### Guides
+  * ### ${page.getting_started}
+  * ### ${page.extension_options}
+  * ### ${page.platform_setup}
+* ### Modules
+  * ### ${module.app}
+  * ### ${module.analytics}
+  * ### ${module.auth}
+    * ### ${page.guides_authentication}
+  * ### ${module.firestore}
+    * ### ${page.guides_firestore}
+  * ### ${module.database}
+    * ### ${page.guides_realtime}
+  * ### ${module.storage}
+    * ### ${page.guides_cloud_storage}
+  * ### ${module.messaging}
+    * ### ${page.guides_cloud_messaging}
+  * ### ${module.remote_config}
+    * ### ${page.guides_remote_config}
+  * ### ${module.functions}
+    * ### ${page.setup_cloud_functions}
+  * ### ${module.app_check}
+  * ### ${module.installations}
+  * ### ${module.ump}
+  * ### ${module.crashlytics}
+    * ### ${page.guides_crashlytics}
+  * ### ${module.performance}
+  * ### ${module.in_app_messaging}

@@ -1,0 +1,2675 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="installations.html">
+      
+      
+        <link rel="next" href="crashlytics.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>User Messaging Platform - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-messaging-platform" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Messaging Platform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="ump.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-messaging-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Messaging Platform
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Messaging Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-parents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Form parents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-and-project-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console and project setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privacy-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privacy options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_consent_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_consent_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_consent_form_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_consent_form_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_privacy_options_requirement_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_privacy_options_requirement_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_can_request_ads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_can_request_ads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_reset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_request_consent_info_update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_request_consent_info_update
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_load_consent_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_load_consent_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_show_consent_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_show_consent_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_load_and_show_consent_form_if_required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_load_and_show_consent_form_if_required
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_show_privacy_options_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_show_privacy_options_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentformstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentFormStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpprivacyoptionsrequirementstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpPrivacyOptionsRequirementStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentdebuggeography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentDebugGeography
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-messaging-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        User Messaging Platform
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Messaging Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form-parents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Form parents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-and-project-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console and project setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consent-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consent flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privacy-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privacy options
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Development
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_consent_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_consent_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_consent_form_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_consent_form_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_privacy_options_requirement_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_privacy_options_requirement_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_can_request_ads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_can_request_ads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_reset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_request_consent_info_update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_request_consent_info_update
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_load_consent_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_load_consent_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_show_consent_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_show_consent_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_load_and_show_consent_form_if_required" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_load_and_show_consent_form_if_required
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_show_privacy_options_form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_show_privacy_options_form
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_ump_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_ump_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentformstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentFormStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpprivacyoptionsrequirementstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpPrivacyOptionsRequirementStatus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentdebuggeography" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentDebugGeography
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="user-messaging-platform"><strong>User Messaging Platform</strong><a class="headerlink" href="#user-messaging-platform" title="Permanent link">&para;</a></h1>
+<p>This module covers the User Messaging Platform (UMP): Google's consent SDK for ads. Where a
+regulation requires it - the GDPR in the European Economic Area, the UK and Switzerland, the US
+state privacy laws - the SDK shows the player the consent message configured in the AdMob
+console, records their choice in the standard form the Google Mobile Ads SDK reads, and tells
+the game whether it may request ads. It is about consent for ads, not for Firebase's own data
+collection: that is the <code>disableDataCollection</code> option and the per-product functions it points
+at (see <a href="extension_options.html">Extension Options</a>).</p>
+<h3 id="the-flow">The flow<a class="headerlink" href="#the-flow" title="Permanent link">&para;</a></h3>
+<p>Every launch: <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>, then
+<a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a>, then start the ads when
+<a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> says so. The previous session's consent applies as
+soon as the update is requested, so a returning player is not held up by the round trip. When
+<a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a> is <code>Required</code>, the game must
+offer a way back into the form - a "Privacy settings" button that calls
+<a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a> - and re-check
+<a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> afterwards. The consent the SDK stores is read by the
+Google Mobile Ads SDK on the device, whichever extension makes the ad requests.</p>
+<h3 id="form-parents">Form parents<a class="headerlink" href="#form-parents" title="Permanent link">&para;</a></h3>
+<p>The three form functions take a <code>form_parent</code>. Pass <code>0</code>: the extension supplies the game's own
+window - the activity the Firebase App was created with on Android, the runner's root view
+controller on iOS - which is the only window a GameMaker game has. A non-zero value is a
+platform handle (an Android <code>Activity</code>, an iOS <code>UIViewController</code>) for a game that bridges
+one of its own, and is passed through untouched.</p>
+<h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
+<p>Android and iOS have the real SDK; the extension links <code>user-messaging-platform</code> 4.0.0 and the
+<code>GoogleUserMessagingPlatform</code> 2.3.0 pod. Windows, macOS and Linux have a stub that walks the
+flow without a network or a form, for a game to test its own logic: the update completes at
+once with consent <code>Obtained</code> (<code>Required</code> with the <code>EEA</code> debug geography, <code>NotRequired</code> with
+<code>NonEEA</code>, whatever the device ids), a form is <code>Available</code> only when consent is <code>Required</code> and
+the player is not tagged as under age, showing a form sets <code>Obtained</code> and, under <code>EEA</code>, makes
+the privacy options <code>Required</code>, and the privacy options form sets consent back to <code>Required</code>.
+Every callback fires at once.</p>
+<h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
+<p>The callbacks' <code>error_code</code> is one of two sets, both <code>0</code> on success. For
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>, <code>firebase::ump::ConsentRequestError</code>:</p>
+<ul>
+<li><code>1</code> - <code>InvalidAppId</code>: the AdMob app id in the Android manifest or <code>Info.plist</code> is missing or wrong.</li>
+<li><code>2</code> - <code>Network</code>: no connection.</li>
+<li><code>3</code> - <code>Internal</code>: an error inside the SDK.</li>
+<li><code>4</code> - <code>Misconfiguration</code>: the message setup in the AdMob console is not valid.</li>
+<li><code>5</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
+<li><code>6</code> - <code>InvalidOperation</code>: the call was not valid at this point; try again.</li>
+<li><code>7</code> - <code>OperationInProgress</code>: the previous update has not completed yet.</li>
+</ul>
+<p>For the four form functions, <code>firebase::ump::ConsentFormError</code>:</p>
+<ul>
+<li><code>1</code> - <code>Timeout</code>: the form did not load in time; try again.</li>
+<li><code>2</code> - <code>Internal</code>: an error inside the SDK.</li>
+<li><code>3</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
+<li><code>4</code> - <code>Unavailable</code>: there is no form to show - not required, not loaded, or none configured.</li>
+<li><code>5</code> - <code>AlreadyUsed</code>: the loaded form has been shown already; load it again.</li>
+<li><code>6</code> - <code>InvalidOperation</code>: the call was not valid at this point (on iOS, a bad form parent).</li>
+<li><code>7</code> - <code>OperationInProgress</code>: the previous form call has not completed yet.</li>
+</ul>
+<p>On Android the SDK reports a single "invalid operation" code, and the C++ layer tells request
+codes <code>1</code>, <code>4</code> and <code>6</code>, and form codes <code>4</code>, <code>5</code> and <code>6</code>, apart by the message text - an
+unexpected wording lands on <code>6</code>.</p>
+<h3 id="console-and-project-setup">Console and project setup<a class="headerlink" href="#console-and-project-setup" title="Permanent link">&para;</a></h3>
+<p>Consent messages are created and published in the AdMob console under <strong>Privacy &amp; messaging</strong>,
+per app, and the app has to carry its AdMob app id: <code>com.google.android.gms.ads.APPLICATION_ID</code>
+in the Android manifest and <code>GADApplicationIdentifier</code> in <code>Info.plist</code>. This extension does
+not inject either - the AdMob extension does, from its Android App ID and iOS App ID options -
+so a game that shows ads through anything else adds them itself; without them the update
+fails with request code <code>1</code>.</p>
+<h2 id="instance">Instance<a class="headerlink" href="#instance" title="Permanent link">&para;</a></h2>
+<p>The consent-info handle the other functions take:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a></li>
+<li><a href="ump.html#firebase_ump_get_instance_for_app">firebase_ump_get_instance_for_app</a></li>
+</ul>
+<h2 id="consent-flow">Consent flow<a class="headerlink" href="#consent-flow" title="Permanent link">&para;</a></h2>
+<p>Refreshing the consent information, showing the form and checking whether ads may be requested:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a></li>
+<li><a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a></li>
+<li><a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a></li>
+</ul>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h2>
+<p>The three statuses the update maintains:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a></li>
+<li><a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a></li>
+<li><a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a></li>
+</ul>
+<h2 id="privacy-options">Privacy options<a class="headerlink" href="#privacy-options" title="Permanent link">&para;</a></h2>
+<p>Letting the player revisit their choice:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a></li>
+</ul>
+<h2 id="development">Development<a class="headerlink" href="#development" title="Permanent link">&para;</a></h2>
+<p>Testing the flow:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_reset">firebase_ump_reset</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="ump.html#firebaseumpconsentstatus">FirebaseUmpConsentStatus</a></li>
+<li><a href="ump.html#firebaseumpconsentformstatus">FirebaseUmpConsentFormStatus</a></li>
+<li><a href="ump.html#firebaseumpprivacyoptionsrequirementstatus">FirebaseUmpPrivacyOptionsRequirementStatus</a></li>
+<li><a href="ump.html#firebaseumpconsentdebuggeography">FirebaseUmpConsentDebugGeography</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_get_instance">firebase_ump_get_instance<a class="headerlink" href="#firebase_ump_get_instance" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getinstance">firebase::ump::ConsentInfo::GetInstance</a></p>
+<p>This function returns the handle to the consent-info object every other function in this
+module takes. The User Messaging Platform SDK has one such object per process, so the same
+handle comes back on every call and there is nothing to release. It returns <code>undefined</code> with
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run
+or the SDK could not initialise - on Android, when its Java classes could not be loaded.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_get_instance()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The consent-info handle, or <code>undefined</code> on failure.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_get_consent_status">firebase_ump_get_consent_status<a class="headerlink" href="#firebase_ump_get_consent_status" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getconsentstatus">firebase::ump::ConsentInfo::GetConsentStatus</a></p>
+<p>This function returns the player's consent status: <code>Unknown</code> until
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> has been called (or when it failed with
+nothing stored from before), <code>Required</code> when a consent form has to be shown, <code>NotRequired</code>
+when the region does not call for one, <code>Obtained</code> when the player has answered. The value is
+the previous session's as soon as the update is requested and the fresh one when its callback
+fires; the form functions update it before their callbacks.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_get_consent_status(consent_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="ump.html#firebaseumpconsentstatus">FirebaseUmpConsentStatus</a></p>
+</blockquote>
+<p>The status, <code>FirebaseUmpConsentStatus.Unknown</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status<a class="headerlink" href="#firebase_ump_get_consent_form_status" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getconsentformstatus">firebase::ump::ConsentInfo::GetConsentFormStatus</a></p>
+<p>This function returns whether a consent form is available to load: <code>Unknown</code> before
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>, <code>Unavailable</code> when there is no form for
+this player (no message configured, none required, or the player is tagged as under age),
+<code>Available</code> when <a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a> can load one.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_get_consent_form_status(consent_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="ump.html#firebaseumpconsentformstatus">FirebaseUmpConsentFormStatus</a></p>
+</blockquote>
+<p>The status, <code>FirebaseUmpConsentFormStatus.Unknown</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status<a class="headerlink" href="#firebase_ump_get_privacy_options_requirement_status" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getprivacyoptionsrequirementstatus">firebase::ump::ConsentInfo::GetPrivacyOptionsRequirementStatus</a></p>
+<p>This function returns whether the game has to offer the player a way to revisit their consent
+choices: <code>Required</code> means a "Privacy settings" entry point (a button in the options menu is
+the usual one) must call <a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a>, <code>NotRequired</code>
+that none is needed, <code>Unknown</code> before <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>.
+Check it after the update and after each form has been dismissed, and show or hide the entry
+point accordingly.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_get_privacy_options_requirement_status(consent_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="ump.html#firebaseumpprivacyoptionsrequirementstatus">FirebaseUmpPrivacyOptionsRequirementStatus</a></p>
+</blockquote>
+<p>The status, <code>FirebaseUmpPrivacyOptionsRequirementStatus.Unknown</code> when the handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_can_request_ads">firebase_ump_can_request_ads<a class="headerlink" href="#firebase_ump_can_request_ads" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#canrequestads">firebase::ump::ConsentInfo::CanRequestAds</a></p>
+<p>This function says whether the game may request ads: <code>1</code> once
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> has been called this session and the
+consent status is <code>FirebaseUmpConsentStatus.Obtained</code> or <code>NotRequired</code>, <code>0</code> before that and
+whenever consent is required but not given. It is the one check the ads code needs - gate the
+ads SDK's initialisation and every ad request on it - and it reflects the previous session's
+consent as soon as the update is requested, before the callback.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_can_request_ads(consent_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when ads may be requested, <code>0</code> otherwise (or when the handle is not valid).</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_reset">firebase_ump_reset<a class="headerlink" href="#firebase_ump_reset" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#reset">firebase::ump::ConsentInfo::Reset</a></p>
+<p>This function clears the consent state the SDK has stored on the device, so that the next
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> treats the game as a fresh install and
+shows the form again. It is for development - testing the flow without reinstalling - and
+has no place in a shipped build.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_reset(consent_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update<a class="headerlink" href="#firebase_ump_request_consent_info_update" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#requestconsentinfoupdate">firebase::ump::ConsentInfo::RequestConsentInfoUpdate</a></p>
+<p>This function asks the User Messaging Platform whether this player has to be shown a consent
+message and which one: it sends the device's region and the app's AdMob configuration to
+Google and updates the three statuses (<a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a>,
+<a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a>,
+<a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a>) and
+<a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a>. Call it at every launch, before anything else in
+the module: the statuses start as the previous session's values as soon as the call is made,
+so a game that already has consent from last time can request ads while the update is in
+flight, and settle on the fresh values when the callback fires. The usual next call is
+<a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a>.</p>
+<p>The two debug parameters make a development build behave as if the device were in the
+European Economic Area (or outside it): <code>debug_geography</code> applies only to devices whose ids
+are in <code>debug_device_ids</code> - the SDK prints a device's id to the log the first time it runs with
+debug settings - and to emulators and simulators, where it always applies. Ship with
+<code>FirebaseUmpConsentDebugGeography.Disabled</code> and no ids. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+valid. It returns
+<code>FirebaseError.InvalidArgument</code> when <code>debug_geography</code> is not a
+<a href="ump.html#firebaseumpconsentdebuggeography">FirebaseUmpConsentDebugGeography</a> value.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_request_consent_info_update(consent_ref, debug_geography, tag_for_under_age_of_consent, debug_device_ids=undefined, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+<tr>
+<td>debug_geography</td>
+<td><a href="ump.html#firebaseumpconsentdebuggeography">FirebaseUmpConsentDebugGeography</a></td>
+<td>The geography to simulate on the debug devices, or <code>FirebaseUmpConsentDebugGeography.Disabled</code>.</td>
+</tr>
+<tr>
+<td>tag_for_under_age_of_consent</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> when the player is known to be under the age of consent - the SDK then shows no consent form - <code>0</code> otherwise.</td>
+</tr>
+<tr>
+<td>debug_device_ids</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a> of <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The ids of the devices the debug geography applies to, as the SDK logs them; omit it or pass <code>undefined</code> for none.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the statuses have been updated, or the request failed.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the request codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">consent = firebase_ump_get_instance();
+firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeography.Disabled, 0, undefined, function(_error, _message)
+{
+    if (_error != 0)
+    {
+        show_debug_message($"Consent info update failed ({_error}): {_message}");
+        // Fall through: the previous session's consent, if any, still applies.
+    }
+    firebase_ump_load_and_show_consent_form_if_required(consent, 0, function(_error, _message)
+    {
+        if (firebase_ump_can_request_ads(consent))
+        {
+            start_ads();
+        }
+    });
+});</code></pre>
+The above code is the whole flow for a launch: refresh the consent information, show the
+form when the player has to see one, and start the ads only once the SDK says the game may
+request them. An update that fails is not fatal - the statuses keep the previous session's
+values, so a returning player who consented last time still gets ads.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_load_consent_form">firebase_ump_load_consent_form<a class="headerlink" href="#firebase_ump_load_consent_form" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#loadconsentform">firebase::ump::ConsentInfo::LoadConsentForm</a></p>
+<p>This function loads the consent form so that <a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a> can
+present it without a delay - the split lets a game load during a loading screen and show at
+a moment of its choosing. It needs <a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a> to be
+<code>FirebaseUmpConsentFormStatus.Available</code>, which
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> establishes; otherwise the callback
+fires with the form code <code>4</code> (unavailable). A loaded form is shown once; load again to show it
+again. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_load_consent_form(consent_ref, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the form has loaded, or could not be.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_show_consent_form">firebase_ump_show_consent_form<a class="headerlink" href="#firebase_ump_show_consent_form" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#showconsentform">firebase::ump::ConsentInfo::ShowConsentForm</a></p>
+<p>This function presents the consent form <a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a> loaded,
+full screen, and fires the callback once the player has made their choice and the form has
+gone; the statuses and <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> are updated by then. Showing
+without a loaded form fails with the form code <code>4</code> (unavailable) and showing a form a second
+time with <code>5</code> (already used). Unlike
+<a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a> it shows the form whatever the
+consent status - the way to let a player who has already consented see the form again is
+<a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a>, not this. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_show_consent_form(consent_ref, form_parent, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+<tr>
+<td>form_parent</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the form has been dismissed, or could not be shown.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required<a class="headerlink" href="#firebase_ump_load_and_show_consent_form_if_required" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#loadandshowconsentformifrequired">firebase::ump::ConsentInfo::LoadAndShowConsentFormIfRequired</a></p>
+<p>This function shows the consent form when <a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a> is
+<code>FirebaseUmpConsentStatus.Required</code>, loading it first, and does nothing when it is not: the
+callback fires with <code>0</code> once the player has made their choice and the form has gone, or at once
+when no form was needed, and with a form code when the form could not be loaded or shown. The
+statuses and <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> are updated before the callback fires.
+It is the call to make after <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> completes;
+<a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a> and <a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a> are
+the same two steps taken separately. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_load_and_show_consent_form_if_required(consent_ref, form_parent, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+<tr>
+<td>form_parent</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the form has been dismissed, was not required, or could not be shown.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form<a class="headerlink" href="#firebase_ump_show_privacy_options_form" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#showprivacyoptionsform">firebase::ump::ConsentInfo::ShowPrivacyOptionsForm</a></p>
+<p>This function presents the privacy options form - the consent form again, for a player who
+wants to change their answer - and fires the callback once they have dismissed it, with a form
+code when no form could be presented. Call it only from the player's own action, the entry
+point that <a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a> says the game must
+offer; the SDK keeps the form preloaded once one is available, and loads one on demand
+otherwise. Re-check <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> when the callback fires: the
+player may have withdrawn consent. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_show_privacy_options_form(consent_ref, form_parent, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>consent_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
+</tr>
+<tr>
+<td>form_parent</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once when the form has been dismissed, or could not be shown.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Options menu: the "Privacy settings" button, shown only when required
+if (firebase_ump_get_privacy_options_requirement_status(consent) == FirebaseUmpPrivacyOptionsRequirementStatus.Required)
+{
+    firebase_ump_show_privacy_options_form(consent, 0, function(_error, _message)
+    {
+        ads_allowed = firebase_ump_can_request_ads(consent);
+    });
+}</code></pre>
+The above code opens the privacy options form from a button and refreshes the game's own
+ads flag afterwards, since the player may have withdrawn the consent they gave earlier.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_ump_get_instance_for_app">firebase_ump_get_instance_for_app<a class="headerlink" href="#firebase_ump_get_instance_for_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getinstance">firebase::ump::ConsentInfo::GetInstance</a></p>
+<p>This function returns the consent-info handle through another Firebase App. The User
+Messaging Platform SDK has a single consent-info object per process, so this is the same
+handle <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a> returns whichever app is passed; it exists for
+symmetry with the other modules.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_ump_get_instance_for_app(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The consent-info handle, or <code>undefined</code> when the app handle is not valid or the SDK could not initialise.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpconsentstatus">FirebaseUmpConsentStatus<a class="headerlink" href="#firebaseumpconsentstatus" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentstatus">firebase::ump::ConsentStatus</a></p>
+<p>The player's consent status, from <a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>Not known yet: before <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>, or after it failed with nothing stored.</td>
+</tr>
+<tr>
+<td><code>Required</code></td>
+<td>A consent form has to be shown and has not been answered.</td>
+</tr>
+<tr>
+<td><code>NotRequired</code></td>
+<td>No consent is required for this player.</td>
+</tr>
+<tr>
+<td><code>Obtained</code></td>
+<td>Consent was required and the player has answered.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpconsentformstatus">FirebaseUmpConsentFormStatus<a class="headerlink" href="#firebaseumpconsentformstatus" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentformstatus">firebase::ump::ConsentFormStatus</a></p>
+<p>Whether a consent form is available, from <a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>Not known yet; <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> updates it.</td>
+</tr>
+<tr>
+<td><code>Unavailable</code></td>
+<td>There is no form to load for this player.</td>
+</tr>
+<tr>
+<td><code>Available</code></td>
+<td>A form can be loaded with <a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpprivacyoptionsrequirementstatus">FirebaseUmpPrivacyOptionsRequirementStatus<a class="headerlink" href="#firebaseumpprivacyoptionsrequirementstatus" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#privacyoptionsrequirementstatus">firebase::ump::PrivacyOptionsRequirementStatus</a></p>
+<p>Whether a privacy options entry point has to be offered, from
+<a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_get_privacy_options_requirement_status">firebase_ump_get_privacy_options_requirement_status</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>Not known yet; <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> updates it.</td>
+</tr>
+<tr>
+<td><code>NotRequired</code></td>
+<td>No entry point is needed.</td>
+</tr>
+<tr>
+<td><code>Required</code></td>
+<td>The game must offer one that calls <a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpconsentdebuggeography">FirebaseUmpConsentDebugGeography<a class="headerlink" href="#firebaseumpconsentdebuggeography" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentdebuggeography">firebase::ump::ConsentDebugGeography</a></p>
+<p>The geography a development build simulates, for
+<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Disabled</code></td>
+<td>No simulation: the device's real region. The value to ship with.</td>
+</tr>
+<tr>
+<td><code>EEA</code></td>
+<td>Debug devices appear to be in the European Economic Area, so a consent form is required.</td>
+</tr>
+<tr>
+<td><code>NonEEA</code></td>
+<td>Debug devices appear to be outside the European Economic Area.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

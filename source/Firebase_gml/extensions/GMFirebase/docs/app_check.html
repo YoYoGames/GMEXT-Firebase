@@ -1,0 +1,2625 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="setup_cloud_functions.html">
+      
+      
+        <link rel="next" href="installations.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>App Check - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#app-check" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              App Check
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="app_check.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#providers-and-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Providers and platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokens_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_set_provider_factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_set_provider_factory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_debug_provider_set_debug_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_debug_provider_set_debug_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_set_token_auto_refresh_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_set_token_auto_refresh_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_limited_use_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_limited_use_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_add_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_add_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_remove_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_remove_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_instance_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_instance_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_set_token_auto_refresh_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_set_token_auto_refresh_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_limited_use_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_limited_use_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_add_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_add_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappcheckprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckProvider
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappchecktoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckToken
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App Check
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App Check">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#providers-and-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Providers and platforms
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tokens_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instances" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instances
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_set_provider_factory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_set_provider_factory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_debug_provider_set_debug_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_debug_provider_set_debug_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_set_token_auto_refresh_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_set_token_auto_refresh_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_limited_use_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_limited_use_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_add_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_add_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_remove_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_remove_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_instance_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_instance_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_get_instance_for_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_get_instance_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_set_token_auto_refresh_enabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_set_token_auto_refresh_enabled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_get_limited_use_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_get_limited_use_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_check_instance_add_listener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_check_instance_add_listener
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappcheckprovider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckProvider
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappchecktoken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckToken
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="app-check"><strong>App Check</strong><a class="headerlink" href="#app-check" title="Permanent link">&para;</a></h1>
+<p>This module covers Firebase App Check: proof, attached to every request the game makes to
+Firebase, that the request comes from the genuine game on an untampered device. The platform's
+attestation service - Play Integrity on Android, App Attest or DeviceCheck on iOS - vouches for
+the game, Firebase exchanges that for a short-lived App Check token, and the SDK sends the token
+with every call to the services that have enforcement turned on (Realtime Database, Cloud
+Firestore, Cloud Storage, Cloud Functions, Authentication), which then refuse requests without
+one. Most games need only <a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a> before
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a>; the rest of the module is for a game with its own backend
+that wants the same proof.</p>
+<h3 id="providers-and-platforms">Providers and platforms<a class="headerlink" href="#providers-and-platforms" title="Permanent link">&para;</a></h3>
+<p>A build chooses one provider with <a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a>. The
+store platforms have real attestation; Windows, macOS and Linux, emulators and simulators have
+only the <code>Debug</code> provider, which trades a token registered in the console for real App Check
+tokens - a development tool that must never ship, since the registered token is a bypass. The
+extension keeps every provider available in every build, so keeping <code>Debug</code> out of release
+configurations is the game's responsibility.</p>
+<h3 id="tokens">Tokens<a class="headerlink" href="#tokens" title="Permanent link">&para;</a></h3>
+<p>A token lasts about an hour and is refreshed by the SDK ahead of expiry when automatic refresh
+is on; the module-level functions work on the default app, and the <code>firebase_app_check_instance_*</code>
+family does the same for a chosen App Check instance. The token functions return
+<a href="app.html#firebaseerror">FirebaseError</a> at once and deliver a <a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a> to a callback
+whose <code>error_code</code> is App Check's own code:</p>
+<ul>
+<li><code>0</code> - success.</li>
+<li><code>1</code> - <code>ServerUnreachable</code>: no connection to the attestation or App Check backend.</li>
+<li><code>2</code> - <code>InvalidConfiguration</code>: the App Check configuration is not valid.</li>
+<li><code>3</code> - <code>SystemKeychain</code>: the system keychain could not be accessed (Apple platforms).</li>
+<li><code>4</code> - <code>UnsupportedProvider</code>: the chosen provider does not exist on this platform or OS version.</li>
+<li><code>5</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
+</ul>
+<p>The finer codes come from the iOS SDK. Android reports every failure as <code>5</code>, since its SDK has
+no code set; on Windows, macOS and Linux a missing provider is <code>2</code> and a debug token the App
+Check backend rejects is <code>5</code>, with the HTTP status and body in <code>error_message</code>.</p>
+<h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
+<p>Register each app's attestation under <strong>App Check &gt; Apps</strong> in the console - Play Integrity
+needs the app's SHA-256 fingerprint, App Attest and DeviceCheck an Apple team id and, for
+DeviceCheck, a private key - then turn enforcement on per service under <strong>App Check &gt; APIs</strong>,
+after the metrics show the genuine traffic is verified. Debug tokens are registered per app
+under <strong>Manage debug tokens</strong>.</p>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<p>Choosing the provider before the app is initialised:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a></li>
+<li><a href="app_check.html#firebase_app_check_debug_provider_set_debug_token">firebase_app_check_debug_provider_set_debug_token</a></li>
+</ul>
+<h2 id="tokens_1">Tokens<a class="headerlink" href="#tokens_1" title="Permanent link">&para;</a></h2>
+<p>Fetching and watching tokens for the default app, for a backend of the game's own:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_set_token_auto_refresh_enabled">firebase_app_check_set_token_auto_refresh_enabled</a></li>
+<li><a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_add_listener">firebase_app_check_add_listener</a></li>
+<li><a href="app_check.html#firebase_app_check_remove_listener">firebase_app_check_remove_listener</a></li>
+<li><a href="app_check.html#firebase_app_check_get_app">firebase_app_check_get_app</a></li>
+</ul>
+<h2 id="instances">Instances<a class="headerlink" href="#instances" title="Permanent link">&para;</a></h2>
+<p>The same operations on a chosen App Check instance, for a game with several Firebase Apps:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a></li>
+<li><a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_app">firebase_app_check_instance_get_app</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_set_token_auto_refresh_enabled">firebase_app_check_instance_set_token_auto_refresh_enabled</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_token">firebase_app_check_instance_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_limited_use_token">firebase_app_check_instance_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_add_listener">firebase_app_check_instance_add_listener</a></li>
+</ul>
+<h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
+<p>The following structs are used by this module:</p>
+<ul>
+<li><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="app_check.html#firebaseappcheckprovider">FirebaseAppCheckProvider</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory<a class="headerlink" href="#firebase_app_check_set_provider_factory" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#setappcheckproviderfactory">firebase::app_check::AppCheck::SetAppCheckProviderFactory</a></p>
+<p>This function chooses how this build proves it is the genuine game: a <a href="app_check.html#firebaseappcheckprovider">FirebaseAppCheckProvider</a>
+naming the platform's attestation service - <code>PlayIntegrity</code> on Android, <code>DeviceCheck</code> or
+<code>AppAttest</code> on iOS - or <code>Debug</code>, which exchanges a debug token registered in the console for an
+App Check token and is the only provider that works on Windows, macOS and Linux, on an emulator
+or a simulator. Call it before <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>: iOS reads the choice when
+the app is created, the other platforms when App Check is first used, and before initialisation
+is the rule that holds everywhere. Without it App Check mints no tokens and every request goes
+out unattested, which the services refuse once enforcement is on for them. A provider the
+platform does not have is logged as unsupported and installs nothing, so token requests then
+fail as they would with no provider at all.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code>Debug</code> provider must only be selected in a development configuration. A debug
+token in a shipped build is a way around App Check for anyone who extracts it; the extension
+does not remove the provider from release builds, so the game's configuration has to.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_set_provider_factory(provider)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>provider</td>
+<td><a href="app_check.html#firebaseappcheckprovider">FirebaseAppCheckProvider</a></td>
+<td>The provider for this build.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// Create Event, before firebase_app_initialize()
+if (os_type == os_android)
+{
+    firebase_app_check_set_provider_factory(FirebaseAppCheckProvider.PlayIntegrity);
+}
+else if (os_type == os_ios)
+{
+    firebase_app_check_set_provider_factory(FirebaseAppCheckProvider.AppAttest);
+}
+else if (DEBUG_BUILD)   // a configuration-scoped macro, never true in a shipped build
+{
+    firebase_app_check_set_provider_factory(FirebaseAppCheckProvider.Debug);
+}
+firebase_app_initialize();</code></pre>
+The above code picks the platform's attestation on the stores' platforms and the debug
+provider on desktop, where there is no other - gated by a macro that release configurations
+define as <code>false</code>, so a shipped desktop build sends no App Check tokens rather than a debug
+one.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_debug_provider_set_debug_token">firebase_app_check_debug_provider_set_debug_token<a class="headerlink" href="#firebase_app_check_debug_provider_set_debug_token" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/debug-app-check-provider-factory#setdebugtoken">firebase::app_check::DebugAppCheckProviderFactory::SetDebugToken</a></p>
+<p>This function sets the debug token the <code>Debug</code> provider exchanges for App Check tokens - a
+string registered under <strong>App Check &gt; Apps &gt; Manage debug tokens</strong> in the console. Call it
+before <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>. Without it, on Windows, macOS and Linux the SDK
+reads the <code>APP_CHECK_DEBUG_TOKEN</code> environment variable, or generates a fresh token at every
+launch and prints it to the debug log with the console link to register it at; a token set here
+or in the variable survives launches, which is the usual choice for a development machine. On
+Android and iOS the platform SDK manages the debug token itself.</p>
+<blockquote>
+<p>A debug token is a secret: it lets anything that presents it pass as the game.
+Keep it out of source control and out of shipped builds, and delete it from the console when
+it is no longer needed.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_debug_provider_set_debug_token(token)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The debug token, as registered in the console.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_set_token_auto_refresh_enabled">firebase_app_check_set_token_auto_refresh_enabled<a class="headerlink" href="#firebase_app_check_set_token_auto_refresh_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#settokenautorefreshenabled">firebase::app_check::AppCheck::SetTokenAutoRefreshEnabled</a></p>
+<p>This function turns automatic token refresh on or off for the default app: on, the SDK mints a
+new token whenever a request needs one and the current one has expired - the Android and iOS
+SDKs ahead of expiry, the desktop SDK at the request; off, requests use only tokens the game
+fetched itself with <a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a> and have none once the last one
+has expired. On Android and iOS the setting otherwise follows the app's data-collection
+default, which the <code>disableDataCollection</code> extension option turns off (see
+<a href="extension_options.html">Extension Options</a>), so a game built with the option turns refresh on here once the
+player has consented; on Windows, macOS and Linux it is on from the start.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_set_token_auto_refresh_enabled(enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to refresh tokens ahead of expiry, <code>0</code> to fetch on demand only.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_get_token">firebase_app_check_get_token<a class="headerlink" href="#firebase_app_check_get_token" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getappchecktoken">firebase::app_check::AppCheck::GetAppCheckToken</a></p>
+<p>This function fetches the current App Check token for the default app, minting one through the
+provider when there is none or <code>force_refresh</code> asks for a fresh one. Requests to Firebase's own services are attested automatically once a provider is set; this
+call is for the game's own backend, which receives the token in a header and verifies it with
+the Firebase Admin SDK. A
+token is valid for about an hour; <a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a> carries its expiry, and
+<a href="app_check.html#firebase_app_check_add_listener">firebase_app_check_add_listener</a> reports each new one without polling.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_get_token(force_refresh, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>force_refresh</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>1</code> to mint a new token even when the current one is still valid, <code>0</code> to reuse it.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The token and its expiry, or <code>undefined</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">firebase_app_check_get_token(0, function(_error, _message, _token)
+{
+    if (_error != 0)
+    {
+        show_debug_message($"App Check failed ({_error}): {_message}");
+        exit;
+    }
+    var _headers = ds_map_create();
+    ds_map_add(_headers, "X-Firebase-AppCheck", _token.token);
+    request = http_request(api_url + "/claim", "POST", _headers, json_stringify(claim));
+    ds_map_destroy(_headers);
+});</code></pre>
+The above code fetches the token and sends it to the game's own server in the
+<code>X-Firebase-AppCheck</code> header, which is where the Firebase Admin SDK's verification expects it;
+the server rejects requests whose token is missing or forged.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token<a class="headerlink" href="#firebase_app_check_get_limited_use_token" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getlimiteduseappchecktoken">firebase::app_check::AppCheck::GetLimitedUseAppCheckToken</a></p>
+<p>This function mints a limited-use App Check token for the default app: a short-lived token
+meant to be consumed once by the game's backend (the Admin SDK's <code>consumeAppCheckToken</code>), so
+that a request captured in transit cannot be replayed. It always goes to the provider, so it
+costs an attestation per call; use it for the requests that matter - a purchase, a reward
+claim - and <a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a> for the rest. Requests to Firebase's own services are attested automatically once a provider is set; this
+call is for the game's own backend, which receives the token in a header and verifies it with
+the Firebase Admin SDK.</p>
+<p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_get_limited_use_token(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The token and its expiry, or <code>undefined</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_add_listener">firebase_app_check_add_listener<a class="headerlink" href="#firebase_app_check_add_listener" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#addappchecklistener">firebase::app_check::AppCheck::AddAppCheckListener</a></p>
+<p>This function registers a function to be called with each new token the default app mints -
+at the first attestation and at every refresh - so that a game talking to its own backend
+always has the current token to hand without fetching it per request. The listener is not
+called when a token merely expires. Remove it with <a href="app_check.html#firebase_app_check_remove_listener">firebase_app_check_remove_listener</a>.
+It returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when no callback is given or
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_add_listener(callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with each new token.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A listener handle to remove with <a href="app_check.html#firebase_app_check_remove_listener">firebase_app_check_remove_listener</a>, or <code>0</code> on failure.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires each time a new token has been minted.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The new token and its expiry.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_remove_listener">firebase_app_check_remove_listener<a class="headerlink" href="#firebase_app_check_remove_listener" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#removeappchecklistener">firebase::app_check::AppCheck::RemoveAppCheckListener</a></p>
+<p>This function removes a listener added with <a href="app_check.html#firebase_app_check_add_listener">firebase_app_check_add_listener</a> or
+<a href="app_check.html#firebase_app_check_instance_add_listener">firebase_app_check_instance_add_listener</a> and frees its handle.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_remove_listener(listener_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>listener_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The listener handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> when a listener was removed, <code>0</code> when the handle was not one.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_get_app">firebase_app_check_get_app<a class="headerlink" href="#firebase_app_check_get_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#app">firebase::app_check::AppCheck::app</a></p>
+<p>This function returns a handle to the default Firebase App, the one the module-level functions
+attest for. Release it with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_get_app()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>An app handle, or <code>0</code> when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle<a class="headerlink" href="#firebase_app_check_get_instance_handle" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance">firebase::app_check::AppCheck::GetInstance</a></p>
+<p>This function returns a handle to the App Check instance of the default app - the same object
+the module-level functions use - for the <code>firebase_app_check_instance_*</code> functions, which take
+an instance handle so that a game with several Firebase Apps can attest each. The same handle
+comes back on every call and there is nothing to release.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_get_instance_handle()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The instance handle, or <code>0</code> when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app<a class="headerlink" href="#firebase_app_check_get_instance_for_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance">firebase::app_check::AppCheck::GetInstance</a></p>
+<p>This function returns a handle to the App Check instance of another Firebase App, created with
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
+The provider set with <a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a> applies to every
+app.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_get_instance_for_app(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The instance handle, or <code>0</code> when the app handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_instance_get_app">firebase_app_check_instance_get_app<a class="headerlink" href="#firebase_app_check_instance_get_app" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#app">firebase::app_check::AppCheck::app</a></p>
+<p>This function returns a handle to the Firebase App an App Check instance belongs to. Release it
+with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_instance_get_app(app_check)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_check</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An App Check instance handle from <a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a> or <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>An app handle, or <code>0</code> when the instance handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_instance_set_token_auto_refresh_enabled">firebase_app_check_instance_set_token_auto_refresh_enabled<a class="headerlink" href="#firebase_app_check_instance_set_token_auto_refresh_enabled" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#settokenautorefreshenabled">firebase::app_check::AppCheck::SetTokenAutoRefreshEnabled</a></p>
+<p>This function is <a href="app_check.html#firebase_app_check_set_token_auto_refresh_enabled">firebase_app_check_set_token_auto_refresh_enabled</a> for one App Check
+instance.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_instance_set_token_auto_refresh_enabled(app_check, enabled)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_check</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An App Check instance handle from <a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a> or <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>.</td>
+</tr>
+<tr>
+<td>enabled</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to refresh tokens ahead of expiry, <code>false</code> to fetch on demand only.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_instance_get_token">firebase_app_check_instance_get_token<a class="headerlink" href="#firebase_app_check_instance_get_token" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getappchecktoken">firebase::app_check::AppCheck::GetAppCheckToken</a></p>
+<p>This function is <a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a> for one App Check instance. It returns
+<code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_instance_get_token(app_check, force_refresh, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_check</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An App Check instance handle from <a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a> or <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>.</td>
+</tr>
+<tr>
+<td>force_refresh</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to mint a new token even when the current one is still valid, <code>false</code> to reuse it.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The token and its expiry, or <code>undefined</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_instance_get_limited_use_token">firebase_app_check_instance_get_limited_use_token<a class="headerlink" href="#firebase_app_check_instance_get_limited_use_token" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getlimiteduseappchecktoken">firebase::app_check::AppCheck::GetLimitedUseAppCheckToken</a></p>
+<p>This function is <a href="app_check.html#firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token</a> for one App Check
+instance. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle
+is not valid.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_instance_get_limited_use_token(app_check, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_check</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An App Check instance handle from <a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a> or <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with the result.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p><code>FirebaseError.Ok</code> when the call reached the SDK, otherwise the reason the callback will not fire.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires once with the token.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>error_code</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The SDK's description of the failure, or an empty string on success.</td>
+</tr>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The token and its expiry, or <code>undefined</code> on failure.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_check_instance_add_listener">firebase_app_check_instance_add_listener<a class="headerlink" href="#firebase_app_check_instance_add_listener" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#addappchecklistener">firebase::app_check::AppCheck::AddAppCheckListener</a></p>
+<p>This function is <a href="app_check.html#firebase_app_check_add_listener">firebase_app_check_add_listener</a> for one App Check instance; the
+handle is removed with <a href="app_check.html#firebase_app_check_remove_listener">firebase_app_check_remove_listener</a> like any other.</p>
+<p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_check_instance_add_listener(app_check, callback=undefined)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_check</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>An App Check instance handle from <a href="app_check.html#firebase_app_check_get_instance_handle">firebase_app_check_get_instance_handle</a> or <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>.</td>
+</tr>
+<tr>
+<td>callback</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Script_Functions.htm">Function</a></td>
+<td>The function to call with each new token.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A listener handle to remove with <a href="app_check.html#firebase_app_check_remove_listener">firebase_app_check_remove_listener</a>, or <code>0</code> when the handle is not valid or no callback was given.</p>
+<p><br></p>
+<p><strong>Triggers:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a></p>
+</blockquote>
+<p>Fires each time a new token has been minted.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
+<td>The new token and its expiry.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseappcheckprovider">FirebaseAppCheckProvider<a class="headerlink" href="#firebaseappcheckprovider" title="Permanent link">&para;</a></h1>
+<p>The attestation provider <a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a> installs, one of
+the four provider factories the Firebase C++ SDK ships.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_set_provider_factory">firebase_app_check_set_provider_factory</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Debug</code></td>
+<td>Exchanges a registered debug token for App Check tokens; every platform, development only.</td>
+</tr>
+<tr>
+<td><code>DeviceCheck</code></td>
+<td>Apple's DeviceCheck; iOS, every device.</td>
+</tr>
+<tr>
+<td><code>PlayIntegrity</code></td>
+<td>Google's Play Integrity API; Android devices with Google Play services.</td>
+</tr>
+<tr>
+<td><code>AppAttest</code></td>
+<td>Apple's App Attest; iOS 14 and later, the stronger of the two Apple providers.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseappchecktoken">FirebaseAppCheckToken<a class="headerlink" href="#firebaseappchecktoken" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/struct/firebase/app-check/app-check-token">firebase::app_check::AppCheckToken</a></p>
+<p>An App Check token as the token functions and the listener deliver it.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_add_listener">firebase_app_check_add_listener</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_token">firebase_app_check_instance_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_limited_use_token">firebase_app_check_instance_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_add_listener">firebase_app_check_instance_add_listener</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>token</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The token: an opaque string to send to the game's backend as it is.</td>
+</tr>
+<tr>
+<td>expire_time_millis</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>When the token stops being valid, in milliseconds since the Unix epoch.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

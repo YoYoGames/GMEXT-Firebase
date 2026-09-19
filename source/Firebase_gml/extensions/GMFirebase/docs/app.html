@@ -1,0 +1,2703 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="platform_setup.html">
+      
+      
+        <link rel="next" href="analytics.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>App - GMEXT-Firebase</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    
+      <link rel="stylesheet" href="assets/css/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <script>(function(){try{var w=["--gm-nav-width","--gm-toc-width"],i,v;for(i=0;i<w.length;i++){v=localStorage.getItem(w[i]);if(v)document.documentElement.style.setProperty(w[i],v)}}catch(e){}})()</script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#app" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="home.html" title="GMEXT-Firebase" class="md-header__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GMEXT-Firebase
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              App
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="home.html" title="GMEXT-Firebase" class="md-nav__button md-logo" aria-label="GMEXT-Firebase" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GMEXT-Firebase
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/YoYoGames/GMEXT-Firebase" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="home.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firebase
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="extension_options.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extension Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="platform_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Platform Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="app.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-and-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors and callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_is_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_is_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_last_error_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_last_error_code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_last_error_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_last_error_message
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_default_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_default_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize_from_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize_from_json
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_handle_get_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_handle_get_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_handle_get_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_handle_get_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_default_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_default_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_release_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_release_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_set_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_set_log_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_get_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_get_log_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_get_sdk_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_get_sdk_version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseloglevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseLogLevel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppOptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="analytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_authentication.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_firestore.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Firestore Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="database.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_realtime.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Realtime Database Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_storage.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Storage Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_cloud_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Messaging Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_remote_config.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remote Config Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="setup_cloud_functions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cloud Functions Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="app_check.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App Check
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installations.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ump.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Messaging Platform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guides_crashlytics.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crashlytics Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="performance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="in_app_messaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    In-App Messaging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="App">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Initialisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#errors-and-callbacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Errors and callbacks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_is_initialized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_is_initialized
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_last_error_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_last_error_code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_last_error_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_last_error_message
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_default_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_default_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_instance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_instance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_apps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize_with_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_initialize_from_json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_initialize_from_json
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_handle_get_name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_handle_get_name
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_handle_get_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_handle_get_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_get_default_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_get_default_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_app_release_handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_app_release_handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_set_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_set_log_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_get_log_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_get_log_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_get_sdk_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_get_sdk_version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseloglevel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseLogLevel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseappoptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppOptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><a id="top"></a></p>
+<h1 id="app"><strong>App</strong><a class="headerlink" href="#app" title="Permanent link">&para;</a></h1>
+<p>This module covers the Firebase App every other module attaches to, the synchronous error
+channel, the SDK's log level and the conventions the whole extension follows.</p>
+<h3 id="initialisation">Initialisation<a class="headerlink" href="#initialisation" title="Permanent link">&para;</a></h3>
+<p>Call <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> once, before any other function of this extension or of
+the <code>GMFirebaseCrashlytics</code>, <code>GMFirebasePerformance</code> and <code>GMFirebaseInAppMessaging</code> extensions. It
+reads the credential file the extension options point at (see <a href="getting_started.html">Getting Started</a> and
+<a href="extension_options.html">Extension Options</a>) and creates the default app. Each product module then has its own
+<code>initialize</code> function - <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>,
+<a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> and so on, or creates itself on first use as
+<a href="auth.html#firebase_auth_get_auth">firebase_auth_get_auth</a> does - which attaches that product to the default app. The
+<code>*_for_app</code> variants attach it to a second app instead, created with
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.</p>
+<h3 id="errors-and-callbacks">Errors and callbacks<a class="headerlink" href="#errors-and-callbacks" title="Permanent link">&para;</a></h3>
+<p>Every function that takes a callback returns <a href="app.html#firebaseerror">FirebaseError</a> synchronously. <code>FirebaseError.Ok</code>
+means the call reached the SDK and the callback will be called exactly once, on the game's own
+thread, with the SDK's result: an <code>error_code</code> argument (<code>0</code> on success, otherwise the product's
+own error enum - <a href="auth.html#firebaseautherror">FirebaseAuthError</a>, <a href="firestore.html#firestoreerror">FirestoreError</a>,
+<a href="database.html#firebasedatabaseerror">FirebaseDatabaseError</a>, <a href="remote_config.html#firebaseremoteconfigerror">FirebaseRemoteConfigError</a> - or the SDK's raw code
+where no enum is declared), an <code>error_message</code> string, and then the value the call produces, if
+any. Any other return means the call failed before the SDK saw it, the callback will never be
+called, and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> and <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> hold
+the reason.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>FirebaseError.Ok</code> is <code>0</code>. Compare the return against <code>FirebaseError.Ok</code>; a truthy test
+(<code>if (firebase_..._(...))</code>) runs its body on failure. The only functions of this extension that
+return a plain success flag are the <code>initialize</code> family - <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>,
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> and their siblings.</p>
+</div>
+<h3 id="handles">Handles<a class="headerlink" href="#handles" title="Permanent link">&para;</a></h3>
+<p>Firebase objects - apps, users, references, documents, queries, snapshots - reach GML as numeric
+handles. A function that returns one names the function that releases it, and <code>0</code> always means
+"no object". A handle can be released as soon as the call that needed it has started: the SDK holds
+what it needs, and the callback still fires. The one exception is a Cloud Storage reference on
+Windows, macOS and Linux, which must stay alive until the callback of any operation started on it
+has fired - see <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_release</a>. A handle that was released, or never
+valid, makes a call fail with <code>FirebaseError.InvalidHandle</code>.</p>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<p>The following functions are provided for the app, the error channel and logging:</p>
+<ul>
+<li><a href="app.html#firebase_app_initialize">firebase_app_initialize</a></li>
+<li><a href="app.html#firebase_app_is_initialized">firebase_app_is_initialized</a></li>
+<li><a href="app.html#firebase_app_get_name">firebase_app_get_name</a></li>
+<li><a href="app.html#firebase_last_error_code">firebase_last_error_code</a></li>
+<li><a href="app.html#firebase_last_error_message">firebase_last_error_message</a></li>
+<li><a href="app.html#firebase_app_get_default_handle">firebase_app_get_default_handle</a></li>
+<li><a href="app.html#firebase_app_get_instance">firebase_app_get_instance</a></li>
+<li><a href="app.html#firebase_app_get_apps">firebase_app_get_apps</a></li>
+<li><a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a></li>
+<li><a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a></li>
+<li><a href="app.html#firebase_app_handle_get_name">firebase_app_handle_get_name</a></li>
+<li><a href="app.html#firebase_app_handle_get_options">firebase_app_handle_get_options</a></li>
+<li><a href="app.html#firebase_app_get_default_options">firebase_app_get_default_options</a></li>
+<li><a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a></li>
+<li><a href="app.html#firebase_set_log_level">firebase_set_log_level</a></li>
+<li><a href="app.html#firebase_get_log_level">firebase_get_log_level</a></li>
+<li><a href="app.html#firebase_get_sdk_version">firebase_get_sdk_version</a></li>
+</ul>
+<h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
+<p>The following struct is used by this module:</p>
+<ul>
+<li><a href="app.html#firebaseappoptions">FirebaseAppOptions</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="app.html#firebaseerror">FirebaseError</a></li>
+<li><a href="app.html#firebaseloglevel">FirebaseLogLevel</a></li>
+</ul>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_initialize">firebase_app_initialize<a class="headerlink" href="#firebase_app_initialize" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#create">firebase::App::Create</a></p>
+<p>This function creates the default Firebase App, or reuses it when one already exists, and must be
+called once before any other function of this extension. Every product module (Analytics,
+Authentication, Cloud Firestore, ...) attaches to the App this call creates.</p>
+<p>Where the configuration comes from depends on the platform: on Android it is the
+<code>google-services.json</code> file that the <code>jsonFile</code> extension option stages into the build, on iOS the
+<code>GoogleService-Info.plist</code> that the <code>plistFile</code> option adds to the bundle, and on Windows, macOS and
+Linux a <code>google-services-desktop.json</code> or <code>google-services.json</code> placed beside the executable, which
+the <code>desktopJsonFile</code> option copies there at build time. See <a href="extension_options.html">Extension Options</a>.</p>
+<p>If the function succeeds it returns <code>1</code>. If it fails it returns <code>0</code> and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+is <code>FirebaseError.NotInitialized</code>, with <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> saying why - typically
+a configuration file that could not be found or read.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function returns a plain <code>1</code> or <code>0</code>, not a <a href="app.html#firebaseerror">FirebaseError</a> value, so a truthy
+test on its return is correct here. The asynchronous functions of this extension return
+<a href="app.html#firebaseerror">FirebaseError</a> instead, where <code>FirebaseError.Ok</code> is <code>0</code> - see the notes on this page.</p>
+</div>
+<blockquote>
+<p>On iOS the <code>GMFirebaseCrashlytics</code>, <code>GMFirebasePerformance</code> and <code>GMFirebaseInAppMessaging</code>
+extensions depend on this call having configured the default app; their functions are no-ops until
+it has run. On Android the default app is configured at launch and those three work either way.</p>
+</blockquote>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_initialize()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> if the default app exists after the call, otherwise <code>0</code>.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (!firebase_app_initialize())
+{
+    show_debug_message("Firebase init failed: " + firebase_last_error_message());
+    exit;
+}
+show_debug_message("Firebase App: " + firebase_app_get_name());</code></pre>
+The above code initialises Firebase in a Create event and stops if that fails, printing the reason
+from <a href="app.html#firebase_last_error_message">firebase_last_error_message</a>. Once it has succeeded, <a href="app.html#firebase_app_get_name">firebase_app_get_name</a>
+returns the name of the default app and every other module can be initialised.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_is_initialized">firebase_app_is_initialized<a class="headerlink" href="#firebase_app_is_initialized" title="Permanent link">&para;</a></h1>
+<p>This function returns whether <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has succeeded. It only reads
+the state; it never creates the app.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_is_initialized()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p><code>1</code> once the default app has been created, otherwise <code>0</code>.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (!firebase_app_is_initialized())
+{
+    firebase_app_initialize();
+}</code></pre>
+The above code initialises Firebase only when it has not been initialised yet, which is the pattern
+for an object that can be created more than once during the game.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_get_name">firebase_app_get_name<a class="headerlink" href="#firebase_app_get_name" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#name">firebase::App::name</a></p>
+<p>This function returns the name of the default Firebase App. The SDK gives the default app a fixed
+name; an app created with <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or
+<a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a> and a name of your own is read with
+<a href="app.html#firebase_app_handle_get_name">firebase_app_handle_get_name</a> instead.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_get_name()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The name of the default app, or an empty string when it has not been initialised.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">show_debug_message("Firebase App: " + firebase_app_get_name());</code></pre>
+The above code prints the name of the default app after <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has
+succeeded.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_last_error_code">firebase_last_error_code<a class="headerlink" href="#firebase_last_error_code" title="Permanent link">&para;</a></h1>
+<p>This function returns the error code of the last call that failed before it reached the
+Firebase SDK - an invalid handle, a module that has not been initialised, or an argument the
+extension refused. The value is set on the thread that made the call, so read it right after a call
+has reported failure: after an asynchronous function returned anything other than <code>FirebaseError.Ok</code>,
+or after an initialise function returned <code>0</code>.</p>
+<p>Note that the value is not cleared by a later call that succeeds; it holds the code of the last
+<em>failure</em> until the next one overwrites it. Do not poll it to find out whether a call worked - the
+call's own return value says that.</p>
+<p>A result the SDK produces - a sign-in that was rejected, a document that does not exist, a network
+error - never lands here. It is delivered to that call's callback, as the callback's <code>error_code</code> and
+<code>error_message</code> arguments, and nowhere else.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_last_error_code()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseerror">FirebaseError</a></p>
+</blockquote>
+<p>The code of the last call that failed before reaching the SDK.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _result = firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _user)
+{
+    // The SDK's own result arrives here
+});
+
+if (_result != FirebaseError.Ok)
+{
+    show_debug_message($"Sign-in not started: {firebase_last_error_code()} {firebase_last_error_message()}");
+}</code></pre>
+The above code starts a sign-in and checks the synchronous return against <code>FirebaseError.Ok</code>. When
+the call could not be started - here because <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not succeeded,
+so <code>_result</code> is <code>FirebaseError.NotInitialized</code> - the callback will never run, and
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> and <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> carry the reason.
+When the call did start, the callback is the only place the outcome is reported.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_last_error_message">firebase_last_error_message<a class="headerlink" href="#firebase_last_error_message" title="Permanent link">&para;</a></h1>
+<p>This function returns the message that goes with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> - the
+name of the function that failed and what it objected to, for example
+<code>"firebase_app_initialize: no google-services-desktop.json or google-services.json in &lt;folder&gt;"</code>.
+The same rules apply: it describes the last call that failed before reaching the SDK, it is not
+cleared by a later success, and an SDK result never lands here.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_last_error_message()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The message of the last call that failed before reaching the SDK, or an empty string when nothing has failed yet.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (!firebase_app_initialize())
+{
+    show_debug_message("Firebase init failed: " + firebase_last_error_message());
+}</code></pre>
+The above code prints why the default app could not be created. The message names the missing or
+unreadable configuration file, which is the usual cause on desktop.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_get_default_handle">firebase_app_get_default_handle<a class="headerlink" href="#firebase_app_get_default_handle" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#getinstance">firebase::App::GetInstance</a></p>
+<p>This function returns a handle to the default Firebase App, for the functions that take an app
+argument - <a href="analytics.html#firebase_analytics_initialize_for_app">firebase_analytics_initialize_for_app</a>,
+<a href="messaging.html#firebase_messaging_initialize_for_app">firebase_messaging_initialize_for_app</a>, <a href="app_check.html#firebase_app_check_get_instance_for_app">firebase_app_check_get_instance_for_app</a>
+and their siblings. On Windows, macOS, Linux and iOS the default app is created on demand if
+<a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run yet; on Android it must have run first, and the
+function returns <code>0</code> otherwise.</p>
+<p>Release the handle with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a> when you no longer need it. The app
+itself lives for the rest of the game; only the handle is released.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_get_default_handle()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A handle to the default app, or <code>0</code> when it does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _app = firebase_app_get_default_handle();
+firebase_analytics_initialize_for_app(_app);
+firebase_app_release_handle(_app);</code></pre>
+The above code fetches a handle to the default app, initialises Analytics against it and releases
+the handle again, since the module keeps its own reference to the app from then on.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_get_instance">firebase_app_get_instance<a class="headerlink" href="#firebase_app_get_instance" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#getinstance_1">firebase::App::GetInstance</a></p>
+<p>This function returns a handle to the app with the given name, created earlier with
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
+An empty name returns the default app. Unlike <a href="app.html#firebase_app_get_default_handle">firebase_app_get_default_handle</a>, this
+function never creates an app: it returns <code>0</code> when no app of that name exists.</p>
+<p>Release the handle with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a> when you no longer need it.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_get_instance(name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name the app was created with, or an empty string for the default app.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A handle to the named app, or <code>0</code> when it does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _app = firebase_app_get_instance("analytics-only");
+if (_app == 0)
+{
+    _app = firebase_app_initialize_from_json(json_config, "analytics-only");
+}</code></pre>
+The above code looks up a named app and creates it from a configuration string when it does not
+exist yet, so the object that runs this can be created any number of times without creating the app
+twice.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_get_apps">firebase_app_get_apps<a class="headerlink" href="#firebase_app_get_apps" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#getapps">firebase::App::GetApps</a></p>
+<p>This function returns a handle to every Firebase App that exists, the default one included. Each
+handle should be released with <a href="app.html#firebase_app_release_handle">firebase_app_release_handle</a> when you are done with it.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_get_apps()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Arrays.htm">Array</a> of <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>An array with one handle per app, empty when no app has been created.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _apps = firebase_app_get_apps();
+for (var _i = 0; _i &lt; array_length(_apps); _i++)
+{
+    show_debug_message(firebase_app_handle_get_name(_apps[_i]));
+    firebase_app_release_handle(_apps[_i]);
+}</code></pre>
+The above code prints the name of every app and releases each handle as it goes.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_initialize_with_options">firebase_app_initialize_with_options<a class="headerlink" href="#firebase_app_initialize_with_options" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#create_2">firebase::App::Create</a></p>
+<p>This function creates a Firebase App from the given <a href="app.html#firebaseappoptions">FirebaseAppOptions</a> instead of the
+configuration file, and returns a handle to it. Any variable of the struct left <code>undefined</code> keeps
+the SDK's default for that setting. With an empty name the app becomes the default app - the one
+every product module attaches to, exactly as if <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> had created
+it; with a name of your own it is a second app that only the <code>*_for_app</code> functions use.</p>
+<p>If the SDK cannot create the app the function returns <code>0</code> and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+is <code>FirebaseError.NotInitialized</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The usual way to configure the extension is the credential files described on
+<a href="getting_started.html">Getting Started</a>. Use this function when the configuration has to come from somewhere else
+at runtime - a second Firebase project, or values fetched from your own server.</p>
+</div>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_initialize_with_options(options, name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>options</td>
+<td><a href="app.html#firebaseappoptions">FirebaseAppOptions</a></td>
+<td>The settings for the app; variables left <code>undefined</code> keep the SDK defaults.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name for the app, or an empty string to create the default app.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A handle to the new app, or <code>0</code> when it could not be created.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _options =
+{
+    app_id: "1:012345678901:android:0123456789abcdef",
+    api_key: "AIza...",
+    project_id: "my-second-project",
+    messaging_sender_id: "012345678901"
+};
+second_app = firebase_app_initialize_with_options(_options, "second");
+if (second_app == 0)
+{
+    show_debug_message(firebase_last_error_message());
+}</code></pre>
+The above code creates a second, named app for another Firebase project and keeps its handle in an
+instance variable so the <code>*_for_app</code> functions can use it later. The variables not given
+(<code>database_url</code>, <code>storage_bucket</code>, <code>ga_tracking_id</code>) keep their defaults.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_initialize_from_json">firebase_app_initialize_from_json<a class="headerlink" href="#firebase_app_initialize_from_json" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app-options#loadfromjsonconfig">firebase::AppOptions::LoadFromJsonConfig</a></p>
+<p>This function creates a Firebase App from the contents of a <code>google-services.json</code> file passed as a
+string, and returns a handle to it. It is <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> with the
+options parsed for you: the same rules apply to the name (empty for the default app, anything else
+for a second app) and to the handle.</p>
+<p>If the string is not a Firebase configuration the function returns <code>0</code> and
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> is <code>FirebaseError.InvalidArgument</code>; if the SDK then cannot
+create the app it is <code>FirebaseError.NotInitialized</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_initialize_from_json(json_config, name)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>json_config</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The contents of a <code>google-services.json</code> file.</td>
+</tr>
+<tr>
+<td>name</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The name for the app, or an empty string to create the default app.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>A handle to the new app, or <code>0</code> when it could not be created.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _buffer = buffer_load("second-project.json");
+var _json = buffer_read(_buffer, buffer_text);
+buffer_delete(_buffer);
+
+second_app = firebase_app_initialize_from_json(_json, "second");</code></pre>
+The above code loads a configuration file from the Included Files with <code>buffer_load</code>, reads it as
+text and creates a named app from it. Keep such a file out of a public repository: it identifies
+your Firebase project.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_handle_get_name">firebase_app_handle_get_name<a class="headerlink" href="#firebase_app_handle_get_name" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#name">firebase::App::name</a></p>
+<p>This function returns the name of the app the given handle refers to.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_handle_get_name(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The app's name, or an empty string when the handle is not valid.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">show_debug_message("Second app: " + firebase_app_handle_get_name(second_app));</code></pre>
+The above code prints the name a second app was created with.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_handle_get_options">firebase_app_handle_get_options<a class="headerlink" href="#firebase_app_handle_get_options" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#options">firebase::App::options</a></p>
+<p>This function returns the <a href="app.html#firebaseappoptions">FirebaseAppOptions</a> the app behind the given handle was created
+with. Every variable of the struct is present; a setting the configuration did not supply is an
+empty string.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_handle_get_options(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The app handle.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseappoptions">FirebaseAppOptions</a></p>
+</blockquote>
+<p>The app's settings, or <code>undefined</code> when the handle is not valid.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _options = firebase_app_handle_get_options(second_app);
+if (!is_undefined(_options))
+{
+    show_debug_message("Project: " + _options.project_id);
+}</code></pre>
+The above code reads the project ID of a second app, checking for <code>undefined</code> first in case the
+handle has been released.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_get_default_options">firebase_app_get_default_options<a class="headerlink" href="#firebase_app_get_default_options" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/app#options">firebase::App::options</a></p>
+<p>This function returns the <a href="app.html#firebaseappoptions">FirebaseAppOptions</a> of the default app - the values read from
+<code>google-services.json</code> or <code>GoogleService-Info.plist</code>. Every variable of the struct is present; a
+setting the file did not supply is an empty string.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_get_default_options()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseappoptions">FirebaseAppOptions</a></p>
+</blockquote>
+<p>The default app's settings, or <code>undefined</code> when the default app does not exist.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _options = firebase_app_get_default_options();
+show_debug_message("Project: " + _options.project_id + ", bucket: " + _options.storage_bucket);</code></pre>
+The above code prints the project ID and the storage bucket of the default app, which is a quick way
+to check that the right configuration file made it into the build.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_app_release_handle">firebase_app_release_handle<a class="headerlink" href="#firebase_app_release_handle" title="Permanent link">&para;</a></h1>
+<p>This function releases an app handle returned by <a href="app.html#firebase_app_get_default_handle">firebase_app_get_default_handle</a>,
+<a href="app.html#firebase_app_get_instance">firebase_app_get_instance</a>, <a href="app.html#firebase_app_get_apps">firebase_app_get_apps</a>,
+<a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
+Only the handle goes: the Firebase App itself is never destroyed, and a new handle to it can be
+fetched at any time. Releasing a handle that was already released, or <code>0</code>, does nothing.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_app_release_handle(app)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The app handle to release.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">var _app = firebase_app_get_default_handle();
+firebase_messaging_initialize_for_app(_app);
+firebase_app_release_handle(_app);</code></pre>
+The above code uses a handle for a single call and releases it straight after. The messaging
+module keeps its own reference to the app, so the handle is not needed once the call has returned.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_set_log_level">firebase_set_log_level<a class="headerlink" href="#firebase_set_log_level" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase#setloglevel">firebase::SetLogLevel</a></p>
+<p>This function sets how much the Firebase SDK logs: every message at or above the given level is
+written to the platform's log (logcat on Android, the system log on iOS, standard output on
+desktop). The default is <code>FirebaseLogLevel.Info</code>. The setting is global - it
+applies to every app and every product.</p>
+<p>A value that is not a <a href="app.html#firebaseloglevel">FirebaseLogLevel</a> member is refused: the level is left unchanged
+and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> is <code>FirebaseError.InvalidArgument</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_set_log_level(level)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>level</td>
+<td><a href="app.html#firebaseloglevel">FirebaseLogLevel</a></td>
+<td>The lowest level to log.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (debug_mode)
+{
+    firebase_set_log_level(FirebaseLogLevel.Verbose);
+}</code></pre>
+The above code turns on the SDK's full logging while the game runs from the IDE, which is where the
+SDK's own messages about a missing configuration or a rejected request are most useful.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_get_log_level">firebase_get_log_level<a class="headerlink" href="#firebase_get_log_level" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase#getloglevel">firebase::GetLogLevel</a></p>
+<p>This function returns the SDK's current log level, as set with <a href="app.html#firebase_set_log_level">firebase_set_log_level</a>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_get_log_level()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="app.html#firebaseloglevel">FirebaseLogLevel</a></p>
+</blockquote>
+<p>The lowest level the SDK currently logs.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">if (firebase_get_log_level() &gt; FirebaseLogLevel.Debug)
+{
+    firebase_set_log_level(FirebaseLogLevel.Debug);
+}</code></pre>
+The above code lowers the log level to <code>Debug</code> unless it is already at <code>Debug</code> or <code>Verbose</code>.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_get_sdk_version">firebase_get_sdk_version<a class="headerlink" href="#firebase_get_sdk_version" title="Permanent link">&para;</a></h1>
+<p>This function returns the version of the Firebase C++ SDK the extension was built against,
+as a string such as <code>"13.13.0"</code>. It is a compile-time constant, useful when reporting a problem.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_get_sdk_version()</code></pre>
+</blockquote>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></p>
+</blockquote>
+<p>The Firebase C++ SDK version.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">show_debug_message("Firebase C++ SDK " + firebase_get_sdk_version());</code></pre>
+The above code prints the SDK version at start-up.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseerror">FirebaseError<a class="headerlink" href="#firebaseerror" title="Permanent link">&para;</a></h1>
+<p>What every asynchronous function of this extension returns. <code>Ok</code> means the call reached the
+SDK and the callback will be called exactly once with the SDK's own result. Any other value means
+the call failed before the SDK was involved, the callback will never be called, and
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> and <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> say why.</p>
+<p>The failure codes are negative on purpose, so they can never be mistaken for a product's own error
+code (the SDK's are zero or positive). <code>Ok</code> is <code>0</code>: compare a return against <code>FirebaseError.Ok</code>,
+never test it for truth - <code>if (firebase_..._(...))</code> runs on failure, not on success.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_log_apple_transaction">firebase_analytics_log_apple_transaction</a></li>
+<li><a href="analytics.html#firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id</a></li>
+<li><a href="analytics.html#firebase_analytics_get_session_id">firebase_analytics_get_session_id</a></li>
+<li><a href="app.html#firebase_last_error_code">firebase_last_error_code</a></li>
+<li><a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_token">firebase_app_check_instance_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_limited_use_token">firebase_app_check_instance_get_limited_use_token</a></li>
+<li><a href="auth.html#firebase_auth_fetch_providers_for_email">firebase_auth_fetch_providers_for_email</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_custom_token">firebase_auth_sign_in_with_custom_token</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_credential">firebase_auth_sign_in_with_credential</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_and_retrieve_data_with_credential">firebase_auth_sign_in_and_retrieve_data_with_credential</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_anonymously">firebase_auth_sign_in_anonymously</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_email_and_password">firebase_auth_sign_in_with_email_and_password</a></li>
+<li><a href="auth.html#firebase_auth_create_user_with_email_and_password">firebase_auth_create_user_with_email_and_password</a></li>
+<li><a href="auth.html#firebase_auth_send_password_reset_email">firebase_auth_send_password_reset_email</a></li>
+<li><a href="auth.html#firebase_auth_game_center_auth_provider_get_credential">firebase_auth_game_center_auth_provider_get_credential</a></li>
+<li><a href="auth.html#firebase_auth_user_get_token">firebase_auth_user_get_token</a></li>
+<li><a href="auth.html#firebase_auth_user_update_password">firebase_auth_user_update_password</a></li>
+<li><a href="auth.html#firebase_auth_user_update_profile">firebase_auth_user_update_profile</a></li>
+<li><a href="auth.html#firebase_auth_user_send_email_verification">firebase_auth_user_send_email_verification</a></li>
+<li><a href="auth.html#firebase_auth_user_send_email_verification_before_updating_email">firebase_auth_user_send_email_verification_before_updating_email</a></li>
+<li><a href="auth.html#firebase_auth_user_reauthenticate">firebase_auth_user_reauthenticate</a></li>
+<li><a href="auth.html#firebase_auth_user_reauthenticate_and_retrieve_data">firebase_auth_user_reauthenticate_and_retrieve_data</a></li>
+<li><a href="auth.html#firebase_auth_user_link_with_credential">firebase_auth_user_link_with_credential</a></li>
+<li><a href="auth.html#firebase_auth_user_unlink">firebase_auth_user_unlink</a></li>
+<li><a href="auth.html#firebase_auth_user_reload">firebase_auth_user_reload</a></li>
+<li><a href="auth.html#firebase_auth_user_delete">firebase_auth_user_delete</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_provider">firebase_auth_sign_in_with_provider</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_custom_token_result">firebase_auth_sign_in_with_custom_token_result</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_and_retrieve_data_with_credential_result">firebase_auth_sign_in_and_retrieve_data_with_credential_result</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_anonymously_result">firebase_auth_sign_in_anonymously_result</a></li>
+<li><a href="auth.html#firebase_auth_sign_in_with_email_and_password_result">firebase_auth_sign_in_with_email_and_password_result</a></li>
+<li><a href="auth.html#firebase_auth_create_user_with_email_and_password_result">firebase_auth_create_user_with_email_and_password_result</a></li>
+<li><a href="auth.html#firebase_auth_user_reauthenticate_with_provider">firebase_auth_user_reauthenticate_with_provider</a></li>
+<li><a href="auth.html#firebase_auth_user_link_with_provider">firebase_auth_user_link_with_provider</a></li>
+<li><a href="auth.html#firebase_auth_user_reauthenticate_and_retrieve_data_result">firebase_auth_user_reauthenticate_and_retrieve_data_result</a></li>
+<li><a href="auth.html#firebase_auth_user_link_with_credential_result">firebase_auth_user_link_with_credential_result</a></li>
+<li><a href="auth.html#firebase_auth_user_update_phone_number_credential">firebase_auth_user_update_phone_number_credential</a></li>
+<li><a href="auth.html#firebase_auth_game_center_auth_provider_get_credential_last_result">firebase_auth_game_center_auth_provider_get_credential_last_result</a></li>
+<li><a href="database.html#firebase_database_ref_get_value">firebase_database_ref_get_value</a></li>
+<li><a href="database.html#firebase_database_query_get_value">firebase_database_query_get_value</a></li>
+<li><a href="database.html#firebase_database_ref_set_value">firebase_database_ref_set_value</a></li>
+<li><a href="database.html#firebase_database_ref_set_priority">firebase_database_ref_set_priority</a></li>
+<li><a href="database.html#firebase_database_ref_set_value_and_priority">firebase_database_ref_set_value_and_priority</a></li>
+<li><a href="database.html#firebase_database_ref_update_children">firebase_database_ref_update_children</a></li>
+<li><a href="database.html#firebase_database_ref_remove_value">firebase_database_ref_remove_value</a></li>
+<li><a href="database.html#firebase_database_ref_run_transaction">firebase_database_ref_run_transaction</a></li>
+<li><a href="database.html#firebase_database_on_disconnect_cancel">firebase_database_on_disconnect_cancel</a></li>
+<li><a href="database.html#firebase_database_on_disconnect_remove_value">firebase_database_on_disconnect_remove_value</a></li>
+<li><a href="database.html#firebase_database_on_disconnect_set_value">firebase_database_on_disconnect_set_value</a></li>
+<li><a href="database.html#firebase_database_on_disconnect_set_value_and_priority">firebase_database_on_disconnect_set_value_and_priority</a></li>
+<li><a href="database.html#firebase_database_on_disconnect_update_children">firebase_database_on_disconnect_update_children</a></li>
+<li><a href="installations.html#firebase_installations_get_id">firebase_installations_get_id</a></li>
+<li><a href="installations.html#firebase_installations_get_token">firebase_installations_get_token</a></li>
+<li><a href="installations.html#firebase_installations_delete">firebase_installations_delete</a></li>
+<li><a href="firestore.html#firebase_firestore_enable_network">firebase_firestore_enable_network</a></li>
+<li><a href="firestore.html#firebase_firestore_disable_network">firebase_firestore_disable_network</a></li>
+<li><a href="firestore.html#firebase_firestore_terminate">firebase_firestore_terminate</a></li>
+<li><a href="firestore.html#firebase_firestore_clear_persistence">firebase_firestore_clear_persistence</a></li>
+<li><a href="firestore.html#firebase_firestore_wait_for_pending_writes">firebase_firestore_wait_for_pending_writes</a></li>
+<li><a href="firestore.html#firebase_firestore_run_transaction">firebase_firestore_run_transaction</a></li>
+<li><a href="firestore.html#firebase_firestore_collection_ref_add">firebase_firestore_collection_ref_add</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_get">firebase_firestore_document_ref_get</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_set">firebase_firestore_document_ref_set</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_set_merge">firebase_firestore_document_ref_set_merge</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_set_merge_fields">firebase_firestore_document_ref_set_merge_fields</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_update">firebase_firestore_document_ref_update</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_delete">firebase_firestore_document_ref_delete</a></li>
+<li><a href="firestore.html#firebase_firestore_query_get">firebase_firestore_query_get</a></li>
+<li><a href="firestore.html#firebase_firestore_write_batch_commit">firebase_firestore_write_batch_commit</a></li>
+<li><a href="storage.html#firebase_storage_ref_delete">firebase_storage_ref_delete</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_download_url">firebase_storage_ref_get_download_url</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_metadata">firebase_storage_ref_get_metadata</a></li>
+<li><a href="storage.html#firebase_storage_ref_update_metadata">firebase_storage_ref_update_metadata</a></li>
+<li><a href="storage.html#firebase_storage_ref_put_bytes">firebase_storage_ref_put_bytes</a></li>
+<li><a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a></li>
+<li><a href="storage.html#firebase_storage_ref_list">firebase_storage_ref_list</a></li>
+<li><a href="functions.html#firebase_functions_callable_call">firebase_functions_callable_call</a></li>
+<li><a href="functions.html#firebase_functions_callable_call_with_data">firebase_functions_callable_call_with_data</a></li>
+<li><a href="remote_config.html#firebase_remote_config_ensure_initialized">firebase_remote_config_ensure_initialized</a></li>
+<li><a href="remote_config.html#firebase_remote_config_set_config_settings">firebase_remote_config_set_config_settings</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch">firebase_remote_config_fetch</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch_with_expiration">firebase_remote_config_fetch_with_expiration</a></li>
+<li><a href="remote_config.html#firebase_remote_config_fetch_and_activate">firebase_remote_config_fetch_and_activate</a></li>
+<li><a href="remote_config.html#firebase_remote_config_activate">firebase_remote_config_activate</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_keys_by_prefix">firebase_remote_config_get_keys_by_prefix</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_keys">firebase_remote_config_get_keys</a></li>
+<li><a href="remote_config.html#firebase_remote_config_get_all">firebase_remote_config_get_all</a></li>
+<li><a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a></li>
+<li><a href="remote_config.html#firebase_remote_config_set_custom_signals">firebase_remote_config_set_custom_signals</a></li>
+<li><a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a></li>
+<li><a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a></li>
+<li><a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a></li>
+<li><a href="messaging.html#firebase_messaging_get_token">firebase_messaging_get_token</a></li>
+<li><a href="messaging.html#firebase_messaging_delete_token">firebase_messaging_delete_token</a></li>
+<li><a href="messaging.html#firebase_messaging_subscribe">firebase_messaging_subscribe</a></li>
+<li><a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a></li>
+<li><a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a></li>
+<li><a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a></li>
+<li><a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a></li>
+<li><a href="firestore.html#firebase_firestore_aggregate_query_get">firebase_firestore_aggregate_query_get</a></li>
+<li><a href="firestore.html#firebase_firestore_load_bundle">firebase_firestore_load_bundle</a></li>
+<li><a href="firestore.html#firebase_firestore_named_query">firebase_firestore_named_query</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_set_merge_field_paths">firebase_firestore_document_ref_set_merge_field_paths</a></li>
+<li><a href="remote_config.html#firebase_remote_config_ensure_initialized_info">firebase_remote_config_ensure_initialized_info</a></li>
+<li><a href="firestore.html#firebase_firestore_document_ref_update_field_paths">firebase_firestore_document_ref_update_field_paths</a></li>
+<li><a href="installations.html#firebase_installations_instance_get_id">firebase_installations_instance_get_id</a></li>
+<li><a href="installations.html#firebase_installations_instance_get_token">firebase_installations_instance_get_token</a></li>
+<li><a href="installations.html#firebase_installations_instance_delete">firebase_installations_instance_delete</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ok</code></td>
+<td>The call reached the SDK; the callback fires once with the result.</td>
+</tr>
+<tr>
+<td><code>InvalidHandle</code></td>
+<td>A handle argument does not refer to a live object - it was never valid, or it has been released.</td>
+</tr>
+<tr>
+<td><code>NotInitialized</code></td>
+<td>The module the function belongs to has not been initialised, or the default app does not exist.</td>
+</tr>
+<tr>
+<td><code>InvalidArgument</code></td>
+<td>An argument was refused before the call - an enum value outside its range, a value of a kind the SDK cannot take, an empty name where one is required.</td>
+</tr>
+<tr>
+<td><code>Unsupported</code></td>
+<td>The operation is not available on this platform, or is not implemented by this version of the extension.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseloglevel">FirebaseLogLevel<a class="headerlink" href="#firebaseloglevel" title="Permanent link">&para;</a></h1>
+<p>The Firebase SDK's log levels, from the most to the least verbose, for
+<a href="app.html#firebase_set_log_level">firebase_set_log_level</a> and <a href="app.html#firebase_get_log_level">firebase_get_log_level</a>. Setting a level logs
+every message at that level and above.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_set_log_callback">firebase_analytics_set_log_callback</a></li>
+<li><a href="app.html#firebase_set_log_level">firebase_set_log_level</a></li>
+<li><a href="app.html#firebase_get_log_level">firebase_get_log_level</a></li>
+<li><a href="database.html#firebase_database_set_log_level">firebase_database_set_log_level</a></li>
+<li><a href="database.html#firebase_database_get_log_level">firebase_database_get_log_level</a></li>
+<li><a href="firestore.html#firebase_firestore_set_log_level">firebase_firestore_set_log_level</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Verbose</code></td>
+<td>Everything, including the SDK's internal tracing.</td>
+</tr>
+<tr>
+<td><code>Debug</code></td>
+<td>Debugging detail.</td>
+</tr>
+<tr>
+<td><code>Info</code></td>
+<td>Informational messages - the default.</td>
+</tr>
+<tr>
+<td><code>Warning</code></td>
+<td>Warnings only.</td>
+</tr>
+<tr>
+<td><code>Error</code></td>
+<td>Errors only.</td>
+</tr>
+<tr>
+<td><code>Assert</code></td>
+<td>Assertion failures only.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseappoptions">FirebaseAppOptions<a class="headerlink" href="#firebaseappoptions" title="Permanent link">&para;</a></h1>
+<p>The settings a Firebase App is created from - the values <code>google-services.json</code> and
+<code>GoogleService-Info.plist</code> carry. <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> takes one; a
+variable left <code>undefined</code> there keeps the SDK's default. <a href="app.html#firebase_app_get_default_options">firebase_app_get_default_options</a>
+and <a href="app.html#firebase_app_handle_get_options">firebase_app_handle_get_options</a> return one with every variable present, an empty
+string standing for a setting that was not supplied.</p>
+<p>This struct is referenced by the following functions:</p>
+<ul>
+<li><a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a></li>
+<li><a href="app.html#firebase_app_handle_get_options">firebase_app_handle_get_options</a></li>
+<li><a href="app.html#firebase_app_get_default_options">firebase_app_get_default_options</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Firebase app ID that identifies this app (<code>mobilesdk_app_id</code> in <code>google-services.json</code>, <code>GOOGLE_APP_ID</code> in the plist).</td>
+</tr>
+<tr>
+<td>api_key</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The API key that authenticates requests from the app.</td>
+</tr>
+<tr>
+<td>messaging_sender_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Cloud Messaging sender ID.</td>
+</tr>
+<tr>
+<td>database_url</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Realtime Database root URL.</td>
+</tr>
+<tr>
+<td>ga_tracking_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Google Analytics tracking ID.</td>
+</tr>
+<tr>
+<td>storage_bucket</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Cloud Storage bucket name.</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
+<td>The Google Cloud project ID.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      <p align="center">GameMaker 2026</p>
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.tracking", "toc.follow", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gml.min.js"></script>
+      
+        <script src="assets/js/hljs-init.js"></script>
+      
+        <script src="assets/js/resize-columns.js"></script>
+      
+    
+  </body>
+</html>

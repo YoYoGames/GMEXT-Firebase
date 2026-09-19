@@ -4,7 +4,7 @@ var _score = irandom_range(1,9999)
 var _db = firebase_database_get_instance();
 var _ref_scores = firebase_database_get_reference_at_path(_db,"scores");
 var _ref_score = firebase_database_ref_push(_ref_scores);
-var _ref_score_id = firebase_database_ref_key(_ref_score);
+var _ref_score_id = firebase_database_ref_get(_ref_score).key;
 
 show_debug_message("Generated ID: " + _ref_score_id);
 

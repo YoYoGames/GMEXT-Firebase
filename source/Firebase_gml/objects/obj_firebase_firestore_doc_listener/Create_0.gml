@@ -38,25 +38,15 @@ function firestore_demo_listener_start()
                 }
 
 
-                var _exists =
-                    firebase_firestore_document_snapshot_exists(
+                var _info =
+                    firebase_firestore_document_snapshot_get_info(
                         _snapshot
                     );
 
-                var _id =
-                    firebase_firestore_document_snapshot_id(
-                        _snapshot
-                    );
-
-                var _cached =
-                    firebase_firestore_document_snapshot_metadata_is_from_cache(
-                        _snapshot
-                    );
-
-                var _pending =
-                    firebase_firestore_document_snapshot_metadata_has_pending_writes(
-                        _snapshot
-                    );
+                var _exists = _info.exists;
+                var _id = _info.id;
+                var _cached = _info.is_from_cache;
+                var _pending = _info.has_pending_writes;
 
 
                 show_debug_message("=== PLAYER CHANGED ===");

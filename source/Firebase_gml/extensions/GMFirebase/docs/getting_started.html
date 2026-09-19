@@ -1118,11 +1118,11 @@ configures the default app on that platform. Call it first, then use them.</p>
 <h1 id="results-and-callbacks">Results and callbacks<a class="headerlink" href="#results-and-callbacks" title="Permanent link">&para;</a></h1>
 <p>Everything that talks to a Firebase server is asynchronous. Such a function takes a callback as its
 last argument and returns a <a href="app.html#firebaseerror">FirebaseError</a> at once:</p>
-<pre class="highlight"><code class="language-gml">var _result = firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _user)
+<pre class="highlight"><code class="language-gml">var _result = firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _result)
 {
     if (_error_code == 0)
     {
-        show_debug_message("Signed in as " + firebase_auth_user_email(_user));
+        show_debug_message("Signed in as " + firebase_auth_user_get_info(_result.user).email);
     }
     else
     {

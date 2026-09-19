@@ -1,7 +1,7 @@
 
 if(!listening)
 {
-	value_listener = firebase_database_ref_add_value_listener(_ref,
+	value_listener = firebase_database_query_add_value_listener(_ref,
 	        function(_snapshot)
 	        {
 				var _info = firebase_database_snapshot_get_info(_snapshot);
@@ -18,7 +18,7 @@ if(!listening)
 }
 else
 {
-	firebase_database_ref_remove_value_listener(_ref,value_listener);
+	firebase_database_query_remove_value_listener(_ref,value_listener);
 }
 
 listening = !listening

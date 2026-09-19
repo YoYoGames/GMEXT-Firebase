@@ -73,7 +73,7 @@
  * This function attaches an identifier to the session's reports, so that a player's crash can be
  * found from a support request - the console lets you search reports by it. Use an id that
  * means something to you and nothing to anyone else: the Authentication user id
- * (${function.firebase_auth_user_uid} is the usual one), never a name or an e-mail address. An
+ * (the `uid` of ${function.firebase_auth_user_get_info} is the usual one), never a name or an e-mail address. An
  * empty string clears it. The id is part of what a player's data request covers. On iOS it does nothing until ${function.firebase_app_initialize} has run.
  *
  * @param {String} user_id The identifier, or an empty string for none.

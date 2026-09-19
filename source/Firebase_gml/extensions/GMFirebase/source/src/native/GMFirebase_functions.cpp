@@ -116,14 +116,9 @@ void firebase_functions_use_functions_emulator(uint64_t firebase_functions_ref, 
 	functions->UseFunctionsEmulator(std::string(origin).c_str());
 }
 
-uint64_t firebase_functions_get_https_callable(uint64_t firebase_functions_ref, std::string_view name)
-{
-	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
-	if (functions == nullptr) return 0;
-	return registerFunctionsCallable(functions->GetHttpsCallable(std::string(name).c_str()));
-}
-
-uint64_t firebase_functions_get_https_callable_with_options(uint64_t firebase_functions_ref, std::string_view name, bool limited_use_app_check_token)
+// HttpsCallableOptions has one field, so the options overload is the only one
+// called; false is what the SDK's no-options overload uses.
+uint64_t firebase_functions_get_https_callable(uint64_t firebase_functions_ref, std::string_view name, bool limited_use_app_check_token)
 {
 	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
 	if (functions == nullptr) return 0;
@@ -133,14 +128,7 @@ uint64_t firebase_functions_get_https_callable_with_options(uint64_t firebase_fu
 	return registerFunctionsCallable(functions->GetHttpsCallable(std::string(name).c_str(), options));
 }
 
-uint64_t firebase_functions_get_https_callable_from_url(uint64_t firebase_functions_ref, std::string_view url)
-{
-	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
-	if (functions == nullptr) return 0;
-	return registerFunctionsCallable(functions->GetHttpsCallableFromURL(std::string(url).c_str()));
-}
-
-uint64_t firebase_functions_get_https_callable_from_url_with_options(uint64_t firebase_functions_ref, std::string_view url, bool limited_use_app_check_token)
+uint64_t firebase_functions_get_https_callable_from_url(uint64_t firebase_functions_ref, std::string_view url, bool limited_use_app_check_token)
 {
 	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
 	if (functions == nullptr) return 0;

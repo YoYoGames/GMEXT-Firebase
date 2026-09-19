@@ -51,15 +51,23 @@
  * a name that does not exist fails only then (`FirebaseFunctionsError.NotFound`), and one callable can be called
  * any number of times. Release it with ${function.firebase_functions_callable_release}.
  *
+ * The one option a callable has is whether each call carries a limited-use App Check token
+ * instead of the ordinary one. A limited-use token is meant to be consumed by the function
+ * (`consumeAppCheckToken` on the server side), so that a request captured in transit cannot be
+ * replayed; it costs a token exchange per call, and needs App Check set up (see
+ * ${module.app_check}). Pass `false` for the ordinary token - the choice is fixed for the life of
+ * the callable.
+ *
  * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
  * @param {String} name The function's deployed name (`"claimDailyReward"`).
+ * @param {Bool} limited_use_app_check_token `true` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `false` for the ordinary token.
  * @returns {Real} A callable handle to release with ${function.firebase_functions_callable_release}, or `0` when the handle is not valid.
  *
  * @example
  * ```gml
  * // Create Event of a persistent controller
  * functions = firebase_functions_get_instance();
- * claim_reward = firebase_functions_get_https_callable(functions, "claimDailyReward");
+ * claim_reward = firebase_functions_get_https_callable(functions, "claimDailyReward", false);
  *
  * // The "Claim" button
  * firebase_functions_callable_call_with_data(claim_reward, { day: current_day },
@@ -85,45 +93,14 @@
  */
 
 /**
- * @function firebase_functions_get_https_callable_with_options
- * @desc **Firebase C++ SDK:** [firebase::functions::Functions::GetHttpsCallable](https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallable_1)
- *
- * This function is ${function.firebase_functions_get_https_callable} with the one option a
- * callable has: whether each call carries a limited-use App Check token instead of the ordinary
- * one. A limited-use token is meant to be consumed by the function (`consumeAppCheckToken` on the
- * server side), so that a request captured in transit cannot be replayed; it costs a token
- * exchange per call, and needs App Check set up (see ${module.app_check}). The option is fixed for
- * the life of the callable.
- *
- * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
- * @param {String} name The function's deployed name.
- * @param {Bool} limited_use_app_check_token `true` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `false` for the ordinary token.
- * @returns {Real} A callable handle to release with ${function.firebase_functions_callable_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
  * @function firebase_functions_get_https_callable_from_url
  * @desc **Firebase C++ SDK:** [firebase::functions::Functions::GetHttpsCallableFromURL](https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallablefromurl)
  *
  * This function returns a callable for a function by its full URL rather than its name - the way
  * to reach a function behind a custom domain, or a 2nd-generation function through the Cloud Run
  * URL the console shows for it. The instance's region does not apply, since the URL carries the
- * address. Release it with ${function.firebase_functions_callable_release}.
- *
- * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
- * @param {String} url The function's HTTPS URL.
- * @returns {Real} A callable handle to release with ${function.firebase_functions_callable_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_functions_get_https_callable_from_url_with_options
- * @desc **Firebase C++ SDK:** [firebase::functions::Functions::GetHttpsCallableFromURL](https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallablefromurl_1)
- *
- * This function is ${function.firebase_functions_get_https_callable_from_url} with the
- * limited-use App Check token option of
- * ${function.firebase_functions_get_https_callable_with_options}.
+ * address. Release it with ${function.firebase_functions_callable_release}. The limited-use
+ * App Check token option is the one ${function.firebase_functions_get_https_callable} describes.
  *
  * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
  * @param {String} url The function's HTTPS URL.
@@ -216,7 +193,7 @@
  * @example
  * ```gml
  * // Submit a score the server validates and ranks
- * submit_score = firebase_functions_get_https_callable(functions, "submitScore");
+ * submit_score = firebase_functions_get_https_callable(functions, "submitScore", false);
  * firebase_functions_callable_call_with_data(submit_score,
  *     { level: level_id, score: score, replay: replay_events },
  *     function(_error, _message, _data)
@@ -377,9 +354,7 @@
  * @section_func Callables
  * @desc A callable addresses one deployed function, by name or by URL:
  * @ref firebase_functions_get_https_callable
- * @ref firebase_functions_get_https_callable_with_options
  * @ref firebase_functions_get_https_callable_from_url
- * @ref firebase_functions_get_https_callable_from_url_with_options
  * @ref firebase_functions_callable_is_valid
  * @ref firebase_functions_callable_get_functions
  * @ref firebase_functions_callable_release

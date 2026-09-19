@@ -25,7 +25,7 @@ if (_by_score == _by_timestamp)
 }
 
 var _field = _by_score ? "score" : "scored_at";
-var _query = firebase_database_ref_order_by_child(_scores, _field);
+var _query = firebase_database_query_order_by_child(_scores, _field);
 
 firebase_database_ref_release(_scores);
 
@@ -167,7 +167,7 @@ var _started = firebase_database_query_get_value(
             for (var i = 0; i < array_length(_children); i++)
             {
                 var _child = _children[i];
-                var _id = firebase_database_snapshot_key(_child);
+                var _id = firebase_database_snapshot_get_info(_child).key;
                 var _data = firebase_database_snapshot_get_value(_child);
 
                 show_debug_message($"[{i}] {_id} -> {json_stringify(_data)}");

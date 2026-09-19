@@ -50,7 +50,7 @@ service firebase.storage {
 }
 ```
 
-`request.auth.uid` is what ${function.firebase_auth_user_uid} returns, so the game builds its
+`request.auth.uid` is the `uid` ${function.firebase_auth_user_get_info} reads, so the game builds its
 paths from it. Rules can also limit what is uploaded - `request.resource.size < 5 * 1024 * 1024`
 for a size cap, `request.resource.contentType.matches('image/.*')` for a type - which is the
 only place such limits hold, since the client decides what it sends. Click **Publish** after

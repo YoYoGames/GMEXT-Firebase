@@ -10,7 +10,7 @@ if (!firebase_auth_get_auth())
 firebase_auth_sign_in_with_email_and_password(
     "new@example.com",
     "password123",
-    function(_error, _message, _user)
+    function(_error, _message, _result)
     {
         if (_error != FirebaseAuthError.None)
         {
@@ -20,6 +20,8 @@ firebase_auth_sign_in_with_email_and_password(
 
             return;
         }
+
+        var _user = _result.user;
 
         var _info =
             firebase_auth_user_get_info(_user);

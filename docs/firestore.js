@@ -205,10 +205,10 @@
  *
  * @example
  * ```gml
- * var _player = firebase_firestore_document(firestore, "players/" + firebase_auth_user_uid(user));
+ * var _player = firebase_firestore_document(firestore, "players/" + firebase_auth_user_get_info(user).uid);
  * firebase_firestore_document_ref_get(_player, FirestoreSource.Default, function(_error_code, _error_message, _snapshot)
  * {
- *     if (_error_code == FirestoreError.Ok && firebase_firestore_document_snapshot_exists(_snapshot))
+ *     if (_error_code == FirestoreError.Ok && firebase_firestore_document_snapshot_get_info(_snapshot).exists)
  *     {
  *         var _data = firebase_firestore_document_snapshot_get_data(_snapshot, FirestoreServerTimestampBehavior.None);
  *         show_debug_message($"Welcome back, {_data.name} (level {_data.level})");
@@ -530,7 +530,7 @@
  * ```gml
  * var _scores = firebase_firestore_collection(firestore, "scores");
  * var _when = firebase_firestore_field_value_server_timestamp();
- * firebase_firestore_collection_ref_add(_scores, { user: firebase_auth_user_uid(user), score: 1250, mode: "ranked", created_at: _when },
+ * firebase_firestore_collection_ref_add(_scores, { user: firebase_auth_user_get_info(user).uid, score: 1250, mode: "ranked", created_at: _when },
  *     function(_error_code, _error_message, _document)
  *     {
  *         if (_error_code == FirestoreError.Ok)
@@ -631,7 +631,7 @@
  * fails when the document is not cached.
  *
  * The callback receives a document snapshot. A document that does not exist is not an error: the
- * snapshot's ${function.firebase_firestore_document_snapshot_exists} is `false`. Read the fields
+ * `exists` of its ${function.firebase_firestore_document_snapshot_get_info} is `false`. Read the fields
  * with ${function.firebase_firestore_document_snapshot_get_data} or
  * ${function.firebase_firestore_document_snapshot_get}, then release the snapshot with
  * ${function.firebase_firestore_document_snapshot_release}. To be told about every later change
@@ -866,7 +866,7 @@
  *         show_debug_message("Listener error: " + _error_message);
  *         return;
  *     }
- *     if (firebase_firestore_document_snapshot_exists(_snapshot))
+ *     if (firebase_firestore_document_snapshot_get_info(_snapshot).exists)
  *     {
  *         var _data = firebase_firestore_document_snapshot_get_data(_snapshot, FirestoreServerTimestampBehavior.Estimate);
  *         gold = _data.gold;
@@ -1359,7 +1359,7 @@
  *     for (var _i = 0; _i < array_length(_changes); _i++)
  *     {
  *         var _change = _changes[_i];
- *         var _id = firebase_firestore_document_snapshot_id(_change.document);
+ *         var _id = firebase_firestore_document_snapshot_get_info(_change.document).id;
  *         switch (_change.type)
  *         {
  *             case FirestoreDocumentChangeType.Added: lobby_add_room(_id, firebase_firestore_document_snapshot_get_data(_change.document, FirestoreServerTimestampBehavior.None)); break;
@@ -1761,8 +1761,7 @@
  * @desc This function reads a document snapshot's properties into one ${struct.FirestoreDocumentSnapshotInfo}:
  * whether the document exists, its ID, and the two metadata flags. It hands out no handle; a
  * reference to the document comes from ${function.firebase_firestore_document_snapshot_reference},
- * which registers one to release. The individual functions below return the same values one at a
- * time.
+ * which registers one to release.
  *
  * @param {Real} ref A document snapshot handle.
  * @returns {Struct.FirestoreDocumentSnapshotInfo} The snapshot's properties, or `undefined` when the handle is not valid.
@@ -1845,8 +1844,7 @@
 /**
  * @function firebase_firestore_query_snapshot_get_info
  * @desc This function reads a query snapshot's properties into one ${struct.FirestoreQuerySnapshotInfo}:
- * the number of documents, whether there are none, and the two metadata flags. The individual
- * functions below return the same values one at a time.
+ * the number of documents, whether there are none, and the two metadata flags.
  *
  * @param {Real} ref A query snapshot handle.
  * @returns {Struct.FirestoreQuerySnapshotInfo} The snapshot's properties, or `undefined` when the handle is not valid.
@@ -3394,29 +3392,6 @@
  */
 
 /**
- * @function firebase_firestore_document_snapshot_exists
- * @desc **Firebase C++ SDK:** [firebase::firestore::DocumentSnapshot::exists](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/document-snapshot#exists)
- *
- * This function returns whether the document existed when the snapshot was taken. A read of a
- * missing document is not an error; this is how it shows.
- *
- * @param {Real} snapshot A document snapshot handle.
- * @returns {Bool} `true` when the document exists, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_document_snapshot_id
- * @desc **Firebase C++ SDK:** [firebase::firestore::DocumentSnapshot::id](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/document-snapshot#id)
- *
- * This function returns the ID of the document the snapshot is of, whether or not it exists.
- *
- * @param {Real} snapshot A document snapshot handle.
- * @returns {String} The document ID, or an empty string when the handle is not valid.
- * @function_end
- */
-
-/**
  * @function firebase_firestore_document_snapshot_reference
  * @desc **Firebase C++ SDK:** [firebase::firestore::DocumentSnapshot::reference](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/document-snapshot#reference)
  *
@@ -3426,78 +3401,6 @@
  *
  * @param {Real} snapshot A document snapshot handle.
  * @returns {Real} A document reference handle, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_document_snapshot_metadata_has_pending_writes
- * @desc **Firebase C++ SDK:** [firebase::firestore::SnapshotMetadata::has_pending_writes](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/snapshot-metadata#has_pending_writes)
- *
- * This function returns whether the snapshot reflects a local write the server has not confirmed
- * yet. A listener that opted into metadata changes fires again with `false` once the server has.
- *
- * @param {Real} snapshot A document snapshot handle.
- * @returns {Bool} `true` while a local write to the document is unconfirmed, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_document_snapshot_metadata_is_from_cache
- * @desc **Firebase C++ SDK:** [firebase::firestore::SnapshotMetadata::is_from_cache](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/snapshot-metadata#is_from_cache)
- *
- * This function returns whether the snapshot came from the local cache rather than the server -
- * because the read asked for the cache, the device was offline, or a listener delivered the cached
- * copy first. A listener that opted into metadata changes fires again with `false` once the
- * server's data has arrived.
- *
- * @param {Real} snapshot A document snapshot handle.
- * @returns {Bool} `true` for cached data, `false` for the server's.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_query_snapshot_size
- * @desc **Firebase C++ SDK:** [firebase::firestore::QuerySnapshot::size](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/query-snapshot#size)
- *
- * This function returns how many documents the snapshot holds.
- *
- * @param {Real} snapshot A query snapshot handle.
- * @returns {Real} The number of documents, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_query_snapshot_empty
- * @desc **Firebase C++ SDK:** [firebase::firestore::QuerySnapshot::empty](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/query-snapshot#empty)
- *
- * This function returns whether the snapshot holds no documents.
- *
- * @param {Real} snapshot A query snapshot handle.
- * @returns {Bool} `true` when there are no documents (or the handle is not valid), otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_query_snapshot_metadata_has_pending_writes
- * @desc **Firebase C++ SDK:** [firebase::firestore::SnapshotMetadata::has_pending_writes](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/snapshot-metadata#has_pending_writes)
- *
- * This function returns whether any document in the snapshot reflects a local write the server has
- * not confirmed yet.
- *
- * @param {Real} snapshot A query snapshot handle.
- * @returns {Bool} `true` while an unconfirmed local write is in the results, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_firestore_query_snapshot_metadata_is_from_cache
- * @desc **Firebase C++ SDK:** [firebase::firestore::SnapshotMetadata::is_from_cache](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/snapshot-metadata#is_from_cache)
- *
- * This function returns whether the results came from the local cache rather than the server; see
- * ${function.firebase_firestore_document_snapshot_metadata_is_from_cache}.
- *
- * @param {Real} snapshot A query snapshot handle.
- * @returns {Bool} `true` for cached results, `false` for the server's.
  * @function_end
  */
 
@@ -3605,10 +3508,10 @@
  * @desc Every property of a document snapshot but its fields, from
  * ${function.firebase_firestore_document_snapshot_get_info}.
  *
- * @member {Bool} exists Whether the document existed when the snapshot was taken.
- * @member {String} id The document's ID.
- * @member {Bool} has_pending_writes Whether the snapshot reflects a local write the server has not confirmed.
- * @member {Bool} is_from_cache Whether the snapshot came from the local cache rather than the server.
+ * @member {Bool} exists Whether the document existed when the snapshot was taken; a read of a missing document is not an error, this is how it shows.
+ * @member {String} id The ID of the document the snapshot is of, whether or not it exists.
+ * @member {Bool} has_pending_writes Whether the snapshot reflects a local write the server has not confirmed yet; a listener that opted into metadata changes fires again with `false` once the server has.
+ * @member {Bool} is_from_cache Whether the snapshot came from the local cache rather than the server - because the read asked for the cache, the device was offline, or a listener delivered the cached copy first; a listener that opted into metadata changes fires again with `false` once the server's data has arrived.
  * @struct_end
  */
 
@@ -3619,8 +3522,8 @@
  *
  * @member {Real} size The number of documents in the results.
  * @member {Bool} empty Whether there are none.
- * @member {Bool} has_pending_writes Whether any result reflects a local write the server has not confirmed.
- * @member {Bool} is_from_cache Whether the results came from the local cache rather than the server.
+ * @member {Bool} has_pending_writes Whether any document in the results reflects a local write the server has not confirmed yet.
+ * @member {Bool} is_from_cache Whether the results came from the local cache rather than the server, as ${struct.FirestoreDocumentSnapshotInfo}'s `is_from_cache` describes.
  * @struct_end
  */
 
@@ -4052,11 +3955,7 @@
  * @ref firebase_firestore_document_snapshot_get
  * @ref firebase_firestore_document_snapshot_get_field_path
  * @ref firebase_firestore_document_snapshot_get_data
- * @ref firebase_firestore_document_snapshot_exists
- * @ref firebase_firestore_document_snapshot_id
  * @ref firebase_firestore_document_snapshot_reference
- * @ref firebase_firestore_document_snapshot_metadata_has_pending_writes
- * @ref firebase_firestore_document_snapshot_metadata_is_from_cache
  * @ref firebase_firestore_document_snapshot_metadata_to_string
  * @ref firebase_firestore_document_snapshot_is_valid
  * @ref firebase_firestore_document_snapshot_to_string
@@ -4069,10 +3968,6 @@
  * @ref firebase_firestore_query_snapshot_get_info
  * @ref firebase_firestore_query_snapshot_documents
  * @ref firebase_firestore_query_snapshot_document_changes
- * @ref firebase_firestore_query_snapshot_size
- * @ref firebase_firestore_query_snapshot_empty
- * @ref firebase_firestore_query_snapshot_metadata_has_pending_writes
- * @ref firebase_firestore_query_snapshot_metadata_is_from_cache
  * @ref firebase_firestore_query_snapshot_metadata_to_string
  * @ref firebase_firestore_query_snapshot_get_query
  * @ref firebase_firestore_query_snapshot_is_valid

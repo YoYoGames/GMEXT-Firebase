@@ -14,7 +14,7 @@ firebase_database_ref_set_value(_ref, click_count, function(error_code, error_me
 
 	var _db = firebase_database_get_instance();
 	var _ref = firebase_database_get_reference_at_path(_db, "demo/click_count");
-	firebase_database_ref_get_value(_ref, function(error_code, error_message, snapshot_ref) {
+	firebase_database_query_get_value(_ref, function(error_code, error_message, snapshot_ref) {
 		if (error_code == FirebaseDatabaseError.None) {
 			var _info = firebase_database_snapshot_get_info(snapshot_ref);
 			var _value = firebase_database_snapshot_get_value(snapshot_ref);

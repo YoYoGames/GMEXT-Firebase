@@ -911,32 +911,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#firebase_functions_get_https_callable_with_options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        firebase_functions_get_https_callable_with_options
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#firebase_functions_get_https_callable_from_url" class="md-nav__link">
     <span class="md-ellipsis">
       
         firebase_functions_get_https_callable_from_url
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#firebase_functions_get_https_callable_from_url_with_options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        firebase_functions_get_https_callable_from_url_with_options
       
     </span>
   </a>
@@ -1438,32 +1416,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#firebase_functions_get_https_callable_with_options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        firebase_functions_get_https_callable_with_options
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#firebase_functions_get_https_callable_from_url" class="md-nav__link">
     <span class="md-ellipsis">
       
         firebase_functions_get_https_callable_from_url
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#firebase_functions_get_https_callable_from_url_with_options" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        firebase_functions_get_https_callable_from_url_with_options
       
     </span>
   </a>
@@ -1634,9 +1590,7 @@ writing and deploying a first callable.</p>
 <p>A callable addresses one deployed function, by name or by URL:</p>
 <ul>
 <li><a href="functions.html#firebase_functions_get_https_callable">firebase_functions_get_https_callable</a></li>
-<li><a href="functions.html#firebase_functions_get_https_callable_with_options">firebase_functions_get_https_callable_with_options</a></li>
 <li><a href="functions.html#firebase_functions_get_https_callable_from_url">firebase_functions_get_https_callable_from_url</a></li>
-<li><a href="functions.html#firebase_functions_get_https_callable_from_url_with_options">firebase_functions_get_https_callable_from_url_with_options</a></li>
 <li><a href="functions.html#firebase_functions_callable_is_valid">firebase_functions_callable_is_valid</a></li>
 <li><a href="functions.html#firebase_functions_callable_get_functions">firebase_functions_callable_get_functions</a></li>
 <li><a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a></li>
@@ -1764,10 +1718,16 @@ callable is an address, not a connection: nothing is sent until
 <a href="functions.html#firebase_functions_callable_call">firebase_functions_callable_call</a> or <a href="functions.html#firebase_functions_callable_call_with_data">firebase_functions_callable_call_with_data</a>,
 a name that does not exist fails only then (<code>FirebaseFunctionsError.NotFound</code>), and one callable can be called
 any number of times. Release it with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>.</p>
+<p>The one option a callable has is whether each call carries a limited-use App Check token
+instead of the ordinary one. A limited-use token is meant to be consumed by the function
+(<code>consumeAppCheckToken</code> on the server side), so that a request captured in transit cannot be
+replayed; it costs a token exchange per call, and needs App Check set up (see
+<a href="app_check.html">App Check</a>). Pass <code>false</code> for the ordinary token - the choice is fixed for the life of
+the callable.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable(functions_ref, name)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable(functions_ref, name, limited_use_app_check_token)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -1788,6 +1748,11 @@ any number of times. Release it with <a href="functions.html#firebase_functions_
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
 <td>The function's deployed name (<code>"claimDailyReward"</code>).</td>
 </tr>
+<tr>
+<td>limited_use_app_check_token</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>false</code> for the ordinary token.</td>
+</tr>
 </tbody>
 </table>
 <p><br></p>
@@ -1800,7 +1765,7 @@ any number of times. Release it with <a href="functions.html#firebase_functions_
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller
 functions = firebase_functions_get_instance();
-claim_reward = firebase_functions_get_https_callable(functions, "claimDailyReward");
+claim_reward = firebase_functions_get_https_callable(functions, "claimDailyReward", false);
 
 // The "Claim" button
 firebase_functions_callable_call_with_data(claim_reward, { day: current_day },
@@ -1825,106 +1790,17 @@ there rather than in the game.</p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
-<h1 id="firebase_functions_get_https_callable_with_options">firebase_functions_get_https_callable_with_options<a class="headerlink" href="#firebase_functions_get_https_callable_with_options" title="Permanent link">&para;</a></h1>
-<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallable_1">firebase::functions::Functions::GetHttpsCallable</a></p>
-<p>This function is <a href="functions.html#firebase_functions_get_https_callable">firebase_functions_get_https_callable</a> with the one option a
-callable has: whether each call carries a limited-use App Check token instead of the ordinary
-one. A limited-use token is meant to be consumed by the function (<code>consumeAppCheckToken</code> on the
-server side), so that a request captured in transit cannot be replayed; it costs a token
-exchange per call, and needs App Check set up (see <a href="app_check.html">App Check</a>). The option is fixed for
-the life of the callable.</p>
-<p><br></p>
-<p><strong>Syntax:</strong></p>
-<blockquote>
-<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable_with_options(functions_ref, name, limited_use_app_check_token)</code></pre>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>functions_ref</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>The Cloud Functions handle from <a href="functions.html#firebase_functions_get_instance">firebase_functions_get_instance</a>.</td>
-</tr>
-<tr>
-<td>name</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
-<td>The function's deployed name.</td>
-</tr>
-<tr>
-<td>limited_use_app_check_token</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
-<td><code>true</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>false</code> for the ordinary token.</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><strong>Returns:</strong></p>
-<blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
-</blockquote>
-<p>A callable handle to release with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>, or <code>0</code> when the handle is not valid.</p>
-<p><br></p>
-<hr />
-<p align="right"><a href="#top">Back To Top</a></p>
-
 <h1 id="firebase_functions_get_https_callable_from_url">firebase_functions_get_https_callable_from_url<a class="headerlink" href="#firebase_functions_get_https_callable_from_url" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallablefromurl">firebase::functions::Functions::GetHttpsCallableFromURL</a></p>
 <p>This function returns a callable for a function by its full URL rather than its name - the way
 to reach a function behind a custom domain, or a 2nd-generation function through the Cloud Run
 URL the console shows for it. The instance's region does not apply, since the URL carries the
-address. Release it with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>.</p>
+address. Release it with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>. The limited-use
+App Check token option is the one <a href="functions.html#firebase_functions_get_https_callable">firebase_functions_get_https_callable</a> describes.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable_from_url(functions_ref, url)</code></pre>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>functions_ref</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>The Cloud Functions handle from <a href="functions.html#firebase_functions_get_instance">firebase_functions_get_instance</a>.</td>
-</tr>
-<tr>
-<td>url</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
-<td>The function's HTTPS URL.</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><strong>Returns:</strong></p>
-<blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
-</blockquote>
-<p>A callable handle to release with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>, or <code>0</code> when the handle is not valid.</p>
-<p><br></p>
-<hr />
-<p align="right"><a href="#top">Back To Top</a></p>
-
-<h1 id="firebase_functions_get_https_callable_from_url_with_options">firebase_functions_get_https_callable_from_url_with_options<a class="headerlink" href="#firebase_functions_get_https_callable_from_url_with_options" title="Permanent link">&para;</a></h1>
-<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/functions/functions#gethttpscallablefromurl_1">firebase::functions::Functions::GetHttpsCallableFromURL</a></p>
-<p>This function is <a href="functions.html#firebase_functions_get_https_callable_from_url">firebase_functions_get_https_callable_from_url</a> with the
-limited-use App Check token option of
-<a href="functions.html#firebase_functions_get_https_callable_with_options">firebase_functions_get_https_callable_with_options</a>.</p>
-<p><br></p>
-<p><strong>Syntax:</strong></p>
-<blockquote>
-<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable_from_url_with_options(functions_ref, url, limited_use_app_check_token)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_functions_get_https_callable_from_url(functions_ref, url, limited_use_app_check_token)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -2199,7 +2075,7 @@ handle is not valid.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Submit a score the server validates and ranks
-submit_score = firebase_functions_get_https_callable(functions, "submitScore");
+submit_score = firebase_functions_get_https_callable(functions, "submitScore", false);
 firebase_functions_callable_call_with_data(submit_score,
     { level: level_id, score: score, replay: replay_events },
     function(_error, _message, _data)

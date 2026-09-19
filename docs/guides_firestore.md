@@ -49,8 +49,8 @@ service cloud.firestore {
 ```
 
 `request.auth` is the player's Firebase Authentication sign-in - anonymous sign-in is enough to get
-one (see ${module.auth}) - and `request.auth.uid` is what ${function.firebase_auth_user_uid}
-returns, so a game keys its per-player documents by it. Data that every player may read but none
+one (see ${module.auth}) - and `request.auth.uid` is the `uid` ${function.firebase_auth_user_get_info}
+reads, so a game keys its per-player documents by it. Data that every player may read but none
 may write, such as a leaderboard, is written by a Cloud Function (${module.functions}) instead,
 which is not subject to the rules. Click **Publish** after editing; the change applies within a
 minute. The **Rules playground** on the same tab lets you try a request against the rules without

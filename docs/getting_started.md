@@ -71,11 +71,11 @@ Everything that talks to a Firebase server is asynchronous. Such a function take
 last argument and returns a ${constant.FirebaseError} at once:
 
 ```gml
-var _result = firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _user)
+var _result = firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _result)
 {
     if (_error_code == 0)
     {
-        show_debug_message("Signed in as " + firebase_auth_user_email(_user));
+        show_debug_message("Signed in as " + firebase_auth_user_get_info(_result.user).email);
     }
     else
     {

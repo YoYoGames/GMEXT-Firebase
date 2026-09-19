@@ -56,7 +56,7 @@ gives each signed-in player their own subtree:
 ```
 
 `auth` is the player's Firebase Authentication sign-in - anonymous sign-in is enough to get one
-(see ${module.auth}) - and `auth.uid` is what ${function.firebase_auth_user_uid} returns, so a game
+(see ${module.auth}) - and `auth.uid` is the `uid` ${function.firebase_auth_user_get_info} reads, so a game
 keys its per-player data by it. Data every player may read but none may write, such as a
 leaderboard, is written by a Cloud Function (${module.functions}), which the rules do not apply to.
 Click **Publish** after editing; the change applies at once. The **Rules playground** on the same

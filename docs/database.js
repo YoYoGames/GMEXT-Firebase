@@ -92,7 +92,7 @@
  *
  * @example
  * ```gml
- * var _score = firebase_database_get_reference_at_path(database, "players/" + firebase_auth_user_uid(user) + "/score");
+ * var _score = firebase_database_get_reference_at_path(database, "players/" + firebase_auth_user_get_info(user).uid + "/score");
  * firebase_database_ref_set_value(_score, 1250, function(_error_code, _error_message)
  * {
  *     show_debug_message(_error_code == FirebaseDatabaseError.None ? "Score saved" : _error_message);
@@ -205,21 +205,22 @@
  */
 
 /**
- * @function firebase_database_ref_order_by_child
+ * @function firebase_database_query_order_by_child
  * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByChild](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbychild_1)
  *
- * This function starts a query over the children of the location that sorts the children by the value of the child at `path` inside each of them - `"score"` to rank players by score. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that sorts the children by the value of the child at `path` inside each of them - `"score"` to rank players by score. A previous order directive is replaced. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {String} path The relative path of the child to sort by.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  *
  * @example
  * ```gml
- * var _by_score = firebase_database_ref_order_by_child(scores, "score");
+ * var _by_score = firebase_database_query_order_by_child(scores, "score");
  * var _top = firebase_database_query_limit_to_last(_by_score, 10);
  * firebase_database_query_release(_by_score);
  *
@@ -244,75 +245,80 @@
  */
 
 /**
- * @function firebase_database_ref_order_by_key
+ * @function firebase_database_query_order_by_key
  * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByKey](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbykey)
  *
- * This function starts a query over the children of the location that sorts the children by their keys - the order push IDs were created in. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that sorts the children by their keys - the order push IDs were created in. A previous order directive is replaced. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_order_by_value
+ * @function firebase_database_query_order_by_value
  * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByValue](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbyvalue)
  *
- * This function starts a query over the children of the location that sorts the children by their own values, for a location whose children are plain numbers or strings. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that sorts the children by their own values, for a location whose children are plain numbers or strings. A previous order directive is replaced. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_order_by_priority
+ * @function firebase_database_query_order_by_priority
  * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByPriority](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbypriority)
  *
- * This function starts a query over the children of the location that sorts the children by their priority (${function.firebase_database_ref_set_priority}), which is also the order a query without an order directive uses. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that sorts the children by their priority (${function.firebase_database_ref_set_priority}), which is also the order a query without an order directive uses. A previous order directive is replaced. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_start_at
+ * @function firebase_database_query_start_at
  * @desc **Firebase C++ SDK:** [firebase::database::Query::StartAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#startat)
  *
- * This function starts a query over the children of the location that keeps the children whose sort value - by the order directive, or the priority without one - is greater than or equal to `order_value`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the children whose sort value - by the order directive, or the priority without one - is greater than or equal to `order_value`. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The lowest sort value to include.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_start_at_key
+ * @function firebase_database_query_start_at_key
  * @desc **Firebase C++ SDK:** [firebase::database::Query::StartAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#startat_1)
  *
- * This function starts a query over the children of the location that keeps the children whose sort value is greater than or equal to `order_value`, and among those with exactly that value, whose key is greater than or equal to `child_key` - the cursor for paging past a tie. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the children whose sort value is greater than or equal to `order_value`, and among those with exactly that value, whose key is greater than or equal to `child_key` - the cursor for paging past a tie. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
  * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
  * every platform. Prefer the plain variant where the key is not needed.]]
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The lowest sort value to include.
  * @param {String} child_key The lowest key to include among children with that sort value.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
@@ -320,33 +326,35 @@
  */
 
 /**
- * @function firebase_database_ref_end_at
+ * @function firebase_database_query_end_at
  * @desc **Firebase C++ SDK:** [firebase::database::Query::EndAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#endat)
  *
- * This function starts a query over the children of the location that keeps the children whose sort value is less than or equal to `order_value`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the children whose sort value is less than or equal to `order_value`. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The highest sort value to include.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_end_at_key
+ * @function firebase_database_query_end_at_key
  * @desc **Firebase C++ SDK:** [firebase::database::Query::EndAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#endat_1)
  *
- * This function starts a query over the children of the location that keeps the children whose sort value is less than or equal to `order_value`, and among those with exactly that value, whose key is less than or equal to `child_key`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the children whose sort value is less than or equal to `order_value`, and among those with exactly that value, whose key is less than or equal to `child_key`. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
  * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
  * every platform. Prefer the plain variant where the key is not needed.]]
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The highest sort value to include.
  * @param {String} child_key The highest key to include among children with that sort value.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
@@ -354,33 +362,35 @@
  */
 
 /**
- * @function firebase_database_ref_equal_to
+ * @function firebase_database_query_equal_to
  * @desc **Firebase C++ SDK:** [firebase::database::Query::EqualTo](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#equalto)
  *
- * This function starts a query over the children of the location that keeps the children whose sort value equals `order_value` - with ${function.firebase_database_ref_order_by_child}, the lookup of every child whose field has a value. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the children whose sort value equals `order_value` - with ${function.firebase_database_query_order_by_child}, the lookup of every child whose field has a value. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The sort value to match.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_equal_to_key
+ * @function firebase_database_query_equal_to_key
  * @desc **Firebase C++ SDK:** [firebase::database::Query::EqualTo](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#equalto_1)
  *
- * This function starts a query over the children of the location that keeps the one child whose sort value equals `order_value` and whose key is `child_key`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps the one child whose sort value equals `order_value` and whose key is `child_key`. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
  * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
  * every platform. Prefer the plain variant where the key is not needed.]]
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Any} order_value The sort value to match.
  * @param {String} child_key The key to match.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
@@ -388,63 +398,91 @@
  */
 
 /**
- * @function firebase_database_ref_limit_to_first
+ * @function firebase_database_query_limit_to_first
  * @desc **Firebase C++ SDK:** [firebase::database::Query::LimitToFirst](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#limittofirst)
  *
- * This function starts a query over the children of the location that keeps only the first `limit` children in the query's order. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps only the first `limit` children in the query's order. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Real} limit The maximum number of children.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_limit_to_last
+ * @function firebase_database_query_limit_to_last
  * @desc **Firebase C++ SDK:** [firebase::database::Query::LimitToLast](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#limittolast)
  *
- * This function starts a query over the children of the location that keeps only the last `limit` children in the query's order - the top ten of an ascending score order, still delivered in ascending order. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- * Run it with ${function.firebase_database_query_get_value} or listen to it, and release it with
+ * This function builds a query over the children of a location that keeps only the last `limit` children in the query's order - the top ten of an ascending score order, still delivered in ascending order. The input is not changed - a reference starts a query over its children, a query is
+ * narrowed further - and the function returns a new query with the condition added; the input
+ * handle can be released once it is no longer needed. Run the query with
+ * ${function.firebase_database_query_get_value} or listen to it, and release it with
  * ${function.firebase_database_query_release}.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Real} limit The maximum number of children.
  * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_set_keep_synchronized
+ * @function firebase_database_query_get_reference
+ * @desc **Firebase C++ SDK:** [firebase::database::Query::GetReference](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#getreference)
+ *
+ * This function returns a reference to the location a query reads, without any of the query's
+ * ordering or limits. Release it with ${function.firebase_database_ref_release}.
+ *
+ * @param {Real} ref A reference or a query handle.
+ * @returns {Real} A reference handle to release with ${function.firebase_database_ref_release}, or `0` when the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_query_set_keep_synchronized
  * @desc **Firebase C++ SDK:** [firebase::database::Query::SetKeepSynchronized](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#setkeepsynchronized)
  *
- * This function tells the SDK to keep the location downloaded and up to date even while no listener is
+ * This function tells the SDK to keep the location, or the query's results downloaded and up to date even while no listener is
  * attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
  * at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
  * again with `false`.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Bool} keep_sync `true` to keep the data synchronised, `false` to stop.
  * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_get_value
+ * @function firebase_database_query_is_valid
+ * @desc **Firebase C++ SDK:** [firebase::database::Query::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#is_valid)
+ *
+ * This function returns whether the handle refers to a usable query - `false` for a released handle
+ * and for a query built from a reference that was not valid.
+ *
+ * @param {Real} ref A reference or a query handle.
+ * @returns {Bool} `true` when the query can be used, otherwise `false`.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_query_get_value
  * @desc **Firebase C++ SDK:** [firebase::database::Query::GetValue](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#getvalue)
  *
- * This function reads the data at the location once and hands the callback a snapshot of it. The snapshot holds the whole subtree below the location, so reading a node high up the tree
+ * This function reads the data once and hands the callback a snapshot of it: for a reference, the
+ * data at the location; for a query, the children that matched, in the query's order -
+ * ${function.firebase_database_snapshot_get_children} returns them one snapshot each. The snapshot holds the whole subtree below the location, so reading a node high up the tree
  * downloads everything under it; read the location you need, or narrow it with a query. A location
- * with no data is not an error: the snapshot's ${function.firebase_database_snapshot_exists} is
- * `false` and its value `undefined`.
+ * with no data is not an error: the snapshot's `exists` (see ${function.firebase_database_snapshot_get_info})
+ * is `false` and its value `undefined`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback for a reference
  * that is not valid. To be told about every later change instead, use a value listener.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
@@ -458,14 +496,14 @@
  * @example
  * ```gml
  * var _player = firebase_database_get_reference_at_path(database, "players/USER_123");
- * firebase_database_ref_get_value(_player, function(_error_code, _error_message, _snapshot)
+ * firebase_database_query_get_value(_player, function(_error_code, _error_message, _snapshot)
  * {
  *     if (_error_code != FirebaseDatabaseError.None)
  *     {
  *         show_debug_message("Read failed: " + _error_message);
  *         return;
  *     }
- *     if (firebase_database_snapshot_exists(_snapshot))
+ *     if (firebase_database_snapshot_get_info(_snapshot).exists)
  *     {
  *         var _data = firebase_database_snapshot_get_value(_snapshot);
  *         show_debug_message($"{_data.name} has {_data.score} points");
@@ -481,21 +519,21 @@
  */
 
 /**
- * @function firebase_database_ref_add_value_listener
+ * @function firebase_database_query_add_value_listener
  * @desc **Firebase C++ SDK:** [firebase::database::Query::AddValueListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#addvaluelistener)
  *
- * This function starts listening to the location, so the game learns about every change without polling.
+ * This function starts listening to the location, or the query's results, so the game learns about every change without polling.
  * The `on_value_changed` callback fires once at registration with the current data and again
  * every time anything at or below the location changes, from the server or from a local write.
  * Each call brings a new snapshot handle of the whole subtree that the callback must release. It
- * keeps firing until the listener is removed with ${function.firebase_database_ref_remove_value_listener} - at the latest in the Clean Up event
+ * keeps firing until the listener is removed with ${function.firebase_database_query_remove_value_listener} - at the latest in the Clean Up event
  * of the object that owns the callback. `on_cancelled` fires instead when the server refuses the
  * listener - the security rules deny reading the location - after which the listener is gone.
  *
  * Both callbacks are optional, but not both at once; the function returns `0` with ${function.firebase_last_error_code}
  * set when no callback is given or the handle is not valid.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Function} [on_value_changed] Called with each snapshot.
  * @param {Function} [on_cancelled] Called when the listener is cancelled.
  * @returns {Real} A listener handle, or `0` on failure.
@@ -515,10 +553,10 @@
  * ```gml
  * // Create Event
  * var _player = firebase_database_get_reference_at_path(database, "players/USER_123");
- * player_listener = firebase_database_ref_add_value_listener(_player,
+ * player_listener = firebase_database_query_add_value_listener(_player,
  *     function(_snapshot)
  *     {
- *         if (firebase_database_snapshot_exists(_snapshot))
+ *         if (firebase_database_snapshot_get_info(_snapshot).exists)
  *         {
  *             var _data = firebase_database_snapshot_get_value(_snapshot);
  *             gold = _data.gold;
@@ -532,46 +570,46 @@
  * player_ref = _player;
  *
  * // Clean Up Event
- * firebase_database_ref_remove_value_listener(player_ref, player_listener);
+ * firebase_database_query_remove_value_listener(player_ref, player_listener);
  * firebase_database_ref_release(player_ref);
  * ```
  * The above code keeps the object's `gold` variable in step with the player node, on this device
  * and any other the player uses, and stops listening when the object is destroyed. The reference is
- * kept because removing the listener needs it.
+ * kept because removing the listener needs it; a reference is accepted wherever a query is.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_remove_value_listener
+ * @function firebase_database_query_remove_value_listener
  * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveValueListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removevaluelistener)
  *
- * This function stops a value listener added with ${function.firebase_database_ref_add_value_listener}
+ * This function stops a value listener added with ${function.firebase_database_query_add_value_listener}
  * and frees its handle. The callbacks are not called again after this returns.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Real} listener_ref The listener handle.
  * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_remove_all_value_listeners
+ * @function firebase_database_query_remove_all_value_listeners
  * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveAllValueListeners](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removeallvaluelisteners)
  *
- * This function stops every value listener on the location. The listener handles are not freed: pass
- * each one to ${function.firebase_database_ref_remove_value_listener} afterwards, which is
+ * This function stops every value listener on the location, or the query's results. The listener handles are not freed: pass
+ * each one to ${function.firebase_database_query_remove_value_listener} afterwards, which is
  * harmless for an already-stopped listener, to free it.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
 /**
- * @function firebase_database_ref_add_child_listener
+ * @function firebase_database_query_add_child_listener
  * @desc **Firebase C++ SDK:** [firebase::database::Query::AddChildListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#addchildlistener)
  *
- * This function starts listening to the children of the location. A child listener reports changes to the children of the location one child at a time, which is
+ * This function starts listening to the children of the location, or the query's results. A child listener reports changes to the children of the location one child at a time, which is
  * the way to keep a list in step without re-reading it: `on_child_added` fires once per existing
  * child at registration (in the query's order) and for every child added later,
  * `on_child_changed` when a child's data changes, `on_child_moved` when a child's position changes
@@ -581,11 +619,11 @@
  * for the first. `on_cancelled` fires instead when the server refuses the listener, after which
  * the listener is gone.
  *
- * Every callback is optional, but not all at once. Remove the listener with ${function.firebase_database_ref_remove_child_listener} at the latest in the Clean Up
+ * Every callback is optional, but not all at once. Remove the listener with ${function.firebase_database_query_remove_child_listener} at the latest in the Clean Up
  * event of the object that owns the callbacks. The function returns `0` with
  * ${function.firebase_last_error_code} set when no callback is given or the handle is not valid.
  *
- * @param {Real} ref A reference handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Function} [on_child_added] Called for each existing child and each new one.
  * @param {Function} [on_child_changed] Called when a child changes.
  * @param {Function} [on_child_moved] Called when a child's position changes.
@@ -625,403 +663,33 @@
  * @example
  * ```gml
  * // Create Event
- * lobby_listener = firebase_database_ref_add_child_listener(rooms_ref,
+ * lobby_listener = firebase_database_query_add_child_listener(rooms_ref,
  *     function(_snapshot, _previous_key)
  *     {
- *         lobby_add_room(firebase_database_snapshot_key(_snapshot), firebase_database_snapshot_get_value(_snapshot));
+ *         var _key = firebase_database_snapshot_get_info(_snapshot).key;
+ *         lobby_add_room(_key, firebase_database_snapshot_get_value(_snapshot));
  *         firebase_database_snapshot_release(_snapshot);
  *     },
  *     function(_snapshot, _previous_key)
  *     {
- *         lobby_update_room(firebase_database_snapshot_key(_snapshot), firebase_database_snapshot_get_value(_snapshot));
+ *         var _key = firebase_database_snapshot_get_info(_snapshot).key;
+ *         lobby_update_room(_key, firebase_database_snapshot_get_value(_snapshot));
  *         firebase_database_snapshot_release(_snapshot);
  *     },
  *     undefined,
  *     function(_snapshot)
  *     {
- *         lobby_remove_room(firebase_database_snapshot_key(_snapshot));
+ *         lobby_remove_room(firebase_database_snapshot_get_info(_snapshot).key);
  *         firebase_database_snapshot_release(_snapshot);
  *     },
  *     undefined);
  *
  * // Clean Up Event
- * firebase_database_ref_remove_child_listener(rooms_ref, lobby_listener);
+ * firebase_database_query_remove_child_listener(rooms_ref, lobby_listener);
  * ```
  * The above code keeps a lobby list in step with the `rooms` node: every existing room arrives
  * through `on_child_added` first, then each change as it happens. The moved and cancelled callbacks
  * are not needed and are passed as `undefined`.
- * @function_end
- */
-
-/**
- * @function firebase_database_ref_remove_child_listener
- * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveChildListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removechildlistener)
- *
- * This function stops a child listener added with ${function.firebase_database_ref_add_child_listener}
- * and frees its handle. The callbacks are not called again after this returns.
- *
- * @param {Real} ref A reference handle.
- * @param {Real} listener_ref The listener handle.
- * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_ref_remove_all_child_listeners
- * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveAllChildListeners](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removeallchildlisteners)
- *
- * This function stops every child listener on the location. The listener handles are not freed: pass
- * each one to ${function.firebase_database_ref_remove_child_listener} afterwards to free it.
- *
- * @param {Real} ref A reference handle.
- * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_order_by_child
- * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByChild](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbychild_1)
- *
- * This function narrows a query so that it sorts the children by the value of the child at `path` inside each of them - `"score"` to rank players by score. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {String} path The relative path of the child to sort by.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_order_by_key
- * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByKey](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbykey)
- *
- * This function narrows a query so that it sorts the children by their keys - the order push IDs were created in. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_order_by_value
- * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByValue](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbyvalue)
- *
- * This function narrows a query so that it sorts the children by their own values, for a location whose children are plain numbers or strings. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_order_by_priority
- * @desc **Firebase C++ SDK:** [firebase::database::Query::OrderByPriority](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#orderbypriority)
- *
- * This function narrows a query so that it sorts the children by their priority (${function.firebase_database_ref_set_priority}), which is also the order a query without an order directive uses. A previous order directive is replaced. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_start_at
- * @desc **Firebase C++ SDK:** [firebase::database::Query::StartAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#startat)
- *
- * This function narrows a query so that it keeps the children whose sort value - by the order directive, or the priority without one - is greater than or equal to `order_value`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The lowest sort value to include.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_start_at_key
- * @desc **Firebase C++ SDK:** [firebase::database::Query::StartAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#startat_1)
- *
- * This function narrows a query so that it keeps the children whose sort value is greater than or equal to `order_value`, and among those with exactly that value, whose key is greater than or equal to `child_key` - the cursor for paging past a tie. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
- * every platform. Prefer the plain variant where the key is not needed.]]
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The lowest sort value to include.
- * @param {String} child_key The lowest key to include among children with that sort value.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_end_at
- * @desc **Firebase C++ SDK:** [firebase::database::Query::EndAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#endat)
- *
- * This function narrows a query so that it keeps the children whose sort value is less than or equal to `order_value`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The highest sort value to include.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_end_at_key
- * @desc **Firebase C++ SDK:** [firebase::database::Query::EndAt](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#endat_1)
- *
- * This function narrows a query so that it keeps the children whose sort value is less than or equal to `order_value`, and among those with exactly that value, whose key is less than or equal to `child_key`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
- * every platform. Prefer the plain variant where the key is not needed.]]
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The highest sort value to include.
- * @param {String} child_key The highest key to include among children with that sort value.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_equal_to
- * @desc **Firebase C++ SDK:** [firebase::database::Query::EqualTo](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#equalto)
- *
- * This function narrows a query so that it keeps the children whose sort value equals `order_value` - with ${function.firebase_database_ref_order_by_child}, the lookup of every child whose field has a value. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The sort value to match.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_equal_to_key
- * @desc **Firebase C++ SDK:** [firebase::database::Query::EqualTo](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#equalto_1)
- *
- * This function narrows a query so that it keeps the one child whose sort value equals `order_value` and whose key is `child_key`. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * [[Note: The SDK reports a known issue with the `_key` variants: they do not work properly on
- * every platform. Prefer the plain variant where the key is not needed.]]
- *
- * @param {Real} ref A query handle.
- * @param {Any} order_value The sort value to match.
- * @param {String} child_key The key to match.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_limit_to_first
- * @desc **Firebase C++ SDK:** [firebase::database::Query::LimitToFirst](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#limittofirst)
- *
- * This function narrows a query so that it keeps only the first `limit` children in the query's order. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {Real} limit The maximum number of children.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_limit_to_last
- * @desc **Firebase C++ SDK:** [firebase::database::Query::LimitToLast](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#limittolast)
- *
- * This function narrows a query so that it keeps only the last `limit` children in the query's order - the top ten of an ascending score order, still delivered in ascending order. The input is not changed; the function returns a new query with the condition added, and the
- * input handle can be released once it is no longer needed.
- *
- * @param {Real} ref A query handle.
- * @param {Real} limit The maximum number of children.
- * @returns {Real} A new query handle to release with ${function.firebase_database_query_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_get_reference
- * @desc **Firebase C++ SDK:** [firebase::database::Query::GetReference](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#getreference)
- *
- * This function returns a reference to the location a query reads, without any of the query's
- * ordering or limits. Release it with ${function.firebase_database_ref_release}.
- *
- * @param {Real} ref A query handle.
- * @returns {Real} A reference handle to release with ${function.firebase_database_ref_release}, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_set_keep_synchronized
- * @desc **Firebase C++ SDK:** [firebase::database::Query::SetKeepSynchronized](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#setkeepsynchronized)
- *
- * This function tells the SDK to keep the query's results downloaded and up to date even while no listener is
- * attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
- * at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
- * again with `false`.
- *
- * @param {Real} ref A query handle.
- * @param {Bool} keep_sync `true` to keep the data synchronised, `false` to stop.
- * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_is_valid
- * @desc **Firebase C++ SDK:** [firebase::database::Query::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#is_valid)
- *
- * This function returns whether the handle refers to a usable query - `false` for a released handle
- * and for a query built from a reference that was not valid.
- *
- * @param {Real} ref A query handle.
- * @returns {Bool} `true` when the query can be used, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_get_value
- * @desc **Firebase C++ SDK:** [firebase::database::Query::GetValue](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#getvalue)
- *
- * This function runs the query once and hands the callback a snapshot of the children that
- * matched, in the query's order - ${function.firebase_database_snapshot_get_children} returns them
- * one snapshot each. The snapshot holds the whole subtree below the location, so reading a node high up the tree
- * downloads everything under it; read the location you need, or narrow it with a query. A location
- * with no data is not an error: the snapshot's ${function.firebase_database_snapshot_exists} is
- * `false` and its value `undefined`.
- *
- * The function returns `FirebaseError.InvalidHandle` without calling the callback for a reference
- * that is not valid. To be told about every later change instead, use a value listener.
- *
- * @param {Real} ref A query handle.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the data at the location.
- * @member {Enum.FirebaseDatabaseError} error_code `FirebaseDatabaseError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} snapshot A snapshot handle to release with ${function.firebase_database_snapshot_release}, or `0` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_database_query_add_value_listener
- * @desc **Firebase C++ SDK:** [firebase::database::Query::AddValueListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#addvaluelistener)
- *
- * This function starts listening to the query's results, so the game learns about every change without polling.
- * The `on_value_changed` callback fires once at registration with the current data and again
- * every time anything at or below the location changes, from the server or from a local write.
- * Each call brings a new snapshot handle of the whole subtree that the callback must release. It
- * keeps firing until the listener is removed with ${function.firebase_database_query_remove_value_listener} - at the latest in the Clean Up event
- * of the object that owns the callback. `on_cancelled` fires instead when the server refuses the
- * listener - the security rules deny reading the location - after which the listener is gone.
- *
- * Both callbacks are optional, but not both at once; the function returns `0` with ${function.firebase_last_error_code}
- * set when no callback is given or the handle is not valid.
- *
- * @param {Real} ref A query handle.
- * @param {Function} [on_value_changed] Called with each snapshot.
- * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` on failure.
- *
- * @event callback:on_value_changed
- * @desc Fires with the current data at registration and again on every change.
- * @member {Real} snapshot A snapshot handle to release with ${function.firebase_database_snapshot_release}.
- * @event_end
- *
- * @event callback:on_cancelled
- * @desc Fires when the server stops the listener - the rules deny reading the location.
- * @member {Enum.FirebaseDatabaseError} error_code `FirebaseDatabaseError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_database_query_remove_value_listener
- * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveValueListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removevaluelistener)
- *
- * This function stops a value listener added with ${function.firebase_database_query_add_value_listener}
- * and frees its handle. The callbacks are not called again after this returns.
- *
- * @param {Real} ref A query handle.
- * @param {Real} listener_ref The listener handle.
- * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_remove_all_value_listeners
- * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveAllValueListeners](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removeallvaluelisteners)
- *
- * This function stops every value listener on the query's results. The listener handles are not freed: pass
- * each one to ${function.firebase_database_query_remove_value_listener} afterwards, which is
- * harmless for an already-stopped listener, to free it.
- *
- * @param {Real} ref A query handle.
- * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_query_add_child_listener
- * @desc **Firebase C++ SDK:** [firebase::database::Query::AddChildListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#addchildlistener)
- *
- * This function starts listening to the children of the query's results. A child listener reports changes to the children of the location one child at a time, which is
- * the way to keep a list in step without re-reading it: `on_child_added` fires once per existing
- * child at registration (in the query's order) and for every child added later,
- * `on_child_changed` when a child's data changes, `on_child_moved` when a child's position changes
- * because its priority or ordered value did, and `on_child_removed` when a child is deleted. Each
- * call brings a new snapshot handle of that child that the callback must release; the
- * `previous_sibling_key` argument names the child ordered before this one, or is an empty string
- * for the first. `on_cancelled` fires instead when the server refuses the listener, after which
- * the listener is gone.
- *
- * Every callback is optional, but not all at once. Remove the listener with ${function.firebase_database_query_remove_child_listener} at the latest in the Clean Up
- * event of the object that owns the callbacks. The function returns `0` with
- * ${function.firebase_last_error_code} set when no callback is given or the handle is not valid.
- *
- * @param {Real} ref A query handle.
- * @param {Function} [on_child_added] Called for each existing child and each new one.
- * @param {Function} [on_child_changed] Called when a child changes.
- * @param {Function} [on_child_moved] Called when a child's position changes.
- * @param {Function} [on_child_removed] Called when a child is deleted.
- * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` on failure.
- *
- * @event callback:on_child_added
- * @desc Fires once per existing child at registration and for every child added later.
- * @member {Real} snapshot A snapshot handle of the child, to release with ${function.firebase_database_snapshot_release}.
- * @member {String} previous_sibling_key The key of the child ordered before this one, or an empty string for the first.
- * @event_end
- *
- * @event callback:on_child_changed
- * @desc Fires when a child's data changes.
- * @member {Real} snapshot A snapshot handle of the child, to release with ${function.firebase_database_snapshot_release}.
- * @member {String} previous_sibling_key The key of the child ordered before this one, or an empty string for the first.
- * @event_end
- *
- * @event callback:on_child_moved
- * @desc Fires when a child's position among its siblings changes.
- * @member {Real} snapshot A snapshot handle of the child, to release with ${function.firebase_database_snapshot_release}.
- * @member {String} previous_sibling_key The key of the child now ordered before this one, or an empty string for the first.
- * @event_end
- *
- * @event callback:on_child_removed
- * @desc Fires when a child is deleted.
- * @member {Real} snapshot A snapshot handle of the child as it was, to release with ${function.firebase_database_snapshot_release}.
- * @event_end
- *
- * @event callback:on_cancelled
- * @desc Fires when the server stops the listener - the rules deny reading the location.
- * @member {Enum.FirebaseDatabaseError} error_code `FirebaseDatabaseError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @event_end
  * @function_end
  */
 
@@ -1032,7 +700,7 @@
  * This function stops a child listener added with ${function.firebase_database_query_add_child_listener}
  * and frees its handle. The callbacks are not called again after this returns.
  *
- * @param {Real} ref A query handle.
+ * @param {Real} ref A reference or a query handle.
  * @param {Real} listener_ref The listener handle.
  * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
@@ -1042,10 +710,10 @@
  * @function firebase_database_query_remove_all_child_listeners
  * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveAllChildListeners](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removeallchildlisteners)
  *
- * This function stops every child listener on the query's results. The listener handles are not freed: pass
+ * This function stops every child listener on the location, or the query's results. The listener handles are not freed: pass
  * each one to ${function.firebase_database_query_remove_child_listener} afterwards to free it.
  *
- * @param {Real} ref A query handle.
+ * @param {Real} ref A reference or a query handle.
  * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
@@ -1064,14 +732,22 @@
 /**
  * @function firebase_database_ref_get
  * @desc This function reads a reference's properties into one ${struct.FirebaseDatabaseReferenceInfo}:
- * its key, whether it is the root, whether it is valid, its URL and the database handle, which is
- * never released. It hands out no reference handles: ${function.firebase_database_ref_get_parent},
- * ${function.firebase_database_ref_get_root} and ${function.firebase_database_query_get_reference}
- * each register one to release. The individual `firebase_database_ref_*` getters return the same
- * values one at a time.
+ * its key - the last segment of the path, `"USER_123"` for `players/USER_123`, an empty string
+ * for the root - whether it is the root, whether it is valid and its full URL. It hands out no
+ * handles: ${function.firebase_database_ref_get_parent}, ${function.firebase_database_ref_get_root}
+ * and ${function.firebase_database_query_get_reference} each register a reference to release, and
+ * ${function.firebase_database_ref_get_database} returns the database handle.
  *
  * @param {Real} ref A reference handle.
  * @returns {Struct.FirebaseDatabaseReferenceInfo} The reference's properties, or `undefined` when the handle is not valid.
+ *
+ * @example
+ * ```gml
+ * var _entry = firebase_database_ref_push(scores);
+ * show_debug_message("New score key: " + firebase_database_ref_get(_entry).key);
+ * ```
+ * The above code reads the push ID of a new child through the reference's properties, the one
+ * place a reference's key, URL and root flag are read.
  * @function_end
  */
 
@@ -1094,7 +770,7 @@
  *
  * This function returns a reference to a new child of this location with a key the SDK generates
  * - a 20-character push ID that sorts by creation time, so children pushed one after another come
- * back in that order from ${function.firebase_database_ref_get_value} and the listeners. Nothing is
+ * back in that order from ${function.firebase_database_query_get_value} and the listeners. Nothing is
  * written until you write to the reference; a list of items is built by pushing a child per item.
  * Release the handle with ${function.firebase_database_ref_release}.
  *
@@ -1104,8 +780,8 @@
  * @example
  * ```gml
  * var _entry = firebase_database_ref_push(scores);
- * show_debug_message("New score key: " + firebase_database_ref_key(_entry));
- * firebase_database_ref_set_value(_entry, { user: firebase_auth_user_uid(user), score: 1250, scored_at: firebase_database_server_timestamp() },
+ * show_debug_message("New score key: " + firebase_database_ref_get(_entry).key);
+ * firebase_database_ref_set_value(_entry, { user: firebase_auth_user_get_info(user).uid, score: 1250, scored_at: firebase_database_server_timestamp() },
  *     function(_error_code, _error_message)
  *     {
  *         show_debug_message(_error_code == FirebaseDatabaseError.None ? "Score posted" : _error_message);
@@ -1185,12 +861,12 @@
  * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::SetPriority](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#setpriority)
  *
  * This function sets the location's priority, the value that orders it among its siblings for
- * ${function.firebase_database_ref_order_by_priority} and the default order of a query without an
+ * ${function.firebase_database_query_order_by_priority} and the default order of a query without an
  * `order_by`: children with no priority first, then numeric priorities ascending, then string
  * priorities ascending; ties broken by key. A priority is a number, a string or `undefined`;
  * anything else fails the callback with `FirebaseDatabaseError.InvalidVariantType`. Priorities
  * are a legacy feature - ordering by a child value with
- * ${function.firebase_database_ref_order_by_child} does the same job with visible data. Only one write of this kind should be in flight on a location at a time; a second one before
+ * ${function.firebase_database_query_order_by_child} does the same job with visible data. Only one write of this kind should be in flight on a location at a time; a second one before
  * the first has completed fails with `FirebaseDatabaseError.ConflictingOperationInProgress`.
  *
  * @param {Real} ref A reference handle.
@@ -1305,7 +981,7 @@
  *
  * [[Important: For a counter or another value that several devices change at once, keep the
  * increment on a server you control - a Cloud Function (${module.functions}) reading and writing
- * the location - or accept the race and read with ${function.firebase_database_ref_get_value} and
+ * the location - or accept the race and read with ${function.firebase_database_query_get_value} and
  * write with ${function.firebase_database_ref_set_value}. For several locations that must change
  * together, ${function.firebase_database_ref_update_children} is atomic and needs no read.]]
  *
@@ -1335,18 +1011,6 @@
  */
 
 /**
- * @function firebase_database_snapshot_exists
- * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::exists](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#exists)
- *
- * This function returns whether the snapshot holds any data. A read of a location that has none
- * is not an error; this is how it shows.
- *
- * @param {Real} ref A snapshot handle.
- * @returns {Bool} `true` when there is data, otherwise `false`.
- * @function_end
- */
-
-/**
  * @function firebase_database_snapshot_is_valid
  * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#is_valid)
  *
@@ -1364,8 +1028,8 @@
  *
  * This function returns a snapshot of a location below this one, out of the data already
  * downloaded - no request is made. It is the way to read one part of a large snapshot without
- * converting all of it. The child need not exist; its ${function.firebase_database_snapshot_exists}
- * says. Release the handle with ${function.firebase_database_snapshot_release}.
+ * converting all of it. The child need not exist; the `exists` of its
+ * ${function.firebase_database_snapshot_get_info} says. Release the handle with ${function.firebase_database_snapshot_release}.
  *
  * @param {Real} ref A snapshot handle.
  * @param {String} path A slash-separated path relative to this location (`"stats/wins"`).
@@ -1386,29 +1050,6 @@
  */
 
 /**
- * @function firebase_database_snapshot_has_children
- * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::has_children](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#has_children)
- *
- * This function returns whether the snapshot's location is a node with children rather than a
- * leaf value or an empty location.
- *
- * @param {Real} ref A snapshot handle.
- * @returns {Bool} `true` when there are children, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_database_snapshot_children_count
- * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::children_count](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#children_count)
- *
- * This function returns how many direct children the snapshot's location has.
- *
- * @param {Real} ref A snapshot handle.
- * @returns {Real} The number of children, or `0` for a leaf, an empty location or an invalid handle.
- * @function_end
- */
-
-/**
  * @function firebase_database_snapshot_get_children
  * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::children](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#children)
  *
@@ -1419,18 +1060,6 @@
  *
  * @param {Real} ref A snapshot handle.
  * @returns {Array[Real]} An array of snapshot handles, empty when there are no children or the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_database_snapshot_key
- * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::key_string](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#key_string)
- *
- * This function returns the key of the snapshot's location - the last segment of its path, or the
- * push ID of a child delivered by a child listener.
- *
- * @param {Real} ref A snapshot handle.
- * @returns {String} The key, or an empty string for the root or an invalid handle.
  * @function_end
  */
 
@@ -1500,29 +1129,6 @@
  */
 
 /**
- * @function firebase_database_ref_key
- * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::key_string](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#key_string)
- *
- * This function returns the last segment of the reference's path - `"USER_123"` for
- * `players/USER_123` - or an empty string for the root.
- *
- * @param {Real} ref A reference handle.
- * @returns {String} The key, or an empty string for the root or an invalid handle.
- * @function_end
- */
-
-/**
- * @function firebase_database_ref_is_root
- * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::is_root](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#is_root)
- *
- * This function returns whether the reference is the root of the database.
- *
- * @param {Real} ref A reference handle.
- * @returns {Bool} `true` for the root, otherwise `false`.
- * @function_end
- */
-
-/**
  * @function firebase_database_ref_is_valid
  * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#is_valid)
  *
@@ -1570,17 +1176,6 @@
  */
 
 /**
- * @function firebase_database_ref_get_url
- * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::url](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#url)
- *
- * This function returns the location's full URL - the database URL followed by the path.
- *
- * @param {Real} ref A reference handle.
- * @returns {String} The URL, or an empty string when the handle is not valid.
- * @function_end
- */
-
-/**
  * @function firebase_database_server_timestamp
  * @desc This function returns the placeholder the server replaces with the time it applied the write, in
  * milliseconds since the Unix epoch, so every device agrees on when something happened regardless
@@ -1611,7 +1206,7 @@
  *
  * @example
  * ```gml
- * var _presence = firebase_database_get_reference_at_path(database, "presence/" + firebase_auth_user_uid(user));
+ * var _presence = firebase_database_get_reference_at_path(database, "presence/" + firebase_auth_user_get_info(user).uid);
  * firebase_database_ref_set_value(_presence, { online: true, since: firebase_database_server_timestamp() }, undefined);
  *
  * var _on_disconnect = firebase_database_ref_on_disconnect(_presence);
@@ -1792,14 +1387,14 @@
 /**
  * @struct FirebaseDatabaseReferenceInfo
  * @desc Every property of a reference in one struct, from ${function.firebase_database_ref_get}. It
- * carries no reference handles - the parent, the root and a copy of the location itself come from
+ * carries no handles - the parent, the root and a copy of the location itself come from
  * ${function.firebase_database_ref_get_parent}, ${function.firebase_database_ref_get_root} and
- * ${function.firebase_database_query_get_reference}; the database handle is not released.
+ * ${function.firebase_database_query_get_reference}, the database from
+ * ${function.firebase_database_ref_get_database}.
  *
  * @member {String} key The last segment of the path, or an empty string for the root.
  * @member {Bool} is_root Whether this is the root of the database.
  * @member {Bool} is_valid Whether the reference can be used.
- * @member {Real} database The database handle.
  * @member {String} url The location's full URL.
  * @struct_end
  */
@@ -1810,11 +1405,11 @@
  * It carries no handle; ${function.firebase_database_snapshot_get_reference} registers one to the
  * snapshot's location.
  *
- * @member {String} key The key of the snapshot's location.
- * @member {Bool} exists Whether there is data.
+ * @member {String} key The key of the snapshot's location - the last segment of its path, or the push ID of a child delivered by a child listener.
+ * @member {Bool} exists Whether there is data; a read of a location that has none is not an error, this is how it shows.
  * @member {Bool} is_valid Whether the snapshot can be read.
- * @member {Bool} has_children Whether the location is a node with children.
- * @member {Real} children_count The number of direct children.
+ * @member {Bool} has_children Whether the location is a node with children rather than a leaf value or an empty location.
+ * @member {Real} children_count The number of direct children, `0` for a leaf or an empty location.
  * @struct_end
  */
 
@@ -1865,9 +1460,12 @@
  * ${function.firebase_database_snapshot_get_children} and each ${function.firebase_database_snapshot_child}
  * mints a new snapshot handle that the game must release.
  *
- * The query builders never change their input: `firebase_database_ref_*` starts a query from a
- * reference and `firebase_database_query_*` narrows a query, each returning a new handle with the
- * condition added. Release the intermediate handles as the chain is built.
+ * A reference is a query in the SDK, and every `firebase_database_query_*` function accepts
+ * either handle: a builder starts a query from a reference or narrows a query, always returning a
+ * new query handle with the condition added (release the intermediate handles as the chain is
+ * built), and the read and the listeners work on a location or on a query's results alike. The
+ * properties of a reference or a snapshot are read as one struct, through
+ * ${function.firebase_database_ref_get} and ${function.firebase_database_snapshot_get_info}.
  *
  * ### Data
  *
@@ -1922,13 +1520,10 @@
  * @desc A reference names a location in the tree, which may or may not hold data; it reaches the
  * locations around it and is where reads, writes, listeners and queries start:
  * @ref firebase_database_ref_get
- * @ref firebase_database_ref_key
- * @ref firebase_database_ref_is_root
  * @ref firebase_database_ref_is_valid
  * @ref firebase_database_ref_get_parent
  * @ref firebase_database_ref_get_root
  * @ref firebase_database_ref_get_database
- * @ref firebase_database_ref_get_url
  * @ref firebase_database_ref_child
  * @ref firebase_database_ref_push
  * @ref firebase_database_ref_go_online
@@ -1936,10 +1531,9 @@
  * @ref firebase_database_ref_release
  * @section_end
  *
- * @section_func Reading and writing
- * @desc Reading a location once, and the writes - whole value, priority, several paths at once,
- * delete - plus the server timestamp placeholder:
- * @ref firebase_database_ref_get_value
+ * @section_func Writing
+ * @desc The writes - whole value, priority, several paths at once, delete - plus the server timestamp
+ * placeholder:
  * @ref firebase_database_ref_set_value
  * @ref firebase_database_ref_set_priority
  * @ref firebase_database_ref_set_value_and_priority
@@ -1949,38 +1543,24 @@
  * @ref firebase_database_server_timestamp
  * @section_end
  *
- * @section_func Listening
- * @desc Being told when a location or its children change. A value listener delivers the whole subtree
- * on every change; a child listener delivers one child per event and is the right tool for a
- * list:
- * @ref firebase_database_ref_add_value_listener
- * @ref firebase_database_ref_remove_value_listener
- * @ref firebase_database_ref_remove_all_value_listeners
- * @ref firebase_database_ref_add_child_listener
- * @ref firebase_database_ref_remove_child_listener
- * @ref firebase_database_ref_remove_all_child_listeners
- * @ref firebase_database_ref_set_keep_synchronized
- * @section_end
- *
- * @section_func Queries from a reference
- * @desc Starting a query over a location's children - an order directive, then a range, then a limit.
- * A query has one order directive; a range without one compares priorities:
- * @ref firebase_database_ref_order_by_child
- * @ref firebase_database_ref_order_by_key
- * @ref firebase_database_ref_order_by_value
- * @ref firebase_database_ref_order_by_priority
- * @ref firebase_database_ref_start_at
- * @ref firebase_database_ref_start_at_key
- * @ref firebase_database_ref_end_at
- * @ref firebase_database_ref_end_at_key
- * @ref firebase_database_ref_equal_to
- * @ref firebase_database_ref_equal_to_key
- * @ref firebase_database_ref_limit_to_first
- * @ref firebase_database_ref_limit_to_last
+ * @section_func Reading and listening
+ * @desc Reading a location or a query's results once, and being told when they change. Each of these
+ * takes a reference or a query handle. A value listener delivers the whole subtree on every
+ * change; a child listener delivers one child per event and is the right tool for a list:
+ * @ref firebase_database_query_get_value
+ * @ref firebase_database_query_add_value_listener
+ * @ref firebase_database_query_remove_value_listener
+ * @ref firebase_database_query_remove_all_value_listeners
+ * @ref firebase_database_query_add_child_listener
+ * @ref firebase_database_query_remove_child_listener
+ * @ref firebase_database_query_remove_all_child_listeners
+ * @ref firebase_database_query_set_keep_synchronized
  * @section_end
  *
  * @section_func Queries
- * @desc Narrowing a query further, running it, listening to it, and releasing it:
+ * @desc Building a query over a location's children from a reference or a narrower query - an order
+ * directive, then a range, then a limit. A query has one order directive; a range without one
+ * compares priorities:
  * @ref firebase_database_query_order_by_child
  * @ref firebase_database_query_order_by_key
  * @ref firebase_database_query_order_by_value
@@ -1994,15 +1574,7 @@
  * @ref firebase_database_query_limit_to_first
  * @ref firebase_database_query_limit_to_last
  * @ref firebase_database_query_get_reference
- * @ref firebase_database_query_set_keep_synchronized
  * @ref firebase_database_query_is_valid
- * @ref firebase_database_query_get_value
- * @ref firebase_database_query_add_value_listener
- * @ref firebase_database_query_remove_value_listener
- * @ref firebase_database_query_remove_all_value_listeners
- * @ref firebase_database_query_add_child_listener
- * @ref firebase_database_query_remove_child_listener
- * @ref firebase_database_query_remove_all_child_listeners
  * @ref firebase_database_query_release
  * @section_end
  *
@@ -2023,13 +1595,9 @@
  * @ref firebase_database_snapshot_get_info
  * @ref firebase_database_snapshot_get_value
  * @ref firebase_database_snapshot_get_priority
- * @ref firebase_database_snapshot_exists
  * @ref firebase_database_snapshot_is_valid
- * @ref firebase_database_snapshot_key
  * @ref firebase_database_snapshot_child
  * @ref firebase_database_snapshot_has_child
- * @ref firebase_database_snapshot_has_children
- * @ref firebase_database_snapshot_children_count
  * @ref firebase_database_snapshot_get_children
  * @ref firebase_database_snapshot_get_reference
  * @ref firebase_database_snapshot_release

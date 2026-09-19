@@ -2544,7 +2544,7 @@ Names are case-sensitive, and the <code>firebase_</code>, <code>google_</code> a
 <h1 id="firebase_analytics_set_user_id">firebase_analytics_set_user_id<a class="headerlink" href="#firebase_analytics_set_user_id" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setuserid">firebase::analytics::SetUserId</a></p>
 <p>This function sets the id Analytics uses to recognise the same player across devices - the
-game's own account id, such as the <a href="auth.html#firebase_auth_user_uid">firebase_auth_user_uid</a> of the signed-in user,
+game's own account id, such as the <code>uid</code> <a href="auth.html#firebase_auth_user_get_info">firebase_auth_user_get_info</a> reads for the signed-in user,
 never an email address or a name. An empty string removes it. Google's privacy policy governs
 its use. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
 <p><br></p>

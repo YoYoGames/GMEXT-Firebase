@@ -1,5 +1,5 @@
 
-firebase_database_ref_get_value(_ref, function(error_code, error_message, snapshot_ref) {
+firebase_database_query_get_value(_ref, function(error_code, error_message, snapshot_ref) {
 	if (error_code == FirebaseDatabaseError.None) {
 		var _info = firebase_database_snapshot_get_info(snapshot_ref);
 		var _value = firebase_database_snapshot_get_value(snapshot_ref);

@@ -43,11 +43,10 @@ extern uint32_t g_fs_write_batch_index;
 // constructors (Integer/Timestamp/GeoPoint/Reference/Blob/Null) that let
 // script code opt into a precise Firestore type GML's all-double "real"
 // can't otherwise express. Both flavors are minted by
-// firestore_field_value_*() and registered here identically. These embeddable
-// helper handles are surfaced to GML as exact doubles (packed refs use only 50
-// bits), because dynamic GMValue containers support real/double but not a nested
-// int64 wire kind. gmValueToFieldValue() resolves such a ref found inside a plain
-// data map back to the concrete FieldValue it was registered with.
+// firestore_field_value_*() and registered here identically, as the same
+// uint64 handles every other object uses. gmValueToFieldValue() resolves such
+// a handle found inside a plain data map back to the concrete FieldValue it
+// was registered with.
 extern std::map<uint32_t, firebase::firestore::FieldValue> g_fs_field_value_map;
 extern uint32_t g_fs_field_value_index;
 
@@ -140,16 +139,14 @@ gm_structs::FirestoreBlob makeFirestoreBlob(const firebase::firestore::FieldValu
 void releaseFirestoreSnapshotBlobs(uint32_t snapshot_id);
 
 // Inbound (GML -> C++): reconstructs a FieldValue from a decoded incoming
-// GMValue. Plain reals become FieldValue::Double() (GML has no separate
-// int/double distinction - use firestore_field_value_integer() to force
-// int64 storage). A double whose value exactly matches one of this
-// extension's packed refs (see GMFirebase_common.h's ext/type bit layout) is
-// resolved against g_fs_field_value_map (an explicit sentinel/typed value
-// minted by firestore_field_value_*()) or g_fs_doc_ref_map (auto-detected
-// DocumentReference -> FieldValue::Reference()) instead of being taken
-// literally - real user data numbers never land in that reserved bit range,
-// the same assumption every other packed-ref-as-double value in this
-// extension already relies on.
+// GMValue. Plain reals become FieldValue::Double() (use
+// firestore_field_value_integer() to force int64 storage). A GML int64 -
+// which crosses as its own wire kind, never as a double - carrying this
+// extension's ext/type bits (see GMFirebase_common.h) is resolved against
+// g_fs_field_value_map (an explicit sentinel/typed value minted by
+// firestore_field_value_*()) or g_fs_doc_ref_map (a DocumentReference handle
+// -> FieldValue::Reference()) instead of being taken literally; any other
+// int64 is FieldValue::Integer().
 firebase::firestore::FieldValue gmValueToFieldValue(const gm::wire::GMValue& value);
 
 // Decodes an inbound gmval struct (field name -> value) into a MapFieldValue,

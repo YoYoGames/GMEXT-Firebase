@@ -525,17 +525,76 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_app_check_set_token_auto_refresh_enabled",
-          "argCount": 1,
+          "%Name": "__firebase_app_check_get_instance",
+          "argCount": 2,
           "args": [
+            1,
             2
           ],
-          "documentation": "@param {Real} enabled\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_app_check_get_instance",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_app_check_get_instance",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_app_check_get_instance_for_app",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_app_check_get_instance_for_app",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_app_check_get_instance_for_app",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_app_check_get_app",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_app_check_get_app",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_app_check_get_app",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_app_check_set_token_auto_refresh_enabled",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_app_check_set_token_auto_refresh_enabled",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_app_check_set_token_auto_refresh_enabled",
+          "name": "__firebase_app_check_set_token_auto_refresh_enabled",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -614,6 +673,64 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_app_check_remove_listener",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_installations_get_instance",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_installations_get_instance",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_installations_get_instance",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_installations_get_instance_for_app",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_installations_get_instance_for_app",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_installations_get_instance_for_app",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_installations_get_app",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_installations_get_app",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_installations_get_app",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -1425,186 +1542,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_uid",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_uid",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_uid",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_email",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_email",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_email",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_display_name",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_display_name",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_display_name",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_photo_url",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_photo_url",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_photo_url",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_provider_id",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_provider_id",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_provider_id",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_phone_number",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_phone_number",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_phone_number",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_is_email_verified",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_is_email_verified",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_is_email_verified",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_is_anonymous",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_is_anonymous",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_is_anonymous",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_creation_timestamp",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_creation_timestamp",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_creation_timestamp",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_last_sign_in_timestamp",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_last_sign_in_timestamp",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_last_sign_in_timestamp",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_auth_user_get_token",
           "argCount": 4,
           "args": [
@@ -2044,396 +1981,6 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_database_get_log_level",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_order_by_child",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_order_by_child",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_order_by_child",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_order_by_key",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_order_by_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_order_by_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_order_by_value",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_order_by_value",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_order_by_value",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_order_by_priority",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_order_by_priority",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_order_by_priority",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_start_at",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_start_at",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_start_at",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_start_at_key",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_start_at_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_start_at_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_end_at",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_end_at",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_end_at",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_end_at_key",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_end_at_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_end_at_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_equal_to",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_equal_to",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_equal_to",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_equal_to_key",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_equal_to_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_equal_to_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_limit_to_first",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_limit_to_first",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_limit_to_first",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_limit_to_last",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_limit_to_last",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_limit_to_last",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_set_keep_synchronized",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_set_keep_synchronized",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_set_keep_synchronized",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_get_value",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_get_value",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_get_value",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_add_value_listener",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_add_value_listener",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_add_value_listener",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_remove_value_listener",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_remove_value_listener",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_remove_value_listener",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_remove_all_value_listeners",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_remove_all_value_listeners",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_remove_all_value_listeners",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_add_child_listener",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_add_child_listener",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_add_child_listener",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_remove_child_listener",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_remove_child_listener",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_remove_child_listener",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_remove_all_child_listeners",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_remove_all_child_listeners",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_remove_all_child_listeners",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -3120,24 +2667,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_snapshot_exists",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_snapshot_exists",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_snapshot_exists",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_database_snapshot_is_valid",
           "argCount": 2,
           "args": [
@@ -3194,42 +2723,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_snapshot_has_children",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_snapshot_has_children",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_snapshot_has_children",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_snapshot_children_count",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_snapshot_children_count",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_snapshot_children_count",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_database_snapshot_get_children",
           "argCount": 4,
           "args": [
@@ -3247,24 +2740,6 @@
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_snapshot_key",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_database_snapshot_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_snapshot_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
         },
         {
           "$GMExtensionFunction": "",
@@ -4793,30 +4268,36 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_delete",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_firestore_field_value_delete",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_delete",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_delete",
+          "name": "__firebase_firestore_field_value_delete",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_server_timestamp",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_firestore_field_value_server_timestamp",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_server_timestamp",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_server_timestamp",
+          "name": "__firebase_firestore_field_value_server_timestamp",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -4824,12 +4305,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_array_union",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_array_union",
           "help": "",
           "hidden": true,
@@ -4842,12 +4325,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_array_remove",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_array_remove",
           "help": "",
           "hidden": true,
@@ -4859,104 +4344,116 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_increment_integer",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_increment_integer",
+          "argCount": 3,
           "args": [
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} value\r\n@returns {Real}",
+          "documentation": "@param {Real} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_increment_integer",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_increment_integer",
+          "name": "__firebase_firestore_field_value_increment_integer",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_increment_double",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_increment_double",
+          "argCount": 3,
           "args": [
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} value\r\n@returns {Real}",
+          "documentation": "@param {Real} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_increment_double",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_increment_double",
+          "name": "__firebase_firestore_field_value_increment_double",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_integer",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_integer",
+          "argCount": 3,
           "args": [
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} value\r\n@returns {Real}",
+          "documentation": "@param {Real} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_integer",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_integer",
+          "name": "__firebase_firestore_field_value_integer",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_double",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_double",
+          "argCount": 3,
           "args": [
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} value\r\n@returns {Real}",
+          "documentation": "@param {Real} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_double",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_double",
+          "name": "__firebase_firestore_field_value_double",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_timestamp",
-          "argCount": 2,
+          "%Name": "__firebase_firestore_field_value_timestamp",
+          "argCount": 4,
           "args": [
             2,
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} seconds\r\n@param {Real} nanoseconds\r\n@returns {Real}",
+          "documentation": "@param {Real} seconds\r\n@param {Real} nanoseconds\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_timestamp",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_timestamp",
+          "name": "__firebase_firestore_field_value_timestamp",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_geo_point",
-          "argCount": 2,
+          "%Name": "__firebase_firestore_field_value_geo_point",
+          "argCount": 4,
           "args": [
             2,
+            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} latitude\r\n@param {Real} longitude\r\n@returns {Real}",
+          "documentation": "@param {Real} latitude\r\n@param {Real} longitude\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_geo_point",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_geo_point",
+          "name": "__firebase_firestore_field_value_geo_point",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -4964,12 +4461,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_reference",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_reference",
           "help": "",
           "hidden": true,
@@ -4982,12 +4481,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_blob",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_blob",
           "help": "",
           "hidden": true,
@@ -4999,15 +4500,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_null",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_firestore_field_value_null",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_null",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_null",
+          "name": "__firebase_firestore_field_value_null",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -6670,26 +6174,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_functions_get_https_callable_with_options",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_functions_get_https_callable_with_options",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_functions_get_https_callable_with_options",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_functions_get_https_callable_from_url",
           "argCount": 4,
           "args": [
@@ -6704,26 +6188,6 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_functions_get_https_callable_from_url",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_functions_get_https_callable_from_url_with_options",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_functions_get_https_callable_from_url_with_options",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_functions_get_https_callable_from_url_with_options",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -7946,7 +7410,7 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_sign_in_with_custom_token_result",
+          "%Name": "__firebase_auth_user_provider_data",
           "argCount": 4,
           "args": [
             1,
@@ -7955,129 +7419,11 @@
             2
           ],
           "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_sign_in_with_custom_token_result",
+          "externalName": "__EXT_NATIVE__firebase_auth_user_provider_data",
           "help": "",
           "hidden": true,
           "kind": 4,
-          "name": "__firebase_auth_sign_in_with_custom_token_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_sign_in_and_retrieve_data_with_credential_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_sign_in_and_retrieve_data_with_credential_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_sign_in_and_retrieve_data_with_credential_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_sign_in_anonymously_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_sign_in_anonymously_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_sign_in_anonymously_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_sign_in_with_email_and_password_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_sign_in_with_email_and_password_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_sign_in_with_email_and_password_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_create_user_with_email_and_password_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_create_user_with_email_and_password_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_create_user_with_email_and_password_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_provider_data_count",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_provider_data_count",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_provider_data_count",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_provider_data_at",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_provider_data_at",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_provider_data_at",
+          "name": "__firebase_auth_user_provider_data",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -8124,46 +7470,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_reauthenticate_and_retrieve_data_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_reauthenticate_and_retrieve_data_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_reauthenticate_and_retrieve_data_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_auth_user_link_with_credential_result",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_auth_user_link_with_credential_result",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_auth_user_link_with_credential_result",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_auth_user_update_phone_number_credential",
           "argCount": 4,
           "args": [
@@ -8178,42 +7484,6 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_auth_user_update_phone_number_credential",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_key",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_key",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_key",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_is_root",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_is_root",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_is_root",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -8295,24 +7565,6 @@
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_database_ref_get_url",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_database_ref_get_url",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_database_ref_get_url",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
         },
         {
           "$GMExtensionFunction": "",
@@ -8473,12 +7725,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_path_create",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_path_create",
           "help": "",
           "hidden": true,
@@ -8490,15 +7744,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_path_document_id",
-          "argCount": 0,
-          "args": [],
-          "documentation": "@returns {Real}",
+          "%Name": "__firebase_firestore_field_path_document_id",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_path_document_id",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_path_document_id",
+          "name": "__firebase_firestore_field_path_document_id",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -8560,12 +7817,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_equal_to",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_equal_to",
           "help": "",
           "hidden": true,
@@ -8578,12 +7837,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_not_equal_to",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_not_equal_to",
           "help": "",
           "hidden": true,
@@ -8596,12 +7857,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_less_than",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_less_than",
           "help": "",
           "hidden": true,
@@ -8614,12 +7877,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_less_than_or_equal_to",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to",
           "help": "",
           "hidden": true,
@@ -8632,12 +7897,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_greater_than",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_greater_than",
           "help": "",
           "hidden": true,
@@ -8650,12 +7917,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_greater_than_or_equal_to",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to",
           "help": "",
           "hidden": true,
@@ -8668,12 +7937,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_array_contains",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_array_contains",
           "help": "",
           "hidden": true,
@@ -8686,12 +7957,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_array_contains_any",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_array_contains_any",
           "help": "",
           "hidden": true,
@@ -8704,12 +7977,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_in",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_in",
           "help": "",
           "hidden": true,
@@ -8722,12 +7997,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_not_in",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_not_in",
           "help": "",
           "hidden": true,
@@ -8740,12 +8017,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_equal_to_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_equal_to_field_path",
           "help": "",
           "hidden": true,
@@ -8758,12 +8037,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_not_equal_to_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_not_equal_to_field_path",
           "help": "",
           "hidden": true,
@@ -8776,12 +8057,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_less_than_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_less_than_field_path",
           "help": "",
           "hidden": true,
@@ -8794,12 +8077,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_less_than_or_equal_to_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_less_than_or_equal_to_field_path",
           "help": "",
           "hidden": true,
@@ -8812,12 +8097,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_greater_than_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_greater_than_field_path",
           "help": "",
           "hidden": true,
@@ -8830,12 +8117,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_greater_than_or_equal_to_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_greater_than_or_equal_to_field_path",
           "help": "",
           "hidden": true,
@@ -8848,12 +8137,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_array_contains_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_array_contains_field_path",
           "help": "",
           "hidden": true,
@@ -8866,12 +8157,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_array_contains_any_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_array_contains_any_field_path",
           "help": "",
           "hidden": true,
@@ -8884,12 +8177,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_in_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_in_field_path",
           "help": "",
           "hidden": true,
@@ -8902,12 +8197,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_not_in_field_path",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_not_in_field_path",
           "help": "",
           "hidden": true,
@@ -8920,12 +8217,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_and",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_and",
           "help": "",
           "hidden": true,
@@ -8938,12 +8237,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_filter_or",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_filter_or",
           "help": "",
           "hidden": true,
@@ -10825,24 +10126,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_get_app",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_get_app",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_get_app",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_remote_config_get_app",
           "argCount": 4,
           "args": [
@@ -10863,52 +10146,38 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_get_app",
-          "argCount": 2,
+          "%Name": "__firebase_firestore_field_value_boolean",
+          "argCount": 3,
           "args": [
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_get_app",
+          "documentation": "@param {Real} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_field_value_boolean",
           "help": "",
           "hidden": true,
           "kind": 4,
-          "name": "__firebase_app_check_get_app",
+          "name": "__firebase_firestore_field_value_boolean",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_boolean",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_string",
+          "argCount": 3,
           "args": [
+            1,
+            1,
             2
           ],
-          "documentation": "@param {Real} value\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_field_value_boolean",
-          "help": "",
-          "hidden": false,
-          "kind": 4,
-          "name": "firebase_firestore_field_value_boolean",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_string",
-          "argCount": 1,
-          "args": [
-            1
-          ],
-          "documentation": "@param {String} value\r\n@returns {Real}",
+          "documentation": "@param {String} value\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_string",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_string",
+          "name": "__firebase_firestore_field_value_string",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2
@@ -10916,12 +10185,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_array",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_array",
           "help": "",
           "hidden": true,
@@ -10934,12 +10205,14 @@
         {
           "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_field_value_map",
-          "argCount": 2,
+          "argCount": 4,
           "args": [
+            1,
+            2,
             1,
             2
           ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_map",
           "help": "",
           "hidden": true,
@@ -11121,260 +10394,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_get_instance_handle",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_get_instance_handle",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_get_instance_handle",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_get_instance_for_app",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_get_instance_for_app",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_get_instance_for_app",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_instance_get_app",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_instance_get_app",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_instance_get_app",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_instance_get_id",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_instance_get_id",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_instance_get_id",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_instance_get_token",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_instance_get_token",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_instance_get_token",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_installations_instance_delete",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_installations_instance_delete",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_installations_instance_delete",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_get_instance_handle",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_get_instance_handle",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_get_instance_handle",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_get_instance_for_app",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_get_instance_for_app",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_get_instance_for_app",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_instance_get_app",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_instance_get_app",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_instance_get_app",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_instance_set_token_auto_refresh_enabled",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_instance_set_token_auto_refresh_enabled",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_instance_set_token_auto_refresh_enabled",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_instance_get_token",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_instance_get_token",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_instance_get_token",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_instance_get_limited_use_token",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_instance_get_limited_use_token",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_instance_get_limited_use_token",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_app_check_instance_add_listener",
-          "argCount": 4,
-          "args": [
-            1,
-            2,
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_app_check_instance_add_listener",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_app_check_instance_add_listener",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_document_snapshot_metadata_to_string",
           "argCount": 2,
           "args": [
@@ -11426,42 +10445,6 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_document_snapshot_exists",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_document_snapshot_exists",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_document_snapshot_exists",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_document_snapshot_id",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {String}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_document_snapshot_id",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_document_snapshot_id",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 1
-        },
-        {
-          "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_document_snapshot_reference",
           "argCount": 4,
           "args": [
@@ -11476,114 +10459,6 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_firestore_document_snapshot_reference",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_document_snapshot_metadata_has_pending_writes",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_document_snapshot_metadata_has_pending_writes",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_document_snapshot_metadata_has_pending_writes",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_document_snapshot_metadata_is_from_cache",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_document_snapshot_metadata_is_from_cache",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_document_snapshot_metadata_is_from_cache",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_query_snapshot_size",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_query_snapshot_size",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_query_snapshot_size",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_query_snapshot_empty",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_query_snapshot_empty",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_query_snapshot_empty",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_query_snapshot_metadata_has_pending_writes",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_query_snapshot_metadata_has_pending_writes",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_query_snapshot_metadata_has_pending_writes",
-          "resourceType": "GMExtensionFunction",
-          "resourceVersion": "2.0",
-          "returnType": 2
-        },
-        {
-          "$GMExtensionFunction": "",
-          "%Name": "__firebase_firestore_query_snapshot_metadata_is_from_cache",
-          "argCount": 2,
-          "args": [
-            1,
-            2
-          ],
-          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
-          "externalName": "__EXT_NATIVE__firebase_firestore_query_snapshot_metadata_is_from_cache",
-          "help": "",
-          "hidden": true,
-          "kind": 4,
-          "name": "__firebase_firestore_query_snapshot_metadata_is_from_cache",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2

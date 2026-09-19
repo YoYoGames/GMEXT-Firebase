@@ -28,13 +28,6 @@ static DataSnapshot* resolve_db_snapshot(uint64_t ref)
 // DataSnapshot
 // ============================================================
 
-bool firebase_database_snapshot_exists(uint64_t ref)
-{
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return false;
-	return s->exists();
-}
-
 bool firebase_database_snapshot_is_valid(uint64_t ref)
 {
 	DataSnapshot* s = resolve_db_snapshot(ref);
@@ -58,20 +51,6 @@ bool firebase_database_snapshot_has_child(uint64_t ref, std::string_view path)
 	return s->HasChild(path_str.c_str());
 }
 
-bool firebase_database_snapshot_has_children(uint64_t ref)
-{
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return false;
-	return s->has_children();
-}
-
-double firebase_database_snapshot_children_count(uint64_t ref)
-{
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return 0;
-	return (double)s->children_count();
-}
-
 // Returns an array of GM_FB_TYPE_DATA_SNAPSHOT refs, one per child, in
 // Query-defined iteration order. Each ref is independently owned and must be
 // released with firebase_database_snapshot_release() by the caller.
@@ -87,13 +66,6 @@ std::vector<std::uint64_t> firebase_database_snapshot_get_children(uint64_t ref)
 			refs.push_back(registerDatabaseSnapshot(child));
 	}
 	return refs;
-}
-
-std::string firebase_database_snapshot_key(uint64_t ref)
-{
-	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return std::string();
-	return s->key_string();
 }
 
 uint64_t firebase_database_snapshot_get_reference(uint64_t ref)

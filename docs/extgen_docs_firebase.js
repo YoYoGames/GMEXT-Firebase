@@ -183,13 +183,35 @@
  */
 
 /**
+ * @function_partial firebase_app_check_get_instance
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_app_check_get_app
+ * @param {Real} app_check
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_app_check_set_token_auto_refresh_enabled
+ * @param {Real} app_check
  * @param {Bool} enabled
  * @function_end
  */
 
 /**
  * @function_partial firebase_app_check_get_token
+ * @param {Real} app_check
  * @param {Bool} force_refresh
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
@@ -198,6 +220,7 @@
 
 /**
  * @function_partial firebase_app_check_get_limited_use_token
+ * @param {Real} app_check
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -205,6 +228,7 @@
 
 /**
  * @function_partial firebase_app_check_add_listener
+ * @param {Real} app_check
  * @param {Function} [callback]
  * @returns {Real}
  * @function_end
@@ -218,7 +242,28 @@
  */
 
 /**
+ * @function_partial firebase_installations_get_instance
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_get_instance_for_app
+ * @param {Real} app
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_installations_get_app
+ * @param {Real} installations
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
  * @function_partial firebase_installations_get_id
+ * @param {Real} installations
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -226,6 +271,7 @@
 
 /**
  * @function_partial firebase_installations_get_token
+ * @param {Real} installations
  * @param {Bool} force_refresh
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
@@ -234,6 +280,7 @@
 
 /**
  * @function_partial firebase_installations_delete
+ * @param {Real} installations
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -529,76 +576,6 @@
  */
 
 /**
- * @function_partial firebase_auth_user_uid
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_email
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_display_name
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_photo_url
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_provider_id
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_phone_number
- * @param {Real} user_ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_is_email_verified
- * @param {Real} user_ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_is_anonymous
- * @param {Real} user_ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_creation_timestamp
- * @param {Real} user_ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_last_sign_in_timestamp
- * @param {Real} user_ref
- * @returns {Real}
- * @function_end
- */
-
-/**
  * @function_partial firebase_auth_user_get_token
  * @param {Real} user_ref
  * @param {Bool} force_refresh
@@ -779,169 +756,6 @@
  * @function_partial firebase_database_get_log_level
  * @param {Real} db_ref
  * @returns {Enum.FirebaseLogLevel}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_order_by_child
- * @param {Real} ref
- * @param {String} path
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_order_by_key
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_order_by_value
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_order_by_priority
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_start_at
- * @param {Real} ref
- * @param {Any} order_value
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_start_at_key
- * @param {Real} ref
- * @param {Any} order_value
- * @param {String} child_key
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_end_at
- * @param {Real} ref
- * @param {Any} order_value
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_end_at_key
- * @param {Real} ref
- * @param {Any} order_value
- * @param {String} child_key
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_equal_to
- * @param {Real} ref
- * @param {Any} order_value
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_equal_to_key
- * @param {Real} ref
- * @param {Any} order_value
- * @param {String} child_key
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_limit_to_first
- * @param {Real} ref
- * @param {Real} limit
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_limit_to_last
- * @param {Real} ref
- * @param {Real} limit
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_set_keep_synchronized
- * @param {Real} ref
- * @param {Bool} keep_sync
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_value
- * @param {Real} ref
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_add_value_listener
- * @param {Real} ref
- * @param {Function} [on_value_changed]
- * @param {Function} [on_cancelled]
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_remove_value_listener
- * @param {Real} ref
- * @param {Real} listener_ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_remove_all_value_listeners
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_add_child_listener
- * @param {Real} ref
- * @param {Function} [on_child_added]
- * @param {Function} [on_child_changed]
- * @param {Function} [on_child_moved]
- * @param {Function} [on_child_removed]
- * @param {Function} [on_cancelled]
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_remove_child_listener
- * @param {Real} ref
- * @param {Real} listener_ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_remove_all_child_listeners
- * @param {Real} ref
- * @returns {Bool}
  * @function_end
  */
 
@@ -1224,13 +1038,6 @@
  */
 
 /**
- * @function_partial firebase_database_snapshot_exists
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
  * @function_partial firebase_database_snapshot_is_valid
  * @param {Real} ref
  * @returns {Bool}
@@ -1254,30 +1061,9 @@
  */
 
 /**
- * @function_partial firebase_database_snapshot_has_children
- * @param {Real} ref
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_snapshot_children_count
- * @param {Real} ref
- * @returns {Real}
- * @function_end
- */
-
-/**
  * @function_partial firebase_database_snapshot_get_children
  * @param {Real} ref
  * @returns {Array[Real]}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_snapshot_key
- * @param {Real} ref
- * @returns {String}
  * @function_end
  */
 
@@ -2638,14 +2424,6 @@
  * @function_partial firebase_functions_get_https_callable
  * @param {Real} functions_ref
  * @param {String} name
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_functions_get_https_callable_with_options
- * @param {Real} functions_ref
- * @param {String} name
  * @param {Bool} limited_use_app_check_token
  * @returns {Real}
  * @function_end
@@ -2653,14 +2431,6 @@
 
 /**
  * @function_partial firebase_functions_get_https_callable_from_url
- * @param {Real} functions_ref
- * @param {String} url
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_functions_get_https_callable_from_url_with_options
  * @param {Real} functions_ref
  * @param {String} url
  * @param {Bool} limited_use_app_check_token
@@ -3147,58 +2917,9 @@
  */
 
 /**
- * @function_partial firebase_auth_sign_in_with_custom_token_result
- * @param {String} custom_token
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_sign_in_and_retrieve_data_with_credential_result
- * @param {Real} credential
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_sign_in_anonymously_result
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_sign_in_with_email_and_password_result
- * @param {String} email
- * @param {String} password
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_create_user_with_email_and_password_result
- * @param {String} email
- * @param {String} password
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_provider_data_count
+ * @function_partial firebase_auth_user_provider_data
  * @param {Real} user
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_provider_data_at
- * @param {Real} user
- * @param {Real} index
- * @returns {Struct.FirebaseAuthProviderUserInfo}
+ * @returns {Array[Struct.FirebaseAuthProviderUserInfo]}
  * @function_end
  */
 
@@ -3221,43 +2942,11 @@
  */
 
 /**
- * @function_partial firebase_auth_user_reauthenticate_and_retrieve_data_result
- * @param {Real} user
- * @param {Real} credential
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_auth_user_link_with_credential_result
- * @param {Real} user
- * @param {Real} credential
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
  * @function_partial firebase_auth_user_update_phone_number_credential
  * @param {Real} user
  * @param {Real} phone_credential
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_key
- * @param {Real} ref
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_is_root
- * @param {Real} ref
- * @returns {Bool}
  * @function_end
  */
 
@@ -3286,13 +2975,6 @@
  * @function_partial firebase_database_ref_get_database
  * @param {Real} ref
  * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_database_ref_get_url
- * @param {Real} ref
- * @returns {String}
  * @function_end
  */
 
@@ -4299,20 +3981,8 @@
  */
 
 /**
- * @function_partial firebase_installations_get_app
- * @returns {Real}
- * @function_end
- */
-
-/**
  * @function_partial firebase_remote_config_get_app
  * @param {Real} remote_config
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_get_app
  * @returns {Real}
  * @function_end
  */
@@ -4409,103 +4079,6 @@
  */
 
 /**
- * @function_partial firebase_installations_get_instance_handle
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_installations_get_instance_for_app
- * @param {Real} app
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_installations_instance_get_app
- * @param {Real} installations
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_installations_instance_get_id
- * @param {Real} installations
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_installations_instance_get_token
- * @param {Real} installations
- * @param {Bool} force_refresh
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_installations_instance_delete
- * @param {Real} installations
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_get_instance_handle
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_get_instance_for_app
- * @param {Real} app
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_instance_get_app
- * @param {Real} app_check
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_instance_set_token_auto_refresh_enabled
- * @param {Real} app_check
- * @param {Bool} enabled
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_instance_get_token
- * @param {Real} app_check
- * @param {Bool} force_refresh
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_instance_get_limited_use_token
- * @param {Real} app_check
- * @param {Function} [callback]
- * @returns {Enum.FirebaseError}
- * @function_end
- */
-
-/**
- * @function_partial firebase_app_check_instance_add_listener
- * @param {Real} app_check
- * @param {Function} [callback]
- * @returns {Real}
- * @function_end
- */
-
-/**
  * @function_partial firebase_firestore_document_snapshot_metadata_to_string
  * @param {Real} snapshot
  * @returns {String}
@@ -4526,65 +4099,9 @@
  */
 
 /**
- * @function_partial firebase_firestore_document_snapshot_exists
- * @param {Real} snapshot
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_id
- * @param {Real} snapshot
- * @returns {String}
- * @function_end
- */
-
-/**
  * @function_partial firebase_firestore_document_snapshot_reference
  * @param {Real} snapshot
  * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_metadata_has_pending_writes
- * @param {Real} snapshot
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_document_snapshot_metadata_is_from_cache
- * @param {Real} snapshot
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_size
- * @param {Real} snapshot
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_empty
- * @param {Real} snapshot
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_metadata_has_pending_writes
- * @param {Real} snapshot
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_firestore_query_snapshot_metadata_is_from_cache
- * @param {Real} snapshot
- * @returns {Bool}
  * @function_end
  */
 
@@ -4704,7 +4221,6 @@
  * @member {String} key
  * @member {Bool} is_root
  * @member {Bool} is_valid
- * @member {Real} database
  * @member {String} url
  * @struct_end
  */

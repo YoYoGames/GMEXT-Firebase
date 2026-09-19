@@ -64,18 +64,61 @@
  */
 
 /**
+ * @function firebase_app_check_get_instance
+ * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetInstance](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance)
+ *
+ * This function returns a handle to the App Check instance of the default app, the one
+ * ${function.firebase_app_initialize} set up. The token and listener functions take this handle,
+ * or the one ${function.firebase_app_check_get_instance_for_app} returns for another app. The SDK
+ * keeps one instance per app, so the same handle comes back on every call and there is nothing
+ * to release.
+ *
+ * @returns {Real} The App Check handle, or `0` when ${function.firebase_app_initialize} has not run.
+ * @function_end
+ */
+
+/**
+ * @function firebase_app_check_get_instance_for_app
+ * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetInstance](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance)
+ *
+ * This function returns a handle to the App Check instance of another Firebase App, created with
+ * ${function.firebase_app_initialize_with_options} or ${function.firebase_app_initialize_from_json}.
+ * The provider set with ${function.firebase_app_check_set_provider_factory} applies to every
+ * app. As with the default app's handle, the same one comes back on every call and there is
+ * nothing to release.
+ *
+ * @param {Real} app An app handle.
+ * @returns {Real} The App Check handle, or `0` when the app handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_app_check_get_app
+ * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::app](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#app)
+ *
+ * This function returns a handle to the Firebase App an App Check instance attests for. Release
+ * it with ${function.firebase_app_release_handle}.
+ *
+ * @param {Real} app_check An App Check handle from ${function.firebase_app_check_get_instance} or ${function.firebase_app_check_get_instance_for_app}.
+ * @returns {Real} An app handle, or `0` when the handle is not valid.
+ * @function_end
+ */
+
+/**
  * @function firebase_app_check_set_token_auto_refresh_enabled
  * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::SetTokenAutoRefreshEnabled](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#settokenautorefreshenabled)
  *
- * This function turns automatic token refresh on or off for the default app: on, the SDK mints a
- * new token whenever a request needs one and the current one has expired - the Android and iOS
- * SDKs ahead of expiry, the desktop SDK at the request; off, requests use only tokens the game
- * fetched itself with ${function.firebase_app_check_get_token} and have none once the last one
- * has expired. On Android and iOS the setting otherwise follows the app's data-collection
- * default, which the `disableDataCollection` extension option turns off (see
+ * This function turns automatic token refresh on or off for the app the handle belongs to: on,
+ * the SDK mints a new token whenever a request needs one and the current one has expired - the
+ * Android and iOS SDKs ahead of expiry, the desktop SDK at the request; off, requests use only
+ * tokens the game fetched itself with ${function.firebase_app_check_get_token} and have none once
+ * the last one has expired. On Android and iOS the setting otherwise follows the app's
+ * data-collection default, which the `disableDataCollection` extension option turns off (see
  * ${page.extension_options}), so a game built with the option turns refresh on here once the
- * player has consented; on Windows, macOS and Linux it is on from the start.
+ * player has consented; on Windows, macOS and Linux it is on from the start. Nothing happens
+ * when the handle is not valid.
  *
+ * @param {Real} app_check An App Check handle from ${function.firebase_app_check_get_instance} or ${function.firebase_app_check_get_instance_for_app}.
  * @param {Bool} enabled `true` to refresh tokens ahead of expiry, `false` to fetch on demand only.
  * @function_end
  */
@@ -84,16 +127,17 @@
  * @function firebase_app_check_get_token
  * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetAppCheckToken](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getappchecktoken)
  *
- * This function fetches the current App Check token for the default app, minting one through the
- * provider when there is none or `force_refresh` asks for a fresh one. Requests to Firebase's own services are attested automatically once a provider is set; this
+ * This function fetches the current App Check token for the app the handle belongs to, minting
+ * one through the provider when there is none or `force_refresh` asks for a fresh one. Requests to Firebase's own services are attested automatically once a provider is set; this
  * call is for the game's own backend, which receives the token in a header and verifies it with
  * the Firebase Admin SDK. A
  * token is valid for about an hour; ${struct.FirebaseAppCheckToken} carries its expiry, and
  * ${function.firebase_app_check_add_listener} reports each new one without polling.
  *
- * The function returns `FirebaseError.NotInitialized` without calling the callback when
- * ${function.firebase_app_initialize} has not run.
+ * The function returns `FirebaseError.InvalidHandle` without calling the callback when the
+ * handle is not valid.
  *
+ * @param {Real} app_check An App Check handle from ${function.firebase_app_check_get_instance} or ${function.firebase_app_check_get_instance_for_app}.
  * @param {Bool} force_refresh `true` to mint a new token even when the current one is still valid, `false` to reuse it.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
@@ -107,7 +151,8 @@
  *
  * @example
  * ```gml
- * firebase_app_check_get_token(false, function(_error, _message, _token)
+ * var _app_check = firebase_app_check_get_instance();
+ * firebase_app_check_get_token(_app_check, false, function(_error, _message, _token)
  * {
  *     if (_error != FirebaseAppCheckError.None)
  *     {
@@ -120,7 +165,7 @@
  *     ds_map_destroy(_headers);
  * });
  * ```
- * The above code fetches the token and sends it to the game's own server in the
+ * The above code fetches the default app's token and sends it to the game's own server in the
  * `X-Firebase-AppCheck` header, which is where the Firebase Admin SDK's verification expects it;
  * the server rejects requests whose token is missing or forged.
  * @function_end
@@ -130,17 +175,19 @@
  * @function firebase_app_check_get_limited_use_token
  * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetLimitedUseAppCheckToken](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getlimiteduseappchecktoken)
  *
- * This function mints a limited-use App Check token for the default app: a short-lived token
- * meant to be consumed once by the game's backend (the Admin SDK's `consumeAppCheckToken`), so
- * that a request captured in transit cannot be replayed. It always goes to the provider, so it
- * costs an attestation per call; use it for the requests that matter - a purchase, a reward
- * claim - and ${function.firebase_app_check_get_token} for the rest. Requests to Firebase's own services are attested automatically once a provider is set; this
+ * This function mints a limited-use App Check token for the app the handle belongs to: a
+ * short-lived token meant to be consumed once by the game's backend (the Admin SDK's
+ * `consumeAppCheckToken`), so that a request captured in transit cannot be replayed. It always
+ * goes to the provider, so it costs an attestation per call; use it for the requests that
+ * matter - a purchase, a reward claim - and ${function.firebase_app_check_get_token} for the
+ * rest. Requests to Firebase's own services are attested automatically once a provider is set; this
  * call is for the game's own backend, which receives the token in a header and verifies it with
  * the Firebase Admin SDK.
  *
- * The function returns `FirebaseError.NotInitialized` without calling the callback when
- * ${function.firebase_app_initialize} has not run.
+ * The function returns `FirebaseError.InvalidHandle` without calling the callback when the
+ * handle is not valid.
  *
+ * @param {Real} app_check An App Check handle from ${function.firebase_app_check_get_instance} or ${function.firebase_app_check_get_instance_for_app}.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
@@ -157,13 +204,14 @@
  * @function firebase_app_check_add_listener
  * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::AddAppCheckListener](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#addappchecklistener)
  *
- * This function registers a function to be called with each new token the default app mints -
- * at the first attestation and at every refresh - so that a game talking to its own backend
- * always has the current token to hand without fetching it per request. The listener is not
- * called when a token merely expires. Remove it with ${function.firebase_app_check_remove_listener}.
- * It returns `0` with ${function.firebase_last_error_code} set when no callback is given or
- * ${function.firebase_app_initialize} has not run.
+ * This function registers a function to be called with each new token the app mints - at the
+ * first attestation and at every refresh - so that a game talking to its own backend always has
+ * the current token to hand without fetching it per request. The listener is not called when a
+ * token merely expires. Remove it with ${function.firebase_app_check_remove_listener}. It returns
+ * `0` with ${function.firebase_last_error_code} set when no callback is given or the handle is
+ * not valid.
  *
+ * @param {Real} app_check An App Check handle from ${function.firebase_app_check_get_instance} or ${function.firebase_app_check_get_instance_for_app}.
  * @param {Function} [callback] The function to call with each new token.
  * @returns {Real} A listener handle to remove with ${function.firebase_app_check_remove_listener}, or `0` on failure.
  *
@@ -178,133 +226,12 @@
  * @function firebase_app_check_remove_listener
  * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::RemoveAppCheckListener](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#removeappchecklistener)
  *
- * This function removes a listener added with ${function.firebase_app_check_add_listener} or
- * ${function.firebase_app_check_instance_add_listener} and frees its handle.
+ * This function removes a listener added with ${function.firebase_app_check_add_listener} and
+ * frees its handle. The listener remembers the App Check instance it was added to, so no
+ * instance handle is needed here.
  *
  * @param {Real} listener_ref The listener handle.
  * @returns {Bool} `true` when a listener was removed, `false` when the handle was not one.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_get_app
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::app](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#app)
- *
- * This function returns a handle to the default Firebase App, the one the module-level functions
- * attest for. Release it with ${function.firebase_app_release_handle}.
- *
- * @returns {Real} An app handle, or `0` when ${function.firebase_app_initialize} has not run.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_get_instance_handle
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetInstance](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance)
- *
- * This function returns a handle to the App Check instance of the default app - the same object
- * the module-level functions use - for the `firebase_app_check_instance_*` functions, which take
- * an instance handle so that a game with several Firebase Apps can attest each. The same handle
- * comes back on every call and there is nothing to release.
- *
- * @returns {Real} The instance handle, or `0` when ${function.firebase_app_initialize} has not run.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_get_instance_for_app
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetInstance](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getinstance)
- *
- * This function returns a handle to the App Check instance of another Firebase App, created with
- * ${function.firebase_app_initialize_with_options} or ${function.firebase_app_initialize_from_json}.
- * The provider set with ${function.firebase_app_check_set_provider_factory} applies to every
- * app.
- *
- * @param {Real} app An app handle.
- * @returns {Real} The instance handle, or `0` when the app handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_instance_get_app
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::app](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#app)
- *
- * This function returns a handle to the Firebase App an App Check instance belongs to. Release it
- * with ${function.firebase_app_release_handle}.
- *
- * @param {Real} app_check An App Check instance handle from ${function.firebase_app_check_get_instance_handle} or ${function.firebase_app_check_get_instance_for_app}.
- * @returns {Real} An app handle, or `0` when the instance handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_instance_set_token_auto_refresh_enabled
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::SetTokenAutoRefreshEnabled](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#settokenautorefreshenabled)
- *
- * This function is ${function.firebase_app_check_set_token_auto_refresh_enabled} for one App Check
- * instance.
- *
- * @param {Real} app_check An App Check instance handle from ${function.firebase_app_check_get_instance_handle} or ${function.firebase_app_check_get_instance_for_app}.
- * @param {Bool} enabled `true` to refresh tokens ahead of expiry, `false` to fetch on demand only.
- * @function_end
- */
-
-/**
- * @function firebase_app_check_instance_get_token
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetAppCheckToken](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getappchecktoken)
- *
- * This function is ${function.firebase_app_check_get_token} for one App Check instance. It returns
- * `FirebaseError.InvalidHandle` without calling the callback when the handle is not valid.
- *
- * @param {Real} app_check An App Check instance handle from ${function.firebase_app_check_get_instance_handle} or ${function.firebase_app_check_get_instance_for_app}.
- * @param {Bool} force_refresh `true` to mint a new token even when the current one is still valid, `false` to reuse it.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the token.
- * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_app_check_instance_get_limited_use_token
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::GetLimitedUseAppCheckToken](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#getlimiteduseappchecktoken)
- *
- * This function is ${function.firebase_app_check_get_limited_use_token} for one App Check
- * instance. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle
- * is not valid.
- *
- * @param {Real} app_check An App Check instance handle from ${function.firebase_app_check_get_instance_handle} or ${function.firebase_app_check_get_instance_for_app}.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the token.
- * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_app_check_instance_add_listener
- * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheck::AddAppCheckListener](https://firebase.google.com/docs/reference/cpp/class/firebase/app-check/app-check#addappchecklistener)
- *
- * This function is ${function.firebase_app_check_add_listener} for one App Check instance; the
- * handle is removed with ${function.firebase_app_check_remove_listener} like any other.
- *
- * @param {Real} app_check An App Check instance handle from ${function.firebase_app_check_get_instance_handle} or ${function.firebase_app_check_get_instance_for_app}.
- * @param {Function} [callback] The function to call with each new token.
- * @returns {Real} A listener handle to remove with ${function.firebase_app_check_remove_listener}, or `0` when the handle is not valid or no callback was given.
- *
- * @event callback
- * @desc Fires each time a new token has been minted.
- * @member {Struct.FirebaseAppCheckToken} token The new token and its expiry.
- * @event_end
  * @function_end
  */
 
@@ -373,8 +300,10 @@
  * ### Tokens
  *
  * A token lasts about an hour and is refreshed by the SDK ahead of expiry when automatic refresh
- * is on; the module-level functions work on the default app, and the `firebase_app_check_instance_*`
- * family does the same for a chosen App Check instance. The token functions return
+ * is on. Every token and listener call takes the App Check handle of the app it works on -
+ * ${function.firebase_app_check_get_instance} returns the default app's,
+ * ${function.firebase_app_check_get_instance_for_app} another app's - so a game with several
+ * Firebase Apps attests each the same way. The token functions return
  * ${constant.FirebaseError} at once and deliver a ${struct.FirebaseAppCheckToken} to a callback
  * whose `error_code` is a ${constant.FirebaseAppCheckError}, App Check's own code set: `None` on
  * success, otherwise the member that names the failure.
@@ -398,25 +327,20 @@
  * @ref firebase_app_check_debug_provider_set_debug_token
  * @section_end
  *
+ * @section_func Instances
+ * @desc The App Check handle the token functions take, for the default app or another one:
+ * @ref firebase_app_check_get_instance
+ * @ref firebase_app_check_get_instance_for_app
+ * @ref firebase_app_check_get_app
+ * @section_end
+ *
  * @section_func Tokens
- * @desc Fetching and watching tokens for the default app, for a backend of the game's own:
+ * @desc Fetching and watching tokens, for a backend of the game's own:
  * @ref firebase_app_check_set_token_auto_refresh_enabled
  * @ref firebase_app_check_get_token
  * @ref firebase_app_check_get_limited_use_token
  * @ref firebase_app_check_add_listener
  * @ref firebase_app_check_remove_listener
- * @ref firebase_app_check_get_app
- * @section_end
- *
- * @section_func Instances
- * @desc The same operations on a chosen App Check instance, for a game with several Firebase Apps:
- * @ref firebase_app_check_get_instance_handle
- * @ref firebase_app_check_get_instance_for_app
- * @ref firebase_app_check_instance_get_app
- * @ref firebase_app_check_instance_set_token_auto_refresh_enabled
- * @ref firebase_app_check_instance_get_token
- * @ref firebase_app_check_instance_get_limited_use_token
- * @ref firebase_app_check_instance_add_listener
  * @section_end
  *
  * @section_struct Structs

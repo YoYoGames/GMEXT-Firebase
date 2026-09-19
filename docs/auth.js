@@ -202,9 +202,11 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInWithCustomToken](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinwithcustomtoken)
  *
  * This function signs in with a custom token minted by your own server through the Firebase Admin
- * SDK - the "bring your own auth" flow. The callback receives the user's handle. Use
- * ${function.firebase_auth_sign_in_with_custom_token_result} instead when you also want the
- * provider's additional data.
+ * SDK - the "bring your own auth" flow. The callback receives a ${struct.FirebaseAuthResult}: `user` is the signed-in user's handle,
+ * `credential` a credential the provider returned (or `undefined`) and `additional_user_info` the
+ * provider's additional data. Release the result's `credential` and
+ * `additional_user_info.updated_credential`, when present, with
+ * ${function.firebase_auth_credential_release}.
  *
  * The callback fails with `FirebaseAuthError.InvalidCustomToken` or `CustomTokenMismatch` when the
  * token is malformed or was minted for another project.
@@ -217,16 +219,16 @@
  * @desc Fires once with the outcome of the sign-in.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  *
  * @example
  * ```gml
- * firebase_auth_sign_in_with_custom_token(token, function(_error_code, _error_message, _user)
+ * firebase_auth_sign_in_with_custom_token(token, function(_error_code, _error_message, _result)
  * {
  *     if (_error_code == FirebaseAuthError.None)
  *     {
- *         show_debug_message("Signed in as " + firebase_auth_user_uid(_user));
+ *         show_debug_message("Signed in as " + firebase_auth_user_get_info(_result.user).uid);
  *     }
  *     else
  *     {
@@ -244,14 +246,15 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInWithCredential](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinwithcredential)
  *
  * This function signs in with a credential from one of the `*_get_credential` functions - an
- * e-mail and password pair, a Google ID token, a phone verification. The callback receives the user's
- * handle only; ${function.firebase_auth_sign_in_and_retrieve_data_with_credential} is the same call
- * with the provider's additional data.
+ * e-mail and password pair, a Google ID token, a phone verification. It is the one sign-in whose
+ * callback receives the user's handle alone, as the SDK's `SignInWithCredential` does;
+ * ${function.firebase_auth_sign_in_and_retrieve_data_with_credential} is the same call delivering
+ * the full ${struct.FirebaseAuthResult} with the provider's additional data.
  *
  * The credential can be released with ${function.firebase_auth_credential_release} as soon as this
  * function has returned `FirebaseError.Ok`.
  *
- * [[Note: The `user` argument is the Auth instance's live user view - the same handle
+ * [[Note: The user handle is the Auth instance's live user view - the same handle
  * ${function.firebase_auth_current_user} returns - so it reports whoever is signed in now, and
  * ${function.firebase_auth_user_release} has nothing to free.]]
  *
@@ -273,7 +276,7 @@
  * {
  *     if (_error_code == FirebaseAuthError.None)
  *     {
- *         show_debug_message("Signed in as " + firebase_auth_user_email(_user));
+ *         show_debug_message("Signed in as " + firebase_auth_user_get_info(_user).email);
  *     }
  *     else
  *     {
@@ -298,10 +301,9 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInAndRetrieveDataWithCredential](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinandretrievedatawithcredential)
  *
  * This function signs in with a credential, like ${function.firebase_auth_sign_in_with_credential},
- * and lets the server return the provider's additional data alongside the user. In this variant the
- * callback still receives the user's handle only; call
- * ${function.firebase_auth_sign_in_and_retrieve_data_with_credential_result} to receive the full
- * ${struct.FirebaseAuthResult} with that data.
+ * and delivers the full ${struct.FirebaseAuthResult}: the user, and the provider's additional data -
+ * the profile the provider returned, the user name, and for some providers an updated credential.
+ * Release the result's credentials with ${function.firebase_auth_credential_release}.
  *
  * @param {Real} credential_ref A credential handle from one of the `*_get_credential` functions.
  * @param {Function} [callback] The function to call with the result.
@@ -311,8 +313,31 @@
  * @desc Fires once with the outcome of the sign-in.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
+ *
+ * @example
+ * ```gml
+ * firebase_auth_sign_in_and_retrieve_data_with_credential(credential, function(_error_code, _error_message, _result)
+ * {
+ *     if (_error_code != FirebaseAuthError.None)
+ *     {
+ *         show_debug_message("Sign-in failed: " + _error_message);
+ *         return;
+ *     }
+ *     var _info = _result.additional_user_info;
+ *     show_debug_message($"Signed in through {_info.provider_id} as {_info.user_name}");
+ *     if (variable_struct_exists(_info.profile, "picture"))
+ *     {
+ *         show_debug_message("Avatar: " + _info.profile.picture);
+ *     }
+ *     if (!is_undefined(_result.credential)) firebase_auth_credential_release(_result.credential);
+ *     if (!is_undefined(_info.updated_credential)) firebase_auth_credential_release(_info.updated_credential);
+ * });
+ * ```
+ * The above code signs in with a provider credential and reads the provider's profile from the
+ * result - the keys in `profile` are the provider's own, so the code checks for the one it wants -
+ * then releases both credentials the result may carry.
  * @function_end
  */
 
@@ -326,7 +351,11 @@
  * keep the player's data when they register.
  *
  * Anonymous sign-in must be enabled in the Firebase console (Authentication > Sign-in method), or the
- * callback fails with `FirebaseAuthError.OperationNotAllowed`.
+ * callback fails with `FirebaseAuthError.OperationNotAllowed`. The callback receives a ${struct.FirebaseAuthResult}: `user` is the signed-in user's handle,
+ * `credential` a credential the provider returned (or `undefined`) and `additional_user_info` the
+ * provider's additional data. Release the result's `credential` and
+ * `additional_user_info.updated_credential`, when present, with
+ * ${function.firebase_auth_credential_release}.
  *
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
@@ -335,16 +364,16 @@
  * @desc Fires once with the outcome of the sign-in.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  *
  * @example
  * ```gml
- * firebase_auth_sign_in_anonymously(function(_error_code, _error_message, _user)
+ * firebase_auth_sign_in_anonymously(function(_error_code, _error_message, _result)
  * {
  *     if (_error_code == FirebaseAuthError.None)
  *     {
- *         show_debug_message("Anonymous sign-in OK, uid " + firebase_auth_user_uid(_user));
+ *         show_debug_message("Anonymous sign-in OK, uid " + firebase_auth_user_get_info(_result.user).uid);
  *     }
  *     else
  *     {
@@ -361,9 +390,13 @@
  * @function firebase_auth_sign_in_with_email_and_password
  * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInWithEmailAndPassword](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinwithemailandpassword)
  *
- * This function signs in an existing account with its e-mail address and password. The callback
- * receives the user's handle; the common failures are `FirebaseAuthError.WrongPassword`,
- * `UserNotFound`, `InvalidEmail` and, after repeated failures, `TooManyRequests`.
+ * This function signs in an existing account with its e-mail address and password. The common
+ * failures are `FirebaseAuthError.WrongPassword`, `UserNotFound`, `InvalidEmail` and, after
+ * repeated failures, `TooManyRequests`. The callback receives a ${struct.FirebaseAuthResult}: `user` is the signed-in user's handle,
+ * `credential` a credential the provider returned (or `undefined`) and `additional_user_info` the
+ * provider's additional data. Release the result's `credential` and
+ * `additional_user_info.updated_credential`, when present, with
+ * ${function.firebase_auth_credential_release}.
  *
  * E-mail/password sign-in must be enabled in the Firebase console (Authentication > Sign-in method).
  * To register a new account use ${function.firebase_auth_create_user_with_email_and_password}.
@@ -377,19 +410,19 @@
  * @desc Fires once with the outcome of the sign-in.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  *
  * @example
  * ```gml
- * firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _user)
+ * firebase_auth_sign_in_with_email_and_password(email, password, function(_error_code, _error_message, _result)
  * {
  *     if (_error_code != FirebaseAuthError.None)
  *     {
  *         show_debug_message("Login failed: " + _error_message);
  *         return;
  *     }
- *     var _info = firebase_auth_user_get_info(_user);
+ *     var _info = firebase_auth_user_get_info(_result.user);
  *     show_debug_message($"UID: {_info.uid}, e-mail: {_info.email}, name: {_info.display_name}");
  * });
  * ```
@@ -405,9 +438,13 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::Auth::CreateUserWithEmailAndPassword](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#createuserwithemailandpassword)
  *
  * This function registers a new account with the given e-mail address and password and signs it in.
- * The callback receives the new user's handle; it fails with `FirebaseAuthError.EmailAlreadyInUse`
- * when the address is taken, `WeakPassword` when the password is shorter than six characters, and
- * `InvalidEmail` when the address is malformed.
+ * The callback fails with `FirebaseAuthError.EmailAlreadyInUse` when the address is taken,
+ * `WeakPassword` when the password is shorter than six characters, and `InvalidEmail` when the
+ * address is malformed. The callback receives a ${struct.FirebaseAuthResult}: `user` is the signed-in user's handle,
+ * `credential` a credential the provider returned (or `undefined`) and `additional_user_info` the
+ * provider's additional data. Release the result's `credential` and
+ * `additional_user_info.updated_credential`, when present, with
+ * ${function.firebase_auth_credential_release}.
  *
  * The new account's e-mail is unverified; ${function.firebase_auth_user_send_email_verification}
  * sends the verification e-mail.
@@ -418,21 +455,21 @@
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
  * @event callback
- * @desc Fires once with the outcome of the sign-in.
+ * @desc Fires once with the outcome of the sign-up.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  *
  * @example
  * ```gml
- * firebase_auth_create_user_with_email_and_password(email, password, function(_error_code, _error_message, _user)
+ * firebase_auth_create_user_with_email_and_password(email, password, function(_error_code, _error_message, _result)
  * {
  *     switch (_error_code)
  *     {
  *         case FirebaseAuthError.None:
- *             show_debug_message("Account created, uid " + firebase_auth_user_uid(_user));
- *             firebase_auth_user_send_email_verification(_user, undefined);
+ *             show_debug_message("Account created, uid " + firebase_auth_user_get_info(_result.user).uid);
+ *             firebase_auth_user_send_email_verification(_result.user, undefined);
  *             break;
  *         case FirebaseAuthError.EmailAlreadyInUse:
  *             show_debug_message("That address already has an account");
@@ -519,7 +556,7 @@
  *     }
  *     else
  *     {
- *         show_debug_message("Signed in as " + firebase_auth_user_uid(_user));
+ *         show_debug_message("Signed in as " + firebase_auth_user_get_info(_user).uid);
  *     }
  * });
  *
@@ -958,8 +995,12 @@
  * @function firebase_auth_user_get_info
  * @desc This function reads every property of a user into one ${struct.FirebaseAuthUserInfo}: the ID,
  * e-mail, display name, photo URL, provider, phone number, the verified and anonymous flags and the
- * two timestamps. It is the convenient form of the individual `firebase_auth_user_*` getters when
- * several properties are needed together.
+ * two timestamps. It is the one place a user's properties are read; the struct's members say what
+ * each one holds and what it is for.
+ *
+ * [[Note: Do not use the ID to authenticate the player with your own server - anyone can claim
+ * one. Send the token from ${function.firebase_auth_user_get_token} instead, which the server
+ * verifies with the Firebase Admin SDK.]]
  *
  * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @returns {Struct.FirebaseAuthUserInfo} The user's properties, or `undefined` when the handle is not valid; `is_valid` inside is the SDK's own answer for a user handle that did resolve.
@@ -1001,129 +1042,6 @@
  *
  * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @returns {Bool} `true` while a user is signed in, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_uid
- * @desc **Firebase C++ SDK:** [firebase::auth::User::uid](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#uid)
- *
- * This function returns the user's ID, unique within the Firebase project. It is the key to store
- * the player's data under in Cloud Firestore or the Realtime Database.
- *
- * [[Note: Do not use the ID to authenticate the player with your own server - anyone can claim
- * one. Send the token from ${function.firebase_auth_user_get_token} instead, which the server
- * verifies with the Firebase Admin SDK.]]
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The user ID, or an empty string when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_email
- * @desc **Firebase C++ SDK:** [firebase::auth::User::email](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#email)
- *
- * This function returns the e-mail address associated with the user, if the account has one.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The e-mail address, or an empty string when there is none.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_display_name
- * @desc **Firebase C++ SDK:** [firebase::auth::User::display_name](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#display_name)
- *
- * This function returns the user's display name, as set by the sign-in provider or by
- * ${function.firebase_auth_user_update_profile}.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The display name, or an empty string when there is none.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_photo_url
- * @desc **Firebase C++ SDK:** [firebase::auth::User::photo_url](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#photo_url)
- *
- * This function returns the URL of the user's profile photo, as set by the sign-in provider or by
- * ${function.firebase_auth_user_update_profile}.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The photo URL, or an empty string when there is none.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_provider_id
- * @desc **Firebase C++ SDK:** [firebase::auth::User::provider_id](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#provider_id)
- *
- * This function returns the ID of the provider the user signed in with - for a Firebase user this
- * is `"firebase"`; the providers linked to the account are listed by
- * ${function.firebase_auth_user_provider_data_at}.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The provider ID, or an empty string when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_phone_number
- * @desc **Firebase C++ SDK:** [firebase::auth::User::phone_number](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#phone_number)
- *
- * This function returns the phone number linked to the user, in E.164 format, if there is one.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {String} The phone number, or an empty string when there is none.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_is_email_verified
- * @desc **Firebase C++ SDK:** [firebase::auth::User::is_email_verified](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#is_email_verified)
- *
- * This function returns whether the user has verified their e-mail address by following the link
- * ${function.firebase_auth_user_send_email_verification} sends. The flag is read from the cached
- * user; call ${function.firebase_auth_user_reload} to refresh it after the player has clicked the
- * link.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Bool} `true` when the address is verified, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_is_anonymous
- * @desc **Firebase C++ SDK:** [firebase::auth::User::is_anonymous](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#is_anonymous)
- *
- * This function returns whether the user signed in with ${function.firebase_auth_sign_in_anonymously}
- * and has not yet linked a real credential.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Bool} `true` for an anonymous user, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_creation_timestamp
- * @desc **Firebase C++ SDK:** [firebase::auth::User::metadata](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#metadata)
- *
- * This function returns when the account was created, as UTC milliseconds since the Unix epoch.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Real} The creation time (in milliseconds since 1970-01-01 UTC), or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_last_sign_in_timestamp
- * @desc **Firebase C++ SDK:** [firebase::auth::User::metadata](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#metadata)
- *
- * This function returns when the user last signed in, as UTC milliseconds since the Unix epoch.
- *
- * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Real} The last sign-in time (in milliseconds since 1970-01-01 UTC), or `0` when the handle is not valid.
  * @function_end
  */
 
@@ -1223,8 +1141,8 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::User::UpdateUserProfile](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#updateuserprofile)
  *
  * This function sets the user's display name and photo URL. Both are always written: an empty string
- * clears that field. To change only one of them, pass the current value of the other, from
- * ${function.firebase_auth_user_display_name} or ${function.firebase_auth_user_photo_url}.
+ * clears that field. To change only one of them, pass the current value of the other, read through
+ * ${function.firebase_auth_user_get_info}.
  *
  * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @param {String} display_name The new display name, or an empty string to clear it.
@@ -1240,7 +1158,8 @@
  *
  * @example
  * ```gml
- * firebase_auth_user_update_profile(user, "Player One", firebase_auth_user_photo_url(user), function(_error_code, _error_message)
+ * var _photo_url = firebase_auth_user_get_info(user).photo_url;
+ * firebase_auth_user_update_profile(user, "Player One", _photo_url, function(_error_code, _error_message)
  * {
  *     show_debug_message(_error_code == FirebaseAuthError.None ? "Name updated" : _error_message);
  * });
@@ -1254,8 +1173,8 @@
  * @function firebase_auth_user_send_email_verification
  * @desc **Firebase C++ SDK:** [firebase::auth::User::SendEmailVerification](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#sendemailverification)
  *
- * This function sends the user a verification e-mail with a link; once they follow it,
- * ${function.firebase_auth_user_is_email_verified} reports `true` after the next
+ * This function sends the user a verification e-mail with a link; once they follow it, the
+ * `is_email_verified` of ${function.firebase_auth_user_get_info} reports `true` after the next
  * ${function.firebase_auth_user_reload}. The e-mail is in the language set with
  * ${function.firebase_auth_set_language_code}.
  *
@@ -1322,9 +1241,9 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::User::ReauthenticateAndRetrieveData](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#reauthenticateandretrievedata)
  *
  * This function is ${function.firebase_auth_user_reauthenticate} with the provider's data requested
- * from the server; in this variant the callback still receives the user's handle only. Use
- * ${function.firebase_auth_user_reauthenticate_and_retrieve_data_result} to receive the
- * ${struct.FirebaseAuthResult} with that data.
+ * from the server, delivered as a ${struct.FirebaseAuthResult}: the user, and the provider's
+ * additional data and any credential it returned, to release with
+ * ${function.firebase_auth_credential_release}.
  *
  * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @param {Real} credential_ref A credential handle from one of the `*_get_credential` functions.
@@ -1335,7 +1254,7 @@
  * @desc Fires once with the outcome of the re-authentication.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
@@ -1349,6 +1268,11 @@
  * on an e-mail account. The callback fails with `FirebaseAuthError.CredentialAlreadyInUse` when the
  * credential belongs to a different account, and with `ProviderAlreadyLinked` when the account
  * already has that provider. Remove a provider again with ${function.firebase_auth_user_unlink}.
+ * The callback receives a ${struct.FirebaseAuthResult}: `user` is the signed-in user's handle,
+ * `credential` a credential the provider returned (or `undefined`) and `additional_user_info` the
+ * provider's additional data. Release the result's `credential` and
+ * `additional_user_info.updated_credential`, when present, with
+ * ${function.firebase_auth_credential_release}.
  *
  * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @param {Real} credential_ref A credential handle from one of the `*_get_credential` functions.
@@ -1359,7 +1283,7 @@
  * @desc Fires once with the outcome of the link.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
@@ -1369,7 +1293,8 @@
  * @desc **Firebase C++ SDK:** [firebase::auth::User::Unlink](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#unlink)
  *
  * This function detaches a sign-in provider from the user's account. The callback fails with
- * `FirebaseAuthError.NoSuchProvider` when the account is not linked to that provider.
+ * `FirebaseAuthError.NoSuchProvider` when the account is not linked to that provider. It delivers
+ * a ${struct.FirebaseAuthResult} whose `user` is the account as it now stands.
  *
  * @param {Real} user_ref The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
  * @param {String} provider_id The provider to detach, for example the value of ${function.firebase_auth_google_auth_provider_id}.
@@ -1380,7 +1305,7 @@
  * @desc Fires once with the outcome of the unlink.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} user The signed-in user's handle, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
@@ -1407,7 +1332,7 @@
  * ```gml
  * firebase_auth_user_reload(user, function(_error_code, _error_message)
  * {
- *     if (_error_code == FirebaseAuthError.None && firebase_auth_user_is_email_verified(user))
+ *     if (_error_code == FirebaseAuthError.None && firebase_auth_user_get_info(user).is_email_verified)
  *     {
  *         show_debug_message("E-mail verified");
  *     }
@@ -1468,7 +1393,7 @@
  * {
  *     if (_error_code == FirebaseAuthError.None)
  *     {
- *         show_debug_message("Signed in as " + firebase_auth_user_uid(_result.user));
+ *         show_debug_message("Signed in as " + firebase_auth_user_get_info(_result.user).uid);
  *         if (!is_undefined(_result.credential))
  *         {
  *             firebase_auth_credential_release(_result.credential);
@@ -1536,167 +1461,30 @@
  * @desc Fires once with the outcome of the sign-in, after the web view has closed.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
 
 /**
- * @function firebase_auth_sign_in_with_custom_token_result
- * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInWithCustomToken](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinwithcustomtoken)
+ * @function firebase_auth_user_provider_data
+ * @desc **Firebase C++ SDK:** [firebase::auth::User::provider_data](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#provider_data)
  *
- * This function is ${function.firebase_auth_sign_in_with_custom_token} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback instead of the user handle alone.
+ * This function returns the sign-in providers linked to the user's account, one
+ * ${struct.FirebaseAuthProviderUserInfo} per provider in the SDK's order: the profile each provider
+ * holds for the user - the ID, e-mail, display name, photo and phone number as that provider knows
+ * them. The array is empty for a user with no provider entries and for a handle that is not valid
+ * (with ${function.firebase_last_error_code} set to `FirebaseError.InvalidHandle`).
  *
- * @param {String} custom_token The token your server minted for this player.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the sign-in.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_sign_in_and_retrieve_data_with_credential_result
- * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInAndRetrieveDataWithCredential](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinandretrievedatawithcredential)
- *
- * This function is ${function.firebase_auth_sign_in_with_credential} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback: the user, and the provider's additional
- * data - the profile the provider returned, the user name, and for some providers an updated
- * credential. Release the result's credentials with ${function.firebase_auth_credential_release}.
- *
- * @param {Real} credential A credential handle from one of the `*_get_credential` functions.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the sign-in.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
+ * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
+ * @returns {Array[Struct.FirebaseAuthProviderUserInfo]} An array of the linked providers' profiles, empty when there are none.
  *
  * @example
  * ```gml
- * firebase_auth_sign_in_and_retrieve_data_with_credential_result(credential, function(_error_code, _error_message, _result)
+ * var _providers = firebase_auth_user_provider_data(user);
+ * for (var _i = 0; _i < array_length(_providers); _i++)
  * {
- *     if (_error_code != FirebaseAuthError.None)
- *     {
- *         show_debug_message("Sign-in failed: " + _error_message);
- *         return;
- *     }
- *     var _info = _result.additional_user_info;
- *     show_debug_message($"Signed in through {_info.provider_id} as {_info.user_name}");
- *     if (variable_struct_exists(_info.profile, "picture"))
- *     {
- *         show_debug_message("Avatar: " + _info.profile.picture);
- *     }
- *     if (!is_undefined(_result.credential)) firebase_auth_credential_release(_result.credential);
- *     if (!is_undefined(_info.updated_credential)) firebase_auth_credential_release(_info.updated_credential);
- * });
- * ```
- * The above code signs in with a provider credential and reads the provider's profile from the
- * result - the keys in `profile` are the provider's own, so the code checks for the one it wants -
- * then releases both credentials the result may carry.
- * @function_end
- */
-
-/**
- * @function firebase_auth_sign_in_anonymously_result
- * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInAnonymously](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinanonymously)
- *
- * This function is ${function.firebase_auth_sign_in_anonymously} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback instead of the user handle alone.
- *
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the sign-in.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_sign_in_with_email_and_password_result
- * @desc **Firebase C++ SDK:** [firebase::auth::Auth::SignInWithEmailAndPassword](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#signinwithemailandpassword)
- *
- * This function is ${function.firebase_auth_sign_in_with_email_and_password} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback instead of the user handle alone.
- *
- * @param {String} email The account's e-mail address.
- * @param {String} password The account's password.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the sign-in.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_create_user_with_email_and_password_result
- * @desc **Firebase C++ SDK:** [firebase::auth::Auth::CreateUserWithEmailAndPassword](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/auth#createuserwithemailandpassword)
- *
- * This function is ${function.firebase_auth_create_user_with_email_and_password} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback instead of the user handle alone.
- *
- * @param {String} email The e-mail address for the new account.
- * @param {String} password The password for the new account, at least six characters.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the sign-up.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_provider_data_count
- * @desc **Firebase C++ SDK:** [firebase::auth::User::provider_data](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#provider_data)
- *
- * This function returns how many sign-in providers are linked to the user's account - one entry
- * per provider, read with ${function.firebase_auth_user_provider_data_at}.
- *
- * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Real} The number of linked providers, or `0` when the handle is not valid.
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_provider_data_at
- * @desc **Firebase C++ SDK:** [firebase::auth::User::provider_data](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#provider_data)
- *
- * This function returns the profile the given linked provider holds for the user - the ID, e-mail,
- * display name, photo and phone number as that provider knows them - as a
- * ${struct.FirebaseAuthProviderUserInfo}.
- *
- * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @param {Real} index The provider's index, from `0` to ${function.firebase_auth_user_provider_data_count} minus one.
- * @returns {Struct.FirebaseAuthProviderUserInfo} The provider's profile, or `undefined` when the handle or the index is not valid.
- *
- * @example
- * ```gml
- * var _count = firebase_auth_user_provider_data_count(user);
- * for (var _i = 0; _i < _count; _i++)
- * {
- *     var _entry = firebase_auth_user_provider_data_at(user, _i);
+ *     var _entry = _providers[_i];
  *     show_debug_message($"{_entry.provider_id}: {_entry.display_name} <{_entry.email}>");
  * }
  * ```
@@ -1722,7 +1510,7 @@
  * @desc Fires once with the outcome of the re-authentication.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
@@ -1744,49 +1532,7 @@
  * @desc Fires once with the outcome of the link.
  * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_reauthenticate_and_retrieve_data_result
- * @desc **Firebase C++ SDK:** [firebase::auth::User::ReauthenticateAndRetrieveData](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#reauthenticateandretrievedata)
- *
- * This function is ${function.firebase_auth_user_reauthenticate} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback.
- *
- * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @param {Real} credential A credential handle from one of the `*_get_credential` functions.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the re-authentication.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
- * @event_end
- * @function_end
- */
-
-/**
- * @function firebase_auth_user_link_with_credential_result
- * @desc **Firebase C++ SDK:** [firebase::auth::User::LinkWithCredential](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/user#linkwithcredential)
- *
- * This function is ${function.firebase_auth_user_link_with_credential} with the full
- * ${struct.FirebaseAuthResult} delivered to the callback.
- *
- * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @param {Real} credential A credential handle from one of the `*_get_credential` functions.
- * @param {Function} [callback] The function to call with the result.
- * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
- *
- * @event callback
- * @desc Fires once with the outcome of the link.
- * @member {Enum.FirebaseAuthError} error_code `FirebaseAuthError.None` on success, otherwise the reason it failed.
- * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Struct.FirebaseAuthResult} result The sign-in result, or `undefined` on failure.
+ * @member {Struct.FirebaseAuthResult} result The sign-in result - `result.user` is the user's handle - or `undefined` on failure.
  * @event_end
  * @function_end
  */
@@ -1870,9 +1616,9 @@
  * var _second_auth = firebase_auth_get_instance_for_app(second_app);
  *
  * firebase_auth_use_instance(_second_auth);
- * firebase_auth_sign_in_anonymously(function(_error_code, _error_message, _user)
+ * firebase_auth_sign_in_anonymously(function(_error_code, _error_message, _result)
  * {
- *     show_debug_message("Second project: " + (_error_code == FirebaseAuthError.None ? firebase_auth_user_uid(_user) : _error_message));
+ *     show_debug_message("Second project: " + (_error_code == FirebaseAuthError.None ? firebase_auth_user_get_info(_result.user).uid : _error_message));
  * });
  * firebase_auth_use_instance(_default_auth);
  * ```
@@ -1989,8 +1735,8 @@
 
 /**
  * @struct FirebaseAuthProviderUserInfo
- * @desc The profile one linked sign-in provider holds for a user, returned by
- * ${function.firebase_auth_user_provider_data_at}. Each field is what *that provider* reported,
+ * @desc The profile one linked sign-in provider holds for a user, one element of the array
+ * ${function.firebase_auth_user_provider_data} returns. Each field is what *that provider* reported,
  * which can differ from the user's own values in ${struct.FirebaseAuthUserInfo}.
  *
  * @member {String} uid The user's ID at the provider.
@@ -2017,17 +1763,17 @@
 
 /**
  * @struct FirebaseAuthUserInfo
- * @desc Every property of a user in one struct, from ${function.firebase_auth_user_get_info}. The
- * individual `firebase_auth_user_*` getters return the same values one at a time.
+ * @desc Every property of a user in one struct, from ${function.firebase_auth_user_get_info}, read from
+ * the cached user - ${function.firebase_auth_user_reload} refreshes it from the server.
  *
- * @member {String} uid The user ID, unique within the project.
- * @member {String} email The e-mail address, or an empty string.
- * @member {String} display_name The display name, or an empty string.
- * @member {String} photo_url The photo URL, or an empty string.
- * @member {String} provider_id The provider ID the user signed in with.
- * @member {String} phone_number The phone number in E.164 format, or an empty string.
- * @member {Bool} is_email_verified Whether the e-mail address has been verified.
- * @member {Bool} is_anonymous Whether the user signed in anonymously.
+ * @member {String} uid The user ID, unique within the project - the key to store the player's data under in Cloud Firestore or the Realtime Database.
+ * @member {String} email The e-mail address associated with the account, or an empty string.
+ * @member {String} display_name The display name, as set by the sign-in provider or ${function.firebase_auth_user_update_profile}, or an empty string.
+ * @member {String} photo_url The URL of the profile photo, as set by the sign-in provider or ${function.firebase_auth_user_update_profile}, or an empty string.
+ * @member {String} provider_id The ID of the provider the user signed in with - `"firebase"` for a Firebase user; the providers linked to the account are listed by ${function.firebase_auth_user_provider_data}.
+ * @member {String} phone_number The phone number linked to the account, in E.164 format, or an empty string.
+ * @member {Bool} is_email_verified Whether the user has followed the link ${function.firebase_auth_user_send_email_verification} sends.
+ * @member {Bool} is_anonymous Whether the user signed in with ${function.firebase_auth_sign_in_anonymously} and has not yet linked a real credential.
  * @member {Bool} is_valid Whether a user is signed in on this handle.
  * @member {Real} creation_timestamp When the account was created (UTC milliseconds since the Unix epoch).
  * @member {Real} last_sign_in_timestamp When the user last signed in (UTC milliseconds since the Unix epoch).
@@ -2036,10 +1782,10 @@
 
 /**
  * @struct FirebaseAuthResult
- * @desc The full outcome of a sign-in, link or re-authentication, delivered by the `*_result` and
- * `*_with_provider` functions. The `user` is the live user view (see
- * ${function.firebase_auth_current_user}); the two credentials it may carry are handles to release
- * with ${function.firebase_auth_credential_release}.
+ * @desc The full outcome of a sign-in, sign-up, link, unlink or re-authentication, delivered by every
+ * such callback except ${function.firebase_auth_sign_in_with_credential}'s. The `user` is the live
+ * user view (see ${function.firebase_auth_current_user}); the two credentials it may carry are
+ * handles to release with ${function.firebase_auth_credential_release}.
  *
  * @member {Real} [user] The signed-in user's handle, or `undefined` when the operation failed.
  * @member {Real} [credential] The credential the provider returned, or `undefined`.
@@ -2157,15 +1903,15 @@
  *
  * Every sign-in function takes a callback and returns ${constant.FirebaseError} synchronously; the
  * callback receives an `error_code` from ${constant.FirebaseAuthError} (`None` on success), an
- * `error_message`, and the user. The user arrives as a **handle** that is the Authentication
- * instance's live view of its current user: the same handle comes back from
- * ${function.firebase_auth_current_user}, from every sign-in and from every listener, and it always
- * reports whoever is signed in now. ${function.firebase_auth_user_release} therefore frees nothing.
- * Firebase persists the sign-in, so on the next run the player is signed in before any of your code
- * runs - ${function.firebase_auth_add_state_listener} is the way to learn that.
- *
- * The `*_result` variants of the sign-in functions deliver a ${struct.FirebaseAuthResult} instead of
- * the bare user, with the provider's additional data and any credential it returned.
+ * `error_message`, and a ${struct.FirebaseAuthResult} whose `user` is the signed-in user, with the
+ * provider's additional data and any credential it returned alongside
+ * (${function.firebase_auth_sign_in_with_credential} alone delivers the user handle by itself, as
+ * the SDK does). The user arrives as a **handle** that is the Authentication instance's live view of
+ * its current user: the same handle comes back from ${function.firebase_auth_current_user}, from
+ * every sign-in and from every listener, and it always reports whoever is signed in now.
+ * ${function.firebase_auth_user_release} therefore frees nothing. Firebase persists the sign-in, so
+ * on the next run the player is signed in before any of your code runs -
+ * ${function.firebase_auth_add_state_listener} is the way to learn that.
  *
  * ### Credentials and providers
  *
@@ -2218,11 +1964,6 @@
  * @ref firebase_auth_sign_in_with_credential
  * @ref firebase_auth_sign_in_and_retrieve_data_with_credential
  * @ref firebase_auth_sign_in_with_provider
- * @ref firebase_auth_sign_in_anonymously_result
- * @ref firebase_auth_sign_in_with_email_and_password_result
- * @ref firebase_auth_create_user_with_email_and_password_result
- * @ref firebase_auth_sign_in_with_custom_token_result
- * @ref firebase_auth_sign_in_and_retrieve_data_with_credential_result
  * @section_end
  *
  * @section_func Listeners
@@ -2234,34 +1975,24 @@
  * @section_end
  *
  * @section_func User
- * @desc Reading the signed-in user. The getters below each return one property; ${function.firebase_auth_user_get_info}
- * returns them all at once, which is the better choice when more than one is needed:
+ * @desc Reading the signed-in user. ${function.firebase_auth_user_get_info} returns every property at once
+ * as a ${struct.FirebaseAuthUserInfo}:
  *
  * ```gml
  * var _user = firebase_auth_current_user();
  * if (!is_undefined(_user) && firebase_auth_user_is_valid(_user))
  * {
- *     show_debug_message(firebase_auth_user_display_name(_user) + " <" + firebase_auth_user_email(_user) + ">");
+ *     var _info = firebase_auth_user_get_info(_user);
+ *     show_debug_message(_info.display_name + " <" + _info.email + ">");
  * }
  * ```
  *
  * The above code prints the current user's name and address, checking first that someone is signed
- * in. Every getter returns an empty string, `false` or `0` for a handle nobody is signed in on.
+ * in. For a handle nobody is signed in on, `is_valid` is `false` and every string member is empty.
  * @ref firebase_auth_user_get_info
  * @ref firebase_auth_user_release
  * @ref firebase_auth_user_is_valid
- * @ref firebase_auth_user_uid
- * @ref firebase_auth_user_email
- * @ref firebase_auth_user_display_name
- * @ref firebase_auth_user_photo_url
- * @ref firebase_auth_user_provider_id
- * @ref firebase_auth_user_phone_number
- * @ref firebase_auth_user_is_email_verified
- * @ref firebase_auth_user_is_anonymous
- * @ref firebase_auth_user_creation_timestamp
- * @ref firebase_auth_user_last_sign_in_timestamp
- * @ref firebase_auth_user_provider_data_count
- * @ref firebase_auth_user_provider_data_at
+ * @ref firebase_auth_user_provider_data
  * @ref firebase_auth_user_get_token
  * @ref firebase_auth_user_reload
  * @section_end
@@ -2279,12 +2010,10 @@
  * @section_func Linking and re-authentication
  * @desc Attaching further sign-in methods to an account and proving the player's identity again:
  * @ref firebase_auth_user_link_with_credential
- * @ref firebase_auth_user_link_with_credential_result
  * @ref firebase_auth_user_link_with_provider
  * @ref firebase_auth_user_unlink
  * @ref firebase_auth_user_reauthenticate
  * @ref firebase_auth_user_reauthenticate_and_retrieve_data
- * @ref firebase_auth_user_reauthenticate_and_retrieve_data_result
  * @ref firebase_auth_user_reauthenticate_with_provider
  * @section_end
  *

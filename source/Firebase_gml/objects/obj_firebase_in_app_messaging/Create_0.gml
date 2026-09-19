@@ -1,6 +1,9 @@
 
 
+var _installations = firebase_installations_get_instance();
+
 firebase_installations_get_id(
+    _installations,
     function(_error, _message, _fid)
     {
         show_debug_message({

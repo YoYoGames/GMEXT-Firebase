@@ -221,7 +221,7 @@
  * @desc **Firebase C++ SDK:** [firebase::analytics::SetUserId](https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#setuserid)
  *
  * This function sets the id Analytics uses to recognise the same player across devices - the
- * game's own account id, such as the ${function.firebase_auth_user_uid} of the signed-in user,
+ * game's own account id, such as the `uid` ${function.firebase_auth_user_get_info} reads for the signed-in user,
  * never an email address or a name. An empty string removes it. Google's privacy policy governs
  * its use. It does nothing before ${function.firebase_analytics_initialize}.
  *

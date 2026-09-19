@@ -96,9 +96,9 @@ var _started = firebase_firestore_query_get(
                 var _doc = _documents[i];
 
                 var _id =
-                    firebase_firestore_document_snapshot_id(
+                    firebase_firestore_document_snapshot_get_info(
                         _doc
-                    );
+                    ).id;
 
                 var _data =
                     firebase_firestore_document_snapshot_get_data(

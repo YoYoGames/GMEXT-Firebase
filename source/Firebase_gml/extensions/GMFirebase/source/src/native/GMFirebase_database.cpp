@@ -64,8 +64,13 @@ static DatabaseReference* resolve_db_ref(uint64_t ref)
 	return r;
 }
 
+// A DatabaseReference is a Query in the SDK, so the firebase_database_query_*
+// family accepts either handle; the reference resolves to its own registry
+// entry and is used through the base class.
 static Query* resolve_db_query(uint64_t ref)
 {
+	if (gm_fb_ref_ext(ref) == GM_FIREBASE_EXT && gm_fb_ref_type(ref) == GM_FB_TYPE_DATABASE_REF)
+		return resolve_db_ref(ref);
 	Query* q = nullptr;
 	validate_fb_ref_map(ref, GM_FB_TYPE_DATABASE_QUERY, Query, g_db_query_map, q);
 	return q;
@@ -395,38 +400,7 @@ static bool query_remove_all_child_listeners(Query* q)
 	return true;
 }
 
-// ---- firebase_database_ref_* (operate on a GM_FB_TYPE_DATABASE_REF handle) ----
-
-uint64_t firebase_database_ref_order_by_child(uint64_t ref, std::string_view path) { return query_order_by_child(resolve_db_ref(ref), path); }
-uint64_t firebase_database_ref_order_by_key(uint64_t ref) { return query_order_by_key(resolve_db_ref(ref)); }
-uint64_t firebase_database_ref_order_by_value(uint64_t ref) { return query_order_by_value(resolve_db_ref(ref)); }
-uint64_t firebase_database_ref_order_by_priority(uint64_t ref) { return query_order_by_priority(resolve_db_ref(ref)); }
-uint64_t firebase_database_ref_start_at(uint64_t ref, const gm::wire::GMValue& order_value) { return query_start_at(resolve_db_ref(ref), order_value); }
-uint64_t firebase_database_ref_start_at_key(uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key) { return query_start_at_key(resolve_db_ref(ref), order_value, child_key); }
-uint64_t firebase_database_ref_end_at(uint64_t ref, const gm::wire::GMValue& order_value) { return query_end_at(resolve_db_ref(ref), order_value); }
-uint64_t firebase_database_ref_end_at_key(uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key) { return query_end_at_key(resolve_db_ref(ref), order_value, child_key); }
-uint64_t firebase_database_ref_equal_to(uint64_t ref, const gm::wire::GMValue& order_value) { return query_equal_to(resolve_db_ref(ref), order_value); }
-uint64_t firebase_database_ref_equal_to_key(uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key) { return query_equal_to_key(resolve_db_ref(ref), order_value, child_key); }
-uint64_t firebase_database_ref_limit_to_first(uint64_t ref, double limit) { return query_limit_to_first(resolve_db_ref(ref), limit); }
-uint64_t firebase_database_ref_limit_to_last(uint64_t ref, double limit) { return query_limit_to_last(resolve_db_ref(ref), limit); }
-bool firebase_database_ref_set_keep_synchronized(uint64_t ref, bool keep_sync) { return query_set_keep_synchronized(resolve_db_ref(ref), keep_sync); }
-FirebaseError firebase_database_ref_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_ref(ref), "firebase_database_ref_get_value", callback); }
-uint64_t firebase_database_ref_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_ref(ref), on_value_changed, on_cancelled); }
-bool firebase_database_ref_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_ref(ref), listener_ref); }
-bool firebase_database_ref_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_ref(ref)); }
-uint64_t firebase_database_ref_add_child_listener(uint64_t ref,
-	const std::optional<gm::wire::GMFunction>& on_child_added,
-	const std::optional<gm::wire::GMFunction>& on_child_changed,
-	const std::optional<gm::wire::GMFunction>& on_child_moved,
-	const std::optional<gm::wire::GMFunction>& on_child_removed,
-	const std::optional<gm::wire::GMFunction>& on_cancelled)
-{
-	return query_add_child_listener(resolve_db_ref(ref), on_child_added, on_child_changed, on_child_moved, on_child_removed, on_cancelled);
-}
-bool firebase_database_ref_remove_child_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_child_listener(resolve_db_ref(ref), listener_ref); }
-bool firebase_database_ref_remove_all_child_listeners(uint64_t ref) { return query_remove_all_child_listeners(resolve_db_ref(ref)); }
-
-// ---- firebase_database_query_* (operate on a GM_FB_TYPE_DATABASE_QUERY handle) ----
+// ---- firebase_database_query_* (a GM_FB_TYPE_DATABASE_REF or GM_FB_TYPE_DATABASE_QUERY handle) ----
 
 uint64_t firebase_database_query_order_by_child(uint64_t ref, std::string_view path) { return query_order_by_child(resolve_db_query(ref), path); }
 uint64_t firebase_database_query_order_by_key(uint64_t ref) { return query_order_by_key(resolve_db_query(ref)); }
@@ -469,13 +443,11 @@ void firebase_database_query_release(uint64_t ref)
 // DatabaseReference-only surface
 // ============================================================
 
-// Consolidates key/is_root/is_valid/get_database/get_url into a single call.
-// It carries no reference handles - get_parent/get_root/query_get_reference
-// are the getters that register one the caller owns. `database` is a
-// GM_FB_TYPE_DATABASE ref (not owned/released, same as every other
-// Database-returning getter in this extension). undefined for a handle that
-// does not resolve (InvalidHandle is already recorded); is_valid inside the
-// struct is the SDK's own answer.
+// The scalar view of a reference: key, is_root, is_valid and url. It carries
+// no handles - get_parent/get_root/get_database/query_get_reference are the
+// getters for those. undefined for a handle that does not resolve
+// (InvalidHandle is already recorded); is_valid inside the struct is the
+// SDK's own answer.
 std::optional<gm_structs::FirebaseDatabaseReferenceInfo> firebase_database_ref_get(uint64_t ref)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
@@ -485,8 +457,6 @@ std::optional<gm_structs::FirebaseDatabaseReferenceInfo> firebase_database_ref_g
 	out.key = r->key_string();
 	out.is_root = r->is_root();
 	out.is_valid = r->is_valid();
-	Database* db = r->database();
-	out.database = db != nullptr ? registerFirebasePointer(db, GM_FB_TYPE_DATABASE) : 0;
 	out.url = r->url();
 
 	return out;
@@ -612,20 +582,8 @@ void firebase_database_ref_release(uint64_t ref)
 }
 
 // ============================================================
-// DatabaseReference granular identity + server timestamp + OnDisconnect
+// DatabaseReference handle getters + server timestamp + OnDisconnect
 // ============================================================
-
-std::string firebase_database_ref_key(uint64_t ref)
-{
-    DatabaseReference* r = resolve_db_ref(ref);
-    return r ? r->key_string() : std::string();
-}
-
-bool firebase_database_ref_is_root(uint64_t ref)
-{
-    DatabaseReference* r = resolve_db_ref(ref);
-    return (r && r->is_root());
-}
 
 bool firebase_database_ref_is_valid(uint64_t ref)
 {
@@ -650,12 +608,6 @@ uint64_t firebase_database_ref_get_database(uint64_t ref)
     DatabaseReference* r = resolve_db_ref(ref);
     Database* db = r ? r->database() : nullptr;
     return db ? registerFirebasePointer(db, GM_FB_TYPE_DATABASE) : 0;
-}
-
-std::string firebase_database_ref_get_url(uint64_t ref)
-{
-    DatabaseReference* r = resolve_db_ref(ref);
-    return r ? r->url() : std::string();
 }
 
 gm::wire::DataStream firebase_database_server_timestamp()

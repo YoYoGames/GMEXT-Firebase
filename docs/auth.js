@@ -711,8 +711,10 @@
  * @function firebase_auth_game_center_auth_provider_is_player_authenticated
  * @desc **Firebase C++ SDK:** [firebase::auth::GameCenterAuthProvider::IsPlayerAuthenticated](https://firebase.google.com/docs/reference/cpp/class/firebase/auth/game-center-auth-provider#isplayerauthenticated)
  *
- * This function returns whether a player is signed in to Game Center on this device. It is only
- * meaningful on iOS; everywhere else it returns `false`.
+ * This function returns whether a player is signed in to Game Center on this device.
+ *
+ * On Android, Windows, macOS and Linux it returns `false` and sets ${function.firebase_last_error_code}
+ * to `FirebaseError.Unsupported` - the SDK has no Game Center there.
  *
  * @returns {Bool} `true` when a Game Center player is signed in, otherwise `false`.
  * @function_end

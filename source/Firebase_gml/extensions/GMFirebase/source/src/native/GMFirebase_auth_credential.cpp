@@ -191,12 +191,12 @@ uint64_t firebase_auth_facebook_auth_provider_get_credential(std::string_view ac
 }
 
 // Game Center exists in the SDK's iOS/tvOS sources only. The Android and
-// desktop builds (desktop is what macOS links) implement GetCredential() as a
-// FIREBASE_ASSERT_RETURN on a constant false, and that assert is not compiled
-// out of release builds - LogAssert() aborts the process, the same mechanism as
-// the analytics crash. So the call is refused before it reaches the SDK
-// anywhere else. On iOS the SDK itself completes with
-// kAuthErrorInvalidCredential when GameKit is not linked.
+// desktop builds (desktop is what macOS links) implement GetCredential() and
+// IsPlayerAuthenticated() as a FIREBASE_ASSERT_RETURN on a constant false, and
+// that assert is not compiled out of release builds - LogAssert() aborts the
+// process, the same mechanism as the analytics crash. So all three Game Center
+// calls are refused before they reach the SDK anywhere else. On iOS the SDK
+// itself completes with kAuthErrorInvalidCredential when GameKit is not linked.
 FirebaseError firebase_auth_game_center_auth_provider_get_credential(const std::optional<gm::wire::GMFunction>& callback)
 {
 #if FIREBASE_PLATFORM_IOS || FIREBASE_PLATFORM_TVOS
@@ -218,7 +218,12 @@ FirebaseError firebase_auth_game_center_auth_provider_get_credential(const std::
 
 bool firebase_auth_game_center_auth_provider_is_player_authenticated()
 {
+#if FIREBASE_PLATFORM_IOS || FIREBASE_PLATFORM_TVOS
 	return firebase::auth::GameCenterAuthProvider::IsPlayerAuthenticated();
+#else
+	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED, "firebase_auth_game_center_auth_provider_is_player_authenticated: Game Center is only available on iOS and tvOS");
+	return false;
+#endif
 }
 
 uint64_t firebase_auth_github_auth_provider_get_credential(std::string_view token)

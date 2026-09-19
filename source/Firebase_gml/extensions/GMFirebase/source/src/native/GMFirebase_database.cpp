@@ -1,4 +1,5 @@
 #include "GMFirebase_database.h"
+#include <memory>
 
 using firebase::database::Database;
 using firebase::database::DatabaseReference;
@@ -658,6 +659,17 @@ gm::wire::DataStream firebase_database_server_timestamp()
 
 namespace
 {
+#if !FIREBASE_PLATFORM_DESKTOP
+    // On Android and iOS the SDK caches the DisconnectionHandler inside the
+    // DatabaseReference's internal and deletes it with that internal; desktop
+    // hands back a fresh caller-owned one per call. Minting from a private copy
+    // of the reference gives GML the desktop contract everywhere: the handler
+    // handle outlives the reference handle it came from and is released once.
+    // Guarded by g_firebase_value_registry_mutex like every other map of SDK
+    // value objects.
+    std::map<firebase::database::DisconnectionHandler*, std::unique_ptr<DatabaseReference>> g_on_disconnect_owner;
+#endif
+
     firebase::database::DisconnectionHandler* resolveOnDisconnect(uint64_t handler_ref)
     {
         firebase::database::DisconnectionHandler* handler = nullptr;
@@ -680,8 +692,22 @@ uint64_t firebase_database_ref_on_disconnect(uint64_t ref)
 {
     DatabaseReference* r = resolve_db_ref(ref);
     if (!r) return 0;
+#if FIREBASE_PLATFORM_DESKTOP
     auto* handler = r->OnDisconnect();
     return handler ? registerFirebasePointer(handler, GM_FB_TYPE_DATABASE_ON_DISCONNECT) : 0;
+#else
+    // The copy's handler cache starts empty, so this is a new handler owned by
+    // the copy. The unique_ptr keeps the copy where it is when it moves into
+    // the map, which is what keeps the handler's owner fixed.
+    auto owner = std::make_unique<DatabaseReference>(*r);
+    auto* handler = owner->OnDisconnect();
+    if (!handler) return 0;
+    {
+        std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+        g_on_disconnect_owner[handler] = std::move(owner);
+    }
+    return registerFirebasePointer(handler, GM_FB_TYPE_DATABASE_ON_DISCONNECT);
+#endif
 }
 
 FirebaseError firebase_database_on_disconnect_cancel(uint64_t handler_ref, const std::optional<gm::wire::GMFunction>& callback)
@@ -722,7 +748,14 @@ void firebase_database_on_disconnect_release(uint64_t handler_ref)
 {
     auto* h = static_cast<firebase::database::DisconnectionHandler*>(
         unregisterFirebasePointer(handler_ref, GM_FB_TYPE_DATABASE_ON_DISCONNECT));
+    if (!h) return;
+#if FIREBASE_PLATFORM_DESKTOP
     delete h;
+#else
+    // Dropping the owning reference copy is what deletes the handler.
+    std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+    g_on_disconnect_owner.erase(h);
+#endif
 }
 
 uint64_t firebase_database_get_app(uint64_t db_ref)

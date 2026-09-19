@@ -193,7 +193,7 @@ firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provid
 #define GM_FB_TYPE_DATABASE_VALUE_LISTENER 0x14 // ptr registry: GMFirebaseValueListener
 #define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15   // map: firebase::database::MutableData (transactions)
 #define GM_FB_TYPE_DATABASE_CHILD_LISTENER 0x16 // ptr registry: GMFirebaseChildListener
-#define GM_FB_TYPE_DATABASE_ON_DISCONNECT 0x17 // ptr: heap-owned DisconnectionHandler
+#define GM_FB_TYPE_DATABASE_ON_DISCONNECT 0x17 // ptr: DisconnectionHandler - caller-owned on desktop, owned by a private DatabaseReference copy elsewhere (GMFirebase_database.cpp)
 
 // Firestore
 #define GM_FB_TYPE_FIRESTORE 0x20              // ptr: firebase::firestore::Firestore*

@@ -8090,7 +8090,9 @@ registers writes the <em>server</em> performs when this client's connection is l
 presence: set <code>online</code> to <code>true</code> now, and register that it becomes <code>false</code> on disconnect. Each
 <code>firebase_database_on_disconnect_*</code> call queues one action on the server for this location;
 <a href="database.html#firebase_database_on_disconnect_cancel">firebase_database_on_disconnect_cancel</a> clears the queue. Release the handler with
-<a href="database.html#firebase_database_on_disconnect_release">firebase_database_on_disconnect_release</a> once the calls have been started.</p>
+<a href="database.html#firebase_database_on_disconnect_release">firebase_database_on_disconnect_release</a> once the calls have been started. Each call
+returns a handle of its own, and it stays valid after the reference handle it came from has been
+released.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>

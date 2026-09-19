@@ -5189,8 +5189,9 @@ it, releasing the credential once the sign-in has been started.</p>
 
 <h1 id="firebase_auth_game_center_auth_provider_is_player_authenticated">firebase_auth_game_center_auth_provider_is_player_authenticated<a class="headerlink" href="#firebase_auth_game_center_auth_provider_is_player_authenticated" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/auth/game-center-auth-provider#isplayerauthenticated">firebase::auth::GameCenterAuthProvider::IsPlayerAuthenticated</a></p>
-<p>This function returns whether a player is signed in to Game Center on this device. It is only
-meaningful on iOS; everywhere else it returns <code>false</code>.</p>
+<p>This function returns whether a player is signed in to Game Center on this device.</p>
+<p>On Android, Windows, macOS and Linux it returns <code>false</code> and sets <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+to <code>FirebaseError.Unsupported</code> - the SDK has no Game Center there.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>

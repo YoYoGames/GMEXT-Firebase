@@ -1601,7 +1601,9 @@
  * presence: set `online` to `true` now, and register that it becomes `false` on disconnect. Each
  * `firebase_database_on_disconnect_*` call queues one action on the server for this location;
  * ${function.firebase_database_on_disconnect_cancel} clears the queue. Release the handler with
- * ${function.firebase_database_on_disconnect_release} once the calls have been started.
+ * ${function.firebase_database_on_disconnect_release} once the calls have been started. Each call
+ * returns a handle of its own, and it stays valid after the reference handle it came from has been
+ * released.
  *
  * @param {Real} ref A reference handle.
  * @returns {Real} A disconnect handler handle, or `0` when the handle is not valid.

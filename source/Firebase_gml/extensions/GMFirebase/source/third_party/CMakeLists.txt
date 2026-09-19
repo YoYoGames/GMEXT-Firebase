@@ -292,6 +292,16 @@ elseif(ANDROID)
     IMPORTED_LOCATION "${_firebase_app_path}")
   target_link_libraries(ext_third_party INTERFACE firebase_app)
 
+  # Firebase and the static libc++ are private to libGMFirebase.so: hide every
+  # archive symbol so nothing from the SDK or libc++ is exported and
+  # --gc-sections can drop what nothing reaches. The NDK compiles with -g in every
+  # configuration and the prebuilt libfirebase_*.a carry full DWARF, which is
+  # most of the unstripped .so; Release drops the debug sections and keeps
+  # .symtab so crash frames still resolve to function names.
+  target_link_options(ext_third_party INTERFACE
+    "LINKER:--exclude-libs,ALL"
+    "$<$<CONFIG:Release>:LINKER:--strip-debug>")
+
   # Messaging includes an additional Java-side AAR in the C++ SDK package.
   list(FIND EXT_TP_FIREBASE_MODULES "messaging" _messaging_idx)
   if(NOT _messaging_idx EQUAL -1)

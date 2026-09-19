@@ -11,7 +11,7 @@
  * session - and this call connects the module to it. On Windows it loads `google_analytics.dll`
  * from the game's folder; see the Platforms section of ${module.analytics}.
  *
- * @returns {Real} `1` when the module is initialised, `0` when the default app does not exist.
+ * @returns {Bool} `true` when the module is initialised, `false` when the default app does not exist.
  *
  * @example
  * ```gml
@@ -49,22 +49,22 @@
  * stored on the device and holds across launches, so a consent screen needs the call once. It is
  * the runtime half of the `disableDataCollection` extension option (see
  * ${page.extension_options}): a game built with the option ships with collection off from the
- * first launch, and calls this function with `1` once the player has agreed. By default
+ * first launch, and calls this function with `true` once the player has agreed. By default
  * collection is on. It does nothing before ${function.firebase_analytics_initialize}.
  *
- * @param {Real} enabled `1` to collect, `0` to stop.
+ * @param {Bool} enabled `true` to collect, `false` to stop.
  *
  * @example
  * ```gml
  * // The consent screen's buttons
  * if (player_accepted)
  * {
- *     firebase_analytics_set_analytics_collection_enabled(1);
- *     firebase_analytics_set_consent(1, 1, 1, 1);
+ *     firebase_analytics_set_analytics_collection_enabled(true);
+ *     firebase_analytics_set_consent(true, true, true, true);
  * }
  * else
  * {
- *     firebase_analytics_set_consent(0, 1, 0, 0);
+ *     firebase_analytics_set_consent(false, true, false, false);
  * }
  * ```
  * The above code is a consent screen for a game built with `disableDataCollection`: acceptance
@@ -87,10 +87,10 @@
  * measures itself typically grants `analytics_storage` alone. On Windows, macOS and Linux the
  * call does nothing. It does nothing before ${function.firebase_analytics_initialize}.
  *
- * @param {Real} ad_storage `1` to grant, `0` to deny storage for advertising.
- * @param {Real} analytics_storage `1` to grant, `0` to deny storage for analytics.
- * @param {Real} ad_user_data `1` to grant, `0` to deny sending user data for advertising.
- * @param {Real} ad_personalization `1` to grant, `0` to deny personalised advertising.
+ * @param {Bool} ad_storage `true` to grant, `false` to deny storage for advertising.
+ * @param {Bool} analytics_storage `true` to grant, `false` to deny storage for analytics.
+ * @param {Bool} ad_user_data `true` to grant, `false` to deny sending user data for advertising.
+ * @param {Bool} ad_personalization `true` to grant, `false` to deny personalised advertising.
  * @function_end
  */
 
@@ -316,12 +316,12 @@
  * @function firebase_analytics_is_desktop_initialized
  * @desc **Firebase C++ SDK:** [firebase::analytics::IsDesktopInitialized](https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#isdesktopinitialized)
  *
- * This function returns whether the Windows Analytics library was found and started: `1` when
+ * This function returns whether the Windows Analytics library was found and started: `true` when
  * `google_analytics.dll` was loaded from the game's folder at
- * ${function.firebase_analytics_initialize} and initialised, `0` when it was not - in which case
- * every call on Windows is a no-op. It returns `0` on every other platform.
+ * ${function.firebase_analytics_initialize} and initialised, `false` when it was not - in which case
+ * every call on Windows is a no-op. It returns `false` on every other platform.
  *
- * @returns {Real} `1` when Analytics is live on Windows, otherwise `0`.
+ * @returns {Bool} `true` when Analytics is live on Windows, otherwise `false`.
  * @function_end
  */
 
@@ -335,7 +335,7 @@
  * iOS enable DebugView from the platform's side, with `adb shell setprop debug.firebase.analytics.app`
  * and the `-FIRDebugEnabled` launch argument. It does nothing before ${function.firebase_analytics_initialize}.
  *
- * @param {Real} enabled `1` for debug mode, `0` for normal operation.
+ * @param {Bool} enabled `true` for debug mode, `false` for normal operation.
  * @function_end
  */
 
@@ -365,10 +365,9 @@
  * address - an iOS feature that matches the player to an ad they saw without the address leaving
  * the device, for measuring the ads that brought players to the game.
  *
- * It is iOS-only: on Android, Windows, macOS and Linux the call does nothing. The
- * `GoogleAdsOnDeviceConversion` framework it needs comes with the `FirebaseAnalytics` pod the
- * extension pins, so nothing has to be added to the iOS build. It does nothing before
- * ${function.firebase_analytics_initialize}.
+ * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
+ * library linked into the iOS build, which this version of the extension does not do, so the call
+ * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {String} email_address The player's email address, domain included.
  * @function_end
@@ -381,8 +380,9 @@
  * This function is ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}
  * for a phone number.
  *
- * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
- * It does nothing before ${function.firebase_analytics_initialize}.
+ * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
+ * library linked into the iOS build, which this version of the extension does not do, so the call
+ * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {String} phone_number The player's phone number in E.164 format (`"+14155552671"`).
  * @function_end
@@ -393,11 +393,12 @@
  * @desc **Firebase C++ SDK:** [firebase::analytics::NotifyAppLifecycleChange](https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#notifyapplifecyclechange)
  *
  * This function tells the Windows Analytics library about a change of the game's lifecycle state.
- * The SDK defines two states: `0`, unknown, and `1`, termination - which is what
- * ${function.firebase_analytics_notify_app_lifecycle_termination} sends. It does nothing on other
- * platforms. It does nothing before ${function.firebase_analytics_initialize}.
+ * The SDK defines two states, the two members of ${constant.FirebaseAnalyticsAppLifecycleState};
+ * `Termination` is what ${function.firebase_analytics_notify_app_lifecycle_termination} sends. A
+ * value outside the enum is refused with `FirebaseError.InvalidArgument` in
+ * ${function.firebase_last_error_code}. It does nothing on other platforms. It does nothing before ${function.firebase_analytics_initialize}.
  *
- * @param {Real} state The lifecycle state: `1` for termination.
+ * @param {Enum.FirebaseAnalyticsAppLifecycleState} state The lifecycle state, a ${constant.FirebaseAnalyticsAppLifecycleState} member.
  * @function_end
  */
 
@@ -409,8 +410,9 @@
  * for an email address the game has already normalised and SHA-256 hashed, as Google's on-device
  * measurement guide describes, passed as the raw 32 bytes of the hash.
  *
- * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
- * It does nothing before ${function.firebase_analytics_initialize}.
+ * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
+ * library linked into the iOS build, which this version of the extension does not do, so the call
+ * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {Buffer} hashed_email A buffer holding the hash's bytes.
  * @function_end
@@ -424,8 +426,9 @@
  * for a phone number the game has already normalised to E.164 and SHA-256 hashed, passed as the
  * raw 32 bytes of the hash.
  *
- * It is iOS-only, like ${function.firebase_analytics_initiate_on_device_conversion_measurement_email}.
- * It does nothing before ${function.firebase_analytics_initialize}.
+ * [[Important: On-device conversion measurement needs the `GoogleAppMeasurementOnDeviceConversion`
+ * library linked into the iOS build, which this version of the extension does not do, so the call
+ * does nothing on every platform.]] It does nothing before ${function.firebase_analytics_initialize}.
  *
  * @param {Buffer} hashed_phone A buffer holding the hash's bytes.
  * @function_end
@@ -441,7 +444,7 @@
  * app.
  *
  * @param {Real} app An app handle.
- * @returns {Real} `1` when the module is initialised, `0` when the app handle is not valid.
+ * @returns {Bool} `true` when the module is initialised, `false` when the app handle is not valid.
  * @function_end
  */
 
@@ -459,6 +462,18 @@
  */
 
 /**
+ * @const FirebaseAnalyticsAppLifecycleState
+ * @desc **Firebase C++ SDK:** [firebase::analytics::AppLifecycleState](https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#applifecyclestate)
+ *
+ * The state ${function.firebase_analytics_notify_app_lifecycle_change} reports to the Windows
+ * Analytics library.
+ *
+ * @member Unknown An invalid state, which the SDK uses for an uninitialised value.
+ * @member Termination The game is about to be terminated.
+ * @const_end
+ */
+
+/**
  * @module analytics
  * @title Analytics
  * @desc This module covers Google Analytics for Firebase: events the game logs - a level finished, a
@@ -472,19 +487,10 @@
  * ### Platforms
  *
  * Analytics works fully on Android and iOS. On Windows the SDK loads Google Analytics from a
- * `google_analytics.dll` beside the game's executable and runs every call as a no-op without it;
- * ${function.firebase_analytics_is_desktop_initialized} says which. The SDK package does not
- * include that DLL: the README says where to download it (the SDK repository, at the tag matching
- * the pinned version) and where to put it (`libs/windows/` under the SDK root), and the Windows
- * build step copies it beside the executable from there. The SDK checks the DLL's hash against a
- * list compiled into the pinned library, so a DLL from another SDK version is refused and Analytics
- * stays a no-op - ${function.firebase_analytics_set_log_callback} shows the "Hash mismatch for
- * Analytics DLL." line when that happens. One flow cannot load it at all: a Run from the IDE (VM)
- * executes the game inside the runtime's own runner, whose folder is the runtime's, and the SDK
- * only looks beside the running executable - so on an IDE run
- * ${function.firebase_analytics_is_desktop_initialized} reads `0` and Analytics is the stub, while a
- * packaged or YYC build is its own executable and loads the DLL. On macOS and Linux every call is a
- * no-op. On all three, ${function.firebase_analytics_get_analytics_instance_id} and
+ * `google_analytics.dll` placed beside the game's executable - a library the Firebase C++ SDK
+ * package does not include - and runs every call as a no-op without it;
+ * ${function.firebase_analytics_is_desktop_initialized} says which. On macOS and Linux every call
+ * is a no-op. On all three, ${function.firebase_analytics_get_analytics_instance_id} and
  * ${function.firebase_analytics_get_session_id} answer with placeholder ids,
  * ${function.firebase_analytics_set_consent} does nothing, and the functions in the Desktop
  * section are Windows-only. Game code need not branch: the calls are safe everywhere.
@@ -504,7 +510,7 @@
  * Collection is on by default from the first launch on Android and iOS, before any code runs.
  * A game that needs consent first ships with the `disableDataCollection` extension option (see
  * ${page.extension_options}), which turns collection off in the manifest and the `Info.plist`,
- * and calls ${function.firebase_analytics_set_analytics_collection_enabled} with `1` once the
+ * and calls ${function.firebase_analytics_set_analytics_collection_enabled} with `true` once the
  * player has agreed; ${function.firebase_analytics_set_consent} sets the finer-grained consent
  * mode signals for advertising. Both are stored on the device.
  *
@@ -570,6 +576,11 @@
  * @section_struct Structs
  * @desc The following structs are used by this module:
  * @ref FirebaseAnalyticsParameter
+ * @section_end
+ *
+ * @section_const Constants
+ * @desc The following constants are used by this module:
+ * @ref FirebaseAnalyticsAppLifecycleState
  * @section_end
  *
  * @module_end

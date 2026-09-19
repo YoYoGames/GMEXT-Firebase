@@ -1416,7 +1416,7 @@
  * @param {Real} batch_ref A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document_ref A document reference handle.
  * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -1432,7 +1432,7 @@
  * @param {Real} batch_ref A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document_ref A document reference handle.
  * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -1448,7 +1448,7 @@
  * @param {Real} document_ref A document reference handle.
  * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
  * @param {Array[String]} fields The names of the fields to write.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -1465,7 +1465,7 @@
  * @param {Real} batch_ref A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document_ref A document reference handle.
  * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -1479,7 +1479,7 @@
  *
  * @param {Real} batch_ref A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document_ref A document reference handle.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -2763,14 +2763,14 @@
  * @function firebase_firestore_field_value_type
  * @desc **Firebase C++ SDK:** [firebase::firestore::FieldValue::type](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#type_1)
  *
- * This function returns the kind of value a field value handle holds, as the SDK's own numbering:
- * `0` null, `1` boolean, `2` integer, `3` double, `4` timestamp, `5` string, `6` blob,
- * `7` reference, `8` geo point, `9` array, `10` map, and for the sentinels `11` delete,
- * `12` server timestamp, `13` array union, `14` array remove, `15` increment integer,
- * `16` increment double. The `is_*` functions answer the same question one kind at a time.
+ * This function returns the kind of value a field value handle holds, as a
+ * ${constant.FirestoreFieldValueType} member - one of the eleven value kinds, or one of the six
+ * sentinels a write can carry. The `is_*` functions answer the same question one kind at a time.
+ * A handle that is not a field value sets ${function.firebase_last_error_code} to
+ * `FirebaseError.InvalidHandle`.
  *
  * @param {Real} field_value A field value handle from one of the constructors on this page.
- * @returns {Real} The type number, or `-1` when the handle is not valid.
+ * @returns {Enum.FirestoreFieldValueType} The kind of value, or `FirestoreFieldValueType.Null` when the handle is not valid.
  * @function_end
  */
 
@@ -3132,7 +3132,7 @@
  * @param {Real} batch A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document A document reference handle.
  * @param {Array[Struct.FirestoreFieldPathValue]} entries An array of `{ field_path, value }` structs.
- * @returns {Real} `1` when the write was added to the batch, `0` when a handle was not valid.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -3645,6 +3645,34 @@
  */
 
 /**
+ * @const FirestoreFieldValueType
+ * @desc **Firebase C++ SDK:** [firebase::firestore::FieldValue::Type](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#type)
+ *
+ * The kind of value a field value handle holds, from ${function.firebase_firestore_field_value_type}:
+ * the eleven kinds a document can store, and the six sentinels that are only ever passed to a write
+ * and never come back from Firestore.
+ *
+ * @member Null A null value - also what an invalid handle reports.
+ * @member Boolean A boolean.
+ * @member Integer A 64-bit integer.
+ * @member Double A double.
+ * @member Timestamp A ${struct.FirestoreTimestamp}.
+ * @member String A string.
+ * @member Blob A byte array.
+ * @member Reference A document reference.
+ * @member GeoPoint A ${struct.FirestoreGeoPoint}.
+ * @member Array An array of field values.
+ * @member Map A map of field names to field values.
+ * @member Delete Sentinel: deletes the field, from ${function.firebase_firestore_field_value_delete}.
+ * @member ServerTimestamp Sentinel: the server's time at the write, from ${function.firebase_firestore_field_value_server_timestamp}.
+ * @member ArrayUnion Sentinel: adds elements to an array field, from ${function.firebase_firestore_field_value_array_union}.
+ * @member ArrayRemove Sentinel: removes elements from an array field, from ${function.firebase_firestore_field_value_array_remove}.
+ * @member IncrementInteger Sentinel: adds an integer to a numeric field, from ${function.firebase_firestore_field_value_increment_integer}.
+ * @member IncrementDouble Sentinel: adds a double to a numeric field, from ${function.firebase_firestore_field_value_increment_double}.
+ * @const_end
+ */
+
+/**
  * @const FirestoreAggregateSource
  * @desc Where ${function.firebase_firestore_aggregate_query_get} computes its result.
  *
@@ -4014,6 +4042,7 @@
  * @ref FirestoreDocumentChangeType
  * @ref FirestoreLoadBundleTaskState
  * @ref FirestoreAggregateSource
+ * @ref FirestoreFieldValueType
  * @section_end
  *
  * @module_end

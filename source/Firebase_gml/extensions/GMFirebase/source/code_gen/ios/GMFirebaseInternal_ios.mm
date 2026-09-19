@@ -1880,9 +1880,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change:(double)state
+- (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(state);
+    return __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
@@ -2264,9 +2264,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_messaging_initialize_with_options(suppress_notification_permission_prompt);
 }
-- (double)__EXT_NATIVE__firebase_firestore_field_value_type:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+- (double)__EXT_NATIVE__firebase_firestore_field_value_type:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
-    return __EXT_NATIVE__firebase_firestore_field_value_type(__arg_buffer, __arg_buffer_length);
+    return __EXT_NATIVE__firebase_firestore_field_value_type(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_firestore_field_value_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {

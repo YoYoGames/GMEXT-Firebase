@@ -145,50 +145,50 @@ uint64_t firebase_database_get_reference_from_url(uint64_t db_ref, std::string_v
 	return registerDatabaseReference(db->GetReferenceFromUrl(url_str.c_str()));
 }
 
-double firebase_database_go_offline(uint64_t db_ref)
+bool firebase_database_go_offline(uint64_t db_ref)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return 0;
+	if (db == nullptr) return false;
 	db->GoOffline();
-	return 1;
+	return true;
 }
 
-double firebase_database_go_online(uint64_t db_ref)
+bool firebase_database_go_online(uint64_t db_ref)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return 0;
+	if (db == nullptr) return false;
 	db->GoOnline();
-	return 1;
+	return true;
 }
 
-double firebase_database_purge_outstanding_writes(uint64_t db_ref)
+bool firebase_database_purge_outstanding_writes(uint64_t db_ref)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return 0;
+	if (db == nullptr) return false;
 	db->PurgeOutstandingWrites();
-	return 1;
+	return true;
 }
 
-double firebase_database_set_persistence_enabled(uint64_t db_ref, double enabled)
+bool firebase_database_set_persistence_enabled(uint64_t db_ref, bool enabled)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return 0;
-	db->set_persistence_enabled(enabled != 0);
-	return 1;
+	if (db == nullptr) return false;
+	db->set_persistence_enabled(enabled);
+	return true;
 }
 
-double firebase_database_set_log_level(uint64_t db_ref, gm_enums::FirebaseLogLevel log_level)
+bool firebase_database_set_log_level(uint64_t db_ref, gm_enums::FirebaseLogLevel log_level)
 {
 	Database* db = resolve_database(db_ref);
-	if (db == nullptr) return 0;
+	if (db == nullptr) return false;
 	firebase::LogLevel sdk_level;
 	if (!toSdkLogLevel(log_level, sdk_level))
 	{
 		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database_set_log_level: log_level must be a FirebaseLogLevel value");
-		return 0;
+		return false;
 	}
 	db->set_log_level(sdk_level);
-	return 1;
+	return true;
 }
 
 gm_enums::FirebaseLogLevel firebase_database_get_log_level(uint64_t db_ref)
@@ -286,17 +286,17 @@ static uint64_t query_get_reference(Query* q)
 	return registerDatabaseReference(q->GetReference());
 }
 
-static double query_set_keep_synchronized(Query* q, double keep_sync)
+static bool query_set_keep_synchronized(Query* q, bool keep_sync)
 {
-	if (q == nullptr) return 0;
-	q->SetKeepSynchronized(keep_sync != 0);
-	return 1;
+	if (q == nullptr) return false;
+	q->SetKeepSynchronized(keep_sync);
+	return true;
 }
 
-static double query_is_valid(Query* q)
+static bool query_is_valid(Query* q)
 {
-	if (q == nullptr) return 0;
-	return q->is_valid() ? 1 : 0;
+	if (q == nullptr) return false;
+	return q->is_valid();
 }
 
 static FirebaseError query_get_value(Query* q, const char* function, const std::optional<gm::wire::GMFunction>& callback)
@@ -322,26 +322,26 @@ static uint64_t query_add_value_listener(Query* q,
 	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_VALUE_LISTENER);
 }
 
-static double query_remove_value_listener(Query* q, uint64_t listener_ref)
+static bool query_remove_value_listener(Query* q, uint64_t listener_ref)
 {
-	if (q == nullptr) return 0;
+	if (q == nullptr) return false;
 	GMFirebaseValueListener* listener = nullptr;
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER, GMFirebaseValueListener, listener);
-	if (listener == nullptr) return 0;
+	if (listener == nullptr) return false;
 	q->RemoveValueListener(listener);
 	listener = static_cast<GMFirebaseValueListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER));
 	delete listener;
-	return 1;
+	return true;
 }
 
-static double query_remove_all_value_listeners(Query* q)
+static bool query_remove_all_value_listeners(Query* q)
 {
-	if (q == nullptr) return 0;
+	if (q == nullptr) return false;
 	// Does not (and cannot) delete the GMFirebaseValueListener heap instances
 	// this query's equivalents were registered with - GML must still call
 	// remove_value_listener on each ref it holds to free them.
 	q->RemoveAllValueListeners();
-	return 1;
+	return true;
 }
 
 static uint64_t query_add_child_listener(Query* q,
@@ -362,23 +362,23 @@ static uint64_t query_add_child_listener(Query* q,
 	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_CHILD_LISTENER);
 }
 
-static double query_remove_child_listener(Query* q, uint64_t listener_ref)
+static bool query_remove_child_listener(Query* q, uint64_t listener_ref)
 {
-	if (q == nullptr) return 0;
+	if (q == nullptr) return false;
 	GMFirebaseChildListener* listener = nullptr;
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER, GMFirebaseChildListener, listener);
-	if (listener == nullptr) return 0;
+	if (listener == nullptr) return false;
 	q->RemoveChildListener(listener);
 	listener = static_cast<GMFirebaseChildListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER));
 	delete listener;
-	return 1;
+	return true;
 }
 
-static double query_remove_all_child_listeners(Query* q)
+static bool query_remove_all_child_listeners(Query* q)
 {
-	if (q == nullptr) return 0;
+	if (q == nullptr) return false;
 	q->RemoveAllChildListeners();
-	return 1;
+	return true;
 }
 
 // ---- firebase_database_ref_* (operate on a GM_FB_TYPE_DATABASE_REF handle) ----
@@ -395,11 +395,11 @@ uint64_t firebase_database_ref_equal_to(uint64_t ref, const gm::wire::GMValue& o
 uint64_t firebase_database_ref_equal_to_key(uint64_t ref, const gm::wire::GMValue& order_value, std::string_view child_key) { return query_equal_to_key(resolve_db_ref(ref), order_value, child_key); }
 uint64_t firebase_database_ref_limit_to_first(uint64_t ref, double limit) { return query_limit_to_first(resolve_db_ref(ref), limit); }
 uint64_t firebase_database_ref_limit_to_last(uint64_t ref, double limit) { return query_limit_to_last(resolve_db_ref(ref), limit); }
-double firebase_database_ref_set_keep_synchronized(uint64_t ref, double keep_sync) { return query_set_keep_synchronized(resolve_db_ref(ref), keep_sync); }
+bool firebase_database_ref_set_keep_synchronized(uint64_t ref, bool keep_sync) { return query_set_keep_synchronized(resolve_db_ref(ref), keep_sync); }
 FirebaseError firebase_database_ref_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_ref(ref), "firebase_database_ref_get_value", callback); }
 uint64_t firebase_database_ref_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_ref(ref), on_value_changed, on_cancelled); }
-double firebase_database_ref_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_ref(ref), listener_ref); }
-double firebase_database_ref_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_ref(ref)); }
+bool firebase_database_ref_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_ref(ref), listener_ref); }
+bool firebase_database_ref_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_ref(ref)); }
 uint64_t firebase_database_ref_add_child_listener(uint64_t ref,
 	const std::optional<gm::wire::GMFunction>& on_child_added,
 	const std::optional<gm::wire::GMFunction>& on_child_changed,
@@ -409,8 +409,8 @@ uint64_t firebase_database_ref_add_child_listener(uint64_t ref,
 {
 	return query_add_child_listener(resolve_db_ref(ref), on_child_added, on_child_changed, on_child_moved, on_child_removed, on_cancelled);
 }
-double firebase_database_ref_remove_child_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_child_listener(resolve_db_ref(ref), listener_ref); }
-double firebase_database_ref_remove_all_child_listeners(uint64_t ref) { return query_remove_all_child_listeners(resolve_db_ref(ref)); }
+bool firebase_database_ref_remove_child_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_child_listener(resolve_db_ref(ref), listener_ref); }
+bool firebase_database_ref_remove_all_child_listeners(uint64_t ref) { return query_remove_all_child_listeners(resolve_db_ref(ref)); }
 
 // ---- firebase_database_query_* (operate on a GM_FB_TYPE_DATABASE_QUERY handle) ----
 
@@ -427,12 +427,12 @@ uint64_t firebase_database_query_equal_to_key(uint64_t ref, const gm::wire::GMVa
 uint64_t firebase_database_query_limit_to_first(uint64_t ref, double limit) { return query_limit_to_first(resolve_db_query(ref), limit); }
 uint64_t firebase_database_query_limit_to_last(uint64_t ref, double limit) { return query_limit_to_last(resolve_db_query(ref), limit); }
 uint64_t firebase_database_query_get_reference(uint64_t ref) { return query_get_reference(resolve_db_query(ref)); }
-double firebase_database_query_set_keep_synchronized(uint64_t ref, double keep_sync) { return query_set_keep_synchronized(resolve_db_query(ref), keep_sync); }
-double firebase_database_query_is_valid(uint64_t ref) { return query_is_valid(resolve_db_query(ref)); }
+bool firebase_database_query_set_keep_synchronized(uint64_t ref, bool keep_sync) { return query_set_keep_synchronized(resolve_db_query(ref), keep_sync); }
+bool firebase_database_query_is_valid(uint64_t ref) { return query_is_valid(resolve_db_query(ref)); }
 FirebaseError firebase_database_query_get_value(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback) { return query_get_value(resolve_db_query(ref), "firebase_database_query_get_value", callback); }
 uint64_t firebase_database_query_add_value_listener(uint64_t ref, const std::optional<gm::wire::GMFunction>& on_value_changed, const std::optional<gm::wire::GMFunction>& on_cancelled) { return query_add_value_listener(resolve_db_query(ref), on_value_changed, on_cancelled); }
-double firebase_database_query_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_query(ref), listener_ref); }
-double firebase_database_query_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_query(ref)); }
+bool firebase_database_query_remove_value_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_value_listener(resolve_db_query(ref), listener_ref); }
+bool firebase_database_query_remove_all_value_listeners(uint64_t ref) { return query_remove_all_value_listeners(resolve_db_query(ref)); }
 uint64_t firebase_database_query_add_child_listener(uint64_t ref,
 	const std::optional<gm::wire::GMFunction>& on_child_added,
 	const std::optional<gm::wire::GMFunction>& on_child_changed,
@@ -442,13 +442,13 @@ uint64_t firebase_database_query_add_child_listener(uint64_t ref,
 {
 	return query_add_child_listener(resolve_db_query(ref), on_child_added, on_child_changed, on_child_moved, on_child_removed, on_cancelled);
 }
-double firebase_database_query_remove_child_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_child_listener(resolve_db_query(ref), listener_ref); }
-double firebase_database_query_remove_all_child_listeners(uint64_t ref) { return query_remove_all_child_listeners(resolve_db_query(ref)); }
+bool firebase_database_query_remove_child_listener(uint64_t ref, uint64_t listener_ref) { return query_remove_child_listener(resolve_db_query(ref), listener_ref); }
+bool firebase_database_query_remove_all_child_listeners(uint64_t ref) { return query_remove_all_child_listeners(resolve_db_query(ref)); }
 
-double firebase_database_query_release(uint64_t ref)
+void firebase_database_query_release(uint64_t ref)
 {
-	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_DATABASE_QUERY) return 0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_query_map) ? 1 : 0;
+	if (resolve_db_query(ref) == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_query_map);
 }
 
 // ============================================================
@@ -498,20 +498,20 @@ uint64_t firebase_database_ref_push(uint64_t ref)
 	return registerDatabaseReference(r->PushChild());
 }
 
-double firebase_database_ref_go_online(uint64_t ref)
+bool firebase_database_ref_go_online(uint64_t ref)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
+	if (r == nullptr) return false;
 	r->GoOnline();
-	return 1;
+	return true;
 }
 
-double firebase_database_ref_go_offline(uint64_t ref)
+bool firebase_database_ref_go_offline(uint64_t ref)
 {
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return 0;
+	if (r == nullptr) return false;
 	r->GoOffline();
-	return 1;
+	return true;
 }
 
 FirebaseError firebase_database_ref_set_value(uint64_t ref, const gm::wire::GMValue& value, const std::optional<gm::wire::GMFunction>& callback)
@@ -596,10 +596,10 @@ FirebaseError firebase_database_ref_run_transaction(uint64_t ref, const std::opt
 	return FirebaseError::Unsupported;
 }
 
-double firebase_database_ref_release(uint64_t ref)
+void firebase_database_ref_release(uint64_t ref)
 {
-	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_DATABASE_REF) return 0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_ref_map) ? 1 : 0;
+	if (resolve_db_ref(ref) == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_ref_map);
 }
 
 // ============================================================
@@ -612,16 +612,16 @@ std::string firebase_database_ref_key(uint64_t ref)
     return r ? r->key_string() : std::string();
 }
 
-double firebase_database_ref_is_root(uint64_t ref)
+bool firebase_database_ref_is_root(uint64_t ref)
 {
     DatabaseReference* r = resolve_db_ref(ref);
-    return (r && r->is_root()) ? 1.0 : 0.0;
+    return (r && r->is_root());
 }
 
-double firebase_database_ref_is_valid(uint64_t ref)
+bool firebase_database_ref_is_valid(uint64_t ref)
 {
     DatabaseReference* r = resolve_db_ref(ref);
-    return (r && r->is_valid()) ? 1.0 : 0.0;
+    return (r && r->is_valid());
 }
 
 uint64_t firebase_database_ref_get_parent(uint64_t ref)

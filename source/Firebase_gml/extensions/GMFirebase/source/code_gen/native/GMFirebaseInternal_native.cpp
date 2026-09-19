@@ -76,13 +76,13 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_terminate()
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_analytics_collection_enabled(double enabled)
 {
-    firebase_analytics_set_analytics_collection_enabled(static_cast<double>(enabled));
+    firebase_analytics_set_analytics_collection_enabled(static_cast<bool>(enabled));
     return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_consent(double ad_storage, double analytics_storage, double ad_user_data, double ad_personalization)
 {
-    firebase_analytics_set_consent(static_cast<double>(ad_storage), static_cast<double>(analytics_storage), static_cast<double>(ad_user_data), static_cast<double>(ad_personalization));
+    firebase_analytics_set_consent(static_cast<bool>(ad_storage), static_cast<bool>(analytics_storage), static_cast<bool>(ad_user_data), static_cast<bool>(ad_personalization));
     return 0;
 }
 
@@ -227,7 +227,7 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_is_desktop_initialized()
 
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_desktop_debug_mode(double enabled)
 {
-    firebase_analytics_set_desktop_debug_mode(static_cast<double>(enabled));
+    firebase_analytics_set_desktop_debug_mode(static_cast<bool>(enabled));
     return 0;
 }
 
@@ -277,7 +277,7 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_debug_provider_set_debug_token(
 
 GMEXPORT double __EXT_NATIVE__firebase_app_check_set_token_auto_refresh_enabled(double enabled)
 {
-    firebase_app_check_set_token_auto_refresh_enabled(static_cast<double>(enabled));
+    firebase_app_check_set_token_auto_refresh_enabled(static_cast<bool>(enabled));
     return 0;
 }
 
@@ -285,8 +285,8 @@ GMEXPORT double __EXT_NATIVE__firebase_app_check_get_token(char* __arg_buffer, d
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
-    // field: force_refresh, type: Float64
-    double force_refresh = gm::wire::codec::readValue<double>(__br);
+    // field: force_refresh, type: Bool
+    bool force_refresh = gm::wire::codec::readValue<bool>(__br);
 
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
@@ -375,8 +375,8 @@ GMEXPORT double __EXT_NATIVE__firebase_installations_get_token(char* __arg_buffe
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
-    // field: force_refresh, type: Float64
-    double force_refresh = gm::wire::codec::readValue<double>(__br);
+    // field: force_refresh, type: Bool
+    bool force_refresh = gm::wire::codec::readValue<bool>(__br);
 
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
@@ -1492,8 +1492,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_set_persistence_enabled(char* __
     // field: db_ref, type: UInt64
     std::uint64_t db_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: enabled, type: Float64
-    double enabled = gm::wire::codec::readValue<double>(__br);
+    // field: enabled, type: Bool
+    bool enabled = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_database_set_persistence_enabled(db_ref, enabled);
     return static_cast<double>(__result);
@@ -1751,8 +1751,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_set_keep_synchronized(char* 
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: keep_sync, type: Float64
-    double keep_sync = gm::wire::codec::readValue<double>(__br);
+    // field: keep_sync, type: Bool
+    bool keep_sync = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_database_ref_set_keep_synchronized(ref, keep_sync);
     return static_cast<double>(__result);
@@ -2147,8 +2147,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_query_set_keep_synchronized(char
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: keep_sync, type: Float64
-    double keep_sync = gm::wire::codec::readValue<double>(__br);
+    // field: keep_sync, type: Bool
+    bool keep_sync = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_database_query_set_keep_synchronized(ref, keep_sync);
     return static_cast<double>(__result);
@@ -2323,8 +2323,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_query_release(char* __arg_buffer
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_database_query_release(ref);
-    return static_cast<double>(__result);
+    firebase_database_query_release(ref);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_ref_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
@@ -2551,8 +2551,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_release(char* __arg_buffer, 
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_database_ref_release(ref);
-    return static_cast<double>(__result);
+    firebase_database_ref_release(ref);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_exists(char* __arg_buffer, double __arg_buffer_length)
@@ -2725,8 +2725,8 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_release(char* __arg_buf
     // field: snapshot, type: UInt64
     std::uint64_t snapshot = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_database_snapshot_release(snapshot);
-    return static_cast<double>(__result);
+    firebase_database_snapshot_release(snapshot);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_get_instance(char* __ret_buffer, double __ret_buffer_length)
@@ -4490,8 +4490,8 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_release(char* __arg_buffer, d
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_storage_ref_release(ref);
-    return static_cast<double>(__result);
+    firebase_storage_ref_release(ref);
+    return 0;
 }
 
 GMEXPORT char* __EXT_NATIVE__firebase_storage_ref_bucket(char* __arg_buffer, double __arg_buffer_length)
@@ -4840,8 +4840,8 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_release(char* __arg_buff
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_storage_metadata_release(ref);
-    return static_cast<double>(__result);
+    firebase_storage_metadata_release(ref);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -5166,8 +5166,8 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_controller_release(char* __arg_bu
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_storage_controller_release(ref);
-    return static_cast<double>(__result);
+    firebase_storage_controller_release(ref);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_storage_controller_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -5269,8 +5269,8 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_release(char* __arg_b
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    auto&& __result = firebase_storage_list_result_release(ref);
-    return static_cast<double>(__result);
+    firebase_storage_list_result_release(ref);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_storage_list_result_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -5416,8 +5416,8 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_get_https_callable_with_options
     // field: name, type: String
     std::string_view name = gm::wire::codec::readValue<std::string_view>(__br);
 
-    // field: limited_use_app_check_token, type: Float64
-    double limited_use_app_check_token = gm::wire::codec::readValue<double>(__br);
+    // field: limited_use_app_check_token, type: Bool
+    bool limited_use_app_check_token = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_functions_get_https_callable_with_options(functions_ref, name, limited_use_app_check_token);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -5455,8 +5455,8 @@ GMEXPORT double __EXT_NATIVE__firebase_functions_get_https_callable_from_url_wit
     // field: url, type: String
     std::string_view url = gm::wire::codec::readValue<std::string_view>(__br);
 
-    // field: limited_use_app_check_token, type: Float64
-    double limited_use_app_check_token = gm::wire::codec::readValue<double>(__br);
+    // field: limited_use_app_check_token, type: Bool
+    bool limited_use_app_check_token = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_functions_get_https_callable_from_url_with_options(functions_ref, url, limited_use_app_check_token);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
@@ -5978,7 +5978,7 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_terminate()
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_set_registration_on_init_enabled(double enabled)
 {
-    firebase_messaging_set_registration_on_init_enabled(static_cast<double>(enabled));
+    firebase_messaging_set_registration_on_init_enabled(static_cast<bool>(enabled));
     return 0;
 }
 
@@ -5990,7 +5990,7 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_is_registration_on_init_enabled
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_set_token_registration_on_init_enabled(double enabled)
 {
-    firebase_messaging_set_token_registration_on_init_enabled(static_cast<double>(enabled));
+    firebase_messaging_set_token_registration_on_init_enabled(static_cast<bool>(enabled));
     return 0;
 }
 
@@ -6008,7 +6008,7 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_delivery_metrics_export_to_big_
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_set_delivery_metrics_export_to_big_query(double enabled)
 {
-    firebase_messaging_set_delivery_metrics_export_to_big_query(static_cast<double>(enabled));
+    firebase_messaging_set_delivery_metrics_export_to_big_query(static_cast<bool>(enabled));
     return 0;
 }
 
@@ -6511,8 +6511,8 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_request_consent_info_update(char* __a
     // field: debug_geography, type: enum FirebaseUmpConsentDebugGeography
     gm_enums::FirebaseUmpConsentDebugGeography debug_geography = gm::wire::codec::readValue<gm_enums::FirebaseUmpConsentDebugGeography>(__br);
 
-    // field: tag_for_under_age_of_consent, type: Float64
-    double tag_for_under_age_of_consent = gm::wire::codec::readValue<double>(__br);
+    // field: tag_for_under_age_of_consent, type: Bool
+    bool tag_for_under_age_of_consent = gm::wire::codec::readValue<bool>(__br);
 
     // field: debug_device_ids, type: optional<String[]>
     std::optional<std::vector<std::string_view>> debug_device_ids = gm::wire::codec::readOptional<std::vector<std::string_view>>(__br);
@@ -6629,9 +6629,14 @@ GMEXPORT double __EXT_NATIVE__firebase_ump_show_privacy_options_form(char* __arg
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(double state)
+GMEXPORT double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(char* __arg_buffer, double __arg_buffer_length)
 {
-    firebase_analytics_notify_app_lifecycle_change(static_cast<double>(state));
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: state, type: enum FirebaseAnalyticsAppLifecycleState
+    gm_enums::FirebaseAnalyticsAppLifecycleState state = gm::wire::codec::readValue<gm_enums::FirebaseAnalyticsAppLifecycleState>(__br);
+
+    firebase_analytics_notify_app_lifecycle_change(state);
     return 0;
 }
 
@@ -8245,11 +8250,11 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_data_with_info(char* __
 
 GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt)
 {
-    auto&& __result = firebase_messaging_initialize_with_options(static_cast<double>(suppress_notification_permission_prompt));
+    auto&& __result = firebase_messaging_initialize_with_options(static_cast<bool>(suppress_notification_permission_prompt));
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_type(char* __arg_buffer, double __arg_buffer_length)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_type(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
 {
     gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
 
@@ -8257,7 +8262,11 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_type(char* __arg_bu
     std::uint64_t field_value = gm::wire::codec::readValue<std::uint64_t>(__br);
 
     auto&& __result = firebase_firestore_field_value_type(field_value);
-    return static_cast<double>(__result);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirestoreFieldValueType
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_is_valid(char* __arg_buffer, double __arg_buffer_length)
@@ -9195,8 +9204,8 @@ GMEXPORT double __EXT_NATIVE__firebase_messaging_initialize_for_app_with_options
     // field: app, type: UInt64
     std::uint64_t app = gm::wire::codec::readValue<std::uint64_t>(__br);
 
-    // field: suppress_notification_permission_prompt, type: Float64
-    double suppress_notification_permission_prompt = gm::wire::codec::readValue<double>(__br);
+    // field: suppress_notification_permission_prompt, type: Bool
+    bool suppress_notification_permission_prompt = gm::wire::codec::readValue<bool>(__br);
 
     auto&& __result = firebase_messaging_initialize_for_app_with_options(app, suppress_notification_permission_prompt);
     return static_cast<double>(__result);

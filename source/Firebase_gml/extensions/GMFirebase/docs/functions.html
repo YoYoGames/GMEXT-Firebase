@@ -850,6 +850,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1014,6 +1025,17 @@
     <span class="md-ellipsis">
       
         firebase_functions_get_instance_for_app_region
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebasefunctionserror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseFunctionsError
       
     </span>
   </a>
@@ -1355,6 +1377,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1525,6 +1558,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firebasefunctionserror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseFunctionsError
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1568,28 +1612,9 @@ property per member (nested as deep as needed), and <code>undefined</code> is <c
 result comes back the same way; a function that returns nothing hands the callback <code>undefined</code>.</p>
 <h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
 <p>Every call returns <a href="app.html#firebaseerror">FirebaseError</a> at once and delivers its outcome to a callback.
-The callback's <code>error_code</code> is the standard code set callables use - the code a function
-throws with its <code>HttpsError</code>, or the code the SDK assigns to a transport failure - as a plain
-number:</p>
-<ul>
-<li><code>0</code> - success.</li>
-<li><code>1</code> - <code>Cancelled</code>: the call was cancelled.</li>
-<li><code>2</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-<li><code>3</code> - <code>InvalidArgument</code>: the function rejected the argument.</li>
-<li><code>4</code> - <code>DeadlineExceeded</code>: the call timed out before the function answered.</li>
-<li><code>5</code> - <code>NotFound</code>: no function with that name or URL is deployed.</li>
-<li><code>6</code> - <code>AlreadyExists</code>: the function reports that what the call would create already exists.</li>
-<li><code>7</code> - <code>PermissionDenied</code>: the function refused the caller.</li>
-<li><code>8</code> - <code>ResourceExhausted</code>: a quota or rate limit was hit.</li>
-<li><code>9</code> - <code>FailedPrecondition</code>: the function reports that the system is not in the state the call needs.</li>
-<li><code>10</code> - <code>Aborted</code>: the function aborted, typically a conflicting write.</li>
-<li><code>11</code> - <code>OutOfRange</code>: the function reports an argument past its valid range.</li>
-<li><code>12</code> - <code>Unimplemented</code>: the function reports the operation is not implemented.</li>
-<li><code>13</code> - <code>Internal</code>: the function crashed, or threw something other than an <code>HttpsError</code>.</li>
-<li><code>14</code> - <code>Unavailable</code>: the function or the network is unavailable; retry later.</li>
-<li><code>15</code> - <code>DataLoss</code>: the function reports unrecoverable data loss.</li>
-<li><code>16</code> - <code>Unauthenticated</code>: the function requires a signed-in caller and there is none.</li>
-</ul>
+The callback's <code>error_code</code> is a <a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a>, the standard code set
+callables use - the code a function throws with its <code>HttpsError</code>, or the code the SDK assigns to
+a transport failure: <code>None</code> on success, otherwise the member that names the failure.</p>
 <h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
 <p>Functions are deployed from a project folder with the Firebase CLI, which needs the project on
 the pay-as-you-go plan; the console's <strong>Build &gt; Functions</strong> page lists what is deployed, with
@@ -1621,6 +1646,11 @@ writing and deploying a first callable.</p>
 <ul>
 <li><a href="functions.html#firebase_functions_callable_call">firebase_functions_callable_call</a></li>
 <li><a href="functions.html#firebase_functions_callable_call_with_data">firebase_functions_callable_call_with_data</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -1732,7 +1762,7 @@ callables made afterwards go to the emulator. The emulator's default port is <co
 <p>This function returns a callable for a deployed function, by the name it was exported under. A
 callable is an address, not a connection: nothing is sent until
 <a href="functions.html#firebase_functions_callable_call">firebase_functions_callable_call</a> or <a href="functions.html#firebase_functions_callable_call_with_data">firebase_functions_callable_call_with_data</a>,
-a name that does not exist fails only then (<code>NotFound</code>, code <code>5</code>), and one callable can be called
+a name that does not exist fails only then (<code>FirebaseFunctionsError.NotFound</code>), and one callable can be called
 any number of times. Release it with <a href="functions.html#firebase_functions_callable_release">firebase_functions_callable_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1776,7 +1806,7 @@ claim_reward = firebase_functions_get_https_callable(functions, "claimDailyRewar
 firebase_functions_callable_call_with_data(claim_reward, { day: current_day },
     function(_error, _message, _data)
     {
-        if (_error != 0)
+        if (_error != FirebaseFunctionsError.None)
         {
             show_debug_message($"claimDailyReward failed ({_error}): {_message}");
             exit;
@@ -1829,8 +1859,8 @@ the life of the callable.</p>
 </tr>
 <tr>
 <td>limited_use_app_check_token</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>0</code> for the ordinary token.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>false</code> for the ordinary token.</td>
 </tr>
 </tbody>
 </table>
@@ -1917,8 +1947,8 @@ limited-use App Check token option of
 </tr>
 <tr>
 <td>limited_use_app_check_token</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>0</code> for the ordinary token.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - <code>false</code> for the ordinary token.</td>
 </tr>
 </tbody>
 </table>
@@ -1934,7 +1964,7 @@ limited-use App Check token option of
 
 <h1 id="firebase_functions_callable_is_valid">firebase_functions_callable_is_valid<a class="headerlink" href="#firebase_functions_callable_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/functions/https-callable-reference#is_valid">firebase::functions::HttpsCallableReference::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable callable - <code>0</code> for a released
+<p>This function returns whether the handle refers to a usable callable - <code>false</code> for a released
 handle.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -1960,9 +1990,9 @@ handle.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the callable can be called, otherwise <code>0</code>.</p>
+<p><code>true</code> when the callable can be called, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2006,11 +2036,11 @@ the calls that need it have been started.</p>
 <p>This function calls the function with no argument - its <code>data</code> is <code>null</code> - and hands the
 callback what it returned. The SDK sends the player's Authentication token when someone is signed in (<a href="auth.html">Authentication</a>) and
 the App Check token when App Check is set up, so the function knows who is calling without the
-game passing anything. The callback's <code>error_code</code> is <code>0</code> when the function returned normally;
-when the function threw an <code>HttpsError</code>, it is that error's code as the Error codes section of
-<a href="functions.html">Cloud Functions</a> lists them and <code>error_message</code> is the message the function gave; a function
-that crashed reads <code>Internal</code> (code <code>13</code>), one that does not exist <code>NotFound</code> (code <code>5</code>), and a
-network failure <code>Unavailable</code> (code <code>14</code>) or <code>DeadlineExceeded</code> (code <code>4</code>).</p>
+game passing anything. The callback's <code>error_code</code> is <code>FirebaseFunctionsError.None</code> when the
+function returned normally; when the function threw an <code>HttpsError</code>, it is that error's code as
+a <a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a> member and <code>error_message</code> is the message the function gave;
+a function that crashed reads <code>Internal</code>, one that does not exist <code>NotFound</code>, and a network
+failure <code>Unavailable</code> or <code>DeadlineExceeded</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the callable
 handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -2063,8 +2093,8 @@ handle is not valid.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="functions.html">Cloud Functions</a> page.</td>
+<td><a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a></td>
+<td><code>FirebaseFunctionsError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2089,11 +2119,11 @@ handle is not valid.</p>
 object with the same members, an array as an array, and so on - and hands the callback what it
 returned. The SDK sends the player's Authentication token when someone is signed in (<a href="auth.html">Authentication</a>) and
 the App Check token when App Check is set up, so the function knows who is calling without the
-game passing anything. The callback's <code>error_code</code> is <code>0</code> when the function returned normally;
-when the function threw an <code>HttpsError</code>, it is that error's code as the Error codes section of
-<a href="functions.html">Cloud Functions</a> lists them and <code>error_message</code> is the message the function gave; a function
-that crashed reads <code>Internal</code> (code <code>13</code>), one that does not exist <code>NotFound</code> (code <code>5</code>), and a
-network failure <code>Unavailable</code> (code <code>14</code>) or <code>DeadlineExceeded</code> (code <code>4</code>).</p>
+game passing anything. The callback's <code>error_code</code> is <code>FirebaseFunctionsError.None</code> when the
+function returned normally; when the function threw an <code>HttpsError</code>, it is that error's code as
+a <a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a> member and <code>error_message</code> is the message the function gave;
+a function that crashed reads <code>Internal</code>, one that does not exist <code>NotFound</code>, and a network
+failure <code>Unavailable</code> or <code>DeadlineExceeded</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the callable
 handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -2151,8 +2181,8 @@ handle is not valid.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="functions.html">Cloud Functions</a> page.</td>
+<td><a href="functions.html#firebasefunctionserror">FirebaseFunctionsError</a></td>
+<td><code>FirebaseFunctionsError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2174,11 +2204,11 @@ firebase_functions_callable_call_with_data(submit_score,
     { level: level_id, score: score, replay: replay_events },
     function(_error, _message, _data)
     {
-        if (_error == 7)      // PermissionDenied: the function rejected the replay
+        if (_error == FirebaseFunctionsError.PermissionDenied)      // the function rejected the replay
         {
             show_debug_message($"Score rejected: {_message}");
         }
-        else if (_error == 0)
+        else if (_error == FirebaseFunctionsError.None)
         {
             show_debug_message($"Rank {_data.rank} of {_data.total}");
         }
@@ -2186,7 +2216,8 @@ firebase_functions_callable_call_with_data(submit_score,
     });</code></pre>
 The above code sends a struct holding the score and the replay that proves it; the function
 verifies the replay on the server and either throws <code>permission-denied</code>, which reaches the
-callback as code <code>7</code> with the function's message, or returns the rank as a struct. The callable
+callback as <code>FirebaseFunctionsError.PermissionDenied</code> with the function's message, or returns the
+rank as a struct. The callable
 is released in the callback because nothing else uses it.</p>
 <p><br></p>
 <hr />
@@ -2336,6 +2367,102 @@ app's project.</p>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
 <p>The Cloud Functions handle, or <code>0</code> on failure.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasefunctionserror">FirebaseFunctionsError<a class="headerlink" href="#firebasefunctionserror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/functions#error">firebase::functions::Error</a></p>
+<p>The <code>error_code</code> every Cloud Functions callback receives, mirroring the SDK's codes value for
+value - the standard code set a callable throws with its <code>HttpsError</code>, which the SDK also uses
+for its own transport failures. <code>None</code> is success. The ones a game meets: <code>NotFound</code> (no
+function with that name is deployed), <code>PermissionDenied</code> and <code>Unauthenticated</code> (the function
+refused the caller), <code>Internal</code> (the function crashed) and <code>Unavailable</code> or <code>DeadlineExceeded</code>
+(the network).</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="functions.html#firebase_functions_callable_call">firebase_functions_callable_call</a></li>
+<li><a href="functions.html#firebase_functions_callable_call_with_data">firebase_functions_callable_call_with_data</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>Cancelled</code></td>
+<td>The call was cancelled.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify.</td>
+</tr>
+<tr>
+<td><code>InvalidArgument</code></td>
+<td>The function rejected the argument.</td>
+</tr>
+<tr>
+<td><code>DeadlineExceeded</code></td>
+<td>The call timed out before the function answered.</td>
+</tr>
+<tr>
+<td><code>NotFound</code></td>
+<td>No function with that name or URL is deployed.</td>
+</tr>
+<tr>
+<td><code>AlreadyExists</code></td>
+<td>The function reports that what the call would create already exists.</td>
+</tr>
+<tr>
+<td><code>PermissionDenied</code></td>
+<td>The function refused the caller.</td>
+</tr>
+<tr>
+<td><code>ResourceExhausted</code></td>
+<td>A quota or rate limit was hit.</td>
+</tr>
+<tr>
+<td><code>FailedPrecondition</code></td>
+<td>The function reports that the system is not in the state the call needs.</td>
+</tr>
+<tr>
+<td><code>Aborted</code></td>
+<td>The function aborted, typically a conflicting write.</td>
+</tr>
+<tr>
+<td><code>OutOfRange</code></td>
+<td>The function reports an argument past its valid range.</td>
+</tr>
+<tr>
+<td><code>Unimplemented</code></td>
+<td>The function reports the operation is not implemented.</td>
+</tr>
+<tr>
+<td><code>Internal</code></td>
+<td>The function crashed, or threw something other than an <code>HttpsError</code>.</td>
+</tr>
+<tr>
+<td><code>Unavailable</code></td>
+<td>The function or the network is unavailable; retry later.</td>
+</tr>
+<tr>
+<td><code>DataLoss</code></td>
+<td>The function reports unrecoverable data loss.</td>
+</tr>
+<tr>
+<td><code>Unauthenticated</code></td>
+<td>The function requires a signed-in caller and there is none.</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <hr />
 

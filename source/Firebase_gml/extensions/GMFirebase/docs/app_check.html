@@ -1086,6 +1086,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firebaseappcheckerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firebaseappcheckprovider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1570,6 +1581,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firebaseappcheckerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAppCheckError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firebaseappcheckprovider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1634,18 +1656,12 @@ configurations is the game's responsibility.</p>
 is on; the module-level functions work on the default app, and the <code>firebase_app_check_instance_*</code>
 family does the same for a chosen App Check instance. The token functions return
 <a href="app.html#firebaseerror">FirebaseError</a> at once and deliver a <a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a> to a callback
-whose <code>error_code</code> is App Check's own code:</p>
-<ul>
-<li><code>0</code> - success.</li>
-<li><code>1</code> - <code>ServerUnreachable</code>: no connection to the attestation or App Check backend.</li>
-<li><code>2</code> - <code>InvalidConfiguration</code>: the App Check configuration is not valid.</li>
-<li><code>3</code> - <code>SystemKeychain</code>: the system keychain could not be accessed (Apple platforms).</li>
-<li><code>4</code> - <code>UnsupportedProvider</code>: the chosen provider does not exist on this platform or OS version.</li>
-<li><code>5</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-</ul>
-<p>The finer codes come from the iOS SDK. Android reports every failure as <code>5</code>, since its SDK has
-no code set; on Windows, macOS and Linux a missing provider is <code>2</code> and a debug token the App
-Check backend rejects is <code>5</code>, with the HTTP status and body in <code>error_message</code>.</p>
+whose <code>error_code</code> is a <a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a>, App Check's own code set: <code>None</code> on
+success, otherwise the member that names the failure.</p>
+<p>The finer codes come from the iOS SDK. Android reports every failure as <code>Unknown</code>, since its
+SDK has no code set; on Windows, macOS and Linux a missing provider is <code>InvalidConfiguration</code>
+and a debug token the App Check backend rejects is <code>Unknown</code>, with the HTTP status and body in
+<code>error_message</code>.</p>
 <h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
 <p>Register each app's attestation under <strong>App Check &gt; Apps</strong> in the console - Play Integrity
 needs the app's SHA-256 fingerprint, App Attest and DeviceCheck an Apple team id and, for
@@ -1688,6 +1704,7 @@ under <strong>Manage debug tokens</strong>.</p>
 <p>The following constants are used by this module:</p>
 <ul>
 <li><a href="app_check.html#firebaseappcheckprovider">FirebaseAppCheckProvider</a></li>
+<li><a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -1832,8 +1849,8 @@ player has consented; on Windows, macOS and Linux it is on from the start.</p>
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to refresh tokens ahead of expiry, <code>0</code> to fetch on demand only.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to refresh tokens ahead of expiry, <code>false</code> to fetch on demand only.</td>
 </tr>
 </tbody>
 </table>
@@ -1873,8 +1890,8 @@ token is valid for about an hour; <a href="app_check.html#firebaseappchecktoken"
 <tbody>
 <tr>
 <td>force_refresh</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to mint a new token even when the current one is still valid, <code>0</code> to reuse it.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to mint a new token even when the current one is still valid, <code>false</code> to reuse it.</td>
 </tr>
 <tr>
 <td>callback</td>
@@ -1906,8 +1923,8 @@ token is valid for about an hour; <a href="app_check.html#firebaseappchecktoken"
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+<td><a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a></td>
+<td><code>FirebaseAppCheckError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -1923,9 +1940,9 @@ token is valid for about an hour; <a href="app_check.html#firebaseappchecktoken"
 </table>
 <p><br></p>
 <p><strong>Example:</strong></p>
-<p><pre class="highlight"><code class="language-gml">firebase_app_check_get_token(0, function(_error, _message, _token)
+<p><pre class="highlight"><code class="language-gml">firebase_app_check_get_token(false, function(_error, _message, _token)
 {
-    if (_error != 0)
+    if (_error != FirebaseAppCheckError.None)
     {
         show_debug_message($"App Check failed ({_error}): {_message}");
         exit;
@@ -1998,8 +2015,8 @@ the Firebase Admin SDK.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+<td><a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a></td>
+<td><code>FirebaseAppCheckError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2107,9 +2124,9 @@ It returns <code>0</code> with <a href="app.html#firebase_last_error_code">fireb
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when a listener was removed, <code>0</code> when the handle was not one.</p>
+<p><code>true</code> when a listener was removed, <code>false</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2324,8 +2341,8 @@ instance.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+<td><a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a></td>
+<td><code>FirebaseAppCheckError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2398,8 +2415,8 @@ is not valid.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="app_check.html">App Check</a> page.</td>
+<td><a href="app_check.html#firebaseappcheckerror">FirebaseAppCheckError</a></td>
+<td><code>FirebaseAppCheckError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2473,6 +2490,57 @@ handle is removed with <a href="app_check.html#firebase_app_check_remove_listene
 <td>token</td>
 <td><a href="app_check.html#firebaseappchecktoken">FirebaseAppCheckToken</a></td>
 <td>The new token and its expiry.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseappcheckerror">FirebaseAppCheckError<a class="headerlink" href="#firebaseappcheckerror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/app-check#appcheckerror">firebase::app_check::AppCheckError</a></p>
+<p>The <code>error_code</code> every App Check token callback receives, mirroring the SDK's codes value for
+value. <code>None</code> is success. The finer members come from the iOS SDK; Android reports every failure
+as <code>Unknown</code>.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="app_check.html#firebase_app_check_get_token">firebase_app_check_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_get_limited_use_token">firebase_app_check_get_limited_use_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_token">firebase_app_check_instance_get_token</a></li>
+<li><a href="app_check.html#firebase_app_check_instance_get_limited_use_token">firebase_app_check_instance_get_limited_use_token</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>ServerUnreachable</code></td>
+<td>No connection to the attestation or App Check backend.</td>
+</tr>
+<tr>
+<td><code>InvalidConfiguration</code></td>
+<td>The App Check configuration is not valid - on Windows, macOS and Linux, no provider was set.</td>
+</tr>
+<tr>
+<td><code>SystemKeychain</code></td>
+<td>The system keychain could not be accessed (Apple platforms); the app needs keychain access.</td>
+</tr>
+<tr>
+<td><code>UnsupportedProvider</code></td>
+<td>The chosen provider does not exist on this platform or OS version.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify - every Android failure, and a rejected debug token on desktop.</td>
 </tr>
 </tbody>
 </table>

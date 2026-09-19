@@ -1860,7 +1860,7 @@
  * ${function.firebase_auth_get_current_instance_handle} first to switch back.
  *
  * @param {Real} auth An instance handle from ${function.firebase_auth_get_instance_for_app} or ${function.firebase_auth_get_current_instance_handle}.
- * @returns {Real} `1` when the instance was switched, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the instance was switched, `false` when the handle is not valid.
  *
  * @example
  * ```gml

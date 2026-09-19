@@ -786,6 +786,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1423,6 +1434,17 @@
     <span class="md-ellipsis">
       
         firebase_messaging_initialize_for_app_with_options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebasemessagingerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseMessagingError
       
     </span>
   </a>
@@ -1916,6 +1938,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2559,6 +2592,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firebasemessagingerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseMessagingError
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2589,7 +2633,7 @@ starts with <a href="messaging.html#firebase_messaging_initialize">firebase_mess
 <h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
 <p>Cloud Messaging works on Android and iOS. On Windows, macOS and Linux the SDK ships a stub, and
 the extension keeps it callable so that the same game code runs everywhere: initialisation
-succeeds, every callback fires at once with <code>0</code> and the message <code>"Successfully completed as a
+succeeds, every callback fires at once with <code>FirebaseMessagingError.None</code> and the message <code>"Successfully completed as a
 stub."</code>, <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a> delivers the id <code>"StubRegistrationId"</code> and
 <a href="messaging.html#firebase_messaging_get_token">firebase_messaging_get_token</a> the token <code>"StubToken"</code>, the settings read as their
 defaults, and no message ever arrives.</p>
@@ -2620,14 +2664,8 @@ when the prompt is held back), on Android the game asks with <code>os_request_pe
 <code>android.permission.POST_NOTIFICATIONS</code>, which the extension declares.</p>
 <h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
 <p>Every asynchronous function returns <a href="app.html#firebaseerror">FirebaseError</a> at once and delivers its outcome to
-a callback. The callback's <code>error_code</code> is Cloud Messaging's own code, a plain number:</p>
-<ul>
-<li><code>0</code> - success.</li>
-<li><code>1</code> - <code>FailedToRegisterForRemoteNotifications</code>: the iOS device could not register with APNs.</li>
-<li><code>2</code> - <code>InvalidTopicName</code>: the topic name has characters outside <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>, <code>%</code>, or is longer than 900.</li>
-<li><code>3</code> - <code>NoRegistrationToken</code>: a topic call was made with registration disabled and no registration done.</li>
-<li><code>4</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-</ul>
+a callback. The callback's <code>error_code</code> is a <a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a>, Cloud Messaging's
+own code set: <code>None</code> on success, otherwise the member that names the failure.</p>
 <h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
 <p>Android needs nothing beyond the credential file. iOS needs an APNs authentication key from the
 Apple Developer site uploaded under <strong>Project settings &gt; Cloud Messaging</strong> for the iOS app, and
@@ -2719,6 +2757,11 @@ Each function still works and names its replacement:</p>
 <li><a href="messaging.html#firebase_messaging_set_token_registration_on_init_enabled">firebase_messaging_set_token_registration_on_init_enabled</a></li>
 <li><a href="messaging.html#firebase_messaging_is_token_registration_on_init_enabled">firebase_messaging_is_token_registration_on_init_enabled</a></li>
 </ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></li>
+</ul>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2728,7 +2771,7 @@ Each function still works and names its replacement:</p>
 <p>This function starts Cloud Messaging for the default Firebase App and must be called once, after
 <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> and before any other function of this module. The SDK aborts
 the game when a messaging call reaches it uninitialised, so every function here that would reach
-it refuses first with <code>FirebaseError.NotInitialized</code>, and the poll functions return <code>0</code>. From this
+it refuses first with <code>FirebaseError.NotInitialized</code>, and the poll functions return <code>false</code>. From this
 call on the SDK can deliver messages and registration events at any time; the game collects them
 with <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a>, <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a>
 and <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a> once per step.</p>
@@ -2736,13 +2779,9 @@ and <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_mes
 device with APNs; <a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a> holds the prompt back for
 a <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a> of the game's choosing. On Android the
 notification permission is the game's to request with <code>os_request_permission</code> (the extension
-declares <code>android.permission.POST_NOTIFICATIONS</code>), and the call returns <code>1</code> when Google Play
-services are missing on the device. A second call does nothing and returns <code>0</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The return is the SDK's init result, where <code>0</code> is success - the opposite of
-<a href="app.html#firebase_app_initialize">firebase_app_initialize</a>. Compare it with <code>0</code> rather than testing it for truth.</p>
-</div>
+declares <code>android.permission.POST_NOTIFICATIONS</code>), and the call returns <code>false</code> when Google Play
+services are missing on the device, with <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> naming the
+missing dependency. A second call does nothing and returns <code>true</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2751,13 +2790,13 @@ services are missing on the device. A second call does nothing and returns <code
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the default app does not exist.</p>
+<p><code>true</code> when Cloud Messaging is initialised after the call, <code>false</code> when the default app does not exist or Google Play services are missing on Android - <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> is then <code>FirebaseError.NotInitialized</code>.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller, after firebase_app_initialize()
-if (firebase_messaging_initialize() != 0)
+if (!firebase_messaging_initialize())
 {
     show_debug_message($"Messaging unavailable: {firebase_last_error_message()}");
     exit;
@@ -2783,7 +2822,7 @@ nothing more is needed there.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#terminate">firebase::messaging::Terminate</a></p>
 <p>This function shuts Cloud Messaging down: the SDK stops delivering to the game, the queued messages
 and the last polled message, installation id and token are dropped, and the module is back to its
-uninitialised state, where the poll functions return <code>0</code> and the getters empty strings. On Android
+uninitialised state, where the poll functions return <code>false</code> and the getters empty strings. On Android
 the platform's messaging service keeps running underneath. The module can be initialised again
 afterwards. There is no need to call it when the game exits.</p>
 <p><br></p>
@@ -2807,7 +2846,7 @@ afterwards. There is no need to call it when the game exits.</p>
 Installation ID by itself, which sends a new identity to Firebase before the player has agreed to
 anything. A game that needs consent first ships with the <code>disableDataCollection</code> extension option
 (see <a href="extension_options.html">Extension Options</a>), which puts the platform's opt-out into the Android manifest and
-the iOS <code>Info.plist</code> so that the first launch does not register, and calls this function with <code>1</code>
+the iOS <code>Info.plist</code> so that the first launch does not register, and calls this function with <code>true</code>
 once the player has agreed; turning it on triggers the registration at once. The setting is
 stored on the device and overrides the manifest and plist keys from then on, so the call is
 needed once. Turning it off at runtime does not undo a registration that already happened at
@@ -2829,8 +2868,8 @@ called before <a href="messaging.html#firebase_messaging_initialize">firebase_me
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to register at initialisation, <code>0</code> not to.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to register at initialisation, <code>false</code> not to.</td>
 </tr>
 </tbody>
 </table>
@@ -2847,7 +2886,7 @@ called before <a href="messaging.html#firebase_messaging_initialize">firebase_me
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#isregistrationoninitenabled">firebase::messaging::IsRegistrationOnInitEnabled</a></p>
 <p>This function returns whether the SDK registers the installation at initialisation - the stored
 setting of <a href="messaging.html#firebase_messaging_set_registration_on_init_enabled">firebase_messaging_set_registration_on_init_enabled</a>, or failing that the
-manifest or plist key, or failing that the default of on. The desktop stub always returns <code>1</code>.</p>
+manifest or plist key, or failing that the default of on. The desktop stub always returns <code>true</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2856,9 +2895,9 @@ manifest or plist key, or failing that the default of on. The desktop stub alway
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when registration on init is enabled, otherwise <code>0</code>.</p>
+<p><code>true</code> when registration on init is enabled, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2888,8 +2927,8 @@ setting's old name; both write the same stored setting.</p>
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to register at initialisation, <code>0</code> not to.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to register at initialisation, <code>false</code> not to.</td>
 </tr>
 </tbody>
 </table>
@@ -2919,16 +2958,16 @@ setting's old name; both read the same stored setting.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when registration on init is enabled, otherwise <code>0</code>.</p>
+<p><code>true</code> when registration on init is enabled, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_messaging_delivery_metrics_export_to_big_query_enabled">firebase_messaging_delivery_metrics_export_to_big_query_enabled<a class="headerlink" href="#firebase_messaging_delivery_metrics_export_to_big_query_enabled" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deliverymetricsexporttobigqueryenabled">firebase::messaging::DeliveryMetricsExportToBigQueryEnabled</a></p>
-<p>This function returns whether delivery data is exported to BigQuery, on Android. It returns <code>0</code>
+<p>This function returns whether delivery data is exported to BigQuery, on Android. It returns <code>false</code>
 on every other platform.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2938,9 +2977,9 @@ on every other platform.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the export is on, otherwise <code>0</code>.</p>
+<p><code>true</code> when the export is on, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2969,8 +3008,8 @@ platforms.</p>
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to export delivery metrics, <code>0</code> not to.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to export delivery metrics, <code>false</code> not to.</td>
 </tr>
 </tbody>
 </table>
@@ -2987,15 +3026,16 @@ platforms.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#requestpermission">firebase::messaging::RequestPermission</a></p>
 <p>This function asks the player for permission to show notifications, on iOS: the system prompt
 appears, unless it was answered before, and the device registers with APNs. The callback fires
-when that registration has completed or failed with <code>FailedToRegisterForRemoteNotifications</code>
-(code <code>1</code>) - not when the prompt is answered, so a player who declines still gets a successful
+when that registration has completed or failed with
+<code>FirebaseMessagingError.FailedToRegisterForRemoteNotifications</code> - not when the prompt is answered,
+so a player who declines still gets a successful
 callback and simply sees no notifications. <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> already
 does all of this on iOS unless the prompt was held back with
 <a href="messaging.html#firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options</a>.</p>
-<p>On Android the call does nothing and the callback fires at once with <code>0</code>; the notification
+<p>On Android the call does nothing and the callback fires at once with <code>FirebaseMessagingError.None</code>; the notification
 permission is requested with <code>os_request_permission("android.permission.POST_NOTIFICATIONS")</code>
 and its answer arrives in the Async System event. On Windows, macOS and Linux the callback also
-fires at once with <code>0</code>.</p>
+fires at once with <code>FirebaseMessagingError.None</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -3043,8 +3083,8 @@ fires at once with <code>0</code>.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3067,7 +3107,7 @@ it through <a href="messaging.html#firebase_messaging_poll_registration">firebas
 registered. With registration on init enabled - the default - the SDK registers on its own at
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a>, and this call is for a game that shipped with the
 <code>disableDataCollection</code> option and registers once the player has consented. On Windows, macOS
-and Linux the callback fires at once with <code>0</code> and the id delivered is the stub's
+and Linux the callback fires at once with <code>FirebaseMessagingError.None</code> and the id delivered is the stub's
 <code>"StubRegistrationId"</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
@@ -3116,8 +3156,8 @@ and Linux the callback fires at once with <code>0</code> and the id delivered is
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3129,10 +3169,10 @@ and Linux the callback fires at once with <code>0</code> and the id delivered is
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// The consent screen's "Allow notifications" button
-firebase_messaging_set_registration_on_init_enabled(1);
+firebase_messaging_set_registration_on_init_enabled(true);
 var _result = firebase_messaging_register(function(_error, _message)
 {
-    if (_error != 0) show_debug_message($"Registration failed ({_error}): {_message}");
+    if (_error != FirebaseMessagingError.None) show_debug_message($"Registration failed ({_error}): {_message}");
 });
 
 // Step Event of the persistent controller
@@ -3153,7 +3193,7 @@ the installation id arrives through the poll in the Step event rather than in th
 messages reach it; the id it was registered under arrives through
 <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>. The Firebase Installation ID itself stays on
 the device - <a href="installations.html#firebase_installations_delete">firebase_installations_delete</a> removes it. On Windows, macOS and Linux
-the callback fires at once with <code>0</code>.</p>
+the callback fires at once with <code>FirebaseMessagingError.None</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -3201,8 +3241,8 @@ the callback fires at once with <code>0</code>.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3226,7 +3266,7 @@ token API, and we recommend that you only use this function for legacy support.<
 and device details to Firebase, and hands the callback the registration token: the string that
 the console's test-message dialog and the older server APIs address a single device by. The
 token also arrives through <a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a> whenever the SDK generates
-or refreshes one. On Windows, macOS and Linux the callback fires at once with <code>0</code> and the stub's
+or refreshes one. On Windows, macOS and Linux the callback fires at once with <code>FirebaseMessagingError.None</code> and the stub's
 <code>"StubToken"</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
@@ -3275,8 +3315,8 @@ or refreshes one. On Windows, macOS and Linux the callback fires at once with <c
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3304,7 +3344,7 @@ token API, and we recommend that you only use this function for legacy support.<
 <p>This function deletes the installation's registration token, so that no more messages reach this
 device until a new one is generated. The Firebase Installation ID stays on the device;
 <a href="installations.html#firebase_installations_delete">firebase_installations_delete</a> removes it. On Windows, macOS and Linux the callback
-fires at once with <code>0</code>.</p>
+fires at once with <code>FirebaseMessagingError.None</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -3352,8 +3392,8 @@ fires at once with <code>0</code>.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3371,12 +3411,12 @@ fires at once with <code>0</code>.</p>
 <p>This function subscribes this installation to a topic, so that every message a server sends to
 the topic reaches it: the way to address every player, or every player of a region, a language
 or a guild, without keeping a list of devices. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code> and
-<code>%</code>; anything else fails with <code>InvalidTopicName</code> (code <code>2</code>). The subscription needs the
+<code>%</code>; anything else fails with <code>FirebaseMessagingError.InvalidTopicName</code>. The subscription needs the
 installation to be registered: made before the registration at initialisation has completed, it
 waits for it; with registration on init disabled and no <a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a>
-done, it fails with <code>NoRegistrationToken</code> (code <code>3</code>). A subscription is kept by the backend
-across launches until <a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a>. On Windows, macOS and Linux
-the callback fires at once with <code>0</code>.</p>
+done, it fails with <code>FirebaseMessagingError.NoRegistrationToken</code>. A subscription is kept by the
+backend across launches until <a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a>. On Windows, macOS and
+Linux the callback fires at once with <code>FirebaseMessagingError.None</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -3429,8 +3469,8 @@ the callback fires at once with <code>0</code>.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3444,7 +3484,7 @@ the callback fires at once with <code>0</code>.</p>
 <p><pre class="highlight"><code class="language-gml">// After the player picks a language and a region
 firebase_messaging_subscribe($"news-{language}", function(_error, _message)
 {
-    if (_error != 0) show_debug_message($"Subscribe failed ({_error}): {_message}");
+    if (_error != FirebaseMessagingError.None) show_debug_message($"Subscribe failed ({_error}): {_message}");
 });
 firebase_messaging_subscribe($"events-{region}", undefined);</code></pre>
 The above code puts the installation on two topics, so that a message sent from the console or a
@@ -3458,7 +3498,7 @@ callback because nothing depends on its outcome.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#unsubscribe">firebase::messaging::Unsubscribe</a></p>
 <p>This function removes this installation from a topic, so that messages sent to it no longer
 arrive. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code> and
-<code>%</code>; anything else fails with <code>InvalidTopicName</code> (code <code>2</code>). On Windows, macOS and Linux the callback fires at once with <code>0</code>.</p>
+<code>%</code>; anything else fails with <code>FirebaseMessagingError.InvalidTopicName</code>. On Windows, macOS and Linux the callback fires at once with <code>FirebaseMessagingError.None</code>.</p>
 <p>The function returns <code>FirebaseError.NotInitialized</code> without calling the callback when
 <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> has not run.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -3511,8 +3551,8 @@ arrive. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</co
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="messaging.html">Cloud Messaging</a> page.</td>
+<td><a href="messaging.html#firebasemessagingerror">FirebaseMessagingError</a></td>
+<td><code>FirebaseMessagingError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -3529,10 +3569,10 @@ arrive. A topic name is 1 to 900 characters from <code>a-z</code>, <code>A-Z</co
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onmessage">firebase::messaging::Listener::OnMessage</a></p>
 <p>This function takes the oldest message waiting in the queue, if there is one, and makes it the
 current message that the <code>firebase_messaging_message_*</code> getters read. Call it in a <code>while</code> loop
-once per step, until it returns <code>0</code>, so that a burst of messages is handled in the step it
+once per step, until it returns <code>false</code>, so that a burst of messages is handled in the step it
 arrived. A game that stops polling - a long loading screen, a room with no controller - keeps at
 most 256 messages queued, after which the oldest is dropped with a warning in the debug log. The
-current message stays readable until the next poll that returns <code>1</code> or
+current message stays readable until the next poll that returns <code>true</code> or
 <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3542,9 +3582,9 @@ current message stays readable until the next poll that returns <code>1</code> o
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when a message was taken from the queue and is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><code>true</code> when a message was taken from the queue and is now current, otherwise <code>false</code> - also before initialisation.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Step Event of the persistent controller
@@ -3588,9 +3628,9 @@ and only the latest is kept between polls.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when a registration was pending and its id is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><code>true</code> when a registration was pending and its id is now current, otherwise <code>false</code> - also before initialisation.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3609,9 +3649,9 @@ reported once.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when an unregistration was pending and its id is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><code>true</code> when an unregistration was pending and its id is now current, otherwise <code>false</code> - also before initialisation.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3620,7 +3660,7 @@ reported once.</p>
 <p>This function returns the Firebase Installation ID that the last successful
 <a href="messaging.html#firebase_messaging_poll_registration">firebase_messaging_poll_registration</a> or <a href="messaging.html#firebase_messaging_poll_unregistration">firebase_messaging_poll_unregistration</a>
 delivered: the identifier of this installation of the game, which a server uses to send a message
-to this device alone. It is an empty string until a poll has returned <code>1</code>, and again after
+to this device alone. It is an empty string until a poll has returned <code>true</code>, and again after
 <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3656,9 +3696,9 @@ way.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when a token was pending and is now current, otherwise <code>0</code> - also before initialisation.</p>
+<p><code>true</code> when a token was pending and is now current, otherwise <code>false</code> - also before initialisation.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3671,7 +3711,7 @@ token API, and we recommend that you only use this function for legacy support.<
 </div>
 <p>This function returns the registration token the last successful
 <a href="messaging.html#firebase_messaging_poll_token">firebase_messaging_poll_token</a> delivered. It is an empty string until a poll has
-returned <code>1</code>, and again after <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
+returned <code>true</code>, and again after <a href="messaging.html#firebase_messaging_terminate">firebase_messaging_terminate</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3910,7 +3950,7 @@ to tell a message that waited out an offline stretch from a fresh one. It reads 
 <p>This function returns whether the message reached the game because the player tapped its
 notification: the game was in the background or not running, the system showed the notification
 in its tray, and the tap brought the game up with this message, data payload included. A message
-delivered while the game was in the foreground reads <code>0</code>. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
+delivered while the game was in the foreground reads <code>false</code>. It reads the message the last successful <a href="messaging.html#firebase_messaging_poll_message">firebase_messaging_poll_message</a> made current.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3919,9 +3959,9 @@ delivered while the game was in the foreground reads <code>0</code>. It reads th
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the player opened the message's notification, otherwise <code>0</code>.</p>
+<p><code>true</code> when the player opened the message's notification, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4086,9 +4126,9 @@ there is none. It reads the message the last successful <a href="messaging.html#
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the message has a notification, otherwise <code>0</code>.</p>
+<p><code>true</code> when the message has a notification, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4404,7 +4444,7 @@ notification. It is an empty string on other platforms and when no channel was s
 <h1 id="firebase_messaging_initialize_with_options">firebase_messaging_initialize_with_options<a class="headerlink" href="#firebase_messaging_initialize_with_options" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize_1">firebase::messaging::Initialize</a></p>
 <p>This function is <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> with the one option the SDK has: on iOS,
-<code>suppress_notification_permission_prompt</code> set to <code>1</code> keeps the system permission prompt from
+<code>suppress_notification_permission_prompt</code> set to <code>true</code> keeps the system permission prompt from
 appearing at initialisation, so that the game can explain why it wants to notify the player and
 call <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a> at the right moment. A prompt the player
 has already answered is not shown again either way. The option does nothing on Android.</p>
@@ -4424,17 +4464,17 @@ has already answered is not shown again either way. The option does nothing on A
 <tbody>
 <tr>
 <td>suppress_notification_permission_prompt</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>0</code> to show it now.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>false</code> to show it now.</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the default app does not exist.</p>
+<p><code>true</code> when Cloud Messaging is initialised after the call, <code>false</code> when the default app does not exist or Google Play services are missing on Android - <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> is then <code>FirebaseError.NotInitialized</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4444,7 +4484,7 @@ has already answered is not shown again either way. The option does nothing on A
 <p>This function is <a href="messaging.html#firebase_messaging_initialize">firebase_messaging_initialize</a> for another Firebase App, created with
 <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> or <a href="app.html#firebase_app_initialize_from_json">firebase_app_initialize_from_json</a>.
 Cloud Messaging is initialised once per game, for one app: once any of the initialise functions
-has succeeded, the others do nothing and return <code>0</code>.</p>
+has succeeded, the others do nothing and return <code>true</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -4469,9 +4509,9 @@ has succeeded, the others do nothing and return <code>0</code>.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the app handle is not valid.</p>
+<p><code>true</code> when Cloud Messaging is initialised after the call, <code>false</code> when the app handle is not valid (<code>FirebaseError.InvalidHandle</code>) or Google Play services are missing on Android (<code>FirebaseError.NotInitialized</code>).</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4500,17 +4540,66 @@ has succeeded, the others do nothing and return <code>0</code>.</p>
 </tr>
 <tr>
 <td>suppress_notification_permission_prompt</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>0</code> to show it now.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to hold the iOS permission prompt back until <a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a>, <code>false</code> to show it now.</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>0</code> on success, <code>1</code> when Google Play services are missing on Android, <code>-1</code> when the app handle is not valid.</p>
+<p><code>true</code> when Cloud Messaging is initialised after the call, <code>false</code> when the app handle is not valid (<code>FirebaseError.InvalidHandle</code>) or Google Play services are missing on Android (<code>FirebaseError.NotInitialized</code>).</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasemessagingerror">FirebaseMessagingError<a class="headerlink" href="#firebasemessagingerror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#error">firebase::messaging::Error</a></p>
+<p>The <code>error_code</code> every Cloud Messaging callback receives, mirroring the SDK's codes value for
+value. <code>None</code> is success; the other four each belong to one call.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="messaging.html#firebase_messaging_request_permission">firebase_messaging_request_permission</a></li>
+<li><a href="messaging.html#firebase_messaging_register">firebase_messaging_register</a></li>
+<li><a href="messaging.html#firebase_messaging_unregister">firebase_messaging_unregister</a></li>
+<li><a href="messaging.html#firebase_messaging_get_token">firebase_messaging_get_token</a></li>
+<li><a href="messaging.html#firebase_messaging_delete_token">firebase_messaging_delete_token</a></li>
+<li><a href="messaging.html#firebase_messaging_subscribe">firebase_messaging_subscribe</a></li>
+<li><a href="messaging.html#firebase_messaging_unsubscribe">firebase_messaging_unsubscribe</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>FailedToRegisterForRemoteNotifications</code></td>
+<td>The iOS device could not register with APNs - permission to receive notifications was not granted.</td>
+</tr>
+<tr>
+<td><code>InvalidTopicName</code></td>
+<td>The topic name has characters outside <code>a-z</code>, <code>A-Z</code>, <code>0-9</code>, <code>-</code>, <code>_</code>, <code>.</code>, <code>~</code>, <code>%</code>, or is longer than 900.</td>
+</tr>
+<tr>
+<td><code>NoRegistrationToken</code></td>
+<td>A topic call was made with registration disabled and no registration done.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify.</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <hr />
 

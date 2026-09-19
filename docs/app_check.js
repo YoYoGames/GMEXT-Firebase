@@ -76,7 +76,7 @@
  * ${page.extension_options}), so a game built with the option turns refresh on here once the
  * player has consented; on Windows, macOS and Linux it is on from the start.
  *
- * @param {Real} enabled `1` to refresh tokens ahead of expiry, `0` to fetch on demand only.
+ * @param {Bool} enabled `true` to refresh tokens ahead of expiry, `false` to fetch on demand only.
  * @function_end
  */
 
@@ -94,22 +94,22 @@
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_app_initialize} has not run.
  *
- * @param {Real} force_refresh `1` to mint a new token even when the current one is still valid, `0` to reuse it.
+ * @param {Bool} force_refresh `true` to mint a new token even when the current one is still valid, `false` to reuse it.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
  * @event callback
  * @desc Fires once with the token.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.app_check} page.
+ * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
  * @event_end
  *
  * @example
  * ```gml
- * firebase_app_check_get_token(0, function(_error, _message, _token)
+ * firebase_app_check_get_token(false, function(_error, _message, _token)
  * {
- *     if (_error != 0)
+ *     if (_error != FirebaseAppCheckError.None)
  *     {
  *         show_debug_message($"App Check failed ({_error}): {_message}");
  *         exit;
@@ -146,7 +146,7 @@
  *
  * @event callback
  * @desc Fires once with the token.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.app_check} page.
+ * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
  * @event_end
@@ -182,7 +182,7 @@
  * ${function.firebase_app_check_instance_add_listener} and frees its handle.
  *
  * @param {Real} listener_ref The listener handle.
- * @returns {Real} `1` when a listener was removed, `0` when the handle was not one.
+ * @returns {Bool} `true` when a listener was removed, `false` when the handle was not one.
  * @function_end
  */
 
@@ -262,7 +262,7 @@
  *
  * @event callback
  * @desc Fires once with the token.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.app_check} page.
+ * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
  * @event_end
@@ -283,7 +283,7 @@
  *
  * @event callback
  * @desc Fires once with the token.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.app_check} page.
+ * @member {Enum.FirebaseAppCheckError} error_code `FirebaseAppCheckError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Struct.FirebaseAppCheckToken} token The token and its expiry, or `undefined` on failure.
  * @event_end
@@ -317,6 +317,23 @@
  * @member {String} token The token: an opaque string to send to the game's backend as it is.
  * @member {Real} expire_time_millis When the token stops being valid, in milliseconds since the Unix epoch.
  * @struct_end
+ */
+
+/**
+ * @const FirebaseAppCheckError
+ * @desc **Firebase C++ SDK:** [firebase::app_check::AppCheckError](https://firebase.google.com/docs/reference/cpp/namespace/firebase/app-check#appcheckerror)
+ *
+ * The `error_code` every App Check token callback receives, mirroring the SDK's codes value for
+ * value. `None` is success. The finer members come from the iOS SDK; Android reports every failure
+ * as `Unknown`.
+ *
+ * @member None Success.
+ * @member ServerUnreachable No connection to the attestation or App Check backend.
+ * @member InvalidConfiguration The App Check configuration is not valid - on Windows, macOS and Linux, no provider was set.
+ * @member SystemKeychain The system keychain could not be accessed (Apple platforms); the app needs keychain access.
+ * @member UnsupportedProvider The chosen provider does not exist on this platform or OS version.
+ * @member Unknown An error the SDK could not classify - every Android failure, and a rejected debug token on desktop.
+ * @const_end
  */
 
 /**
@@ -359,18 +376,13 @@
  * is on; the module-level functions work on the default app, and the `firebase_app_check_instance_*`
  * family does the same for a chosen App Check instance. The token functions return
  * ${constant.FirebaseError} at once and deliver a ${struct.FirebaseAppCheckToken} to a callback
- * whose `error_code` is App Check's own code:
+ * whose `error_code` is a ${constant.FirebaseAppCheckError}, App Check's own code set: `None` on
+ * success, otherwise the member that names the failure.
  *
- * - `0` - success.
- * - `1` - `ServerUnreachable`: no connection to the attestation or App Check backend.
- * - `2` - `InvalidConfiguration`: the App Check configuration is not valid.
- * - `3` - `SystemKeychain`: the system keychain could not be accessed (Apple platforms).
- * - `4` - `UnsupportedProvider`: the chosen provider does not exist on this platform or OS version.
- * - `5` - `Unknown`: an error the SDK could not classify.
- *
- * The finer codes come from the iOS SDK. Android reports every failure as `5`, since its SDK has
- * no code set; on Windows, macOS and Linux a missing provider is `2` and a debug token the App
- * Check backend rejects is `5`, with the HTTP status and body in `error_message`.
+ * The finer codes come from the iOS SDK. Android reports every failure as `Unknown`, since its
+ * SDK has no code set; on Windows, macOS and Linux a missing provider is `InvalidConfiguration`
+ * and a debug token the App Check backend rejects is `Unknown`, with the HTTP status and body in
+ * `error_message`.
  *
  * ### Console setup
  *
@@ -415,6 +427,7 @@
  * @section_const Constants
  * @desc The following constants are used by this module:
  * @ref FirebaseAppCheckProvider
+ * @ref FirebaseAppCheckError
  * @section_end
  *
  * @module_end

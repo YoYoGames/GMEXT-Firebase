@@ -5,6 +5,21 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// FirebaseStorageError mirrors firebase::storage::Error, the error_code every
+// reference operation's callback receives. See GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseStorageError::None, firebase::storage::kErrorNone);
+GM_FB_PIN_ENUM(FirebaseStorageError::Unknown, firebase::storage::kErrorUnknown);
+GM_FB_PIN_ENUM(FirebaseStorageError::ObjectNotFound, firebase::storage::kErrorObjectNotFound);
+GM_FB_PIN_ENUM(FirebaseStorageError::BucketNotFound, firebase::storage::kErrorBucketNotFound);
+GM_FB_PIN_ENUM(FirebaseStorageError::ProjectNotFound, firebase::storage::kErrorProjectNotFound);
+GM_FB_PIN_ENUM(FirebaseStorageError::QuotaExceeded, firebase::storage::kErrorQuotaExceeded);
+GM_FB_PIN_ENUM(FirebaseStorageError::Unauthenticated, firebase::storage::kErrorUnauthenticated);
+GM_FB_PIN_ENUM(FirebaseStorageError::Unauthorized, firebase::storage::kErrorUnauthorized);
+GM_FB_PIN_ENUM(FirebaseStorageError::RetryLimitExceeded, firebase::storage::kErrorRetryLimitExceeded);
+GM_FB_PIN_ENUM(FirebaseStorageError::NonMatchingChecksum, firebase::storage::kErrorNonMatchingChecksum);
+GM_FB_PIN_ENUM(FirebaseStorageError::DownloadSizeExceeded, firebase::storage::kErrorDownloadSizeExceeded);
+GM_FB_PIN_ENUM(FirebaseStorageError::Cancelled, firebase::storage::kErrorCancelled);
+
 // ============================================================
 // Value-copy registries
 // ============================================================
@@ -261,11 +276,11 @@ uint64_t firebase_storage_ref_get_parent(uint64_t ref)
 // On desktop the SDK's retry thread keeps reading the reference it was started
 // on, so a ref stays registered until the callback of any operation started on
 // it has fired; Android and iOS only hold the future.
-double firebase_storage_ref_release(uint64_t ref)
+void firebase_storage_ref_release(uint64_t ref)
 {
 	firebase::storage::StorageReference* self = resolveStorageRef(ref);
-	if (self == nullptr) return 0.0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_ref_map) ? 1.0 : 0.0;
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_ref_map);
 }
 
 std::string firebase_storage_ref_bucket(uint64_t ref)
@@ -289,11 +304,11 @@ std::string firebase_storage_ref_name(uint64_t ref)
 	return self->name();
 }
 
-double firebase_storage_ref_is_valid(uint64_t ref)
+bool firebase_storage_ref_is_valid(uint64_t ref)
 {
 	firebase::storage::StorageReference* self = resolveStorageRef(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_valid() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_valid();
 }
 
 uint64_t firebase_storage_ref_storage(uint64_t ref)
@@ -511,18 +526,18 @@ uint64_t firebase_storage_metadata_create()
 	return registerStorageMetadata(firebase::storage::Metadata());
 }
 
-double firebase_storage_metadata_release(uint64_t ref)
+void firebase_storage_metadata_release(uint64_t ref)
 {
 	firebase::storage::Metadata* self = resolveMetadata(ref);
-	if (self == nullptr) return 0.0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_metadata_map) ? 1.0 : 0.0;
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_metadata_map);
 }
 
-double firebase_storage_metadata_is_valid(uint64_t ref)
+bool firebase_storage_metadata_is_valid(uint64_t ref)
 {
 	firebase::storage::Metadata* self = resolveMetadata(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_valid() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_valid();
 }
 
 std::string firebase_storage_metadata_bucket(uint64_t ref)
@@ -718,46 +733,46 @@ uint64_t firebase_storage_controller_create()
 	return packFirebaseRef(registerFirebaseValue(firebase::storage::Controller(), g_firebase_storage_controller_index, g_firebase_storage_controller_map), GM_FB_TYPE_STORAGE_CONTROLLER);
 }
 
-double firebase_storage_controller_release(uint64_t ref)
+void firebase_storage_controller_release(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_controller_map) ? 1.0 : 0.0;
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_controller_map);
 }
 
-double firebase_storage_controller_is_valid(uint64_t ref)
+bool firebase_storage_controller_is_valid(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_valid() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_valid();
 }
 
-double firebase_storage_controller_pause(uint64_t ref)
+bool firebase_storage_controller_pause(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return self->Pause() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->Pause();
 }
 
-double firebase_storage_controller_resume(uint64_t ref)
+bool firebase_storage_controller_resume(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return self->Resume() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->Resume();
 }
 
-double firebase_storage_controller_cancel(uint64_t ref)
+bool firebase_storage_controller_cancel(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return self->Cancel() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->Cancel();
 }
 
-double firebase_storage_controller_is_paused(uint64_t ref)
+bool firebase_storage_controller_is_paused(uint64_t ref)
 {
 	firebase::storage::Controller* self = resolveController(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_paused() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_paused();
 }
 
 double firebase_storage_controller_bytes_transferred(uint64_t ref)
@@ -785,18 +800,18 @@ uint64_t firebase_storage_controller_get_reference(uint64_t ref)
 // StorageListResult
 // ============================================================
 
-double firebase_storage_list_result_release(uint64_t ref)
+void firebase_storage_list_result_release(uint64_t ref)
 {
 	firebase::storage::StorageListResult* self = resolveListResult(ref);
-	if (self == nullptr) return 0.0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_list_result_map) ? 1.0 : 0.0;
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_firebase_storage_list_result_map);
 }
 
-double firebase_storage_list_result_is_valid(uint64_t ref)
+bool firebase_storage_list_result_is_valid(uint64_t ref)
 {
 	firebase::storage::StorageListResult* self = resolveListResult(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_valid() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_valid();
 }
 
 double firebase_storage_list_result_item_count(uint64_t ref)

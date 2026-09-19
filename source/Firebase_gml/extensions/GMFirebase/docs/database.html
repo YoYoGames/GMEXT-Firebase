@@ -3823,7 +3823,7 @@ if (database == 0)
     show_debug_message("Realtime Database unavailable: " + firebase_last_error_message());
     exit;
 }
-firebase_database_set_persistence_enabled(database, 1);
+firebase_database_set_persistence_enabled(database, true);
 scores = firebase_database_get_reference_at_path(database, "scores");</code></pre>
 The above code takes the database once, turns on-disk persistence on before any reference
 exists, and keeps a reference to the <code>scores</code> location for the rest of the game.</p>
@@ -3946,7 +3946,7 @@ with <a href="database.html#firebase_database_ref_release">firebase_database_ref
 <p>This function returns a reference to a location, from a slash-separated path from the root
 (<code>"players/USER_123/score"</code>). Nothing is read; the reference is a name, and the location need not
 exist. A malformed path gives a reference whose <a href="database.html#firebase_database_ref_is_valid">firebase_database_ref_is_valid</a> is
-<code>0</code>. Release the handle with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>.</p>
+<code>false</code>. Release the handle with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3997,7 +3997,7 @@ reference as soon as the write has been started; the SDK holds its own copy.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/database#getreferencefromurl">firebase::database::Database::GetReferenceFromUrl</a></p>
 <p>This function returns a reference from a full URL - the database URL followed by the path, as
 the console's data viewer shows it. The URL must belong to this database; another database's URL
-gives a reference whose <a href="database.html#firebase_database_ref_is_valid">firebase_database_ref_is_valid</a> is <code>0</code>. Release the handle
+gives a reference whose <a href="database.html#firebase_database_ref_is_valid">firebase_database_ref_is_valid</a> is <code>false</code>. Release the handle
 with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -4066,9 +4066,9 @@ that. <a href="database.html#firebase_database_ref_go_offline">firebase_database
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4101,9 +4101,9 @@ the writes that queued up.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4139,9 +4139,9 @@ writes the game no longer wants.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4174,17 +4174,17 @@ created; the SDK does not accept a change after that.</p>
 </tr>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to persist to disk, <code>0</code> to keep everything in memory.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to persist to disk, <code>false</code> to keep everything in memory.</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4195,7 +4195,7 @@ created; the SDK does not accept a change after that.</p>
 SDK-wide filter of <a href="app.html#firebase_set_log_level">firebase_set_log_level</a> - a message shows only when both levels
 let it through. The default is <code>FirebaseLogLevel.Info</code>. On Android it must be set before the
 instance does anything else. A value outside <a href="app.html#firebaseloglevel">FirebaseLogLevel</a> is refused with
-<code>FirebaseError.InvalidArgument</code> in <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> and returns <code>0</code>.</p>
+<code>FirebaseError.InvalidArgument</code> in <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> and returns <code>false</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -4225,9 +4225,9 @@ instance does anything else. A value outside <a href="app.html#firebaseloglevel"
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4812,7 +4812,7 @@ Run it with <a href="database.html#firebase_database_query_get_value">firebase_d
 <p>This function tells the SDK to keep the location downloaded and up to date even while no listener is
 attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
 at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
-again with <code>0</code>.</p>
+again with <code>false</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -4834,17 +4834,17 @@ again with <code>0</code>.</p>
 </tr>
 <tr>
 <td>keep_sync</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to keep the data synchronised, <code>0</code> to stop.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to keep the data synchronised, <code>false</code> to stop.</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -4854,7 +4854,7 @@ again with <code>0</code>.</p>
 <p>This function reads the data at the location once and hands the callback a snapshot of it. The snapshot holds the whole subtree below the location, so reading a node high up the tree
 downloads everything under it; read the location you need, or narrow it with a query. A location
 with no data is not an error: the snapshot's <a href="database.html#firebase_database_snapshot_exists">firebase_database_snapshot_exists</a> is
-<code>0</code> and its value <code>undefined</code>.</p>
+<code>false</code> and its value <code>undefined</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback for a reference
 that is not valid. To be told about every later change instead, use a value listener.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -5107,9 +5107,9 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the listener was removed, <code>0</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5143,9 +5143,9 @@ harmless for an already-stopped listener, to free it.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5407,9 +5407,9 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the listener was removed, <code>0</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5442,9 +5442,9 @@ each one to <a href="database.html#firebase_database_ref_remove_child_listener">
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5984,7 +5984,7 @@ ordering or limits. Release it with <a href="database.html#firebase_database_ref
 <p>This function tells the SDK to keep the query's results downloaded and up to date even while no listener is
 attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
 at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
-again with <code>0</code>.</p>
+again with <code>false</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -6006,24 +6006,24 @@ again with <code>0</code>.</p>
 </tr>
 <tr>
 <td>keep_sync</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to keep the data synchronised, <code>0</code> to stop.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to keep the data synchronised, <code>false</code> to stop.</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_database_query_is_valid">firebase_database_query_is_valid<a class="headerlink" href="#firebase_database_query_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#is_valid">firebase::database::Query::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable query - <code>0</code> for a released handle
+<p>This function returns whether the handle refers to a usable query - <code>false</code> for a released handle
 and for a query built from a reference that was not valid.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6049,9 +6049,9 @@ and for a query built from a reference that was not valid.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the query can be used, otherwise <code>0</code>.</p>
+<p><code>true</code> when the query can be used, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6063,7 +6063,7 @@ matched, in the query's order - <a href="database.html#firebase_database_snapsho
 one snapshot each. The snapshot holds the whole subtree below the location, so reading a node high up the tree
 downloads everything under it; read the location you need, or narrow it with a query. A location
 with no data is not an error: the snapshot's <a href="database.html#firebase_database_snapshot_exists">firebase_database_snapshot_exists</a> is
-<code>0</code> and its value <code>undefined</code>.</p>
+<code>false</code> and its value <code>undefined</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback for a reference
 that is not valid. To be told about every later change instead, use a value listener.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -6269,9 +6269,9 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the listener was removed, <code>0</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6305,9 +6305,9 @@ harmless for an already-stopped listener, to free it.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6542,9 +6542,9 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the listener was removed, <code>0</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6577,9 +6577,9 @@ each one to <a href="database.html#firebase_database_query_remove_child_listener
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6587,7 +6587,8 @@ each one to <a href="database.html#firebase_database_query_remove_child_listener
 <h1 id="firebase_database_query_release">firebase_database_query_release<a class="headerlink" href="#firebase_database_query_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a query handle. A query built from it, a running <code>get_value</code> and a
 listener each keep their own copy, so release it as soon as the next step has been built or
-started. A reference is not a query handle: release it with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>.</p>
+started. A reference is not a query handle: release it with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>. A handle that is not a query sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -6612,9 +6613,8 @@ started. A reference is not a query handle: release it with <a href="database.ht
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a query was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6775,9 +6775,9 @@ server filling in when it arrived.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6811,9 +6811,9 @@ reference.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the call went through, <code>0</code> when the handle is not valid.</p>
+<p><code>true</code> when the call went through, <code>false</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7313,7 +7313,8 @@ together, <a href="database.html#firebase_database_ref_update_children">firebase
 <p>This function releases a reference handle - one from the database, from
 <a href="database.html#firebase_database_ref_child">firebase_database_ref_child</a>, from a query's <code>get_reference</code>, from a snapshot, or out
 of a <a href="database.html#firebasedatabasereferenceinfo">FirebaseDatabaseReferenceInfo</a>. Release it as soon as the calls that need it have
-been started; queries, listeners and writes keep their own copies.</p>
+been started; queries, listeners and writes keep their own copies. A handle that is not a reference sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -7338,9 +7339,8 @@ been started; queries, listeners and writes keep their own copies.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a reference was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7373,16 +7373,16 @@ is not an error; this is how it shows.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when there is data, otherwise <code>0</code>.</p>
+<p><code>true</code> when there is data, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_database_snapshot_is_valid">firebase_database_snapshot_is_valid<a class="headerlink" href="#firebase_database_snapshot_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#is_valid">firebase::database::DataSnapshot::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable snapshot - <code>0</code> after it has been
+<p>This function returns whether the handle refers to a usable snapshot - <code>false</code> after it has been
 released.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -7408,9 +7408,9 @@ released.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the snapshot can be read, otherwise <code>0</code>.</p>
+<p><code>true</code> when the snapshot can be read, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7489,9 +7489,9 @@ says. Release the handle with <a href="database.html#firebase_database_snapshot_
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when there is data at the path, otherwise <code>0</code>.</p>
+<p><code>true</code> when there is data at the path, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7524,9 +7524,9 @@ leaf value or an empty location.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when there are children, otherwise <code>0</code>.</p>
+<p><code>true</code> when there are children, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7787,7 +7787,8 @@ the children you need through <a href="database.html#firebase_database_snapshot_
 <h1 id="firebase_database_snapshot_release">firebase_database_snapshot_release<a class="headerlink" href="#firebase_database_snapshot_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a snapshot handle - one from a <code>get_value</code> callback, a listener,
 <a href="database.html#firebase_database_snapshot_get_children">firebase_database_snapshot_get_children</a> or <a href="database.html#firebase_database_snapshot_child">firebase_database_snapshot_child</a>.
-Release each one once its data has been read.</p>
+Release each one once its data has been read. A handle that is not a snapshot sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -7812,9 +7813,8 @@ Release each one once its data has been read.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a snapshot was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7881,16 +7881,16 @@ Release each one once its data has been read.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> for the root, otherwise <code>0</code>.</p>
+<p><code>true</code> for the root, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_database_ref_is_valid">firebase_database_ref_is_valid<a class="headerlink" href="#firebase_database_ref_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#is_valid">firebase::database::DatabaseReference::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable reference - <code>0</code> for a released
+<p>This function returns whether the handle refers to a usable reference - <code>false</code> for a released
 handle and for a reference built from a malformed path or a URL of another database.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -7916,9 +7916,9 @@ handle and for a reference built from a malformed path or a URL of another datab
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the reference can be used, otherwise <code>0</code>.</p>
+<p><code>true</code> when the reference can be used, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

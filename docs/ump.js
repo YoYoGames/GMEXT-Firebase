@@ -62,15 +62,15 @@
  * @function firebase_ump_can_request_ads
  * @desc **Firebase C++ SDK:** [firebase::ump::ConsentInfo::CanRequestAds](https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#canrequestads)
  *
- * This function says whether the game may request ads: `1` once
+ * This function says whether the game may request ads: `true` once
  * ${function.firebase_ump_request_consent_info_update} has been called this session and the
- * consent status is `FirebaseUmpConsentStatus.Obtained` or `NotRequired`, `0` before that and
+ * consent status is `FirebaseUmpConsentStatus.Obtained` or `NotRequired`, `false` before that and
  * whenever consent is required but not given. It is the one check the ads code needs - gate the
  * ads SDK's initialisation and every ad request on it - and it reflects the previous session's
  * consent as soon as the update is requested, before the callback.
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
- * @returns {Real} `1` when ads may be requested, `0` otherwise (or when the handle is not valid).
+ * @returns {Bool} `true` when ads may be requested, `false` otherwise (or when the handle is not valid).
  * @function_end
  */
 
@@ -113,23 +113,23 @@
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
  * @param {Enum.FirebaseUmpConsentDebugGeography} debug_geography The geography to simulate on the debug devices, or `FirebaseUmpConsentDebugGeography.Disabled`.
- * @param {Real} tag_for_under_age_of_consent `1` when the player is known to be under the age of consent - the SDK then shows no consent form - `0` otherwise.
+ * @param {Bool} tag_for_under_age_of_consent `true` when the player is known to be under the age of consent - the SDK then shows no consent form - `false` otherwise.
  * @param {Array[String]} [debug_device_ids] The ids of the devices the debug geography applies to, as the SDK logs them; omit it or pass `undefined` for none.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
  * @event callback
  * @desc Fires once when the statuses have been updated, or the request failed.
- * @member {Real} error_code `0` on success, otherwise one of the request codes listed under Error codes on the ${module.ump} page.
+ * @member {Enum.FirebaseUmpConsentRequestError} error_code `FirebaseUmpConsentRequestError.Success` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  *
  * @example
  * ```gml
  * consent = firebase_ump_get_instance();
- * firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeography.Disabled, 0, undefined, function(_error, _message)
+ * firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeography.Disabled, false, undefined, function(_error, _message)
  * {
- *     if (_error != 0)
+ *     if (_error != FirebaseUmpConsentRequestError.Success)
  *     {
  *         show_debug_message($"Consent info update failed ({_error}): {_message}");
  *         // Fall through: the previous session's consent, if any, still applies.
@@ -159,8 +159,8 @@
  * a moment of its choosing. It needs ${function.firebase_ump_get_consent_form_status} to be
  * `FirebaseUmpConsentFormStatus.Available`, which
  * ${function.firebase_ump_request_consent_info_update} establishes; otherwise the callback
- * fires with the form code `4` (unavailable). A loaded form is shown once; load again to show it
- * again. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
+ * fires with `FirebaseUmpConsentFormError.Unavailable`. A loaded form is shown once; load again to
+ * show it again. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
  * valid.
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
@@ -169,7 +169,7 @@
  *
  * @event callback
  * @desc Fires once when the form has loaded, or could not be.
- * @member {Real} error_code `0` on success, otherwise one of the form codes listed under Error codes on the ${module.ump} page.
+ * @member {Enum.FirebaseUmpConsentFormError} error_code `FirebaseUmpConsentFormError.Success` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -182,8 +182,8 @@
  * This function presents the consent form ${function.firebase_ump_load_consent_form} loaded,
  * full screen, and fires the callback once the player has made their choice and the form has
  * gone; the statuses and ${function.firebase_ump_can_request_ads} are updated by then. Showing
- * without a loaded form fails with the form code `4` (unavailable) and showing a form a second
- * time with `5` (already used). Unlike
+ * without a loaded form fails with `FirebaseUmpConsentFormError.Unavailable` and showing a form a
+ * second time with `AlreadyUsed`. Unlike
  * ${function.firebase_ump_load_and_show_consent_form_if_required} it shows the form whatever the
  * consent status - the way to let a player who has already consented see the form again is
  * ${function.firebase_ump_show_privacy_options_form}, not this. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
@@ -197,7 +197,7 @@
  *
  * @event callback
  * @desc Fires once when the form has been dismissed, or could not be shown.
- * @member {Real} error_code `0` on success, otherwise one of the form codes listed under Error codes on the ${module.ump} page.
+ * @member {Enum.FirebaseUmpConsentFormError} error_code `FirebaseUmpConsentFormError.Success` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -209,7 +209,7 @@
  *
  * This function shows the consent form when ${function.firebase_ump_get_consent_status} is
  * `FirebaseUmpConsentStatus.Required`, loading it first, and does nothing when it is not: the
- * callback fires with `0` once the player has made their choice and the form has gone, or at once
+ * callback fires with `FirebaseUmpConsentFormError.Success` once the player has made their choice and the form has gone, or at once
  * when no form was needed, and with a form code when the form could not be loaded or shown. The
  * statuses and ${function.firebase_ump_can_request_ads} are updated before the callback fires.
  * It is the call to make after ${function.firebase_ump_request_consent_info_update} completes;
@@ -225,7 +225,7 @@
  *
  * @event callback
  * @desc Fires once when the form has been dismissed, was not required, or could not be shown.
- * @member {Real} error_code `0` on success, otherwise one of the form codes listed under Error codes on the ${module.ump} page.
+ * @member {Enum.FirebaseUmpConsentFormError} error_code `FirebaseUmpConsentFormError.Success` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -252,7 +252,7 @@
  *
  * @event callback
  * @desc Fires once when the form has been dismissed, or could not be shown.
- * @member {Real} error_code `0` on success, otherwise one of the form codes listed under Error codes on the ${module.ump} page.
+ * @member {Enum.FirebaseUmpConsentFormError} error_code `FirebaseUmpConsentFormError.Success` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  *
@@ -338,6 +338,42 @@
  */
 
 /**
+ * @const FirebaseUmpConsentRequestError
+ * @desc **Firebase C++ SDK:** [firebase::ump::ConsentRequestError](https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentrequesterror)
+ *
+ * The `error_code` of ${function.firebase_ump_request_consent_info_update}'s callback, mirroring
+ * the SDK's codes value for value. `Success` is success.
+ *
+ * @member Success Success.
+ * @member InvalidAppId The AdMob app id in the Android manifest or `Info.plist` is missing or wrong.
+ * @member Network No connection.
+ * @member Internal An error inside the SDK.
+ * @member Misconfiguration The message setup in the AdMob console is not valid.
+ * @member Unknown An error the SDK could not classify.
+ * @member InvalidOperation The call was not valid at this point; try again.
+ * @member OperationInProgress The previous update has not completed yet.
+ * @const_end
+ */
+
+/**
+ * @const FirebaseUmpConsentFormError
+ * @desc **Firebase C++ SDK:** [firebase::ump::ConsentFormError](https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentformerror)
+ *
+ * The `error_code` of the four form functions' callbacks, mirroring the SDK's codes value for
+ * value. `Success` is success.
+ *
+ * @member Success Success.
+ * @member Timeout The form did not load in time; try again.
+ * @member Internal An error inside the SDK.
+ * @member Unknown An error the SDK could not classify.
+ * @member Unavailable There is no form to show - not required, not loaded, or none configured.
+ * @member AlreadyUsed The loaded form has been shown already; load it again.
+ * @member InvalidOperation The call was not valid at this point (on iOS, a bad form parent).
+ * @member OperationInProgress The previous form call has not completed yet.
+ * @const_end
+ */
+
+/**
  * @module ump
  * @title User Messaging Platform
  * @desc This module covers the User Messaging Platform (UMP): Google's consent SDK for ads. Where a
@@ -381,30 +417,14 @@
  *
  * ### Error codes
  *
- * The callbacks' `error_code` is one of two sets, both `0` on success. For
- * ${function.firebase_ump_request_consent_info_update}, `firebase::ump::ConsentRequestError`:
+ * The callbacks' `error_code` is one of two enums, both `Success` on success:
+ * ${constant.FirebaseUmpConsentRequestError} for ${function.firebase_ump_request_consent_info_update}
+ * and ${constant.FirebaseUmpConsentFormError} for the four form functions.
  *
- * - `1` - `InvalidAppId`: the AdMob app id in the Android manifest or `Info.plist` is missing or wrong.
- * - `2` - `Network`: no connection.
- * - `3` - `Internal`: an error inside the SDK.
- * - `4` - `Misconfiguration`: the message setup in the AdMob console is not valid.
- * - `5` - `Unknown`: an error the SDK could not classify.
- * - `6` - `InvalidOperation`: the call was not valid at this point; try again.
- * - `7` - `OperationInProgress`: the previous update has not completed yet.
- *
- * For the four form functions, `firebase::ump::ConsentFormError`:
- *
- * - `1` - `Timeout`: the form did not load in time; try again.
- * - `2` - `Internal`: an error inside the SDK.
- * - `3` - `Unknown`: an error the SDK could not classify.
- * - `4` - `Unavailable`: there is no form to show - not required, not loaded, or none configured.
- * - `5` - `AlreadyUsed`: the loaded form has been shown already; load it again.
- * - `6` - `InvalidOperation`: the call was not valid at this point (on iOS, a bad form parent).
- * - `7` - `OperationInProgress`: the previous form call has not completed yet.
- *
- * On Android the SDK reports a single "invalid operation" code, and the C++ layer tells request
- * codes `1`, `4` and `6`, and form codes `4`, `5` and `6`, apart by the message text - an
- * unexpected wording lands on `6`.
+ * On Android the SDK reports a single "invalid operation" code, and the C++ layer tells the request
+ * errors `InvalidAppId`, `Misconfiguration` and `InvalidOperation`, and the form errors
+ * `Unavailable`, `AlreadyUsed` and `InvalidOperation`, apart by the message text - an unexpected
+ * wording lands on `InvalidOperation`.
  *
  * ### Console and project setup
  *
@@ -413,7 +433,7 @@
  * in the Android manifest and `GADApplicationIdentifier` in `Info.plist`. This extension does
  * not inject either - the AdMob extension does, from its Android App ID and iOS App ID options -
  * so a game that shows ads through anything else adds them itself; without them the update
- * fails with request code `1`.
+ * fails with `FirebaseUmpConsentRequestError.InvalidAppId`.
  *
  * @section_func Instance
  * @desc The consent-info handle the other functions take:
@@ -453,6 +473,8 @@
  * @ref FirebaseUmpConsentFormStatus
  * @ref FirebaseUmpPrivacyOptionsRequirementStatus
  * @ref FirebaseUmpConsentDebugGeography
+ * @ref FirebaseUmpConsentRequestError
+ * @ref FirebaseUmpConsentFormError
  * @section_end
  *
  * @module_end

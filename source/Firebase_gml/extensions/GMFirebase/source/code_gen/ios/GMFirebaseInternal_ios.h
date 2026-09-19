@@ -451,7 +451,7 @@
 - (double)__EXT_NATIVE__firebase_ump_show_consent_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_ump_load_and_show_consent_form_if_required:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_ump_show_privacy_options_form:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
-- (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change:(double)state;
+- (double)__EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_auth_federated_oauth_provider_create:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
@@ -547,7 +547,7 @@
 - (double)__EXT_NATIVE__firebase_remote_config_get_string_with_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_remote_config_get_data_with_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_messaging_initialize_with_options:(double)suppress_notification_permission_prompt;
-- (double)__EXT_NATIVE__firebase_firestore_field_value_type:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
+- (double)__EXT_NATIVE__firebase_firestore_field_value_type:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_is_valid:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_is_null:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_is_boolean:(char*)__arg_buffer arg1:(double)__arg_buffer_length;

@@ -1718,13 +1718,13 @@ Authentication, Cloud Firestore, ...) attaches to the App this call creates.</p>
 <code>GoogleService-Info.plist</code> that the <code>plistFile</code> option adds to the bundle, and on Windows, macOS and
 Linux a <code>google-services-desktop.json</code> or <code>google-services.json</code> placed beside the executable, which
 the <code>desktopJsonFile</code> option copies there at build time. See <a href="extension_options.html">Extension Options</a>.</p>
-<p>If the function succeeds it returns <code>1</code>. If it fails it returns <code>0</code> and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+<p>If the function succeeds it returns <code>true</code>. If it fails it returns <code>false</code> and <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
 is <code>FirebaseError.NotInitialized</code>, with <a href="app.html#firebase_last_error_message">firebase_last_error_message</a> saying why - typically
 a configuration file that could not be found or read.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This function returns a plain <code>1</code> or <code>0</code>, not a <a href="app.html#firebaseerror">FirebaseError</a> value, so a truthy
-test on its return is correct here. The asynchronous functions of this extension return
+<p>This function returns a boolean, not a <a href="app.html#firebaseerror">FirebaseError</a> value, so a truthy test on
+its return is correct here. The asynchronous functions of this extension return
 <a href="app.html#firebaseerror">FirebaseError</a> instead, where <code>FirebaseError.Ok</code> is <code>0</code> - see the notes on this page.</p>
 </div>
 <div class="admonition warning">
@@ -1741,9 +1741,9 @@ it has run. On Android the default app is configured at launch and those three w
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> if the default app exists after the call, otherwise <code>0</code>.</p>
+<p><code>true</code> if the default app exists after the call, otherwise <code>false</code>.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">if (!firebase_app_initialize())
@@ -1770,9 +1770,9 @@ the state; it never creates the app.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> once the default app has been created, otherwise <code>0</code>.</p>
+<p><code>true</code> once the default app has been created, otherwise <code>false</code>.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">if (!firebase_app_is_initialized())

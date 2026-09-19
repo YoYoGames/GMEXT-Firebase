@@ -5,7 +5,7 @@
  * This function starts Cloud Messaging for the default Firebase App and must be called once, after
  * ${function.firebase_app_initialize} and before any other function of this module. The SDK aborts
  * the game when a messaging call reaches it uninitialised, so every function here that would reach
- * it refuses first with `FirebaseError.NotInitialized`, and the poll functions return `0`. From this
+ * it refuses first with `FirebaseError.NotInitialized`, and the poll functions return `false`. From this
  * call on the SDK can deliver messages and registration events at any time; the game collects them
  * with ${function.firebase_messaging_poll_message}, ${function.firebase_messaging_poll_registration}
  * and ${function.firebase_messaging_poll_unregistration} once per step.
@@ -14,18 +14,16 @@
  * device with APNs; ${function.firebase_messaging_initialize_with_options} holds the prompt back for
  * a ${function.firebase_messaging_request_permission} of the game's choosing. On Android the
  * notification permission is the game's to request with `os_request_permission` (the extension
- * declares `android.permission.POST_NOTIFICATIONS`), and the call returns `1` when Google Play
- * services are missing on the device. A second call does nothing and returns `0`.
+ * declares `android.permission.POST_NOTIFICATIONS`), and the call returns `false` when Google Play
+ * services are missing on the device, with ${function.firebase_last_error_message} naming the
+ * missing dependency. A second call does nothing and returns `true`.
  *
- * [[Note: The return is the SDK's init result, where `0` is success - the opposite of
- * ${function.firebase_app_initialize}. Compare it with `0` rather than testing it for truth.]]
- *
- * @returns {Real} `0` on success, `1` when Google Play services are missing on Android, `-1` when the default app does not exist.
+ * @returns {Bool} `true` when Cloud Messaging is initialised after the call, `false` when the default app does not exist or Google Play services are missing on Android - ${function.firebase_last_error_code} is then `FirebaseError.NotInitialized`.
  *
  * @example
  * ```gml
  * // Create Event of a persistent controller, after firebase_app_initialize()
- * if (firebase_messaging_initialize() != 0)
+ * if (!firebase_messaging_initialize())
  * {
  *     show_debug_message($"Messaging unavailable: {firebase_last_error_message()}");
  *     exit;
@@ -53,7 +51,7 @@
  *
  * This function shuts Cloud Messaging down: the SDK stops delivering to the game, the queued messages
  * and the last polled message, installation id and token are dropped, and the module is back to its
- * uninitialised state, where the poll functions return `0` and the getters empty strings. On Android
+ * uninitialised state, where the poll functions return `false` and the getters empty strings. On Android
  * the platform's messaging service keeps running underneath. The module can be initialised again
  * afterwards. There is no need to call it when the game exits.
  *
@@ -69,14 +67,14 @@
  * Installation ID by itself, which sends a new identity to Firebase before the player has agreed to
  * anything. A game that needs consent first ships with the `disableDataCollection` extension option
  * (see ${page.extension_options}), which puts the platform's opt-out into the Android manifest and
- * the iOS `Info.plist` so that the first launch does not register, and calls this function with `1`
+ * the iOS `Info.plist` so that the first launch does not register, and calls this function with `true`
  * once the player has agreed; turning it on triggers the registration at once. The setting is
  * stored on the device and overrides the manifest and plist keys from then on, so the call is
  * needed once. Turning it off at runtime does not undo a registration that already happened at
  * this launch - only the option prevents the first one - and holds from the next launch. It can be
  * called before ${function.firebase_messaging_initialize}. The desktop stub ignores it.
  *
- * @param {Real} enabled `1` to register at initialisation, `0` not to.
+ * @param {Bool} enabled `true` to register at initialisation, `false` not to.
  * @function_end
  */
 
@@ -86,9 +84,9 @@
  *
  * This function returns whether the SDK registers the installation at initialisation - the stored
  * setting of ${function.firebase_messaging_set_registration_on_init_enabled}, or failing that the
- * manifest or plist key, or failing that the default of on. The desktop stub always returns `1`.
+ * manifest or plist key, or failing that the default of on. The desktop stub always returns `true`.
  *
- * @returns {Real} `1` when registration on init is enabled, otherwise `0`.
+ * @returns {Bool} `true` when registration on init is enabled, otherwise `false`.
  * @function_end
  */
 
@@ -102,7 +100,7 @@
  * This function is ${function.firebase_messaging_set_registration_on_init_enabled} under the
  * setting's old name; both write the same stored setting.
  *
- * @param {Real} enabled `1` to register at initialisation, `0` not to.
+ * @param {Bool} enabled `true` to register at initialisation, `false` not to.
  * @function_end
  */
 
@@ -116,7 +114,7 @@
  * This function is ${function.firebase_messaging_is_registration_on_init_enabled} under the
  * setting's old name; both read the same stored setting.
  *
- * @returns {Real} `1` when registration on init is enabled, otherwise `0`.
+ * @returns {Bool} `true` when registration on init is enabled, otherwise `false`.
  * @function_end
  */
 
@@ -124,10 +122,10 @@
  * @function firebase_messaging_delivery_metrics_export_to_big_query_enabled
  * @desc **Firebase C++ SDK:** [firebase::messaging::DeliveryMetricsExportToBigQueryEnabled](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deliverymetricsexporttobigqueryenabled)
  *
- * This function returns whether delivery data is exported to BigQuery, on Android. It returns `0`
+ * This function returns whether delivery data is exported to BigQuery, on Android. It returns `false`
  * on every other platform.
  *
- * @returns {Real} `1` when the export is on, otherwise `0`.
+ * @returns {Bool} `true` when the export is on, otherwise `false`.
  * @function_end
  */
 
@@ -142,7 +140,7 @@
  * also turns it on, and this call overrides the key. The function does nothing on other
  * platforms.
  *
- * @param {Real} enabled `1` to export delivery metrics, `0` not to.
+ * @param {Bool} enabled `true` to export delivery metrics, `false` not to.
  * @function_end
  */
 
@@ -152,16 +150,17 @@
  *
  * This function asks the player for permission to show notifications, on iOS: the system prompt
  * appears, unless it was answered before, and the device registers with APNs. The callback fires
- * when that registration has completed or failed with `FailedToRegisterForRemoteNotifications`
- * (code `1`) - not when the prompt is answered, so a player who declines still gets a successful
+ * when that registration has completed or failed with
+ * `FirebaseMessagingError.FailedToRegisterForRemoteNotifications` - not when the prompt is answered,
+ * so a player who declines still gets a successful
  * callback and simply sees no notifications. ${function.firebase_messaging_initialize} already
  * does all of this on iOS unless the prompt was held back with
  * ${function.firebase_messaging_initialize_with_options}.
  *
- * On Android the call does nothing and the callback fires at once with `0`; the notification
+ * On Android the call does nothing and the callback fires at once with `FirebaseMessagingError.None`; the notification
  * permission is requested with `os_request_permission("android.permission.POST_NOTIFICATIONS")`
  * and its answer arrives in the Async System event. On Windows, macOS and Linux the callback also
- * fires at once with `0`.
+ * fires at once with `FirebaseMessagingError.None`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_messaging_initialize} has not run.
@@ -171,7 +170,7 @@
  *
  * @event callback
  * @desc Fires once when the device has registered for notifications, or could not.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -189,7 +188,7 @@
  * registered. With registration on init enabled - the default - the SDK registers on its own at
  * ${function.firebase_messaging_initialize}, and this call is for a game that shipped with the
  * `disableDataCollection` option and registers once the player has consented. On Windows, macOS
- * and Linux the callback fires at once with `0` and the id delivered is the stub's
+ * and Linux the callback fires at once with `FirebaseMessagingError.None` and the id delivered is the stub's
  * `"StubRegistrationId"`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
@@ -200,17 +199,17 @@
  *
  * @event callback
  * @desc Fires once when the registration has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  *
  * @example
  * ```gml
  * // The consent screen's "Allow notifications" button
- * firebase_messaging_set_registration_on_init_enabled(1);
+ * firebase_messaging_set_registration_on_init_enabled(true);
  * var _result = firebase_messaging_register(function(_error, _message)
  * {
- *     if (_error != 0) show_debug_message($"Registration failed ({_error}): {_message}");
+ *     if (_error != FirebaseMessagingError.None) show_debug_message($"Registration failed ({_error}): {_message}");
  * });
  *
  * // Step Event of the persistent controller
@@ -233,7 +232,7 @@
  * messages reach it; the id it was registered under arrives through
  * ${function.firebase_messaging_poll_unregistration}. The Firebase Installation ID itself stays on
  * the device - ${function.firebase_installations_delete} removes it. On Windows, macOS and Linux
- * the callback fires at once with `0`.
+ * the callback fires at once with `FirebaseMessagingError.None`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_messaging_initialize} has not run.
@@ -243,7 +242,7 @@
  *
  * @event callback
  * @desc Fires once when the unregistration has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -260,7 +259,7 @@
  * and device details to Firebase, and hands the callback the registration token: the string that
  * the console's test-message dialog and the older server APIs address a single device by. The
  * token also arrives through ${function.firebase_messaging_poll_token} whenever the SDK generates
- * or refreshes one. On Windows, macOS and Linux the callback fires at once with `0` and the stub's
+ * or refreshes one. On Windows, macOS and Linux the callback fires at once with `FirebaseMessagingError.None` and the stub's
  * `"StubToken"`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
@@ -271,7 +270,7 @@
  *
  * @event callback
  * @desc Fires once with the registration token.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {String} token The registration token, or an empty string on failure.
  * @event_end
@@ -288,7 +287,7 @@
  * This function deletes the installation's registration token, so that no more messages reach this
  * device until a new one is generated. The Firebase Installation ID stays on the device;
  * ${function.firebase_installations_delete} removes it. On Windows, macOS and Linux the callback
- * fires at once with `0`.
+ * fires at once with `FirebaseMessagingError.None`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_messaging_initialize} has not run.
@@ -298,7 +297,7 @@
  *
  * @event callback
  * @desc Fires once when the token has been deleted or the deletion failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -311,12 +310,12 @@
  * This function subscribes this installation to a topic, so that every message a server sends to
  * the topic reaches it: the way to address every player, or every player of a region, a language
  * or a guild, without keeping a list of devices. A topic name is 1 to 900 characters from `a-z`, `A-Z`, `0-9`, `-`, `_`, `.`, `~` and
- * `%`; anything else fails with `InvalidTopicName` (code `2`). The subscription needs the
+ * `%`; anything else fails with `FirebaseMessagingError.InvalidTopicName`. The subscription needs the
  * installation to be registered: made before the registration at initialisation has completed, it
  * waits for it; with registration on init disabled and no ${function.firebase_messaging_register}
- * done, it fails with `NoRegistrationToken` (code `3`). A subscription is kept by the backend
- * across launches until ${function.firebase_messaging_unsubscribe}. On Windows, macOS and Linux
- * the callback fires at once with `0`.
+ * done, it fails with `FirebaseMessagingError.NoRegistrationToken`. A subscription is kept by the
+ * backend across launches until ${function.firebase_messaging_unsubscribe}. On Windows, macOS and
+ * Linux the callback fires at once with `FirebaseMessagingError.None`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_messaging_initialize} has not run.
@@ -327,7 +326,7 @@
  *
  * @event callback
  * @desc Fires once when the subscription has been made or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  *
@@ -336,7 +335,7 @@
  * // After the player picks a language and a region
  * firebase_messaging_subscribe($"news-{language}", function(_error, _message)
  * {
- *     if (_error != 0) show_debug_message($"Subscribe failed ({_error}): {_message}");
+ *     if (_error != FirebaseMessagingError.None) show_debug_message($"Subscribe failed ({_error}): {_message}");
  * });
  * firebase_messaging_subscribe($"events-{region}", undefined);
  * ```
@@ -352,7 +351,7 @@
  *
  * This function removes this installation from a topic, so that messages sent to it no longer
  * arrive. A topic name is 1 to 900 characters from `a-z`, `A-Z`, `0-9`, `-`, `_`, `.`, `~` and
- * `%`; anything else fails with `InvalidTopicName` (code `2`). On Windows, macOS and Linux the callback fires at once with `0`.
+ * `%`; anything else fails with `FirebaseMessagingError.InvalidTopicName`. On Windows, macOS and Linux the callback fires at once with `FirebaseMessagingError.None`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_messaging_initialize} has not run.
@@ -363,7 +362,7 @@
  *
  * @event callback
  * @desc Fires once when the subscription has been removed or the removal failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.messaging} page.
+ * @member {Enum.FirebaseMessagingError} error_code `FirebaseMessagingError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -375,13 +374,13 @@
  *
  * This function takes the oldest message waiting in the queue, if there is one, and makes it the
  * current message that the `firebase_messaging_message_*` getters read. Call it in a `while` loop
- * once per step, until it returns `0`, so that a burst of messages is handled in the step it
+ * once per step, until it returns `false`, so that a burst of messages is handled in the step it
  * arrived. A game that stops polling - a long loading screen, a room with no controller - keeps at
  * most 256 messages queued, after which the oldest is dropped with a warning in the debug log. The
- * current message stays readable until the next poll that returns `1` or
+ * current message stays readable until the next poll that returns `true` or
  * ${function.firebase_messaging_terminate}.
  *
- * @returns {Real} `1` when a message was taken from the queue and is now current, otherwise `0` - also before initialisation.
+ * @returns {Bool} `true` when a message was taken from the queue and is now current, otherwise `false` - also before initialisation.
  *
  * @example
  * ```gml
@@ -421,7 +420,7 @@
  * its Firebase Installation ID. Call it once per step. Each completed registration is reported once,
  * and only the latest is kept between polls.
  *
- * @returns {Real} `1` when a registration was pending and its id is now current, otherwise `0` - also before initialisation.
+ * @returns {Bool} `true` when a registration was pending and its id is now current, otherwise `false` - also before initialisation.
  * @function_end
  */
 
@@ -434,7 +433,7 @@
  * return the id that was unregistered. Call it once per step; each completed unregistration is
  * reported once.
  *
- * @returns {Real} `1` when an unregistration was pending and its id is now current, otherwise `0` - also before initialisation.
+ * @returns {Bool} `true` when an unregistration was pending and its id is now current, otherwise `false` - also before initialisation.
  * @function_end
  */
 
@@ -443,7 +442,7 @@
  * @desc This function returns the Firebase Installation ID that the last successful
  * ${function.firebase_messaging_poll_registration} or ${function.firebase_messaging_poll_unregistration}
  * delivered: the identifier of this installation of the game, which a server uses to send a message
- * to this device alone. It is an empty string until a poll has returned `1`, and again after
+ * to this device alone. It is an empty string until a poll has returned `true`, and again after
  * ${function.firebase_messaging_terminate}.
  *
  * @returns {String} The installation id, or an empty string.
@@ -462,7 +461,7 @@
  * per step; only the latest token is kept between polls. Android and iOS still deliver tokens this
  * way.
  *
- * @returns {Real} `1` when a token was pending and is now current, otherwise `0` - also before initialisation.
+ * @returns {Bool} `true` when a token was pending and is now current, otherwise `false` - also before initialisation.
  * @function_end
  */
 
@@ -473,7 +472,7 @@
  *
  * This function returns the registration token the last successful
  * ${function.firebase_messaging_poll_token} delivered. It is an empty string until a poll has
- * returned `1`, and again after ${function.firebase_messaging_terminate}.
+ * returned `true`, and again after ${function.firebase_messaging_terminate}.
  *
  * @returns {String} The registration token, or an empty string.
  * @function_end
@@ -608,9 +607,9 @@
  * This function returns whether the message reached the game because the player tapped its
  * notification: the game was in the background or not running, the system showed the notification
  * in its tray, and the tap brought the game up with this message, data payload included. A message
- * delivered while the game was in the foreground reads `0`. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
+ * delivered while the game was in the foreground reads `false`. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
  *
- * @returns {Real} `1` when the player opened the message's notification, otherwise `0`.
+ * @returns {Bool} `true` when the player opened the message's notification, otherwise `false`.
  * @function_end
  */
 
@@ -684,7 +683,7 @@
  * Every `firebase_messaging_message_notification_*` getter reads as an empty string or `0` when
  * there is none. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
  *
- * @returns {Real} `1` when the message has a notification, otherwise `0`.
+ * @returns {Bool} `true` when the message has a notification, otherwise `false`.
  * @function_end
  */
 
@@ -851,13 +850,13 @@
  * @desc **Firebase C++ SDK:** [firebase::messaging::Initialize](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#initialize_1)
  *
  * This function is ${function.firebase_messaging_initialize} with the one option the SDK has: on iOS,
- * `suppress_notification_permission_prompt` set to `1` keeps the system permission prompt from
+ * `suppress_notification_permission_prompt` set to `true` keeps the system permission prompt from
  * appearing at initialisation, so that the game can explain why it wants to notify the player and
  * call ${function.firebase_messaging_request_permission} at the right moment. A prompt the player
  * has already answered is not shown again either way. The option does nothing on Android.
  *
- * @param {Real} suppress_notification_permission_prompt `1` to hold the iOS permission prompt back until ${function.firebase_messaging_request_permission}, `0` to show it now.
- * @returns {Real} `0` on success, `1` when Google Play services are missing on Android, `-1` when the default app does not exist.
+ * @param {Bool} suppress_notification_permission_prompt `true` to hold the iOS permission prompt back until ${function.firebase_messaging_request_permission}, `false` to show it now.
+ * @returns {Bool} `true` when Cloud Messaging is initialised after the call, `false` when the default app does not exist or Google Play services are missing on Android - ${function.firebase_last_error_code} is then `FirebaseError.NotInitialized`.
  * @function_end
  */
 
@@ -868,10 +867,10 @@
  * This function is ${function.firebase_messaging_initialize} for another Firebase App, created with
  * ${function.firebase_app_initialize_with_options} or ${function.firebase_app_initialize_from_json}.
  * Cloud Messaging is initialised once per game, for one app: once any of the initialise functions
- * has succeeded, the others do nothing and return `0`.
+ * has succeeded, the others do nothing and return `true`.
  *
  * @param {Real} app An app handle.
- * @returns {Real} `0` on success, `1` when Google Play services are missing on Android, `-1` when the app handle is not valid.
+ * @returns {Bool} `true` when Cloud Messaging is initialised after the call, `false` when the app handle is not valid (`FirebaseError.InvalidHandle`) or Google Play services are missing on Android (`FirebaseError.NotInitialized`).
  * @function_end
  */
 
@@ -882,9 +881,24 @@
  * This function is ${function.firebase_messaging_initialize_with_options} for another Firebase App.
  *
  * @param {Real} app An app handle.
- * @param {Real} suppress_notification_permission_prompt `1` to hold the iOS permission prompt back until ${function.firebase_messaging_request_permission}, `0` to show it now.
- * @returns {Real} `0` on success, `1` when Google Play services are missing on Android, `-1` when the app handle is not valid.
+ * @param {Bool} suppress_notification_permission_prompt `true` to hold the iOS permission prompt back until ${function.firebase_messaging_request_permission}, `false` to show it now.
+ * @returns {Bool} `true` when Cloud Messaging is initialised after the call, `false` when the app handle is not valid (`FirebaseError.InvalidHandle`) or Google Play services are missing on Android (`FirebaseError.NotInitialized`).
  * @function_end
+ */
+
+/**
+ * @const FirebaseMessagingError
+ * @desc **Firebase C++ SDK:** [firebase::messaging::Error](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#error)
+ *
+ * The `error_code` every Cloud Messaging callback receives, mirroring the SDK's codes value for
+ * value. `None` is success; the other four each belong to one call.
+ *
+ * @member None Success.
+ * @member FailedToRegisterForRemoteNotifications The iOS device could not register with APNs - permission to receive notifications was not granted.
+ * @member InvalidTopicName The topic name has characters outside `a-z`, `A-Z`, `0-9`, `-`, `_`, `.`, `~`, `%`, or is longer than 900.
+ * @member NoRegistrationToken A topic call was made with registration disabled and no registration done.
+ * @member Unknown An error the SDK could not classify.
+ * @const_end
  */
 
 /**
@@ -900,7 +914,7 @@
  *
  * Cloud Messaging works on Android and iOS. On Windows, macOS and Linux the SDK ships a stub, and
  * the extension keeps it callable so that the same game code runs everywhere: initialisation
- * succeeds, every callback fires at once with `0` and the message `"Successfully completed as a
+ * succeeds, every callback fires at once with `FirebaseMessagingError.None` and the message `"Successfully completed as a
  * stub."`, ${function.firebase_messaging_register} delivers the id `"StubRegistrationId"` and
  * ${function.firebase_messaging_get_token} the token `"StubToken"`, the settings read as their
  * defaults, and no message ever arrives.
@@ -938,13 +952,8 @@
  * ### Error codes
  *
  * Every asynchronous function returns ${constant.FirebaseError} at once and delivers its outcome to
- * a callback. The callback's `error_code` is Cloud Messaging's own code, a plain number:
- *
- * - `0` - success.
- * - `1` - `FailedToRegisterForRemoteNotifications`: the iOS device could not register with APNs.
- * - `2` - `InvalidTopicName`: the topic name has characters outside `a-z`, `A-Z`, `0-9`, `-`, `_`, `.`, `~`, `%`, or is longer than 900.
- * - `3` - `NoRegistrationToken`: a topic call was made with registration disabled and no registration done.
- * - `4` - `Unknown`: an error the SDK could not classify.
+ * a callback. The callback's `error_code` is a ${constant.FirebaseMessagingError}, Cloud Messaging's
+ * own code set: `None` on success, otherwise the member that names the failure.
  *
  * ### Console setup
  *
@@ -1037,6 +1046,11 @@
  * @ref firebase_messaging_current_token
  * @ref firebase_messaging_set_token_registration_on_init_enabled
  * @ref firebase_messaging_is_token_registration_on_init_enabled
+ * @section_end
+ *
+ * @section_const Constants
+ * @desc The following constants are used by this module:
+ * @ref FirebaseMessagingError
  * @section_end
  *
  * @module_end

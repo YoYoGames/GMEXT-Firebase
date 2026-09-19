@@ -91,7 +91,7 @@
  * This function returns a reference from a full URL: the `gs://bucket/path/to/object` form, or the
  * `https://firebasestorage.googleapis.com/...` form the console shows for a file. The URL must name
  * the bucket this instance was created for; another bucket's URL gives a reference whose
- * ${function.firebase_storage_ref_is_valid} is `0`. Release the handle with
+ * ${function.firebase_storage_ref_is_valid} is `false`. Release the handle with
  * ${function.firebase_storage_ref_release}.
  *
  * @param {Real} storage_ref The storage handle from ${function.firebase_storage_get_instance}.
@@ -105,7 +105,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::max_download_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_download_retry_time)
  *
  * This function returns how long, in seconds, the SDK keeps retrying a download after a network
- * failure before its callback fires with `RetryLimitExceeded` (code `8`). The default is 600
+ * failure before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 600
  * seconds.
  *
  * @param {Real} storage_ref The storage handle from ${function.firebase_storage_get_instance}.
@@ -118,7 +118,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::set_max_download_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_download_retry_time)
  *
  * This function sets how long, in seconds, the SDK keeps retrying a download after a network failure
- * before its callback fires with `RetryLimitExceeded` (code `8`). The default is 600 seconds;
+ * before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 600 seconds;
  * set it before the operation starts. A game that would rather report a failure quickly and let the
  * player try again can bring it down to a few seconds.
  *
@@ -132,7 +132,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::max_upload_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_upload_retry_time)
  *
  * This function returns how long, in seconds, the SDK keeps retrying an upload after a network
- * failure before its callback fires with `RetryLimitExceeded` (code `8`). The default is 600
+ * failure before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 600
  * seconds.
  *
  * @param {Real} storage_ref The storage handle from ${function.firebase_storage_get_instance}.
@@ -145,7 +145,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::set_max_upload_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_upload_retry_time)
  *
  * This function sets how long, in seconds, the SDK keeps retrying an upload after a network failure
- * before its callback fires with `RetryLimitExceeded` (code `8`). The default is 600 seconds;
+ * before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 600 seconds;
  * set it before the operation starts. A game that would rather report a failure quickly and let the
  * player try again can bring it down to a few seconds.
  *
@@ -159,7 +159,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::max_operation_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_operation_retry_time)
  *
  * This function returns how long, in seconds, the SDK keeps retrying an operation other than an upload or a download - a metadata read or write, a delete, a download URL or a listing after a network
- * failure before its callback fires with `RetryLimitExceeded` (code `8`). The default is 120
+ * failure before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 120
  * seconds.
  *
  * @param {Real} storage_ref The storage handle from ${function.firebase_storage_get_instance}.
@@ -172,7 +172,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Storage::set_max_operation_retry_time](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_operation_retry_time)
  *
  * This function sets how long, in seconds, the SDK keeps retrying an operation other than an upload or a download - a metadata read or write, a delete, a download URL or a listing after a network failure
- * before its callback fires with `RetryLimitExceeded` (code `8`). The default is 120 seconds;
+ * before its callback fires with `FirebaseStorageError.RetryLimitExceeded`. The default is 120 seconds;
  * set it before the operation starts. A game that would rather report a failure quickly and let the
  * player try again can bring it down to a few seconds.
  *
@@ -215,7 +215,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::StorageReference::GetParent](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#getparent)
  *
  * This function returns a reference to the folder holding this location. The root has no parent:
- * there the returned reference's ${function.firebase_storage_ref_is_valid} is `0`, and it still
+ * there the returned reference's ${function.firebase_storage_ref_is_valid} is `false`, and it still
  * needs releasing.
  *
  * @param {Real} ref A reference handle.
@@ -228,7 +228,8 @@
  * @desc This function releases a reference handle - one from the storage instance, from
  * ${function.firebase_storage_ref_child} or ${function.firebase_storage_ref_get_parent}, from a
  * metadata's or controller's `get_reference`, or taken out of a list result. Release it once no
- * operation started on it is still running.
+ * operation started on it is still running. A handle that is not a reference sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * [[Warning: On Windows, macOS and Linux the SDK keeps reading the reference an operation was started on
  * until that operation has completed, so keep the reference handle until the callback has fired -
@@ -236,7 +237,6 @@
  * operation itself, but releasing after the callback is correct everywhere.]]
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a reference was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -281,12 +281,12 @@
  * @function firebase_storage_ref_is_valid
  * @desc **Firebase C++ SDK:** [firebase::storage::StorageReference::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#is_valid)
  *
- * This function returns whether the handle refers to a usable reference - `0` for a released
+ * This function returns whether the handle refers to a usable reference - `false` for a released
  * handle, for the parent of the root, for the reference of a metadata or controller handle that
  * is not attached to an object, and for one made from another bucket's URL.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the reference can be used, otherwise `0`.
+ * @returns {Bool} `true` when the reference can be used, otherwise `false`.
  * @function_end
  */
 
@@ -308,7 +308,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::StorageReference::Delete](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#delete)
  *
  * This function deletes the object at the location. Deleting one that does not exist fails with
- * `ObjectNotFound` (code `2`). Folders are not objects and cannot be deleted; a folder disappears
+ * `FirebaseStorageError.ObjectNotFound`. Folders are not objects and cannot be deleted; a folder disappears
  * when its last object does.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback when the
@@ -325,7 +325,7 @@
  *
  * @event callback
  * @desc Fires once when the object has been deleted or the delete failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
  * @function_end
@@ -337,7 +337,7 @@
  *
  * This function fetches a public `https://` URL for the object, carrying a token that lets anyone
  * holding the URL download it without signing in - the way to hand a file to a browser, a web view
- * or another player. The object must exist (`ObjectNotFound`, code `2`, otherwise) and the caller
+ * or another player. The object must exist (`FirebaseStorageError.ObjectNotFound` otherwise) and the caller
  * needs read access under the security rules. The token can be revoked from the file's details in
  * the console, after which the URL stops working.
  *
@@ -355,7 +355,7 @@
  *
  * @event callback
  * @desc Fires once with the URL.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {String} url The download URL, or an empty string on failure.
  * @event_end
@@ -370,7 +370,7 @@
  * custom key/value pairs - without downloading its content. The callback's handle is read with the
  * `firebase_storage_metadata_*` functions and released with
  * ${function.firebase_storage_metadata_release}. An object that does not exist fails with
- * `ObjectNotFound` (code `2`).
+ * `FirebaseStorageError.ObjectNotFound`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback when the
  * reference is not valid.
@@ -386,7 +386,7 @@
  *
  * @event callback
  * @desc Fires once with the object's metadata.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} metadata A metadata handle describing the stored object, to release with ${function.firebase_storage_metadata_release}, or `0` on failure.
  * @event_end
@@ -419,7 +419,7 @@
  *
  * @event callback
  * @desc Fires once with the object's updated metadata.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} metadata A metadata handle describing the stored object, to release with ${function.firebase_storage_metadata_release}, or `0` on failure.
  * @event_end
@@ -433,7 +433,7 @@
  *
  * firebase_storage_ref_update_metadata(replay_ref, _metadata, function(_error, _message, _updated)
  * {
- *     if (_error == 0)
+ *     if (_error == FirebaseStorageError.None)
  *     {
  *         show_debug_message($"Now at metadata generation {firebase_storage_metadata_metadata_generation(_updated)}");
  *         firebase_storage_metadata_release(_updated);
@@ -488,7 +488,7 @@
  *
  * @event callback
  * @desc Fires once when the upload has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} metadata A metadata handle describing the stored object, to release with ${function.firebase_storage_metadata_release}, or `0` on failure.
  * @event_end
@@ -507,7 +507,7 @@
  * var _result = firebase_storage_ref_put_bytes(level_ref, upload_buffer, _metadata, undefined, 0,
  *     function(_error, _message, _metadata)
  *     {
- *         if (_error == 0)
+ *         if (_error == FirebaseStorageError.None)
  *         {
  *             show_debug_message($"Stored {firebase_storage_metadata_size_bytes(_metadata)} bytes");
  *             firebase_storage_metadata_release(_metadata);
@@ -576,7 +576,7 @@
  *
  * @event callback
  * @desc Fires once when the upload has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} metadata A metadata handle describing the stored object, to release with ${function.firebase_storage_metadata_release}, or `0` on failure.
  * @event_end
@@ -595,7 +595,7 @@
  *     0,
  *     function(_error, _message, _metadata)
  *     {
- *         if (_error == 0)
+ *         if (_error == FirebaseStorageError.None)
  *         {
  *             firebase_storage_metadata_release(_metadata);
  *         }
@@ -626,7 +626,7 @@
  * This function downloads the object into a buffer the game has created. The SDK writes straight
  * into it, at most `buffer_get_size` bytes, so size the buffer for the largest object expected or
  * read the size from ${function.firebase_storage_ref_get_metadata} first: an object larger than
- * the buffer fails with `DownloadSizeExceeded` (code `10`). The callback's `bytes_read` is how much
+ * the buffer fails with `FirebaseStorageError.DownloadSizeExceeded`. The callback's `bytes_read` is how much
  * was written, from the start of the buffer; the seek position is not moved. The buffer must stay alive and the same size until the callback has fired: the
  * SDK works on its memory during the transfer, and a `buffer_resize` can move it.
  *
@@ -655,7 +655,7 @@
  *
  * @event callback
  * @desc Fires once when the download has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} bytes_read The number of bytes written into the buffer, or `0` on failure.
  * @event_end
@@ -669,7 +669,7 @@
  * var _result = firebase_storage_ref_get_bytes(level_ref, download_buffer, undefined, 0,
  *     function(_error, _message, _bytes_read)
  *     {
- *         if (_error == 0)
+ *         if (_error == FirebaseStorageError.None)
  *         {
  *             buffer_resize(download_buffer, _bytes_read);
  *             buffer_seek(download_buffer, buffer_seek_start, 0);
@@ -730,7 +730,7 @@
  *
  * @event callback
  * @desc Fires once when the download has completed or failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} bytes_read The number of bytes written to the file, or `0` on failure.
  * @event_end
@@ -769,7 +769,7 @@
  *
  * @event callback
  * @desc Fires once with a page of results.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.storage} page.
+ * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @member {Real} list_result A list result handle to release with ${function.firebase_storage_list_result_release}, or `0` on failure.
  * @event_end
@@ -782,7 +782,7 @@
  *     var _result = firebase_storage_ref_list(replays_ref, 100, _page_token,
  *         function(_error, _message, _list)
  *         {
- *             if (_error != 0)
+ *             if (_error != FirebaseStorageError.None)
  *             {
  *                 show_debug_message($"List failed ({_error}): {_message}");
  *                 firebase_storage_ref_release(replays_ref);
@@ -837,10 +837,10 @@
 /**
  * @function firebase_storage_metadata_release
  * @desc This function releases a metadata handle - one from ${function.firebase_storage_metadata_create}
- * or one a callback returned.
+ * or one a callback returned. A handle that is not a metadata handle sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a metadata handle was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -848,10 +848,10 @@
  * @function firebase_storage_metadata_is_valid
  * @desc **Firebase C++ SDK:** [firebase::storage::Metadata::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/metadata#is_valid)
  *
- * This function returns whether the handle refers to usable metadata - `0` for a released handle.
+ * This function returns whether the handle refers to usable metadata - `false` for a released handle.
  *
  * @param {Real} ref A metadata handle.
- * @returns {Real} `1` when the metadata can be read, otherwise `0`.
+ * @returns {Bool} `true` when the metadata can be read, otherwise `false`.
  * @function_end
  */
 
@@ -1049,7 +1049,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Metadata::GetReference](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/metadata#getreference)
  *
  * This function returns a reference to the object the metadata describes - on a handle the game
- * created, one whose ${function.firebase_storage_ref_is_valid} is `0`. Release it with
+ * created, one whose ${function.firebase_storage_ref_is_valid} is `false`. Release it with
  * ${function.firebase_storage_ref_release}.
  *
  * @param {Real} ref A metadata handle.
@@ -1143,7 +1143,7 @@
  * ${function.firebase_storage_ref_put_file}, ${function.firebase_storage_ref_get_bytes} or
  * ${function.firebase_storage_ref_get_file}, to pause, resume or cancel that transfer and to read
  * its progress while it runs. A new controller is attached to nothing - its
- * ${function.firebase_storage_controller_is_valid} is `0` until a transfer has been started with
+ * ${function.firebase_storage_controller_is_valid} is `false` until a transfer has been started with
  * it - and one controller drives one transfer at a time. Release it with
  * ${function.firebase_storage_controller_release} once the transfer's callback has fired.
  *
@@ -1157,7 +1157,7 @@
  * var _result = firebase_storage_ref_get_file(pack_ref, game_save_id + "winter.zip", undefined, controller,
  *     function(_error, _message, _bytes_read)
  *     {
- *         if (_error == 11) show_debug_message("Cancelled by the player");
+ *         if (_error == FirebaseStorageError.Cancelled) show_debug_message("Cancelled by the player");
  *         firebase_storage_controller_release(controller);
  *         firebase_storage_ref_release(pack_ref);
  *         instance_destroy();
@@ -1179,7 +1179,7 @@
  * ```
  * The above code attaches a controller to a download, polls it every step for the progress bar
  * instead of using a progress callback, and cancels it on a key press; the completion callback then
- * fires with `Cancelled` (code `11`) and frees everything.
+ * fires with `FirebaseStorageError.Cancelled` and frees everything.
  * @function_end
  */
 
@@ -1187,10 +1187,10 @@
  * @function firebase_storage_controller_release
  * @desc This function releases a controller handle. Release it after the transfer it was attached to
  * has completed; a transfer keeps running when its controller is released, it just cannot be
- * driven any more.
+ * driven any more. A handle that is not a controller sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a controller was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -1198,11 +1198,11 @@
  * @function firebase_storage_controller_is_valid
  * @desc **Firebase C++ SDK:** [firebase::storage::Controller::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#is_valid)
  *
- * This function returns whether the controller is attached to a transfer - `0` for a new
+ * This function returns whether the controller is attached to a transfer - `false` for a new
  * controller that has not been passed to one yet, and for a released handle.
  *
  * @param {Real} ref A controller handle.
- * @returns {Real} `1` when the controller drives a transfer, otherwise `0`.
+ * @returns {Bool} `true` when the controller drives a transfer, otherwise `false`.
  * @function_end
  */
 
@@ -1215,7 +1215,7 @@
  * continues from where it stopped.
  *
  * @param {Real} ref A controller handle.
- * @returns {Real} `1` when the transfer was paused, `0` when it could not be - not running, already paused, or the handle is not valid.
+ * @returns {Bool} `true` when the transfer was paused, `false` when it could not be - not running, already paused, or the handle is not valid.
  * @function_end
  */
 
@@ -1226,7 +1226,7 @@
  * This function resumes a transfer paused with ${function.firebase_storage_controller_pause}.
  *
  * @param {Real} ref A controller handle.
- * @returns {Real} `1` when the transfer was resumed, `0` when it could not be - not paused, or the handle is not valid.
+ * @returns {Bool} `true` when the transfer was resumed, `false` when it could not be - not paused, or the handle is not valid.
  * @function_end
  */
 
@@ -1235,11 +1235,11 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Controller::Cancel](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#cancel)
  *
  * This function cancels the transfer the controller is attached to. Its completion callback fires
- * with `Cancelled` (code `11`); a cancelled upload leaves no object, and a cancelled download
+ * with `FirebaseStorageError.Cancelled`; a cancelled upload leaves no object, and a cancelled download
  * leaves the buffer or file partly written.
  *
  * @param {Real} ref A controller handle.
- * @returns {Real} `1` when the transfer was cancelled, `0` when it could not be - already finished, or the handle is not valid.
+ * @returns {Bool} `true` when the transfer was cancelled, `false` when it could not be - already finished, or the handle is not valid.
  * @function_end
  */
 
@@ -1250,7 +1250,7 @@
  * This function returns whether the transfer is currently paused.
  *
  * @param {Real} ref A controller handle.
- * @returns {Real} `1` while the transfer is paused, otherwise `0`.
+ * @returns {Bool} `true` while the transfer is paused, otherwise `false`.
  * @function_end
  */
 
@@ -1283,7 +1283,7 @@
  * @desc **Firebase C++ SDK:** [firebase::storage::Controller::GetReference](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#getreference)
  *
  * This function returns a reference to the object the transfer works on - on a controller not yet
- * attached to one, a reference whose ${function.firebase_storage_ref_is_valid} is `0`. Release it
+ * attached to one, a reference whose ${function.firebase_storage_ref_is_valid} is `false`. Release it
  * with ${function.firebase_storage_ref_release}.
  *
  * @param {Real} ref A controller handle.
@@ -1294,10 +1294,10 @@
 /**
  * @function firebase_storage_list_result_release
  * @desc This function releases a list result handle from ${function.firebase_storage_ref_list}. The
- * references already taken out of it are unaffected; each is released on its own.
+ * references already taken out of it are unaffected; each is released on its own. A handle that is not a list result sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a list result was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -1305,11 +1305,11 @@
  * @function firebase_storage_list_result_is_valid
  * @desc **Firebase C++ SDK:** [firebase::storage::StorageListResult::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-list-result#is_valid)
  *
- * This function returns whether the handle refers to a usable list result - `0` for a released
+ * This function returns whether the handle refers to a usable list result - `false` for a released
  * handle.
  *
  * @param {Real} ref A list result handle.
- * @returns {Real} `1` when the result can be read, otherwise `0`.
+ * @returns {Bool} `true` when the result can be read, otherwise `false`.
  * @function_end
  */
 
@@ -1426,6 +1426,31 @@
  */
 
 /**
+ * @const FirebaseStorageError
+ * @desc **Firebase C++ SDK:** [firebase::storage::Error](https://firebase.google.com/docs/reference/cpp/namespace/firebase/storage#error)
+ *
+ * The `error_code` every Cloud Storage callback receives, mirroring the SDK's codes value for
+ * value. `None` is success. The ones a game meets: `ObjectNotFound` (a download, metadata fetch or
+ * delete of an object that does not exist), `Unauthenticated` and `Unauthorized` (the security
+ * rules refused the caller), `RetryLimitExceeded` (the network stayed down past the retry time)
+ * and `Cancelled` (the game's own controller stopped the transfer).
+ *
+ * @member None Success.
+ * @member Unknown An error the SDK could not classify.
+ * @member ObjectNotFound Nothing exists at the reference.
+ * @member BucketNotFound The project has no bucket, or the instance's URL names one that does not exist.
+ * @member ProjectNotFound No project is configured for Cloud Storage.
+ * @member QuotaExceeded The bucket's quota is used up.
+ * @member Unauthenticated The rules require a signed-in user and there is none.
+ * @member Unauthorized The rules refuse this user this operation.
+ * @member RetryLimitExceeded The retry time ran out - the maximum time limit on the operation was exceeded.
+ * @member NonMatchingChecksum The server received something other than what was sent.
+ * @member DownloadSizeExceeded The object is larger than the buffer given to ${function.firebase_storage_ref_get_bytes}.
+ * @member Cancelled ${function.firebase_storage_controller_cancel} stopped the transfer.
+ * @const_end
+ */
+
+/**
  * @module storage
  * @title Cloud Storage
  * @desc This module covers Cloud Storage for Firebase: object storage for the files a game makes or
@@ -1467,27 +1492,16 @@
  * ### Error codes
  *
  * Every operation returns ${constant.FirebaseError} at once and delivers its outcome to a
- * callback. The callback's `error_code` is Cloud Storage's own code, a plain number:
- *
- * - `0` - success.
- * - `1` - `Unknown`: an error the SDK could not classify.
- * - `2` - `ObjectNotFound`: nothing exists at the reference.
- * - `3` - `BucketNotFound`: the project has no bucket, or the instance's URL names one that does not exist.
- * - `4` - `ProjectNotFound`: no project is configured for Cloud Storage.
- * - `5` - `QuotaExceeded`: the bucket's quota is used up.
- * - `6` - `Unauthenticated`: the rules require a signed-in user and there is none.
- * - `7` - `Unauthorized`: the rules refuse this user this operation.
- * - `8` - `RetryLimitExceeded`: the retry time ran out.
- * - `9` - `NonMatchingChecksum`: the server received something other than what was sent.
- * - `10` - `DownloadSizeExceeded`: the object is larger than the buffer given to ${function.firebase_storage_ref_get_bytes}.
- * - `11` - `Cancelled`: ${function.firebase_storage_controller_cancel} stopped the transfer.
+ * callback. The callback's `error_code` is a ${constant.FirebaseStorageError}, Cloud Storage's own
+ * code set: `None` on success, otherwise the member that names the failure.
  *
  * ### Console setup
  *
  * Create the bucket under **Build > Storage** in the Firebase console and write security rules for
  * it: the starting rules require a signed-in user for every read and write, so a game that has not
- * signed the player in - anonymously is enough, see ${module.auth} - gets `Unauthenticated`
- * (code `6`) on its first request. Listing needs rules written for rules version 2. At the time of
+ * signed the player in - anonymously is enough, see ${module.auth} - gets
+ * `FirebaseStorageError.Unauthenticated` on its first request. Listing needs rules written for rules
+ * version 2. At the time of
  * writing a new project has to be on the pay-as-you-go plan to create its bucket; the free tier
  * still applies within it. ${page.guides_cloud_storage} walks through it.
  *
@@ -1594,6 +1608,11 @@
  * @ref firebase_storage_controller_bytes_transferred
  * @ref firebase_storage_controller_total_byte_count
  * @ref firebase_storage_controller_get_reference
+ * @section_end
+ *
+ * @section_const Constants
+ * @desc The following constants are used by this module:
+ * @ref FirebaseStorageError
  * @section_end
  *
  * @module_end

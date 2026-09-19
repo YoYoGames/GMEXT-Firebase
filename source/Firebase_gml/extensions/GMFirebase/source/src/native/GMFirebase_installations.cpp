@@ -69,11 +69,11 @@ FirebaseError firebase_installations_get_id(const std::optional<gm::wire::GMFunc
 	return installationsGetId(installations, callback);
 }
 
-FirebaseError firebase_installations_get_token(double force_refresh, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_installations_get_token(bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::installations::Installations* installations = getInstallationsInstance();
 	if (installations == nullptr) return FirebaseError::NotInitialized;
-	return installationsGetToken(installations, force_refresh >= 0.5, callback);
+	return installationsGetToken(installations, force_refresh, callback);
 }
 
 FirebaseError firebase_installations_delete(const std::optional<gm::wire::GMFunction>& callback)

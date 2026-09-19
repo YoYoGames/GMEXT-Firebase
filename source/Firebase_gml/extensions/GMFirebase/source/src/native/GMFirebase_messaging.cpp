@@ -8,6 +8,15 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// FirebaseMessagingError mirrors firebase::messaging::Error, the error_code
+// the permission, registration, token and topic callbacks receive. See
+// GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseMessagingError::None, firebase::messaging::kErrorNone);
+GM_FB_PIN_ENUM(FirebaseMessagingError::FailedToRegisterForRemoteNotifications, firebase::messaging::kErrorFailedToRegisterForRemoteNotifications);
+GM_FB_PIN_ENUM(FirebaseMessagingError::InvalidTopicName, firebase::messaging::kErrorInvalidTopicName);
+GM_FB_PIN_ENUM(FirebaseMessagingError::NoRegistrationToken, firebase::messaging::kErrorNoRegistrationToken);
+GM_FB_PIN_ENUM(FirebaseMessagingError::Unknown, firebase::messaging::kErrorUnknown);
+
 // Firebase C++ SDK 13.12 deprecated the token-based FCM registration API in
 // favor of the Installation-ID model (Register()/Unregister() and
 // OnRegistrationReceived()), which this file exposes alongside. The token
@@ -152,10 +161,12 @@ namespace
 		return false;
 	}
 
-	double messagingInitialize(firebase::App* app, const firebase::messaging::MessagingOptions* options, const char* function)
+	// True once the SDK is initialised; the InitResult behind a failure is in
+	// the last-error message.
+	bool messagingInitialize(firebase::App* app, const firebase::messaging::MessagingOptions* options, const char* function)
 	{
 		if (g_firebase_messaging_listener != nullptr)
-			return static_cast<double>(firebase::kInitResultSuccess);
+			return true;
 
 		auto* listener = new GmMessagingListener();
 		firebase::InitResult result = options != nullptr
@@ -168,11 +179,11 @@ namespace
 			// fail, so unset it before the object goes away.
 			firebase::messaging::SetListener(nullptr);
 			delete listener;
-			return static_cast<double>(result);
+			return false;
 		}
 
 		g_firebase_messaging_listener = listener;
-		return static_cast<double>(result);
+		return true;
 	}
 }
 
@@ -180,13 +191,13 @@ namespace
 // Init / lifecycle
 // ============================================================
 
-double firebase_messaging_initialize()
+bool firebase_messaging_initialize()
 {
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
-		return -1.0;
+		return false;
 	}
 
 	return messagingInitialize(app, nullptr, "firebase_messaging_initialize");
@@ -214,34 +225,34 @@ void firebase_messaging_terminate()
 // the first init. The token-named pair is the same SDK state under its
 // pre-13.12 name (Android forwards one to the other, iOS reads the same
 // autoInitEnabled), so both call the current entry points.
-void firebase_messaging_set_registration_on_init_enabled(double enabled)
+void firebase_messaging_set_registration_on_init_enabled(bool enabled)
 {
-	firebase::messaging::SetRegistrationOnInitEnabled(enabled >= 0.5);
+	firebase::messaging::SetRegistrationOnInitEnabled(enabled);
 }
 
-double firebase_messaging_is_registration_on_init_enabled()
+bool firebase_messaging_is_registration_on_init_enabled()
 {
-	return firebase::messaging::IsRegistrationOnInitEnabled() ? 1.0 : 0.0;
+	return firebase::messaging::IsRegistrationOnInitEnabled();
 }
 
-void firebase_messaging_set_token_registration_on_init_enabled(double enabled)
+void firebase_messaging_set_token_registration_on_init_enabled(bool enabled)
 {
-	firebase::messaging::SetRegistrationOnInitEnabled(enabled >= 0.5);
+	firebase::messaging::SetRegistrationOnInitEnabled(enabled);
 }
 
-double firebase_messaging_is_token_registration_on_init_enabled()
+bool firebase_messaging_is_token_registration_on_init_enabled()
 {
-	return firebase::messaging::IsRegistrationOnInitEnabled() ? 1.0 : 0.0;
+	return firebase::messaging::IsRegistrationOnInitEnabled();
 }
 
-double firebase_messaging_delivery_metrics_export_to_big_query_enabled()
+bool firebase_messaging_delivery_metrics_export_to_big_query_enabled()
 {
-	return firebase::messaging::DeliveryMetricsExportToBigQueryEnabled() ? 1.0 : 0.0;
+	return firebase::messaging::DeliveryMetricsExportToBigQueryEnabled();
 }
 
-void firebase_messaging_set_delivery_metrics_export_to_big_query(double enabled)
+void firebase_messaging_set_delivery_metrics_export_to_big_query(bool enabled)
 {
-	firebase::messaging::SetDeliveryMetricsExportToBigQuery(enabled >= 0.5);
+	firebase::messaging::SetDeliveryMetricsExportToBigQuery(enabled);
 }
 
 // ============================================================
@@ -355,29 +366,29 @@ FirebaseError firebase_messaging_unsubscribe(std::string_view topic, const std::
 // Returns 1 and refreshes the getters below if a message was pending;
 // 0 otherwise (call firebase_messaging_poll_message() in a loop, or once per step,
 // until it returns 0).
-double firebase_messaging_poll_message()
+bool firebase_messaging_poll_message()
 {
-	if (!messagingReady("firebase_messaging_poll_message")) return 0.0;
+	if (!messagingReady("firebase_messaging_poll_message")) return false;
 
-	return g_firebase_messaging_listener->pollMessage(g_current_message) ? 1.0 : 0.0;
+	return g_firebase_messaging_listener->pollMessage(g_current_message);
 }
 
 // Returns 1 and refreshes firebase_messaging_current_installation_id() if a
 // registration completed since the last poll; 0 otherwise.
-double firebase_messaging_poll_registration()
+bool firebase_messaging_poll_registration()
 {
-	if (!messagingReady("firebase_messaging_poll_registration")) return 0.0;
+	if (!messagingReady("firebase_messaging_poll_registration")) return false;
 
-	return g_firebase_messaging_listener->pollRegistration(g_current_installation_id) ? 1.0 : 0.0;
+	return g_firebase_messaging_listener->pollRegistration(g_current_installation_id);
 }
 
 // Returns 1 and refreshes firebase_messaging_current_installation_id() if an
 // unregistration completed since the last poll; 0 otherwise.
-double firebase_messaging_poll_unregistration()
+bool firebase_messaging_poll_unregistration()
 {
-	if (!messagingReady("firebase_messaging_poll_unregistration")) return 0.0;
+	if (!messagingReady("firebase_messaging_poll_unregistration")) return false;
 
-	return g_firebase_messaging_listener->pollUnregistration(g_current_installation_id) ? 1.0 : 0.0;
+	return g_firebase_messaging_listener->pollUnregistration(g_current_installation_id);
 }
 
 std::string firebase_messaging_current_installation_id()
@@ -387,11 +398,11 @@ std::string firebase_messaging_current_installation_id()
 
 // Returns 1 and refreshes firebase_messaging_current_token() if a freshly-generated
 // registration token was pending; 0 otherwise.
-double firebase_messaging_poll_token()
+bool firebase_messaging_poll_token()
 {
-	if (!messagingReady("firebase_messaging_poll_token")) return 0.0;
+	if (!messagingReady("firebase_messaging_poll_token")) return false;
 
-	return g_firebase_messaging_listener->pollToken(g_current_token) ? 1.0 : 0.0;
+	return g_firebase_messaging_listener->pollToken(g_current_token);
 }
 
 std::string firebase_messaging_current_token()
@@ -463,9 +474,9 @@ std::string firebase_messaging_message_link()
 	return g_current_message.link;
 }
 
-double firebase_messaging_message_notification_opened()
+bool firebase_messaging_message_notification_opened()
 {
-	return g_current_message.notification_opened ? 1.0 : 0.0;
+	return g_current_message.notification_opened;
 }
 
 double firebase_messaging_message_data_count()
@@ -510,9 +521,9 @@ double firebase_messaging_message_raw_data_copy(GMBuffer out_buffer)
 // the message carries no notification payload)
 // ============================================================
 
-double firebase_messaging_message_has_notification()
+bool firebase_messaging_message_has_notification()
 {
-	return g_current_message.notification != nullptr ? 1.0 : 0.0;
+	return g_current_message.notification != nullptr;
 }
 
 std::string firebase_messaging_message_notification_title()
@@ -600,29 +611,29 @@ std::string firebase_messaging_message_notification_android_channel_id()
 }
 
 // Firebase C++ MessagingOptions overload.
-double firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt)
+bool firebase_messaging_initialize_with_options(bool suppress_notification_permission_prompt)
 {
     firebase::App* app = getFirebaseApp();
     if (app == nullptr)
     {
         setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
-        return -1.0;
+        return false;
     }
     firebase::messaging::MessagingOptions options;
-    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt >= 0.5;
+    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
     return messagingInitialize(app, &options, "firebase_messaging_initialize_with_options");
 }
 
-double firebase_messaging_initialize_for_app(uint64_t app_ref)
+bool firebase_messaging_initialize_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return -1.0;
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
     return messagingInitialize(app, nullptr, "firebase_messaging_initialize_for_app");
 }
 
-double firebase_messaging_initialize_for_app_with_options(uint64_t app_ref, double suppress_notification_permission_prompt)
+bool firebase_messaging_initialize_for_app_with_options(uint64_t app_ref, bool suppress_notification_permission_prompt)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return -1.0;
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
     firebase::messaging::MessagingOptions options;
-    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt >= 0.5;
+    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
     return messagingInitialize(app, &options, "firebase_messaging_initialize_for_app_with_options");
 }

@@ -48,7 +48,7 @@
  * This function returns a callable for a deployed function, by the name it was exported under. A
  * callable is an address, not a connection: nothing is sent until
  * ${function.firebase_functions_callable_call} or ${function.firebase_functions_callable_call_with_data},
- * a name that does not exist fails only then (`NotFound`, code `5`), and one callable can be called
+ * a name that does not exist fails only then (`FirebaseFunctionsError.NotFound`), and one callable can be called
  * any number of times. Release it with ${function.firebase_functions_callable_release}.
  *
  * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
@@ -65,7 +65,7 @@
  * firebase_functions_callable_call_with_data(claim_reward, { day: current_day },
  *     function(_error, _message, _data)
  *     {
- *         if (_error != 0)
+ *         if (_error != FirebaseFunctionsError.None)
  *         {
  *             show_debug_message($"claimDailyReward failed ({_error}): {_message}");
  *             exit;
@@ -97,7 +97,7 @@
  *
  * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
  * @param {String} name The function's deployed name.
- * @param {Real} limited_use_app_check_token `1` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `0` for the ordinary token.
+ * @param {Bool} limited_use_app_check_token `true` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `false` for the ordinary token.
  * @returns {Real} A callable handle to release with ${function.firebase_functions_callable_release}, or `0` when the handle is not valid.
  * @function_end
  */
@@ -127,7 +127,7 @@
  *
  * @param {Real} functions_ref The Cloud Functions handle from ${function.firebase_functions_get_instance}.
  * @param {String} url The function's HTTPS URL.
- * @param {Real} limited_use_app_check_token `1` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `0` for the ordinary token.
+ * @param {Bool} limited_use_app_check_token `true` to send a limited-use App Check token with each call - one the function can consume so that a captured request cannot be replayed - `false` for the ordinary token.
  * @returns {Real} A callable handle to release with ${function.firebase_functions_callable_release}, or `0` when the handle is not valid.
  * @function_end
  */
@@ -136,11 +136,11 @@
  * @function firebase_functions_callable_is_valid
  * @desc **Firebase C++ SDK:** [firebase::functions::HttpsCallableReference::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/functions/https-callable-reference#is_valid)
  *
- * This function returns whether the handle refers to a usable callable - `0` for a released
+ * This function returns whether the handle refers to a usable callable - `false` for a released
  * handle.
  *
  * @param {Real} ref A callable handle.
- * @returns {Real} `1` when the callable can be called, otherwise `0`.
+ * @returns {Bool} `true` when the callable can be called, otherwise `false`.
  * @function_end
  */
 
@@ -161,11 +161,11 @@
  * This function calls the function with no argument - its `data` is `null` - and hands the
  * callback what it returned. The SDK sends the player's Authentication token when someone is signed in (${module.auth}) and
  * the App Check token when App Check is set up, so the function knows who is calling without the
- * game passing anything. The callback's `error_code` is `0` when the function returned normally;
- * when the function threw an `HttpsError`, it is that error's code as the Error codes section of
- * ${module.functions} lists them and `error_message` is the message the function gave; a function
- * that crashed reads `Internal` (code `13`), one that does not exist `NotFound` (code `5`), and a
- * network failure `Unavailable` (code `14`) or `DeadlineExceeded` (code `4`).
+ * game passing anything. The callback's `error_code` is `FirebaseFunctionsError.None` when the
+ * function returned normally; when the function threw an `HttpsError`, it is that error's code as
+ * a ${constant.FirebaseFunctionsError} member and `error_message` is the message the function gave;
+ * a function that crashed reads `Internal`, one that does not exist `NotFound`, and a network
+ * failure `Unavailable` or `DeadlineExceeded`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback when the callable
  * handle is not valid.
@@ -176,7 +176,7 @@
  *
  * @event callback
  * @desc Fires once when the function has returned or the call failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.functions} page.
+ * @member {Enum.FirebaseFunctionsError} error_code `FirebaseFunctionsError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The message the function threw, or the SDK's description of a transport failure, or an empty string on success.
  * @member {Any} data The value the function returned, converted as the Data section of ${module.functions} describes; `undefined` when it returned nothing or on failure.
  * @event_end
@@ -192,11 +192,11 @@
  * object with the same members, an array as an array, and so on - and hands the callback what it
  * returned. The SDK sends the player's Authentication token when someone is signed in (${module.auth}) and
  * the App Check token when App Check is set up, so the function knows who is calling without the
- * game passing anything. The callback's `error_code` is `0` when the function returned normally;
- * when the function threw an `HttpsError`, it is that error's code as the Error codes section of
- * ${module.functions} lists them and `error_message` is the message the function gave; a function
- * that crashed reads `Internal` (code `13`), one that does not exist `NotFound` (code `5`), and a
- * network failure `Unavailable` (code `14`) or `DeadlineExceeded` (code `4`).
+ * game passing anything. The callback's `error_code` is `FirebaseFunctionsError.None` when the
+ * function returned normally; when the function threw an `HttpsError`, it is that error's code as
+ * a ${constant.FirebaseFunctionsError} member and `error_message` is the message the function gave;
+ * a function that crashed reads `Internal`, one that does not exist `NotFound`, and a network
+ * failure `Unavailable` or `DeadlineExceeded`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback when the callable
  * handle is not valid.
@@ -208,7 +208,7 @@
  *
  * @event callback
  * @desc Fires once when the function has returned or the call failed.
- * @member {Real} error_code `0` on success, otherwise one of the codes listed under Error codes on the ${module.functions} page.
+ * @member {Enum.FirebaseFunctionsError} error_code `FirebaseFunctionsError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The message the function threw, or the SDK's description of a transport failure, or an empty string on success.
  * @member {Any} data The value the function returned, converted as the Data section of ${module.functions} describes; `undefined` when it returned nothing or on failure.
  * @event_end
@@ -221,11 +221,11 @@
  *     { level: level_id, score: score, replay: replay_events },
  *     function(_error, _message, _data)
  *     {
- *         if (_error == 7)      // PermissionDenied: the function rejected the replay
+ *         if (_error == FirebaseFunctionsError.PermissionDenied)      // the function rejected the replay
  *         {
  *             show_debug_message($"Score rejected: {_message}");
  *         }
- *         else if (_error == 0)
+ *         else if (_error == FirebaseFunctionsError.None)
  *         {
  *             show_debug_message($"Rank {_data.rank} of {_data.total}");
  *         }
@@ -234,7 +234,8 @@
  * ```
  * The above code sends a struct holding the score and the replay that proves it; the function
  * verifies the replay on the server and either throws `permission-denied`, which reaches the
- * callback as code `7` with the function's message, or returns the rank as a struct. The callable
+ * callback as `FirebaseFunctionsError.PermissionDenied` with the function's message, or returns the
+ * rank as a struct. The callable
  * is released in the callback because nothing else uses it.
  * @function_end
  */
@@ -292,6 +293,37 @@
  */
 
 /**
+ * @const FirebaseFunctionsError
+ * @desc **Firebase C++ SDK:** [firebase::functions::Error](https://firebase.google.com/docs/reference/cpp/namespace/firebase/functions#error)
+ *
+ * The `error_code` every Cloud Functions callback receives, mirroring the SDK's codes value for
+ * value - the standard code set a callable throws with its `HttpsError`, which the SDK also uses
+ * for its own transport failures. `None` is success. The ones a game meets: `NotFound` (no
+ * function with that name is deployed), `PermissionDenied` and `Unauthenticated` (the function
+ * refused the caller), `Internal` (the function crashed) and `Unavailable` or `DeadlineExceeded`
+ * (the network).
+ *
+ * @member None Success.
+ * @member Cancelled The call was cancelled.
+ * @member Unknown An error the SDK could not classify.
+ * @member InvalidArgument The function rejected the argument.
+ * @member DeadlineExceeded The call timed out before the function answered.
+ * @member NotFound No function with that name or URL is deployed.
+ * @member AlreadyExists The function reports that what the call would create already exists.
+ * @member PermissionDenied The function refused the caller.
+ * @member ResourceExhausted A quota or rate limit was hit.
+ * @member FailedPrecondition The function reports that the system is not in the state the call needs.
+ * @member Aborted The function aborted, typically a conflicting write.
+ * @member OutOfRange The function reports an argument past its valid range.
+ * @member Unimplemented The function reports the operation is not implemented.
+ * @member Internal The function crashed, or threw something other than an `HttpsError`.
+ * @member Unavailable The function or the network is unavailable; retry later.
+ * @member DataLoss The function reports unrecoverable data loss.
+ * @member Unauthenticated The function requires a signed-in caller and there is none.
+ * @const_end
+ */
+
+/**
  * @module functions
  * @title Cloud Functions
  * @desc This module covers Cloud Functions for Firebase, on the calling side: HTTPS callable functions -
@@ -321,27 +353,9 @@
  * ### Error codes
  *
  * Every call returns ${constant.FirebaseError} at once and delivers its outcome to a callback.
- * The callback's `error_code` is the standard code set callables use - the code a function
- * throws with its `HttpsError`, or the code the SDK assigns to a transport failure - as a plain
- * number:
- *
- * - `0` - success.
- * - `1` - `Cancelled`: the call was cancelled.
- * - `2` - `Unknown`: an error the SDK could not classify.
- * - `3` - `InvalidArgument`: the function rejected the argument.
- * - `4` - `DeadlineExceeded`: the call timed out before the function answered.
- * - `5` - `NotFound`: no function with that name or URL is deployed.
- * - `6` - `AlreadyExists`: the function reports that what the call would create already exists.
- * - `7` - `PermissionDenied`: the function refused the caller.
- * - `8` - `ResourceExhausted`: a quota or rate limit was hit.
- * - `9` - `FailedPrecondition`: the function reports that the system is not in the state the call needs.
- * - `10` - `Aborted`: the function aborted, typically a conflicting write.
- * - `11` - `OutOfRange`: the function reports an argument past its valid range.
- * - `12` - `Unimplemented`: the function reports the operation is not implemented.
- * - `13` - `Internal`: the function crashed, or threw something other than an `HttpsError`.
- * - `14` - `Unavailable`: the function or the network is unavailable; retry later.
- * - `15` - `DataLoss`: the function reports unrecoverable data loss.
- * - `16` - `Unauthenticated`: the function requires a signed-in caller and there is none.
+ * The callback's `error_code` is a ${constant.FirebaseFunctionsError}, the standard code set
+ * callables use - the code a function throws with its `HttpsError`, or the code the SDK assigns to
+ * a transport failure: `None` on success, otherwise the member that names the failure.
  *
  * ### Console setup
  *
@@ -375,6 +389,11 @@
  * @desc Calling a function, with or without an argument:
  * @ref firebase_functions_callable_call
  * @ref firebase_functions_callable_call_with_data
+ * @section_end
+ *
+ * @section_const Constants
+ * @desc The following constants are used by this module:
+ * @ref FirebaseFunctionsError
  * @section_end
  *
  * @module_end

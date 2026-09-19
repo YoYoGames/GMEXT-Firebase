@@ -2890,8 +2890,8 @@ getters once the new values are live.</p>
 <h1 id="firebase_remote_config_get_boolean">firebase_remote_config_get_boolean<a class="headerlink" href="#firebase_remote_config_get_boolean" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getboolean">firebase::remote_config::RemoteConfig::GetBoolean</a></p>
 <p>This function returns a parameter's value as a boolean. A console value of <code>true</code>, <code>1</code>, <code>t</code>,
-<code>yes</code>, <code>y</code> or <code>on</code> (in any case) reads as <code>1</code>; <code>false</code>, <code>0</code>, <code>f</code>, <code>no</code>, <code>n</code>, <code>off</code> and an empty
-value read as <code>0</code>; anything else fails the conversion and reads as <code>0</code>, which
+<code>yes</code>, <code>y</code> or <code>on</code> (in any case) reads as <code>true</code>; <code>false</code>, <code>0</code>, <code>f</code>, <code>no</code>, <code>n</code>, <code>off</code> and an empty
+value read as <code>false</code>; anything else fails the conversion and reads as <code>false</code>, which
 <a href="remote_config.html#firebase_remote_config_get_boolean_with_info">firebase_remote_config_get_boolean_with_info</a> can tell apart. The value comes from the last activation, or the default set with
 <a href="remote_config.html#firebase_remote_config_set_defaults">firebase_remote_config_set_defaults</a>, or - with neither - the static value.</p>
 <p><br></p>
@@ -2923,9 +2923,9 @@ value read as <code>0</code>; anything else fails the conversion and reads as <c
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> for a true value, otherwise <code>0</code>.</p>
+<p><code>true</code> for a true value, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3615,9 +3615,9 @@ connection to the backend is closed; adding a listener again reopens it.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when a listener was removed, <code>0</code> when the handle was not one.</p>
+<p><code>true</code> when a listener was removed, <code>false</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

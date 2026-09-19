@@ -28,7 +28,7 @@
  *     show_debug_message("Realtime Database unavailable: " + firebase_last_error_message());
  *     exit;
  * }
- * firebase_database_set_persistence_enabled(database, 1);
+ * firebase_database_set_persistence_enabled(database, true);
  * scores = firebase_database_get_reference_at_path(database, "scores");
  * ```
  * The above code takes the database once, turns on-disk persistence on before any reference
@@ -84,7 +84,7 @@
  * This function returns a reference to a location, from a slash-separated path from the root
  * (`"players/USER_123/score"`). Nothing is read; the reference is a name, and the location need not
  * exist. A malformed path gives a reference whose ${function.firebase_database_ref_is_valid} is
- * `0`. Release the handle with ${function.firebase_database_ref_release}.
+ * `false`. Release the handle with ${function.firebase_database_ref_release}.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
  * @param {String} path The location's path from the root.
@@ -110,7 +110,7 @@
  *
  * This function returns a reference from a full URL - the database URL followed by the path, as
  * the console's data viewer shows it. The URL must belong to this database; another database's URL
- * gives a reference whose ${function.firebase_database_ref_is_valid} is `0`. Release the handle
+ * gives a reference whose ${function.firebase_database_ref_is_valid} is `false`. Release the handle
  * with ${function.firebase_database_ref_release}.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
@@ -130,7 +130,7 @@
  * that. ${function.firebase_database_ref_go_offline} does the same from a reference.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -142,7 +142,7 @@
  * the writes that queued up.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -157,7 +157,7 @@
  * writes the game no longer wants.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -172,8 +172,8 @@
  * created; the SDK does not accept a change after that.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
- * @param {Real} enabled `1` to persist to disk, `0` to keep everything in memory.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @param {Bool} enabled `true` to persist to disk, `false` to keep everything in memory.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -185,11 +185,11 @@
  * SDK-wide filter of ${function.firebase_set_log_level} - a message shows only when both levels
  * let it through. The default is `FirebaseLogLevel.Info`. On Android it must be set before the
  * instance does anything else. A value outside ${constant.FirebaseLogLevel} is refused with
- * `FirebaseError.InvalidArgument` in ${function.firebase_last_error_code} and returns `0`.
+ * `FirebaseError.InvalidArgument` in ${function.firebase_last_error_code} and returns `false`.
  *
  * @param {Real} db_ref The database handle from ${function.firebase_database_get_instance}.
  * @param {Enum.FirebaseLogLevel} log_level The new level.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -424,11 +424,11 @@
  * This function tells the SDK to keep the location downloaded and up to date even while no listener is
  * attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
  * at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
- * again with `0`.
+ * again with `false`.
  *
  * @param {Real} ref A reference handle.
- * @param {Real} keep_sync `1` to keep the data synchronised, `0` to stop.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @param {Bool} keep_sync `true` to keep the data synchronised, `false` to stop.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -439,7 +439,7 @@
  * This function reads the data at the location once and hands the callback a snapshot of it. The snapshot holds the whole subtree below the location, so reading a node high up the tree
  * downloads everything under it; read the location you need, or narrow it with a query. A location
  * with no data is not an error: the snapshot's ${function.firebase_database_snapshot_exists} is
- * `0` and its value `undefined`.
+ * `false` and its value `undefined`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback for a reference
  * that is not valid. To be told about every later change instead, use a value listener.
@@ -550,7 +550,7 @@
  *
  * @param {Real} ref A reference handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Real} `1` when the listener was removed, `0` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
  */
 
@@ -563,7 +563,7 @@
  * harmless for an already-stopped listener, to free it.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -662,7 +662,7 @@
  *
  * @param {Real} ref A reference handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Real} `1` when the listener was removed, `0` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
  */
 
@@ -674,7 +674,7 @@
  * each one to ${function.firebase_database_ref_remove_child_listener} afterwards to free it.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -862,11 +862,11 @@
  * This function tells the SDK to keep the query's results downloaded and up to date even while no listener is
  * attached, and to keep it in the on-disk cache when persistence is on - so a read of it is answered
  * at once, and is available offline, at the cost of the bandwidth to keep it current. Turn it off
- * again with `0`.
+ * again with `false`.
  *
  * @param {Real} ref A query handle.
- * @param {Real} keep_sync `1` to keep the data synchronised, `0` to stop.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @param {Bool} keep_sync `true` to keep the data synchronised, `false` to stop.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -874,11 +874,11 @@
  * @function firebase_database_query_is_valid
  * @desc **Firebase C++ SDK:** [firebase::database::Query::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#is_valid)
  *
- * This function returns whether the handle refers to a usable query - `0` for a released handle
+ * This function returns whether the handle refers to a usable query - `false` for a released handle
  * and for a query built from a reference that was not valid.
  *
  * @param {Real} ref A query handle.
- * @returns {Real} `1` when the query can be used, otherwise `0`.
+ * @returns {Bool} `true` when the query can be used, otherwise `false`.
  * @function_end
  */
 
@@ -891,7 +891,7 @@
  * one snapshot each. The snapshot holds the whole subtree below the location, so reading a node high up the tree
  * downloads everything under it; read the location you need, or narrow it with a query. A location
  * with no data is not an error: the snapshot's ${function.firebase_database_snapshot_exists} is
- * `0` and its value `undefined`.
+ * `false` and its value `undefined`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling the callback for a reference
  * that is not valid. To be told about every later change instead, use a value listener.
@@ -951,7 +951,7 @@
  *
  * @param {Real} ref A query handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Real} `1` when the listener was removed, `0` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
  */
 
@@ -964,7 +964,7 @@
  * harmless for an already-stopped listener, to free it.
  *
  * @param {Real} ref A query handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -1034,7 +1034,7 @@
  *
  * @param {Real} ref A query handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Real} `1` when the listener was removed, `0` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
  * @function_end
  */
 
@@ -1046,7 +1046,7 @@
  * each one to ${function.firebase_database_query_remove_child_listener} afterwards to free it.
  *
  * @param {Real} ref A query handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -1054,10 +1054,10 @@
  * @function firebase_database_query_release
  * @desc This function releases a query handle. A query built from it, a running `get_value` and a
  * listener each keep their own copy, so release it as soon as the next step has been built or
- * started. A reference is not a query handle: release it with ${function.firebase_database_ref_release}.
+ * started. A reference is not a query handle: release it with ${function.firebase_database_ref_release}. A handle that is not a query sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a query was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -1125,7 +1125,7 @@
  * ${function.firebase_database_go_online} reached from a reference.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -1138,7 +1138,7 @@
  * reference.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the call went through, `0` when the handle is not valid.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
  * @function_end
  */
 
@@ -1326,10 +1326,10 @@
  * @desc This function releases a reference handle - one from the database, from
  * ${function.firebase_database_ref_child}, from a query's `get_reference`, from a snapshot, or out
  * of a ${struct.FirebaseDatabaseReferenceInfo}. Release it as soon as the calls that need it have
- * been started; queries, listeners and writes keep their own copies.
+ * been started; queries, listeners and writes keep their own copies. A handle that is not a reference sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
- * @returns {Real} `1` when a reference was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -1341,7 +1341,7 @@
  * is not an error; this is how it shows.
  *
  * @param {Real} ref A snapshot handle.
- * @returns {Real} `1` when there is data, otherwise `0`.
+ * @returns {Bool} `true` when there is data, otherwise `false`.
  * @function_end
  */
 
@@ -1349,11 +1349,11 @@
  * @function firebase_database_snapshot_is_valid
  * @desc **Firebase C++ SDK:** [firebase::database::DataSnapshot::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/data-snapshot#is_valid)
  *
- * This function returns whether the handle refers to a usable snapshot - `0` after it has been
+ * This function returns whether the handle refers to a usable snapshot - `false` after it has been
  * released.
  *
  * @param {Real} ref A snapshot handle.
- * @returns {Real} `1` when the snapshot can be read, otherwise `0`.
+ * @returns {Bool} `true` when the snapshot can be read, otherwise `false`.
  * @function_end
  */
 
@@ -1380,7 +1380,7 @@
  *
  * @param {Real} ref A snapshot handle.
  * @param {String} path A slash-separated path relative to this location (`"stats/wins"`).
- * @returns {Real} `1` when there is data at the path, otherwise `0`.
+ * @returns {Bool} `true` when there is data at the path, otherwise `false`.
  * @function_end
  */
 
@@ -1392,7 +1392,7 @@
  * leaf value or an empty location.
  *
  * @param {Real} ref A snapshot handle.
- * @returns {Real} `1` when there are children, otherwise `0`.
+ * @returns {Bool} `true` when there are children, otherwise `false`.
  * @function_end
  */
 
@@ -1491,10 +1491,10 @@
  * @function firebase_database_snapshot_release
  * @desc This function releases a snapshot handle - one from a `get_value` callback, a listener,
  * ${function.firebase_database_snapshot_get_children} or ${function.firebase_database_snapshot_child}.
- * Release each one once its data has been read.
+ * Release each one once its data has been read. A handle that is not a snapshot sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} snapshot The handle to release.
- * @returns {Real} `1` when a snapshot was released, `0` when the handle was not one.
  * @function_end
  */
 
@@ -1517,7 +1517,7 @@
  * This function returns whether the reference is the root of the database.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` for the root, otherwise `0`.
+ * @returns {Bool} `true` for the root, otherwise `false`.
  * @function_end
  */
 
@@ -1525,11 +1525,11 @@
  * @function firebase_database_ref_is_valid
  * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::is_valid](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#is_valid)
  *
- * This function returns whether the handle refers to a usable reference - `0` for a released
+ * This function returns whether the handle refers to a usable reference - `false` for a released
  * handle and for a reference built from a malformed path or a URL of another database.
  *
  * @param {Real} ref A reference handle.
- * @returns {Real} `1` when the reference can be used, otherwise `0`.
+ * @returns {Bool} `true` when the reference can be used, otherwise `false`.
  * @function_end
  */
 

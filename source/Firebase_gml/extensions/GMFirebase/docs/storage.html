@@ -721,6 +721,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1567,6 +1578,17 @@
     <span class="md-ellipsis">
       
         firebase_storage_get_instance_for_app_url
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebasestorageerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseStorageError
       
     </span>
   </a>
@@ -2103,6 +2125,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2955,6 +2988,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firebasestorageerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseStorageError
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3009,26 +3053,14 @@ everything else, set with the <code>firebase_storage_set_max_*_retry_time</code>
 callback fires with <code>RetryLimitExceeded</code>.</p>
 <h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
 <p>Every operation returns <a href="app.html#firebaseerror">FirebaseError</a> at once and delivers its outcome to a
-callback. The callback's <code>error_code</code> is Cloud Storage's own code, a plain number:</p>
-<ul>
-<li><code>0</code> - success.</li>
-<li><code>1</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-<li><code>2</code> - <code>ObjectNotFound</code>: nothing exists at the reference.</li>
-<li><code>3</code> - <code>BucketNotFound</code>: the project has no bucket, or the instance's URL names one that does not exist.</li>
-<li><code>4</code> - <code>ProjectNotFound</code>: no project is configured for Cloud Storage.</li>
-<li><code>5</code> - <code>QuotaExceeded</code>: the bucket's quota is used up.</li>
-<li><code>6</code> - <code>Unauthenticated</code>: the rules require a signed-in user and there is none.</li>
-<li><code>7</code> - <code>Unauthorized</code>: the rules refuse this user this operation.</li>
-<li><code>8</code> - <code>RetryLimitExceeded</code>: the retry time ran out.</li>
-<li><code>9</code> - <code>NonMatchingChecksum</code>: the server received something other than what was sent.</li>
-<li><code>10</code> - <code>DownloadSizeExceeded</code>: the object is larger than the buffer given to <a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a>.</li>
-<li><code>11</code> - <code>Cancelled</code>: <a href="storage.html#firebase_storage_controller_cancel">firebase_storage_controller_cancel</a> stopped the transfer.</li>
-</ul>
+callback. The callback's <code>error_code</code> is a <a href="storage.html#firebasestorageerror">FirebaseStorageError</a>, Cloud Storage's own
+code set: <code>None</code> on success, otherwise the member that names the failure.</p>
 <h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
 <p>Create the bucket under <strong>Build &gt; Storage</strong> in the Firebase console and write security rules for
 it: the starting rules require a signed-in user for every read and write, so a game that has not
-signed the player in - anonymously is enough, see <a href="auth.html">Authentication</a> - gets <code>Unauthenticated</code>
-(code <code>6</code>) on its first request. Listing needs rules written for rules version 2. At the time of
+signed the player in - anonymously is enough, see <a href="auth.html">Authentication</a> - gets
+<code>FirebaseStorageError.Unauthenticated</code> on its first request. Listing needs rules written for rules
+version 2. At the time of
 writing a new project has to be on the pay-as-you-go plan to create its bucket; the free tier
 still applies within it. <a href="guides_cloud_storage.html">Cloud Storage Guide</a> walks through it.</p>
 <h2 id="instance">Instance<a class="headerlink" href="#instance" title="Permanent link">&para;</a></h2>
@@ -3135,6 +3167,11 @@ or setting each attribute on a metadata handle:</p>
 <li><a href="storage.html#firebase_storage_controller_bytes_transferred">firebase_storage_controller_bytes_transferred</a></li>
 <li><a href="storage.html#firebase_storage_controller_total_byte_count">firebase_storage_controller_total_byte_count</a></li>
 <li><a href="storage.html#firebase_storage_controller_get_reference">firebase_storage_controller_get_reference</a></li>
+</ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -3335,7 +3372,7 @@ the handle with <a href="storage.html#firebase_storage_ref_release">firebase_sto
 <p>This function returns a reference from a full URL: the <code>gs://bucket/path/to/object</code> form, or the
 <code>https://firebasestorage.googleapis.com/...</code> form the console shows for a file. The URL must name
 the bucket this instance was created for; another bucket's URL gives a reference whose
-<a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>0</code>. Release the handle with
+<a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>false</code>. Release the handle with
 <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3376,7 +3413,7 @@ the bucket this instance was created for; another bucket's URL gives a reference
 <h1 id="firebase_storage_max_download_retry_time">firebase_storage_max_download_retry_time<a class="headerlink" href="#firebase_storage_max_download_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_download_retry_time">firebase::storage::Storage::max_download_retry_time</a></p>
 <p>This function returns how long, in seconds, the SDK keeps retrying a download after a network
-failure before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 600
+failure before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 600
 seconds.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3412,7 +3449,7 @@ seconds.</p>
 <h1 id="firebase_storage_set_max_download_retry_time">firebase_storage_set_max_download_retry_time<a class="headerlink" href="#firebase_storage_set_max_download_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_download_retry_time">firebase::storage::Storage::set_max_download_retry_time</a></p>
 <p>This function sets how long, in seconds, the SDK keeps retrying a download after a network failure
-before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 600 seconds;
+before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 600 seconds;
 set it before the operation starts. A game that would rather report a failure quickly and let the
 player try again can bring it down to a few seconds.</p>
 <p><br></p>
@@ -3453,7 +3490,7 @@ player try again can bring it down to a few seconds.</p>
 <h1 id="firebase_storage_max_upload_retry_time">firebase_storage_max_upload_retry_time<a class="headerlink" href="#firebase_storage_max_upload_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_upload_retry_time">firebase::storage::Storage::max_upload_retry_time</a></p>
 <p>This function returns how long, in seconds, the SDK keeps retrying an upload after a network
-failure before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 600
+failure before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 600
 seconds.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3489,7 +3526,7 @@ seconds.</p>
 <h1 id="firebase_storage_set_max_upload_retry_time">firebase_storage_set_max_upload_retry_time<a class="headerlink" href="#firebase_storage_set_max_upload_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_upload_retry_time">firebase::storage::Storage::set_max_upload_retry_time</a></p>
 <p>This function sets how long, in seconds, the SDK keeps retrying an upload after a network failure
-before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 600 seconds;
+before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 600 seconds;
 set it before the operation starts. A game that would rather report a failure quickly and let the
 player try again can bring it down to a few seconds.</p>
 <p><br></p>
@@ -3530,7 +3567,7 @@ player try again can bring it down to a few seconds.</p>
 <h1 id="firebase_storage_max_operation_retry_time">firebase_storage_max_operation_retry_time<a class="headerlink" href="#firebase_storage_max_operation_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#max_operation_retry_time">firebase::storage::Storage::max_operation_retry_time</a></p>
 <p>This function returns how long, in seconds, the SDK keeps retrying an operation other than an upload or a download - a metadata read or write, a delete, a download URL or a listing after a network
-failure before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 120
+failure before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 120
 seconds.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3566,7 +3603,7 @@ seconds.</p>
 <h1 id="firebase_storage_set_max_operation_retry_time">firebase_storage_set_max_operation_retry_time<a class="headerlink" href="#firebase_storage_set_max_operation_retry_time" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage#set_max_operation_retry_time">firebase::storage::Storage::set_max_operation_retry_time</a></p>
 <p>This function sets how long, in seconds, the SDK keeps retrying an operation other than an upload or a download - a metadata read or write, a delete, a download URL or a listing after a network failure
-before its callback fires with <code>RetryLimitExceeded</code> (code <code>8</code>). The default is 120 seconds;
+before its callback fires with <code>FirebaseStorageError.RetryLimitExceeded</code>. The default is 120 seconds;
 set it before the operation starts. A game that would rather report a failure quickly and let the
 player try again can bring it down to a few seconds.</p>
 <p><br></p>
@@ -3694,7 +3731,7 @@ with <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_re
 <h1 id="firebase_storage_ref_get_parent">firebase_storage_ref_get_parent<a class="headerlink" href="#firebase_storage_ref_get_parent" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#getparent">firebase::storage::StorageReference::GetParent</a></p>
 <p>This function returns a reference to the folder holding this location. The root has no parent:
-there the returned reference's <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>0</code>, and it still
+there the returned reference's <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>false</code>, and it still
 needs releasing.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3731,7 +3768,8 @@ needs releasing.</p>
 <p>This function releases a reference handle - one from the storage instance, from
 <a href="storage.html#firebase_storage_ref_child">firebase_storage_ref_child</a> or <a href="storage.html#firebase_storage_ref_get_parent">firebase_storage_ref_get_parent</a>, from a
 metadata's or controller's <code>get_reference</code>, or taken out of a list result. Release it once no
-operation started on it is still running.</p>
+operation started on it is still running. A handle that is not a reference sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>On Windows, macOS and Linux the SDK keeps reading the reference an operation was started on
@@ -3763,9 +3801,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a reference was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3878,7 +3915,7 @@ an empty string.</p>
 
 <h1 id="firebase_storage_ref_is_valid">firebase_storage_ref_is_valid<a class="headerlink" href="#firebase_storage_ref_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#is_valid">firebase::storage::StorageReference::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable reference - <code>0</code> for a released
+<p>This function returns whether the handle refers to a usable reference - <code>false</code> for a released
 handle, for the parent of the root, for the reference of a metadata or controller handle that
 is not attached to an object, and for one made from another bucket's URL.</p>
 <p><br></p>
@@ -3905,9 +3942,9 @@ is not attached to an object, and for one made from another bucket's URL.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the reference can be used, otherwise <code>0</code>.</p>
+<p><code>true</code> when the reference can be used, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -3951,7 +3988,7 @@ returned, with nothing to release.</p>
 <h1 id="firebase_storage_ref_delete">firebase_storage_ref_delete<a class="headerlink" href="#firebase_storage_ref_delete" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#delete">firebase::storage::StorageReference::Delete</a></p>
 <p>This function deletes the object at the location. Deleting one that does not exist fails with
-<code>ObjectNotFound</code> (code <code>2</code>). Folders are not objects and cannot be deleted; a folder disappears
+<code>FirebaseStorageError.ObjectNotFound</code>. Folders are not objects and cannot be deleted; a folder disappears
 when its last object does.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the
 reference is not valid.</p>
@@ -4012,8 +4049,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4030,7 +4067,7 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#getdownloadurl">firebase::storage::StorageReference::GetDownloadUrl</a></p>
 <p>This function fetches a public <code>https://</code> URL for the object, carrying a token that lets anyone
 holding the URL download it without signing in - the way to hand a file to a browser, a web view
-or another player. The object must exist (<code>ObjectNotFound</code>, code <code>2</code>, otherwise) and the caller
+or another player. The object must exist (<code>FirebaseStorageError.ObjectNotFound</code> otherwise) and the caller
 needs read access under the security rules. The token can be revoked from the file's details in
 the console, after which the URL stops working.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the
@@ -4092,8 +4129,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4117,7 +4154,7 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 custom key/value pairs - without downloading its content. The callback's handle is read with the
 <code>firebase_storage_metadata_*</code> functions and released with
 <a href="storage.html#firebase_storage_metadata_release">firebase_storage_metadata_release</a>. An object that does not exist fails with
-<code>ObjectNotFound</code> (code <code>2</code>).</p>
+<code>FirebaseStorageError.ObjectNotFound</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the
 reference is not valid.</p>
 <div class="admonition warning">
@@ -4177,8 +4214,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4268,8 +4305,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4292,7 +4329,7 @@ firebase_storage_metadata_set_custom_metadata(_metadata, "version", GM_version);
 
 firebase_storage_ref_update_metadata(replay_ref, _metadata, function(_error, _message, _updated)
 {
-    if (_error == 0)
+    if (_error == FirebaseStorageError.None)
     {
         show_debug_message($"Now at metadata generation {firebase_storage_metadata_metadata_generation(_updated)}");
         firebase_storage_metadata_release(_updated);
@@ -4428,8 +4465,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4457,7 +4494,7 @@ level_ref = firebase_storage_ref_child(root_ref, $"levels/{level_id}.json");
 var _result = firebase_storage_ref_put_bytes(level_ref, upload_buffer, _metadata, undefined, 0,
     function(_error, _message, _metadata)
     {
-        if (_error == 0)
+        if (_error == FirebaseStorageError.None)
         {
             show_debug_message($"Stored {firebase_storage_metadata_size_bytes(_metadata)} bytes");
             firebase_storage_metadata_release(_metadata);
@@ -4607,8 +4644,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4636,7 +4673,7 @@ var _result = firebase_storage_ref_put_file(shot_ref, game_save_id + "shot.png",
     0,
     function(_error, _message, _metadata)
     {
-        if (_error == 0)
+        if (_error == FirebaseStorageError.None)
         {
             firebase_storage_metadata_release(_metadata);
         }
@@ -4665,7 +4702,7 @@ safe moment on desktop. The callback's metadata handle is released as soon as it
 <p>This function downloads the object into a buffer the game has created. The SDK writes straight
 into it, at most <code>buffer_get_size</code> bytes, so size the buffer for the largest object expected or
 read the size from <a href="storage.html#firebase_storage_ref_get_metadata">firebase_storage_ref_get_metadata</a> first: an object larger than
-the buffer fails with <code>DownloadSizeExceeded</code> (code <code>10</code>). The callback's <code>bytes_read</code> is how much
+the buffer fails with <code>FirebaseStorageError.DownloadSizeExceeded</code>. The callback's <code>bytes_read</code> is how much
 was written, from the start of the buffer; the seek position is not moved. The buffer must stay alive and the same size until the callback has fired: the
 SDK works on its memory during the transfer, and a <code>buffer_resize</code> can move it.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling either callback when the
@@ -4774,8 +4811,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -4798,7 +4835,7 @@ download_buffer = buffer_create(1 &lt;&lt; 20, buffer_fixed, 1); // up to 1 MiB
 var _result = firebase_storage_ref_get_bytes(level_ref, download_buffer, undefined, 0,
     function(_error, _message, _bytes_read)
     {
-        if (_error == 0)
+        if (_error == FirebaseStorageError.None)
         {
             buffer_resize(download_buffer, _bytes_read);
             buffer_seek(download_buffer, buffer_seek_start, 0);
@@ -4937,8 +4974,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -5040,8 +5077,8 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the codes listed under Error codes on the <a href="storage.html">Cloud Storage</a> page.</td>
+<td><a href="storage.html#firebasestorageerror">FirebaseStorageError</a></td>
+<td><code>FirebaseStorageError.None</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -5063,7 +5100,7 @@ list_replays = function(_page_token)
     var _result = firebase_storage_ref_list(replays_ref, 100, _page_token,
         function(_error, _message, _list)
         {
-            if (_error != 0)
+            if (_error != FirebaseStorageError.None)
             {
                 show_debug_message($"List failed ({_error}): {_message}");
                 firebase_storage_ref_release(replays_ref);
@@ -5125,7 +5162,8 @@ once the call that consumed it has returned; the SDK copies it.</p>
 
 <h1 id="firebase_storage_metadata_release">firebase_storage_metadata_release<a class="headerlink" href="#firebase_storage_metadata_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a metadata handle - one from <a href="storage.html#firebase_storage_metadata_create">firebase_storage_metadata_create</a>
-or one a callback returned.</p>
+or one a callback returned. A handle that is not a metadata handle sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -5150,16 +5188,15 @@ or one a callback returned.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a metadata handle was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_storage_metadata_is_valid">firebase_storage_metadata_is_valid<a class="headerlink" href="#firebase_storage_metadata_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/metadata#is_valid">firebase::storage::Metadata::is_valid</a></p>
-<p>This function returns whether the handle refers to usable metadata - <code>0</code> for a released handle.</p>
+<p>This function returns whether the handle refers to usable metadata - <code>false</code> for a released handle.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -5184,9 +5221,9 @@ or one a callback returned.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the metadata can be read, otherwise <code>0</code>.</p>
+<p><code>true</code> when the metadata can be read, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5771,7 +5808,7 @@ the game created.</p>
 <h1 id="firebase_storage_metadata_get_reference">firebase_storage_metadata_get_reference<a class="headerlink" href="#firebase_storage_metadata_get_reference" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/metadata#getreference">firebase::storage::Metadata::GetReference</a></p>
 <p>This function returns a reference to the object the metadata describes - on a handle the game
-created, one whose <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>0</code>. Release it with
+created, one whose <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>false</code>. Release it with
 <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6042,7 +6079,7 @@ key had. It takes effect on the server when the handle is passed to an upload or
 <a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a>, <a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a> or
 <a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a>, to pause, resume or cancel that transfer and to read
 its progress while it runs. A new controller is attached to nothing - its
-<a href="storage.html#firebase_storage_controller_is_valid">firebase_storage_controller_is_valid</a> is <code>0</code> until a transfer has been started with
+<a href="storage.html#firebase_storage_controller_is_valid">firebase_storage_controller_is_valid</a> is <code>false</code> until a transfer has been started with
 it - and one controller drives one transfer at a time. Release it with
 <a href="storage.html#firebase_storage_controller_release">firebase_storage_controller_release</a> once the transfer's callback has fired.</p>
 <p><br></p>
@@ -6064,7 +6101,7 @@ pack_ref = firebase_storage_get_reference_path(storage, "packs/winter.zip");
 var _result = firebase_storage_ref_get_file(pack_ref, game_save_id + "winter.zip", undefined, controller,
     function(_error, _message, _bytes_read)
     {
-        if (_error == 11) show_debug_message("Cancelled by the player");
+        if (_error == FirebaseStorageError.Cancelled) show_debug_message("Cancelled by the player");
         firebase_storage_controller_release(controller);
         firebase_storage_ref_release(pack_ref);
         instance_destroy();
@@ -6085,7 +6122,7 @@ if (firebase_storage_controller_is_valid(controller))
 }</code></pre>
 The above code attaches a controller to a download, polls it every step for the progress bar
 instead of using a progress callback, and cancels it on a key press; the completion callback then
-fires with <code>Cancelled</code> (code <code>11</code>) and frees everything.</p>
+fires with <code>FirebaseStorageError.Cancelled</code> and frees everything.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6093,7 +6130,8 @@ fires with <code>Cancelled</code> (code <code>11</code>) and frees everything.</
 <h1 id="firebase_storage_controller_release">firebase_storage_controller_release<a class="headerlink" href="#firebase_storage_controller_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a controller handle. Release it after the transfer it was attached to
 has completed; a transfer keeps running when its controller is released, it just cannot be
-driven any more.</p>
+driven any more. A handle that is not a controller sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -6118,16 +6156,15 @@ driven any more.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a controller was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_storage_controller_is_valid">firebase_storage_controller_is_valid<a class="headerlink" href="#firebase_storage_controller_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#is_valid">firebase::storage::Controller::is_valid</a></p>
-<p>This function returns whether the controller is attached to a transfer - <code>0</code> for a new
+<p>This function returns whether the controller is attached to a transfer - <code>false</code> for a new
 controller that has not been passed to one yet, and for a released handle.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6153,9 +6190,9 @@ controller that has not been passed to one yet, and for a released handle.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the controller drives a transfer, otherwise <code>0</code>.</p>
+<p><code>true</code> when the controller drives a transfer, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6189,9 +6226,9 @@ continues from where it stopped.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the transfer was paused, <code>0</code> when it could not be - not running, already paused, or the handle is not valid.</p>
+<p><code>true</code> when the transfer was paused, <code>false</code> when it could not be - not running, already paused, or the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6223,9 +6260,9 @@ continues from where it stopped.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the transfer was resumed, <code>0</code> when it could not be - not paused, or the handle is not valid.</p>
+<p><code>true</code> when the transfer was resumed, <code>false</code> when it could not be - not paused, or the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6233,7 +6270,7 @@ continues from where it stopped.</p>
 <h1 id="firebase_storage_controller_cancel">firebase_storage_controller_cancel<a class="headerlink" href="#firebase_storage_controller_cancel" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#cancel">firebase::storage::Controller::Cancel</a></p>
 <p>This function cancels the transfer the controller is attached to. Its completion callback fires
-with <code>Cancelled</code> (code <code>11</code>); a cancelled upload leaves no object, and a cancelled download
+with <code>FirebaseStorageError.Cancelled</code>; a cancelled upload leaves no object, and a cancelled download
 leaves the buffer or file partly written.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6259,9 +6296,9 @@ leaves the buffer or file partly written.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the transfer was cancelled, <code>0</code> when it could not be - already finished, or the handle is not valid.</p>
+<p><code>true</code> when the transfer was cancelled, <code>false</code> when it could not be - already finished, or the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6293,9 +6330,9 @@ leaves the buffer or file partly written.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> while the transfer is paused, otherwise <code>0</code>.</p>
+<p><code>true</code> while the transfer is paused, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6373,7 +6410,7 @@ yet - a download's size arrives with the first response.</p>
 <h1 id="firebase_storage_controller_get_reference">firebase_storage_controller_get_reference<a class="headerlink" href="#firebase_storage_controller_get_reference" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/controller#getreference">firebase::storage::Controller::GetReference</a></p>
 <p>This function returns a reference to the object the transfer works on - on a controller not yet
-attached to one, a reference whose <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>0</code>. Release it
+attached to one, a reference whose <a href="storage.html#firebase_storage_ref_is_valid">firebase_storage_ref_is_valid</a> is <code>false</code>. Release it
 with <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_release</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6408,7 +6445,8 @@ with <a href="storage.html#firebase_storage_ref_release">firebase_storage_ref_re
 
 <h1 id="firebase_storage_list_result_release">firebase_storage_list_result_release<a class="headerlink" href="#firebase_storage_list_result_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a list result handle from <a href="storage.html#firebase_storage_ref_list">firebase_storage_ref_list</a>. The
-references already taken out of it are unaffected; each is released on its own.</p>
+references already taken out of it are unaffected; each is released on its own. A handle that is not a list result sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -6433,16 +6471,15 @@ references already taken out of it are unaffected; each is released on its own.<
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p>N/A</p>
 </blockquote>
-<p><code>1</code> when a list result was released, <code>0</code> when the handle was not one.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebase_storage_list_result_is_valid">firebase_storage_list_result_is_valid<a class="headerlink" href="#firebase_storage_list_result_is_valid" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-list-result#is_valid">firebase::storage::StorageListResult::is_valid</a></p>
-<p>This function returns whether the handle refers to a usable list result - <code>0</code> for a released
+<p>This function returns whether the handle refers to a usable list result - <code>false</code> for a released
 handle.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6468,9 +6505,9 @@ handle.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the result can be read, otherwise <code>0</code>.</p>
+<p><code>true</code> when the result can be read, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -6802,6 +6839,88 @@ named by its <code>gs://</code> URL.</p>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
 <p>The storage handle, or <code>0</code> on failure.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebasestorageerror">FirebaseStorageError<a class="headerlink" href="#firebasestorageerror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/storage#error">firebase::storage::Error</a></p>
+<p>The <code>error_code</code> every Cloud Storage callback receives, mirroring the SDK's codes value for
+value. <code>None</code> is success. The ones a game meets: <code>ObjectNotFound</code> (a download, metadata fetch or
+delete of an object that does not exist), <code>Unauthenticated</code> and <code>Unauthorized</code> (the security
+rules refused the caller), <code>RetryLimitExceeded</code> (the network stayed down past the retry time)
+and <code>Cancelled</code> (the game's own controller stopped the transfer).</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="storage.html#firebase_storage_ref_delete">firebase_storage_ref_delete</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_download_url">firebase_storage_ref_get_download_url</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_metadata">firebase_storage_ref_get_metadata</a></li>
+<li><a href="storage.html#firebase_storage_ref_update_metadata">firebase_storage_ref_update_metadata</a></li>
+<li><a href="storage.html#firebase_storage_ref_put_bytes">firebase_storage_ref_put_bytes</a></li>
+<li><a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a></li>
+<li><a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a></li>
+<li><a href="storage.html#firebase_storage_ref_list">firebase_storage_ref_list</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify.</td>
+</tr>
+<tr>
+<td><code>ObjectNotFound</code></td>
+<td>Nothing exists at the reference.</td>
+</tr>
+<tr>
+<td><code>BucketNotFound</code></td>
+<td>The project has no bucket, or the instance's URL names one that does not exist.</td>
+</tr>
+<tr>
+<td><code>ProjectNotFound</code></td>
+<td>No project is configured for Cloud Storage.</td>
+</tr>
+<tr>
+<td><code>QuotaExceeded</code></td>
+<td>The bucket's quota is used up.</td>
+</tr>
+<tr>
+<td><code>Unauthenticated</code></td>
+<td>The rules require a signed-in user and there is none.</td>
+</tr>
+<tr>
+<td><code>Unauthorized</code></td>
+<td>The rules refuse this user this operation.</td>
+</tr>
+<tr>
+<td><code>RetryLimitExceeded</code></td>
+<td>The retry time ran out - the maximum time limit on the operation was exceeded.</td>
+</tr>
+<tr>
+<td><code>NonMatchingChecksum</code></td>
+<td>The server received something other than what was sent.</td>
+</tr>
+<tr>
+<td><code>DownloadSizeExceeded</code></td>
+<td>The object is larger than the buffer given to <a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a>.</td>
+</tr>
+<tr>
+<td><code>Cancelled</code></td>
+<td><a href="storage.html#firebase_storage_controller_cancel">firebase_storage_controller_cancel</a> stopped the transfer.</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <hr />
 

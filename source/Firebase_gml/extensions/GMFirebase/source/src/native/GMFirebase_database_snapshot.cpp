@@ -28,18 +28,18 @@ static DataSnapshot* resolve_db_snapshot(uint64_t ref)
 // DataSnapshot
 // ============================================================
 
-double firebase_database_snapshot_exists(uint64_t ref)
+bool firebase_database_snapshot_exists(uint64_t ref)
 {
 	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return 0;
-	return s->exists() ? 1 : 0;
+	if (s == nullptr) return false;
+	return s->exists();
 }
 
-double firebase_database_snapshot_is_valid(uint64_t ref)
+bool firebase_database_snapshot_is_valid(uint64_t ref)
 {
 	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return 0;
-	return s->is_valid() ? 1 : 0;
+	if (s == nullptr) return false;
+	return s->is_valid();
 }
 
 uint64_t firebase_database_snapshot_child(uint64_t ref, std::string_view path)
@@ -50,19 +50,19 @@ uint64_t firebase_database_snapshot_child(uint64_t ref, std::string_view path)
 	return registerDatabaseSnapshot(s->Child(path_str.c_str()));
 }
 
-double firebase_database_snapshot_has_child(uint64_t ref, std::string_view path)
+bool firebase_database_snapshot_has_child(uint64_t ref, std::string_view path)
 {
 	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return 0;
+	if (s == nullptr) return false;
 	std::string path_str(path);
-	return s->HasChild(path_str.c_str()) ? 1 : 0;
+	return s->HasChild(path_str.c_str());
 }
 
-double firebase_database_snapshot_has_children(uint64_t ref)
+bool firebase_database_snapshot_has_children(uint64_t ref)
 {
 	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return 0;
-	return s->has_children() ? 1 : 0;
+	if (s == nullptr) return false;
+	return s->has_children();
 }
 
 double firebase_database_snapshot_children_count(uint64_t ref)
@@ -156,10 +156,10 @@ gm::wire::DataStream firebase_database_snapshot_get_priority(uint64_t ref)
 	return out;
 }
 
-double firebase_database_snapshot_release(uint64_t ref)
+void firebase_database_snapshot_release(uint64_t ref)
 {
-	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_DATA_SNAPSHOT) return 0;
-	return unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_snapshot_map) ? 1 : 0;
+	if (resolve_db_snapshot(ref) == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(ref), g_db_snapshot_map);
 }
 
 // ============================================================

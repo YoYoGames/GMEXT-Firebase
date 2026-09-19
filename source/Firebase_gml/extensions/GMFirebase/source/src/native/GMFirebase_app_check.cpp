@@ -9,6 +9,15 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// FirebaseAppCheckError mirrors firebase::app_check::AppCheckError, the
+// error_code every token callback receives. See GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseAppCheckError::None, firebase::app_check::kAppCheckErrorNone);
+GM_FB_PIN_ENUM(FirebaseAppCheckError::ServerUnreachable, firebase::app_check::kAppCheckErrorServerUnreachable);
+GM_FB_PIN_ENUM(FirebaseAppCheckError::InvalidConfiguration, firebase::app_check::kAppCheckErrorInvalidConfiguration);
+GM_FB_PIN_ENUM(FirebaseAppCheckError::SystemKeychain, firebase::app_check::kAppCheckErrorSystemKeychain);
+GM_FB_PIN_ENUM(FirebaseAppCheckError::UnsupportedProvider, firebase::app_check::kAppCheckErrorUnsupportedProvider);
+GM_FB_PIN_ENUM(FirebaseAppCheckError::Unknown, firebase::app_check::kAppCheckErrorUnknown);
+
 namespace
 {
 	firebase::app_check::AppCheck* getAppCheckInstance()
@@ -134,19 +143,19 @@ void firebase_app_check_debug_provider_set_debug_token(std::string_view token)
 // Token auto-refresh / manual fetch
 // ============================================================
 
-void firebase_app_check_set_token_auto_refresh_enabled(double enabled)
+void firebase_app_check_set_token_auto_refresh_enabled(bool enabled)
 {
 	firebase::app_check::AppCheck* app_check = getAppCheckInstance();
 	if (app_check == nullptr) return;
-	app_check->SetTokenAutoRefreshEnabled(enabled >= 0.5);
+	app_check->SetTokenAutoRefreshEnabled(enabled);
 }
 
-FirebaseError firebase_app_check_get_token(double force_refresh, const std::optional<gm::wire::GMFunction>& callback)
+FirebaseError firebase_app_check_get_token(bool force_refresh, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::app_check::AppCheck* app_check = getAppCheckInstance();
 	if (app_check == nullptr) return FirebaseError::NotInitialized;
 
-	firebase::Future<firebase::app_check::AppCheckToken> future = app_check->GetAppCheckToken(force_refresh >= 0.5);
+	firebase::Future<firebase::app_check::AppCheckToken> future = app_check->GetAppCheckToken(force_refresh);
 	future.OnCompletion([callback](const firebase::Future<firebase::app_check::AppCheckToken>& f)
 	{
 		completeTokenFuture(callback, f);
@@ -189,11 +198,11 @@ uint64_t firebase_app_check_add_listener(const std::optional<gm::wire::GMFunctio
 	return registerFirebasePointer(listener, GM_FB_TYPE_APPCHECK_LISTENER);
 }
 
-double firebase_app_check_remove_listener(uint64_t listener_ref)
+bool firebase_app_check_remove_listener(uint64_t listener_ref)
 {
 	firebase::app_check::AppCheckListener* listener = nullptr;
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_APPCHECK_LISTENER, firebase::app_check::AppCheckListener, listener);
-	if (listener == nullptr) return 0.0;
+	if (listener == nullptr) return false;
 
 	firebase::app_check::AppCheck* app_check = nullptr;
 	{
@@ -205,7 +214,7 @@ double firebase_app_check_remove_listener(uint64_t listener_ref)
 
 	listener = static_cast<firebase::app_check::AppCheckListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_APPCHECK_LISTENER));
 	delete listener;
-	return 1.0;
+	return true;
 }
 
 uint64_t firebase_app_check_get_app()

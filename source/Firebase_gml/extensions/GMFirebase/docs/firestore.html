@@ -3072,6 +3072,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firestorefieldvaluetype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirestoreFieldValueType
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firestoreaggregatesource" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6267,6 +6278,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firestorefieldvaluetype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirestoreFieldValueType
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firestoreaggregatesource" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6735,6 +6757,7 @@ listener's previous snapshot:</p>
 <li><a href="firestore.html#firestoredocumentchangetype">FirestoreDocumentChangeType</a></li>
 <li><a href="firestore.html#firestoreloadbundletaskstate">FirestoreLoadBundleTaskState</a></li>
 <li><a href="firestore.html#firestoreaggregatesource">FirestoreAggregateSource</a></li>
+<li><a href="firestore.html#firestorefieldvaluetype">FirestoreFieldValueType</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -10328,9 +10351,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -10375,9 +10398,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -10426,9 +10449,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -10474,9 +10497,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -10515,9 +10538,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -13949,11 +13972,11 @@ unchanged and sets <a href="app.html#firebase_last_error_code">firebase_last_err
 
 <h1 id="firebase_firestore_field_value_type">firebase_firestore_field_value_type<a class="headerlink" href="#firebase_firestore_field_value_type" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#type_1">firebase::firestore::FieldValue::type</a></p>
-<p>This function returns the kind of value a field value handle holds, as the SDK's own numbering:
-<code>0</code> null, <code>1</code> boolean, <code>2</code> integer, <code>3</code> double, <code>4</code> timestamp, <code>5</code> string, <code>6</code> blob,
-<code>7</code> reference, <code>8</code> geo point, <code>9</code> array, <code>10</code> map, and for the sentinels <code>11</code> delete,
-<code>12</code> server timestamp, <code>13</code> array union, <code>14</code> array remove, <code>15</code> increment integer,
-<code>16</code> increment double. The <code>is_*</code> functions answer the same question one kind at a time.</p>
+<p>This function returns the kind of value a field value handle holds, as a
+<a href="firestore.html#firestorefieldvaluetype">FirestoreFieldValueType</a> member - one of the eleven value kinds, or one of the six
+sentinels a write can carry. The <code>is_*</code> functions answer the same question one kind at a time.
+A handle that is not a field value sets <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to
+<code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -13978,9 +14001,9 @@ unchanged and sets <a href="app.html#firebase_last_error_code">firebase_last_err
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="firestore.html#firestorefieldvaluetype">FirestoreFieldValueType</a></p>
 </blockquote>
-<p>The type number, or <code>-1</code> when the handle is not valid.</p>
+<p>The kind of value, or <code>FirestoreFieldValueType.Null</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -15047,9 +15070,9 @@ records the write and returns whether it did.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the write was added to the batch, <code>0</code> when a handle was not valid.</p>
+<p><code>true</code> when the write was added to the batch, <code>false</code> when a handle was not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -16271,6 +16294,98 @@ confirmed yet - only ever a question for a snapshot with <code>has_pending_write
 <tr>
 <td><code>Success</code></td>
 <td>The load finished; final.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firestorefieldvaluetype">FirestoreFieldValueType<a class="headerlink" href="#firestorefieldvaluetype" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#type">firebase::firestore::FieldValue::Type</a></p>
+<p>The kind of value a field value handle holds, from <a href="firestore.html#firebase_firestore_field_value_type">firebase_firestore_field_value_type</a>:
+the eleven kinds a document can store, and the six sentinels that are only ever passed to a write
+and never come back from Firestore.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="firestore.html#firebase_firestore_field_value_type">firebase_firestore_field_value_type</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Null</code></td>
+<td>A null value - also what an invalid handle reports.</td>
+</tr>
+<tr>
+<td><code>Boolean</code></td>
+<td>A boolean.</td>
+</tr>
+<tr>
+<td><code>Integer</code></td>
+<td>A 64-bit integer.</td>
+</tr>
+<tr>
+<td><code>Double</code></td>
+<td>A double.</td>
+</tr>
+<tr>
+<td><code>Timestamp</code></td>
+<td>A <a href="firestore.html#firestoretimestamp">FirestoreTimestamp</a>.</td>
+</tr>
+<tr>
+<td><code>String</code></td>
+<td>A string.</td>
+</tr>
+<tr>
+<td><code>Blob</code></td>
+<td>A byte array.</td>
+</tr>
+<tr>
+<td><code>Reference</code></td>
+<td>A document reference.</td>
+</tr>
+<tr>
+<td><code>GeoPoint</code></td>
+<td>A <a href="firestore.html#firestoregeopoint">FirestoreGeoPoint</a>.</td>
+</tr>
+<tr>
+<td><code>Array</code></td>
+<td>An array of field values.</td>
+</tr>
+<tr>
+<td><code>Map</code></td>
+<td>A map of field names to field values.</td>
+</tr>
+<tr>
+<td><code>Delete</code></td>
+<td>Sentinel: deletes the field, from <a href="firestore.html#firebase_firestore_field_value_delete">firebase_firestore_field_value_delete</a>.</td>
+</tr>
+<tr>
+<td><code>ServerTimestamp</code></td>
+<td>Sentinel: the server's time at the write, from <a href="firestore.html#firebase_firestore_field_value_server_timestamp">firebase_firestore_field_value_server_timestamp</a>.</td>
+</tr>
+<tr>
+<td><code>ArrayUnion</code></td>
+<td>Sentinel: adds elements to an array field, from <a href="firestore.html#firebase_firestore_field_value_array_union">firebase_firestore_field_value_array_union</a>.</td>
+</tr>
+<tr>
+<td><code>ArrayRemove</code></td>
+<td>Sentinel: removes elements from an array field, from <a href="firestore.html#firebase_firestore_field_value_array_remove">firebase_firestore_field_value_array_remove</a>.</td>
+</tr>
+<tr>
+<td><code>IncrementInteger</code></td>
+<td>Sentinel: adds an integer to a numeric field, from <a href="firestore.html#firebase_firestore_field_value_increment_integer">firebase_firestore_field_value_increment_integer</a>.</td>
+</tr>
+<tr>
+<td><code>IncrementDouble</code></td>
+<td>Sentinel: adds a double to a numeric field, from <a href="firestore.html#firebase_firestore_field_value_increment_double">firebase_firestore_field_value_increment_double</a>.</td>
 </tr>
 </tbody>
 </table>

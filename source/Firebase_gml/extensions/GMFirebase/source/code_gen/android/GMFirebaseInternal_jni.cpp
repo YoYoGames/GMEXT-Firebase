@@ -6688,10 +6688,16 @@ static jdouble __JNI_WRAPPER__firebase_ump_show_privacy_options_form_43B11E093DA
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_analytics_notify_app_lifecycle_change JNI wrapper signature: (D)D
-static jdouble __JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_change_3C025E179BCF(JNIEnv* /* env */, jclass /* GMFirebaseBridge */, jdouble state)
+// firebase_analytics_notify_app_lifecycle_change JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_change_A58C5A790F52(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    double __ret = __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(static_cast<double>(state));
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -8210,8 +8216,8 @@ static jdouble __JNI_WRAPPER__firebase_messaging_initialize_with_options_E0A9DBE
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_field_value_type JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_firestore_field_value_type_293BD36CB2FF(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_firestore_field_value_type JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_field_value_type_DEACDA7CB8FB(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -8219,7 +8225,13 @@ static jdouble __JNI_WRAPPER__firebase_firestore_field_value_type_293BD36CB2FF(J
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_firestore_field_value_type((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    void* __ret_buffer_ptr = env->GetDirectBufferAddress(__ret_buffer);
+    jlong __ret_buffer_cap = env->GetDirectBufferCapacity(__ret_buffer);
+    if (!__ret_buffer_ptr || __ret_buffer_cap <= 0) {
+        throwIAE(env, "__ret_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_field_value_type((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length), (char *)__ret_buffer_ptr, static_cast<double>(__ret_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -10379,7 +10391,7 @@ extern "C" {
             { "__EXT_JNI__firebase_ump_show_consent_form", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_consent_form_0243E9B9948A },
             { "__EXT_JNI__firebase_ump_load_and_show_consent_form_if_required", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_load_and_show_consent_form_if_required_FAD8767BA390 },
             { "__EXT_JNI__firebase_ump_show_privacy_options_form", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_show_privacy_options_form_43B11E093DAB },
-            { "__EXT_JNI__firebase_analytics_notify_app_lifecycle_change", "(D)D", (void*)__JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_change_3C025E179BCF },
+            { "__EXT_JNI__firebase_analytics_notify_app_lifecycle_change", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_notify_app_lifecycle_change_A58C5A790F52 },
             { "__EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email_56601A82470D },
             { "__EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone_123B0E9FC2D4 },
             { "__EXT_JNI__firebase_auth_federated_oauth_provider_create", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_auth_federated_oauth_provider_create_26B31F3D6018 },
@@ -10475,7 +10487,7 @@ extern "C" {
             { "__EXT_JNI__firebase_remote_config_get_string_with_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_string_with_info_3A412DA6D62B },
             { "__EXT_JNI__firebase_remote_config_get_data_with_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_remote_config_get_data_with_info_BF14D77D615D },
             { "__EXT_JNI__firebase_messaging_initialize_with_options", "(D)D", (void*)__JNI_WRAPPER__firebase_messaging_initialize_with_options_E0A9DBEE7B01 },
-            { "__EXT_JNI__firebase_firestore_field_value_type", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_type_293BD36CB2FF },
+            { "__EXT_JNI__firebase_firestore_field_value_type", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_type_DEACDA7CB8FB },
             { "__EXT_JNI__firebase_firestore_field_value_is_valid", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_is_valid_4E50EC8A5CE4 },
             { "__EXT_JNI__firebase_firestore_field_value_is_null", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_is_null_33832352EB22 },
             { "__EXT_JNI__firebase_firestore_field_value_is_boolean", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_is_boolean_6E5878183195 },

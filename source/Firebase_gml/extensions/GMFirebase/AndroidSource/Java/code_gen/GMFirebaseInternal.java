@@ -1804,9 +1804,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_ump_show_privacy_options_form(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(double state)
+    public double __EXT_NATIVE__firebase_analytics_notify_app_lifecycle_change(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_analytics_notify_app_lifecycle_change(state);
+        return __EXT_JNI__firebase_analytics_notify_app_lifecycle_change(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
@@ -2188,9 +2188,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_messaging_initialize_with_options(suppress_notification_permission_prompt);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_type(ByteBuffer __arg_buffer, double __arg_buffer_length)
+    public double __EXT_NATIVE__firebase_firestore_field_value_type(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_type(__arg_buffer, __arg_buffer_length);
+        return __EXT_JNI__firebase_firestore_field_value_type(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_field_value_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {

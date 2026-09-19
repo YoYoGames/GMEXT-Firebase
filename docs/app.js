@@ -12,19 +12,19 @@
  * Linux a `google-services-desktop.json` or `google-services.json` placed beside the executable, which
  * the `desktopJsonFile` option copies there at build time. See ${page.extension_options}.
  *
- * If the function succeeds it returns `1`. If it fails it returns `0` and ${function.firebase_last_error_code}
+ * If the function succeeds it returns `true`. If it fails it returns `false` and ${function.firebase_last_error_code}
  * is `FirebaseError.NotInitialized`, with ${function.firebase_last_error_message} saying why - typically
  * a configuration file that could not be found or read.
  *
- * [[Note: This function returns a plain `1` or `0`, not a ${constant.FirebaseError} value, so a truthy
- * test on its return is correct here. The asynchronous functions of this extension return
+ * [[Note: This function returns a boolean, not a ${constant.FirebaseError} value, so a truthy test on
+ * its return is correct here. The asynchronous functions of this extension return
  * ${constant.FirebaseError} instead, where `FirebaseError.Ok` is `0` - see the notes on this page.]]
  *
  * [[Important: On iOS the `GMFirebaseCrashlytics`, `GMFirebasePerformance` and `GMFirebaseInAppMessaging`
  * extensions depend on this call having configured the default app; their functions are no-ops until
  * it has run. On Android the default app is configured at launch and those three work either way.]]
  *
- * @returns {Real} `1` if the default app exists after the call, otherwise `0`.
+ * @returns {Bool} `true` if the default app exists after the call, otherwise `false`.
  *
  * @example
  * ```gml
@@ -46,7 +46,7 @@
  * @desc This function returns whether ${function.firebase_app_initialize} has succeeded. It only reads
  * the state; it never creates the app.
  *
- * @returns {Real} `1` once the default app has been created, otherwise `0`.
+ * @returns {Bool} `true` once the default app has been created, otherwise `false`.
  *
  * @example
  * ```gml

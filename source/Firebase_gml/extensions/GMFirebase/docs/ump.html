@@ -1183,6 +1183,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentrequesterror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentRequestError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentformerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentFormError
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1635,6 +1657,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentrequesterror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentRequestError
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseumpconsentformerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseUmpConsentFormError
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1690,37 +1734,20 @@ the player is not tagged as under age, showing a form sets <code>Obtained</code>
 the privacy options <code>Required</code>, and the privacy options form sets consent back to <code>Required</code>.
 Every callback fires at once.</p>
 <h3 id="error-codes">Error codes<a class="headerlink" href="#error-codes" title="Permanent link">&para;</a></h3>
-<p>The callbacks' <code>error_code</code> is one of two sets, both <code>0</code> on success. For
-<a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>, <code>firebase::ump::ConsentRequestError</code>:</p>
-<ul>
-<li><code>1</code> - <code>InvalidAppId</code>: the AdMob app id in the Android manifest or <code>Info.plist</code> is missing or wrong.</li>
-<li><code>2</code> - <code>Network</code>: no connection.</li>
-<li><code>3</code> - <code>Internal</code>: an error inside the SDK.</li>
-<li><code>4</code> - <code>Misconfiguration</code>: the message setup in the AdMob console is not valid.</li>
-<li><code>5</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-<li><code>6</code> - <code>InvalidOperation</code>: the call was not valid at this point; try again.</li>
-<li><code>7</code> - <code>OperationInProgress</code>: the previous update has not completed yet.</li>
-</ul>
-<p>For the four form functions, <code>firebase::ump::ConsentFormError</code>:</p>
-<ul>
-<li><code>1</code> - <code>Timeout</code>: the form did not load in time; try again.</li>
-<li><code>2</code> - <code>Internal</code>: an error inside the SDK.</li>
-<li><code>3</code> - <code>Unknown</code>: an error the SDK could not classify.</li>
-<li><code>4</code> - <code>Unavailable</code>: there is no form to show - not required, not loaded, or none configured.</li>
-<li><code>5</code> - <code>AlreadyUsed</code>: the loaded form has been shown already; load it again.</li>
-<li><code>6</code> - <code>InvalidOperation</code>: the call was not valid at this point (on iOS, a bad form parent).</li>
-<li><code>7</code> - <code>OperationInProgress</code>: the previous form call has not completed yet.</li>
-</ul>
-<p>On Android the SDK reports a single "invalid operation" code, and the C++ layer tells request
-codes <code>1</code>, <code>4</code> and <code>6</code>, and form codes <code>4</code>, <code>5</code> and <code>6</code>, apart by the message text - an
-unexpected wording lands on <code>6</code>.</p>
+<p>The callbacks' <code>error_code</code> is one of two enums, both <code>Success</code> on success:
+<a href="ump.html#firebaseumpconsentrequesterror">FirebaseUmpConsentRequestError</a> for <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>
+and <a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a> for the four form functions.</p>
+<p>On Android the SDK reports a single "invalid operation" code, and the C++ layer tells the request
+errors <code>InvalidAppId</code>, <code>Misconfiguration</code> and <code>InvalidOperation</code>, and the form errors
+<code>Unavailable</code>, <code>AlreadyUsed</code> and <code>InvalidOperation</code>, apart by the message text - an unexpected
+wording lands on <code>InvalidOperation</code>.</p>
 <h3 id="console-and-project-setup">Console and project setup<a class="headerlink" href="#console-and-project-setup" title="Permanent link">&para;</a></h3>
 <p>Consent messages are created and published in the AdMob console under <strong>Privacy &amp; messaging</strong>,
 per app, and the app has to carry its AdMob app id: <code>com.google.android.gms.ads.APPLICATION_ID</code>
 in the Android manifest and <code>GADApplicationIdentifier</code> in <code>Info.plist</code>. This extension does
 not inject either - the AdMob extension does, from its Android App ID and iOS App ID options -
 so a game that shows ads through anything else adds them itself; without them the update
-fails with request code <code>1</code>.</p>
+fails with <code>FirebaseUmpConsentRequestError.InvalidAppId</code>.</p>
 <h2 id="instance">Instance<a class="headerlink" href="#instance" title="Permanent link">&para;</a></h2>
 <p>The consent-info handle the other functions take:</p>
 <ul>
@@ -1760,6 +1787,8 @@ fails with request code <code>1</code>.</p>
 <li><a href="ump.html#firebaseumpconsentformstatus">FirebaseUmpConsentFormStatus</a></li>
 <li><a href="ump.html#firebaseumpprivacyoptionsrequirementstatus">FirebaseUmpPrivacyOptionsRequirementStatus</a></li>
 <li><a href="ump.html#firebaseumpconsentdebuggeography">FirebaseUmpConsentDebugGeography</a></li>
+<li><a href="ump.html#firebaseumpconsentrequesterror">FirebaseUmpConsentRequestError</a></li>
+<li><a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a></li>
 </ul>
 <p><br></p>
 <hr />
@@ -1904,9 +1933,9 @@ point accordingly.</p>
 
 <h1 id="firebase_ump_can_request_ads">firebase_ump_can_request_ads<a class="headerlink" href="#firebase_ump_can_request_ads" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#canrequestads">firebase::ump::ConsentInfo::CanRequestAds</a></p>
-<p>This function says whether the game may request ads: <code>1</code> once
+<p>This function says whether the game may request ads: <code>true</code> once
 <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> has been called this session and the
-consent status is <code>FirebaseUmpConsentStatus.Obtained</code> or <code>NotRequired</code>, <code>0</code> before that and
+consent status is <code>FirebaseUmpConsentStatus.Obtained</code> or <code>NotRequired</code>, <code>false</code> before that and
 whenever consent is required but not given. It is the one check the ads code needs - gate the
 ads SDK's initialisation and every ad request on it - and it reflects the previous session's
 consent as soon as the update is requested, before the callback.</p>
@@ -1934,9 +1963,9 @@ consent as soon as the update is requested, before the callback.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when ads may be requested, <code>0</code> otherwise (or when the handle is not valid).</p>
+<p><code>true</code> when ads may be requested, <code>false</code> otherwise (or when the handle is not valid).</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2024,8 +2053,8 @@ valid. It returns
 </tr>
 <tr>
 <td>tag_for_under_age_of_consent</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> when the player is known to be under the age of consent - the SDK then shows no consent form - <code>0</code> otherwise.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> when the player is known to be under the age of consent - the SDK then shows no consent form - <code>false</code> otherwise.</td>
 </tr>
 <tr>
 <td>debug_device_ids</td>
@@ -2062,8 +2091,8 @@ valid. It returns
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the request codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+<td><a href="ump.html#firebaseumpconsentrequesterror">FirebaseUmpConsentRequestError</a></td>
+<td><code>FirebaseUmpConsentRequestError.Success</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2075,9 +2104,9 @@ valid. It returns
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">consent = firebase_ump_get_instance();
-firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeography.Disabled, 0, undefined, function(_error, _message)
+firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeography.Disabled, false, undefined, function(_error, _message)
 {
-    if (_error != 0)
+    if (_error != FirebaseUmpConsentRequestError.Success)
     {
         show_debug_message($"Consent info update failed ({_error}): {_message}");
         // Fall through: the previous session's consent, if any, still applies.
@@ -2105,8 +2134,8 @@ present it without a delay - the split lets a game load during a loading screen 
 a moment of its choosing. It needs <a href="ump.html#firebase_ump_get_consent_form_status">firebase_ump_get_consent_form_status</a> to be
 <code>FirebaseUmpConsentFormStatus.Available</code>, which
 <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> establishes; otherwise the callback
-fires with the form code <code>4</code> (unavailable). A loaded form is shown once; load again to show it
-again. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
+fires with <code>FirebaseUmpConsentFormError.Unavailable</code>. A loaded form is shown once; load again to
+show it again. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
 valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
@@ -2158,8 +2187,8 @@ valid.</p>
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+<td><a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a></td>
+<td><code>FirebaseUmpConsentFormError.Success</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2177,8 +2206,8 @@ valid.</p>
 <p>This function presents the consent form <a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a> loaded,
 full screen, and fires the callback once the player has made their choice and the form has
 gone; the statuses and <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> are updated by then. Showing
-without a loaded form fails with the form code <code>4</code> (unavailable) and showing a form a second
-time with <code>5</code> (already used). Unlike
+without a loaded form fails with <code>FirebaseUmpConsentFormError.Unavailable</code> and showing a form a
+second time with <code>AlreadyUsed</code>. Unlike
 <a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a> it shows the form whatever the
 consent status - the way to let a player who has already consented see the form again is
 <a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a>, not this. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
@@ -2239,8 +2268,8 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+<td><a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a></td>
+<td><code>FirebaseUmpConsentFormError.Success</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2257,7 +2286,7 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#loadandshowconsentformifrequired">firebase::ump::ConsentInfo::LoadAndShowConsentFormIfRequired</a></p>
 <p>This function shows the consent form when <a href="ump.html#firebase_ump_get_consent_status">firebase_ump_get_consent_status</a> is
 <code>FirebaseUmpConsentStatus.Required</code>, loading it first, and does nothing when it is not: the
-callback fires with <code>0</code> once the player has made their choice and the form has gone, or at once
+callback fires with <code>FirebaseUmpConsentFormError.Success</code> once the player has made their choice and the form has gone, or at once
 when no form was needed, and with a form code when the form could not be loaded or shown. The
 statuses and <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> are updated before the callback fires.
 It is the call to make after <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> completes;
@@ -2320,8 +2349,8 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+<td><a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a></td>
+<td><code>FirebaseUmpConsentFormError.Success</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2400,8 +2429,8 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <tbody>
 <tr>
 <td>error_code</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> on success, otherwise one of the form codes listed under Error codes on the <a href="ump.html">User Messaging Platform</a> page.</td>
+<td><a href="ump.html#firebaseumpconsentformerror">FirebaseUmpConsentFormError</a></td>
+<td><code>FirebaseUmpConsentFormError.Success</code> on success, otherwise the reason it failed.</td>
 </tr>
 <tr>
 <td>error_message</td>
@@ -2598,6 +2627,119 @@ symmetry with the other modules.</p>
 <tr>
 <td><code>NonEEA</code></td>
 <td>Debug devices appear to be outside the European Economic Area.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpconsentrequesterror">FirebaseUmpConsentRequestError<a class="headerlink" href="#firebaseumpconsentrequesterror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentrequesterror">firebase::ump::ConsentRequestError</a></p>
+<p>The <code>error_code</code> of <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a>'s callback, mirroring
+the SDK's codes value for value. <code>Success</code> is success.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Success</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>InvalidAppId</code></td>
+<td>The AdMob app id in the Android manifest or <code>Info.plist</code> is missing or wrong.</td>
+</tr>
+<tr>
+<td><code>Network</code></td>
+<td>No connection.</td>
+</tr>
+<tr>
+<td><code>Internal</code></td>
+<td>An error inside the SDK.</td>
+</tr>
+<tr>
+<td><code>Misconfiguration</code></td>
+<td>The message setup in the AdMob console is not valid.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify.</td>
+</tr>
+<tr>
+<td><code>InvalidOperation</code></td>
+<td>The call was not valid at this point; try again.</td>
+</tr>
+<tr>
+<td><code>OperationInProgress</code></td>
+<td>The previous update has not completed yet.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseumpconsentformerror">FirebaseUmpConsentFormError<a class="headerlink" href="#firebaseumpconsentformerror" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/ump#consentformerror">firebase::ump::ConsentFormError</a></p>
+<p>The <code>error_code</code> of the four form functions' callbacks, mirroring the SDK's codes value for
+value. <code>Success</code> is success.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a></li>
+<li><a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a></li>
+<li><a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Success</code></td>
+<td>Success.</td>
+</tr>
+<tr>
+<td><code>Timeout</code></td>
+<td>The form did not load in time; try again.</td>
+</tr>
+<tr>
+<td><code>Internal</code></td>
+<td>An error inside the SDK.</td>
+</tr>
+<tr>
+<td><code>Unknown</code></td>
+<td>An error the SDK could not classify.</td>
+</tr>
+<tr>
+<td><code>Unavailable</code></td>
+<td>There is no form to show - not required, not loaded, or none configured.</td>
+</tr>
+<tr>
+<td><code>AlreadyUsed</code></td>
+<td>The loaded form has been shown already; load it again.</td>
+</tr>
+<tr>
+<td><code>InvalidOperation</code></td>
+<td>The call was not valid at this point (on iOS, a bad form parent).</td>
+</tr>
+<tr>
+<td><code>OperationInProgress</code></td>
+<td>The previous form call has not completed yet.</td>
 </tr>
 </tbody>
 </table>

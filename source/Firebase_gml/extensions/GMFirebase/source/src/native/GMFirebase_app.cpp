@@ -492,19 +492,19 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
 // Creates (or reuses) the single shared firebase::App instance every other
 // product module attaches to via getFirebaseApp(). Must be called once,
 // before any other GMFirebase_* module function, on every platform.
-double firebase_app_initialize()
+bool firebase_app_initialize()
 {
     TRACE("[GMFirebase] firebase_app_initialize() called\n");
 
 #if defined(__ANDROID__)
     if (g_firebase_app != nullptr)
-        return 1.0;
+        return true;
 
     // Reuse an already-created default C++ App if one exists.
     if (firebase::App* existing = firebase::App::GetInstance())
     {
         g_firebase_app = existing;
-        return 1.0;
+        return true;
     }
 
     std::string android_error;
@@ -518,10 +518,10 @@ double firebase_app_initialize()
                 (android_error.empty()
                     ? std::string("failed to create Android firebase::App")
                     : android_error));
-        return 0.0;
+        return false;
     }
 
-    return 1.0;
+    return true;
 #else
 	TRACE("[GMFirebase] firebase_app_initialize() calling getFirebaseApp()\n");
 	firebase::App* app = getFirebaseApp();
@@ -529,17 +529,17 @@ double firebase_app_initialize()
 	if (app == nullptr)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_app_initialize: failed to create firebase::App");
-		return 0.0;
+		return false;
 	}
-	return 1.0;
+	return true;
 #endif
 }
 
 // True once firebase_app_initialize() has successfully produced an App,
 // without forcing creation the way getFirebaseApp() does.
-double firebase_app_is_initialized()
+bool firebase_app_is_initialized()
 {
-	return g_firebase_app != nullptr ? 1.0 : 0.0;
+	return g_firebase_app != nullptr;
 }
 
 // Empty string if the app has not been initialized yet.

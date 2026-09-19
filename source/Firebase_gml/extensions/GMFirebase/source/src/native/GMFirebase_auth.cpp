@@ -674,12 +674,12 @@ uint64_t firebase_auth_get_instance_for_app(uint64_t app_ref)
     return registerFirebasePointer(auth, GM_FB_TYPE_AUTH);
 }
 
-double firebase_auth_use_instance(uint64_t auth_ref)
+bool firebase_auth_use_instance(uint64_t auth_ref)
 {
     auto* auth = static_cast<firebase::auth::Auth*>(resolveFirebasePointer(auth_ref, GM_FB_TYPE_AUTH));
-    if (!auth) return 0.0;
+    if (!auth) return false;
     g_firebase_auth = auth;
-    return 1.0;
+    return true;
 }
 
 uint64_t firebase_auth_instance_get_app(uint64_t auth_ref)

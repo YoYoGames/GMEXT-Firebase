@@ -1,12 +1,12 @@
 /**
  * @function_partial firebase_app_initialize
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_app_is_initialized
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -30,7 +30,7 @@
 
 /**
  * @function_partial firebase_analytics_initialize
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -41,16 +41,16 @@
 
 /**
  * @function_partial firebase_analytics_set_analytics_collection_enabled
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
 /**
  * @function_partial firebase_analytics_set_consent
- * @param {Real} ad_storage
- * @param {Real} analytics_storage
- * @param {Real} ad_user_data
- * @param {Real} ad_personalization
+ * @param {Bool} ad_storage
+ * @param {Bool} analytics_storage
+ * @param {Bool} ad_user_data
+ * @param {Bool} ad_personalization
  * @function_end
  */
 
@@ -142,13 +142,13 @@
 
 /**
  * @function_partial firebase_analytics_is_desktop_initialized
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_analytics_set_desktop_debug_mode
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
@@ -184,13 +184,13 @@
 
 /**
  * @function_partial firebase_app_check_set_token_auto_refresh_enabled
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
 /**
  * @function_partial firebase_app_check_get_token
- * @param {Real} force_refresh
+ * @param {Bool} force_refresh
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -213,7 +213,7 @@
 /**
  * @function_partial firebase_app_check_remove_listener
  * @param {Real} listener_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -226,7 +226,7 @@
 
 /**
  * @function_partial firebase_installations_get_token
- * @param {Real} force_refresh
+ * @param {Bool} force_refresh
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -741,29 +741,29 @@
 /**
  * @function_partial firebase_database_go_offline
  * @param {Real} db_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_go_online
  * @param {Real} db_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_purge_outstanding_writes
  * @param {Real} db_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_set_persistence_enabled
  * @param {Real} db_ref
- * @param {Real} enabled
- * @returns {Real}
+ * @param {Bool} enabled
+ * @returns {Bool}
  * @function_end
  */
 
@@ -771,7 +771,7 @@
  * @function_partial firebase_database_set_log_level
  * @param {Real} db_ref
  * @param {Enum.FirebaseLogLevel} log_level
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -881,8 +881,8 @@
 /**
  * @function_partial firebase_database_ref_set_keep_synchronized
  * @param {Real} ref
- * @param {Real} keep_sync
- * @returns {Real}
+ * @param {Bool} keep_sync
+ * @returns {Bool}
  * @function_end
  */
 
@@ -907,14 +907,14 @@
  * @function_partial firebase_database_ref_remove_value_listener
  * @param {Real} ref
  * @param {Real} listener_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_ref_remove_all_value_listeners
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -934,14 +934,14 @@
  * @function_partial firebase_database_ref_remove_child_listener
  * @param {Real} ref
  * @param {Real} listener_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_ref_remove_all_child_listeners
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1051,15 +1051,15 @@
 /**
  * @function_partial firebase_database_query_set_keep_synchronized
  * @param {Real} ref
- * @param {Real} keep_sync
- * @returns {Real}
+ * @param {Bool} keep_sync
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_query_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1084,14 +1084,14 @@
  * @function_partial firebase_database_query_remove_value_listener
  * @param {Real} ref
  * @param {Real} listener_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_query_remove_all_value_listeners
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1111,21 +1111,20 @@
  * @function_partial firebase_database_query_remove_child_listener
  * @param {Real} ref
  * @param {Real} listener_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_query_remove_all_child_listeners
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_query_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
@@ -1154,14 +1153,14 @@
 /**
  * @function_partial firebase_database_ref_go_online
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_ref_go_offline
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1221,21 +1220,20 @@
 /**
  * @function_partial firebase_database_ref_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_exists
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1251,14 +1249,14 @@
  * @function_partial firebase_database_snapshot_has_child
  * @param {Real} ref
  * @param {String} path
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_snapshot_has_children
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1314,7 +1312,6 @@
 /**
  * @function_partial firebase_database_snapshot_release
  * @param {Real} snapshot
- * @returns {Real}
  * @function_end
  */
 
@@ -1850,7 +1847,7 @@
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1859,7 +1856,7 @@
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1869,7 +1866,7 @@
  * @param {Real} document_ref
  * @param {Any} data
  * @param {Array[String]} fields
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1878,7 +1875,7 @@
  * @param {Real} batch_ref
  * @param {Real} document_ref
  * @param {Any} data
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1886,7 +1883,7 @@
  * @function_partial firebase_firestore_write_batch_delete
  * @param {Real} batch_ref
  * @param {Real} document_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2175,7 +2172,6 @@
 /**
  * @function_partial firebase_storage_ref_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
@@ -2203,7 +2199,7 @@
 /**
  * @function_partial firebase_storage_ref_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2312,14 +2308,13 @@
 /**
  * @function_partial firebase_storage_metadata_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_metadata_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2496,42 +2491,41 @@
 /**
  * @function_partial firebase_storage_controller_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_controller_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_controller_pause
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_controller_resume
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_controller_cancel
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_controller_is_paused
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2559,14 +2553,13 @@
 /**
  * @function_partial firebase_storage_list_result_release
  * @param {Real} ref
- * @returns {Real}
  * @function_end
  */
 
 /**
  * @function_partial firebase_storage_list_result_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2639,7 +2632,7 @@
  * @function_partial firebase_functions_get_https_callable_with_options
  * @param {Real} functions_ref
  * @param {String} name
- * @param {Real} limited_use_app_check_token
+ * @param {Bool} limited_use_app_check_token
  * @returns {Real}
  * @function_end
  */
@@ -2656,7 +2649,7 @@
  * @function_partial firebase_functions_get_https_callable_from_url_with_options
  * @param {Real} functions_ref
  * @param {String} url
- * @param {Real} limited_use_app_check_token
+ * @param {Bool} limited_use_app_check_token
  * @returns {Real}
  * @function_end
  */
@@ -2664,7 +2657,7 @@
 /**
  * @function_partial firebase_functions_callable_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2766,7 +2759,7 @@
  * @function_partial firebase_remote_config_get_boolean
  * @param {Real} rc_ref
  * @param {String} key
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2872,13 +2865,13 @@
 /**
  * @function_partial firebase_remote_config_remove_config_update_listener
  * @param {Real} reg_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_initialize
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -2889,37 +2882,37 @@
 
 /**
  * @function_partial firebase_messaging_set_registration_on_init_enabled
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_is_registration_on_init_enabled
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_set_token_registration_on_init_enabled
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_is_token_registration_on_init_enabled
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_delivery_metrics_export_to_big_query_enabled
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_set_delivery_metrics_export_to_big_query
- * @param {Real} enabled
+ * @param {Bool} enabled
  * @function_end
  */
 
@@ -2976,19 +2969,19 @@
 
 /**
  * @function_partial firebase_messaging_poll_message
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_poll_registration
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_poll_unregistration
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3000,7 +2993,7 @@
 
 /**
  * @function_partial firebase_messaging_poll_token
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3084,7 +3077,7 @@
 
 /**
  * @function_partial firebase_messaging_message_notification_opened
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3123,7 +3116,7 @@
 
 /**
  * @function_partial firebase_messaging_message_has_notification
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3249,7 +3242,7 @@
 /**
  * @function_partial firebase_ump_can_request_ads
  * @param {Real} consent_ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3263,7 +3256,7 @@
  * @function_partial firebase_ump_request_consent_info_update
  * @param {Real} consent_ref
  * @param {Enum.FirebaseUmpConsentDebugGeography} debug_geography
- * @param {Real} tag_for_under_age_of_consent
+ * @param {Bool} tag_for_under_age_of_consent
  * @param {Array[String]} [debug_device_ids]
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
@@ -3307,7 +3300,7 @@
 
 /**
  * @function_partial firebase_analytics_notify_app_lifecycle_change
- * @param {Real} state
+ * @param {Enum.FirebaseAnalyticsAppLifecycleState} state
  * @function_end
  */
 
@@ -3466,14 +3459,14 @@
 /**
  * @function_partial firebase_database_ref_is_root
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_database_ref_is_valid
  * @param {Real} ref
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -4055,15 +4048,15 @@
 
 /**
  * @function_partial firebase_messaging_initialize_with_options
- * @param {Real} suppress_notification_permission_prompt
- * @returns {Real}
+ * @param {Bool} suppress_notification_permission_prompt
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_firestore_field_value_type
  * @param {Real} field_value
- * @returns {Real}
+ * @returns {Enum.FirestoreFieldValueType}
  * @function_end
  */
 
@@ -4271,7 +4264,7 @@
  * @param {Real} batch
  * @param {Real} document
  * @param {Array[Struct.FirestoreFieldPathValue]} entries
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -4564,22 +4557,22 @@
 /**
  * @function_partial firebase_analytics_initialize_for_app
  * @param {Real} app
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_initialize_for_app
  * @param {Real} app
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
 /**
  * @function_partial firebase_messaging_initialize_for_app_with_options
  * @param {Real} app
- * @param {Real} suppress_notification_permission_prompt
- * @returns {Real}
+ * @param {Bool} suppress_notification_permission_prompt
+ * @returns {Bool}
  * @function_end
  */
 
@@ -4606,7 +4599,7 @@
 /**
  * @function_partial firebase_auth_use_instance
  * @param {Real} auth
- * @returns {Real}
+ * @returns {Bool}
  * @function_end
  */
 
@@ -5079,6 +5072,17 @@
  */
 
 /**
+ * @enum_partial FirebaseAppCheckError
+ * @member None
+ * @member ServerUnreachable
+ * @member InvalidConfiguration
+ * @member SystemKeychain
+ * @member UnsupportedProvider
+ * @member Unknown
+ * @enum_end
+ */
+
+/**
  * @enum_partial FirebaseAppCheckProvider
  * @member Debug
  * @member DeviceCheck
@@ -5273,6 +5277,67 @@
  */
 
 /**
+ * @enum_partial FirestoreFieldValueType
+ * @member Null
+ * @member Boolean
+ * @member Integer
+ * @member Double
+ * @member Timestamp
+ * @member String
+ * @member Blob
+ * @member Reference
+ * @member GeoPoint
+ * @member Array
+ * @member Map
+ * @member Delete
+ * @member ServerTimestamp
+ * @member ArrayUnion
+ * @member ArrayRemove
+ * @member IncrementInteger
+ * @member IncrementDouble
+ * @enum_end
+ */
+
+/**
+ * @enum_partial FirebaseStorageError
+ * @member None
+ * @member Unknown
+ * @member ObjectNotFound
+ * @member BucketNotFound
+ * @member ProjectNotFound
+ * @member QuotaExceeded
+ * @member Unauthenticated
+ * @member Unauthorized
+ * @member RetryLimitExceeded
+ * @member NonMatchingChecksum
+ * @member DownloadSizeExceeded
+ * @member Cancelled
+ * @enum_end
+ */
+
+/**
+ * @enum_partial FirebaseFunctionsError
+ * @member None
+ * @member Cancelled
+ * @member Unknown
+ * @member InvalidArgument
+ * @member DeadlineExceeded
+ * @member NotFound
+ * @member AlreadyExists
+ * @member PermissionDenied
+ * @member ResourceExhausted
+ * @member FailedPrecondition
+ * @member Aborted
+ * @member OutOfRange
+ * @member Unimplemented
+ * @member Internal
+ * @member Unavailable
+ * @member DataLoss
+ * @member Unauthenticated
+ * @enum_end
+ */
+
+/**
  * @enum_partial FirebaseRemoteConfigLastFetchStatus
  * @member Success
  * @member Failure
@@ -5308,6 +5373,16 @@
  */
 
 /**
+ * @enum_partial FirebaseMessagingError
+ * @member None
+ * @member FailedToRegisterForRemoteNotifications
+ * @member InvalidTopicName
+ * @member NoRegistrationToken
+ * @member Unknown
+ * @enum_end
+ */
+
+/**
  * @enum_partial FirebaseUmpConsentStatus
  * @member Unknown
  * @member Required
@@ -5337,6 +5412,39 @@
  * @member Disabled
  * @member EEA
  * @member NonEEA
+ * @enum_end
+ */
+
+/**
+ * @enum_partial FirebaseUmpConsentRequestError
+ * @member Success
+ * @member InvalidAppId
+ * @member Network
+ * @member Internal
+ * @member Misconfiguration
+ * @member Unknown
+ * @member InvalidOperation
+ * @member OperationInProgress
+ * @enum_end
+ */
+
+/**
+ * @enum_partial FirebaseUmpConsentFormError
+ * @member Success
+ * @member Timeout
+ * @member Internal
+ * @member Unknown
+ * @member Unavailable
+ * @member AlreadyUsed
+ * @member InvalidOperation
+ * @member OperationInProgress
+ * @enum_end
+ */
+
+/**
+ * @enum_partial FirebaseAnalyticsAppLifecycleState
+ * @member Unknown
+ * @member Termination
  * @enum_end
  */
 

@@ -269,14 +269,14 @@
  * @desc **Firebase C++ SDK:** [firebase::remote_config::RemoteConfig::GetBoolean](https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getboolean)
  *
  * This function returns a parameter's value as a boolean. A console value of `true`, `1`, `t`,
- * `yes`, `y` or `on` (in any case) reads as `1`; `false`, `0`, `f`, `no`, `n`, `off` and an empty
- * value read as `0`; anything else fails the conversion and reads as `0`, which
+ * `yes`, `y` or `on` (in any case) reads as `true`; `false`, `0`, `f`, `no`, `n`, `off` and an empty
+ * value read as `false`; anything else fails the conversion and reads as `false`, which
  * ${function.firebase_remote_config_get_boolean_with_info} can tell apart. The value comes from the last activation, or the default set with
  * ${function.firebase_remote_config_set_defaults}, or - with neither - the static value.
  *
  * @param {Real} rc_ref The Remote Config handle from ${function.firebase_remote_config_get_instance}.
  * @param {String} key The parameter's key.
- * @returns {Real} `1` for a true value, otherwise `0`.
+ * @returns {Bool} `true` for a true value, otherwise `false`.
  * @function_end
  */
 
@@ -548,7 +548,7 @@
  * connection to the backend is closed; adding a listener again reopens it.
  *
  * @param {Real} reg_ref The listener handle from ${function.firebase_remote_config_add_config_update_listener}.
- * @returns {Real} `1` when a listener was removed, `0` when the handle was not one.
+ * @returns {Bool} `true` when a listener was removed, `false` when the handle was not one.
  * @function_end
  */
 

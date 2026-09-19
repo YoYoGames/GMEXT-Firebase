@@ -212,11 +212,11 @@ FirebaseError firebase_remote_config_activate(uint64_t rc_ref, const std::option
 // Parameter values
 // ============================================================
 
-double firebase_remote_config_get_boolean(uint64_t rc_ref, std::string_view key)
+bool firebase_remote_config_get_boolean(uint64_t rc_ref, std::string_view key)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
-	if (rc == nullptr) return 0.0;
-	return rc->GetBoolean(std::string(key).c_str()) ? 1.0 : 0.0;
+	if (rc == nullptr) return false;
+	return rc->GetBoolean(std::string(key).c_str());
 }
 
 double firebase_remote_config_get_long(uint64_t rc_ref, std::string_view key)
@@ -431,15 +431,15 @@ uint64_t firebase_remote_config_add_config_update_listener(uint64_t rc_ref, cons
 	return registerFirebasePointer(boxed, GM_FB_TYPE_RC_LISTENER_REG);
 }
 
-double firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
+bool firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
 {
 	firebase::remote_config::ConfigUpdateListenerRegistration* reg = resolveListenerReg(reg_ref);
-	if (reg == nullptr) return 0.0;
+	if (reg == nullptr) return false;
 
 	reg->Remove();
 	reg = static_cast<firebase::remote_config::ConfigUpdateListenerRegistration*>(unregisterFirebasePointer(reg_ref, GM_FB_TYPE_RC_LISTENER_REG));
 	delete reg;
-	return 1.0;
+	return true;
 }
 
 // ============================================================

@@ -4,6 +4,26 @@ using namespace gm::wire;
 using namespace gm_structs;
 using namespace gm_enums;
 
+// FirebaseFunctionsError mirrors firebase::functions::Error, the gRPC codes a
+// callable_call callback receives. See GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseFunctionsError::None, firebase::functions::kErrorNone);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Cancelled, firebase::functions::kErrorCancelled);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Unknown, firebase::functions::kErrorUnknown);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::InvalidArgument, firebase::functions::kErrorInvalidArgument);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::DeadlineExceeded, firebase::functions::kErrorDeadlineExceeded);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::NotFound, firebase::functions::kErrorNotFound);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::AlreadyExists, firebase::functions::kErrorAlreadyExists);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::PermissionDenied, firebase::functions::kErrorPermissionDenied);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::ResourceExhausted, firebase::functions::kErrorResourceExhausted);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::FailedPrecondition, firebase::functions::kErrorFailedPrecondition);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Aborted, firebase::functions::kErrorAborted);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::OutOfRange, firebase::functions::kErrorOutOfRange);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Unimplemented, firebase::functions::kErrorUnimplemented);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Internal, firebase::functions::kErrorInternal);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Unavailable, firebase::functions::kErrorUnavailable);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::DataLoss, firebase::functions::kErrorDataLoss);
+GM_FB_PIN_ENUM(FirebaseFunctionsError::Unauthenticated, firebase::functions::kErrorUnauthenticated);
+
 std::map<uint32_t, firebase::functions::HttpsCallableReference> g_firebase_functions_callable_map;
 uint32_t g_firebase_functions_callable_index = 0;
 
@@ -103,13 +123,13 @@ uint64_t firebase_functions_get_https_callable(uint64_t firebase_functions_ref, 
 	return registerFunctionsCallable(functions->GetHttpsCallable(std::string(name).c_str()));
 }
 
-uint64_t firebase_functions_get_https_callable_with_options(uint64_t firebase_functions_ref, std::string_view name, double limited_use_app_check_token)
+uint64_t firebase_functions_get_https_callable_with_options(uint64_t firebase_functions_ref, std::string_view name, bool limited_use_app_check_token)
 {
 	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
 	if (functions == nullptr) return 0;
 
 	firebase::functions::HttpsCallableOptions options;
-	options.limited_use_app_check_token = (limited_use_app_check_token >= 0.5);
+	options.limited_use_app_check_token = limited_use_app_check_token;
 	return registerFunctionsCallable(functions->GetHttpsCallable(std::string(name).c_str(), options));
 }
 
@@ -120,13 +140,13 @@ uint64_t firebase_functions_get_https_callable_from_url(uint64_t firebase_functi
 	return registerFunctionsCallable(functions->GetHttpsCallableFromURL(std::string(url).c_str()));
 }
 
-uint64_t firebase_functions_get_https_callable_from_url_with_options(uint64_t firebase_functions_ref, std::string_view url, double limited_use_app_check_token)
+uint64_t firebase_functions_get_https_callable_from_url_with_options(uint64_t firebase_functions_ref, std::string_view url, bool limited_use_app_check_token)
 {
 	firebase::functions::Functions* functions = resolveFunctions(firebase_functions_ref);
 	if (functions == nullptr) return 0;
 
 	firebase::functions::HttpsCallableOptions options;
-	options.limited_use_app_check_token = (limited_use_app_check_token >= 0.5);
+	options.limited_use_app_check_token = limited_use_app_check_token;
 	return registerFunctionsCallable(functions->GetHttpsCallableFromURL(std::string(url).c_str(), options));
 }
 
@@ -134,11 +154,11 @@ uint64_t firebase_functions_get_https_callable_from_url_with_options(uint64_t fi
 // HttpsCallableReference
 // ============================================================
 
-double firebase_functions_callable_is_valid(uint64_t ref)
+bool firebase_functions_callable_is_valid(uint64_t ref)
 {
 	firebase::functions::HttpsCallableReference* self = resolveCallable(ref);
-	if (self == nullptr) return 0.0;
-	return self->is_valid() ? 1.0 : 0.0;
+	if (self == nullptr) return false;
+	return self->is_valid();
 }
 
 void firebase_functions_callable_release(uint64_t ref)

@@ -20,6 +20,25 @@ GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::Disabled, firebase::ump::kConse
 GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::EEA, firebase::ump::kConsentDebugGeographyEEA);
 GM_FB_PIN_ENUM(FirebaseUmpConsentDebugGeography::NonEEA, firebase::ump::kConsentDebugGeographyNonEEA);
 
+// The two callback-code enums: ConsentRequestError on request_consent_info_update,
+// ConsentFormError on the four form functions.
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::Success, firebase::ump::kConsentRequestSuccess);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::InvalidAppId, firebase::ump::kConsentRequestErrorInvalidAppId);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::Network, firebase::ump::kConsentRequestErrorNetwork);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::Internal, firebase::ump::kConsentRequestErrorInternal);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::Misconfiguration, firebase::ump::kConsentRequestErrorMisconfiguration);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::Unknown, firebase::ump::kConsentRequestErrorUnknown);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::InvalidOperation, firebase::ump::kConsentRequestErrorInvalidOperation);
+GM_FB_PIN_ENUM(FirebaseUmpConsentRequestError::OperationInProgress, firebase::ump::kConsentRequestErrorOperationInProgress);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::Success, firebase::ump::kConsentFormSuccess);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::Timeout, firebase::ump::kConsentFormErrorTimeout);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::Internal, firebase::ump::kConsentFormErrorInternal);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::Unknown, firebase::ump::kConsentFormErrorUnknown);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::Unavailable, firebase::ump::kConsentFormErrorUnavailable);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::AlreadyUsed, firebase::ump::kConsentFormErrorAlreadyUsed);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::InvalidOperation, firebase::ump::kConsentFormErrorInvalidOperation);
+GM_FB_PIN_ENUM(FirebaseUmpConsentFormError::OperationInProgress, firebase::ump::kConsentFormErrorOperationInProgress);
+
 #if FIREBASE_PLATFORM_IOS
 // Defined in src/ios/GMFirebase_ios.mm: the runner's root view controller.
 extern "C" void* gmFirebaseIosRootViewController(void);
@@ -121,11 +140,11 @@ FirebaseUmpPrivacyOptionsRequirementStatus firebase_ump_get_privacy_options_requ
 	return static_cast<FirebaseUmpPrivacyOptionsRequirementStatus>(consent_info->GetPrivacyOptionsRequirementStatus());
 }
 
-double firebase_ump_can_request_ads(uint64_t consent_ref)
+bool firebase_ump_can_request_ads(uint64_t consent_ref)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
-	if (consent_info == nullptr) return 0.0;
-	return consent_info->CanRequestAds() ? 1.0 : 0.0;
+	if (consent_info == nullptr) return false;
+	return consent_info->CanRequestAds();
 }
 
 void firebase_ump_reset(uint64_t consent_ref)
@@ -140,14 +159,14 @@ void firebase_ump_reset(uint64_t consent_ref)
 // makes debug_geography silently not apply on a real device.
 // callback(error_code: real, error_message: string)
 FirebaseError firebase_ump_request_consent_info_update(uint64_t consent_ref, FirebaseUmpConsentDebugGeography debug_geography,
-	double tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids,
+	bool tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids,
 	const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::ump::ConsentRequestParameters params;
-	params.tag_for_under_age_of_consent = (tag_for_under_age_of_consent >= 0.5);
+	params.tag_for_under_age_of_consent = tag_for_under_age_of_consent;
 
 	switch (debug_geography)
 	{

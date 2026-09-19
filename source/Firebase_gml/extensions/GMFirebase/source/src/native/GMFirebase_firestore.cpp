@@ -45,6 +45,23 @@ GM_FB_PIN_ENUM(FirestoreAggregateSource::Server, firebase::firestore::AggregateS
 GM_FB_PIN_ENUM(FirestoreLoadBundleTaskState::Error, firebase::firestore::LoadBundleTaskProgress::State::kError);
 GM_FB_PIN_ENUM(FirestoreLoadBundleTaskState::InProgress, firebase::firestore::LoadBundleTaskProgress::State::kInProgress);
 GM_FB_PIN_ENUM(FirestoreLoadBundleTaskState::Success, firebase::firestore::LoadBundleTaskProgress::State::kSuccess);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Null, firebase::firestore::FieldValue::Type::kNull);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Boolean, firebase::firestore::FieldValue::Type::kBoolean);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Integer, firebase::firestore::FieldValue::Type::kInteger);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Double, firebase::firestore::FieldValue::Type::kDouble);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Timestamp, firebase::firestore::FieldValue::Type::kTimestamp);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::String, firebase::firestore::FieldValue::Type::kString);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Blob, firebase::firestore::FieldValue::Type::kBlob);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Reference, firebase::firestore::FieldValue::Type::kReference);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::GeoPoint, firebase::firestore::FieldValue::Type::kGeoPoint);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Array, firebase::firestore::FieldValue::Type::kArray);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Map, firebase::firestore::FieldValue::Type::kMap);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::Delete, firebase::firestore::FieldValue::Type::kDelete);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::ServerTimestamp, firebase::firestore::FieldValue::Type::kServerTimestamp);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::ArrayUnion, firebase::firestore::FieldValue::Type::kArrayUnion);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::ArrayRemove, firebase::firestore::FieldValue::Type::kArrayRemove);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::IncrementInteger, firebase::firestore::FieldValue::Type::kIncrementInteger);
+GM_FB_PIN_ENUM(FirestoreFieldValueType::IncrementDouble, firebase::firestore::FieldValue::Type::kIncrementDouble);
 
 // GML -> SDK. False for anything outside the enum; the caller records
 // InvalidArgument.
@@ -1322,75 +1339,75 @@ void firebase_firestore_query_release(uint64_t ref)
 // WriteBatch
 // ============================================================
 
-double firebase_firestore_write_batch_set(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+bool firebase_firestore_write_batch_set(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return false;
 
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return false;
 
 	batch->Set(*doc, gmValueToMapFieldValue(data));
-	return 1.0;
+	return true;
 }
 
-double firebase_firestore_write_batch_set_merge(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+bool firebase_firestore_write_batch_set_merge(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return false;
 
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return false;
 
 	batch->Set(*doc, gmValueToMapFieldValue(data), firebase::firestore::SetOptions::Merge());
-	return 1.0;
+	return true;
 }
 
-double firebase_firestore_write_batch_set_merge_fields(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields)
+bool firebase_firestore_write_batch_set_merge_fields(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return false;
 
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return false;
 
 	auto options = firebase::firestore::SetOptions::MergeFields(toStringVector(fields));
 	batch->Set(*doc, gmValueToMapFieldValue(data), options);
-	return 1.0;
+	return true;
 }
 
-double firebase_firestore_write_batch_update(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+bool firebase_firestore_write_batch_update(uint64_t batch_ref, uint64_t document_ref, const gm::wire::GMValue& data)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return false;
 
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return false;
 
 	batch->Update(*doc, gmValueToMapFieldValue(data));
-	return 1.0;
+	return true;
 }
 
-double firebase_firestore_write_batch_delete(uint64_t batch_ref, uint64_t document_ref)
+bool firebase_firestore_write_batch_delete(uint64_t batch_ref, uint64_t document_ref)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
-	if (batch == nullptr) return 0.0;
+	if (batch == nullptr) return false;
 
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (doc == nullptr) return 0.0;
+	if (doc == nullptr) return false;
 
 	batch->Delete(*doc);
-	return 1.0;
+	return true;
 }
 
 FirebaseError firebase_firestore_write_batch_commit(uint64_t batch_ref, const std::optional<gm::wire::GMFunction>& callback)
@@ -1772,9 +1789,12 @@ firebase::firestore::MapFieldPathValue gmToMapFieldPathValue(const std::vector<g
     return out;
 }
 
-double firebase_firestore_field_value_type(uint64_t ref)
+// Null for a handle that does not resolve (InvalidHandle is already recorded),
+// which is also what the SDK's type() answers for an invalid value.
+gm_enums::FirestoreFieldValueType firebase_firestore_field_value_type(uint64_t ref)
 {
-    auto* v = resolveFieldValueHandle(ref); return v ? static_cast<double>(v->type()) : -1.0;
+    auto* v = resolveFieldValueHandle(ref);
+    return v ? static_cast<FirestoreFieldValueType>(v->type()) : FirestoreFieldValueType::Null;
 }
 bool firebase_firestore_field_value_is_valid(uint64_t ref) { auto* v=resolveFieldValueHandle(ref); return v && v->is_valid(); }
 bool firebase_firestore_field_value_is_null(uint64_t ref) { auto* v=resolveFieldValueHandle(ref); return v && v->is_null(); }
@@ -1854,11 +1874,11 @@ FirebaseError firebase_firestore_document_ref_update_field_paths(uint64_t ref, c
     }); return FirebaseError::Ok;
 }
 
-double firebase_firestore_write_batch_update_field_paths(uint64_t batch_ref, uint64_t document_ref, const std::vector<gm_structs::FirestoreFieldPathValue>& entries)
+bool firebase_firestore_write_batch_update_field_paths(uint64_t batch_ref, uint64_t document_ref, const std::vector<gm_structs::FirestoreFieldPathValue>& entries)
 {
     firebase::firestore::WriteBatch* batch=nullptr; validate_fb_ref_map(batch_ref,GM_FB_TYPE_FIRESTORE_WRITE_BATCH,firebase::firestore::WriteBatch,g_fs_write_batch_map,batch);
     firebase::firestore::DocumentReference* doc=nullptr; validate_fb_ref_map(document_ref,GM_FB_TYPE_FIRESTORE_DOC_REF,firebase::firestore::DocumentReference,g_fs_doc_ref_map,doc);
-    if(!batch || !doc) return 0.0; batch->Update(*doc,gmToMapFieldPathValue(entries)); return 1.0;
+    if(!batch || !doc) return false; batch->Update(*doc,gmToMapFieldPathValue(entries)); return true;
 }
 
 bool firebase_firestore_write_batch_is_valid(uint64_t batch_ref)

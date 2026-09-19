@@ -543,6 +543,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -828,6 +839,17 @@
     <span class="md-ellipsis">
       
         firebase_analytics_initialize_for_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebaseanalyticsapplifecyclestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAnalyticsAppLifecycleState
       
     </span>
   </a>
@@ -1575,6 +1597,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constants
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1867,6 +1900,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firebaseanalyticsapplifecyclestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FirebaseAnalyticsAppLifecycleState
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firebaseanalyticsparameter" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1908,19 +1952,10 @@ on the platform's terms - and the module adds the game's. Everything starts with
 <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>, after <a href="app.html#firebase_app_initialize">firebase_app_initialize</a>.</p>
 <h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
 <p>Analytics works fully on Android and iOS. On Windows the SDK loads Google Analytics from a
-<code>google_analytics.dll</code> beside the game's executable and runs every call as a no-op without it;
-<a href="analytics.html#firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized</a> says which. The SDK package does not
-include that DLL: the README says where to download it (the SDK repository, at the tag matching
-the pinned version) and where to put it (<code>libs/windows/</code> under the SDK root), and the Windows
-build step copies it beside the executable from there. The SDK checks the DLL's hash against a
-list compiled into the pinned library, so a DLL from another SDK version is refused and Analytics
-stays a no-op - <a href="analytics.html#firebase_analytics_set_log_callback">firebase_analytics_set_log_callback</a> shows the "Hash mismatch for
-Analytics DLL." line when that happens. One flow cannot load it at all: a Run from the IDE (VM)
-executes the game inside the runtime's own runner, whose folder is the runtime's, and the SDK
-only looks beside the running executable - so on an IDE run
-<a href="analytics.html#firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized</a> reads <code>0</code> and Analytics is the stub, while a
-packaged or YYC build is its own executable and loads the DLL. On macOS and Linux every call is a
-no-op. On all three, <a href="analytics.html#firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id</a> and
+<code>google_analytics.dll</code> placed beside the game's executable - a library the Firebase C++ SDK
+package does not include - and runs every call as a no-op without it;
+<a href="analytics.html#firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized</a> says which. On macOS and Linux every call
+is a no-op. On all three, <a href="analytics.html#firebase_analytics_get_analytics_instance_id">firebase_analytics_get_analytics_instance_id</a> and
 <a href="analytics.html#firebase_analytics_get_session_id">firebase_analytics_get_session_id</a> answer with placeholder ids,
 <a href="analytics.html#firebase_analytics_set_consent">firebase_analytics_set_consent</a> does nothing, and the functions in the Desktop
 section are Windows-only. Game code need not branch: the calls are safe everywhere.</p>
@@ -1936,7 +1971,7 @@ except the two id fetches and the Apple transaction.</p>
 <p>Collection is on by default from the first launch on Android and iOS, before any code runs.
 A game that needs consent first ships with the <code>disableDataCollection</code> extension option (see
 <a href="extension_options.html">Extension Options</a>), which turns collection off in the manifest and the <code>Info.plist</code>,
-and calls <a href="analytics.html#firebase_analytics_set_analytics_collection_enabled">firebase_analytics_set_analytics_collection_enabled</a> with <code>1</code> once the
+and calls <a href="analytics.html#firebase_analytics_set_analytics_collection_enabled">firebase_analytics_set_analytics_collection_enabled</a> with <code>true</code> once the
 player has agreed; <a href="analytics.html#firebase_analytics_set_consent">firebase_analytics_set_consent</a> sets the finer-grained consent
 mode signals for advertising. Both are stored on the device.</p>
 <h3 id="console-setup">Console setup<a class="headerlink" href="#console-setup" title="Permanent link">&para;</a></h3>
@@ -2001,6 +2036,11 @@ Apple purchases:</p>
 <ul>
 <li><a href="analytics.html#firebaseanalyticsparameter">FirebaseAnalyticsParameter</a></li>
 </ul>
+<h2 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">&para;</a></h2>
+<p>The following constants are used by this module:</p>
+<ul>
+<li><a href="analytics.html#firebaseanalyticsapplifecyclestate">FirebaseAnalyticsAppLifecycleState</a></li>
+</ul>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2023,9 +2063,9 @@ from the game's folder; see the Platforms section of <a href="analytics.html">An
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the module is initialised, <code>0</code> when the default app does not exist.</p>
+<p><code>true</code> when the module is initialised, <code>false</code> when the default app does not exist.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Create Event of a persistent controller, after firebase_app_initialize()
@@ -2068,7 +2108,7 @@ or uploaded - not the automatic events either - until it is turned on again. The
 stored on the device and holds across launches, so a consent screen needs the call once. It is
 the runtime half of the <code>disableDataCollection</code> extension option (see
 <a href="extension_options.html">Extension Options</a>): a game built with the option ships with collection off from the
-first launch, and calls this function with <code>1</code> once the player has agreed. By default
+first launch, and calls this function with <code>true</code> once the player has agreed. By default
 collection is on. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -2086,8 +2126,8 @@ collection is on. It does nothing before <a href="analytics.html#firebase_analyt
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to collect, <code>0</code> to stop.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to collect, <code>false</code> to stop.</td>
 </tr>
 </tbody>
 </table>
@@ -2101,12 +2141,12 @@ collection is on. It does nothing before <a href="analytics.html#firebase_analyt
 <p><pre class="highlight"><code class="language-gml">// The consent screen's buttons
 if (player_accepted)
 {
-    firebase_analytics_set_analytics_collection_enabled(1);
-    firebase_analytics_set_consent(1, 1, 1, 1);
+    firebase_analytics_set_analytics_collection_enabled(true);
+    firebase_analytics_set_consent(true, true, true, true);
 }
 else
 {
-    firebase_analytics_set_consent(0, 1, 0, 0);
+    firebase_analytics_set_consent(false, true, false, false);
 }</code></pre>
 The above code is a consent screen for a game built with <code>disableDataCollection</code>: acceptance
 turns collection on and grants every consent type, refusal keeps analytics storage - the
@@ -2142,23 +2182,23 @@ call does nothing. It does nothing before <a href="analytics.html#firebase_analy
 <tbody>
 <tr>
 <td>ad_storage</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to grant, <code>0</code> to deny storage for advertising.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to grant, <code>false</code> to deny storage for advertising.</td>
 </tr>
 <tr>
 <td>analytics_storage</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to grant, <code>0</code> to deny storage for analytics.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to grant, <code>false</code> to deny storage for analytics.</td>
 </tr>
 <tr>
 <td>ad_user_data</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to grant, <code>0</code> to deny sending user data for advertising.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to grant, <code>false</code> to deny sending user data for advertising.</td>
 </tr>
 <tr>
 <td>ad_personalization</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> to grant, <code>0</code> to deny personalised advertising.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> to grant, <code>false</code> to deny personalised advertising.</td>
 </tr>
 </tbody>
 </table>
@@ -2757,10 +2797,10 @@ module. It does nothing on other platforms, where the platform SDK handles termi
 
 <h1 id="firebase_analytics_is_desktop_initialized">firebase_analytics_is_desktop_initialized<a class="headerlink" href="#firebase_analytics_is_desktop_initialized" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#isdesktopinitialized">firebase::analytics::IsDesktopInitialized</a></p>
-<p>This function returns whether the Windows Analytics library was found and started: <code>1</code> when
+<p>This function returns whether the Windows Analytics library was found and started: <code>true</code> when
 <code>google_analytics.dll</code> was loaded from the game's folder at
-<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> and initialised, <code>0</code> when it was not - in which case
-every call on Windows is a no-op. It returns <code>0</code> on every other platform.</p>
+<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a> and initialised, <code>false</code> when it was not - in which case
+every call on Windows is a no-op. It returns <code>false</code> on every other platform.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2769,9 +2809,9 @@ every call on Windows is a no-op. It returns <code>0</code> on every other platf
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when Analytics is live on Windows, otherwise <code>0</code>.</p>
+<p><code>true</code> when Analytics is live on Windows, otherwise <code>false</code>.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2799,8 +2839,8 @@ and the <code>-FIRDebugEnabled</code> launch argument. It does nothing before <a
 <tbody>
 <tr>
 <td>enabled</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>1</code> for debug mode, <code>0</code> for normal operation.</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
+<td><code>true</code> for debug mode, <code>false</code> for normal operation.</td>
 </tr>
 </tbody>
 </table>
@@ -2881,10 +2921,12 @@ stop. It does nothing on other platforms. It does nothing before <a href="analyt
 <p>This function starts on-device conversion measurement for a player identified by email
 address - an iOS feature that matches the player to an ad they saw without the address leaving
 the device, for measuring the ads that brought players to the game.</p>
-<p>It is iOS-only: on Android, Windows, macOS and Linux the call does nothing. The
-<code>GoogleAdsOnDeviceConversion</code> framework it needs comes with the <code>FirebaseAnalytics</code> pod the
-extension pins, so nothing has to be added to the iOS build. It does nothing before
-<a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2919,8 +2961,12 @@ extension pins, so nothing has to be added to the iOS build. It does nothing bef
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#initiateondeviceconversionmeasurementwithphonenumber">firebase::analytics::InitiateOnDeviceConversionMeasurementWithPhoneNumber</a></p>
 <p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>
 for a phone number.</p>
-<p>It is iOS-only, like <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>.
-It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2954,9 +3000,10 @@ It does nothing before <a href="analytics.html#firebase_analytics_initialize">fi
 <h1 id="firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change<a class="headerlink" href="#firebase_analytics_notify_app_lifecycle_change" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#notifyapplifecyclechange">firebase::analytics::NotifyAppLifecycleChange</a></p>
 <p>This function tells the Windows Analytics library about a change of the game's lifecycle state.
-The SDK defines two states: <code>0</code>, unknown, and <code>1</code>, termination - which is what
-<a href="analytics.html#firebase_analytics_notify_app_lifecycle_termination">firebase_analytics_notify_app_lifecycle_termination</a> sends. It does nothing on other
-platforms. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+The SDK defines two states, the two members of <a href="analytics.html#firebaseanalyticsapplifecyclestate">FirebaseAnalyticsAppLifecycleState</a>;
+<code>Termination</code> is what <a href="analytics.html#firebase_analytics_notify_app_lifecycle_termination">firebase_analytics_notify_app_lifecycle_termination</a> sends. A
+value outside the enum is refused with <code>FirebaseError.InvalidArgument</code> in
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a>. It does nothing on other platforms. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -2973,8 +3020,8 @@ platforms. It does nothing before <a href="analytics.html#firebase_analytics_ini
 <tbody>
 <tr>
 <td>state</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>The lifecycle state: <code>1</code> for termination.</td>
+<td><a href="analytics.html#firebaseanalyticsapplifecyclestate">FirebaseAnalyticsAppLifecycleState</a></td>
+<td>The lifecycle state, a <a href="analytics.html#firebaseanalyticsapplifecyclestate">FirebaseAnalyticsAppLifecycleState</a> member.</td>
 </tr>
 </tbody>
 </table>
@@ -2992,8 +3039,12 @@ platforms. It does nothing before <a href="analytics.html#firebase_analytics_ini
 <p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>
 for an email address the game has already normalised and SHA-256 hashed, as Google's on-device
 measurement guide describes, passed as the raw 32 bytes of the hash.</p>
-<p>It is iOS-only, like <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>.
-It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3029,8 +3080,12 @@ It does nothing before <a href="analytics.html#firebase_analytics_initialize">fi
 <p>This function is <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_phone">firebase_analytics_initiate_on_device_conversion_measurement_phone</a>
 for a phone number the game has already normalised to E.164 and SHA-256 hashed, passed as the
 raw 32 bytes of the hash.</p>
-<p>It is iOS-only, like <a href="analytics.html#firebase_analytics_initiate_on_device_conversion_measurement_email">firebase_analytics_initiate_on_device_conversion_measurement_email</a>.
-It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>On-device conversion measurement needs the <code>GoogleAppMeasurementOnDeviceConversion</code>
+library linked into the iOS build, which this version of the extension does not do, so the call
+does nothing on every platform. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
+</div>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3091,9 +3146,40 @@ app.</p>
 <p><br></p>
 <p><strong>Returns:</strong></p>
 <blockquote>
-<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>1</code> when the module is initialised, <code>0</code> when the app handle is not valid.</p>
+<p><code>true</code> when the module is initialised, <code>false</code> when the app handle is not valid.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebaseanalyticsapplifecyclestate">FirebaseAnalyticsAppLifecycleState<a class="headerlink" href="#firebaseanalyticsapplifecyclestate" title="Permanent link">&para;</a></h1>
+<p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/namespace/firebase/analytics#applifecyclestate">firebase::analytics::AppLifecycleState</a></p>
+<p>The state <a href="analytics.html#firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change</a> reports to the Windows
+Analytics library.</p>
+<p>These constants are referenced by the following functions:</p>
+<ul>
+<li><a href="analytics.html#firebase_analytics_notify_app_lifecycle_change">firebase_analytics_notify_app_lifecycle_change</a></li>
+</ul>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Unknown</code></td>
+<td>An invalid state, which the SDK uses for an uninitialised value.</td>
+</tr>
+<tr>
+<td><code>Termination</code></td>
+<td>The game is about to be terminated.</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

@@ -467,7 +467,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_ump_show_consent_form(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_ump_load_and_show_consent_form_if_required(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_ump_show_privacy_options_form(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
-    public static native double __EXT_JNI__firebase_analytics_notify_app_lifecycle_change(double state);
+    public static native double __EXT_JNI__firebase_analytics_notify_app_lifecycle_change(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_auth_federated_oauth_provider_create(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
@@ -563,7 +563,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_remote_config_get_string_with_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_remote_config_get_data_with_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_messaging_initialize_with_options(double suppress_notification_permission_prompt);
-    public static native double __EXT_JNI__firebase_firestore_field_value_type(ByteBuffer __arg_buffer, double __arg_buffer_length);
+    public static native double __EXT_JNI__firebase_firestore_field_value_type(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_field_value_is_valid(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_field_value_is_null(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_field_value_is_boolean(ByteBuffer __arg_buffer, double __arg_buffer_length);

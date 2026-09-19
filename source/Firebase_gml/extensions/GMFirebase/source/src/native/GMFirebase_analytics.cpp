@@ -7,14 +7,6 @@ using namespace gm_enums;
 
 namespace
 {
-	// GML has no separate boolean wire type - every "flag" parameter crosses
-	// as a real, following the same >=0.5 truthy convention the legacy
-	// (YYFirebaseAnalytics) extension used for FirebaseAnalytics_SetConsent.
-	bool gmTruthy(double value)
-	{
-		return value >= 0.5;
-	}
-
 	// firebase::analytics::Initialize() returns void and the SDK exposes no
 	// IsInitialized(), so the module tracks it. Every other analytics entry
 	// point asserts on it inside the SDK - LogAssert(), which aborts the
@@ -59,18 +51,18 @@ namespace
 // Lifecycle
 // ============================================================
 
-double firebase_analytics_initialize()
+bool firebase_analytics_initialize()
 {
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_analytics_initialize: no firebase::App - call firebase_app_initialize() first");
-		return 0.0;
+		return false;
 	}
 
 	firebase::analytics::Initialize(*app);
 	g_analytics_initialized = true;
-	return 1.0;
+	return true;
 }
 
 void firebase_analytics_terminate()
@@ -84,18 +76,18 @@ void firebase_analytics_terminate()
 // Collection / Consent
 // ============================================================
 
-void firebase_analytics_set_analytics_collection_enabled(double enabled)
+void firebase_analytics_set_analytics_collection_enabled(bool enabled)
 {
 	if (!analyticsReady("firebase_analytics_set_analytics_collection_enabled")) return;
-	firebase::analytics::SetAnalyticsCollectionEnabled(gmTruthy(enabled));
+	firebase::analytics::SetAnalyticsCollectionEnabled(enabled);
 }
 
 // Mirrors the legacy FirebaseAnalytics_SetConsent(adsConsent, analyticsConsent,
 // adUserDataConsent, adPersonalizationConsent) contract exactly: four fixed
 // real (truthy >= 0.5) params, all four consent types always included in the
 // settings map with no "omit to leave unchanged" semantics.
-void firebase_analytics_set_consent(double ad_storage, double analytics_storage,
-	double ad_user_data, double ad_personalization)
+void firebase_analytics_set_consent(bool ad_storage, bool analytics_storage,
+	bool ad_user_data, bool ad_personalization)
 {
 	if (!analyticsReady("firebase_analytics_set_consent")) return;
 	using firebase::analytics::ConsentType;
@@ -103,13 +95,13 @@ void firebase_analytics_set_consent(double ad_storage, double analytics_storage,
 
 	std::map<ConsentType, ConsentStatus> settings;
 	settings[firebase::analytics::kConsentTypeAdStorage] =
-		gmTruthy(ad_storage) ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+		ad_storage ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
 	settings[firebase::analytics::kConsentTypeAnalyticsStorage] =
-		gmTruthy(analytics_storage) ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+		analytics_storage ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
 	settings[firebase::analytics::kConsentTypeAdUserData] =
-		gmTruthy(ad_user_data) ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+		ad_user_data ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
 	settings[firebase::analytics::kConsentTypeAdPersonalization] =
-		gmTruthy(ad_personalization) ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+		ad_personalization ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
 
 	firebase::analytics::SetConsent(settings);
 }
@@ -251,16 +243,16 @@ void firebase_analytics_notify_app_lifecycle_termination()
 	firebase::analytics::NotifyAppLifecycleChange(firebase::analytics::kTermination);
 }
 
-double firebase_analytics_is_desktop_initialized()
+bool firebase_analytics_is_desktop_initialized()
 {
-	if (!analyticsReady("firebase_analytics_is_desktop_initialized")) return 0.0;
-	return firebase::analytics::IsDesktopInitialized() ? 1.0 : 0.0;
+	if (!analyticsReady("firebase_analytics_is_desktop_initialized")) return false;
+	return firebase::analytics::IsDesktopInitialized();
 }
 
-void firebase_analytics_set_desktop_debug_mode(double enabled)
+void firebase_analytics_set_desktop_debug_mode(bool enabled)
 {
 	if (!analyticsReady("firebase_analytics_set_desktop_debug_mode")) return;
-	firebase::analytics::SetDesktopDebugMode(gmTruthy(enabled));
+	firebase::analytics::SetDesktopDebugMode(enabled);
 }
 
 // ============================================================
@@ -308,11 +300,31 @@ void firebase_analytics_initiate_on_device_conversion_measurement_phone(std::str
 // Firebase C++ 13.11 completeness additions
 // ============================================================
 
-void firebase_analytics_notify_app_lifecycle_change(double state)
+// FirebaseAnalyticsAppLifecycleState mirrors firebase::analytics::AppLifecycleState.
+// See GM_FB_PIN_ENUM in GMFirebase_common.h.
+GM_FB_PIN_ENUM(FirebaseAnalyticsAppLifecycleState::Unknown, firebase::analytics::kUnknown);
+GM_FB_PIN_ENUM(FirebaseAnalyticsAppLifecycleState::Termination, firebase::analytics::kTermination);
+
+static bool toSdkAppLifecycleState(FirebaseAnalyticsAppLifecycleState state, firebase::analytics::AppLifecycleState& out)
+{
+	switch (state)
+	{
+	case FirebaseAnalyticsAppLifecycleState::Unknown: out = firebase::analytics::kUnknown; return true;
+	case FirebaseAnalyticsAppLifecycleState::Termination: out = firebase::analytics::kTermination; return true;
+	default: return false;
+	}
+}
+
+void firebase_analytics_notify_app_lifecycle_change(FirebaseAnalyticsAppLifecycleState state)
 {
 	if (!analyticsReady("firebase_analytics_notify_app_lifecycle_change")) return;
-    firebase::analytics::NotifyAppLifecycleChange(
-        static_cast<firebase::analytics::AppLifecycleState>(static_cast<int>(state)));
+	firebase::analytics::AppLifecycleState sdk_state;
+	if (!toSdkAppLifecycleState(state, sdk_state))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_analytics_notify_app_lifecycle_change: state must be a FirebaseAnalyticsAppLifecycleState value");
+		return;
+	}
+	firebase::analytics::NotifyAppLifecycleChange(sdk_state);
 }
 
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(GMBuffer hashed_email)
@@ -331,10 +343,10 @@ void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(G
     firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber(std::move(bytes));
 }
 
-double firebase_analytics_initialize_for_app(uint64_t app_ref)
+bool firebase_analytics_initialize_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0.0;
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
     firebase::analytics::Initialize(*app);
     g_analytics_initialized = true;
-    return 1.0;
+    return true;
 }

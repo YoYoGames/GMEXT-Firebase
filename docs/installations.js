@@ -58,7 +58,7 @@
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
  * ${function.firebase_app_initialize} has not run.
  *
- * @param {Real} force_refresh `1` to mint a new token even when the current one is still valid, `0` to reuse it.
+ * @param {Bool} force_refresh `true` to mint a new token even when the current one is still valid, `false` to reuse it.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *

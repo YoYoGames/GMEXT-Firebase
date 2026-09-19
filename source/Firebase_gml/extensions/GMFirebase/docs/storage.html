@@ -1046,6 +1046,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firebase_storage_download_copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_storage_download_copy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_storage_download_release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_storage_download_release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firebase_storage_ref_get_file" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2450,6 +2472,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#firebase_storage_download_copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_storage_download_copy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#firebase_storage_download_release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        firebase_storage_download_release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#firebase_storage_ref_get_file" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3041,11 +3085,13 @@ operation started on it: release it in the callback, or after all the callbacks 
 operations share it. Android and iOS do not read it after the call returns, but the same order
 is correct there too, and the demo objects keep it.</p>
 <h3 id="transfers">Transfers<a class="headerlink" href="#transfers" title="Permanent link">&para;</a></h3>
-<p>Uploads and downloads take the data as a GML buffer (<a href="storage.html#firebase_storage_ref_put_bytes">firebase_storage_ref_put_bytes</a>,
-<a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a>) or as a file on the device
-(<a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a>, <a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a>). A buffer
-is used whole, from its start to <code>buffer_get_size</code>, and must stay alive and the same size until
-the callback has fired. Each transfer takes an optional <code>progress_callback</code>, called as bytes move,
+<p>Uploads take the data as a GML buffer (<a href="storage.html#firebase_storage_ref_put_bytes">firebase_storage_ref_put_bytes</a>, used whole
+and copied before the call returns) or a file on the device
+(<a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a>); downloads land in a file
+(<a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a>) or in extension memory that the game copies into a
+buffer of its own through a download handle (<a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a>,
+<a href="storage.html#firebase_storage_download_copy">firebase_storage_download_copy</a>, <a href="storage.html#firebase_storage_download_release">firebase_storage_download_release</a>).
+Each transfer takes an optional <code>progress_callback</code>, called as bytes move,
 and an optional controller from <a href="storage.html#firebase_storage_controller_create">firebase_storage_controller_create</a>, which can pause,
 resume or cancel it and be polled for its progress. A failed transfer is retried on its own for
 up to the instance's retry time - ten minutes by default for uploads and downloads, two for
@@ -3103,6 +3149,8 @@ for it; deleting it:</p>
 <li><a href="storage.html#firebase_storage_ref_put_bytes">firebase_storage_ref_put_bytes</a></li>
 <li><a href="storage.html#firebase_storage_ref_put_file">firebase_storage_ref_put_file</a></li>
 <li><a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a></li>
+<li><a href="storage.html#firebase_storage_download_copy">firebase_storage_download_copy</a></li>
+<li><a href="storage.html#firebase_storage_download_release">firebase_storage_download_release</a></li>
 <li><a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a></li>
 <li><a href="storage.html#firebase_storage_ref_get_download_url">firebase_storage_ref_get_download_url</a></li>
 <li><a href="storage.html#firebase_storage_ref_delete">firebase_storage_ref_delete</a></li>
@@ -4349,8 +4397,8 @@ after it has been read.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#putbytes">firebase::storage::StorageReference::PutBytes</a></p>
 <p>This function uploads the whole content of a buffer to the location - <code>buffer_get_size</code> bytes
 from its start, whatever its seek position - creating the object or replacing the one there, so
-size the buffer to exactly the data to send. The buffer must stay alive and the same size until the callback has fired: the
-SDK works on its memory during the transfer, and a <code>buffer_resize</code> can move it.</p>
+size the buffer to exactly the data to send. The bytes are copied before the function returns,
+so the buffer can be deleted or resized straight away.</p>
 <p>Pass a metadata handle to store a content type and other attributes with the object; without
 one the object has no content type, and a browser given its download URL will not know what it
 is. The callback's <code>metadata</code> describes the object as stored - size, generation, the attributes
@@ -4699,15 +4747,17 @@ safe moment on desktop. The callback's metadata handle is released as soon as it
 
 <h1 id="firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes<a class="headerlink" href="#firebase_storage_ref_get_bytes" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#getbytes">firebase::storage::StorageReference::GetBytes</a></p>
-<p>This function downloads the object into a buffer the game has created. The SDK writes straight
-into it, at most <code>buffer_get_size</code> bytes, so size the buffer for the largest object expected or
-read the size from <a href="storage.html#firebase_storage_ref_get_metadata">firebase_storage_ref_get_metadata</a> first: an object larger than
-the buffer fails with <code>FirebaseStorageError.DownloadSizeExceeded</code>. The callback's <code>bytes_read</code> is how much
-was written, from the start of the buffer; the seek position is not moved. The buffer must stay alive and the same size until the callback has fired: the
-SDK works on its memory during the transfer, and a <code>buffer_resize</code> can move it.</p>
+<p>This function downloads the object into memory on the extension's side and hands the game a
+download handle to copy it out of. <code>max_size</code> is the most it will accept, so set it for the
+largest object expected or read the size from <a href="storage.html#firebase_storage_ref_get_metadata">firebase_storage_ref_get_metadata</a>
+first: an object larger than that fails with <code>FirebaseStorageError.DownloadSizeExceeded</code>. The
+callback's <code>download_ref</code> and <code>size</code> are the handle and the byte count; create a buffer of that
+size, <a href="storage.html#firebase_storage_download_copy">firebase_storage_download_copy</a> the bytes into it, then
+<a href="storage.html#firebase_storage_download_release">firebase_storage_download_release</a> the handle. On failure <code>download_ref</code> is <code>0</code>.</p>
 <p>The function returns <code>FirebaseError.InvalidHandle</code> without calling either callback when the
-reference is not valid. For an object the game will load from disk anyway,
-<a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a> avoids holding it in a buffer.</p>
+reference is not valid, and <code>FirebaseError.InvalidArgument</code> when <code>max_size</code> is below 1. For an
+object the game will load from disk anyway, <a href="storage.html#firebase_storage_ref_get_file">firebase_storage_ref_get_file</a> avoids
+holding it in memory twice.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>On Windows, macOS and Linux the SDK keeps reading the reference an operation was started on
@@ -4719,7 +4769,7 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_storage_ref_get_bytes(ref, data, progress_callback=undefined, controller_ref, callback=undefined)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_storage_ref_get_bytes(ref, max_size, progress_callback=undefined, controller_ref, callback=undefined)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -4736,9 +4786,9 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <td>A reference handle.</td>
 </tr>
 <tr>
-<td>data</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
-<td>The buffer to download into; its size is the most that will be read.</td>
+<td>max_size</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The largest object to accept, in bytes; the download is held in memory of this size.</td>
 </tr>
 <tr>
 <td>progress_callback</td>
@@ -4820,9 +4870,14 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <td>The SDK's description of the failure, or an empty string on success.</td>
 </tr>
 <tr>
-<td>bytes_read</td>
+<td>download_ref</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>The number of bytes written into the buffer, or <code>0</code> on failure.</td>
+<td>A download handle holding the bytes, to copy from with <a href="storage.html#firebase_storage_download_copy">firebase_storage_download_copy</a> and release with <a href="storage.html#firebase_storage_download_release">firebase_storage_download_release</a>; <code>0</code> on failure.</td>
+</tr>
+<tr>
+<td>size</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The number of bytes downloaded, or <code>0</code> on failure.</td>
 </tr>
 </tbody>
 </table>
@@ -4830,35 +4885,109 @@ operation itself, but releasing after the callback is correct everywhere.</p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">// Download a JSON level into memory
 level_ref = firebase_storage_get_reference_path(storage, $"levels/{level_id}.json");
-download_buffer = buffer_create(1 &lt;&lt; 20, buffer_fixed, 1); // up to 1 MiB
 
-var _result = firebase_storage_ref_get_bytes(level_ref, download_buffer, undefined, 0,
-    function(_error, _message, _bytes_read)
+var _result = firebase_storage_ref_get_bytes(level_ref, 1 &lt;&lt; 20, undefined, 0, // up to 1 MiB
+    function(_error, _message, _download, _size)
     {
         if (_error == FirebaseStorageError.None)
         {
-            buffer_resize(download_buffer, _bytes_read);
-            buffer_seek(download_buffer, buffer_seek_start, 0);
-            level_data = json_parse(buffer_read(download_buffer, buffer_text));
+            var _buffer = buffer_create(_size, buffer_fixed, 1);
+            firebase_storage_download_copy(_download, _buffer);
+            firebase_storage_download_release(_download);
+            level_data = json_parse(buffer_read(_buffer, buffer_text));
+            buffer_delete(_buffer);
         }
         else
         {
             show_debug_message($"Download failed ({_error}): {_message}");
         }
-        buffer_delete(download_buffer);
         firebase_storage_ref_release(level_ref);
         level_ref = 0;
     });
 
 if (_result != FirebaseError.Ok)
 {
-    buffer_delete(download_buffer);
     firebase_storage_ref_release(level_ref);
     level_ref = 0;
 }</code></pre>
-The above code downloads into a buffer sized for the largest level, trims it to the bytes
-actually read before parsing the text, and frees the buffer and the reference in the callback.
-The resize is safe there because the transfer is over.</p>
+The above code accepts a level of up to 1 MiB, copies the bytes into a buffer sized exactly to
+what arrived, releases the download handle, and parses the text.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_storage_download_copy">firebase_storage_download_copy<a class="headerlink" href="#firebase_storage_download_copy" title="Permanent link">&para;</a></h1>
+<p>This function copies the bytes a download handle holds into the start of a GameMaker
+buffer, up to the buffer's size, and returns how many were copied. The callback of
+<a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a> gives the handle and the size to create the buffer
+with; the handle keeps the bytes until <a href="storage.html#firebase_storage_download_release">firebase_storage_download_release</a> frees it,
+so it can be copied from more than once.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_storage_download_copy(download_ref, out_buffer)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>download_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>A download handle from a <a href="storage.html#firebase_storage_ref_get_bytes">firebase_storage_ref_get_bytes</a> callback.</td>
+</tr>
+<tr>
+<td>out_buffer</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Buffers/Buffers.htm">Buffer</a></td>
+<td>The buffer to write into.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
+</blockquote>
+<p>The number of bytes copied, or <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set to <code>FirebaseError.InvalidHandle</code> when the handle is not a live download.</p>
+<p><br></p>
+<hr />
+<p align="right"><a href="#top">Back To Top</a></p>
+
+<h1 id="firebase_storage_download_release">firebase_storage_download_release<a class="headerlink" href="#firebase_storage_download_release" title="Permanent link">&para;</a></h1>
+<p>This function frees the bytes a download handle holds. Call it once the bytes have been
+copied out; the memory stays allocated until then. A handle that is not a download sets
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
+<p><br></p>
+<p><strong>Syntax:</strong></p>
+<blockquote>
+<pre class="highlight"><code class="language-gml">firebase_storage_download_release(download_ref)</code></pre>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>download_ref</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The handle to release.</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><strong>Returns:</strong></p>
+<blockquote>
+<p>N/A</p>
+</blockquote>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

@@ -3516,7 +3516,8 @@ the keys whose value changed - the fetch is done, and the game only has to
 work on Android and iOS; on Windows, macOS and Linux the listener is accepted and never called,
 and a game that wants fresh values there fetches on its own schedule. The listener stays until
 <a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a>; the connection closes when the
-last listener is removed.</p>
+last listener is removed. It returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when no
+callback is given or the handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -3549,7 +3550,7 @@ last listener is removed.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle to remove with <a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a>, or <code>0</code> when the handle is not valid.</p>
+<p>A listener handle to remove with <a href="remote_config.html#firebase_remote_config_remove_config_update_listener">firebase_remote_config_remove_config_update_listener</a>, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>

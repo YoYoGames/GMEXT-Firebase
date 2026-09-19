@@ -344,8 +344,9 @@
  * This function shuts the instance down and releases its resources. After the callback the instance
  * handle and every reference, query, batch and snapshot derived from it are dead; only
  * ${function.firebase_firestore_clear_persistence} may still be called on it, and
- * ${function.firebase_firestore_get_instance} then creates a fresh instance. Pending writes are not
- * cancelled - they are sent the next time the instance starts.
+ * ${function.firebase_firestore_get_instance} then creates a fresh instance and frees the
+ * terminated one. Pending writes are not cancelled - they are sent the next time the instance
+ * starts.
  *
  * Under normal circumstances there is no reason to call this. Its use is a test that wants to wipe
  * the local state between runs.
@@ -1713,19 +1714,16 @@
  *
  * This function wraps the bytes of a buffer as a Firestore blob - binary data stored in the
  * document. The whole buffer is the blob, so size it to the data; the SDK copies the bytes and the
- * buffer can be deleted as soon as this returns. It reads back as a ${struct.FirestoreBlob}, whose
- * `base64` a `buffer_base64_decode` turns into a buffer again. The handle stands for the value
- * wherever a write takes data - as a field's value in the struct passed to
- * ${function.firebase_firestore_document_ref_set}, ${function.firebase_firestore_document_ref_update},
- * ${function.firebase_firestore_collection_ref_add} or a write batch. Release it with
- * ${function.firebase_firestore_field_value_release} once the write has been started; the SDK keeps
- * its own copy.
+ * buffer can be deleted as soon as this returns. It reads back as a ${struct.FirestoreBlob} - a
+ * handle and a size, copied into a buffer with ${function.firebase_firestore_field_value_blob_copy}.
+ * The handle stands for the value wherever a write takes data - as a field's value in the struct
+ * passed to ${function.firebase_firestore_document_ref_set},
+ * ${function.firebase_firestore_document_ref_update}, ${function.firebase_firestore_collection_ref_add}
+ * or a write batch. Release it with ${function.firebase_firestore_field_value_release} once the
+ * write has been started; the SDK keeps its own copy.
  *
- * Keep blobs small. A document is capped at 1 MB by Firestore, and a synchronous read through
- * ${function.firebase_firestore_document_snapshot_get_data} or ${function.firebase_firestore_document_snapshot_get}
- * returns through an 8 KB buffer that the base64 form has to fit in, which puts a blob of about
- * 6 KB at the ceiling today. Anything bigger belongs in Cloud Storage (${module.storage}) with
- * its path kept here.
+ * Keep blobs small: a document is capped at 1 MB by Firestore. Anything bigger belongs in Cloud
+ * Storage (${module.storage}) with its path kept here.
  *
  * @param {Buffer} data The bytes to store; the whole buffer.
  * @returns {Real} A field value handle, to release with ${function.firebase_firestore_field_value_release} once the write has been started.
@@ -1812,8 +1810,9 @@
  * converted as the Data section describes: numbers, strings and booleans as themselves, nested maps
  * as structs, arrays as arrays, timestamps, geo points, blobs and references as
  * ${struct.FirestoreTimestamp}, ${struct.FirestoreGeoPoint}, ${struct.FirestoreBlob} and
- * ${struct.FirestoreReference} structs, nulls as `undefined`. Nothing it returns is a handle to
- * release. A document that does not exist gives an empty struct.
+ * ${struct.FirestoreReference} structs, nulls as `undefined`. The one handle a read hands out is
+ * a blob's `field_value`, and it belongs to this snapshot: releasing the snapshot releases it. A
+ * document that does not exist gives an empty struct.
  *
  * The `server_timestamp_behavior` argument decides what a server timestamp the server has not
  * resolved yet reads as: `undefined` (`None`), the local clock's estimate (`Estimate`) or the value
@@ -1821,8 +1820,8 @@
  *
  * The converted struct returns through an 8 KB buffer, so a document larger than that cannot be
  * read this way today. A document of many small fields can still be read one field at a time with
- * ${function.firebase_firestore_document_snapshot_get}, which has the same limit per field; a
- * single value over 8 KB - a large blob, a long string - belongs in Cloud Storage.
+ * ${function.firebase_firestore_document_snapshot_get}, which has the same limit per field; a blob
+ * does not count (only its handle and size cross), a string over 8 KB belongs in Cloud Storage.
  *
  * @param {Real} ref A document snapshot handle.
  * @param {Enum.FirestoreServerTimestampBehavior} server_timestamp_behavior How a server timestamp that the server has not resolved yet is reported: `FirestoreServerTimestampBehavior.None`, `Estimate` or `Previous`.
@@ -1835,8 +1834,9 @@
  * @desc This function releases a document snapshot handle - one from a `get` callback, a listener, a
  * query snapshot's `documents` or a document change. Release each one once its fields have been
  * read; a snapshot kept for paging (${function.firebase_firestore_query_start_after_snapshot}) is
- * released once the next page has been requested. A handle that is not a document snapshot sets
- * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
+ * released once the next page has been requested. Any ${struct.FirestoreBlob} handle read out of
+ * the snapshot that the game has not released itself goes with it. A handle that is not a document
+ * snapshot sets ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} ref The handle to release.
  * @function_end
@@ -2642,10 +2642,12 @@
  * answers that.
  *
  * The function returns a listener handle for ${function.firebase_firestore_listener_registration_remove}.
+ * It returns `0` with ${function.firebase_last_error_code} set when no callback is given or the
+ * instance handle is not valid.
  *
  * @param {Real} firestore The instance handle from ${function.firebase_firestore_get_instance}.
  * @param {Function} [callback] The function to call, with no arguments.
- * @returns {Real} A listener handle, or `0` when the instance handle is not valid.
+ * @returns {Real} A listener handle, or `0` on failure.
  *
  * @event callback
  * @desc Fires each time every snapshot listener affected by a change has been called.
@@ -2973,10 +2975,11 @@
  * @function firebase_firestore_field_value_blob_size
  * @desc **Firebase C++ SDK:** [firebase::firestore::FieldValue::blob_size](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob_size)
  *
- * This function returns the size in bytes of the blob a field value handle holds. Values read from a snapshot arrive as plain GML values, so this
- * only ever inspects a handle the game built with one of the constructors.
+ * This function returns the size in bytes of the blob a field value handle holds - one the game
+ * built with ${function.firebase_firestore_field_value_blob}, or the `field_value` of a
+ * ${struct.FirestoreBlob} read out of a document, whose `size` member already says the same.
  *
- * @param {Real} field_value A field value handle from one of the constructors on this page.
+ * @param {Real} field_value A field value handle holding a blob.
  * @returns {Real} The blob's size, or `0` when the handle does not hold a blob.
  * @function_end
  */
@@ -2986,12 +2989,27 @@
  * @desc **Firebase C++ SDK:** [firebase::firestore::FieldValue::blob_value](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob_value)
  *
  * This function copies the bytes of the blob a field value handle holds into the start of a
- * GameMaker buffer, up to the buffer's size, and returns how many bytes were copied. Size the buffer
- * from ${function.firebase_firestore_field_value_blob_size} first.
+ * GameMaker buffer, up to the buffer's size, and returns how many bytes were copied. It is how a
+ * blob read out of a document reaches the game: the ${struct.FirestoreBlob} in the decoded data
+ * carries the handle and the size, so create a buffer of that size and copy into it. The handle
+ * stays valid until the snapshot it came from is released, or until
+ * ${function.firebase_firestore_field_value_release} frees it earlier.
  *
- * @param {Real} field_value A field value handle from one of the constructors on this page.
+ * @param {Real} field_value A field value handle holding a blob.
  * @param {Buffer} out_buffer The buffer to write into.
  * @returns {Real} The number of bytes copied, or `0` when the handle does not hold a blob.
+ *
+ * @example
+ * ```gml
+ * // Read the "avatar" blob of a document into a buffer of its own
+ * var _data = firebase_firestore_document_snapshot_get_data(snapshot, FirestoreServerTimestampBehavior.None);
+ * var _blob = _data.avatar;
+ * avatar_buffer = buffer_create(_blob.size, buffer_fixed, 1);
+ * firebase_firestore_field_value_blob_copy(_blob.field_value, avatar_buffer);
+ *
+ * // Releasing the snapshot frees the blob handle with it; the buffer is the game's
+ * firebase_firestore_document_snapshot_release(snapshot);
+ * ```
  * @function_end
  */
 
@@ -3506,12 +3524,17 @@
 
 /**
  * @struct FirestoreBlob
- * @desc Binary data as it reads back out of a document. The bytes come base64-encoded, because a
- * plain string cannot carry a zero byte across from the extension; `buffer_base64_decode(blob.base64)`
- * gives a buffer holding them. To store one, use ${function.firebase_firestore_field_value_blob}
- * with a buffer - writing this struct back stores a map with a `base64` member, not a blob.
+ * @desc Binary data as it reads back out of a document. The bytes stay on the extension's side
+ * behind a field value handle - the one read that hands out a handle, since nothing but a buffer
+ * can carry bytes into GML and the extension cannot create one - and the game copies them into a
+ * buffer of `size` bytes with ${function.firebase_firestore_field_value_blob_copy}. The handle
+ * belongs to the snapshot the blob was read from: releasing the snapshot releases it, and
+ * ${function.firebase_firestore_field_value_release} releases it earlier. To store one, use
+ * ${function.firebase_firestore_field_value_blob} with a buffer - writing this struct back stores a
+ * map with `field_value` and `size` members, not a blob.
  *
- * @member {String} base64 The bytes, base64-encoded.
+ * @member {Real} field_value A field value handle holding the bytes, valid while the snapshot is.
+ * @member {Real} size The blob's size in bytes.
  * @struct_end
  */
 
@@ -3751,8 +3774,9 @@
  * array union, a delete. On the way out: integers and doubles both arrive as numbers, maps as
  * structs, arrays as arrays, nulls as `undefined`, and the four Firestore types GML has no value
  * for as one struct each - ${struct.FirestoreTimestamp}, ${struct.FirestoreGeoPoint},
- * ${struct.FirestoreBlob} (the bytes as base64) and ${struct.FirestoreReference} (the document's
- * path). A read hands out no handles; to write one of the four back, use its
+ * ${struct.FirestoreBlob} (a handle to copy the bytes out of, plus their size) and
+ * ${struct.FirestoreReference} (the document's path). The blob's handle is the one a read hands
+ * out, and it is released with the snapshot; to write one of the four back, use its
  * `firebase_firestore_field_value_*` constructor - passing the struct itself stores a map of its
  * members.
  *

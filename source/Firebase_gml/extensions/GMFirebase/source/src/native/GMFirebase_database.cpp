@@ -315,6 +315,13 @@ static uint64_t query_add_value_listener(Query* q,
 	const std::optional<gm::wire::GMFunction>& on_value_changed,
 	const std::optional<gm::wire::GMFunction>& on_cancelled)
 {
+	// A listener with nothing to call is a no-op the game would still have
+	// to remove; refused like every other registration in this extension.
+	if (!on_value_changed.has_value() && !on_cancelled.has_value())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database add_value_listener: at least one callback is required");
+		return 0;
+	}
 	if (q == nullptr) return 0;
 	GMFirebaseValueListener* listener = new GMFirebaseValueListener();
 	listener->on_value_changed = on_value_changed;
@@ -352,6 +359,12 @@ static uint64_t query_add_child_listener(Query* q,
 	const std::optional<gm::wire::GMFunction>& on_child_removed,
 	const std::optional<gm::wire::GMFunction>& on_cancelled)
 {
+	if (!on_child_added.has_value() && !on_child_changed.has_value() && !on_child_moved.has_value()
+		&& !on_child_removed.has_value() && !on_cancelled.has_value())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database add_child_listener: at least one callback is required");
+		return 0;
+	}
 	if (q == nullptr) return 0;
 	GMFirebaseChildListener* listener = new GMFirebaseChildListener();
 	listener->on_child_added = on_child_added;

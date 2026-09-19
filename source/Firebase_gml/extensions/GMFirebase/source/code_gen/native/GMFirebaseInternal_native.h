@@ -488,7 +488,8 @@ namespace gm_structs
 
     struct FirestoreBlob
     {
-        std::string base64;
+        std::uint64_t field_value;
+        double size;
     };
 
     struct FirestoreReference
@@ -796,14 +797,16 @@ namespace gm::wire::codec
     template<>
     inline void writeValue<gm_structs::FirestoreBlob>(gm::byteio::IByteWriter& _buf, const gm_structs::FirestoreBlob& obj)
     {
-        gm::wire::codec::writeValue(_buf, obj.base64);
+        gm::wire::codec::writeValue(_buf, obj.field_value);
+        gm::wire::codec::writeValue(_buf, obj.size);
     }
 
     template<>
     inline gm_structs::FirestoreBlob readValue<gm_structs::FirestoreBlob>(gm::byteio::BufferReader& _buf)
     {
         gm_structs::FirestoreBlob obj;
-        obj.base64 = gm::wire::codec::readValue<std::string>(_buf);
+        obj.field_value = gm::wire::codec::readValue<std::uint64_t>(_buf);
+        obj.size = gm::wire::codec::readValue<double>(_buf);
         return obj;
     }
 
@@ -1574,7 +1577,9 @@ gm_enums::FirebaseError firebase_storage_ref_get_metadata(std::uint64_t ref, con
 gm_enums::FirebaseError firebase_storage_ref_update_metadata(std::uint64_t ref, std::uint64_t metadata_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_storage_ref_put_bytes(std::uint64_t ref, gm::wire::GMBuffer data, std::uint64_t metadata_ref, const std::optional<gm::wire::GMFunction>& progress_callback, std::uint64_t controller_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_storage_ref_put_file(std::uint64_t ref, std::string_view local_path, std::uint64_t metadata_ref, const std::optional<gm::wire::GMFunction>& progress_callback, std::uint64_t controller_ref, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_storage_ref_get_bytes(std::uint64_t ref, gm::wire::GMBuffer data, const std::optional<gm::wire::GMFunction>& progress_callback, std::uint64_t controller_ref, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_storage_ref_get_bytes(std::uint64_t ref, double max_size, const std::optional<gm::wire::GMFunction>& progress_callback, std::uint64_t controller_ref, const std::optional<gm::wire::GMFunction>& callback);
+double firebase_storage_download_copy(std::uint64_t download_ref, gm::wire::GMBuffer out_buffer);
+void firebase_storage_download_release(std::uint64_t download_ref);
 gm_enums::FirebaseError firebase_storage_ref_get_file(std::uint64_t ref, std::string_view local_path, const std::optional<gm::wire::GMFunction>& progress_callback, std::uint64_t controller_ref, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_storage_ref_list(std::uint64_t ref, double max_results, std::string_view page_token, const std::optional<gm::wire::GMFunction>& callback);
 std::uint64_t firebase_storage_metadata_create();
@@ -1709,7 +1714,7 @@ std::string firebase_messaging_message_notification_title_loc_key();
 double firebase_messaging_message_notification_title_loc_args_count();
 std::string firebase_messaging_message_notification_title_loc_args_at(double index);
 std::string firebase_messaging_message_notification_android_channel_id();
-std::optional<std::uint64_t> firebase_ump_get_instance();
+std::uint64_t firebase_ump_get_instance();
 gm_enums::FirebaseUmpConsentStatus firebase_ump_get_consent_status(std::uint64_t consent_ref);
 gm_enums::FirebaseUmpConsentFormStatus firebase_ump_get_consent_form_status(std::uint64_t consent_ref);
 gm_enums::FirebaseUmpPrivacyOptionsRequirementStatus firebase_ump_get_privacy_options_requirement_status(std::uint64_t consent_ref);
@@ -1717,9 +1722,9 @@ bool firebase_ump_can_request_ads(std::uint64_t consent_ref);
 void firebase_ump_reset(std::uint64_t consent_ref);
 gm_enums::FirebaseError firebase_ump_request_consent_info_update(std::uint64_t consent_ref, gm_enums::FirebaseUmpConsentDebugGeography debug_geography, bool tag_for_under_age_of_consent, const std::optional<std::vector<std::string_view>>& debug_device_ids, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_ump_load_consent_form(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_ump_show_consent_form(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_ump_load_and_show_consent_form_if_required(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
-gm_enums::FirebaseError firebase_ump_show_privacy_options_form(std::uint64_t consent_ref, std::uint64_t form_parent, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_ump_show_consent_form(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_ump_load_and_show_consent_form_if_required(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
+gm_enums::FirebaseError firebase_ump_show_privacy_options_form(std::uint64_t consent_ref, const std::optional<gm::wire::GMFunction>& callback);
 void firebase_analytics_notify_app_lifecycle_change(gm_enums::FirebaseAnalyticsAppLifecycleState state);
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(gm::wire::GMBuffer hashed_email);
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(gm::wire::GMBuffer hashed_phone);
@@ -1890,7 +1895,7 @@ std::uint64_t firebase_remote_config_get_instance_for_app(std::uint64_t app);
 bool firebase_analytics_initialize_for_app(std::uint64_t app);
 bool firebase_messaging_initialize_for_app(std::uint64_t app);
 bool firebase_messaging_initialize_for_app_with_options(std::uint64_t app, bool suppress_notification_permission_prompt);
-std::optional<std::uint64_t> firebase_ump_get_instance_for_app(std::uint64_t app);
+std::uint64_t firebase_ump_get_instance_for_app(std::uint64_t app);
 std::uint64_t firebase_auth_get_current_instance_handle();
 std::uint64_t firebase_auth_get_instance_for_app(std::uint64_t app);
 bool firebase_auth_use_instance(std::uint64_t auth);

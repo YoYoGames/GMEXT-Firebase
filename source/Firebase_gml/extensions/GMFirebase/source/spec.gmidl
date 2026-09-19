@@ -1643,14 +1643,18 @@ class `[[FirestoreGeoPoint]]` prototype Object
 	[field, type_hint=`real`] property longitude: gmval { get; set; }
 }
 
-// A blob as read out of a document: the bytes base64-encoded, so
-// buffer_base64_decode() gives them back. A raw string cannot carry a 0x00
-// byte across the wire, base64 can. To write one, use
-// firebase_firestore_field_value_blob() with a buffer.
+// A blob as read out of a document. No wire kind carries bytes to GML, so
+// the read hands back a FieldValue handle plus the byte count and the game
+// copies the bytes into a buffer it sized itself with
+// firebase_firestore_field_value_blob_copy(field_value, buffer). The handle
+// belongs to the snapshot it was read from: releasing the snapshot frees
+// it, and firebase_firestore_field_value_release() frees it earlier. To
+// write one, use firebase_firestore_field_value_blob() with a buffer.
 [global]
 class `[[FirestoreBlob]]` prototype Object
 {
-	[field] property base64: string { get; set; }
+	[field, type_hint=`uint64`] property field_value: gmval { get; set; }
+	[field, type_hint=`real`] property size: gmval { get; set; }
 }
 
 // A document reference as read out of a document: the document's path.
@@ -2300,7 +2304,8 @@ function firebase_firestore_field_value_reference(
 
 // data: the whole buffer is the blob - size it to the bytes. The SDK copies
 // them, so the buffer is free as soon as this returns. Reads back as a
-// FirestoreBlob.
+// FirestoreBlob (a handle and a size, copied out with
+// firebase_firestore_field_value_blob_copy).
 [global, bind = typed_gml]
 function firebase_firestore_field_value_blob(
 	[type_hint=buffer] data: gmval
@@ -2343,10 +2348,11 @@ function firebase_firestore_document_snapshot_get_info(
 // error says which); a missing field is a lookup with exists false. Value
 // rules, shared with every document read in this extension: a timestamp is a
 // FirestoreTimestamp instance, a geopoint a FirestoreGeoPoint instance, a
-// blob a FirestoreBlob instance (base64), a document reference a
-// FirestoreReference instance (its path - no handle is registered on a
-// read); nested arrays/maps recurse using the same rules; Firestore null is
-// undefined.
+// blob a FirestoreBlob instance (a FieldValue handle owned by this snapshot
+// plus the byte count - the one read that registers a handle, because no
+// wire kind carries bytes), a document reference a FirestoreReference
+// instance (its path - no handle); nested arrays/maps recurse using the same
+// rules; Firestore null is undefined.
 [global, bind = typed_gml, type_hint=`FirestoreFieldLookup?`]
 function firebase_firestore_document_snapshot_get(
 	[type_hint=`uint64`] ref: gmval,
@@ -2589,6 +2595,8 @@ function firebase_storage_ref_update_metadata(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
+// data: the whole buffer is uploaded. The bytes are copied before this
+// returns, so the buffer is free to delete or resize at once.
 // metadata_ref/controller_ref: pass 0 for "not provided" - controller_ref
 // must come from storage_controller_create() if you want to pause/resume/
 // cancel or poll progress mid-transfer.
@@ -2615,18 +2623,37 @@ function firebase_storage_ref_put_file(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// data: a GML buffer pre-sized to the maximum number of bytes to download;
-// the SDK writes directly into it. controller_ref: pass 0 for "not
-// provided". progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
-// callback(error_code: FirebaseStorageError, error_message: string, bytes_read: real)
+// max_size: the largest object this call accepts, in bytes - the download
+// is held in native memory of that size and an object larger than it fails
+// with the SDK's DownloadSizeExceeded error. On success the callback hands
+// back a download handle and the byte count; create a buffer of that size,
+// firebase_storage_download_copy() the bytes into it, then
+// firebase_storage_download_release() the handle. controller_ref: pass 0 for
+// "not provided".
+// progress_callback(paused: bool, bytes_transferred: real, total_byte_count: real)
+// callback(error_code: FirebaseStorageError, error_message: string, download_ref: uint64, size: real)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_storage_ref_get_bytes(
 	[type_hint=`uint64`] ref: gmval,
-	[type_hint=buffer] data: gmval,
+	[type_hint=`real`] max_size: gmval,
 	[type_hint=`func?`] progress_callback: gmval,
 	[type_hint=`uint64`] controller_ref: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
+
+// Copies the downloaded bytes into out_buffer, up to its size, and returns
+// the number copied; 0 with the last error set when download_ref is not a
+// live download. The handle stays valid until released.
+[global, bind = typed_gml]
+function firebase_storage_download_copy(
+	[type_hint=`uint64`] download_ref: gmval,
+	[type_hint=buffer] out_buffer: gmval
+): real;
+
+[global, bind = typed_gml]
+function firebase_storage_download_release(
+	[type_hint=`uint64`] download_ref: gmval
+): unit;
 
 // callback(error_code: FirebaseStorageError, error_message: string, bytes_read: real)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
@@ -3571,9 +3598,9 @@ enum FirebaseUmpConsentFormError
 	OperationInProgress = 7,
 }
 
-// Nullable: fails (returns no value) if there is no firebase::App yet, or
-// if ConsentInfo::GetInstance() itself fails to initialize.
-[global, bind = typed_gml, type_hint=`uint64?`]
+// Returns 0 with the last error set if there is no firebase::App yet, or if
+// ConsentInfo::GetInstance() itself fails to initialize.
+[global, bind = typed_gml, type_hint=`uint64`]
 function firebase_ump_get_instance(): gmval;
 
 [global, bind = typed_gml, type_hint=`FirebaseUmpConsentStatus`]
@@ -3619,31 +3646,26 @@ function firebase_ump_load_consent_form(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// form_parent: pass 0 to show the form over the game's own Activity (Android)
-// or root view controller (iOS); on desktop the value is unused. A non-zero
-// value is an opaque platform handle (jobject/id cast to a uint64) for callers
-// bridging their own - see GMFirebase_ump.h.
+// The form shows over the game's own Activity (Android) or root view
+// controller (iOS); on desktop the SDK's stub flow runs.
 // callback(error_code: FirebaseUmpConsentFormError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_show_consent_form(
 	[type_hint=`uint64`] consent_ref: gmval,
-	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// See ump_show_consent_form for form_parent. callback(error_code: FirebaseUmpConsentFormError, error_message: string)
+// callback(error_code: FirebaseUmpConsentFormError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_load_and_show_consent_form_if_required(
 	[type_hint=`uint64`] consent_ref: gmval,
-	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// See ump_show_consent_form for form_parent. callback(error_code: FirebaseUmpConsentFormError, error_message: string)
+// callback(error_code: FirebaseUmpConsentFormError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_ump_show_privacy_options_form(
 	[type_hint=`uint64`] consent_ref: gmval,
-	[type_hint=`uint64`] form_parent: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -4168,7 +4190,7 @@ function firebase_analytics_initialize_for_app([type_hint=`uint64`] app: gmval):
 function firebase_messaging_initialize_for_app([type_hint=`uint64`] app: gmval): bool;
 [global, bind = typed_gml]
 function firebase_messaging_initialize_for_app_with_options([type_hint=`uint64`] app: gmval, suppress_notification_permission_prompt: bool): bool;
-[global, bind = typed_gml, type_hint=`uint64?`]
+[global, bind = typed_gml, type_hint=`uint64`]
 function firebase_ump_get_instance_for_app([type_hint=`uint64`] app: gmval): gmval;
 
 // ---- Auth explicit instance selection (multi-app without duplicating the whole Auth surface) ----

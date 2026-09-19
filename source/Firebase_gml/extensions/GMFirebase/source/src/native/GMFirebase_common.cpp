@@ -423,9 +423,9 @@ namespace
 			// Nothing this extension reads produces a Variant blob at SDK 13.13.0:
 			// Realtime Database and Functions values are JSON, and Remote Config
 			// only reaches FromMutableBlob when a value fails asString, which a
-			// string never does. Encoded like a Firestore blob regardless - a raw
-			// string would stop the GML reader at the first 0x00 byte.
-			emit(makeFirestoreBlob(v.blob_data(), v.blob_size()));
+			// string never does. Crosses like a Firestore blob regardless - a
+			// handle the game copies out and releases (no snapshot owns it).
+			emit(makeFirestoreBlob(v.blob_data(), v.blob_size(), 0));
 			break;
 
 		case firebase::Variant::kTypeVector:
@@ -469,46 +469,6 @@ void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out)
 {
 	visitVariant(v, [&](const auto& value) { out.addKeyValue(key, value); });
-}
-
-// Standard alphabet, '=' padding, no line breaks: the form buffer_base64_decode()
-// reads.
-std::string base64Encode(const std::uint8_t* data, std::size_t size)
-{
-	static constexpr char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-	std::string out;
-	out.reserve(((size + 2) / 3) * 4);
-
-	std::size_t i = 0;
-	for (; i + 3 <= size; i += 3)
-	{
-		std::uint32_t triple = (static_cast<std::uint32_t>(data[i]) << 16) | (static_cast<std::uint32_t>(data[i + 1]) << 8) | data[i + 2];
-		out.push_back(alphabet[(triple >> 18) & 0x3F]);
-		out.push_back(alphabet[(triple >> 12) & 0x3F]);
-		out.push_back(alphabet[(triple >> 6) & 0x3F]);
-		out.push_back(alphabet[triple & 0x3F]);
-	}
-
-	if (i < size)
-	{
-		std::uint32_t triple = static_cast<std::uint32_t>(data[i]) << 16;
-		if (i + 1 < size)
-			triple |= static_cast<std::uint32_t>(data[i + 1]) << 8;
-		out.push_back(alphabet[(triple >> 18) & 0x3F]);
-		out.push_back(alphabet[(triple >> 12) & 0x3F]);
-		out.push_back(i + 1 < size ? alphabet[(triple >> 6) & 0x3F] : '=');
-		out.push_back('=');
-	}
-
-	return out;
-}
-
-gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size)
-{
-	gm_structs::FirestoreBlob out;
-	out.base64 = base64Encode(data, size);
-	return out;
 }
 
 // Dispatches on the wire kind rather than is<T>(), which is an exact-kind

@@ -217,6 +217,7 @@ firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provid
 #define GM_FB_TYPE_STORAGE_METADATA 0x32     // map: Metadata
 #define GM_FB_TYPE_STORAGE_CONTROLLER 0x33   // map: Controller
 #define GM_FB_TYPE_STORAGE_LIST_RESULT 0x34  // map: ListResult
+#define GM_FB_TYPE_STORAGE_DOWNLOAD 0x35     // map: the bytes of a completed GetBytes
 
 // Functions
 #define GM_FB_TYPE_FUNCTIONS 0x40           // ptr: firebase::functions::Functions*
@@ -412,13 +413,16 @@ void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::S
 // string/array/struct/undefined), not a 1-element array wrapper.
 void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out);
 
-// Binary data on the way out. A raw string stops the GML reader at the first
-// 0x00 byte, so bytes travel base64-encoded inside the generated FirestoreBlob
-// struct (buffer_base64_decode() on the GML side). Shared by the Variant blob
-// branch above and the Firestore kBlob branch, which is why it lives here and
-// not in GMFirebase_firestore.*.
-std::string base64Encode(const std::uint8_t* data, std::size_t size);
-gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size);
+// Binary data on the way out. No wire kind carries bytes to GML (a string
+// stops the reader at the first 0x00), so the bytes stay native behind a
+// FieldValue handle and the generated FirestoreBlob struct carries that
+// handle plus the size; the game copies the bytes out with
+// firebase_firestore_field_value_blob_copy(). This overload copies the bytes
+// into a new FieldValue for the Variant blob branch above; the Firestore
+// kBlob branch registers its FieldValue directly (GMFirebase_firestore.h).
+// Both are defined in GMFirebase_firestore.cpp, beside the registry.
+// owner_snapshot: the DocumentSnapshot ref the decode runs under, or 0.
+gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size, uint64_t owner_snapshot);
 
 // Inbound (GML -> C++): reconstructs a firebase::Variant from a decoded
 // incoming GMValue, recursing through GMArrayView/GMObjectView for

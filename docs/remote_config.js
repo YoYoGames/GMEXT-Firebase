@@ -524,11 +524,12 @@
  * work on Android and iOS; on Windows, macOS and Linux the listener is accepted and never called,
  * and a game that wants fresh values there fetches on its own schedule. The listener stays until
  * ${function.firebase_remote_config_remove_config_update_listener}; the connection closes when the
- * last listener is removed.
+ * last listener is removed. It returns `0` with ${function.firebase_last_error_code} set when no
+ * callback is given or the handle is not valid.
  *
  * @param {Real} rc_ref The Remote Config handle from ${function.firebase_remote_config_get_instance}.
  * @param {Function} [callback] The function to call on each update.
- * @returns {Real} A listener handle to remove with ${function.firebase_remote_config_remove_config_update_listener}, or `0` when the handle is not valid.
+ * @returns {Real} A listener handle to remove with ${function.firebase_remote_config_remove_config_update_listener}, or `0` on failure.
  *
  * @event callback
  * @desc Fires each time a new version has been fetched, or the connection failed.

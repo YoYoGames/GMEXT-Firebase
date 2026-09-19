@@ -1,26 +1,10 @@
 source/Firebase_gml/options/
 output/
 
-*.sh-e
-
 # Firebase credentials are staged from the extension options at build time, never committed.
 google-services.json
 google-services-desktop.json
 GoogleService-Info.plist
-
-source/Firebase_gml/extensions/FirebaseSetup/scriptUtils.bat.bak
-
-source/Firebase_gml/extensions/FirebaseSetup/scriptUtils.sh.bak
-
-source/Firebase_gml/extensions/GameCenter/scriptUtils.bat.bak
-
-source/Firebase_gml/extensions/GameCenter/scriptUtils.sh.bak
-
-source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.bat.bak
-
-source/Firebase_gml/extensions/GooglePlayServices/scriptUtils.sh.bak
-
-source/Firebase_cloud/
 
 source/Firebase_gml/node_modules/
 source/Firebase_gml/.gm-cli-cache/

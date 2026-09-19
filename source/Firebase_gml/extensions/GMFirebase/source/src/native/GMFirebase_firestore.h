@@ -51,6 +51,12 @@ extern uint32_t g_fs_write_batch_index;
 extern std::map<uint32_t, firebase::firestore::FieldValue> g_fs_field_value_map;
 extern uint32_t g_fs_field_value_index;
 
+// Blob handles minted while decoding a DocumentSnapshot, keyed by the
+// snapshot's id. Releasing the snapshot releases whichever of them the game
+// has not released itself (see releaseFirestoreSnapshotBlobs). Guarded by
+// g_firebase_value_registry_mutex like the maps above.
+extern std::map<uint32_t, std::vector<uint32_t>> g_fs_snapshot_blob_children;
+
 extern std::map<uint32_t, firebase::firestore::FieldPath> g_fs_field_path_map;
 extern uint32_t g_fs_field_path_index;
 extern std::map<uint32_t, firebase::firestore::Filter> g_fs_filter_map;
@@ -111,16 +117,27 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out);
 // with three sinks. Every value kind with no single GML primitive travels as
 // a generated struct that decodes to a real GML instance even when nested
 // inside a dynamic document: FirestoreTimestamp, FirestoreGeoPoint,
-// FirestoreBlob (base64 - a raw string cannot carry a 0x00 byte) and
 // FirestoreReference (the document path - a read registers no handle the
-// caller would have to release). Each has a firebase_firestore_field_value_*
+// caller would have to release) and FirestoreBlob. A blob is the one read
+// that does register a handle: no wire kind carries bytes to GML, so the
+// struct is a FieldValue handle plus the byte count and the game copies the
+// bytes out with firebase_firestore_field_value_blob_copy into a buffer it
+// sized itself. owner_snapshot is the DocumentSnapshot id the decode runs
+// under (0 when there is none); a blob handle minted under a snapshot is
+// released with it. Each kind has a firebase_firestore_field_value_*
 // constructor for the way back in.
-void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out);
-void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out);
-void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out);
+void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out, uint64_t owner_snapshot);
+void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out, uint64_t owner_snapshot);
+void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out, uint64_t owner_snapshot);
 gm_structs::FirestoreTimestamp makeFirestoreTimestamp(const firebase::Timestamp& ts);
 gm_structs::FirestoreGeoPoint makeFirestoreGeoPoint(const firebase::firestore::GeoPoint& gp);
 gm_structs::FirestoreReference makeFirestoreReference(const firebase::firestore::DocumentReference& ref);
+gm_structs::FirestoreBlob makeFirestoreBlob(const firebase::firestore::FieldValue& blob, uint64_t owner_snapshot);
+
+// Releases every blob handle still registered under a DocumentSnapshot id
+// and forgets the list. Called by firebase_firestore_document_snapshot_release
+// before the snapshot itself goes.
+void releaseFirestoreSnapshotBlobs(uint32_t snapshot_id);
 
 // Inbound (GML -> C++): reconstructs a FieldValue from a decoded incoming
 // GMValue. Plain reals become FieldValue::Double() (GML has no separate

@@ -1,5 +1,9 @@
 #include "GMFirebase_storage.h"
+#include <algorithm>
+#include <cstring>
 #include <iterator>
+#include <memory>
+#include <vector>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -35,6 +39,13 @@ uint32_t g_firebase_storage_controller_index = 0;
 
 std::map<uint32_t, firebase::storage::StorageListResult> g_firebase_storage_list_result_map;
 uint32_t g_firebase_storage_list_result_index = 0;
+
+// A completed GetBytes, held until the game copies it out and releases it
+// (firebase_storage_download_copy / _release). The bytes are the vector the
+// SDK downloaded into, shared so registering moves no data.
+using StorageDownload = std::shared_ptr<std::vector<std::uint8_t>>;
+std::map<uint32_t, StorageDownload> g_firebase_storage_download_map;
+uint32_t g_firebase_storage_download_index = 0;
 
 uint64_t registerStorageReference(const firebase::storage::StorageReference& ref)
 {
@@ -85,6 +96,13 @@ namespace
 	{
 		firebase::storage::StorageListResult* out = nullptr;
 		validate_fb_ref_map(ref, GM_FB_TYPE_STORAGE_LIST_RESULT, firebase::storage::StorageListResult, g_firebase_storage_list_result_map, out);
+		return out;
+	}
+
+	StorageDownload* resolveDownload(uint64_t ref)
+	{
+		StorageDownload* out = nullptr;
+		validate_fb_ref_map(ref, GM_FB_TYPE_STORAGE_DOWNLOAD, StorageDownload, g_firebase_storage_download_map, out);
 		return out;
 	}
 
@@ -397,16 +415,24 @@ FirebaseError firebase_storage_ref_put_bytes(uint64_t ref, GMBuffer data, uint64
 	firebase::storage::Controller* controller = resolveOptionalController(controller_ref);
 	GMFirebaseStorageListener* listener = makeOptionalListener(progress_callback);
 
+	// The SDK reads the pointer for the whole transfer and copies nothing,
+	// so the bytes are copied out of the GML buffer here and owned by the
+	// completion lambda. Shared rather than captured by value: OnCompletion
+	// takes a std::function, whose copies would move the bytes out from
+	// under the pointer the SDK holds.
+	const auto* p = static_cast<const std::uint8_t*>(data.data());
+	auto bytes = std::make_shared<std::vector<std::uint8_t>>(p, p + data.length());
+
 	firebase::Future<firebase::storage::Metadata> future = (metadata != nullptr)
-		? self->PutBytes(data.data(), data.length(), *metadata, listener, controller)
-		: self->PutBytes(data.data(), data.length(), listener, controller);
+		? self->PutBytes(bytes->data(), bytes->size(), *metadata, listener, controller)
+		: self->PutBytes(bytes->data(), bytes->size(), listener, controller);
 
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_put_bytes"))
 	{
 		delete listener;
 		return FirebaseError::InvalidHandle;
 	}
-	future.OnCompletion([callback, listener](const firebase::Future<firebase::storage::Metadata>& f)
+	future.OnCompletion([callback, listener, bytes](const firebase::Future<firebase::storage::Metadata>& f)
 	{
 		delete listener;
 		completeFuture(callback, f, registerStorageMetadata);
@@ -444,32 +470,68 @@ FirebaseError firebase_storage_ref_put_file(uint64_t ref, std::string_view local
 	return FirebaseError::Ok;
 }
 
-// data: a GML buffer pre-sized to the maximum number of bytes to download;
-// the SDK writes directly into it (Storage::GetBytes(void* buffer,
-// buffer_size, ...) convention - no separate copy step needed).
-// callback(error_code: real, error_message: string, bytes_read: real)
-FirebaseError firebase_storage_ref_get_bytes(uint64_t ref, GMBuffer data,
+// The SDK writes into a buffer that must outlive the transfer, so the
+// download lands in native memory of max_size bytes (an object larger than
+// that fails with kErrorDownloadSizeExceeded, the SDK's own rule) and is
+// handed to GML as a download handle to copy out of and release.
+// callback(error_code: real, error_message: string, download_ref: uint64, size: real)
+FirebaseError firebase_storage_ref_get_bytes(uint64_t ref, double max_size,
 	const std::optional<GMFunction>& progress_callback, uint64_t controller_ref,
 	const std::optional<GMFunction>& callback)
 {
 	firebase::storage::StorageReference* self = resolveStorageRef(ref);
 	if (self == nullptr) return FirebaseError::InvalidHandle;
 
+	if (!(max_size >= 1.0))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_storage_ref_get_bytes: max_size must be at least 1");
+		return FirebaseError::InvalidArgument;
+	}
+
 	firebase::storage::Controller* controller = resolveOptionalController(controller_ref);
 	GMFirebaseStorageListener* listener = makeOptionalListener(progress_callback);
+	auto bytes = std::make_shared<std::vector<std::uint8_t>>(static_cast<size_t>(max_size));
 
-	firebase::Future<size_t> future = self->GetBytes(data.data(), data.length(), listener, controller);
+	firebase::Future<size_t> future = self->GetBytes(bytes->data(), bytes->size(), listener, controller);
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_get_bytes"))
 	{
 		delete listener;
 		return FirebaseError::InvalidHandle;
 	}
-	future.OnCompletion([callback, listener](const firebase::Future<size_t>& f)
+	future.OnCompletion([callback, listener, bytes](const firebase::Future<size_t>& f)
 	{
 		delete listener;
-		completeFuture(callback, f, [](size_t bytes_read) { return static_cast<double>(bytes_read); });
+		if (!callback.has_value()) return;
+
+		uint64_t download_ref = 0;
+		double size = 0.0;
+		if (f.error() == 0 && f.result() != nullptr)
+		{
+			bytes->resize(*f.result());
+			size = static_cast<double>(bytes->size());
+			download_ref = packFirebaseRef(registerFirebaseValue(bytes, g_firebase_storage_download_index, g_firebase_storage_download_map), GM_FB_TYPE_STORAGE_DOWNLOAD);
+		}
+		callback->call(static_cast<double>(f.error()), futureErrorMessage(f), download_ref, size);
 	});
 	return FirebaseError::Ok;
+}
+
+double firebase_storage_download_copy(uint64_t download_ref, GMBuffer out_buffer)
+{
+	StorageDownload* self = resolveDownload(download_ref);
+	if (self == nullptr) return 0.0;
+
+	const std::vector<std::uint8_t>& bytes = **self;
+	size_t n = std::min<size_t>(bytes.size(), static_cast<size_t>(out_buffer.length()));
+	if (n) std::memcpy(out_buffer.data(), bytes.data(), n);
+	return static_cast<double>(n);
+}
+
+void firebase_storage_download_release(uint64_t download_ref)
+{
+	StorageDownload* self = resolveDownload(download_ref);
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(download_ref), g_firebase_storage_download_map);
 }
 
 // callback(error_code: real, error_message: string, bytes_read: real)

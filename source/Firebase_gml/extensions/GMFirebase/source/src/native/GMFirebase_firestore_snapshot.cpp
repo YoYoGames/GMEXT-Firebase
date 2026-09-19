@@ -88,12 +88,12 @@ namespace
 	// value is undefined in both cases. An invalid FieldValue is what Get()
 	// returns for a missing field. A snapshot that does not resolve is not a
 	// lookup at all - the callers return undefined for that.
-	gm_structs::FirestoreFieldLookup makeFieldLookup(const firebase::firestore::FieldValue& value)
+	gm_structs::FirestoreFieldLookup makeFieldLookup(const firebase::firestore::FieldValue& value, uint64_t owner_snapshot)
 	{
 		gm_structs::FirestoreFieldLookup out;
 		out.exists = value.is_valid();
 		if (out.exists)
-			writeFieldValueToStream(value, out.value);
+			writeFieldValueToStream(value, out.value, owner_snapshot);
 		else
 			out.value << std::optional<std::uint8_t>{};
 		return out;
@@ -116,7 +116,7 @@ std::optional<gm_structs::FirestoreFieldLookup> firebase_firestore_document_snap
 		return std::nullopt;
 	}
 	std::string field_name(field);
-	return makeFieldLookup(snap->Get(field_name.c_str(), stb));
+	return makeFieldLookup(snap->Get(field_name.c_str(), stb), ref);
 }
 
 // Returns the full field map as a struct, field name -> converted value.
@@ -133,7 +133,7 @@ gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref,
 		{
 			firebase::firestore::MapFieldValue data = snap->GetData(stb);
 			for (const auto& kv : data)
-				addFieldValueToStruct(kv.first.c_str(), kv.second, result);
+				addFieldValueToStruct(kv.first.c_str(), kv.second, result, ref);
 		}
 		else
 			setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_snapshot_get_data: server_timestamp_behavior must be a FirestoreServerTimestampBehavior value");
@@ -144,6 +144,8 @@ gm::wire::DataStream firebase_firestore_document_snapshot_get_data(uint64_t ref,
 	return out;
 }
 
+// Also releases the blob handles read out of this snapshot that the game
+// has not released itself (see makeFirestoreBlob).
 void firebase_firestore_document_snapshot_release(uint64_t ref)
 {
 	if (gm_fb_ref_ext(ref) != GM_FIREBASE_EXT || gm_fb_ref_type(ref) != GM_FB_TYPE_FIRESTORE_DOC_SNAPSHOT)
@@ -151,6 +153,7 @@ void firebase_firestore_document_snapshot_release(uint64_t ref)
 		setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
 		return;
 	}
+	releaseFirestoreSnapshotBlobs(gm_fb_ref_id(ref));
 	unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_doc_snapshot_map);
 }
 
@@ -287,7 +290,7 @@ std::optional<gm_structs::FirestoreFieldLookup> firebase_firestore_document_snap
         setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_document_snapshot_get_field_path: server_timestamp_behavior must be a FirestoreServerTimestampBehavior value");
         return std::nullopt;
     }
-    return makeFieldLookup(snap->Get(*path, stb));
+    return makeFieldLookup(snap->Get(*path, stb), ref);
 }
 
 bool firebase_firestore_query_snapshot_is_valid(uint64_t ref)

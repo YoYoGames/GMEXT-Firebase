@@ -492,13 +492,13 @@
  * of the object that owns the callback. `on_cancelled` fires instead when the server refuses the
  * listener - the security rules deny reading the location - after which the listener is gone.
  *
- * Both callbacks are optional; the function returns `0` with ${function.firebase_last_error_code}
- * set when the handle is not valid.
+ * Both callbacks are optional, but not both at once; the function returns `0` with ${function.firebase_last_error_code}
+ * set when no callback is given or the handle is not valid.
  *
  * @param {Real} ref A reference handle.
  * @param {Function} [on_value_changed] Called with each snapshot.
  * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` when the handle is not valid.
+ * @returns {Real} A listener handle, or `0` on failure.
  *
  * @event callback:on_value_changed
  * @desc Fires with the current data at registration and again on every change.
@@ -581,9 +581,9 @@
  * for the first. `on_cancelled` fires instead when the server refuses the listener, after which
  * the listener is gone.
  *
- * Every callback is optional. Remove the listener with ${function.firebase_database_ref_remove_child_listener} at the latest in the Clean Up
+ * Every callback is optional, but not all at once. Remove the listener with ${function.firebase_database_ref_remove_child_listener} at the latest in the Clean Up
  * event of the object that owns the callbacks. The function returns `0` with
- * ${function.firebase_last_error_code} set when the handle is not valid.
+ * ${function.firebase_last_error_code} set when no callback is given or the handle is not valid.
  *
  * @param {Real} ref A reference handle.
  * @param {Function} [on_child_added] Called for each existing child and each new one.
@@ -591,7 +591,7 @@
  * @param {Function} [on_child_moved] Called when a child's position changes.
  * @param {Function} [on_child_removed] Called when a child is deleted.
  * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` when the handle is not valid.
+ * @returns {Real} A listener handle, or `0` on failure.
  *
  * @event callback:on_child_added
  * @desc Fires once per existing child at registration and for every child added later.
@@ -921,13 +921,13 @@
  * of the object that owns the callback. `on_cancelled` fires instead when the server refuses the
  * listener - the security rules deny reading the location - after which the listener is gone.
  *
- * Both callbacks are optional; the function returns `0` with ${function.firebase_last_error_code}
- * set when the handle is not valid.
+ * Both callbacks are optional, but not both at once; the function returns `0` with ${function.firebase_last_error_code}
+ * set when no callback is given or the handle is not valid.
  *
  * @param {Real} ref A query handle.
  * @param {Function} [on_value_changed] Called with each snapshot.
  * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` when the handle is not valid.
+ * @returns {Real} A listener handle, or `0` on failure.
  *
  * @event callback:on_value_changed
  * @desc Fires with the current data at registration and again on every change.
@@ -982,9 +982,9 @@
  * for the first. `on_cancelled` fires instead when the server refuses the listener, after which
  * the listener is gone.
  *
- * Every callback is optional. Remove the listener with ${function.firebase_database_query_remove_child_listener} at the latest in the Clean Up
+ * Every callback is optional, but not all at once. Remove the listener with ${function.firebase_database_query_remove_child_listener} at the latest in the Clean Up
  * event of the object that owns the callbacks. The function returns `0` with
- * ${function.firebase_last_error_code} set when the handle is not valid.
+ * ${function.firebase_last_error_code} set when no callback is given or the handle is not valid.
  *
  * @param {Real} ref A query handle.
  * @param {Function} [on_child_added] Called for each existing child and each new one.
@@ -992,7 +992,7 @@
  * @param {Function} [on_child_moved] Called when a child's position changes.
  * @param {Function} [on_child_removed] Called when a child is deleted.
  * @param {Function} [on_cancelled] Called when the listener is cancelled.
- * @returns {Real} A listener handle, or `0` when the handle is not valid.
+ * @returns {Real} A listener handle, or `0` on failure.
  *
  * @event callback:on_child_added
  * @desc Fires once per existing child at registration and for every child added later.

@@ -412,15 +412,21 @@ std::optional<FirebaseRemoteConfigInfo> firebase_remote_config_get_info(uint64_t
 // callback(error_code: real, error_message: string, updated_keys: array of string)
 uint64_t firebase_remote_config_add_config_update_listener(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
+	if (!callback.has_value())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_remote_config_add_config_update_listener: a callback is required");
+		return 0;
+	}
+
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr) return 0;
 
+	GMFunction cb = callback.value();
 	firebase::remote_config::ConfigUpdateListenerRegistration registration = rc->AddOnConfigUpdateListener(
-		[callback](firebase::remote_config::ConfigUpdate&& update, firebase::remote_config::RemoteConfigError error)
+		[cb](firebase::remote_config::ConfigUpdate&& update, firebase::remote_config::RemoteConfigError error)
 	{
-		if (!callback.has_value()) return;
 		const char* message = remoteConfigErrorMessage(error);
-		callback->call(static_cast<double>(error), std::string_view{ message }, update.updated_keys);
+		cb.call(static_cast<double>(error), std::string_view{ message }, update.updated_keys);
 	});
 
 	auto* boxed = new firebase::remote_config::ConfigUpdateListenerRegistration(std::move(registration));

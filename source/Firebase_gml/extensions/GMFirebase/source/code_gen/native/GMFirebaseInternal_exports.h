@@ -312,6 +312,8 @@ GMEXPORT double __EXT_NATIVE__firebase_storage_ref_update_metadata(char* __arg_b
 GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_bytes(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_storage_ref_put_file(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_bytes(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_download_copy(char* __arg_buffer, double __arg_buffer_length);
+GMEXPORT double __EXT_NATIVE__firebase_storage_download_release(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_storage_ref_get_file(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_storage_ref_list(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_storage_metadata_create(char* __ret_buffer, double __ret_buffer_length);

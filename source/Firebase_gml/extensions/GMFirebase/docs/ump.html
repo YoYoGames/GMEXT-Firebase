@@ -893,10 +893,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#form-parents" class="md-nav__link">
+  <a href="#where-the-forms-show" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Form parents
+        Where the forms show
       
     </span>
   </a>
@@ -1367,10 +1367,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#form-parents" class="md-nav__link">
+  <a href="#where-the-forms-show" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Form parents
+        Where the forms show
       
     </span>
   </a>
@@ -1718,12 +1718,10 @@ offer a way back into the form - a "Privacy settings" button that calls
 <a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a> - and re-check
 <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> afterwards. The consent the SDK stores is read by the
 Google Mobile Ads SDK on the device, whichever extension makes the ad requests.</p>
-<h3 id="form-parents">Form parents<a class="headerlink" href="#form-parents" title="Permanent link">&para;</a></h3>
-<p>The three form functions take a <code>form_parent</code>. Pass <code>0</code>: the extension supplies the game's own
-window - the activity the Firebase App was created with on Android, the runner's root view
-controller on iOS - which is the only window a GameMaker game has. A non-zero value is a
-platform handle (an Android <code>Activity</code>, an iOS <code>UIViewController</code>) for a game that bridges
-one of its own, and is passed through untouched.</p>
+<h3 id="where-the-forms-show">Where the forms show<a class="headerlink" href="#where-the-forms-show" title="Permanent link">&para;</a></h3>
+<p>The three form functions show over the game's own window - the activity the Firebase App was
+created with on Android, the runner's root view controller on iOS - which is the only window a
+GameMaker game has, so they take no parent argument.</p>
 <h3 id="platforms">Platforms<a class="headerlink" href="#platforms" title="Permanent link">&para;</a></h3>
 <p>Android and iOS have the real SDK; the extension links <code>user-messaging-platform</code> 4.0.0 and the
 <code>GoogleUserMessagingPlatform</code> 2.3.0 pod. Windows, macOS and Linux have a stub that walks the
@@ -1798,7 +1796,7 @@ fails with <code>FirebaseUmpConsentRequestError.InvalidAppId</code>.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/ump/consent-info#getinstance">firebase::ump::ConsentInfo::GetInstance</a></p>
 <p>This function returns the handle to the consent-info object every other function in this
 module takes. The User Messaging Platform SDK has one such object per process, so the same
-handle comes back on every call and there is nothing to release. It returns <code>undefined</code> with
+handle comes back on every call and there is nothing to release. It returns <code>0</code> with
 <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> has not run
 or the SDK could not initialise - on Android, when its Java classes could not be loaded.</p>
 <p><br></p>
@@ -1811,7 +1809,7 @@ or the SDK could not initialise - on Android, when its Java classes could not be
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>The consent-info handle, or <code>undefined</code> on failure.</p>
+<p>The consent-info handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2111,7 +2109,7 @@ firebase_ump_request_consent_info_update(consent, FirebaseUmpConsentDebugGeograp
         show_debug_message($"Consent info update failed ({_error}): {_message}");
         // Fall through: the previous session's consent, if any, still applies.
     }
-    firebase_ump_load_and_show_consent_form_if_required(consent, 0, function(_error, _message)
+    firebase_ump_load_and_show_consent_form_if_required(consent, function(_error, _message)
     {
         if (firebase_ump_can_request_ads(consent))
         {
@@ -2211,13 +2209,13 @@ second time with <code>AlreadyUsed</code>. Unlike
 <a href="ump.html#firebase_ump_load_and_show_consent_form_if_required">firebase_ump_load_and_show_consent_form_if_required</a> it shows the form whatever the
 consent status - the way to let a player who has already consented see the form again is
 <a href="ump.html#firebase_ump_show_privacy_options_form">firebase_ump_show_privacy_options_form</a>, not this. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
-valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+valid, and <code>FirebaseError.NotInitialized</code> when there is no window to
 show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_ump_show_consent_form(consent_ref, form_parent, callback=undefined)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_ump_show_consent_form(consent_ref, callback=undefined)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -2232,11 +2230,6 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <td>consent_ref</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
 <td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
-</tr>
-<tr>
-<td>form_parent</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
 </tr>
 <tr>
 <td>callback</td>
@@ -2292,13 +2285,13 @@ statuses and <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_re
 It is the call to make after <a href="ump.html#firebase_ump_request_consent_info_update">firebase_ump_request_consent_info_update</a> completes;
 <a href="ump.html#firebase_ump_load_consent_form">firebase_ump_load_consent_form</a> and <a href="ump.html#firebase_ump_show_consent_form">firebase_ump_show_consent_form</a> are
 the same two steps taken separately. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
-valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+valid, and <code>FirebaseError.NotInitialized</code> when there is no window to
 show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_ump_load_and_show_consent_form_if_required(consent_ref, form_parent, callback=undefined)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_ump_load_and_show_consent_form_if_required(consent_ref, callback=undefined)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -2313,11 +2306,6 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <td>consent_ref</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
 <td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
-</tr>
-<tr>
-<td>form_parent</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
 </tr>
 <tr>
 <td>callback</td>
@@ -2372,13 +2360,13 @@ point that <a href="ump.html#firebase_ump_get_privacy_options_requirement_status
 offer; the SDK keeps the form preloaded once one is available, and loads one on demand
 otherwise. Re-check <a href="ump.html#firebase_ump_can_request_ads">firebase_ump_can_request_ads</a> when the callback fires: the
 player may have withdrawn consent. It returns <code>FirebaseError.InvalidHandle</code> without calling the callback when the handle is not
-valid, and <code>FirebaseError.NotInitialized</code> when <code>form_parent</code> is <code>0</code> and there is no window to
+valid, and <code>FirebaseError.NotInitialized</code> when there is no window to
 show the form on yet (no Firebase App on Android, no root view controller on iOS).</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_ump_show_privacy_options_form(consent_ref, form_parent, callback=undefined)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_ump_show_privacy_options_form(consent_ref, callback=undefined)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -2393,11 +2381,6 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <td>consent_ref</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
 <td>The consent-info handle from <a href="ump.html#firebase_ump_get_instance">firebase_ump_get_instance</a>.</td>
-</tr>
-<tr>
-<td>form_parent</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td><code>0</code> for the game's own window; see Form parents on the <a href="ump.html">User Messaging Platform</a> page.</td>
 </tr>
 <tr>
 <td>callback</td>
@@ -2444,7 +2427,7 @@ show the form on yet (no Firebase App on Android, no root view controller on iOS
 <p><pre class="highlight"><code class="language-gml">// Options menu: the "Privacy settings" button, shown only when required
 if (firebase_ump_get_privacy_options_requirement_status(consent) == FirebaseUmpPrivacyOptionsRequirementStatus.Required)
 {
-    firebase_ump_show_privacy_options_form(consent, 0, function(_error, _message)
+    firebase_ump_show_privacy_options_form(consent, function(_error, _message)
     {
         ads_allowed = firebase_ump_can_request_ads(consent);
     });
@@ -2487,7 +2470,7 @@ symmetry with the other modules.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>The consent-info handle, or <code>undefined</code> when the app handle is not valid or the SDK could not initialise.</p>
+<p>The consent-info handle, or <code>0</code> when the app handle is not valid or the SDK could not initialise.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

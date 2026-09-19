@@ -455,8 +455,8 @@
  *
  * This function uploads the whole content of a buffer to the location - `buffer_get_size` bytes
  * from its start, whatever its seek position - creating the object or replacing the one there, so
- * size the buffer to exactly the data to send. The buffer must stay alive and the same size until the callback has fired: the
- * SDK works on its memory during the transfer, and a `buffer_resize` can move it.
+ * size the buffer to exactly the data to send. The bytes are copied before the function returns,
+ * so the buffer can be deleted or resized straight away.
  *
  * Pass a metadata handle to store a content type and other attributes with the object; without
  * one the object has no content type, and a browser given its download URL will not know what it
@@ -623,16 +623,18 @@
  * @function firebase_storage_ref_get_bytes
  * @desc **Firebase C++ SDK:** [firebase::storage::StorageReference::GetBytes](https://firebase.google.com/docs/reference/cpp/class/firebase/storage/storage-reference#getbytes)
  *
- * This function downloads the object into a buffer the game has created. The SDK writes straight
- * into it, at most `buffer_get_size` bytes, so size the buffer for the largest object expected or
- * read the size from ${function.firebase_storage_ref_get_metadata} first: an object larger than
- * the buffer fails with `FirebaseStorageError.DownloadSizeExceeded`. The callback's `bytes_read` is how much
- * was written, from the start of the buffer; the seek position is not moved. The buffer must stay alive and the same size until the callback has fired: the
- * SDK works on its memory during the transfer, and a `buffer_resize` can move it.
+ * This function downloads the object into memory on the extension's side and hands the game a
+ * download handle to copy it out of. `max_size` is the most it will accept, so set it for the
+ * largest object expected or read the size from ${function.firebase_storage_ref_get_metadata}
+ * first: an object larger than that fails with `FirebaseStorageError.DownloadSizeExceeded`. The
+ * callback's `download_ref` and `size` are the handle and the byte count; create a buffer of that
+ * size, ${function.firebase_storage_download_copy} the bytes into it, then
+ * ${function.firebase_storage_download_release} the handle. On failure `download_ref` is `0`.
  *
  * The function returns `FirebaseError.InvalidHandle` without calling either callback when the
- * reference is not valid. For an object the game will load from disk anyway,
- * ${function.firebase_storage_ref_get_file} avoids holding it in a buffer.
+ * reference is not valid, and `FirebaseError.InvalidArgument` when `max_size` is below 1. For an
+ * object the game will load from disk anyway, ${function.firebase_storage_ref_get_file} avoids
+ * holding it in memory twice.
  *
  * [[Warning: On Windows, macOS and Linux the SDK keeps reading the reference an operation was started on
  * until that operation has completed, so keep the reference handle until the callback has fired -
@@ -640,7 +642,7 @@
  * operation itself, but releasing after the callback is correct everywhere.]]
  *
  * @param {Real} ref A reference handle.
- * @param {Buffer} data The buffer to download into; its size is the most that will be read.
+ * @param {Real} max_size The largest object to accept, in bytes; the download is held in memory of this size.
  * @param {Function} [progress_callback] The function to call as the transfer progresses, or `undefined` for none.
  * @param {Real} controller_ref A controller handle from ${function.firebase_storage_controller_create} to attach to the transfer, or `0` for none.
  * @param {Function} [callback] The function to call with the result.
@@ -657,43 +659,66 @@
  * @desc Fires once when the download has completed or failed.
  * @member {Enum.FirebaseStorageError} error_code `FirebaseStorageError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
- * @member {Real} bytes_read The number of bytes written into the buffer, or `0` on failure.
+ * @member {Real} download_ref A download handle holding the bytes, to copy from with ${function.firebase_storage_download_copy} and release with ${function.firebase_storage_download_release}; `0` on failure.
+ * @member {Real} size The number of bytes downloaded, or `0` on failure.
  * @event_end
  *
  * @example
  * ```gml
  * // Download a JSON level into memory
  * level_ref = firebase_storage_get_reference_path(storage, $"levels/{level_id}.json");
- * download_buffer = buffer_create(1 << 20, buffer_fixed, 1); // up to 1 MiB
  *
- * var _result = firebase_storage_ref_get_bytes(level_ref, download_buffer, undefined, 0,
- *     function(_error, _message, _bytes_read)
+ * var _result = firebase_storage_ref_get_bytes(level_ref, 1 << 20, undefined, 0, // up to 1 MiB
+ *     function(_error, _message, _download, _size)
  *     {
  *         if (_error == FirebaseStorageError.None)
  *         {
- *             buffer_resize(download_buffer, _bytes_read);
- *             buffer_seek(download_buffer, buffer_seek_start, 0);
- *             level_data = json_parse(buffer_read(download_buffer, buffer_text));
+ *             var _buffer = buffer_create(_size, buffer_fixed, 1);
+ *             firebase_storage_download_copy(_download, _buffer);
+ *             firebase_storage_download_release(_download);
+ *             level_data = json_parse(buffer_read(_buffer, buffer_text));
+ *             buffer_delete(_buffer);
  *         }
  *         else
  *         {
  *             show_debug_message($"Download failed ({_error}): {_message}");
  *         }
- *         buffer_delete(download_buffer);
  *         firebase_storage_ref_release(level_ref);
  *         level_ref = 0;
  *     });
  *
  * if (_result != FirebaseError.Ok)
  * {
- *     buffer_delete(download_buffer);
  *     firebase_storage_ref_release(level_ref);
  *     level_ref = 0;
  * }
  * ```
- * The above code downloads into a buffer sized for the largest level, trims it to the bytes
- * actually read before parsing the text, and frees the buffer and the reference in the callback.
- * The resize is safe there because the transfer is over.
+ * The above code accepts a level of up to 1 MiB, copies the bytes into a buffer sized exactly to
+ * what arrived, releases the download handle, and parses the text.
+ * @function_end
+ */
+
+/**
+ * @function firebase_storage_download_copy
+ * @desc This function copies the bytes a download handle holds into the start of a GameMaker
+ * buffer, up to the buffer's size, and returns how many were copied. The callback of
+ * ${function.firebase_storage_ref_get_bytes} gives the handle and the size to create the buffer
+ * with; the handle keeps the bytes until ${function.firebase_storage_download_release} frees it,
+ * so it can be copied from more than once.
+ *
+ * @param {Real} download_ref A download handle from a ${function.firebase_storage_ref_get_bytes} callback.
+ * @param {Buffer} out_buffer The buffer to write into.
+ * @returns {Real} The number of bytes copied, or `0` with ${function.firebase_last_error_code} set to `FirebaseError.InvalidHandle` when the handle is not a live download.
+ * @function_end
+ */
+
+/**
+ * @function firebase_storage_download_release
+ * @desc This function frees the bytes a download handle holds. Call it once the bytes have been
+ * copied out; the memory stays allocated until then. A handle that is not a download sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
+ *
+ * @param {Real} download_ref The handle to release.
  * @function_end
  */
 
@@ -1478,11 +1503,13 @@
  *
  * ### Transfers
  *
- * Uploads and downloads take the data as a GML buffer (${function.firebase_storage_ref_put_bytes},
- * ${function.firebase_storage_ref_get_bytes}) or as a file on the device
- * (${function.firebase_storage_ref_put_file}, ${function.firebase_storage_ref_get_file}). A buffer
- * is used whole, from its start to `buffer_get_size`, and must stay alive and the same size until
- * the callback has fired. Each transfer takes an optional `progress_callback`, called as bytes move,
+ * Uploads take the data as a GML buffer (${function.firebase_storage_ref_put_bytes}, used whole
+ * and copied before the call returns) or a file on the device
+ * (${function.firebase_storage_ref_put_file}); downloads land in a file
+ * (${function.firebase_storage_ref_get_file}) or in extension memory that the game copies into a
+ * buffer of its own through a download handle (${function.firebase_storage_ref_get_bytes},
+ * ${function.firebase_storage_download_copy}, ${function.firebase_storage_download_release}).
+ * Each transfer takes an optional `progress_callback`, called as bytes move,
  * and an optional controller from ${function.firebase_storage_controller_create}, which can pause,
  * resume or cancel it and be polled for its progress. A failed transfer is retried on its own for
  * up to the instance's retry time - ten minutes by default for uploads and downloads, two for
@@ -1544,6 +1571,8 @@
  * @ref firebase_storage_ref_put_bytes
  * @ref firebase_storage_ref_put_file
  * @ref firebase_storage_ref_get_bytes
+ * @ref firebase_storage_download_copy
+ * @ref firebase_storage_download_release
  * @ref firebase_storage_ref_get_file
  * @ref firebase_storage_ref_get_download_url
  * @ref firebase_storage_ref_delete

@@ -216,12 +216,22 @@ uint64_t firebase_functions_get_instance_for_app(uint64_t app_ref)
 {
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     auto* functions = firebase::functions::Functions::GetInstance(app);
-    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+    if (!functions)
+    {
+        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app: Functions::GetInstance() returned null");
+        return 0;
+    }
+    return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }
 
 uint64_t firebase_functions_get_instance_for_app_region(uint64_t app_ref, std::string_view region)
 {
     auto* app = resolveFirebaseApp(app_ref); if (!app) return 0; std::string r(region);
     auto* functions = firebase::functions::Functions::GetInstance(app, r.c_str());
-    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+    if (!functions)
+    {
+        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app_region: Functions::GetInstance() returned null");
+        return 0;
+    }
+    return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }

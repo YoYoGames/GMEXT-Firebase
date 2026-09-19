@@ -4809,6 +4809,32 @@ static jdouble __JNI_WRAPPER__firebase_storage_ref_get_bytes_9F91050DC3BF(JNIEnv
     return static_cast<jdouble>(__ret);
 }
 
+// firebase_storage_download_copy JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_download_copy_BFA53F0541AE(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_download_copy((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
+// firebase_storage_download_release JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_storage_download_release_9934C96273C4(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+{
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_storage_download_release((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    return static_cast<jdouble>(__ret);
+}
+
 // firebase_storage_ref_get_file JNI wrapper signature: (Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D
 static jdouble __JNI_WRAPPER__firebase_storage_ref_get_file_77C22696A56E(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length, jobject __ret_buffer, jdouble __ret_buffer_length)
 {
@@ -10251,6 +10277,8 @@ extern "C" {
             { "__EXT_JNI__firebase_storage_ref_put_bytes", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_bytes_F45A97E97BCC },
             { "__EXT_JNI__firebase_storage_ref_put_file", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_put_file_07A1F39B7CF3 },
             { "__EXT_JNI__firebase_storage_ref_get_bytes", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_bytes_9F91050DC3BF },
+            { "__EXT_JNI__firebase_storage_download_copy", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_download_copy_BFA53F0541AE },
+            { "__EXT_JNI__firebase_storage_download_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_download_release_9934C96273C4 },
             { "__EXT_JNI__firebase_storage_ref_get_file", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_get_file_77C22696A56E },
             { "__EXT_JNI__firebase_storage_ref_list", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_ref_list_3344C48A2D53 },
             { "__EXT_JNI__firebase_storage_metadata_create", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_storage_metadata_create_A752D68874E9 },

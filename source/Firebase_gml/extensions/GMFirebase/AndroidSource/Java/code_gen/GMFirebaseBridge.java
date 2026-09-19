@@ -322,6 +322,8 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_storage_ref_put_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_put_file(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_get_bytes(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
+    public static native double __EXT_JNI__firebase_storage_download_copy(ByteBuffer __arg_buffer, double __arg_buffer_length);
+    public static native double __EXT_JNI__firebase_storage_download_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_get_file(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_storage_ref_list(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);
     public static native double __EXT_JNI__firebase_storage_metadata_create(ByteBuffer __ret_buffer, double __ret_buffer_length);

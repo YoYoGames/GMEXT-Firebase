@@ -113,6 +113,7 @@ uint32_t g_fs_write_batch_index = 0;
 
 std::map<uint32_t, firebase::firestore::FieldValue> g_fs_field_value_map;
 uint32_t g_fs_field_value_index = 0;
+std::map<uint32_t, std::vector<uint32_t>> g_fs_snapshot_blob_children;
 
 std::map<uint32_t, firebase::firestore::FieldPath> g_fs_field_path_map;
 uint32_t g_fs_field_path_index = 0;
@@ -155,6 +156,38 @@ uint64_t registerFirestoreFieldValue(const firebase::firestore::FieldValue& valu
 {
 	uint32_t id = registerFirebaseValue(value, g_fs_field_value_index, g_fs_field_value_map);
 	return packFirebaseRef(id, GM_FB_TYPE_FIRESTORE_FIELD_VALUE);
+}
+
+gm_structs::FirestoreBlob makeFirestoreBlob(const firebase::firestore::FieldValue& blob, uint64_t owner_snapshot)
+{
+	gm_structs::FirestoreBlob out;
+	out.field_value = registerFirestoreFieldValue(blob);
+	out.size = static_cast<double>(blob.blob_size());
+
+	// Recorded after the registration, which takes the same lock.
+	if (owner_snapshot != 0)
+	{
+		std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+		g_fs_snapshot_blob_children[gm_fb_ref_id(owner_snapshot)].push_back(gm_fb_ref_id(out.field_value));
+	}
+	return out;
+}
+
+gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size, uint64_t owner_snapshot)
+{
+	return makeFirestoreBlob(firebase::firestore::FieldValue::Blob(data, size), owner_snapshot);
+}
+
+void releaseFirestoreSnapshotBlobs(uint32_t snapshot_id)
+{
+	std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+	auto it = g_fs_snapshot_blob_children.find(snapshot_id);
+	if (it == g_fs_snapshot_blob_children.end()) return;
+
+	// A child the game already released is simply gone from the map.
+	for (uint32_t child : it->second)
+		g_fs_field_value_map.erase(child);
+	g_fs_snapshot_blob_children.erase(it);
 }
 
 
@@ -251,9 +284,10 @@ namespace
 {
 	// One switch over FieldValue::Type for the three sinks below. emit() gets
 	// each converted value and writes it wherever its sink puts one value: an
-	// array element, a keyed struct field, or a bare stream value.
+	// array element, a keyed struct field, or a bare stream value. owner is
+	// the DocumentSnapshot ref the decode runs under, or 0 (see the header).
 	template<class Emit>
-	void visitFieldValue(const firebase::firestore::FieldValue& v, Emit&& emit)
+	void visitFieldValue(const firebase::firestore::FieldValue& v, uint64_t owner, Emit&& emit)
 	{
 		switch (v.type())
 		{
@@ -278,10 +312,10 @@ namespace
 			break;
 
 		case firebase::firestore::FieldValue::Type::kBlob:
-			// A raw string would stop the GML reader at the first 0x00 byte and
-			// leave its cursor mid-blob, so every field after it would decode as
-			// garbage. Base64 inside a typed struct carries any byte.
-			emit(makeFirestoreBlob(v.blob_value(), v.blob_size()));
+			// No wire kind carries bytes to GML (a string stops the reader at
+			// the first 0x00), so the bytes stay native behind a handle and
+			// the game copies them into a buffer it sizes from the struct.
+			emit(makeFirestoreBlob(v, owner));
 			break;
 
 		case firebase::firestore::FieldValue::Type::kReference:
@@ -302,7 +336,7 @@ namespace
 		{
 			gm::wire::ArrayStream nested;
 			for (const auto& elem : v.array_value())
-				pushFieldValueToArray(elem, nested);
+				pushFieldValueToArray(elem, nested, owner);
 			emit(nested);
 			break;
 		}
@@ -311,7 +345,7 @@ namespace
 		{
 			gm::wire::StructStream nested;
 			for (const auto& kv : v.map_value())
-				addFieldValueToStruct(kv.first.c_str(), kv.second, nested);
+				addFieldValueToStruct(kv.first.c_str(), kv.second, nested, owner);
 			emit(nested);
 			break;
 		}
@@ -335,19 +369,19 @@ namespace
 	}
 }
 
-void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out)
+void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out, uint64_t owner_snapshot)
 {
-	visitFieldValue(v, [&](const auto& value) { out << value; });
+	visitFieldValue(v, owner_snapshot, [&](const auto& value) { out << value; });
 }
 
-void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out)
+void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out, uint64_t owner_snapshot)
 {
-	visitFieldValue(v, [&](const auto& value) { out.addKeyValue(key, value); });
+	visitFieldValue(v, owner_snapshot, [&](const auto& value) { out.addKeyValue(key, value); });
 }
 
-void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out)
+void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out, uint64_t owner_snapshot)
 {
-	visitFieldValue(v, [&](const auto& value) { out << value; });
+	visitFieldValue(v, owner_snapshot, [&](const auto& value) { out << value; });
 }
 
 namespace
@@ -581,8 +615,39 @@ void firebase_firestore_field_value_release(uint64_t ref)
 // Firestore instance / settings / lifecycle
 // ============================================================
 
+namespace
+{
+	// Instances whose Terminate() has completed, with the handle each was
+	// registered under, waiting to be deleted. The SDK erases a terminated
+	// instance from its own cache but never deletes it, and the completion
+	// runs on the Firestore core's own executor, where ~FirestoreInternal's
+	// Dispose() of that core cannot run. The handle stays live meanwhile so
+	// clear_persistence can follow terminate the way the SDK requires; the
+	// next get_instance* - the call that mints a replacement - unregisters
+	// and deletes on the GML thread. Keyed by pointer so a second terminate
+	// on the same handle parks nothing twice.
+	std::mutex g_terminated_firestores_mutex;
+	std::map<firebase::firestore::Firestore*, uint64_t> g_terminated_firestores;
+
+	void deleteTerminatedFirestores()
+	{
+		std::map<firebase::firestore::Firestore*, uint64_t> done;
+		{
+			std::lock_guard<std::mutex> lock(g_terminated_firestores_mutex);
+			done.swap(g_terminated_firestores);
+		}
+		for (const auto& entry : done)
+		{
+			unregisterFirebasePointer(entry.second, GM_FB_TYPE_FIRESTORE);
+			delete entry.first;
+		}
+	}
+}
+
 uint64_t firebase_firestore_get_instance()
 {
+	deleteTerminatedFirestores();
+
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
@@ -603,6 +668,8 @@ uint64_t firebase_firestore_get_instance()
 
 uint64_t firebase_firestore_get_instance_for_database(std::string_view database_name)
 {
+	deleteTerminatedFirestores();
+
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
@@ -749,15 +816,20 @@ FirebaseError firebase_firestore_disable_network(uint64_t instance_ref, const st
 	return FirebaseError::Ok;
 }
 
-// After this future completes, `instance_ref` (and every ref derived from
-// it) must not be used again - the underlying Firestore* is destroyed.
+// After the callback only clear_persistence may still use `instance_ref`;
+// the SDK erases the instance from its cache here, and the extension deletes
+// the object on the next get_instance* (see g_terminated_firestores).
 FirebaseError firebase_firestore_terminate(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
 	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
 	if (fs == nullptr) return FirebaseError::InvalidHandle;
 
-	fs->Terminate().OnCompletion([callback](const firebase::Future<void>& f)
+	fs->Terminate().OnCompletion([fs, instance_ref, callback](const firebase::Future<void>& f)
 	{
+		{
+			std::lock_guard<std::mutex> lock(g_terminated_firestores_mutex);
+			g_terminated_firestores.emplace(fs, instance_ref);
+		}
 		completeFuture(callback, f);
 	});
 	return FirebaseError::Ok;
@@ -1659,8 +1731,15 @@ void firebase_firestore_aggregate_snapshot_release(uint64_t ref)
 
 uint64_t firebase_firestore_add_snapshots_in_sync_listener(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
 {
+    if (!callback.has_value())
+    {
+        setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_add_snapshots_in_sync_listener: a callback is required");
+        return 0;
+    }
+
     auto* fs = resolveFirestore(instance_ref); if (!fs) return 0;
-    auto reg = fs->AddSnapshotsInSyncListener([callback]() { if (callback) callback->call(); });
+    gm::wire::GMFunction cb = callback.value();
+    auto reg = fs->AddSnapshotsInSyncListener([cb]() { cb.call(); });
     auto* boxed = new firebase::firestore::ListenerRegistration(std::move(reg));
     return registerFirebasePointer(boxed, GM_FB_TYPE_FIRESTORE_LISTENER_REG);
 }
@@ -1802,13 +1881,13 @@ std::optional<gm_structs::FirestoreGeoPoint> firebase_firestore_field_value_geo_
 gm::wire::DataStream firebase_firestore_field_value_array_value(uint64_t ref)
 {
     gm::wire::ArrayStream a; auto* v=resolveFieldValueHandle(ref);
-    if(v && v->is_array()) for(const auto& x:v->array_value()) pushFieldValueToArray(x,a);
+    if(v && v->is_array()) for(const auto& x:v->array_value()) pushFieldValueToArray(x,a,0);
     gm::wire::DataStream out; out<<a; return out;
 }
 gm::wire::DataStream firebase_firestore_field_value_map_value(uint64_t ref)
 {
     gm::wire::StructStream s; auto* v=resolveFieldValueHandle(ref);
-    if(v && v->is_map()) for(const auto& kv:v->map_value()) addFieldValueToStruct(kv.first.c_str(),kv.second,s);
+    if(v && v->is_map()) for(const auto& kv:v->map_value()) addFieldValueToStruct(kv.first.c_str(),kv.second,s,0);
     gm::wire::DataStream out; out<<s; return out;
 }
 std::string firebase_firestore_field_value_to_string(uint64_t ref) { auto* v=resolveFieldValueHandle(ref); return v ? v->ToString() : std::string(); }

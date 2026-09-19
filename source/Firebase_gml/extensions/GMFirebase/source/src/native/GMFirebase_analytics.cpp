@@ -1,5 +1,6 @@
 #include "GMFirebase_common.h"
 #include "firebase/analytics.h"
+#include <mutex>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -261,19 +262,32 @@ void firebase_analytics_set_desktop_debug_mode(bool enabled)
 
 namespace
 {
+	// Written from the GML thread, read from whichever thread the SDK logs
+	// on. The callback copies the function out under the lock and calls it
+	// outside, so a reassignment never races the call and the call never
+	// holds the lock.
+	std::mutex g_analytics_log_mutex;
 	std::optional<gm::wire::GMFunction> g_analytics_log_callback;
 
 	void CALLBACK_firebase_analytics_log(firebase::LogLevel level, const char* message)
 	{
-		if (g_analytics_log_callback.has_value())
-			g_analytics_log_callback->call((double)level, std::string_view{ message != nullptr ? message : "" });
+		std::optional<gm::wire::GMFunction> callback;
+		{
+			std::lock_guard<std::mutex> lock(g_analytics_log_mutex);
+			callback = g_analytics_log_callback;
+		}
+		if (callback.has_value())
+			callback->call((double)level, std::string_view{ message != nullptr ? message : "" });
 	}
 }
 
 void firebase_analytics_set_log_callback(const std::optional<gm::wire::GMFunction>& callback)
 {
 	if (!analyticsReady("firebase_analytics_set_log_callback")) return;
-	g_analytics_log_callback = callback;
+	{
+		std::lock_guard<std::mutex> lock(g_analytics_log_mutex);
+		g_analytics_log_callback = callback;
+	}
 	if (callback.has_value())
 		firebase::analytics::SetLogCallback(CALLBACK_firebase_analytics_log);
 	else

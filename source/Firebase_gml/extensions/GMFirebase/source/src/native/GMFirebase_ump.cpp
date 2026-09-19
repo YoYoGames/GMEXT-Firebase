@@ -53,20 +53,13 @@ namespace
 		return out;
 	}
 
-	// A non-zero form_parent is a caller-supplied platform handle and is used
-	// as-is. Zero means "use the game's own parent": the activity the App was
-	// created with on Android (the same object the SDK's ConsentInfo captured
-	// for itself), the runner's root view controller on iOS, and the SDK's
-	// never-dereferenced stub on desktop. Nothing GML-reachable could supply a
-	// real parent before this, so the forms could never be shown.
-	FirebaseError resolveFormParent(uint64_t form_parent, firebase::ump::FormParent& out)
+	// The game's own parent: the activity the App was created with on Android
+	// (the same object the SDK's ConsentInfo captured for itself), the
+	// runner's root view controller on iOS, and the SDK's never-dereferenced
+	// stub on desktop. Nothing GML-reachable can supply another one, which
+	// is why the form functions take no parent parameter.
+	FirebaseError resolveFormParent(firebase::ump::FormParent& out)
 	{
-		if (form_parent != 0)
-		{
-			out = reinterpret_cast<firebase::ump::FormParent>(static_cast<uintptr_t>(form_parent));
-			return FirebaseError::Ok;
-		}
-
 #if FIREBASE_PLATFORM_ANDROID
 		firebase::App* app = getFirebaseApp();
 		if (app == nullptr)
@@ -77,8 +70,8 @@ namespace
 		out = app->activity();
 		return FirebaseError::Ok;
 #elif FIREBASE_PLATFORM_IOS
-		// Through uintptr_t like the caller-supplied path above: an integer to
-		// id cast needs no bridge under ARC, a void* to id cast does.
+		// Through uintptr_t: an integer to id cast needs no bridge under ARC,
+		// a void* to id cast does.
 		out = reinterpret_cast<firebase::ump::FormParent>(reinterpret_cast<uintptr_t>(gmFirebaseIosRootViewController()));
 		if (out == nullptr)
 		{
@@ -97,15 +90,16 @@ namespace
 // ConsentInfo instance
 // ============================================================
 
-// Nullable: ConsentInfo::GetInstance() can fail (e.g. missing dependency on
-// Android), in which case GML gets back "no value" rather than a ref.
-std::optional<uint64_t> firebase_ump_get_instance()
+// 0 with the last error set when ConsentInfo::GetInstance() fails (e.g. a
+// missing dependency on Android) - the handle convention of every other
+// *_get_instance in this extension.
+uint64_t firebase_ump_get_instance()
 {
 	firebase::App* app = getFirebaseApp();
 	if (app == nullptr)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_ump: no firebase::App - call firebase_app_initialize() first");
-		return std::nullopt;
+		return 0;
 	}
 
 	firebase::InitResult init_result = firebase::kInitResultSuccess;
@@ -113,7 +107,7 @@ std::optional<uint64_t> firebase_ump_get_instance()
 	if (consent_info == nullptr || init_result != firebase::kInitResultSuccess)
 	{
 		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("firebase_ump: ConsentInfo::GetInstance() failed", init_result));
-		return std::nullopt;
+		return 0;
 	}
 
 	return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
@@ -206,17 +200,16 @@ FirebaseError firebase_ump_load_consent_form(uint64_t consent_ref, const std::op
 	return FirebaseError::Ok;
 }
 
-// form_parent: 0 for the game's own activity / root view controller, or a
-// caller-supplied platform handle (jobject/id cast to uint64) - see
+// The form's parent is the game's own activity / root view controller - see
 // resolveFormParent() and GMFirebase_ump.h.
 // callback(error_code: real, error_message: string)
-FirebaseError firebase_ump_show_consent_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+FirebaseError firebase_ump_show_consent_form(uint64_t consent_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::ump::FormParent parent;
-	const FirebaseError parent_error = resolveFormParent(form_parent, parent);
+	const FirebaseError parent_error = resolveFormParent(parent);
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowConsentForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -226,13 +219,13 @@ FirebaseError firebase_ump_show_consent_form(uint64_t consent_ref, uint64_t form
 }
 
 // callback(error_code: real, error_message: string)
-FirebaseError firebase_ump_load_and_show_consent_form_if_required(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+FirebaseError firebase_ump_load_and_show_consent_form_if_required(uint64_t consent_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::ump::FormParent parent;
-	const FirebaseError parent_error = resolveFormParent(form_parent, parent);
+	const FirebaseError parent_error = resolveFormParent(parent);
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->LoadAndShowConsentFormIfRequired(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -242,13 +235,13 @@ FirebaseError firebase_ump_load_and_show_consent_form_if_required(uint64_t conse
 }
 
 // callback(error_code: real, error_message: string)
-FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint64_t form_parent, const std::optional<GMFunction>& callback)
+FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, const std::optional<GMFunction>& callback)
 {
 	firebase::ump::ConsentInfo* consent_info = resolveConsentInfo(consent_ref);
 	if (consent_info == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::ump::FormParent parent;
-	const FirebaseError parent_error = resolveFormParent(form_parent, parent);
+	const FirebaseError parent_error = resolveFormParent(parent);
 	if (parent_error != FirebaseError::Ok) return parent_error;
 	consent_info->ShowPrivacyOptionsForm(parent).OnCompletion([callback](const firebase::Future<void>& f)
 	{
@@ -257,15 +250,15 @@ FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, uint6
 	return FirebaseError::Ok;
 }
 
-std::optional<uint64_t> firebase_ump_get_instance_for_app(uint64_t app_ref)
+uint64_t firebase_ump_get_instance_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return std::nullopt;
+    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
     firebase::InitResult init_result = firebase::kInitResultSuccess;
     auto* consent_info = firebase::ump::ConsentInfo::GetInstance(*app, &init_result);
     if (!consent_info || init_result != firebase::kInitResultSuccess)
     {
         setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("UMP ConsentInfo::GetInstance(app) failed", init_result));
-        return std::nullopt;
+        return 0;
     }
     return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
 }

@@ -4,11 +4,11 @@
  *
  * This function returns the handle to the consent-info object every other function in this
  * module takes. The User Messaging Platform SDK has one such object per process, so the same
- * handle comes back on every call and there is nothing to release. It returns `undefined` with
+ * handle comes back on every call and there is nothing to release. It returns `0` with
  * ${function.firebase_last_error_code} set when ${function.firebase_app_initialize} has not run
  * or the SDK could not initialise - on Android, when its Java classes could not be loaded.
  *
- * @returns {Real} The consent-info handle, or `undefined` on failure.
+ * @returns {Real} The consent-info handle, or `0` on failure.
  * @function_end
  */
 
@@ -134,7 +134,7 @@
  *         show_debug_message($"Consent info update failed ({_error}): {_message}");
  *         // Fall through: the previous session's consent, if any, still applies.
  *     }
- *     firebase_ump_load_and_show_consent_form_if_required(consent, 0, function(_error, _message)
+ *     firebase_ump_load_and_show_consent_form_if_required(consent, function(_error, _message)
  *     {
  *         if (firebase_ump_can_request_ads(consent))
  *         {
@@ -187,11 +187,10 @@
  * ${function.firebase_ump_load_and_show_consent_form_if_required} it shows the form whatever the
  * consent status - the way to let a player who has already consented see the form again is
  * ${function.firebase_ump_show_privacy_options_form}, not this. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
- * valid, and `FirebaseError.NotInitialized` when `form_parent` is `0` and there is no window to
+ * valid, and `FirebaseError.NotInitialized` when there is no window to
  * show the form on yet (no Firebase App on Android, no root view controller on iOS).
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
- * @param {Real} form_parent `0` for the game's own window; see Form parents on the ${module.ump} page.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
@@ -215,11 +214,10 @@
  * It is the call to make after ${function.firebase_ump_request_consent_info_update} completes;
  * ${function.firebase_ump_load_consent_form} and ${function.firebase_ump_show_consent_form} are
  * the same two steps taken separately. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
- * valid, and `FirebaseError.NotInitialized` when `form_parent` is `0` and there is no window to
+ * valid, and `FirebaseError.NotInitialized` when there is no window to
  * show the form on yet (no Firebase App on Android, no root view controller on iOS).
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
- * @param {Real} form_parent `0` for the game's own window; see Form parents on the ${module.ump} page.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
@@ -242,11 +240,10 @@
  * offer; the SDK keeps the form preloaded once one is available, and loads one on demand
  * otherwise. Re-check ${function.firebase_ump_can_request_ads} when the callback fires: the
  * player may have withdrawn consent. It returns `FirebaseError.InvalidHandle` without calling the callback when the handle is not
- * valid, and `FirebaseError.NotInitialized` when `form_parent` is `0` and there is no window to
+ * valid, and `FirebaseError.NotInitialized` when there is no window to
  * show the form on yet (no Firebase App on Android, no root view controller on iOS).
  *
  * @param {Real} consent_ref The consent-info handle from ${function.firebase_ump_get_instance}.
- * @param {Real} form_parent `0` for the game's own window; see Form parents on the ${module.ump} page.
  * @param {Function} [callback] The function to call with the result.
  * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire.
  *
@@ -261,7 +258,7 @@
  * // Options menu: the "Privacy settings" button, shown only when required
  * if (firebase_ump_get_privacy_options_requirement_status(consent) == FirebaseUmpPrivacyOptionsRequirementStatus.Required)
  * {
- *     firebase_ump_show_privacy_options_form(consent, 0, function(_error, _message)
+ *     firebase_ump_show_privacy_options_form(consent, function(_error, _message)
  *     {
  *         ads_allowed = firebase_ump_can_request_ads(consent);
  *     });
@@ -282,7 +279,7 @@
  * symmetry with the other modules.
  *
  * @param {Real} app An app handle.
- * @returns {Real} The consent-info handle, or `undefined` when the app handle is not valid or the SDK could not initialise.
+ * @returns {Real} The consent-info handle, or `0` when the app handle is not valid or the SDK could not initialise.
  * @function_end
  */
 
@@ -396,13 +393,11 @@
  * ${function.firebase_ump_can_request_ads} afterwards. The consent the SDK stores is read by the
  * Google Mobile Ads SDK on the device, whichever extension makes the ad requests.
  *
- * ### Form parents
+ * ### Where the forms show
  *
- * The three form functions take a `form_parent`. Pass `0`: the extension supplies the game's own
- * window - the activity the Firebase App was created with on Android, the runner's root view
- * controller on iOS - which is the only window a GameMaker game has. A non-zero value is a
- * platform handle (an Android `Activity`, an iOS `UIViewController`) for a game that bridges
- * one of its own, and is passed through untouched.
+ * The three form functions show over the game's own window - the activity the Firebase App was
+ * created with on Android, the runner's root view controller on iOS - which is the only window a
+ * GameMaker game has, so they take no parent argument.
  *
  * ### Platforms
  *

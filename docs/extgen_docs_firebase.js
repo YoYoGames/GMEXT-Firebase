@@ -2270,11 +2270,25 @@
 /**
  * @function_partial firebase_storage_ref_get_bytes
  * @param {Real} ref
- * @param {Buffer} data
+ * @param {Real} max_size
  * @param {Function} [progress_callback]
  * @param {Real} controller_ref
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_download_copy
+ * @param {Real} download_ref
+ * @param {Buffer} out_buffer
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_storage_download_release
+ * @param {Real} download_ref
  * @function_end
  */
 
@@ -3274,7 +3288,6 @@
 /**
  * @function_partial firebase_ump_show_consent_form
  * @param {Real} consent_ref
- * @param {Real} form_parent
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -3283,7 +3296,6 @@
 /**
  * @function_partial firebase_ump_load_and_show_consent_form_if_required
  * @param {Real} consent_ref
- * @param {Real} form_parent
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -3292,7 +3304,6 @@
 /**
  * @function_partial firebase_ump_show_privacy_options_form
  * @param {Real} consent_ref
- * @param {Real} form_parent
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -4937,7 +4948,8 @@
 
 /**
  * @struct_partial FirestoreBlob
- * @member {String} base64
+ * @member {Real} field_value
+ * @member {Real} size
  * @struct_end
  */
 

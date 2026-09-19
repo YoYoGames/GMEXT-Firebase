@@ -103,13 +103,13 @@ public class GMFirebaseInAppMessaging
     // post.
     private void installNativeListeners(String reason)
     {
-        runOnGameThread(() -> installNativeListenersOnMain(reason));
+        runOnMainThread(() -> installNativeListenersOnMain(reason));
     }
 
 
     private void removeNativeListeners(String reason)
     {
-        runOnGameThread(() -> removeNativeListenersOnMain(reason));
+        runOnMainThread(() -> removeNativeListenersOnMain(reason));
     }
 
 
@@ -265,7 +265,7 @@ public class GMFirebaseInAppMessaging
         if (callback != null && pending != null)
         {
             final MessageInfo event = pending;
-            runOnGameThread(() -> invokeImpression(callback, event));
+            invokeImpression(callback, event);
         }
     }
 
@@ -291,7 +291,7 @@ public class GMFirebaseInAppMessaging
         if (callback != null && pending != null)
         {
             final ClickInfo event = pending;
-            runOnGameThread(() -> invokeClick(callback, event));
+            invokeClick(callback, event);
         }
     }
 
@@ -317,7 +317,7 @@ public class GMFirebaseInAppMessaging
         if (callback != null && pending != null)
         {
             final MessageInfo event = pending;
-            runOnGameThread(() -> invokeDismiss(callback, event));
+            invokeDismiss(callback, event);
         }
     }
 
@@ -343,7 +343,7 @@ public class GMFirebaseInAppMessaging
         if (callback != null && pending != null)
         {
             final DisplayErrorInfo event = pending;
-            runOnGameThread(() -> invokeDisplayError(callback, event));
+            invokeDisplayError(callback, event);
         }
     }
 
@@ -410,7 +410,7 @@ public class GMFirebaseInAppMessaging
             }
         }
 
-        runOnGameThread(() -> invokeImpression(callback, info));
+        invokeImpression(callback, info);
     }
 
 
@@ -437,7 +437,7 @@ public class GMFirebaseInAppMessaging
             }
         }
 
-        runOnGameThread(() -> invokeClick(callback, info));
+        invokeClick(callback, info);
     }
 
 
@@ -463,7 +463,7 @@ public class GMFirebaseInAppMessaging
             }
         }
 
-        runOnGameThread(() -> invokeDismiss(callback, info));
+        invokeDismiss(callback, info);
     }
 
 
@@ -494,7 +494,7 @@ public class GMFirebaseInAppMessaging
             }
         }
 
-        runOnGameThread(() -> invokeDisplayError(callback, info));
+        invokeDisplayError(callback, info);
     }
 
 
@@ -737,10 +737,13 @@ public class GMFirebaseInAppMessaging
     }
 
 
-    private static void runOnGameThread(
+    private static void runOnMainThread(
         Runnable runnable)
     {
-        // GameMaker's Java callback bridge is safe from Android's main thread.
+        // Only the FIAM listener add/remove needs this: the SDK keeps those
+        // listeners in plain HashMaps it mutates on the main thread. Callback
+        // delivery does not - GMFunction.call is a concurrent queue, safe from
+        // any thread - so the invoke* calls go direct.
         // Do not depend on CurrentActivity here: a lifecycle callback may arrive
         // while the Activity reference is temporarily unavailable.
         if (Looper.myLooper() == Looper.getMainLooper())

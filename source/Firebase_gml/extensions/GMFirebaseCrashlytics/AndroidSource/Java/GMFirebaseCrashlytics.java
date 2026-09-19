@@ -162,19 +162,10 @@ public final class GMFirebaseCrashlytics extends GMFirebaseCrashlyticsInternal
                 final String error =
                     success ? "" : errorMessage(task.getException());
 
-                if (RunnerActivity.CurrentActivity != null)
-                {
-                    RunnerActivity.CurrentActivity.runOnUiThread(() ->
-                    {
-                        callback.call(success, hasUnsent, error);
-                        callback.release();
-                    });
-                }
-                else
-                {
-                    callback.call(success, hasUnsent, error);
-                    callback.release();
-                }
+                // The bridge queue is safe from any thread, and this listener
+                // already runs on the main thread.
+                callback.call(success, hasUnsent, error);
+                callback.release();
             });
         }
         catch (RuntimeException error)

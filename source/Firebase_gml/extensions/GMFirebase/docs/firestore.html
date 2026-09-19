@@ -6479,8 +6479,9 @@ value constructors the value or sentinel it stands for - a server timestamp, an 
 array union, a delete. On the way out: integers and doubles both arrive as numbers, maps as
 structs, arrays as arrays, nulls as <code>undefined</code>, and the four Firestore types GML has no value
 for as one struct each - <a href="firestore.html#firestoretimestamp">FirestoreTimestamp</a>, <a href="firestore.html#firestoregeopoint">FirestoreGeoPoint</a>,
-<a href="firestore.html#firestoreblob">FirestoreBlob</a> (the bytes as base64) and <a href="firestore.html#firestorereference">FirestoreReference</a> (the document's
-path). A read hands out no handles; to write one of the four back, use its
+<a href="firestore.html#firestoreblob">FirestoreBlob</a> (a handle to copy the bytes out of, plus their size) and
+<a href="firestore.html#firestorereference">FirestoreReference</a> (the document's path). The blob's handle is the one a read hands
+out, and it is released with the snapshot; to write one of the four back, use its
 <code>firebase_firestore_field_value_*</code> constructor - passing the struct itself stores a map of its
 members.</p>
 <p>A field name in a data struct or a query can be a dotted path into nested maps (<code>"stats.wins"</code>).
@@ -7611,8 +7612,9 @@ disabled does nothing and still calls the callback.</p>
 <p>This function shuts the instance down and releases its resources. After the callback the instance
 handle and every reference, query, batch and snapshot derived from it are dead; only
 <a href="firestore.html#firebase_firestore_clear_persistence">firebase_firestore_clear_persistence</a> may still be called on it, and
-<a href="firestore.html#firebase_firestore_get_instance">firebase_firestore_get_instance</a> then creates a fresh instance. Pending writes are not
-cancelled - they are sent the next time the instance starts.</p>
+<a href="firestore.html#firebase_firestore_get_instance">firebase_firestore_get_instance</a> then creates a fresh instance and frees the
+terminated one. Pending writes are not cancelled - they are sent the next time the instance
+starts.</p>
 <p>Under normal circumstances there is no reason to call this. Its use is a test that wants to wipe
 the local state between runs.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
@@ -11126,18 +11128,15 @@ its own copy.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob">firebase::firestore::FieldValue::Blob</a></p>
 <p>This function wraps the bytes of a buffer as a Firestore blob - binary data stored in the
 document. The whole buffer is the blob, so size it to the data; the SDK copies the bytes and the
-buffer can be deleted as soon as this returns. It reads back as a <a href="firestore.html#firestoreblob">FirestoreBlob</a>, whose
-<code>base64</code> a <code>buffer_base64_decode</code> turns into a buffer again. The handle stands for the value
-wherever a write takes data - as a field's value in the struct passed to
-<a href="firestore.html#firebase_firestore_document_ref_set">firebase_firestore_document_ref_set</a>, <a href="firestore.html#firebase_firestore_document_ref_update">firebase_firestore_document_ref_update</a>,
-<a href="firestore.html#firebase_firestore_collection_ref_add">firebase_firestore_collection_ref_add</a> or a write batch. Release it with
-<a href="firestore.html#firebase_firestore_field_value_release">firebase_firestore_field_value_release</a> once the write has been started; the SDK keeps
-its own copy.</p>
-<p>Keep blobs small. A document is capped at 1 MB by Firestore, and a synchronous read through
-<a href="firestore.html#firebase_firestore_document_snapshot_get_data">firebase_firestore_document_snapshot_get_data</a> or <a href="firestore.html#firebase_firestore_document_snapshot_get">firebase_firestore_document_snapshot_get</a>
-returns through an 8 KB buffer that the base64 form has to fit in, which puts a blob of about
-6 KB at the ceiling today. Anything bigger belongs in Cloud Storage (<a href="storage.html">Cloud Storage</a>) with
-its path kept here.</p>
+buffer can be deleted as soon as this returns. It reads back as a <a href="firestore.html#firestoreblob">FirestoreBlob</a> - a
+handle and a size, copied into a buffer with <a href="firestore.html#firebase_firestore_field_value_blob_copy">firebase_firestore_field_value_blob_copy</a>.
+The handle stands for the value wherever a write takes data - as a field's value in the struct
+passed to <a href="firestore.html#firebase_firestore_document_ref_set">firebase_firestore_document_ref_set</a>,
+<a href="firestore.html#firebase_firestore_document_ref_update">firebase_firestore_document_ref_update</a>, <a href="firestore.html#firebase_firestore_collection_ref_add">firebase_firestore_collection_ref_add</a>
+or a write batch. Release it with <a href="firestore.html#firebase_firestore_field_value_release">firebase_firestore_field_value_release</a> once the
+write has been started; the SDK keeps its own copy.</p>
+<p>Keep blobs small: a document is capped at 1 MB by Firestore. Anything bigger belongs in Cloud
+Storage (<a href="storage.html">Cloud Storage</a>) with its path kept here.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -11331,15 +11330,16 @@ before using it - a new player's document may not have it yet.</p>
 converted as the Data section describes: numbers, strings and booleans as themselves, nested maps
 as structs, arrays as arrays, timestamps, geo points, blobs and references as
 <a href="firestore.html#firestoretimestamp">FirestoreTimestamp</a>, <a href="firestore.html#firestoregeopoint">FirestoreGeoPoint</a>, <a href="firestore.html#firestoreblob">FirestoreBlob</a> and
-<a href="firestore.html#firestorereference">FirestoreReference</a> structs, nulls as <code>undefined</code>. Nothing it returns is a handle to
-release. A document that does not exist gives an empty struct.</p>
+<a href="firestore.html#firestorereference">FirestoreReference</a> structs, nulls as <code>undefined</code>. The one handle a read hands out is
+a blob's <code>field_value</code>, and it belongs to this snapshot: releasing the snapshot releases it. A
+document that does not exist gives an empty struct.</p>
 <p>The <code>server_timestamp_behavior</code> argument decides what a server timestamp the server has not
 resolved yet reads as: <code>undefined</code> (<code>None</code>), the local clock's estimate (<code>Estimate</code>) or the value
 the field held before the write (<code>Previous</code>).</p>
 <p>The converted struct returns through an 8 KB buffer, so a document larger than that cannot be
 read this way today. A document of many small fields can still be read one field at a time with
-<a href="firestore.html#firebase_firestore_document_snapshot_get">firebase_firestore_document_snapshot_get</a>, which has the same limit per field; a
-single value over 8 KB - a large blob, a long string - belongs in Cloud Storage.</p>
+<a href="firestore.html#firebase_firestore_document_snapshot_get">firebase_firestore_document_snapshot_get</a>, which has the same limit per field; a blob
+does not count (only its handle and size cross), a string over 8 KB belongs in Cloud Storage.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -11380,8 +11380,9 @@ single value over 8 KB - a large blob, a long string - belongs in Cloud Storage.
 <p>This function releases a document snapshot handle - one from a <code>get</code> callback, a listener, a
 query snapshot's <code>documents</code> or a document change. Release each one once its fields have been
 read; a snapshot kept for paging (<a href="firestore.html#firebase_firestore_query_start_after_snapshot">firebase_firestore_query_start_after_snapshot</a>) is
-released once the next page has been requested. A handle that is not a document snapshot sets
-<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
+released once the next page has been requested. Any <a href="firestore.html#firestoreblob">FirestoreBlob</a> handle read out of
+the snapshot that the game has not released itself goes with it. A handle that is not a document
+snapshot sets <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -13644,7 +13645,9 @@ have been told about a change - the point at which the game's view of several do
 consistent again after one server update or local write touched more than one of them. It says
 nothing about whether the listeners are in sync with the <em>server</em>; each snapshot's <code>is_from_cache</code>
 answers that.</p>
-<p>The function returns a listener handle for <a href="firestore.html#firebase_firestore_listener_registration_remove">firebase_firestore_listener_registration_remove</a>.</p>
+<p>The function returns a listener handle for <a href="firestore.html#firebase_firestore_listener_registration_remove">firebase_firestore_listener_registration_remove</a>.
+It returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when no callback is given or the
+instance handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -13677,7 +13680,7 @@ answers that.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle, or <code>0</code> when the instance handle is not valid.</p>
+<p>A listener handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>
@@ -14620,8 +14623,9 @@ only ever inspects a handle the game built with one of the constructors.</p>
 
 <h1 id="firebase_firestore_field_value_blob_size">firebase_firestore_field_value_blob_size<a class="headerlink" href="#firebase_firestore_field_value_blob_size" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob_size">firebase::firestore::FieldValue::blob_size</a></p>
-<p>This function returns the size in bytes of the blob a field value handle holds. Values read from a snapshot arrive as plain GML values, so this
-only ever inspects a handle the game built with one of the constructors.</p>
+<p>This function returns the size in bytes of the blob a field value handle holds - one the game
+built with <a href="firestore.html#firebase_firestore_field_value_blob">firebase_firestore_field_value_blob</a>, or the <code>field_value</code> of a
+<a href="firestore.html#firestoreblob">FirestoreBlob</a> read out of a document, whose <code>size</code> member already says the same.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -14639,7 +14643,7 @@ only ever inspects a handle the game built with one of the constructors.</p>
 <tr>
 <td>field_value</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A field value handle from one of the constructors on this page.</td>
+<td>A field value handle holding a blob.</td>
 </tr>
 </tbody>
 </table>
@@ -14656,8 +14660,11 @@ only ever inspects a handle the game built with one of the constructors.</p>
 <h1 id="firebase_firestore_field_value_blob_copy">firebase_firestore_field_value_blob_copy<a class="headerlink" href="#firebase_firestore_field_value_blob_copy" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob_value">firebase::firestore::FieldValue::blob_value</a></p>
 <p>This function copies the bytes of the blob a field value handle holds into the start of a
-GameMaker buffer, up to the buffer's size, and returns how many bytes were copied. Size the buffer
-from <a href="firestore.html#firebase_firestore_field_value_blob_size">firebase_firestore_field_value_blob_size</a> first.</p>
+GameMaker buffer, up to the buffer's size, and returns how many bytes were copied. It is how a
+blob read out of a document reaches the game: the <a href="firestore.html#firestoreblob">FirestoreBlob</a> in the decoded data
+carries the handle and the size, so create a buffer of that size and copy into it. The handle
+stays valid until the snapshot it came from is released, or until
+<a href="firestore.html#firebase_firestore_field_value_release">firebase_firestore_field_value_release</a> frees it earlier.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -14675,7 +14682,7 @@ from <a href="firestore.html#firebase_firestore_field_value_blob_size">firebase_
 <tr>
 <td>field_value</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A field value handle from one of the constructors on this page.</td>
+<td>A field value handle holding a blob.</td>
 </tr>
 <tr>
 <td>out_buffer</td>
@@ -14690,6 +14697,16 @@ from <a href="firestore.html#firebase_firestore_field_value_blob_size">firebase_
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
 <p>The number of bytes copied, or <code>0</code> when the handle does not hold a blob.</p>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<pre class="highlight"><code class="language-gml">// Read the "avatar" blob of a document into a buffer of its own
+var _data = firebase_firestore_document_snapshot_get_data(snapshot, FirestoreServerTimestampBehavior.None);
+var _blob = _data.avatar;
+avatar_buffer = buffer_create(_blob.size, buffer_fixed, 1);
+firebase_firestore_field_value_blob_copy(_blob.field_value, avatar_buffer);
+
+// Releasing the snapshot frees the blob handle with it; the buffer is the game's
+firebase_firestore_document_snapshot_release(snapshot);</code></pre>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -16548,10 +16565,14 @@ datetime with <code>date_create_datetime(1970, 1, 1, 0, 0, 0) + seconds / 86400<
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firestoreblob">FirestoreBlob<a class="headerlink" href="#firestoreblob" title="Permanent link">&para;</a></h1>
-<p>Binary data as it reads back out of a document. The bytes come base64-encoded, because a
-plain string cannot carry a zero byte across from the extension; <code>buffer_base64_decode(blob.base64)</code>
-gives a buffer holding them. To store one, use <a href="firestore.html#firebase_firestore_field_value_blob">firebase_firestore_field_value_blob</a>
-with a buffer - writing this struct back stores a map with a <code>base64</code> member, not a blob.</p>
+<p>Binary data as it reads back out of a document. The bytes stay on the extension's side
+behind a field value handle - the one read that hands out a handle, since nothing but a buffer
+can carry bytes into GML and the extension cannot create one - and the game copies them into a
+buffer of <code>size</code> bytes with <a href="firestore.html#firebase_firestore_field_value_blob_copy">firebase_firestore_field_value_blob_copy</a>. The handle
+belongs to the snapshot the blob was read from: releasing the snapshot releases it, and
+<a href="firestore.html#firebase_firestore_field_value_release">firebase_firestore_field_value_release</a> releases it earlier. To store one, use
+<a href="firestore.html#firebase_firestore_field_value_blob">firebase_firestore_field_value_blob</a> with a buffer - writing this struct back stores a
+map with <code>field_value</code> and <code>size</code> members, not a blob.</p>
 <p><br></p>
 <table>
 <thead>
@@ -16563,9 +16584,14 @@ with a buffer - writing this struct back stores a map with a <code>base64</code>
 </thead>
 <tbody>
 <tr>
-<td>base64</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Reference/Strings/Strings.htm">String</a></td>
-<td>The bytes, base64-encoded.</td>
+<td>field_value</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>A field value handle holding the bytes, valid while the snapshot is.</td>
+</tr>
+<tr>
+<td>size</td>
+<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
+<td>The blob's size in bytes.</td>
 </tr>
 </tbody>
 </table>

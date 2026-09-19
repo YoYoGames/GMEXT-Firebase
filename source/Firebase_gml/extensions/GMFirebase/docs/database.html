@@ -4956,8 +4956,8 @@ Each call brings a new snapshot handle of the whole subtree that the callback mu
 keeps firing until the listener is removed with <a href="database.html#firebase_database_ref_remove_value_listener">firebase_database_ref_remove_value_listener</a> - at the latest in the Clean Up event
 of the object that owns the callback. <code>on_cancelled</code> fires instead when the server refuses the
 listener - the security rules deny reading the location - after which the listener is gone.</p>
-<p>Both callbacks are optional; the function returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
-set when the handle is not valid.</p>
+<p>Both callbacks are optional, but not both at once; the function returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+set when no callback is given or the handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -4995,7 +4995,7 @@ set when the handle is not valid.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle, or <code>0</code> when the handle is not valid.</p>
+<p>A listener handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>
@@ -5161,9 +5161,9 @@ call brings a new snapshot handle of that child that the callback must release; 
 <code>previous_sibling_key</code> argument names the child ordered before this one, or is an empty string
 for the first. <code>on_cancelled</code> fires instead when the server refuses the listener, after which
 the listener is gone.</p>
-<p>Every callback is optional. Remove the listener with <a href="database.html#firebase_database_ref_remove_child_listener">firebase_database_ref_remove_child_listener</a> at the latest in the Clean Up
+<p>Every callback is optional, but not all at once. Remove the listener with <a href="database.html#firebase_database_ref_remove_child_listener">firebase_database_ref_remove_child_listener</a> at the latest in the Clean Up
 event of the object that owns the callbacks. The function returns <code>0</code> with
-<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when the handle is not valid.</p>
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when no callback is given or the handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -5216,7 +5216,7 @@ event of the object that owns the callbacks. The function returns <code>0</code>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle, or <code>0</code> when the handle is not valid.</p>
+<p>A listener handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>
@@ -6144,8 +6144,8 @@ Each call brings a new snapshot handle of the whole subtree that the callback mu
 keeps firing until the listener is removed with <a href="database.html#firebase_database_query_remove_value_listener">firebase_database_query_remove_value_listener</a> - at the latest in the Clean Up event
 of the object that owns the callback. <code>on_cancelled</code> fires instead when the server refuses the
 listener - the security rules deny reading the location - after which the listener is gone.</p>
-<p>Both callbacks are optional; the function returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
-set when the handle is not valid.</p>
+<p>Both callbacks are optional, but not both at once; the function returns <code>0</code> with <a href="app.html#firebase_last_error_code">firebase_last_error_code</a>
+set when no callback is given or the handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6183,7 +6183,7 @@ set when the handle is not valid.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle, or <code>0</code> when the handle is not valid.</p>
+<p>A listener handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>
@@ -6323,9 +6323,9 @@ call brings a new snapshot handle of that child that the callback must release; 
 <code>previous_sibling_key</code> argument names the child ordered before this one, or is an empty string
 for the first. <code>on_cancelled</code> fires instead when the server refuses the listener, after which
 the listener is gone.</p>
-<p>Every callback is optional. Remove the listener with <a href="database.html#firebase_database_query_remove_child_listener">firebase_database_query_remove_child_listener</a> at the latest in the Clean Up
+<p>Every callback is optional, but not all at once. Remove the listener with <a href="database.html#firebase_database_query_remove_child_listener">firebase_database_query_remove_child_listener</a> at the latest in the Clean Up
 event of the object that owns the callbacks. The function returns <code>0</code> with
-<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when the handle is not valid.</p>
+<a href="app.html#firebase_last_error_code">firebase_last_error_code</a> set when no callback is given or the handle is not valid.</p>
 <p>This function operates asynchronously, which means that it does not immediately return the requested result. Instead, upon completion of the task, it will trigger the <a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Method_Variables.htm">Callback</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
@@ -6378,7 +6378,7 @@ event of the object that owns the callbacks. The function returns <code>0</code>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></p>
 </blockquote>
-<p>A listener handle, or <code>0</code> when the handle is not valid.</p>
+<p>A listener handle, or <code>0</code> on failure.</p>
 <p><br></p>
 <p><strong>Triggers:</strong></p>
 <blockquote>

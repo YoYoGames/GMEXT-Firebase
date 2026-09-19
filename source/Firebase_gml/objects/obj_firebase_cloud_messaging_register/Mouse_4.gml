@@ -3,8 +3,9 @@
 // ------------------------------------------------------------
 
 // The installation id does not come back here: the SDK delivers it through
-// firebase_messaging_poll_registration(), polled in obj_firebase_cloud_messaging's
-// Step event, also when this app instance was already registered.
+// the registration callback obj_firebase_cloud_messaging sets with
+// firebase_messaging_set_registration_callback(), also when this app
+// instance was already registered.
 
 var _result = firebase_messaging_register(
     function(_error, _message)

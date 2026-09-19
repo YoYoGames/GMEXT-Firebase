@@ -16,24 +16,12 @@
 //
 // Controller is the one exception worth calling out: GML must call
 // storage_controller_create() to mint a blank Controller() in
-// g_storage_controller_map *before* starting an upload/download, so the
+// g_firebase_storage_controller_map *before* starting an upload/download, so the
 // resulting map-stable address can be handed to the SDK as the
 // Controller* out-param and polled (pause/resume/cancel/progress) while the
 // transfer is in flight; std::map's pointer-stability-across-insert
 // guarantee is what makes that address usable for the lifetime of the
 // transfer.
-
-extern std::map<uint32_t, firebase::storage::StorageReference> g_storage_ref_map;
-extern uint32_t g_storage_ref_index;
-
-extern std::map<uint32_t, firebase::storage::Metadata> g_storage_metadata_map;
-extern uint32_t g_storage_metadata_index;
-
-extern std::map<uint32_t, firebase::storage::Controller> g_storage_controller_map;
-extern uint32_t g_storage_controller_index;
-
-extern std::map<uint32_t, firebase::storage::StorageListResult> g_storage_list_result_map;
-extern uint32_t g_storage_list_result_index;
 
 uint64_t registerStorageReference(const firebase::storage::StorageReference& ref);
 uint64_t registerStorageMetadata(const firebase::storage::Metadata& metadata);

@@ -2982,247 +2982,34 @@
  */
 
 /**
- * @function_partial firebase_messaging_poll_message
- * @returns {Bool}
+ * @function_partial firebase_messaging_set_message_callback
+ * @param {Function} [callback]
  * @function_end
  */
 
 /**
- * @function_partial firebase_messaging_poll_registration
- * @returns {Bool}
+ * @function_partial firebase_messaging_set_registration_callback
+ * @param {Function} [callback]
  * @function_end
  */
 
 /**
- * @function_partial firebase_messaging_poll_unregistration
- * @returns {Bool}
+ * @function_partial firebase_messaging_set_unregistration_callback
+ * @param {Function} [callback]
  * @function_end
  */
 
 /**
- * @function_partial firebase_messaging_current_installation_id
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_poll_token
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_current_token
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_from
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_to
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_collapse_key
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_message_id
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_message_type
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_priority
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_original_priority
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_time_to_live
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_sent_time
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_error
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_error_description
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_link
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_opened
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_data_count
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_data_key_at
- * @param {Real} index
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_get_data
- * @param {String} key
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_raw_data_size
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_raw_data_copy
+ * @function_partial firebase_messaging_raw_data_copy
+ * @param {Real} raw_data_ref
  * @param {Buffer} out_buffer
  * @returns {Real}
  * @function_end
  */
 
 /**
- * @function_partial firebase_messaging_message_has_notification
- * @returns {Bool}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_title
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_body
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_icon
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_sound
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_badge
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_tag
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_color
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_click_action
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_body_loc_key
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_body_loc_args_count
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_body_loc_args_at
- * @param {Real} index
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_title_loc_key
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_title_loc_args_count
- * @returns {Real}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_title_loc_args_at
- * @param {Real} index
- * @returns {String}
- * @function_end
- */
-
-/**
- * @function_partial firebase_messaging_message_notification_android_channel_id
- * @returns {String}
+ * @function_partial firebase_messaging_raw_data_release
+ * @param {Real} raw_data_ref
  * @function_end
  */
 
@@ -5061,6 +4848,12 @@
  */
 
 /**
+ * @struct_partial FirebaseMessagingAndroidNotificationParams
+ * @member {String} channel_id
+ * @struct_end
+ */
+
+/**
  * @struct_partial FirebaseAppOptions
  * @member {String} [app_id]
  * @member {String} [api_key]
@@ -5077,6 +4870,46 @@
  * @member {Real} [user]
  * @member {Real} [credential]
  * @member {Struct.FirebaseAuthAdditionalUserInfo} additional_user_info
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirebaseMessagingNotification
+ * @member {String} title
+ * @member {String} body
+ * @member {String} icon
+ * @member {String} sound
+ * @member {String} badge
+ * @member {String} tag
+ * @member {String} color
+ * @member {String} click_action
+ * @member {String} body_loc_key
+ * @member {Array[String]} body_loc_args
+ * @member {String} title_loc_key
+ * @member {Array[String]} title_loc_args
+ * @member {Struct.FirebaseMessagingAndroidNotificationParams} [android]
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirebaseMessagingMessage
+ * @member {String} from
+ * @member {String} to
+ * @member {String} collapse_key
+ * @member {Any} data
+ * @member {Real} [raw_data]
+ * @member {Real} raw_data_size
+ * @member {String} message_id
+ * @member {String} message_type
+ * @member {String} priority
+ * @member {Real} time_to_live
+ * @member {String} error
+ * @member {String} error_description
+ * @member {Struct.FirebaseMessagingNotification} [notification]
+ * @member {Bool} notification_opened
+ * @member {String} link
+ * @member {String} original_priority
+ * @member {Real} sent_time
  * @struct_end
  */
 

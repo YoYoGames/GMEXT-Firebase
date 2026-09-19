@@ -783,6 +783,21 @@ function FirebaseRemoteConfigDataInfo() constructor
 }
 
 /**
+ * @returns {Struct.FirebaseMessagingAndroidNotificationParams}
+ */
+function FirebaseMessagingAndroidNotificationParams() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 857248506;
+
+    self.channel_id = undefined;
+
+}
+
+/**
  * @returns {Struct.FirebaseAppOptions}
  */
 function FirebaseAppOptions() constructor
@@ -817,6 +832,64 @@ function FirebaseAuthResult() constructor
     self.user = undefined;
     self.credential = undefined;
     self.additional_user_info = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseMessagingNotification}
+ */
+function FirebaseMessagingNotification() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 987839259;
+
+    self.title = undefined;
+    self.body = undefined;
+    self.icon = undefined;
+    self.sound = undefined;
+    self.badge = undefined;
+    self.tag = undefined;
+    self.color = undefined;
+    self.click_action = undefined;
+    self.body_loc_key = undefined;
+    self.body_loc_args = undefined;
+    self.title_loc_key = undefined;
+    self.title_loc_args = undefined;
+    self.android = undefined;
+
+}
+
+/**
+ * @returns {Struct.FirebaseMessagingMessage}
+ */
+function FirebaseMessagingMessage() constructor
+{
+    /**
+     * Internally generated hash for quick validation
+     * @ignore
+     */
+    static __uid = 1450007171;
+
+    self.from = undefined;
+    self.to = undefined;
+    self.collapse_key = undefined;
+    self.data = undefined;
+    self.raw_data = undefined;
+    self.raw_data_size = undefined;
+    self.message_id = undefined;
+    self.message_type = undefined;
+    self.priority = undefined;
+    self.time_to_live = undefined;
+    self.error = undefined;
+    self.error_description = undefined;
+    self.notification = undefined;
+    self.notification_opened = undefined;
+    self.link = undefined;
+    self.original_priority = undefined;
+    self.sent_time = undefined;
 
 }
 
@@ -2287,6 +2360,50 @@ function __FirebaseRemoteConfigDataInfo_decode(_buffer, _offset)
 }
 
 /**
+ * @func __FirebaseMessagingAndroidNotificationParams_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseMessagingAndroidNotificationParams} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseMessagingAndroidNotificationParams_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: channel_id, type: String
+        if (!is_string(self.channel_id)) show_error($"{_where} :: self.channel_id expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.channel_id));
+        buffer_write(_buffer, buffer_string, self.channel_id);
+
+    }
+}
+
+/**
+ * @func __FirebaseMessagingAndroidNotificationParams_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseMessagingAndroidNotificationParams}
+ * @ignore
+ */
+function __FirebaseMessagingAndroidNotificationParams_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseMessagingAndroidNotificationParams();
+    with (_inst)
+    {
+        // field: channel_id, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.channel_id = buffer_read(_buffer, buffer_string);
+
+    }
+
+    return _inst;
+}
+
+/**
  * @func __FirebaseAppOptions_encode(_inst, _buffer, _offset, _where)
  * @param {Struct.FirebaseAppOptions} _inst
  * @param {Id.Buffer} _buffer
@@ -2569,6 +2686,399 @@ function __FirebaseAuthResult_decode(_buffer, _offset)
 
         // field: additional_user_info, type: struct FirebaseAuthAdditionalUserInfo
         self.additional_user_info = __FirebaseAuthAdditionalUserInfo_decode(_buffer, buffer_tell(_buffer));
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseMessagingNotification_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseMessagingNotification} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseMessagingNotification_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: title, type: String
+        if (!is_string(self.title)) show_error($"{_where} :: self.title expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.title));
+        buffer_write(_buffer, buffer_string, self.title);
+
+        // field: body, type: String
+        if (!is_string(self.body)) show_error($"{_where} :: self.body expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.body));
+        buffer_write(_buffer, buffer_string, self.body);
+
+        // field: icon, type: String
+        if (!is_string(self.icon)) show_error($"{_where} :: self.icon expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.icon));
+        buffer_write(_buffer, buffer_string, self.icon);
+
+        // field: sound, type: String
+        if (!is_string(self.sound)) show_error($"{_where} :: self.sound expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.sound));
+        buffer_write(_buffer, buffer_string, self.sound);
+
+        // field: badge, type: String
+        if (!is_string(self.badge)) show_error($"{_where} :: self.badge expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.badge));
+        buffer_write(_buffer, buffer_string, self.badge);
+
+        // field: tag, type: String
+        if (!is_string(self.tag)) show_error($"{_where} :: self.tag expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.tag));
+        buffer_write(_buffer, buffer_string, self.tag);
+
+        // field: color, type: String
+        if (!is_string(self.color)) show_error($"{_where} :: self.color expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.color));
+        buffer_write(_buffer, buffer_string, self.color);
+
+        // field: click_action, type: String
+        if (!is_string(self.click_action)) show_error($"{_where} :: self.click_action expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.click_action));
+        buffer_write(_buffer, buffer_string, self.click_action);
+
+        // field: body_loc_key, type: String
+        if (!is_string(self.body_loc_key)) show_error($"{_where} :: self.body_loc_key expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.body_loc_key));
+        buffer_write(_buffer, buffer_string, self.body_loc_key);
+
+        // field: body_loc_args, type: String[]
+        if (!is_array(self.body_loc_args)) show_error($"{_where} :: self.body_loc_args expected array", true);
+        var __length__ = array_length(self.body_loc_args);
+        buffer_write(_buffer, buffer_u32, __length__);
+        for (var _i = 0; _i < __length__; ++_i)
+        {
+            if (!is_string(self.body_loc_args[_i])) show_error($"{_where} :: self.body_loc_args[_i] expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.body_loc_args[_i]));
+            buffer_write(_buffer, buffer_string, self.body_loc_args[_i]);
+        }
+
+        // field: title_loc_key, type: String
+        if (!is_string(self.title_loc_key)) show_error($"{_where} :: self.title_loc_key expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.title_loc_key));
+        buffer_write(_buffer, buffer_string, self.title_loc_key);
+
+        // field: title_loc_args, type: String[]
+        if (!is_array(self.title_loc_args)) show_error($"{_where} :: self.title_loc_args expected array", true);
+        var __length__ = array_length(self.title_loc_args);
+        buffer_write(_buffer, buffer_u32, __length__);
+        for (var _i = 0; _i < __length__; ++_i)
+        {
+            if (!is_string(self.title_loc_args[_i])) show_error($"{_where} :: self.title_loc_args[_i] expected string", true);
+            buffer_write(_buffer, buffer_u32, string_byte_length(self.title_loc_args[_i]));
+            buffer_write(_buffer, buffer_string, self.title_loc_args[_i]);
+        }
+
+        // field: android, type: optional<struct FirebaseMessagingAndroidNotificationParams>
+        if (is_undefined(self.android))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (self.android.__uid != 857248506) show_error($"{_where} :: self.android expected FirebaseMessagingAndroidNotificationParams", true);
+            __FirebaseMessagingAndroidNotificationParams_encode(self.android, _buffer, buffer_tell(_buffer), _where);
+        }
+
+    }
+}
+
+/**
+ * @func __FirebaseMessagingNotification_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseMessagingNotification}
+ * @ignore
+ */
+function __FirebaseMessagingNotification_decode(_buffer, _offset)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseMessagingNotification();
+    with (_inst)
+    {
+        // field: title, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.title = buffer_read(_buffer, buffer_string);
+
+        // field: body, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.body = buffer_read(_buffer, buffer_string);
+
+        // field: icon, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.icon = buffer_read(_buffer, buffer_string);
+
+        // field: sound, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.sound = buffer_read(_buffer, buffer_string);
+
+        // field: badge, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.badge = buffer_read(_buffer, buffer_string);
+
+        // field: tag, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.tag = buffer_read(_buffer, buffer_string);
+
+        // field: color, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.color = buffer_read(_buffer, buffer_string);
+
+        // field: click_action, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.click_action = buffer_read(_buffer, buffer_string);
+
+        // field: body_loc_key, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.body_loc_key = buffer_read(_buffer, buffer_string);
+
+        // field: body_loc_args, type: String[]
+        var __length__ = buffer_read(_buffer, buffer_u32);
+        self.body_loc_args = array_create(__length__);
+        for (var _i = 0; _i < __length__; ++_i)
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.body_loc_args[_i] = buffer_read(_buffer, buffer_string);
+        }
+
+        // field: title_loc_key, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.title_loc_key = buffer_read(_buffer, buffer_string);
+
+        // field: title_loc_args, type: String[]
+        var __length__ = buffer_read(_buffer, buffer_u32);
+        self.title_loc_args = array_create(__length__);
+        for (var _i = 0; _i < __length__; ++_i)
+        {
+            buffer_read(_buffer, buffer_u32);
+            self.title_loc_args[_i] = buffer_read(_buffer, buffer_string);
+        }
+
+        // field: android, type: optional<struct FirebaseMessagingAndroidNotificationParams>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.android = __FirebaseMessagingAndroidNotificationParams_decode(_buffer, buffer_tell(_buffer));
+        }
+        else
+        {
+            self.android = undefined;
+        }
+
+    }
+
+    return _inst;
+}
+
+/**
+ * @func __FirebaseMessagingMessage_encode(_inst, _buffer, _offset, _where)
+ * @param {Struct.FirebaseMessagingMessage} _inst
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @param {String} _where
+ * @ignore
+ */
+function __FirebaseMessagingMessage_encode(_inst, _buffer, _offset, _where = _GMFUNCTION_)
+{
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+    with (_inst)
+    {
+        // field: from, type: String
+        if (!is_string(self.from)) show_error($"{_where} :: self.from expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.from));
+        buffer_write(_buffer, buffer_string, self.from);
+
+        // field: to, type: String
+        if (!is_string(self.to)) show_error($"{_where} :: self.to expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.to));
+        buffer_write(_buffer, buffer_string, self.to);
+
+        // field: collapse_key, type: String
+        if (!is_string(self.collapse_key)) show_error($"{_where} :: self.collapse_key expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.collapse_key));
+        buffer_write(_buffer, buffer_string, self.collapse_key);
+
+        // field: data, type: Any
+
+        __ext_core_buffer_marshal_value(_buffer, self.data);
+
+        // field: raw_data, type: optional<UInt64>
+        if (is_undefined(self.raw_data))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (!is_numeric(self.raw_data)) show_error($"{_where} :: self.raw_data expected number", true);
+            buffer_write(_buffer, buffer_u64, self.raw_data);
+        }
+
+        // field: raw_data_size, type: Float64
+        if (!is_numeric(self.raw_data_size)) show_error($"{_where} :: self.raw_data_size expected number", true);
+        buffer_write(_buffer, buffer_f64, self.raw_data_size);
+
+        // field: message_id, type: String
+        if (!is_string(self.message_id)) show_error($"{_where} :: self.message_id expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.message_id));
+        buffer_write(_buffer, buffer_string, self.message_id);
+
+        // field: message_type, type: String
+        if (!is_string(self.message_type)) show_error($"{_where} :: self.message_type expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.message_type));
+        buffer_write(_buffer, buffer_string, self.message_type);
+
+        // field: priority, type: String
+        if (!is_string(self.priority)) show_error($"{_where} :: self.priority expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.priority));
+        buffer_write(_buffer, buffer_string, self.priority);
+
+        // field: time_to_live, type: Float64
+        if (!is_numeric(self.time_to_live)) show_error($"{_where} :: self.time_to_live expected number", true);
+        buffer_write(_buffer, buffer_f64, self.time_to_live);
+
+        // field: error, type: String
+        if (!is_string(self.error)) show_error($"{_where} :: self.error expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.error));
+        buffer_write(_buffer, buffer_string, self.error);
+
+        // field: error_description, type: String
+        if (!is_string(self.error_description)) show_error($"{_where} :: self.error_description expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.error_description));
+        buffer_write(_buffer, buffer_string, self.error_description);
+
+        // field: notification, type: optional<struct FirebaseMessagingNotification>
+        if (is_undefined(self.notification))
+        {
+            buffer_write(_buffer, buffer_bool, false);
+        }
+        else
+        {
+            buffer_write(_buffer, buffer_bool, true);
+            if (self.notification.__uid != 987839259) show_error($"{_where} :: self.notification expected FirebaseMessagingNotification", true);
+            __FirebaseMessagingNotification_encode(self.notification, _buffer, buffer_tell(_buffer), _where);
+        }
+
+        // field: notification_opened, type: Bool
+        if (!is_bool(self.notification_opened)) show_error($"{_where} :: self.notification_opened expected bool", true);
+        buffer_write(_buffer, buffer_bool, self.notification_opened);
+
+        // field: link, type: String
+        if (!is_string(self.link)) show_error($"{_where} :: self.link expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.link));
+        buffer_write(_buffer, buffer_string, self.link);
+
+        // field: original_priority, type: String
+        if (!is_string(self.original_priority)) show_error($"{_where} :: self.original_priority expected string", true);
+        buffer_write(_buffer, buffer_u32, string_byte_length(self.original_priority));
+        buffer_write(_buffer, buffer_string, self.original_priority);
+
+        // field: sent_time, type: Float64
+        if (!is_numeric(self.sent_time)) show_error($"{_where} :: self.sent_time expected number", true);
+        buffer_write(_buffer, buffer_f64, self.sent_time);
+
+    }
+}
+
+/**
+ * @func __FirebaseMessagingMessage_decode(_buffer, _offset)
+ * @param {Id.Buffer} _buffer
+ * @param {Real} _offset
+ * @returns {Struct.FirebaseMessagingMessage}
+ * @ignore
+ */
+function __FirebaseMessagingMessage_decode(_buffer, _offset)
+{
+    var __decoders__ = __GMFirebase_get_decoders();
+
+    buffer_seek(_buffer, buffer_seek_start, _offset);
+
+    _inst = new FirebaseMessagingMessage();
+    with (_inst)
+    {
+        // field: from, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.from = buffer_read(_buffer, buffer_string);
+
+        // field: to, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.to = buffer_read(_buffer, buffer_string);
+
+        // field: collapse_key, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.collapse_key = buffer_read(_buffer, buffer_string);
+
+        // field: data, type: Any
+        self.data = __ext_core_buffer_unmarshal_value(_buffer, __decoders__);
+
+        // field: raw_data, type: optional<UInt64>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.raw_data = buffer_read(_buffer, buffer_u64);
+        }
+        else
+        {
+            self.raw_data = undefined;
+        }
+
+        // field: raw_data_size, type: Float64
+        self.raw_data_size = buffer_read(_buffer, buffer_f64);
+
+        // field: message_id, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.message_id = buffer_read(_buffer, buffer_string);
+
+        // field: message_type, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.message_type = buffer_read(_buffer, buffer_string);
+
+        // field: priority, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.priority = buffer_read(_buffer, buffer_string);
+
+        // field: time_to_live, type: Float64
+        self.time_to_live = buffer_read(_buffer, buffer_f64);
+
+        // field: error, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.error = buffer_read(_buffer, buffer_string);
+
+        // field: error_description, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.error_description = buffer_read(_buffer, buffer_string);
+
+        // field: notification, type: optional<struct FirebaseMessagingNotification>
+        if (buffer_read(_buffer, buffer_bool))
+        {
+            self.notification = __FirebaseMessagingNotification_decode(_buffer, buffer_tell(_buffer));
+        }
+        else
+        {
+            self.notification = undefined;
+        }
+
+        // field: notification_opened, type: Bool
+        self.notification_opened = buffer_read(_buffer, buffer_bool);
+
+        // field: link, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.link = buffer_read(_buffer, buffer_string);
+
+        // field: original_priority, type: String
+        buffer_read(_buffer, buffer_u32);
+        self.original_priority = buffer_read(_buffer, buffer_string);
+
+        // field: sent_time, type: Float64
+        self.sent_time = buffer_read(_buffer, buffer_f64);
 
     }
 
@@ -13142,142 +13652,139 @@ function firebase_messaging_unsubscribe(_topic, _callback)
     return __result__;
 }
 
-// Skipping function firebase_messaging_poll_message (no wrapper is required)
+/**
+ * @param {Function} _callback
+ */
+function firebase_messaging_set_message_callback(_callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
 
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
 
-// Skipping function firebase_messaging_poll_registration (no wrapper is required)
+    var __args_buffer__ = __ext_core_get_args_buffer();
 
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
 
-// Skipping function firebase_messaging_poll_unregistration (no wrapper is required)
+    var __return_value__ = __firebase_messaging_set_message_callback(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-
-// Skipping function firebase_messaging_current_installation_id (no wrapper is required)
-
-
-// Skipping function firebase_messaging_poll_token (no wrapper is required)
-
-
-// Skipping function firebase_messaging_current_token (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_from (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_to (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_collapse_key (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_message_id (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_message_type (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_priority (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_original_priority (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_time_to_live (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_sent_time (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_error (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_error_description (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_link (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_opened (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_data_count (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_data_key_at (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_get_data (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_raw_data_size (no wrapper is required)
-
+    return __return_value__;
+}
 
 /**
+ * @param {Function} _callback
+ */
+function firebase_messaging_set_registration_callback(_callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_messaging_set_registration_callback(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Function} _callback
+ */
+function firebase_messaging_set_unregistration_callback(_callback)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
+
+    var __dispatcher__ = __GMFirebase_get_dispatcher();
+
+    var __args_buffer__ = __ext_core_get_args_buffer();
+
+    // param: _callback, type: optional<Function>
+    if (is_undefined(_callback))
+    {
+        buffer_write(__args_buffer__, buffer_bool, false);
+    }
+    else
+    {
+        buffer_write(__args_buffer__, buffer_bool, true);
+        if (!is_callable(_callback)) show_error($"{_GMFUNCTION_} :: _callback expected callable type", true);
+        var _callback_handle = __ext_core_function_register(_callback, __dispatcher__);
+        buffer_write(__args_buffer__, buffer_u64, _callback_handle);
+    }
+
+    var __return_value__ = __firebase_messaging_set_unregistration_callback(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+
+    return __return_value__;
+}
+
+/**
+ * @param {Real} _raw_data_ref
  * @param {Id.Buffer} _out_buffer
  * @returns {Real}
  */
-function firebase_messaging_message_raw_data_copy(_out_buffer)
+function firebase_messaging_raw_data_copy(_raw_data_ref, _out_buffer)
 {
     var __available__ = __GMFirebase_is_available();
     if (!__available__) return;
 
     var __args_buffer__ = __ext_core_get_args_buffer();
 
+    // param: _raw_data_ref, type: UInt64
+    if (!is_numeric(_raw_data_ref)) show_error($"{_GMFUNCTION_} :: _raw_data_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _raw_data_ref);
+
     // param: _out_buffer, type: Buffer
     if (!buffer_exists(_out_buffer)) show_error($"{_GMFUNCTION_} :: _out_buffer expected Id.Buffer", true);
     __GMFirebase_queue_buffer(buffer_get_address(_out_buffer), buffer_get_size(_out_buffer));
 
-    var __return_value__ = __firebase_messaging_message_raw_data_copy(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
+    var __return_value__ = __firebase_messaging_raw_data_copy(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
     return __return_value__;
 }
 
-// Skipping function firebase_messaging_message_has_notification (no wrapper is required)
+/**
+ * @param {Real} _raw_data_ref
+ */
+function firebase_messaging_raw_data_release(_raw_data_ref)
+{
+    var __available__ = __GMFirebase_is_available();
+    if (!__available__) return;
 
+    var __args_buffer__ = __ext_core_get_args_buffer();
 
-// Skipping function firebase_messaging_message_notification_title (no wrapper is required)
+    // param: _raw_data_ref, type: UInt64
+    if (!is_numeric(_raw_data_ref)) show_error($"{_GMFUNCTION_} :: _raw_data_ref expected number", true);
+    buffer_write(__args_buffer__, buffer_u64, _raw_data_ref);
 
+    var __return_value__ = __firebase_messaging_raw_data_release(buffer_get_address(__args_buffer__), buffer_tell(__args_buffer__));
 
-// Skipping function firebase_messaging_message_notification_body (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_icon (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_sound (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_badge (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_tag (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_color (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_click_action (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_body_loc_key (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_body_loc_args_count (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_body_loc_args_at (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_title_loc_key (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_title_loc_args_count (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_title_loc_args_at (no wrapper is required)
-
-
-// Skipping function firebase_messaging_message_notification_android_channel_id (no wrapper is required)
-
+    return __return_value__;
+}
 
 /**
  * @returns {Real}
@@ -19048,8 +19555,11 @@ function __GMFirebase_get_decoders()
         __FirebaseRemoteConfigDoubleInfo_decode,
         __FirebaseRemoteConfigStringInfo_decode,
         __FirebaseRemoteConfigDataInfo_decode,
+        __FirebaseMessagingAndroidNotificationParams_decode,
         __FirebaseAppOptions_decode,
-        __FirebaseAuthResult_decode
+        __FirebaseAuthResult_decode,
+        __FirebaseMessagingNotification_decode,
+        __FirebaseMessagingMessage_decode
     ];
     return __decoders__;
 }
@@ -19069,4 +19579,4 @@ function __GMFirebase_is_available()
 // # Exports
 // #####################################################################
 
-#export FirebaseError, FirebaseAppCheckError, FirebaseAppCheckProvider, FirebaseAuthError, FirebaseLogLevel, FirebaseDatabaseError, FirestoreError, FirestoreSource, FirestoreDirection, FirestoreServerTimestampBehavior, FirestoreDocumentChangeType, FirestoreLoadBundleTaskState, FirestoreFieldValueType, FirebaseStorageError, FirebaseFunctionsError, FirebaseRemoteConfigLastFetchStatus, FirebaseRemoteConfigFetchFailureReason, FirebaseRemoteConfigValueSource, FirebaseRemoteConfigError, FirebaseMessagingError, FirebaseUmpConsentStatus, FirebaseUmpConsentFormStatus, FirebaseUmpPrivacyOptionsRequirementStatus, FirebaseUmpConsentDebugGeography, FirebaseUmpConsentRequestError, FirebaseUmpConsentFormError, FirebaseAnalyticsAppLifecycleState, FirestoreAggregateSource, FirebaseAnalyticsParameter, FirebaseAppCheckToken, FirebaseAuthProviderUserInfo, FirebaseAuthAdditionalUserInfo, FirebaseAuthUserInfo, FirebaseDatabaseReferenceInfo, FirebaseDataSnapshotInfo, FirestoreTimestamp, FirestoreGeoPoint, FirestoreBlob, FirestoreReference, FirestoreDocumentChange, FirestoreFieldLookup, FirestoreFieldPathValue, FirestoreLoadBundleTaskProgress, FirestoreDocumentSnapshotInfo, FirestoreQuerySnapshotInfo, FirebaseRemoteConfigInfo, FirebaseRemoteConfigBooleanInfo, FirebaseRemoteConfigLongInfo, FirebaseRemoteConfigDoubleInfo, FirebaseRemoteConfigStringInfo, FirebaseRemoteConfigDataInfo, FirebaseAppOptions, FirebaseAuthResult, firebase_last_error_code, firebase_analytics_log_event_params, firebase_analytics_set_default_event_parameters, firebase_analytics_log_apple_transaction, firebase_analytics_get_analytics_instance_id, firebase_analytics_get_session_id, firebase_analytics_set_log_callback, firebase_app_check_set_provider_factory, firebase_app_check_get_token, firebase_app_check_get_limited_use_token, firebase_app_check_add_listener, firebase_app_check_remove_listener, firebase_installations_get_id, firebase_installations_get_token, firebase_installations_delete, firebase_auth_current_user, firebase_auth_fetch_providers_for_email, firebase_auth_sign_in_with_custom_token, firebase_auth_sign_in_with_credential, firebase_auth_sign_in_and_retrieve_data_with_credential, firebase_auth_sign_in_anonymously, firebase_auth_sign_in_with_email_and_password, firebase_auth_create_user_with_email_and_password, firebase_auth_send_password_reset_email, firebase_auth_add_state_listener, firebase_auth_remove_state_listener, firebase_auth_add_id_token_listener, firebase_auth_remove_id_token_listener, firebase_auth_credential_provider, firebase_auth_credential_is_valid, firebase_auth_credential_release, firebase_auth_email_auth_provider_get_credential, firebase_auth_facebook_auth_provider_get_credential, firebase_auth_game_center_auth_provider_get_credential, firebase_auth_github_auth_provider_get_credential, firebase_auth_google_auth_provider_get_credential, firebase_auth_oauth_provider_get_credential, firebase_auth_oauth_provider_get_credential_with_nonce, firebase_auth_play_games_auth_provider_get_credential, firebase_auth_twitter_auth_provider_get_credential, firebase_auth_phone_verify_phone_number, firebase_auth_phone_get_credential, firebase_auth_phone_credential_sms_code, firebase_auth_phone_resending_token_release, firebase_auth_phone_listener_release, firebase_auth_user_get_info, firebase_auth_user_release, firebase_auth_user_is_valid, firebase_auth_user_uid, firebase_auth_user_email, firebase_auth_user_display_name, firebase_auth_user_photo_url, firebase_auth_user_provider_id, firebase_auth_user_phone_number, firebase_auth_user_is_email_verified, firebase_auth_user_is_anonymous, firebase_auth_user_creation_timestamp, firebase_auth_user_last_sign_in_timestamp, firebase_auth_user_get_token, firebase_auth_user_update_password, firebase_auth_user_update_profile, firebase_auth_user_send_email_verification, firebase_auth_user_send_email_verification_before_updating_email, firebase_auth_user_reauthenticate, firebase_auth_user_reauthenticate_and_retrieve_data, firebase_auth_user_link_with_credential, firebase_auth_user_unlink, firebase_auth_user_reload, firebase_auth_user_delete, firebase_database_get_instance, firebase_database_get_instance_for_url, firebase_database_get_url, firebase_database_get_reference, firebase_database_get_reference_at_path, firebase_database_get_reference_from_url, firebase_database_go_offline, firebase_database_go_online, firebase_database_purge_outstanding_writes, firebase_database_set_persistence_enabled, firebase_database_set_log_level, firebase_database_get_log_level, firebase_database_ref_order_by_child, firebase_database_ref_order_by_key, firebase_database_ref_order_by_value, firebase_database_ref_order_by_priority, firebase_database_ref_start_at, firebase_database_ref_start_at_key, firebase_database_ref_end_at, firebase_database_ref_end_at_key, firebase_database_ref_equal_to, firebase_database_ref_equal_to_key, firebase_database_ref_limit_to_first, firebase_database_ref_limit_to_last, firebase_database_ref_set_keep_synchronized, firebase_database_ref_get_value, firebase_database_ref_add_value_listener, firebase_database_ref_remove_value_listener, firebase_database_ref_remove_all_value_listeners, firebase_database_ref_add_child_listener, firebase_database_ref_remove_child_listener, firebase_database_ref_remove_all_child_listeners, firebase_database_query_order_by_child, firebase_database_query_order_by_key, firebase_database_query_order_by_value, firebase_database_query_order_by_priority, firebase_database_query_start_at, firebase_database_query_start_at_key, firebase_database_query_end_at, firebase_database_query_end_at_key, firebase_database_query_equal_to, firebase_database_query_equal_to_key, firebase_database_query_limit_to_first, firebase_database_query_limit_to_last, firebase_database_query_get_reference, firebase_database_query_set_keep_synchronized, firebase_database_query_is_valid, firebase_database_query_get_value, firebase_database_query_add_value_listener, firebase_database_query_remove_value_listener, firebase_database_query_remove_all_value_listeners, firebase_database_query_add_child_listener, firebase_database_query_remove_child_listener, firebase_database_query_remove_all_child_listeners, firebase_database_query_release, firebase_database_ref_get, firebase_database_ref_child, firebase_database_ref_push, firebase_database_ref_go_online, firebase_database_ref_go_offline, firebase_database_ref_set_value, firebase_database_ref_set_priority, firebase_database_ref_set_value_and_priority, firebase_database_ref_update_children, firebase_database_ref_remove_value, firebase_database_ref_run_transaction, firebase_database_ref_release, firebase_database_snapshot_exists, firebase_database_snapshot_is_valid, firebase_database_snapshot_child, firebase_database_snapshot_has_child, firebase_database_snapshot_has_children, firebase_database_snapshot_children_count, firebase_database_snapshot_get_children, firebase_database_snapshot_key, firebase_database_snapshot_get_reference, firebase_database_snapshot_get_info, firebase_database_snapshot_get_value, firebase_database_snapshot_get_priority, firebase_database_snapshot_release, firebase_firestore_get_instance, firebase_firestore_get_instance_for_database, firebase_firestore_settings_get_host, firebase_firestore_settings_set_host, firebase_firestore_settings_get_ssl_enabled, firebase_firestore_settings_set_ssl_enabled, firebase_firestore_settings_get_persistence_enabled, firebase_firestore_settings_set_persistence_enabled, firebase_firestore_settings_get_cache_size_bytes, firebase_firestore_settings_set_cache_size_bytes, firebase_firestore_collection, firebase_firestore_document, firebase_firestore_collection_group, firebase_firestore_batch, firebase_firestore_set_log_level, firebase_firestore_enable_network, firebase_firestore_disable_network, firebase_firestore_terminate, firebase_firestore_clear_persistence, firebase_firestore_wait_for_pending_writes, firebase_firestore_run_transaction, firebase_firestore_collection_ref_id, firebase_firestore_collection_ref_path, firebase_firestore_collection_ref_parent, firebase_firestore_collection_ref_document, firebase_firestore_collection_ref_document_path, firebase_firestore_collection_ref_add, firebase_firestore_collection_ref_is_valid, firebase_firestore_collection_ref_release, firebase_firestore_document_ref_id, firebase_firestore_document_ref_path, firebase_firestore_document_ref_parent, firebase_firestore_document_ref_collection, firebase_firestore_document_ref_get, firebase_firestore_document_ref_set, firebase_firestore_document_ref_set_merge, firebase_firestore_document_ref_set_merge_fields, firebase_firestore_document_ref_update, firebase_firestore_document_ref_delete, firebase_firestore_document_ref_add_snapshot_listener, firebase_firestore_document_ref_is_valid, firebase_firestore_document_ref_release, firebase_firestore_query_where_equal_to, firebase_firestore_query_where_not_equal_to, firebase_firestore_query_where_less_than, firebase_firestore_query_where_less_than_or_equal_to, firebase_firestore_query_where_greater_than, firebase_firestore_query_where_greater_than_or_equal_to, firebase_firestore_query_where_array_contains, firebase_firestore_query_where_array_contains_any, firebase_firestore_query_where_in, firebase_firestore_query_where_not_in, firebase_firestore_query_order_by, firebase_firestore_query_limit, firebase_firestore_query_limit_to_last, firebase_firestore_query_start_at_snapshot, firebase_firestore_query_start_at_values, firebase_firestore_query_start_after_snapshot, firebase_firestore_query_start_after_values, firebase_firestore_query_end_before_snapshot, firebase_firestore_query_end_before_values, firebase_firestore_query_end_at_snapshot, firebase_firestore_query_end_at_values, firebase_firestore_query_get, firebase_firestore_query_add_snapshot_listener, firebase_firestore_query_is_valid, firebase_firestore_query_release, firebase_firestore_write_batch_set, firebase_firestore_write_batch_set_merge, firebase_firestore_write_batch_set_merge_fields, firebase_firestore_write_batch_update, firebase_firestore_write_batch_delete, firebase_firestore_write_batch_commit, firebase_firestore_write_batch_release, firebase_firestore_field_value_array_union, firebase_firestore_field_value_array_remove, firebase_firestore_field_value_reference, firebase_firestore_field_value_blob, firebase_firestore_field_value_release, firebase_firestore_document_snapshot_get_info, firebase_firestore_document_snapshot_get, firebase_firestore_document_snapshot_get_data, firebase_firestore_document_snapshot_release, firebase_firestore_query_snapshot_get_info, firebase_firestore_query_snapshot_documents, firebase_firestore_query_snapshot_document_changes, firebase_firestore_query_snapshot_release, firebase_firestore_listener_registration_remove, firebase_storage_get_instance, firebase_storage_get_instance_with_url, firebase_storage_url, firebase_storage_get_reference, firebase_storage_get_reference_path, firebase_storage_get_reference_from_url, firebase_storage_max_download_retry_time, firebase_storage_set_max_download_retry_time, firebase_storage_max_upload_retry_time, firebase_storage_set_max_upload_retry_time, firebase_storage_max_operation_retry_time, firebase_storage_set_max_operation_retry_time, firebase_storage_use_emulator, firebase_storage_ref_child, firebase_storage_ref_get_parent, firebase_storage_ref_release, firebase_storage_ref_bucket, firebase_storage_ref_full_path, firebase_storage_ref_name, firebase_storage_ref_is_valid, firebase_storage_ref_storage, firebase_storage_ref_delete, firebase_storage_ref_get_download_url, firebase_storage_ref_get_metadata, firebase_storage_ref_update_metadata, firebase_storage_ref_put_bytes, firebase_storage_ref_put_file, firebase_storage_ref_get_bytes, firebase_storage_download_copy, firebase_storage_download_release, firebase_storage_ref_get_file, firebase_storage_ref_list, firebase_storage_metadata_create, firebase_storage_metadata_release, firebase_storage_metadata_is_valid, firebase_storage_metadata_bucket, firebase_storage_metadata_cache_control, firebase_storage_metadata_set_cache_control, firebase_storage_metadata_content_disposition, firebase_storage_metadata_set_content_disposition, firebase_storage_metadata_content_encoding, firebase_storage_metadata_set_content_encoding, firebase_storage_metadata_content_language, firebase_storage_metadata_set_content_language, firebase_storage_metadata_content_type, firebase_storage_metadata_set_content_type, firebase_storage_metadata_creation_time, firebase_storage_metadata_generation, firebase_storage_metadata_metadata_generation, firebase_storage_metadata_name, firebase_storage_metadata_path, firebase_storage_metadata_get_reference, firebase_storage_metadata_size_bytes, firebase_storage_metadata_updated_time, firebase_storage_metadata_custom_metadata_count, firebase_storage_metadata_custom_metadata_key_at, firebase_storage_metadata_get_custom_metadata, firebase_storage_metadata_set_custom_metadata, firebase_storage_controller_create, firebase_storage_controller_release, firebase_storage_controller_is_valid, firebase_storage_controller_pause, firebase_storage_controller_resume, firebase_storage_controller_cancel, firebase_storage_controller_is_paused, firebase_storage_controller_bytes_transferred, firebase_storage_controller_total_byte_count, firebase_storage_controller_get_reference, firebase_storage_list_result_release, firebase_storage_list_result_is_valid, firebase_storage_list_result_item_count, firebase_storage_list_result_item_at, firebase_storage_list_result_prefix_count, firebase_storage_list_result_prefix_at, firebase_storage_list_result_next_page_token, firebase_functions_get_instance, firebase_functions_get_instance_with_region, firebase_functions_use_functions_emulator, firebase_functions_get_https_callable, firebase_functions_get_https_callable_with_options, firebase_functions_get_https_callable_from_url, firebase_functions_get_https_callable_from_url_with_options, firebase_functions_callable_is_valid, firebase_functions_callable_release, firebase_functions_callable_call, firebase_functions_callable_call_with_data, firebase_remote_config_get_instance, firebase_remote_config_ensure_initialized, firebase_remote_config_set_config_settings, firebase_remote_config_get_config_settings_fetch_timeout, firebase_remote_config_get_config_settings_minimum_fetch_interval, firebase_remote_config_fetch, firebase_remote_config_fetch_with_expiration, firebase_remote_config_fetch_and_activate, firebase_remote_config_activate, firebase_remote_config_get_boolean, firebase_remote_config_get_long, firebase_remote_config_get_double, firebase_remote_config_get_string, firebase_remote_config_get_data_size, firebase_remote_config_get_data, firebase_remote_config_get_keys_by_prefix, firebase_remote_config_get_keys, firebase_remote_config_get_all, firebase_remote_config_set_defaults, firebase_remote_config_set_custom_signals, firebase_remote_config_get_info, firebase_remote_config_add_config_update_listener, firebase_remote_config_remove_config_update_listener, firebase_messaging_request_permission, firebase_messaging_register, firebase_messaging_unregister, firebase_messaging_get_token, firebase_messaging_delete_token, firebase_messaging_subscribe, firebase_messaging_unsubscribe, firebase_messaging_message_raw_data_copy, firebase_ump_get_instance, firebase_ump_get_consent_status, firebase_ump_get_consent_form_status, firebase_ump_get_privacy_options_requirement_status, firebase_ump_can_request_ads, firebase_ump_reset, firebase_ump_request_consent_info_update, firebase_ump_load_consent_form, firebase_ump_show_consent_form, firebase_ump_load_and_show_consent_form_if_required, firebase_ump_show_privacy_options_form, firebase_analytics_notify_app_lifecycle_change, firebase_analytics_initiate_on_device_conversion_measurement_hashed_email, firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone, firebase_auth_federated_oauth_provider_create, firebase_auth_federated_oauth_provider_set_data, firebase_auth_federated_oauth_provider_release, firebase_auth_sign_in_with_provider, firebase_auth_sign_in_with_custom_token_result, firebase_auth_sign_in_and_retrieve_data_with_credential_result, firebase_auth_sign_in_anonymously_result, firebase_auth_sign_in_with_email_and_password_result, firebase_auth_create_user_with_email_and_password_result, firebase_auth_user_provider_data_count, firebase_auth_user_provider_data_at, firebase_auth_user_reauthenticate_with_provider, firebase_auth_user_link_with_provider, firebase_auth_user_reauthenticate_and_retrieve_data_result, firebase_auth_user_link_with_credential_result, firebase_auth_user_update_phone_number_credential, firebase_database_ref_key, firebase_database_ref_is_root, firebase_database_ref_is_valid, firebase_database_ref_get_parent, firebase_database_ref_get_root, firebase_database_ref_get_database, firebase_database_ref_get_url, firebase_database_server_timestamp, firebase_database_ref_on_disconnect, firebase_database_on_disconnect_cancel, firebase_database_on_disconnect_remove_value, firebase_database_on_disconnect_set_value, firebase_database_on_disconnect_set_value_and_priority, firebase_database_on_disconnect_update_children, firebase_database_on_disconnect_release, firebase_firestore_field_path_create, firebase_firestore_field_path_is_valid, firebase_firestore_field_path_to_string, firebase_firestore_field_path_release, firebase_firestore_filter_equal_to, firebase_firestore_filter_not_equal_to, firebase_firestore_filter_less_than, firebase_firestore_filter_less_than_or_equal_to, firebase_firestore_filter_greater_than, firebase_firestore_filter_greater_than_or_equal_to, firebase_firestore_filter_array_contains, firebase_firestore_filter_array_contains_any, firebase_firestore_filter_in, firebase_firestore_filter_not_in, firebase_firestore_filter_equal_to_field_path, firebase_firestore_filter_not_equal_to_field_path, firebase_firestore_filter_less_than_field_path, firebase_firestore_filter_less_than_or_equal_to_field_path, firebase_firestore_filter_greater_than_field_path, firebase_firestore_filter_greater_than_or_equal_to_field_path, firebase_firestore_filter_array_contains_field_path, firebase_firestore_filter_array_contains_any_field_path, firebase_firestore_filter_in_field_path, firebase_firestore_filter_not_in_field_path, firebase_firestore_filter_and, firebase_firestore_filter_or, firebase_firestore_filter_release, firebase_firestore_query_where_filter, firebase_firestore_query_where_equal_to_field_path, firebase_firestore_query_where_not_equal_to_field_path, firebase_firestore_query_where_less_than_field_path, firebase_firestore_query_where_less_than_or_equal_to_field_path, firebase_firestore_query_where_greater_than_field_path, firebase_firestore_query_where_greater_than_or_equal_to_field_path, firebase_firestore_query_where_array_contains_field_path, firebase_firestore_query_where_array_contains_any_field_path, firebase_firestore_query_where_in_field_path, firebase_firestore_query_where_not_in_field_path, firebase_firestore_query_order_by_field_path, firebase_firestore_query_count, firebase_firestore_aggregate_query_get_query, firebase_firestore_aggregate_query_is_valid, firebase_firestore_aggregate_query_get, firebase_firestore_aggregate_query_release, firebase_firestore_aggregate_snapshot_count, firebase_firestore_aggregate_snapshot_get_query, firebase_firestore_aggregate_snapshot_is_valid, firebase_firestore_aggregate_snapshot_release, firebase_firestore_add_snapshots_in_sync_listener, firebase_firestore_load_bundle, firebase_firestore_named_query, firebase_firestore_document_ref_set_merge_field_paths, firebase_firestore_write_batch_set_merge_field_paths, firebase_storage_metadata_md5_hash, firebase_remote_config_ensure_initialized_info, firebase_remote_config_get_boolean_with_info, firebase_remote_config_get_long_with_info, firebase_remote_config_get_double_with_info, firebase_remote_config_get_string_with_info, firebase_remote_config_get_data_with_info, firebase_firestore_field_value_type, firebase_firestore_field_value_is_valid, firebase_firestore_field_value_is_null, firebase_firestore_field_value_is_boolean, firebase_firestore_field_value_is_integer, firebase_firestore_field_value_is_double, firebase_firestore_field_value_is_timestamp, firebase_firestore_field_value_is_string, firebase_firestore_field_value_is_blob, firebase_firestore_field_value_is_reference, firebase_firestore_field_value_is_geo_point, firebase_firestore_field_value_is_array, firebase_firestore_field_value_is_map, firebase_firestore_field_value_boolean_value, firebase_firestore_field_value_integer_value, firebase_firestore_field_value_double_value, firebase_firestore_field_value_string_value, firebase_firestore_field_value_blob_size, firebase_firestore_field_value_blob_copy, firebase_firestore_field_value_reference_value, firebase_firestore_field_value_timestamp_value, firebase_firestore_field_value_geo_point_value, firebase_firestore_field_value_array_value, firebase_firestore_field_value_map_value, firebase_firestore_field_value_to_string, firebase_firestore_query_get_firestore, firebase_firestore_document_ref_get_firestore, firebase_firestore_document_ref_to_string, firebase_firestore_document_ref_update_field_paths, firebase_firestore_write_batch_update_field_paths, firebase_firestore_write_batch_is_valid, firebase_firestore_settings_to_string, firebase_firestore_document_snapshot_is_valid, firebase_firestore_document_snapshot_to_string, firebase_firestore_document_snapshot_get_field_path, firebase_firestore_query_snapshot_is_valid, firebase_firestore_query_snapshot_get_query, firebase_firestore_listener_registration_is_valid, firebase_app_get_default_handle, firebase_app_get_instance, firebase_app_get_apps, firebase_app_initialize_with_options, firebase_app_initialize_from_json, firebase_app_handle_get_name, firebase_app_handle_get_options, firebase_app_get_default_options, firebase_app_release_handle, firebase_set_log_level, firebase_get_log_level, firebase_auth_get_app, firebase_database_get_app, firebase_database_get_instance_for_app, firebase_database_get_instance_for_app_url, firebase_firestore_get_app, firebase_firestore_get_instance_for_app, firebase_firestore_get_instance_for_app_database, firebase_storage_get_app, firebase_storage_get_instance_for_app, firebase_storage_get_instance_for_app_url, firebase_functions_get_app, firebase_functions_callable_get_functions, firebase_functions_get_instance_for_app, firebase_functions_get_instance_for_app_region, firebase_installations_get_app, firebase_remote_config_get_app, firebase_app_check_get_app, firebase_firestore_field_value_array, firebase_firestore_field_value_map, firebase_remote_config_get_instance_for_app, firebase_analytics_initialize_for_app, firebase_messaging_initialize_for_app, firebase_messaging_initialize_for_app_with_options, firebase_ump_get_instance_for_app, firebase_auth_get_current_instance_handle, firebase_auth_get_instance_for_app, firebase_auth_use_instance, firebase_auth_instance_get_app, firebase_installations_get_instance_handle, firebase_installations_get_instance_for_app, firebase_installations_instance_get_app, firebase_installations_instance_get_id, firebase_installations_instance_get_token, firebase_installations_instance_delete, firebase_app_check_get_instance_handle, firebase_app_check_get_instance_for_app, firebase_app_check_instance_get_app, firebase_app_check_instance_set_token_auto_refresh_enabled, firebase_app_check_instance_get_token, firebase_app_check_instance_get_limited_use_token, firebase_app_check_instance_add_listener, firebase_firestore_document_snapshot_metadata_to_string, firebase_firestore_query_snapshot_metadata_to_string, firebase_firestore_document_snapshot_exists, firebase_firestore_document_snapshot_id, firebase_firestore_document_snapshot_reference, firebase_firestore_document_snapshot_metadata_has_pending_writes, firebase_firestore_document_snapshot_metadata_is_from_cache, firebase_firestore_query_snapshot_size, firebase_firestore_query_snapshot_empty, firebase_firestore_query_snapshot_metadata_has_pending_writes, firebase_firestore_query_snapshot_metadata_is_from_cache, firebase_auth_game_center_auth_provider_get_credential_last_result
+#export FirebaseError, FirebaseAppCheckError, FirebaseAppCheckProvider, FirebaseAuthError, FirebaseLogLevel, FirebaseDatabaseError, FirestoreError, FirestoreSource, FirestoreDirection, FirestoreServerTimestampBehavior, FirestoreDocumentChangeType, FirestoreLoadBundleTaskState, FirestoreFieldValueType, FirebaseStorageError, FirebaseFunctionsError, FirebaseRemoteConfigLastFetchStatus, FirebaseRemoteConfigFetchFailureReason, FirebaseRemoteConfigValueSource, FirebaseRemoteConfigError, FirebaseMessagingError, FirebaseUmpConsentStatus, FirebaseUmpConsentFormStatus, FirebaseUmpPrivacyOptionsRequirementStatus, FirebaseUmpConsentDebugGeography, FirebaseUmpConsentRequestError, FirebaseUmpConsentFormError, FirebaseAnalyticsAppLifecycleState, FirestoreAggregateSource, FirebaseAnalyticsParameter, FirebaseAppCheckToken, FirebaseAuthProviderUserInfo, FirebaseAuthAdditionalUserInfo, FirebaseAuthUserInfo, FirebaseDatabaseReferenceInfo, FirebaseDataSnapshotInfo, FirestoreTimestamp, FirestoreGeoPoint, FirestoreBlob, FirestoreReference, FirestoreDocumentChange, FirestoreFieldLookup, FirestoreFieldPathValue, FirestoreLoadBundleTaskProgress, FirestoreDocumentSnapshotInfo, FirestoreQuerySnapshotInfo, FirebaseRemoteConfigInfo, FirebaseRemoteConfigBooleanInfo, FirebaseRemoteConfigLongInfo, FirebaseRemoteConfigDoubleInfo, FirebaseRemoteConfigStringInfo, FirebaseRemoteConfigDataInfo, FirebaseMessagingAndroidNotificationParams, FirebaseAppOptions, FirebaseAuthResult, FirebaseMessagingNotification, FirebaseMessagingMessage, firebase_last_error_code, firebase_analytics_log_event_params, firebase_analytics_set_default_event_parameters, firebase_analytics_log_apple_transaction, firebase_analytics_get_analytics_instance_id, firebase_analytics_get_session_id, firebase_analytics_set_log_callback, firebase_app_check_set_provider_factory, firebase_app_check_get_token, firebase_app_check_get_limited_use_token, firebase_app_check_add_listener, firebase_app_check_remove_listener, firebase_installations_get_id, firebase_installations_get_token, firebase_installations_delete, firebase_auth_current_user, firebase_auth_fetch_providers_for_email, firebase_auth_sign_in_with_custom_token, firebase_auth_sign_in_with_credential, firebase_auth_sign_in_and_retrieve_data_with_credential, firebase_auth_sign_in_anonymously, firebase_auth_sign_in_with_email_and_password, firebase_auth_create_user_with_email_and_password, firebase_auth_send_password_reset_email, firebase_auth_add_state_listener, firebase_auth_remove_state_listener, firebase_auth_add_id_token_listener, firebase_auth_remove_id_token_listener, firebase_auth_credential_provider, firebase_auth_credential_is_valid, firebase_auth_credential_release, firebase_auth_email_auth_provider_get_credential, firebase_auth_facebook_auth_provider_get_credential, firebase_auth_game_center_auth_provider_get_credential, firebase_auth_github_auth_provider_get_credential, firebase_auth_google_auth_provider_get_credential, firebase_auth_oauth_provider_get_credential, firebase_auth_oauth_provider_get_credential_with_nonce, firebase_auth_play_games_auth_provider_get_credential, firebase_auth_twitter_auth_provider_get_credential, firebase_auth_phone_verify_phone_number, firebase_auth_phone_get_credential, firebase_auth_phone_credential_sms_code, firebase_auth_phone_resending_token_release, firebase_auth_phone_listener_release, firebase_auth_user_get_info, firebase_auth_user_release, firebase_auth_user_is_valid, firebase_auth_user_uid, firebase_auth_user_email, firebase_auth_user_display_name, firebase_auth_user_photo_url, firebase_auth_user_provider_id, firebase_auth_user_phone_number, firebase_auth_user_is_email_verified, firebase_auth_user_is_anonymous, firebase_auth_user_creation_timestamp, firebase_auth_user_last_sign_in_timestamp, firebase_auth_user_get_token, firebase_auth_user_update_password, firebase_auth_user_update_profile, firebase_auth_user_send_email_verification, firebase_auth_user_send_email_verification_before_updating_email, firebase_auth_user_reauthenticate, firebase_auth_user_reauthenticate_and_retrieve_data, firebase_auth_user_link_with_credential, firebase_auth_user_unlink, firebase_auth_user_reload, firebase_auth_user_delete, firebase_database_get_instance, firebase_database_get_instance_for_url, firebase_database_get_url, firebase_database_get_reference, firebase_database_get_reference_at_path, firebase_database_get_reference_from_url, firebase_database_go_offline, firebase_database_go_online, firebase_database_purge_outstanding_writes, firebase_database_set_persistence_enabled, firebase_database_set_log_level, firebase_database_get_log_level, firebase_database_ref_order_by_child, firebase_database_ref_order_by_key, firebase_database_ref_order_by_value, firebase_database_ref_order_by_priority, firebase_database_ref_start_at, firebase_database_ref_start_at_key, firebase_database_ref_end_at, firebase_database_ref_end_at_key, firebase_database_ref_equal_to, firebase_database_ref_equal_to_key, firebase_database_ref_limit_to_first, firebase_database_ref_limit_to_last, firebase_database_ref_set_keep_synchronized, firebase_database_ref_get_value, firebase_database_ref_add_value_listener, firebase_database_ref_remove_value_listener, firebase_database_ref_remove_all_value_listeners, firebase_database_ref_add_child_listener, firebase_database_ref_remove_child_listener, firebase_database_ref_remove_all_child_listeners, firebase_database_query_order_by_child, firebase_database_query_order_by_key, firebase_database_query_order_by_value, firebase_database_query_order_by_priority, firebase_database_query_start_at, firebase_database_query_start_at_key, firebase_database_query_end_at, firebase_database_query_end_at_key, firebase_database_query_equal_to, firebase_database_query_equal_to_key, firebase_database_query_limit_to_first, firebase_database_query_limit_to_last, firebase_database_query_get_reference, firebase_database_query_set_keep_synchronized, firebase_database_query_is_valid, firebase_database_query_get_value, firebase_database_query_add_value_listener, firebase_database_query_remove_value_listener, firebase_database_query_remove_all_value_listeners, firebase_database_query_add_child_listener, firebase_database_query_remove_child_listener, firebase_database_query_remove_all_child_listeners, firebase_database_query_release, firebase_database_ref_get, firebase_database_ref_child, firebase_database_ref_push, firebase_database_ref_go_online, firebase_database_ref_go_offline, firebase_database_ref_set_value, firebase_database_ref_set_priority, firebase_database_ref_set_value_and_priority, firebase_database_ref_update_children, firebase_database_ref_remove_value, firebase_database_ref_run_transaction, firebase_database_ref_release, firebase_database_snapshot_exists, firebase_database_snapshot_is_valid, firebase_database_snapshot_child, firebase_database_snapshot_has_child, firebase_database_snapshot_has_children, firebase_database_snapshot_children_count, firebase_database_snapshot_get_children, firebase_database_snapshot_key, firebase_database_snapshot_get_reference, firebase_database_snapshot_get_info, firebase_database_snapshot_get_value, firebase_database_snapshot_get_priority, firebase_database_snapshot_release, firebase_firestore_get_instance, firebase_firestore_get_instance_for_database, firebase_firestore_settings_get_host, firebase_firestore_settings_set_host, firebase_firestore_settings_get_ssl_enabled, firebase_firestore_settings_set_ssl_enabled, firebase_firestore_settings_get_persistence_enabled, firebase_firestore_settings_set_persistence_enabled, firebase_firestore_settings_get_cache_size_bytes, firebase_firestore_settings_set_cache_size_bytes, firebase_firestore_collection, firebase_firestore_document, firebase_firestore_collection_group, firebase_firestore_batch, firebase_firestore_set_log_level, firebase_firestore_enable_network, firebase_firestore_disable_network, firebase_firestore_terminate, firebase_firestore_clear_persistence, firebase_firestore_wait_for_pending_writes, firebase_firestore_run_transaction, firebase_firestore_collection_ref_id, firebase_firestore_collection_ref_path, firebase_firestore_collection_ref_parent, firebase_firestore_collection_ref_document, firebase_firestore_collection_ref_document_path, firebase_firestore_collection_ref_add, firebase_firestore_collection_ref_is_valid, firebase_firestore_collection_ref_release, firebase_firestore_document_ref_id, firebase_firestore_document_ref_path, firebase_firestore_document_ref_parent, firebase_firestore_document_ref_collection, firebase_firestore_document_ref_get, firebase_firestore_document_ref_set, firebase_firestore_document_ref_set_merge, firebase_firestore_document_ref_set_merge_fields, firebase_firestore_document_ref_update, firebase_firestore_document_ref_delete, firebase_firestore_document_ref_add_snapshot_listener, firebase_firestore_document_ref_is_valid, firebase_firestore_document_ref_release, firebase_firestore_query_where_equal_to, firebase_firestore_query_where_not_equal_to, firebase_firestore_query_where_less_than, firebase_firestore_query_where_less_than_or_equal_to, firebase_firestore_query_where_greater_than, firebase_firestore_query_where_greater_than_or_equal_to, firebase_firestore_query_where_array_contains, firebase_firestore_query_where_array_contains_any, firebase_firestore_query_where_in, firebase_firestore_query_where_not_in, firebase_firestore_query_order_by, firebase_firestore_query_limit, firebase_firestore_query_limit_to_last, firebase_firestore_query_start_at_snapshot, firebase_firestore_query_start_at_values, firebase_firestore_query_start_after_snapshot, firebase_firestore_query_start_after_values, firebase_firestore_query_end_before_snapshot, firebase_firestore_query_end_before_values, firebase_firestore_query_end_at_snapshot, firebase_firestore_query_end_at_values, firebase_firestore_query_get, firebase_firestore_query_add_snapshot_listener, firebase_firestore_query_is_valid, firebase_firestore_query_release, firebase_firestore_write_batch_set, firebase_firestore_write_batch_set_merge, firebase_firestore_write_batch_set_merge_fields, firebase_firestore_write_batch_update, firebase_firestore_write_batch_delete, firebase_firestore_write_batch_commit, firebase_firestore_write_batch_release, firebase_firestore_field_value_array_union, firebase_firestore_field_value_array_remove, firebase_firestore_field_value_reference, firebase_firestore_field_value_blob, firebase_firestore_field_value_release, firebase_firestore_document_snapshot_get_info, firebase_firestore_document_snapshot_get, firebase_firestore_document_snapshot_get_data, firebase_firestore_document_snapshot_release, firebase_firestore_query_snapshot_get_info, firebase_firestore_query_snapshot_documents, firebase_firestore_query_snapshot_document_changes, firebase_firestore_query_snapshot_release, firebase_firestore_listener_registration_remove, firebase_storage_get_instance, firebase_storage_get_instance_with_url, firebase_storage_url, firebase_storage_get_reference, firebase_storage_get_reference_path, firebase_storage_get_reference_from_url, firebase_storage_max_download_retry_time, firebase_storage_set_max_download_retry_time, firebase_storage_max_upload_retry_time, firebase_storage_set_max_upload_retry_time, firebase_storage_max_operation_retry_time, firebase_storage_set_max_operation_retry_time, firebase_storage_use_emulator, firebase_storage_ref_child, firebase_storage_ref_get_parent, firebase_storage_ref_release, firebase_storage_ref_bucket, firebase_storage_ref_full_path, firebase_storage_ref_name, firebase_storage_ref_is_valid, firebase_storage_ref_storage, firebase_storage_ref_delete, firebase_storage_ref_get_download_url, firebase_storage_ref_get_metadata, firebase_storage_ref_update_metadata, firebase_storage_ref_put_bytes, firebase_storage_ref_put_file, firebase_storage_ref_get_bytes, firebase_storage_download_copy, firebase_storage_download_release, firebase_storage_ref_get_file, firebase_storage_ref_list, firebase_storage_metadata_create, firebase_storage_metadata_release, firebase_storage_metadata_is_valid, firebase_storage_metadata_bucket, firebase_storage_metadata_cache_control, firebase_storage_metadata_set_cache_control, firebase_storage_metadata_content_disposition, firebase_storage_metadata_set_content_disposition, firebase_storage_metadata_content_encoding, firebase_storage_metadata_set_content_encoding, firebase_storage_metadata_content_language, firebase_storage_metadata_set_content_language, firebase_storage_metadata_content_type, firebase_storage_metadata_set_content_type, firebase_storage_metadata_creation_time, firebase_storage_metadata_generation, firebase_storage_metadata_metadata_generation, firebase_storage_metadata_name, firebase_storage_metadata_path, firebase_storage_metadata_get_reference, firebase_storage_metadata_size_bytes, firebase_storage_metadata_updated_time, firebase_storage_metadata_custom_metadata_count, firebase_storage_metadata_custom_metadata_key_at, firebase_storage_metadata_get_custom_metadata, firebase_storage_metadata_set_custom_metadata, firebase_storage_controller_create, firebase_storage_controller_release, firebase_storage_controller_is_valid, firebase_storage_controller_pause, firebase_storage_controller_resume, firebase_storage_controller_cancel, firebase_storage_controller_is_paused, firebase_storage_controller_bytes_transferred, firebase_storage_controller_total_byte_count, firebase_storage_controller_get_reference, firebase_storage_list_result_release, firebase_storage_list_result_is_valid, firebase_storage_list_result_item_count, firebase_storage_list_result_item_at, firebase_storage_list_result_prefix_count, firebase_storage_list_result_prefix_at, firebase_storage_list_result_next_page_token, firebase_functions_get_instance, firebase_functions_get_instance_with_region, firebase_functions_use_functions_emulator, firebase_functions_get_https_callable, firebase_functions_get_https_callable_with_options, firebase_functions_get_https_callable_from_url, firebase_functions_get_https_callable_from_url_with_options, firebase_functions_callable_is_valid, firebase_functions_callable_release, firebase_functions_callable_call, firebase_functions_callable_call_with_data, firebase_remote_config_get_instance, firebase_remote_config_ensure_initialized, firebase_remote_config_set_config_settings, firebase_remote_config_get_config_settings_fetch_timeout, firebase_remote_config_get_config_settings_minimum_fetch_interval, firebase_remote_config_fetch, firebase_remote_config_fetch_with_expiration, firebase_remote_config_fetch_and_activate, firebase_remote_config_activate, firebase_remote_config_get_boolean, firebase_remote_config_get_long, firebase_remote_config_get_double, firebase_remote_config_get_string, firebase_remote_config_get_data_size, firebase_remote_config_get_data, firebase_remote_config_get_keys_by_prefix, firebase_remote_config_get_keys, firebase_remote_config_get_all, firebase_remote_config_set_defaults, firebase_remote_config_set_custom_signals, firebase_remote_config_get_info, firebase_remote_config_add_config_update_listener, firebase_remote_config_remove_config_update_listener, firebase_messaging_request_permission, firebase_messaging_register, firebase_messaging_unregister, firebase_messaging_get_token, firebase_messaging_delete_token, firebase_messaging_subscribe, firebase_messaging_unsubscribe, firebase_messaging_set_message_callback, firebase_messaging_set_registration_callback, firebase_messaging_set_unregistration_callback, firebase_messaging_raw_data_copy, firebase_messaging_raw_data_release, firebase_ump_get_instance, firebase_ump_get_consent_status, firebase_ump_get_consent_form_status, firebase_ump_get_privacy_options_requirement_status, firebase_ump_can_request_ads, firebase_ump_reset, firebase_ump_request_consent_info_update, firebase_ump_load_consent_form, firebase_ump_show_consent_form, firebase_ump_load_and_show_consent_form_if_required, firebase_ump_show_privacy_options_form, firebase_analytics_notify_app_lifecycle_change, firebase_analytics_initiate_on_device_conversion_measurement_hashed_email, firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone, firebase_auth_federated_oauth_provider_create, firebase_auth_federated_oauth_provider_set_data, firebase_auth_federated_oauth_provider_release, firebase_auth_sign_in_with_provider, firebase_auth_sign_in_with_custom_token_result, firebase_auth_sign_in_and_retrieve_data_with_credential_result, firebase_auth_sign_in_anonymously_result, firebase_auth_sign_in_with_email_and_password_result, firebase_auth_create_user_with_email_and_password_result, firebase_auth_user_provider_data_count, firebase_auth_user_provider_data_at, firebase_auth_user_reauthenticate_with_provider, firebase_auth_user_link_with_provider, firebase_auth_user_reauthenticate_and_retrieve_data_result, firebase_auth_user_link_with_credential_result, firebase_auth_user_update_phone_number_credential, firebase_database_ref_key, firebase_database_ref_is_root, firebase_database_ref_is_valid, firebase_database_ref_get_parent, firebase_database_ref_get_root, firebase_database_ref_get_database, firebase_database_ref_get_url, firebase_database_server_timestamp, firebase_database_ref_on_disconnect, firebase_database_on_disconnect_cancel, firebase_database_on_disconnect_remove_value, firebase_database_on_disconnect_set_value, firebase_database_on_disconnect_set_value_and_priority, firebase_database_on_disconnect_update_children, firebase_database_on_disconnect_release, firebase_firestore_field_path_create, firebase_firestore_field_path_is_valid, firebase_firestore_field_path_to_string, firebase_firestore_field_path_release, firebase_firestore_filter_equal_to, firebase_firestore_filter_not_equal_to, firebase_firestore_filter_less_than, firebase_firestore_filter_less_than_or_equal_to, firebase_firestore_filter_greater_than, firebase_firestore_filter_greater_than_or_equal_to, firebase_firestore_filter_array_contains, firebase_firestore_filter_array_contains_any, firebase_firestore_filter_in, firebase_firestore_filter_not_in, firebase_firestore_filter_equal_to_field_path, firebase_firestore_filter_not_equal_to_field_path, firebase_firestore_filter_less_than_field_path, firebase_firestore_filter_less_than_or_equal_to_field_path, firebase_firestore_filter_greater_than_field_path, firebase_firestore_filter_greater_than_or_equal_to_field_path, firebase_firestore_filter_array_contains_field_path, firebase_firestore_filter_array_contains_any_field_path, firebase_firestore_filter_in_field_path, firebase_firestore_filter_not_in_field_path, firebase_firestore_filter_and, firebase_firestore_filter_or, firebase_firestore_filter_release, firebase_firestore_query_where_filter, firebase_firestore_query_where_equal_to_field_path, firebase_firestore_query_where_not_equal_to_field_path, firebase_firestore_query_where_less_than_field_path, firebase_firestore_query_where_less_than_or_equal_to_field_path, firebase_firestore_query_where_greater_than_field_path, firebase_firestore_query_where_greater_than_or_equal_to_field_path, firebase_firestore_query_where_array_contains_field_path, firebase_firestore_query_where_array_contains_any_field_path, firebase_firestore_query_where_in_field_path, firebase_firestore_query_where_not_in_field_path, firebase_firestore_query_order_by_field_path, firebase_firestore_query_count, firebase_firestore_aggregate_query_get_query, firebase_firestore_aggregate_query_is_valid, firebase_firestore_aggregate_query_get, firebase_firestore_aggregate_query_release, firebase_firestore_aggregate_snapshot_count, firebase_firestore_aggregate_snapshot_get_query, firebase_firestore_aggregate_snapshot_is_valid, firebase_firestore_aggregate_snapshot_release, firebase_firestore_add_snapshots_in_sync_listener, firebase_firestore_load_bundle, firebase_firestore_named_query, firebase_firestore_document_ref_set_merge_field_paths, firebase_firestore_write_batch_set_merge_field_paths, firebase_storage_metadata_md5_hash, firebase_remote_config_ensure_initialized_info, firebase_remote_config_get_boolean_with_info, firebase_remote_config_get_long_with_info, firebase_remote_config_get_double_with_info, firebase_remote_config_get_string_with_info, firebase_remote_config_get_data_with_info, firebase_firestore_field_value_type, firebase_firestore_field_value_is_valid, firebase_firestore_field_value_is_null, firebase_firestore_field_value_is_boolean, firebase_firestore_field_value_is_integer, firebase_firestore_field_value_is_double, firebase_firestore_field_value_is_timestamp, firebase_firestore_field_value_is_string, firebase_firestore_field_value_is_blob, firebase_firestore_field_value_is_reference, firebase_firestore_field_value_is_geo_point, firebase_firestore_field_value_is_array, firebase_firestore_field_value_is_map, firebase_firestore_field_value_boolean_value, firebase_firestore_field_value_integer_value, firebase_firestore_field_value_double_value, firebase_firestore_field_value_string_value, firebase_firestore_field_value_blob_size, firebase_firestore_field_value_blob_copy, firebase_firestore_field_value_reference_value, firebase_firestore_field_value_timestamp_value, firebase_firestore_field_value_geo_point_value, firebase_firestore_field_value_array_value, firebase_firestore_field_value_map_value, firebase_firestore_field_value_to_string, firebase_firestore_query_get_firestore, firebase_firestore_document_ref_get_firestore, firebase_firestore_document_ref_to_string, firebase_firestore_document_ref_update_field_paths, firebase_firestore_write_batch_update_field_paths, firebase_firestore_write_batch_is_valid, firebase_firestore_settings_to_string, firebase_firestore_document_snapshot_is_valid, firebase_firestore_document_snapshot_to_string, firebase_firestore_document_snapshot_get_field_path, firebase_firestore_query_snapshot_is_valid, firebase_firestore_query_snapshot_get_query, firebase_firestore_listener_registration_is_valid, firebase_app_get_default_handle, firebase_app_get_instance, firebase_app_get_apps, firebase_app_initialize_with_options, firebase_app_initialize_from_json, firebase_app_handle_get_name, firebase_app_handle_get_options, firebase_app_get_default_options, firebase_app_release_handle, firebase_set_log_level, firebase_get_log_level, firebase_auth_get_app, firebase_database_get_app, firebase_database_get_instance_for_app, firebase_database_get_instance_for_app_url, firebase_firestore_get_app, firebase_firestore_get_instance_for_app, firebase_firestore_get_instance_for_app_database, firebase_storage_get_app, firebase_storage_get_instance_for_app, firebase_storage_get_instance_for_app_url, firebase_functions_get_app, firebase_functions_callable_get_functions, firebase_functions_get_instance_for_app, firebase_functions_get_instance_for_app_region, firebase_installations_get_app, firebase_remote_config_get_app, firebase_app_check_get_app, firebase_firestore_field_value_array, firebase_firestore_field_value_map, firebase_remote_config_get_instance_for_app, firebase_analytics_initialize_for_app, firebase_messaging_initialize_for_app, firebase_messaging_initialize_for_app_with_options, firebase_ump_get_instance_for_app, firebase_auth_get_current_instance_handle, firebase_auth_get_instance_for_app, firebase_auth_use_instance, firebase_auth_instance_get_app, firebase_installations_get_instance_handle, firebase_installations_get_instance_for_app, firebase_installations_instance_get_app, firebase_installations_instance_get_id, firebase_installations_instance_get_token, firebase_installations_instance_delete, firebase_app_check_get_instance_handle, firebase_app_check_get_instance_for_app, firebase_app_check_instance_get_app, firebase_app_check_instance_set_token_auto_refresh_enabled, firebase_app_check_instance_get_token, firebase_app_check_instance_get_limited_use_token, firebase_app_check_instance_add_listener, firebase_firestore_document_snapshot_metadata_to_string, firebase_firestore_query_snapshot_metadata_to_string, firebase_firestore_document_snapshot_exists, firebase_firestore_document_snapshot_id, firebase_firestore_document_snapshot_reference, firebase_firestore_document_snapshot_metadata_has_pending_writes, firebase_firestore_document_snapshot_metadata_is_from_cache, firebase_firestore_query_snapshot_size, firebase_firestore_query_snapshot_empty, firebase_firestore_query_snapshot_metadata_has_pending_writes, firebase_firestore_query_snapshot_metadata_is_from_cache, firebase_auth_game_center_auth_provider_get_credential_last_result

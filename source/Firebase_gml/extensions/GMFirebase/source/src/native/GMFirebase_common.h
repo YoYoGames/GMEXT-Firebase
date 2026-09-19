@@ -231,13 +231,16 @@ firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provid
 #define GM_FB_TYPE_APPCHECK_LISTENER 0x60 // ptr: our AppCheckListener subclass
 #define GM_FB_TYPE_APPCHECK 0x61          // ptr: firebase::app_check::AppCheck*
 
-// User Messaging Platform (UMP) - Cloud Messaging itself needs no ref types;
-// its surface is a set of global functions plus a poll buffer (see
-// GMFirebase_messaging.*), not per-instance handles.
+// User Messaging Platform (UMP)
 #define GM_FB_TYPE_UMP_CONSENT_INFO 0x70 // ptr: firebase::ump::ConsentInfo*
 
 // Installations
 #define GM_FB_TYPE_INSTALLATIONS 0x81 // ptr: firebase::installations::Installations*
+
+// Cloud Messaging - a surface of global functions and callbacks, no
+// per-instance handle (see GMFirebase_messaging.h); the one ref type is a
+// received message's binary payload.
+#define GM_FB_TYPE_MESSAGING_RAW_DATA 0x90 // map: the bytes of a received message
 
 // ============================================================
 // Validation Macros

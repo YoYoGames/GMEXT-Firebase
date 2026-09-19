@@ -60,9 +60,9 @@ everything is wired up is a test message to your own device:
 2. In the console, click **Create your first campaign** (or **New campaign**), choose **Firebase
    Notification messages**, write a title and text, and click **Send test message**.
 3. Paste the token, add it, and click **Test**. The notification appears on the device within
-   seconds - shown by the system when the game is in the background, delivered to
-   ${function.firebase_messaging_poll_message} with nothing shown when it is in the
-   foreground.<br>
+   seconds - shown by the system when the game is in the background, delivered to the
+   callback set with ${function.firebase_messaging_set_message_callback} with nothing shown
+   when it is in the foreground.<br>
    ![](assets/iOS_setup_8.png)
 
 A campaign proper is the same dialog without the test step: choose the target - an app, an

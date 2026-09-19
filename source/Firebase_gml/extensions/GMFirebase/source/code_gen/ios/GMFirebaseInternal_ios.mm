@@ -1684,165 +1684,25 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_messaging_unsubscribe(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_poll_message
+- (double)__EXT_NATIVE__firebase_messaging_set_message_callback:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_poll_message();
+    return __EXT_NATIVE__firebase_messaging_set_message_callback(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_poll_registration
+- (double)__EXT_NATIVE__firebase_messaging_set_registration_callback:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_poll_registration();
+    return __EXT_NATIVE__firebase_messaging_set_registration_callback(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_poll_unregistration
+- (double)__EXT_NATIVE__firebase_messaging_set_unregistration_callback:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_poll_unregistration();
+    return __EXT_NATIVE__firebase_messaging_set_unregistration_callback(__arg_buffer, __arg_buffer_length);
 }
-- (char*)__EXT_NATIVE__firebase_messaging_current_installation_id
+- (double)__EXT_NATIVE__firebase_messaging_raw_data_copy:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_current_installation_id();
+    return __EXT_NATIVE__firebase_messaging_raw_data_copy(__arg_buffer, __arg_buffer_length);
 }
-- (double)__EXT_NATIVE__firebase_messaging_poll_token
+- (double)__EXT_NATIVE__firebase_messaging_raw_data_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_messaging_poll_token();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_current_token
-{
-    return __EXT_NATIVE__firebase_messaging_current_token();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_from
-{
-    return __EXT_NATIVE__firebase_messaging_message_from();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_to
-{
-    return __EXT_NATIVE__firebase_messaging_message_to();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_collapse_key
-{
-    return __EXT_NATIVE__firebase_messaging_message_collapse_key();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_message_id
-{
-    return __EXT_NATIVE__firebase_messaging_message_message_id();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_message_type
-{
-    return __EXT_NATIVE__firebase_messaging_message_message_type();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_priority
-{
-    return __EXT_NATIVE__firebase_messaging_message_priority();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_original_priority
-{
-    return __EXT_NATIVE__firebase_messaging_message_original_priority();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_time_to_live
-{
-    return __EXT_NATIVE__firebase_messaging_message_time_to_live();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_sent_time
-{
-    return __EXT_NATIVE__firebase_messaging_message_sent_time();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_error
-{
-    return __EXT_NATIVE__firebase_messaging_message_error();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_error_description
-{
-    return __EXT_NATIVE__firebase_messaging_message_error_description();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_link
-{
-    return __EXT_NATIVE__firebase_messaging_message_link();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_notification_opened
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_opened();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_data_count
-{
-    return __EXT_NATIVE__firebase_messaging_message_data_count();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_data_key_at:(double)index
-{
-    return __EXT_NATIVE__firebase_messaging_message_data_key_at(index);
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_get_data:(char*)key
-{
-    return __EXT_NATIVE__firebase_messaging_message_get_data(key);
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_raw_data_size
-{
-    return __EXT_NATIVE__firebase_messaging_message_raw_data_size();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_raw_data_copy:(char*)__arg_buffer arg1:(double)__arg_buffer_length
-{
-    return __EXT_NATIVE__firebase_messaging_message_raw_data_copy(__arg_buffer, __arg_buffer_length);
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_has_notification
-{
-    return __EXT_NATIVE__firebase_messaging_message_has_notification();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_title
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_title();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_body
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_body();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_icon
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_icon();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_sound
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_sound();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_badge
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_badge();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_tag
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_tag();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_color
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_color();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_click_action
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_click_action();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_body_loc_key
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_body_loc_key();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_count
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_count();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_at:(double)index
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_at(index);
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_title_loc_key
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_title_loc_key();
-}
-- (double)__EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_count
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_count();
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_at:(double)index
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_at(index);
-}
-- (char*)__EXT_NATIVE__firebase_messaging_message_notification_android_channel_id
-{
-    return __EXT_NATIVE__firebase_messaging_message_notification_android_channel_id();
+    return __EXT_NATIVE__firebase_messaging_raw_data_release(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_ump_get_instance:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {

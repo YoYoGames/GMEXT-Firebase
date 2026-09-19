@@ -6214,184 +6214,8 @@ static jdouble __JNI_WRAPPER__firebase_messaging_unsubscribe_F6836B511890(JNIEnv
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_poll_message JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_poll_message_087D97D27BC3(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_poll_message();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_poll_registration JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_poll_registration_764031C64618(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_poll_registration();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_poll_unregistration JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_poll_unregistration_0687D0EE9782(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_poll_unregistration();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_current_installation_id JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_current_installation_id_803F8F3EA89A(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_current_installation_id();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_poll_token JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_poll_token_A683A48E0727(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_poll_token();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_current_token JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_current_token_E1DC4B4DA756(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_current_token();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_from JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_from_94B3AA4685E4(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_from();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_to JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_to_100A53AB2F72(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_to();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_collapse_key JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_collapse_key_B11C41434F4B(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_collapse_key();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_message_id JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_message_id_E4C71BCC21BA(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_message_id();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_message_type JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_message_type_36A00B2379E4(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_message_type();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_priority JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_priority_B6A766A43119(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_priority();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_original_priority JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_original_priority_C90A38C84010(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_original_priority();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_time_to_live JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_time_to_live_59E03215BC3B(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_time_to_live();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_message_sent_time JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_sent_time_F866354CE5E1(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_sent_time();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_message_error JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_error_7B906280E375(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_error();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_error_description JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_error_description_F3979A7BB928(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_error_description();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_link JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_link_5487140A571B(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_link();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_opened JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_notification_opened_58C6D98E04C1(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_notification_opened();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_message_data_count JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_data_count_3915E494C3EA(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_data_count();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_message_data_key_at JNI wrapper signature: (D)Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_data_key_at_31627E2223C5(JNIEnv* env, jclass /* GMFirebaseBridge */, jdouble index)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_data_key_at(static_cast<double>(index));
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_get_data JNI wrapper signature: (Ljava/lang/String;)Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_get_data_6245CB3908E3(JNIEnv* env, jclass /* GMFirebaseBridge */, jstring key)
-{
-    UtfChars __pin_key(env, key);
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_get_data((char *)__pin_key.c_str());
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_raw_data_size JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_raw_data_size_3EFFBA866E45(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_raw_data_size();
-    return static_cast<jdouble>(__ret);
-}
-
-// firebase_messaging_message_raw_data_copy JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_raw_data_copy_A9C63C2CA883(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
+// firebase_messaging_set_message_callback JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_set_message_callback_8438D14F93C5(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
     void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
     jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
@@ -6399,133 +6223,60 @@ static jdouble __JNI_WRAPPER__firebase_messaging_message_raw_data_copy_A9C63C2CA
         throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
         return 0.0;
     }
-    double __ret = __EXT_NATIVE__firebase_messaging_message_raw_data_copy((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    double __ret = __EXT_NATIVE__firebase_messaging_set_message_callback((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_message_has_notification JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_has_notification_2D5664684C29(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
+// firebase_messaging_set_registration_callback JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_set_registration_callback_1C681ECA00A3(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    double __ret = __EXT_NATIVE__firebase_messaging_message_has_notification();
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_set_registration_callback((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_message_notification_title JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_title_57C6ADD3C238(JNIEnv* env, jclass /* GMFirebaseBridge */)
+// firebase_messaging_set_unregistration_callback JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_set_unregistration_callback_EF830DE45664(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_title();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_body JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_body_9461D4037E4D(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_body();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_icon JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_icon_05B403FF66FB(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_icon();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_sound JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_sound_7E2288032D89(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_sound();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_badge JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_badge_C52957405004(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_badge();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_tag JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_tag_367771A7EBDE(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_tag();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_color JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_color_F3CA37C151E0(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_color();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_click_action JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_click_action_8733D0EA2605(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_click_action();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_body_loc_key JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_body_loc_key_67598F45D27E(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_body_loc_key();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_body_loc_args_count JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_notification_body_loc_args_count_9B73ED554332(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_count();
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_set_unregistration_callback((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_message_notification_body_loc_args_at JNI wrapper signature: (D)Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_body_loc_args_at_DB54D1D9B38E(JNIEnv* env, jclass /* GMFirebaseBridge */, jdouble index)
+// firebase_messaging_raw_data_copy JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_raw_data_copy_7E7398CB5722(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_body_loc_args_at(static_cast<double>(index));
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_title_loc_key JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_title_loc_key_F5AF415312B5(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_title_loc_key();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_title_loc_args_count JNI wrapper signature: ()D
-static jdouble __JNI_WRAPPER__firebase_messaging_message_notification_title_loc_args_count_012C5EE19E8C(JNIEnv* /* env */, jclass /* GMFirebaseBridge */)
-{
-    double __ret = __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_count();
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_raw_data_copy((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_messaging_message_notification_title_loc_args_at JNI wrapper signature: (D)Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_title_loc_args_at_131ED499CF5A(JNIEnv* env, jclass /* GMFirebaseBridge */, jdouble index)
+// firebase_messaging_raw_data_release JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_messaging_raw_data_release_36EDA7748A5D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_title_loc_args_at(static_cast<double>(index));
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
-}
-
-// firebase_messaging_message_notification_android_channel_id JNI wrapper signature: ()Ljava/lang/String;
-static jstring __JNI_WRAPPER__firebase_messaging_message_notification_android_channel_id_7F7DFEF3AAF6(JNIEnv* env, jclass /* GMFirebaseBridge */)
-{
-    const char* __out = __EXT_NATIVE__firebase_messaging_message_notification_android_channel_id();
-    jstring __j = __out ? env->NewStringUTF(__out) : nullptr;
-    return __j;
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_messaging_raw_data_release((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
+    return static_cast<jdouble>(__ret);
 }
 
 // firebase_ump_get_instance JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
@@ -10373,46 +10124,11 @@ extern "C" {
             { "__EXT_JNI__firebase_messaging_delete_token", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_delete_token_BFBAE7CEFC30 },
             { "__EXT_JNI__firebase_messaging_subscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_subscribe_F8C12E71B5FE },
             { "__EXT_JNI__firebase_messaging_unsubscribe", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_unsubscribe_F6836B511890 },
-            { "__EXT_JNI__firebase_messaging_poll_message", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_message_087D97D27BC3 },
-            { "__EXT_JNI__firebase_messaging_poll_registration", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_registration_764031C64618 },
-            { "__EXT_JNI__firebase_messaging_poll_unregistration", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_unregistration_0687D0EE9782 },
-            { "__EXT_JNI__firebase_messaging_current_installation_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_current_installation_id_803F8F3EA89A },
-            { "__EXT_JNI__firebase_messaging_poll_token", "()D", (void*)__JNI_WRAPPER__firebase_messaging_poll_token_A683A48E0727 },
-            { "__EXT_JNI__firebase_messaging_current_token", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_current_token_E1DC4B4DA756 },
-            { "__EXT_JNI__firebase_messaging_message_from", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_from_94B3AA4685E4 },
-            { "__EXT_JNI__firebase_messaging_message_to", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_to_100A53AB2F72 },
-            { "__EXT_JNI__firebase_messaging_message_collapse_key", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_collapse_key_B11C41434F4B },
-            { "__EXT_JNI__firebase_messaging_message_message_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_message_id_E4C71BCC21BA },
-            { "__EXT_JNI__firebase_messaging_message_message_type", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_message_type_36A00B2379E4 },
-            { "__EXT_JNI__firebase_messaging_message_priority", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_priority_B6A766A43119 },
-            { "__EXT_JNI__firebase_messaging_message_original_priority", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_original_priority_C90A38C84010 },
-            { "__EXT_JNI__firebase_messaging_message_time_to_live", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_time_to_live_59E03215BC3B },
-            { "__EXT_JNI__firebase_messaging_message_sent_time", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_sent_time_F866354CE5E1 },
-            { "__EXT_JNI__firebase_messaging_message_error", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_error_7B906280E375 },
-            { "__EXT_JNI__firebase_messaging_message_error_description", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_error_description_F3979A7BB928 },
-            { "__EXT_JNI__firebase_messaging_message_link", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_link_5487140A571B },
-            { "__EXT_JNI__firebase_messaging_message_notification_opened", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_opened_58C6D98E04C1 },
-            { "__EXT_JNI__firebase_messaging_message_data_count", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_data_count_3915E494C3EA },
-            { "__EXT_JNI__firebase_messaging_message_data_key_at", "(D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_data_key_at_31627E2223C5 },
-            { "__EXT_JNI__firebase_messaging_message_get_data", "(Ljava/lang/String;)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_get_data_6245CB3908E3 },
-            { "__EXT_JNI__firebase_messaging_message_raw_data_size", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_raw_data_size_3EFFBA866E45 },
-            { "__EXT_JNI__firebase_messaging_message_raw_data_copy", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_message_raw_data_copy_A9C63C2CA883 },
-            { "__EXT_JNI__firebase_messaging_message_has_notification", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_has_notification_2D5664684C29 },
-            { "__EXT_JNI__firebase_messaging_message_notification_title", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_title_57C6ADD3C238 },
-            { "__EXT_JNI__firebase_messaging_message_notification_body", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_body_9461D4037E4D },
-            { "__EXT_JNI__firebase_messaging_message_notification_icon", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_icon_05B403FF66FB },
-            { "__EXT_JNI__firebase_messaging_message_notification_sound", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_sound_7E2288032D89 },
-            { "__EXT_JNI__firebase_messaging_message_notification_badge", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_badge_C52957405004 },
-            { "__EXT_JNI__firebase_messaging_message_notification_tag", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_tag_367771A7EBDE },
-            { "__EXT_JNI__firebase_messaging_message_notification_color", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_color_F3CA37C151E0 },
-            { "__EXT_JNI__firebase_messaging_message_notification_click_action", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_click_action_8733D0EA2605 },
-            { "__EXT_JNI__firebase_messaging_message_notification_body_loc_key", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_body_loc_key_67598F45D27E },
-            { "__EXT_JNI__firebase_messaging_message_notification_body_loc_args_count", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_body_loc_args_count_9B73ED554332 },
-            { "__EXT_JNI__firebase_messaging_message_notification_body_loc_args_at", "(D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_body_loc_args_at_DB54D1D9B38E },
-            { "__EXT_JNI__firebase_messaging_message_notification_title_loc_key", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_title_loc_key_F5AF415312B5 },
-            { "__EXT_JNI__firebase_messaging_message_notification_title_loc_args_count", "()D", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_title_loc_args_count_012C5EE19E8C },
-            { "__EXT_JNI__firebase_messaging_message_notification_title_loc_args_at", "(D)Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_title_loc_args_at_131ED499CF5A },
-            { "__EXT_JNI__firebase_messaging_message_notification_android_channel_id", "()Ljava/lang/String;", (void*)__JNI_WRAPPER__firebase_messaging_message_notification_android_channel_id_7F7DFEF3AAF6 },
+            { "__EXT_JNI__firebase_messaging_set_message_callback", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_message_callback_8438D14F93C5 },
+            { "__EXT_JNI__firebase_messaging_set_registration_callback", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_registration_callback_1C681ECA00A3 },
+            { "__EXT_JNI__firebase_messaging_set_unregistration_callback", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_set_unregistration_callback_EF830DE45664 },
+            { "__EXT_JNI__firebase_messaging_raw_data_copy", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_raw_data_copy_7E7398CB5722 },
+            { "__EXT_JNI__firebase_messaging_raw_data_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_messaging_raw_data_release_36EDA7748A5D },
             { "__EXT_JNI__firebase_ump_get_instance", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_get_instance_671F4203AF33 },
             { "__EXT_JNI__firebase_ump_get_consent_status", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_get_consent_status_789FAFD81894 },
             { "__EXT_JNI__firebase_ump_get_consent_form_status", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_ump_get_consent_form_status_5F3026934404 },

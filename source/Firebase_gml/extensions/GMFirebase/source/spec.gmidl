@@ -3276,10 +3276,11 @@ function firebase_remote_config_remove_config_update_listener(
 // ============================================================
 //
 // Messaging exposes no per-instance handle - every function below is
-// global. messaging_poll_message()/messaging_poll_token() drain the SDK's
-// own PollableListener buffer and should be called once per step from
-// GML's event loop; the per-field getters below read back whatever the
-// most recent successful poll populated.
+// global. The SDK delivers through one Listener with a method per event;
+// each is a callback here, set with firebase_messaging_set_*_callback()
+// before or after firebase_messaging_initialize(). An event delivered while
+// its callback is not set is held - messages in order, the latest
+// registration and unregistration id - and handed over the moment it is.
 
 // Mirrors firebase::messaging::Error (firebase/messaging.h) - the error_code
 // the permission, registration, token and topic callbacks receive on Android
@@ -3292,6 +3293,63 @@ enum FirebaseMessagingError
 	InvalidTopicName = 2,
 	NoRegistrationToken = 3,
 	Unknown = 4,
+}
+
+// firebase::messaging::AndroidNotificationParams - the part of a notification
+// that only Android fills.
+[global]
+class `[[FirebaseMessagingAndroidNotificationParams]]` prototype Object
+{
+	[field] property channel_id: string { get; set; }
+}
+
+// firebase::messaging::Notification - the display part of a message, present
+// only when the sender attached one. android is undefined off Android.
+[global]
+class `[[FirebaseMessagingNotification]]` prototype Object
+{
+	[field] property title: string { get; set; }
+	[field] property body: string { get; set; }
+	[field] property icon: string { get; set; }
+	[field] property sound: string { get; set; }
+	[field] property badge: string { get; set; }
+	[field] property tag: string { get; set; }
+	[field] property color: string { get; set; }
+	[field] property click_action: string { get; set; }
+	[field] property body_loc_key: string { get; set; }
+	[field, type_hint=`string[]`] property body_loc_args: gmval { get; set; }
+	[field] property title_loc_key: string { get; set; }
+	[field, type_hint=`string[]`] property title_loc_args: gmval { get; set; }
+	[field, type_hint=`FirebaseMessagingAndroidNotificationParams?`] property android: gmval { get; set; }
+}
+
+// firebase::messaging::Message, delivered to the message callback. data is
+// the sender's key/value map as a struct with dynamic keys. raw_data is
+// undefined unless the message carries a binary payload, and is then a
+// handle for firebase_messaging_raw_data_copy() with raw_data_size bytes
+// behind it, released with firebase_messaging_raw_data_release(). notification
+// is undefined when the message has no display part. original_priority and
+// sent_time are filled on Android only.
+[global]
+class `[[FirebaseMessagingMessage]]` prototype Object
+{
+	[field] property from: string { get; set; }
+	[field] property to: string { get; set; }
+	[field] property collapse_key: string { get; set; }
+	[field] property data: gmval { get; set; }
+	[field, type_hint=`uint64?`] property raw_data: gmval { get; set; }
+	[field, type_hint=`real`] property raw_data_size: gmval { get; set; }
+	[field] property message_id: string { get; set; }
+	[field] property message_type: string { get; set; }
+	[field] property priority: string { get; set; }
+	[field, type_hint=`real`] property time_to_live: gmval { get; set; }
+	[field] property error: string { get; set; }
+	[field] property error_description: string { get; set; }
+	[field, type_hint=`FirebaseMessagingNotification?`] property notification: gmval { get; set; }
+	[field] property notification_opened: bool { get; set; }
+	[field] property link: string { get; set; }
+	[field] property original_priority: string { get; set; }
+	[field, type_hint=`real`] property sent_time: gmval { get; set; }
 }
 
 [global, bind = typed_gml]
@@ -3337,8 +3395,9 @@ function firebase_messaging_request_permission(
 
 // Registers this app instance with FCM: creates the Firebase Installation ID
 // if there is none and sends it to the backend. The callback reports the
-// outcome; the installation id itself arrives through
-// firebase_messaging_poll_registration(), also when already registered.
+// outcome; the installation id itself arrives through the registration
+// callback (firebase_messaging_set_registration_callback()), also when
+// already registered.
 // callback(error_code: FirebaseMessagingError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_register(
@@ -3347,7 +3406,8 @@ function firebase_messaging_register(
 
 // Unregisters this app instance from FCM. The installation id is kept
 // (firebase_installations_delete() removes it); the unregistered id arrives
-// through firebase_messaging_poll_unregistration().
+// through the unregistration callback
+// (firebase_messaging_set_unregistration_callback()).
 // callback(error_code: FirebaseMessagingError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_messaging_unregister(
@@ -3382,152 +3442,45 @@ function firebase_messaging_unsubscribe(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// Returns 1 and refreshes the current-message getters below if a message
-// was pending; 0 otherwise.
+// callback(message: FirebaseMessagingMessage), once per message the SDK
+// delivers, on whatever thread it delivers it. Messages received while no
+// callback is set are held in order (up to 256, the oldest dropped) and
+// delivered when one is; passing undefined clears it.
 [global, bind = typed_gml]
-function firebase_messaging_poll_message(): bool;
+function firebase_messaging_set_message_callback(
+	[type_hint=`func?`] callback: gmval
+): unit;
 
-// Returns 1 and refreshes firebase_messaging_current_installation_id() if a
-// registration with FCM completed since the last poll (after
-// firebase_messaging_register(), or on init when registration-on-init is
-// enabled); 0 otherwise.
+// callback(installation_id: string), when this app instance has been
+// registered with FCM - after firebase_messaging_register(), or on init when
+// registration-on-init is enabled. The latest id received while no callback
+// is set is delivered when one is; passing undefined clears it.
 [global, bind = typed_gml]
-function firebase_messaging_poll_registration(): bool;
+function firebase_messaging_set_registration_callback(
+	[type_hint=`func?`] callback: gmval
+): unit;
 
-// Returns 1 and refreshes firebase_messaging_current_installation_id() if an
-// unregistration completed since the last poll; 0 otherwise.
+// callback(installation_id: string), when this app instance has been
+// unregistered from FCM after firebase_messaging_unregister(). Held and
+// cleared like the registration callback.
 [global, bind = typed_gml]
-function firebase_messaging_poll_unregistration(): bool;
+function firebase_messaging_set_unregistration_callback(
+	[type_hint=`func?`] callback: gmval
+): unit;
 
-// The Firebase Installation ID the most recent successful poll above
-// delivered - the id to target this app instance with for direct-send
-// messages.
+// Copies a message's binary payload into out_buffer, up to its size, and
+// returns the number copied; 0 with the last error set when raw_data_ref is
+// not a live payload. The handle stays valid until released.
 [global, bind = typed_gml]
-function firebase_messaging_current_installation_id(): string;
-
-// Deprecated: use firebase_messaging_poll_registration().
-// Returns 1 and refreshes messaging_current_token() if a freshly-generated
-// registration token was pending; 0 otherwise.
-[global, bind = typed_gml]
-function firebase_messaging_poll_token(): bool;
-
-// Deprecated: use firebase_messaging_current_installation_id().
-[global, bind = typed_gml]
-function firebase_messaging_current_token(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_from(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_to(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_collapse_key(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_message_id(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_message_type(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_priority(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_original_priority(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_time_to_live(): real;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_sent_time(): real;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_error(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_error_description(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_link(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_opened(): bool;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_data_count(): real;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_data_key_at(
-	index: real
-): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_get_data(
-	key: string
-): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_raw_data_size(): real;
-
-// out_buffer: a GML buffer, sized via messaging_message_raw_data_size()
-// first; returns the number of bytes actually copied.
-[global, bind = typed_gml]
-function firebase_messaging_message_raw_data_copy(
+function firebase_messaging_raw_data_copy(
+	[type_hint=`uint64`] raw_data_ref: gmval,
 	[type_hint=buffer] out_buffer: gmval
 ): real;
 
 [global, bind = typed_gml]
-function firebase_messaging_message_has_notification(): bool;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_title(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_body(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_icon(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_sound(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_badge(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_tag(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_color(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_click_action(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_body_loc_key(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_body_loc_args_count(): real;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_body_loc_args_at(
-	index: real
-): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_title_loc_key(): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_title_loc_args_count(): real;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_title_loc_args_at(
-	index: real
-): string;
-
-[global, bind = typed_gml]
-function firebase_messaging_message_notification_android_channel_id(): string;
+function firebase_messaging_raw_data_release(
+	[type_hint=`uint64`] raw_data_ref: gmval
+): unit;
 
 // ============================================================
 // User Messaging Platform (UMP) - consent

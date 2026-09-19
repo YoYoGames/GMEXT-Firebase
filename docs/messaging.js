@@ -5,10 +5,11 @@
  * This function starts Cloud Messaging for the default Firebase App and must be called once, after
  * ${function.firebase_app_initialize} and before any other function of this module. The SDK aborts
  * the game when a messaging call reaches it uninitialised, so every function here that would reach
- * it refuses first with `FirebaseError.NotInitialized`, and the poll functions return `false`. From this
- * call on the SDK can deliver messages and registration events at any time; the game collects them
- * with ${function.firebase_messaging_poll_message}, ${function.firebase_messaging_poll_registration}
- * and ${function.firebase_messaging_poll_unregistration} once per step.
+ * it refuses first with `FirebaseError.NotInitialized`. From this call on the SDK can deliver
+ * messages and registration events at any time, each to the callback set for it with
+ * ${function.firebase_messaging_set_message_callback}, ${function.firebase_messaging_set_registration_callback}
+ * and ${function.firebase_messaging_set_unregistration_callback} - before or after this call, since
+ * anything delivered while a callback is not yet set is held for it.
  *
  * On iOS this call shows the system's notification permission prompt at once and registers the
  * device with APNs; ${function.firebase_messaging_initialize_with_options} holds the prompt back for
@@ -23,6 +24,11 @@
  * @example
  * ```gml
  * // Create Event of a persistent controller, after firebase_app_initialize()
+ * firebase_messaging_set_message_callback(function(_message)
+ * {
+ *     show_debug_message($"Message {_message.message_id} from {_message.from}");
+ * });
+ *
  * if (!firebase_messaging_initialize())
  * {
  *     show_debug_message($"Messaging unavailable: {firebase_last_error_message()}");
@@ -38,8 +44,8 @@
  *     }
  * }
  * ```
- * The above code initialises Cloud Messaging and, on Android, asks for the notification permission
- * the way the platform wants it; the answer arrives in the Async System event as a
+ * The above code sets the message callback, initialises Cloud Messaging and, on Android, asks for
+ * the notification permission the way the platform wants it; the answer arrives in the Async System event as a
  * `"permission_request_result"`. On iOS the initialisation itself has shown the system prompt, so
  * nothing more is needed there.
  * @function_end
@@ -49,11 +55,11 @@
  * @function firebase_messaging_terminate
  * @desc **Firebase C++ SDK:** [firebase::messaging::Terminate](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#terminate)
  *
- * This function shuts Cloud Messaging down: the SDK stops delivering to the game, the queued messages
- * and the last polled message, installation id and token are dropped, and the module is back to its
- * uninitialised state, where the poll functions return `false` and the getters empty strings. On Android
- * the platform's messaging service keeps running underneath. The module can be initialised again
- * afterwards. There is no need to call it when the game exits.
+ * This function shuts Cloud Messaging down: the SDK stops delivering to the game, the three callbacks
+ * are cleared along with anything held for them, every binary payload handle still out is freed, and
+ * the module is back to its uninitialised state. On Android the platform's messaging service keeps
+ * running underneath. The module can be initialised again afterwards, with the callbacks set again.
+ * There is no need to call it when the game exits.
  *
  * @function_end
  */
@@ -182,10 +188,9 @@
  *
  * This function registers this installation of the game with the Cloud Messaging backend so that
  * messages can reach it: it creates the Firebase Installation ID if there is none yet and sends the
- * app and device details to Firebase. The id itself does not come to the callback; the SDK delivers
- * it through ${function.firebase_messaging_poll_registration} and
- * ${function.firebase_messaging_current_installation_id}, and does so even when the game was already
- * registered. With registration on init enabled - the default - the SDK registers on its own at
+ * app and device details to Firebase. The id itself does not come to this callback; the SDK delivers
+ * it to the one set with ${function.firebase_messaging_set_registration_callback}, and does so even
+ * when the game was already registered. With registration on init enabled - the default - the SDK registers on its own at
  * ${function.firebase_messaging_initialize}, and this call is for a game that shipped with the
  * `disableDataCollection` option and registers once the player has consented. On Windows, macOS
  * and Linux the callback fires at once with `FirebaseMessagingError.None` and the id delivered is the stub's
@@ -212,15 +217,15 @@
  *     if (_error != FirebaseMessagingError.None) show_debug_message($"Registration failed ({_error}): {_message}");
  * });
  *
- * // Step Event of the persistent controller
- * while (firebase_messaging_poll_registration())
+ * // Create Event of the persistent controller
+ * firebase_messaging_set_registration_callback(function(_installation_id)
  * {
- *     show_debug_message($"Registered as {firebase_messaging_current_installation_id()}");
- * }
+ *     show_debug_message($"Registered as {_installation_id}");
+ * });
  * ```
  * The above code is the consent flow for a game built with `disableDataCollection`: the setting
  * is turned on so that later launches register by themselves, this launch registers explicitly, and
- * the installation id arrives through the poll in the Step event rather than in the callback.
+ * the installation id arrives through the registration callback rather than the one passed here.
  * @function_end
  */
 
@@ -229,8 +234,8 @@
  * @desc **Firebase C++ SDK:** [firebase::messaging::Unregister](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#unregister)
  *
  * This function unregisters this installation from the Cloud Messaging backend, so that no more
- * messages reach it; the id it was registered under arrives through
- * ${function.firebase_messaging_poll_unregistration}. The Firebase Installation ID itself stays on
+ * messages reach it; the id it was registered under arrives through the callback set with
+ * ${function.firebase_messaging_set_unregistration_callback}. The Firebase Installation ID itself stays on
  * the device - ${function.firebase_installations_delete} removes it. On Windows, macOS and Linux
  * the callback fires at once with `FirebaseMessagingError.None`.
  *
@@ -250,16 +255,14 @@
 
 /**
  * @function firebase_messaging_get_token
- * @desc [[Important: This function has been superseded by ${function.firebase_messaging_register}, which registers the installation and delivers its Firebase Installation ID through ${function.firebase_messaging_poll_registration}; the SDK has deprecated the
+ * @desc [[Important: This function has been superseded by ${function.firebase_messaging_register}, which registers the installation and delivers its Firebase Installation ID to the callback set with ${function.firebase_messaging_set_registration_callback}; the SDK has deprecated the
  * token API, and we recommend that you only use this function for legacy support.]]
  *
  * **Firebase C++ SDK:** [firebase::messaging::GetToken](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#gettoken)
  *
  * This function creates the installation's Firebase Installation ID if there is none, sends the app
  * and device details to Firebase, and hands the callback the registration token: the string that
- * the console's test-message dialog and the older server APIs address a single device by. The
- * token also arrives through ${function.firebase_messaging_poll_token} whenever the SDK generates
- * or refreshes one. On Windows, macOS and Linux the callback fires at once with `FirebaseMessagingError.None` and the stub's
+ * the console's test-message dialog and the older server APIs address a single device by. On Windows, macOS and Linux the callback fires at once with `FirebaseMessagingError.None` and the stub's
  * `"StubToken"`.
  *
  * The function returns `FirebaseError.NotInitialized` without calling the callback when
@@ -279,7 +282,7 @@
 
 /**
  * @function firebase_messaging_delete_token
- * @desc [[Important: This function has been superseded by ${function.firebase_messaging_unregister}, which unregisters the installation and delivers its id through ${function.firebase_messaging_poll_unregistration}; the SDK has deprecated the
+ * @desc [[Important: This function has been superseded by ${function.firebase_messaging_unregister}, which unregisters the installation and delivers its id to the callback set with ${function.firebase_messaging_set_unregistration_callback}; the SDK has deprecated the
  * token API, and we recommend that you only use this function for legacy support.]]
  *
  * **Firebase C++ SDK:** [firebase::messaging::DeleteToken](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#deletetoken)
@@ -369,479 +372,130 @@
  */
 
 /**
- * @function firebase_messaging_poll_message
+ * @function firebase_messaging_set_message_callback
  * @desc **Firebase C++ SDK:** [firebase::messaging::Listener::OnMessage](https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onmessage)
  *
- * This function takes the oldest message waiting in the queue, if there is one, and makes it the
- * current message that the `firebase_messaging_message_*` getters read. Call it in a `while` loop
- * once per step, until it returns `false`, so that a burst of messages is handled in the step it
- * arrived. A game that stops polling - a long loading screen, a room with no controller - keeps at
- * most 256 messages queued, after which the oldest is dropped with a warning in the debug log. The
- * current message stays readable until the next poll that returns `true` or
- * ${function.firebase_messaging_terminate}.
+ * This function sets the callback the SDK delivers every message to, as a ${struct.FirebaseMessagingMessage}.
+ * It can be called before or after ${function.firebase_messaging_initialize}: messages that arrive
+ * while no message callback is set are held in the order they came - up to 256, after which the
+ * oldest is dropped with a warning in the debug log - and delivered one by one the moment a callback
+ * is set. Passing `undefined` clears the callback, after which messages are held again. A message
+ * with a notification the player tapped while the game was in the background arrives with
+ * `notification_opened` set.
  *
- * @returns {Bool} `true` when a message was taken from the queue and is now current, otherwise `false` - also before initialisation.
+ * @param {Function} [callback] The function to call with each message, or `undefined` to clear it.
+ *
+ * @event callback
+ * @desc Fires once per message the SDK delivers.
+ * @member {Struct.FirebaseMessagingMessage} message The message.
+ * @event_end
  *
  * @example
  * ```gml
- * // Step Event of the persistent controller
- * while (firebase_messaging_poll_message())
+ * // Create Event of the persistent controller, before firebase_messaging_initialize()
+ * firebase_messaging_set_message_callback(function(_message)
  * {
- *     var _kind = firebase_messaging_message_get_data("kind");
- *     switch (_kind)
+ *     switch (_message.data[$ "kind"])
  *     {
  *         case "gift":
- *             inventory_add(firebase_messaging_message_get_data("item"),
- *                           real(firebase_messaging_message_get_data("amount")));
+ *             inventory_add(_message.data[$ "item"], real(_message.data[$ "amount"]));
  *             break;
  *         case "event":
- *             if (firebase_messaging_message_notification_opened())
+ *             if (_message.notification_opened)
  *             {
  *                 room_goto(rm_event);
  *             }
  *             break;
  *     }
- * }
+ * });
  * ```
- * The above code drains the queue every step and acts on the `kind` key the server put in each
- * message's data. A message with a notification that the player tapped while the game was in the
- * background arrives here with `notification_opened` set, which the code uses to take the player
- * straight to the event.
+ * The above code acts on the `kind` key the server put in each message's data. A message with a
+ * notification that the player tapped while the game was in the background arrives here with
+ * `notification_opened` set, which the code uses to take the player straight to the event.
  * @function_end
  */
 
 /**
- * @function firebase_messaging_poll_registration
+ * @function firebase_messaging_set_registration_callback
  * @desc **Firebase C++ SDK:** [firebase::messaging::Listener::OnRegistrationReceived](https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onregistrationreceived)
  *
- * This function checks whether a registration has completed since the last poll - after
- * ${function.firebase_messaging_register}, or at initialisation when registration on init is
- * enabled - and, when one has, makes ${function.firebase_messaging_current_installation_id} return
- * its Firebase Installation ID. Call it once per step. Each completed registration is reported once,
- * and only the latest is kept between polls.
+ * This function sets the callback that receives the Firebase Installation ID once a registration
+ * has completed - after ${function.firebase_messaging_register}, or at initialisation when
+ * registration on init is enabled - the identifier of this installation of the game, which a server
+ * uses to send a message to this device alone. It can be called before or after
+ * ${function.firebase_messaging_initialize}; an id that arrived while no callback was set is
+ * delivered as soon as one is, the latest only. Passing `undefined` clears the callback. On Windows,
+ * macOS and Linux the id delivered is the stub's `"StubRegistrationId"`.
  *
- * @returns {Bool} `true` when a registration was pending and its id is now current, otherwise `false` - also before initialisation.
+ * @param {Function} [callback] The function to call with the installation id, or `undefined` to clear it.
+ *
+ * @event callback
+ * @desc Fires once per completed registration.
+ * @member {String} installation_id The Firebase Installation ID this installation is registered under.
+ * @event_end
  * @function_end
  */
 
 /**
- * @function firebase_messaging_poll_unregistration
+ * @function firebase_messaging_set_unregistration_callback
  * @desc **Firebase C++ SDK:** [firebase::messaging::Listener::OnUnregistrationReceived](https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#onunregistrationreceived)
  *
- * This function checks whether an ${function.firebase_messaging_unregister} has completed since
- * the last poll and, when one has, makes ${function.firebase_messaging_current_installation_id}
- * return the id that was unregistered. Call it once per step; each completed unregistration is
- * reported once.
+ * This function sets the callback that receives the id an ${function.firebase_messaging_unregister}
+ * unregistered. It can be called before or after ${function.firebase_messaging_initialize}; an id
+ * that arrived while no callback was set is delivered as soon as one is, the latest only. Passing
+ * `undefined` clears the callback.
  *
- * @returns {Bool} `true` when an unregistration was pending and its id is now current, otherwise `false` - also before initialisation.
+ * @param {Function} [callback] The function to call with the installation id, or `undefined` to clear it.
+ *
+ * @event callback
+ * @desc Fires once per completed unregistration.
+ * @member {String} installation_id The Firebase Installation ID that was unregistered.
+ * @event_end
  * @function_end
  */
 
 /**
- * @function firebase_messaging_current_installation_id
- * @desc This function returns the Firebase Installation ID that the last successful
- * ${function.firebase_messaging_poll_registration} or ${function.firebase_messaging_poll_unregistration}
- * delivered: the identifier of this installation of the game, which a server uses to send a message
- * to this device alone. It is an empty string until a poll has returned `true`, and again after
- * ${function.firebase_messaging_terminate}.
- *
- * @returns {String} The installation id, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_poll_token
- * @desc [[Important: This function has been superseded by ${function.firebase_messaging_poll_registration}, which reports each completed registration with its Firebase Installation ID; the SDK has deprecated the
- * token API, and we recommend that you only use this function for legacy support.]]
- *
- * **Firebase C++ SDK:** [firebase::messaging::Listener::OnTokenReceived](https://firebase.google.com/docs/reference/cpp/class/firebase/messaging/listener#ontokenreceived)
- *
- * This function checks whether the SDK generated or refreshed a registration token since the last
- * poll and, when it has, makes ${function.firebase_messaging_current_token} return it. Call it once
- * per step; only the latest token is kept between polls. Android and iOS still deliver tokens this
- * way.
- *
- * @returns {Bool} `true` when a token was pending and is now current, otherwise `false` - also before initialisation.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_current_token
- * @desc [[Important: This function has been superseded by ${function.firebase_messaging_current_installation_id}, which returns the Firebase Installation ID the last registration poll delivered; the SDK has deprecated the
- * token API, and we recommend that you only use this function for legacy support.]]
- *
- * This function returns the registration token the last successful
- * ${function.firebase_messaging_poll_token} delivered. It is an empty string until a poll has
- * returned `true`, and again after ${function.firebase_messaging_terminate}.
- *
- * @returns {String} The registration token, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_from
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::from](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#from)
- *
- * This function returns the sender's authenticated id: the project's sender ID for a message sent to this device, or `/topics/<name>` for a message sent to a topic. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The sender id.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_to
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::to](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#to)
- *
- * This function returns the recipient as the sender addressed it - a token, a topic or a project id - which is often empty on a message sent from the console. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The recipient, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_collapse_key
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::collapse_key](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#collapse_key)
- *
- * This function returns the collapse key, when the sender set one: while the device is offline, messages that share a key are collapsed so that only the latest is delivered when it comes back. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The collapse key, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_message_id
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::message_id](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#message_id)
- *
- * This function returns the message's id, set by the sender or by Firebase. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The message id.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_message_type
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::message_type](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#message_type)
- *
- * This function returns an empty string for an ordinary message; `"deleted_messages"` when the backend dropped queued messages because too many - a hundred - piled up while the device was offline, in which case the game should ask its own server what it missed; `"send_event"` and `"send_error"` concern upstream messages, which this extension does not send. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The message type, or an empty string for an ordinary message.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_priority
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::priority](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#priority)
- *
- * This function returns the priority the message was delivered with: `"high"`, which can wake the device and reaches the game at once, or `"normal"`, which saves battery and may be delayed. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} `"high"` or `"normal"`.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_original_priority
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::original_priority](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#original_priority)
- *
- * This function returns the priority the sender asked for, which differs from ${function.firebase_messaging_message_priority} when the platform lowered it - Android does so for an app whose high-priority messages did not produce notifications the player saw. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} `"high"` or `"normal"`.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_time_to_live
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::time_to_live](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#time_to_live)
- *
- * This function returns how long, in seconds, the message was to be kept for the device while it
- * was offline before being dropped - up to four weeks, which is the default. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Real} The time to live in seconds.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_sent_time
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::sent_time](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#sent_time)
- *
- * This function returns when the message was sent, in milliseconds since the Unix epoch - the way
- * to tell a message that waited out an offline stretch from a fresh one. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Real} The send time in milliseconds since the Unix epoch, or `0` when the platform did not provide it.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_error
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::error](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#error)
- *
- * This function returns the error code of a `send_error` message about an upstream message, which this extension never sends, so it reads as an empty string. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The error code, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_error_description
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::error_description](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#error_description)
- *
- * This function returns the description that goes with ${function.firebase_messaging_message_error}, empty for the same reason. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The description, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_link
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::link](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#link)
- *
- * This function returns the link into the game the message carried, when the sender attached one. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The link, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_opened
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::notification_opened](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#notification_opened)
- *
- * This function returns whether the message reached the game because the player tapped its
- * notification: the game was in the background or not running, the system showed the notification
- * in its tray, and the tap brought the game up with this message, data payload included. A message
- * delivered while the game was in the foreground reads `false`. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Bool} `true` when the player opened the message's notification, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_data_count
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::data](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data)
- *
- * This function returns how many key/value pairs the message's data payload holds: the custom
- * strings the sender attached, which is where a game puts what it acts on, since the notification
- * part is for the player's eyes. Keys beginning with `google.`, `gcm.` or `goog` are the platform's.
- * Walk them with ${function.firebase_messaging_message_data_key_at} and
- * ${function.firebase_messaging_message_get_data}. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Real} The number of data pairs.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_data_key_at
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::data](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data)
- *
- * This function returns the key of one data pair by position; the pairs come in key order. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @param {Real} index The pair's position, from `0`.
- * @returns {String} The key, or an empty string when the position is out of range.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_get_data
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::data](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#data)
- *
- * This function returns the value stored under a data key. Every value is a string, whatever the
- * sender typed; convert with `real` or `json_parse` as needed. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @param {String} key The data key.
- * @returns {String} The value, or an empty string when the key is not present.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_raw_data_size
+ * @function firebase_messaging_raw_data_copy
  * @desc **Firebase C++ SDK:** [firebase::messaging::Message::raw_data](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#raw_data)
  *
- * This function returns the size in bytes of the message's binary payload. Messages sent through
- * the console or the HTTP API carry none, so it reads `0` in practice. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
+ * This function copies the bytes a message's binary payload handle holds into the start of a
+ * GameMaker buffer, up to the buffer's size, and returns how many were copied. The
+ * ${struct.FirebaseMessagingMessage} gives the handle in `raw_data` and the size to create the buffer
+ * with in `raw_data_size`; the handle keeps the bytes until ${function.firebase_messaging_raw_data_release}
+ * frees it, so it can be copied from more than once. Messages sent through the console or the HTTP
+ * API carry no binary payload, so `raw_data` is `undefined` in practice.
  *
- * @returns {Real} The payload size in bytes.
+ * @param {Real} raw_data_ref The `raw_data` handle of a ${struct.FirebaseMessagingMessage}.
+ * @param {Buffer} out_buffer The buffer to write into.
+ * @returns {Real} The number of bytes copied, or `0` with ${function.firebase_last_error_code} set to `FirebaseError.InvalidHandle` when the handle is not a live payload.
+ *
+ * @example
+ * ```gml
+ * firebase_messaging_set_message_callback(function(_message)
+ * {
+ *     if (is_undefined(_message.raw_data)) exit;
+ *
+ *     var _buffer = buffer_create(_message.raw_data_size, buffer_fixed, 1);
+ *     firebase_messaging_raw_data_copy(_message.raw_data, _buffer);
+ *     firebase_messaging_raw_data_release(_message.raw_data);
+ *
+ *     // ... read the payload out of _buffer ...
+ *     buffer_delete(_buffer);
+ * });
+ * ```
+ * The above code copies a message's binary payload into a buffer sized from the message and releases
+ * the handle as soon as the copy is done.
  * @function_end
  */
 
 /**
- * @function firebase_messaging_message_raw_data_copy
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::raw_data](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#raw_data)
+ * @function firebase_messaging_raw_data_release
+ * @desc This function frees the bytes a message's binary payload handle holds. Call it once the bytes
+ * have been copied out; the memory stays allocated until then, or until
+ * ${function.firebase_messaging_terminate}. A handle that is not a payload sets
+ * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
- * This function copies the message's binary payload into a buffer the game created, from the
- * buffer's start and up to its size; size the buffer from
- * ${function.firebase_messaging_message_raw_data_size}. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @param {Buffer} out_buffer The buffer to copy into.
- * @returns {Real} The number of bytes copied.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_has_notification
- * @desc **Firebase C++ SDK:** [firebase::messaging::Message::notification](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message#notification)
- *
- * This function returns whether the message carries a notification part - the title, body and
- * presentation fields the operating system shows in its tray - as opposed to a data-only message.
- * Every `firebase_messaging_message_notification_*` getter reads as an empty string or `0` when
- * there is none. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Bool} `true` when the message has a notification, otherwise `false`.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_title
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::title](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title)
- *
- * This function returns the notification's title. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The title, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_body
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::body](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body)
- *
- * This function returns the notification's body text. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The body, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_icon
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::icon](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#icon)
- *
- * This function returns the name of the drawable resource the sender chose as the notification's icon, on Android. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The icon, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_sound
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::sound](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#sound)
- *
- * This function returns the sound the sender chose: `"default"`, or the name of a sound file bundled with the game. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The sound, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_badge
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::badge](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#badge)
- *
- * This function returns the badge count the sender set for the app icon, on iOS. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The badge, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_tag
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::tag](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#tag)
- *
- * This function returns the notification's tag, on Android: notifications with the same tag replace each other in the tray instead of stacking. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The tag, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_color
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::color](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#color)
- *
- * This function returns the icon colour the sender set, as `#rrggbb`, on Android. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The color, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_click_action
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::click_action](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#click_action)
- *
- * This function returns what a tap on the notification does: the intent action on Android, the APNs category on iOS. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The click action, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_body_loc_key
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::body_loc_key](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_key)
- *
- * This function returns the key of the body text in the game's string resources (`loc-key` on iOS), for a notification the sender localised on the device rather than in the message. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The body loc key, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_body_loc_args_count
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::body_loc_args](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_args)
- *
- * This function returns how many format arguments go with
- * ${function.firebase_messaging_message_notification_body_loc_key} - the values to substitute into the
- * localised body. It is `0` when there are none or the message has no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Real} The number of arguments.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_body_loc_args_at
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::body_loc_args](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#body_loc_args)
- *
- * This function returns one of the format arguments for the localised body, by position. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @param {Real} index The argument's position, from `0`.
- * @returns {String} The argument, or an empty string when the position is out of range or the message has no notification part.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_title_loc_key
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::title_loc_key](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_key)
- *
- * This function returns the key of the title in the game's string resources (`title-loc-key` on iOS), for a notification the sender localised on the device. It is an empty string when the message carries no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The title loc key, or an empty string.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_title_loc_args_count
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::title_loc_args](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_args)
- *
- * This function returns how many format arguments go with
- * ${function.firebase_messaging_message_notification_title_loc_key} - the values to substitute into the
- * localised title. It is `0` when there are none or the message has no notification part. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {Real} The number of arguments.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_title_loc_args_at
- * @desc **Firebase C++ SDK:** [firebase::messaging::Notification::title_loc_args](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification#title_loc_args)
- *
- * This function returns one of the format arguments for the localised title, by position. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @param {Real} index The argument's position, from `0`.
- * @returns {String} The argument, or an empty string when the position is out of range or the message has no notification part.
- * @function_end
- */
-
-/**
- * @function firebase_messaging_message_notification_android_channel_id
- * @desc **Firebase C++ SDK:** [firebase::messaging::AndroidNotificationParams::channel_id](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/android-notification-params#channel_id)
- *
- * This function returns the Android notification channel the sender addressed, when the message
- * set one; the channel decides the importance, sound and vibration the system gives the
- * notification. It is an empty string on other platforms and when no channel was set. It reads the message the last successful ${function.firebase_messaging_poll_message} made current.
- *
- * @returns {String} The channel id, or an empty string.
+ * @param {Real} raw_data_ref The handle to release.
  * @function_end
  */
 
@@ -887,6 +541,72 @@
  */
 
 /**
+ * @struct FirebaseMessagingAndroidNotificationParams
+ * @desc **Firebase C++ SDK:** [firebase::messaging::AndroidNotificationParams](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/android-notification-params)
+ *
+ * The part of a ${struct.FirebaseMessagingNotification} that only Android fills.
+ *
+ * @member {String} channel_id The Android notification channel the sender addressed; the channel decides the importance, sound and vibration the system gives the notification.
+ * @struct_end
+ */
+
+/**
+ * @struct FirebaseMessagingNotification
+ * @desc **Firebase C++ SDK:** [firebase::messaging::Notification](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/notification)
+ *
+ * The notification part of a ${struct.FirebaseMessagingMessage}: the title, body and presentation
+ * fields the operating system shows in its tray. Which fields are filled depends on what the sender
+ * set and on the platform - the icon, tag and colour are Android's, the badge is iOS's.
+ *
+ * @member {String} title The notification's title.
+ * @member {String} body The notification's body text.
+ * @member {String} icon The name of the drawable resource the sender chose as the notification's icon, on Android.
+ * @member {String} sound The sound the sender chose: `"default"`, or the name of a sound file bundled with the game.
+ * @member {String} badge The badge count the sender set for the app icon, on iOS.
+ * @member {String} tag The notification's tag, on Android: notifications with the same tag replace each other in the tray instead of stacking.
+ * @member {String} color The icon colour the sender set, as `#rrggbb`, on Android.
+ * @member {String} click_action What a tap on the notification does: the intent action on Android, the APNs category on iOS.
+ * @member {String} body_loc_key The key of the body text in the game's string resources (`loc-key` on iOS), for a notification the sender localised on the device rather than in the message.
+ * @member {Array[String]} body_loc_args The format arguments to substitute into the localised body, in order; an empty array when there are none.
+ * @member {String} title_loc_key The key of the title in the game's string resources (`title-loc-key` on iOS), for a notification the sender localised on the device.
+ * @member {Array[String]} title_loc_args The format arguments to substitute into the localised title, in order; an empty array when there are none.
+ * @member {Struct.FirebaseMessagingAndroidNotificationParams} [android] The Android-only parameters, or `undefined` on other platforms and when the sender set none.
+ * @struct_end
+ */
+
+/**
+ * @struct FirebaseMessagingMessage
+ * @desc **Firebase C++ SDK:** [firebase::messaging::Message](https://firebase.google.com/docs/reference/cpp/struct/firebase/messaging/message)
+ *
+ * A message as the SDK delivers it to the callback set with ${function.firebase_messaging_set_message_callback}.
+ * `data` is the sender's key/value strings as a struct with the sender's own keys, so check for a
+ * key before reading it; `notification` is the part the system shows, `undefined` for a data-only
+ * message; `raw_data` is `undefined` unless the message carries a binary payload, and is then a
+ * handle for ${function.firebase_messaging_raw_data_copy} with `raw_data_size` bytes behind it,
+ * which the game releases with ${function.firebase_messaging_raw_data_release}. `original_priority`
+ * and `sent_time` are filled on Android only.
+ *
+ * @member {String} from The sender's authenticated id: the project's sender ID for a message sent to this device, or `/topics/<name>` for a message sent to a topic.
+ * @member {String} to The recipient as the sender addressed it - a token, a topic or a project id - often empty on a message sent from the console.
+ * @member {String} collapse_key The collapse key, when the sender set one: while the device is offline, messages that share a key are collapsed so that only the latest is delivered when it comes back. An empty string otherwise.
+ * @member {Any} data A struct with the key/value strings the sender attached, under the sender's own keys; every value is a string as the sender typed it.
+ * @member {Real} [raw_data] A handle to the binary payload for ${function.firebase_messaging_raw_data_copy}, or `undefined` when the message carries none - which is the case for every message sent through the console or the HTTP API.
+ * @member {Real} raw_data_size The binary payload's size in bytes, `0` when there is none.
+ * @member {String} message_id The message's id, set by the sender or by Firebase.
+ * @member {String} message_type An empty string for an ordinary message; `"deleted_messages"` when the backend dropped queued messages because too many - a hundred - piled up while the device was offline, in which case the game should ask its own server what it missed; `"send_event"` and `"send_error"` concern upstream messages, which this extension does not send.
+ * @member {String} priority The priority the message was delivered with: `"high"`, which can wake the device and reaches the game at once, or `"normal"`, which saves battery and may be delayed.
+ * @member {Real} time_to_live How long, in seconds, the sender allowed the message to wait for the device while it was offline before being dropped - up to four weeks, which is the default.
+ * @member {String} error The error code of a `send_error` message about an upstream message, which this extension never sends, so it reads as an empty string.
+ * @member {String} error_description The description that goes with `error`, empty for the same reason.
+ * @member {Struct.FirebaseMessagingNotification} [notification] The notification part - what the system showed, or would have shown, the player - or `undefined` for a data-only message.
+ * @member {Bool} notification_opened `true` when the message reached the game because the player tapped its notification in the system tray, `false` for a message delivered while the game was in the foreground.
+ * @member {String} link The link into the game the message carried, when the sender attached one; an empty string otherwise.
+ * @member {String} original_priority The priority the sender asked for, which differs from `priority` when the platform lowered it - Android does so for an app whose high-priority messages did not produce notifications the player saw. Android only; an empty string on iOS.
+ * @member {Real} sent_time When the message was sent, as milliseconds since the Unix epoch, to tell a message that waited out an offline stretch from a fresh one. Android only; `0` on iOS.
+ * @struct_end
+ */
+
+/**
  * @const FirebaseMessagingError
  * @desc **Firebase C++ SDK:** [firebase::messaging::Error](https://firebase.google.com/docs/reference/cpp/namespace/firebase/messaging#error)
  *
@@ -921,21 +641,19 @@
  *
  * ### Receiving
  *
- * The SDK delivers on its own threads, at any moment, so this module does not call the game back
- * for messages: it queues them, and the game polls once per step -
- * ${function.firebase_messaging_poll_message} in a `while` loop, then the
- * `firebase_messaging_message_*` getters on the message the poll made current. Registration events
- * work the same way through ${function.firebase_messaging_poll_registration} and
- * ${function.firebase_messaging_poll_unregistration}. The queue keeps 256 messages; the oldest is
- * dropped beyond that.
+ * The SDK delivers each event to a callback the game sets: every message to the one set with
+ * ${function.firebase_messaging_set_message_callback}, as a ${struct.FirebaseMessagingMessage}, and
+ * each completed registration and unregistration to ${function.firebase_messaging_set_registration_callback}
+ * and ${function.firebase_messaging_set_unregistration_callback} with the Firebase Installation ID.
+ * The callbacks can be set before or after initialisation: whatever arrives while one is not set is
+ * held for it - messages in order, up to 256, and the latest id - and delivered the moment it is.
  *
  * A message has a data part - key/value strings the sender attached - and, optionally, a
  * notification part the system shows. While the game is in the foreground every message reaches the
- * poll and nothing is shown. While it is in the background or closed, a message with a notification
- * is shown by the system and reaches the game when the player taps it, with
- * ${function.firebase_messaging_message_notification_opened} set; a data-only message reaches the
- * game on the platform's terms - at once on Android when its priority is high, otherwise when the
- * platform next lets the game run.
+ * callback and nothing is shown. While it is in the background or closed, a message with a
+ * notification is shown by the system and reaches the game when the player taps it, with
+ * `notification_opened` set; a data-only message reaches the game on the platform's terms - at once
+ * on Android when its priority is high, otherwise when the platform next lets the game run.
  *
  * ### Registration and consent
  *
@@ -973,14 +691,13 @@
  * @section_end
  *
  * @section_func Registration and permission
- * @desc Registering the installation with the backend, the id that identifies it, the consent
+ * @desc Registering the installation with the backend, the callbacks that deliver its id, the consent
  * setting, the notification permission, and the BigQuery export:
  * @ref firebase_messaging_request_permission
  * @ref firebase_messaging_register
  * @ref firebase_messaging_unregister
- * @ref firebase_messaging_poll_registration
- * @ref firebase_messaging_poll_unregistration
- * @ref firebase_messaging_current_installation_id
+ * @ref firebase_messaging_set_registration_callback
+ * @ref firebase_messaging_set_unregistration_callback
  * @ref firebase_messaging_set_registration_on_init_enabled
  * @ref firebase_messaging_is_registration_on_init_enabled
  * @ref firebase_messaging_set_delivery_metrics_export_to_big_query
@@ -994,47 +711,10 @@
  * @section_end
  *
  * @section_func Receiving messages
- * @desc Polling the queue, and reading the current message's envelope and data payload:
- * @ref firebase_messaging_poll_message
- * @ref firebase_messaging_message_from
- * @ref firebase_messaging_message_to
- * @ref firebase_messaging_message_collapse_key
- * @ref firebase_messaging_message_message_id
- * @ref firebase_messaging_message_message_type
- * @ref firebase_messaging_message_priority
- * @ref firebase_messaging_message_original_priority
- * @ref firebase_messaging_message_time_to_live
- * @ref firebase_messaging_message_sent_time
- * @ref firebase_messaging_message_error
- * @ref firebase_messaging_message_error_description
- * @ref firebase_messaging_message_link
- * @ref firebase_messaging_message_notification_opened
- * @ref firebase_messaging_message_data_count
- * @ref firebase_messaging_message_data_key_at
- * @ref firebase_messaging_message_get_data
- * @ref firebase_messaging_message_raw_data_size
- * @ref firebase_messaging_message_raw_data_copy
- * @section_end
- *
- * @section_func The notification
- * @desc Reading the notification part of the current message - what the system showed, or would
- * have shown, the player:
- * @ref firebase_messaging_message_has_notification
- * @ref firebase_messaging_message_notification_title
- * @ref firebase_messaging_message_notification_body
- * @ref firebase_messaging_message_notification_icon
- * @ref firebase_messaging_message_notification_sound
- * @ref firebase_messaging_message_notification_badge
- * @ref firebase_messaging_message_notification_tag
- * @ref firebase_messaging_message_notification_color
- * @ref firebase_messaging_message_notification_click_action
- * @ref firebase_messaging_message_notification_body_loc_key
- * @ref firebase_messaging_message_notification_body_loc_args_count
- * @ref firebase_messaging_message_notification_body_loc_args_at
- * @ref firebase_messaging_message_notification_title_loc_key
- * @ref firebase_messaging_message_notification_title_loc_args_count
- * @ref firebase_messaging_message_notification_title_loc_args_at
- * @ref firebase_messaging_message_notification_android_channel_id
+ * @desc The callback every message is delivered to, and the binary payload a message can carry:
+ * @ref firebase_messaging_set_message_callback
+ * @ref firebase_messaging_raw_data_copy
+ * @ref firebase_messaging_raw_data_release
  * @section_end
  *
  * @section_func Deprecated
@@ -1042,10 +722,15 @@
  * Each function still works and names its replacement:
  * @ref firebase_messaging_get_token
  * @ref firebase_messaging_delete_token
- * @ref firebase_messaging_poll_token
- * @ref firebase_messaging_current_token
  * @ref firebase_messaging_set_token_registration_on_init_enabled
  * @ref firebase_messaging_is_token_registration_on_init_enabled
+ * @section_end
+ *
+ * @section_struct Structs
+ * @desc The following structs are used by this module:
+ * @ref FirebaseMessagingMessage
+ * @ref FirebaseMessagingNotification
+ * @ref FirebaseMessagingAndroidNotificationParams
  * @section_end
  *
  * @section_const Constants

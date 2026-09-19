@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cstring>
 #include <deque>
+#include <memory>
 #include <mutex>
 
 using namespace gm::wire;
@@ -36,100 +37,162 @@ GM_FB_PIN_ENUM(FirebaseMessagingError::Unknown, firebase::messaging::kErrorUnkno
 
 namespace
 {
-	// The SDK's own PollableListener queues messages without a cap
-	// (messaging/src/common.cc), so a game that stops polling - a room
-	// transition, a long background stretch - would grow it for as long as the
-	// process runs. This does the same job with a ceiling: the oldest message
-	// is dropped once the queue is full, keeping the newest state, and the
-	// drop is logged.
+	// The SDK delivers through one Listener with a method per event; each is a
+	// GML callback held here rather than in the listener, because SetListener()
+	// replays a pending registration id into the new listener from inside
+	// Initialize(), so a slot has to exist before the listener does. Written
+	// from the GML thread, read from whichever thread the SDK delivers on. The
+	// callback is copied out under the lock and called outside it, so a
+	// reassignment never races the call and the call never holds the lock -
+	// OnMessage() already runs under the SDK's own listener lock.
+	std::mutex g_messaging_mutex;
+	std::optional<GMFunction> g_message_callback;
+	std::optional<GMFunction> g_registration_callback;
+	std::optional<GMFunction> g_unregistration_callback;
+
+	// What arrived while its callback was not set. The SDK holds messages until
+	// a listener exists (Android's storage file, iOS's launch notification) and
+	// delivers them the moment Initialize() installs ours, so a game that
+	// initialises in one event and sets the callback in the next would
+	// otherwise lose the message that launched it. Messages keep their order up
+	// to a cap (the SDK's own PollableListener has none, messaging/src/common.cc);
+	// an id is state, not a stream, so only the latest of each is kept.
+	constexpr size_t kMaxHeldMessages = 256;
+	std::deque<FirebaseMessagingMessage> g_held_messages;
+	std::optional<std::string> g_held_registration;
+	std::optional<std::string> g_held_unregistration;
+
+	// A message's binary payload, held until the game copies it out and
+	// releases it (firebase_messaging_raw_data_copy / _release). Minted only for
+	// a message that carries bytes; terminate frees whatever is left.
+	using MessagingRawData = std::shared_ptr<std::vector<std::uint8_t>>;
+	std::map<uint32_t, MessagingRawData> g_firebase_messaging_raw_data_map;
+	uint32_t g_firebase_messaging_raw_data_index = 0;
+
+	MessagingRawData* resolveRawData(uint64_t ref)
+	{
+		MessagingRawData* out = nullptr;
+		validate_fb_ref_map(ref, GM_FB_TYPE_MESSAGING_RAW_DATA, MessagingRawData, g_firebase_messaging_raw_data_map, out);
+		return out;
+	}
+
+	void releaseRawData(const std::optional<uint64_t>& ref)
+	{
+		if (ref.has_value())
+			unregisterFirebaseValue(gm_fb_ref_id(*ref), g_firebase_messaging_raw_data_map);
+	}
+
+	FirebaseMessagingNotification makeMessagingNotification(const firebase::messaging::Notification& n)
+	{
+		FirebaseMessagingNotification out;
+		out.title = n.title;
+		out.body = n.body;
+		out.icon = n.icon;
+		out.sound = n.sound;
+		out.badge = n.badge;
+		out.tag = n.tag;
+		out.color = n.color;
+		out.click_action = n.click_action;
+		out.body_loc_key = n.body_loc_key;
+		out.body_loc_args = n.body_loc_args;
+		out.title_loc_key = n.title_loc_key;
+		out.title_loc_args = n.title_loc_args;
+		if (n.android != nullptr)
+			out.android = FirebaseMessagingAndroidNotificationParams{ n.android->channel_id };
+		return out;
+	}
+
+	// The SDK's Message copied field for field. notification is only valid
+	// during OnMessage(), which is the one place this runs.
+	FirebaseMessagingMessage makeMessagingMessage(const firebase::messaging::Message& m)
+	{
+		FirebaseMessagingMessage out;
+		out.from = m.from;
+		out.to = m.to;
+		out.collapse_key = m.collapse_key;
+		// The sender's keys are its own, so the map stays a dynamic struct. A
+		// gmval field carries exactly one encoded value, hence the single <<.
+		StructStream data;
+		for (const auto& kv : m.data)
+			data.add(kv.first.c_str(), kv.second);
+		out.data << data;
+		if (!m.raw_data.empty())
+		{
+			auto bytes = std::make_shared<std::vector<std::uint8_t>>(m.raw_data.begin(), m.raw_data.end());
+			out.raw_data = packFirebaseRef(registerFirebaseValue(bytes, g_firebase_messaging_raw_data_index, g_firebase_messaging_raw_data_map), GM_FB_TYPE_MESSAGING_RAW_DATA);
+		}
+		out.raw_data_size = static_cast<double>(m.raw_data.size());
+		out.message_id = m.message_id;
+		out.message_type = m.message_type;
+		out.priority = m.priority;
+		out.time_to_live = static_cast<double>(m.time_to_live);
+		out.error = m.error;
+		out.error_description = m.error_description;
+		if (m.notification != nullptr)
+			out.notification = makeMessagingNotification(*m.notification);
+		out.notification_opened = m.notification_opened;
+		out.link = m.link;
+		out.original_priority = m.original_priority;
+		out.sent_time = static_cast<double>(m.sent_time);
+		return out;
+	}
+
+	// The one Listener the SDK gets. Each method builds the GML value, then
+	// hands it to the callback or holds it; the call never happens under the
+	// lock. OnTokenReceived() is not overridden: the SDK deprecated it, the base
+	// class no-ops it, and Android forwards the same event to
+	// OnRegistrationReceived().
 	class GmMessagingListener : public firebase::messaging::Listener
 	{
 	public:
-		static constexpr size_t kMaxQueuedMessages = 256;
-
 		void OnMessage(const firebase::messaging::Message& message) override
 		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			if (messages_.size() >= kMaxQueuedMessages)
+			FirebaseMessagingMessage out = makeMessagingMessage(message);
+			std::optional<GMFunction> callback;
 			{
-				messages_.pop_front();
-				LOG_WARNING("firebase_messaging: %zu messages queued and none polled - dropping the oldest", kMaxQueuedMessages);
+				std::lock_guard<std::mutex> lock(g_messaging_mutex);
+				if (g_message_callback.has_value())
+					callback = g_message_callback;
+				else
+				{
+					if (g_held_messages.size() >= kMaxHeldMessages)
+					{
+						releaseRawData(g_held_messages.front().raw_data);
+						g_held_messages.pop_front();
+						LOG_WARNING("firebase_messaging: %zu messages held with no message callback set - dropping the oldest", kMaxHeldMessages);
+					}
+					g_held_messages.push_back(std::move(out));
+				}
 			}
-			messages_.push_back(message);
+			if (callback.has_value())
+				callback->call(out);
 		}
 
-		void OnTokenReceived(const char* token) override
-		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			token_ = token != nullptr ? token : "";
-			has_token_ = true;
-		}
-
-		// The SDK fires these with the Firebase Installation ID after Register()
-		// and Unregister() complete (and on init when registration-on-init is
-		// enabled). Like the token, only the latest of each is kept: the id is
-		// state, not a stream.
 		void OnRegistrationReceived(const char* installation_id) override
 		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			registration_ = installation_id != nullptr ? installation_id : "";
-			has_registration_ = true;
+			deliverId(g_registration_callback, g_held_registration, installation_id);
 		}
 
 		void OnUnregistrationReceived(const char* installation_id) override
 		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			unregistration_ = installation_id != nullptr ? installation_id : "";
-			has_unregistration_ = true;
-		}
-
-		bool pollMessage(firebase::messaging::Message& out)
-		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			if (messages_.empty()) return false;
-			out = messages_.front();
-			messages_.pop_front();
-			return true;
-		}
-
-		bool pollToken(std::string& out)
-		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			return take(token_, has_token_, out);
-		}
-
-		bool pollRegistration(std::string& out)
-		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			return take(registration_, has_registration_, out);
-		}
-
-		bool pollUnregistration(std::string& out)
-		{
-			std::lock_guard<std::mutex> lock(mutex_);
-			return take(unregistration_, has_unregistration_, out);
+			deliverId(g_unregistration_callback, g_held_unregistration, installation_id);
 		}
 
 	private:
-		// Hands a pending value to the caller and clears the slot; the mutex is
-		// the caller's.
-		static bool take(std::string& slot, bool& pending, std::string& out)
+		static void deliverId(const std::optional<GMFunction>& slot, std::optional<std::string>& held, const char* installation_id)
 		{
-			if (!pending) return false;
-			out.swap(slot);
-			slot.clear();
-			pending = false;
-			return true;
+			std::string id = installation_id != nullptr ? installation_id : "";
+			std::optional<GMFunction> callback;
+			{
+				std::lock_guard<std::mutex> lock(g_messaging_mutex);
+				if (slot.has_value())
+					callback = slot;
+				else
+					held = id;
+			}
+			if (callback.has_value())
+				callback->call(std::string_view{ id });
 		}
-
-		std::mutex mutex_;
-		std::deque<firebase::messaging::Message> messages_;
-		std::string token_;
-		bool has_token_ = false;
-		std::string registration_;
-		bool has_registration_ = false;
-		std::string unregistration_;
-		bool has_unregistration_ = false;
 	};
 
 	// Handed to the SDK by address at Initialize(), so it has to outlive every
@@ -140,16 +203,6 @@ namespace
 	// runtime chose, with the SDK's threads still able to deliver into it.
 	// Null doubles as "not initialised" for every guard below.
 	GmMessagingListener* g_firebase_messaging_listener = nullptr;
-
-	// Most recently polled message/token, populated by
-	// firebase_messaging_poll_message()/firebase_messaging_poll_token() and read back by the
-	// per-field getters below. Not guarded by a mutex: like the rest of this
-	// extension's poll-based state, this is only ever touched from the GML
-	// step thread that calls firebase_messaging_poll_message()/getter pairs back to
-	// back, never concurrently with itself.
-	firebase::messaging::Message g_current_message;
-	std::string g_current_token;
-	std::string g_current_installation_id;
 
 	// The SDK asserts (and aborts) inside RequestPermission/GetToken/
 	// DeleteToken/Subscribe/Unsubscribe when Initialize() has not run, so
@@ -185,6 +238,21 @@ namespace
 		g_firebase_messaging_listener = listener;
 		return true;
 	}
+
+	// Shared by the two id setters: assign the slot and, when it is now set,
+	// hand over the id that was held - outside the lock.
+	void setIdCallback(std::optional<GMFunction>& slot, std::optional<std::string>& held, const std::optional<GMFunction>& callback)
+	{
+		std::optional<std::string> pending;
+		{
+			std::lock_guard<std::mutex> lock(g_messaging_mutex);
+			slot = callback;
+			if (callback.has_value())
+				pending.swap(held);
+		}
+		if (pending.has_value())
+			callback->call(std::string_view{ *pending });
+	}
 }
 
 // ============================================================
@@ -214,9 +282,22 @@ void firebase_messaging_terminate()
 	firebase::messaging::Terminate();
 	delete g_firebase_messaging_listener;
 	g_firebase_messaging_listener = nullptr;
-	g_current_message = firebase::messaging::Message();
-	g_current_token.clear();
-	g_current_installation_id.clear();
+
+	// A terminate is a full reset: the callbacks go back to GML, what was held
+	// for them is dropped, and every payload handle still out is freed.
+	{
+		std::lock_guard<std::mutex> lock(g_messaging_mutex);
+		g_message_callback.reset();
+		g_registration_callback.reset();
+		g_unregistration_callback.reset();
+		g_held_messages.clear();
+		g_held_registration.reset();
+		g_held_unregistration.reset();
+	}
+	{
+		std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+		g_firebase_messaging_raw_data_map.clear();
+	}
 }
 
 // The setters/getters below are deliberately not gated on initialisation:
@@ -256,6 +337,37 @@ void firebase_messaging_set_delivery_metrics_export_to_big_query(bool enabled)
 }
 
 // ============================================================
+// Event callbacks
+// ============================================================
+
+// The three setters work before firebase_messaging_initialize() as well as
+// after it - a slot is module state, not listener state - and hand over
+// whatever arrived while the slot was empty, in order, outside the lock.
+// undefined clears the slot, after which events are held again.
+void firebase_messaging_set_message_callback(const std::optional<GMFunction>& callback)
+{
+	std::deque<FirebaseMessagingMessage> held;
+	{
+		std::lock_guard<std::mutex> lock(g_messaging_mutex);
+		g_message_callback = callback;
+		if (callback.has_value())
+			held.swap(g_held_messages);
+	}
+	for (const FirebaseMessagingMessage& message : held)
+		callback->call(message);
+}
+
+void firebase_messaging_set_registration_callback(const std::optional<GMFunction>& callback)
+{
+	setIdCallback(g_registration_callback, g_held_registration, callback);
+}
+
+void firebase_messaging_set_unregistration_callback(const std::optional<GMFunction>& callback)
+{
+	setIdCallback(g_unregistration_callback, g_held_unregistration, callback);
+}
+
+// ============================================================
 // Permission / tokens / topics
 // ============================================================
 
@@ -274,8 +386,8 @@ FirebaseError firebase_messaging_request_permission(const std::optional<GMFuncti
 
 // callback(error_code: real, error_message: string)
 // The installation id itself reaches GML through OnRegistrationReceived ->
-// firebase_messaging_poll_registration(), which the SDK fires on completion
-// whether or not the app was already registered.
+// the registration callback, which the SDK fires on completion whether or
+// not the app was already registered.
 FirebaseError firebase_messaging_register(const std::optional<GMFunction>& callback)
 {
 	if (!messagingReady("firebase_messaging_register"))
@@ -360,254 +472,28 @@ FirebaseError firebase_messaging_unsubscribe(std::string_view topic, const std::
 }
 
 // ============================================================
-// Poll buffer
+// Binary payload
 // ============================================================
-
-// Returns 1 and refreshes the getters below if a message was pending;
-// 0 otherwise (call firebase_messaging_poll_message() in a loop, or once per step,
-// until it returns 0).
-bool firebase_messaging_poll_message()
-{
-	if (!messagingReady("firebase_messaging_poll_message")) return false;
-
-	return g_firebase_messaging_listener->pollMessage(g_current_message);
-}
-
-// Returns 1 and refreshes firebase_messaging_current_installation_id() if a
-// registration completed since the last poll; 0 otherwise.
-bool firebase_messaging_poll_registration()
-{
-	if (!messagingReady("firebase_messaging_poll_registration")) return false;
-
-	return g_firebase_messaging_listener->pollRegistration(g_current_installation_id);
-}
-
-// Returns 1 and refreshes firebase_messaging_current_installation_id() if an
-// unregistration completed since the last poll; 0 otherwise.
-bool firebase_messaging_poll_unregistration()
-{
-	if (!messagingReady("firebase_messaging_poll_unregistration")) return false;
-
-	return g_firebase_messaging_listener->pollUnregistration(g_current_installation_id);
-}
-
-std::string firebase_messaging_current_installation_id()
-{
-	return g_current_installation_id;
-}
-
-// Returns 1 and refreshes firebase_messaging_current_token() if a freshly-generated
-// registration token was pending; 0 otherwise.
-bool firebase_messaging_poll_token()
-{
-	if (!messagingReady("firebase_messaging_poll_token")) return false;
-
-	return g_firebase_messaging_listener->pollToken(g_current_token);
-}
-
-std::string firebase_messaging_current_token()
-{
-	return g_current_token;
-}
-
-// ============================================================
-// Current message accessors (valid after firebase_messaging_poll_message() -> 1)
-// ============================================================
-
-std::string firebase_messaging_message_from()
-{
-	return g_current_message.from;
-}
-
-std::string firebase_messaging_message_to()
-{
-	return g_current_message.to;
-}
-
-std::string firebase_messaging_message_collapse_key()
-{
-	return g_current_message.collapse_key;
-}
-
-std::string firebase_messaging_message_message_id()
-{
-	return g_current_message.message_id;
-}
-
-std::string firebase_messaging_message_message_type()
-{
-	return g_current_message.message_type;
-}
-
-std::string firebase_messaging_message_priority()
-{
-	return g_current_message.priority;
-}
-
-std::string firebase_messaging_message_original_priority()
-{
-	return g_current_message.original_priority;
-}
-
-double firebase_messaging_message_time_to_live()
-{
-	return static_cast<double>(g_current_message.time_to_live);
-}
-
-double firebase_messaging_message_sent_time()
-{
-	return static_cast<double>(g_current_message.sent_time);
-}
-
-std::string firebase_messaging_message_error()
-{
-	return g_current_message.error;
-}
-
-std::string firebase_messaging_message_error_description()
-{
-	return g_current_message.error_description;
-}
-
-std::string firebase_messaging_message_link()
-{
-	return g_current_message.link;
-}
-
-bool firebase_messaging_message_notification_opened()
-{
-	return g_current_message.notification_opened;
-}
-
-double firebase_messaging_message_data_count()
-{
-	return static_cast<double>(g_current_message.data.size());
-}
-
-std::string firebase_messaging_message_data_key_at(double index)
-{
-	size_t i = static_cast<size_t>(index);
-	if (i >= g_current_message.data.size()) return std::string();
-
-	auto it = g_current_message.data.begin();
-	std::advance(it, i);
-	return it->first;
-}
-
-std::string firebase_messaging_message_get_data(std::string_view key)
-{
-	auto it = g_current_message.data.find(std::string(key));
-	return it != g_current_message.data.end() ? it->second : std::string();
-}
-
-double firebase_messaging_message_raw_data_size()
-{
-	return static_cast<double>(g_current_message.raw_data.size());
-}
 
 // Copies up to out_buffer.length() bytes into out_buffer; returns the
-// number of bytes actually copied.
-double firebase_messaging_message_raw_data_copy(GMBuffer out_buffer)
+// number of bytes actually copied, 0 with the last error set for a handle
+// that is not a live payload.
+double firebase_messaging_raw_data_copy(uint64_t raw_data_ref, GMBuffer out_buffer)
 {
-	const std::vector<unsigned char>& raw = g_current_message.raw_data;
-	size_t to_copy = std::min(raw.size(), static_cast<size_t>(out_buffer.length()));
-	if (to_copy > 0)
-		std::memcpy(out_buffer.data(), raw.data(), to_copy);
-	return static_cast<double>(to_copy);
+	MessagingRawData* self = resolveRawData(raw_data_ref);
+	if (self == nullptr) return 0.0;
+
+	const std::vector<std::uint8_t>& bytes = **self;
+	size_t n = std::min<size_t>(bytes.size(), static_cast<size_t>(out_buffer.length()));
+	if (n) std::memcpy(out_buffer.data(), bytes.data(), n);
+	return static_cast<double>(n);
 }
 
-// ============================================================
-// Current message's notification (nullptr-safe: fields read as "" / 0 when
-// the message carries no notification payload)
-// ============================================================
-
-bool firebase_messaging_message_has_notification()
+void firebase_messaging_raw_data_release(uint64_t raw_data_ref)
 {
-	return g_current_message.notification != nullptr;
-}
-
-std::string firebase_messaging_message_notification_title()
-{
-	return g_current_message.notification ? g_current_message.notification->title : std::string();
-}
-
-std::string firebase_messaging_message_notification_body()
-{
-	return g_current_message.notification ? g_current_message.notification->body : std::string();
-}
-
-std::string firebase_messaging_message_notification_icon()
-{
-	return g_current_message.notification ? g_current_message.notification->icon : std::string();
-}
-
-std::string firebase_messaging_message_notification_sound()
-{
-	return g_current_message.notification ? g_current_message.notification->sound : std::string();
-}
-
-std::string firebase_messaging_message_notification_badge()
-{
-	return g_current_message.notification ? g_current_message.notification->badge : std::string();
-}
-
-std::string firebase_messaging_message_notification_tag()
-{
-	return g_current_message.notification ? g_current_message.notification->tag : std::string();
-}
-
-std::string firebase_messaging_message_notification_color()
-{
-	return g_current_message.notification ? g_current_message.notification->color : std::string();
-}
-
-std::string firebase_messaging_message_notification_click_action()
-{
-	return g_current_message.notification ? g_current_message.notification->click_action : std::string();
-}
-
-std::string firebase_messaging_message_notification_body_loc_key()
-{
-	return g_current_message.notification ? g_current_message.notification->body_loc_key : std::string();
-}
-
-double firebase_messaging_message_notification_body_loc_args_count()
-{
-	if (!g_current_message.notification) return 0.0;
-	return static_cast<double>(g_current_message.notification->body_loc_args.size());
-}
-
-std::string firebase_messaging_message_notification_body_loc_args_at(double index)
-{
-	if (!g_current_message.notification) return std::string();
-	const std::vector<std::string>& args = g_current_message.notification->body_loc_args;
-	size_t i = static_cast<size_t>(index);
-	return i < args.size() ? args[i] : std::string();
-}
-
-std::string firebase_messaging_message_notification_title_loc_key()
-{
-	return g_current_message.notification ? g_current_message.notification->title_loc_key : std::string();
-}
-
-double firebase_messaging_message_notification_title_loc_args_count()
-{
-	if (!g_current_message.notification) return 0.0;
-	return static_cast<double>(g_current_message.notification->title_loc_args.size());
-}
-
-std::string firebase_messaging_message_notification_title_loc_args_at(double index)
-{
-	if (!g_current_message.notification) return std::string();
-	const std::vector<std::string>& args = g_current_message.notification->title_loc_args;
-	size_t i = static_cast<size_t>(index);
-	return i < args.size() ? args[i] : std::string();
-}
-
-std::string firebase_messaging_message_notification_android_channel_id()
-{
-	if (!g_current_message.notification || !g_current_message.notification->android) return std::string();
-	return g_current_message.notification->android->channel_id;
+	MessagingRawData* self = resolveRawData(raw_data_ref);
+	if (self == nullptr) return;
+	unregisterFirebaseValue(gm_fb_ref_id(raw_data_ref), g_firebase_messaging_raw_data_map);
 }
 
 // Firebase C++ MessagingOptions overload.

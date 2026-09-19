@@ -5,27 +5,28 @@
 #include "firebase/messaging.h"
 
 // ============================================================
-// Cloud Messaging - poll-buffer module
+// Cloud Messaging - callback module
 // ============================================================
 //
 // Messaging's surface is entirely global functions - there is no per-
 // instance handle to mint a GM_FB_TYPE_* ref for, unlike every other module
-// in this extension.
+// in this extension; the one registry here holds a message's binary payload
+// (GM_FB_TYPE_MESSAGING_RAW_DATA) until the game copies it out.
 //
-// This is also the one place in the whole GMFirebase port that legitimately
-// needs a small buffered-poll pattern (as opposed to calling a GMFunction
-// callback directly from wherever the SDK happens to fire it): Messaging's
-// delivery model is inherently async/OS-driven (a message or token can
-// arrive on a platform notification thread at any time, including before
-// GML has had a chance to register any callback at all). The module owns
-// one heap-allocated firebase::messaging::Listener between
-// firebase_messaging_initialize() and firebase_messaging_terminate() that
-// queues messages up to a fixed cap (the SDK's own PollableListener has
-// none) and holds the latest registration token, installation id and
-// unregistered id, and exposes poll functions plus per-field getters over the
-// most recently polled message/token/id, which GML is expected to call once
-// per step from its own event loop.
+// The SDK delivers through one firebase::messaging::Listener with a method
+// per event (OnMessage, OnRegistrationReceived, OnUnregistrationReceived),
+// and each is a GML callback set with firebase_messaging_set_*_callback().
+// The callback slots are module state rather than listener state: the SDK's
+// SetListener() replays a pending registration id into the new listener
+// from inside Initialize(), so the slots have to exist before the listener
+// does, and the setters work before initialize as well as after. An event
+// delivered while its slot is empty is held - messages in order up to a
+// cap, the latest id of each kind - and handed over when the slot is set,
+// which is what the SDK itself does one level down (Android parks messages
+// in a storage file until a listener exists; SetListener replays the id).
 //
-// No other module in this extension needs this - GMFunction::call() is
-// itself thread-safe and every other Future<T>/Listener-based callback is
-// simply invoked directly from whatever thread the SDK fires it on.
+// The module owns one heap-allocated Listener between
+// firebase_messaging_initialize() and firebase_messaging_terminate();
+// GMFunction::call() is thread-safe, so each event is forwarded from
+// whatever thread the SDK fires it on, the callback copied out under the
+// module mutex and called outside it.

@@ -408,8 +408,11 @@ namespace gm_structs
     struct FirebaseRemoteConfigDoubleInfo;
     struct FirebaseRemoteConfigStringInfo;
     struct FirebaseRemoteConfigDataInfo;
+    struct FirebaseMessagingAndroidNotificationParams;
     struct FirebaseAppOptions;
     struct FirebaseAuthResult;
+    struct FirebaseMessagingNotification;
+    struct FirebaseMessagingMessage;
 
     struct FirebaseAnalyticsParameter
     {
@@ -586,6 +589,11 @@ namespace gm_structs
         bool conversion_successful;
     };
 
+    struct FirebaseMessagingAndroidNotificationParams
+    {
+        std::string channel_id;
+    };
+
     struct FirebaseAppOptions
     {
         std::optional<std::string> app_id;
@@ -602,6 +610,44 @@ namespace gm_structs
         std::optional<std::uint64_t> user;
         std::optional<std::uint64_t> credential;
         gm_structs::FirebaseAuthAdditionalUserInfo additional_user_info;
+    };
+
+    struct FirebaseMessagingNotification
+    {
+        std::string title;
+        std::string body;
+        std::string icon;
+        std::string sound;
+        std::string badge;
+        std::string tag;
+        std::string color;
+        std::string click_action;
+        std::string body_loc_key;
+        std::vector<std::string> body_loc_args;
+        std::string title_loc_key;
+        std::vector<std::string> title_loc_args;
+        std::optional<gm_structs::FirebaseMessagingAndroidNotificationParams> android;
+    };
+
+    struct FirebaseMessagingMessage
+    {
+        std::string from;
+        std::string to;
+        std::string collapse_key;
+        gm::wire::DataStream data;
+        std::optional<std::uint64_t> raw_data;
+        double raw_data_size;
+        std::string message_id;
+        std::string message_type;
+        std::string priority;
+        double time_to_live;
+        std::string error;
+        std::string error_description;
+        std::optional<gm_structs::FirebaseMessagingNotification> notification;
+        bool notification_opened;
+        std::string link;
+        std::string original_priority;
+        double sent_time;
     };
 
 }
@@ -1051,6 +1097,20 @@ namespace gm::wire::codec
     }
 
     template<>
+    inline void writeValue<gm_structs::FirebaseMessagingAndroidNotificationParams>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseMessagingAndroidNotificationParams& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.channel_id);
+    }
+
+    template<>
+    inline gm_structs::FirebaseMessagingAndroidNotificationParams readValue<gm_structs::FirebaseMessagingAndroidNotificationParams>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseMessagingAndroidNotificationParams obj;
+        obj.channel_id = gm::wire::codec::readValue<std::string>(_buf);
+        return obj;
+    }
+
+    template<>
     inline void writeValue<gm_structs::FirebaseAppOptions>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseAppOptions& obj)
     {
         gm::wire::codec::writeValue(_buf, obj.app_id);
@@ -1091,6 +1151,90 @@ namespace gm::wire::codec
         obj.user = gm::wire::codec::readOptional<std::uint64_t>(_buf);
         obj.credential = gm::wire::codec::readOptional<std::uint64_t>(_buf);
         obj.additional_user_info = gm::wire::codec::readValue<gm_structs::FirebaseAuthAdditionalUserInfo>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseMessagingNotification>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseMessagingNotification& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.title);
+        gm::wire::codec::writeValue(_buf, obj.body);
+        gm::wire::codec::writeValue(_buf, obj.icon);
+        gm::wire::codec::writeValue(_buf, obj.sound);
+        gm::wire::codec::writeValue(_buf, obj.badge);
+        gm::wire::codec::writeValue(_buf, obj.tag);
+        gm::wire::codec::writeValue(_buf, obj.color);
+        gm::wire::codec::writeValue(_buf, obj.click_action);
+        gm::wire::codec::writeValue(_buf, obj.body_loc_key);
+        gm::wire::codec::writeValue(_buf, obj.body_loc_args);
+        gm::wire::codec::writeValue(_buf, obj.title_loc_key);
+        gm::wire::codec::writeValue(_buf, obj.title_loc_args);
+        gm::wire::codec::writeValue(_buf, obj.android);
+    }
+
+    template<>
+    inline gm_structs::FirebaseMessagingNotification readValue<gm_structs::FirebaseMessagingNotification>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseMessagingNotification obj;
+        obj.title = gm::wire::codec::readValue<std::string>(_buf);
+        obj.body = gm::wire::codec::readValue<std::string>(_buf);
+        obj.icon = gm::wire::codec::readValue<std::string>(_buf);
+        obj.sound = gm::wire::codec::readValue<std::string>(_buf);
+        obj.badge = gm::wire::codec::readValue<std::string>(_buf);
+        obj.tag = gm::wire::codec::readValue<std::string>(_buf);
+        obj.color = gm::wire::codec::readValue<std::string>(_buf);
+        obj.click_action = gm::wire::codec::readValue<std::string>(_buf);
+        obj.body_loc_key = gm::wire::codec::readValue<std::string>(_buf);
+        obj.body_loc_args = gm::wire::codec::readVector<std::string>(_buf);
+        obj.title_loc_key = gm::wire::codec::readValue<std::string>(_buf);
+        obj.title_loc_args = gm::wire::codec::readVector<std::string>(_buf);
+        obj.android = gm::wire::codec::readOptional<gm_structs::FirebaseMessagingAndroidNotificationParams>(_buf);
+        return obj;
+    }
+
+    template<>
+    inline void writeValue<gm_structs::FirebaseMessagingMessage>(gm::byteio::IByteWriter& _buf, const gm_structs::FirebaseMessagingMessage& obj)
+    {
+        gm::wire::codec::writeValue(_buf, obj.from);
+        gm::wire::codec::writeValue(_buf, obj.to);
+        gm::wire::codec::writeValue(_buf, obj.collapse_key);
+        gm::wire::codec::writeValue(_buf, obj.data);
+        gm::wire::codec::writeValue(_buf, obj.raw_data);
+        gm::wire::codec::writeValue(_buf, obj.raw_data_size);
+        gm::wire::codec::writeValue(_buf, obj.message_id);
+        gm::wire::codec::writeValue(_buf, obj.message_type);
+        gm::wire::codec::writeValue(_buf, obj.priority);
+        gm::wire::codec::writeValue(_buf, obj.time_to_live);
+        gm::wire::codec::writeValue(_buf, obj.error);
+        gm::wire::codec::writeValue(_buf, obj.error_description);
+        gm::wire::codec::writeValue(_buf, obj.notification);
+        gm::wire::codec::writeValue(_buf, obj.notification_opened);
+        gm::wire::codec::writeValue(_buf, obj.link);
+        gm::wire::codec::writeValue(_buf, obj.original_priority);
+        gm::wire::codec::writeValue(_buf, obj.sent_time);
+    }
+
+    template<>
+    inline gm_structs::FirebaseMessagingMessage readValue<gm_structs::FirebaseMessagingMessage>(gm::byteio::BufferReader& _buf)
+    {
+        gm_structs::FirebaseMessagingMessage obj;
+        obj.from = gm::wire::codec::readValue<std::string>(_buf);
+        obj.to = gm::wire::codec::readValue<std::string>(_buf);
+        obj.collapse_key = gm::wire::codec::readValue<std::string>(_buf);
+        obj.data = gm::wire::codec::readValue<gm::wire::DataStream>(_buf);
+        obj.raw_data = gm::wire::codec::readOptional<std::uint64_t>(_buf);
+        obj.raw_data_size = gm::wire::codec::readValue<double>(_buf);
+        obj.message_id = gm::wire::codec::readValue<std::string>(_buf);
+        obj.message_type = gm::wire::codec::readValue<std::string>(_buf);
+        obj.priority = gm::wire::codec::readValue<std::string>(_buf);
+        obj.time_to_live = gm::wire::codec::readValue<double>(_buf);
+        obj.error = gm::wire::codec::readValue<std::string>(_buf);
+        obj.error_description = gm::wire::codec::readValue<std::string>(_buf);
+        obj.notification = gm::wire::codec::readOptional<gm_structs::FirebaseMessagingNotification>(_buf);
+        obj.notification_opened = gm::wire::codec::readValue<bool>(_buf);
+        obj.link = gm::wire::codec::readValue<std::string>(_buf);
+        obj.original_priority = gm::wire::codec::readValue<std::string>(_buf);
+        obj.sent_time = gm::wire::codec::readValue<double>(_buf);
         return obj;
     }
 
@@ -1260,17 +1404,38 @@ namespace gm::wire::details
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseAppOptions>
+    struct gm_struct_traits<gm_structs::FirebaseMessagingAndroidNotificationParams>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 23;
     };
 
     template<>
-    struct gm_struct_traits<gm_structs::FirebaseAuthResult>
+    struct gm_struct_traits<gm_structs::FirebaseAppOptions>
     {
         static constexpr bool is_gm_struct = true;
         static constexpr std::uint32_t codec_id = 24;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseAuthResult>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 25;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseMessagingNotification>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 26;
+    };
+
+    template<>
+    struct gm_struct_traits<gm_structs::FirebaseMessagingMessage>
+    {
+        static constexpr bool is_gm_struct = true;
+        static constexpr std::uint32_t codec_id = 27;
     };
 
 }
@@ -1674,46 +1839,11 @@ gm_enums::FirebaseError firebase_messaging_get_token(const std::optional<gm::wir
 gm_enums::FirebaseError firebase_messaging_delete_token(const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_messaging_subscribe(std::string_view topic, const std::optional<gm::wire::GMFunction>& callback);
 gm_enums::FirebaseError firebase_messaging_unsubscribe(std::string_view topic, const std::optional<gm::wire::GMFunction>& callback);
-bool firebase_messaging_poll_message();
-bool firebase_messaging_poll_registration();
-bool firebase_messaging_poll_unregistration();
-std::string firebase_messaging_current_installation_id();
-bool firebase_messaging_poll_token();
-std::string firebase_messaging_current_token();
-std::string firebase_messaging_message_from();
-std::string firebase_messaging_message_to();
-std::string firebase_messaging_message_collapse_key();
-std::string firebase_messaging_message_message_id();
-std::string firebase_messaging_message_message_type();
-std::string firebase_messaging_message_priority();
-std::string firebase_messaging_message_original_priority();
-double firebase_messaging_message_time_to_live();
-double firebase_messaging_message_sent_time();
-std::string firebase_messaging_message_error();
-std::string firebase_messaging_message_error_description();
-std::string firebase_messaging_message_link();
-bool firebase_messaging_message_notification_opened();
-double firebase_messaging_message_data_count();
-std::string firebase_messaging_message_data_key_at(double index);
-std::string firebase_messaging_message_get_data(std::string_view key);
-double firebase_messaging_message_raw_data_size();
-double firebase_messaging_message_raw_data_copy(gm::wire::GMBuffer out_buffer);
-bool firebase_messaging_message_has_notification();
-std::string firebase_messaging_message_notification_title();
-std::string firebase_messaging_message_notification_body();
-std::string firebase_messaging_message_notification_icon();
-std::string firebase_messaging_message_notification_sound();
-std::string firebase_messaging_message_notification_badge();
-std::string firebase_messaging_message_notification_tag();
-std::string firebase_messaging_message_notification_color();
-std::string firebase_messaging_message_notification_click_action();
-std::string firebase_messaging_message_notification_body_loc_key();
-double firebase_messaging_message_notification_body_loc_args_count();
-std::string firebase_messaging_message_notification_body_loc_args_at(double index);
-std::string firebase_messaging_message_notification_title_loc_key();
-double firebase_messaging_message_notification_title_loc_args_count();
-std::string firebase_messaging_message_notification_title_loc_args_at(double index);
-std::string firebase_messaging_message_notification_android_channel_id();
+void firebase_messaging_set_message_callback(const std::optional<gm::wire::GMFunction>& callback);
+void firebase_messaging_set_registration_callback(const std::optional<gm::wire::GMFunction>& callback);
+void firebase_messaging_set_unregistration_callback(const std::optional<gm::wire::GMFunction>& callback);
+double firebase_messaging_raw_data_copy(std::uint64_t raw_data_ref, gm::wire::GMBuffer out_buffer);
+void firebase_messaging_raw_data_release(std::uint64_t raw_data_ref);
 std::uint64_t firebase_ump_get_instance();
 gm_enums::FirebaseUmpConsentStatus firebase_ump_get_consent_status(std::uint64_t consent_ref);
 gm_enums::FirebaseUmpConsentFormStatus firebase_ump_get_consent_form_status(std::uint64_t consent_ref);

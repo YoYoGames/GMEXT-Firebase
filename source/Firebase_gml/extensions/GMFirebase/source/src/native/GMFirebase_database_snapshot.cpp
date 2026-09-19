@@ -104,26 +104,22 @@ uint64_t firebase_database_snapshot_get_reference(uint64_t ref)
 }
 
 // Returns everything about the snapshot at this location - except its value/
-// priority, see firebase_database_snapshot_get_value()/get_priority() below -
-// as a FirebaseDataSnapshotInfo struct. `reference` is a newly registered
-// DatabaseReference ref that the caller owns and must release with
-// firebase_database_ref_release(). If `ref` is not a valid registered
-// snapshot, returns a default-constructed struct (key "",
-// exists/is_valid/has_children false, children_count 0, reference 0) - same
-// convention as firebase_remote_config_get_info().
-gm_structs::FirebaseDataSnapshotInfo firebase_database_snapshot_get_info(uint64_t ref)
+// priority, see firebase_database_snapshot_get_value()/get_priority() below,
+// and its reference, which firebase_database_snapshot_get_reference()
+// registers as a handle the caller owns - as a FirebaseDataSnapshotInfo
+// struct. undefined for a handle that does not resolve (InvalidHandle is
+// already recorded); is_valid inside the struct is the SDK's own answer.
+std::optional<gm_structs::FirebaseDataSnapshotInfo> firebase_database_snapshot_get_info(uint64_t ref)
 {
-	gm_structs::FirebaseDataSnapshotInfo info{};
-
 	DataSnapshot* s = resolve_db_snapshot(ref);
-	if (s == nullptr) return info;
+	if (s == nullptr) return std::nullopt;
 
+	gm_structs::FirebaseDataSnapshotInfo info{};
 	info.key = s->key_string();
 	info.exists = s->exists();
 	info.is_valid = s->is_valid();
 	info.has_children = s->has_children();
 	info.children_count = static_cast<double>(s->children_count());
-	info.reference = registerDatabaseReference(s->GetReference());
 
 	return info;
 }

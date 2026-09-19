@@ -65,14 +65,16 @@ void firebase_auth_user_release(uint64_t user_ref)
 // Basic properties
 // ============================================================
 
-gm_structs::FirebaseAuthUserInfo firebase_auth_user_get_info(uint64_t user_ref)
+// undefined for a handle that does not resolve (InvalidHandle is already
+// recorded); is_valid inside the struct is the SDK's own answer.
+std::optional<gm_structs::FirebaseAuthUserInfo> firebase_auth_user_get_info(uint64_t user_ref)
 {
-	gm_structs::FirebaseAuthUserInfo out{};
 	firebase::auth::User* user = nullptr;
 	validate_fb_ref_ptr(user_ref, GM_FB_TYPE_AUTH_USER, firebase::auth::User, user);
 	if (user == nullptr)
-		return out;
+		return std::nullopt;
 
+	gm_structs::FirebaseAuthUserInfo out{};
 	out.uid = user->uid();
 	out.email = user->email();
 	out.display_name = user->display_name();

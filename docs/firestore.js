@@ -1711,16 +1711,23 @@
  * @function firebase_firestore_field_value_blob
  * @desc **Firebase C++ SDK:** [firebase::firestore::FieldValue::Blob](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/field-value#blob)
  *
- * This function wraps the bytes of a string as a Firestore blob - binary data stored in the
- * document, up to the document size limit of 1 MB. It reads back as a string of the same bytes, or
- * through ${function.firebase_firestore_field_value_blob_copy} into a buffer. For anything larger
- * than a few kilobytes, store it in Cloud Storage (${module.storage}) and keep the path here. The handle stands for the value wherever a write takes data - as a field's value in the struct
- * passed to ${function.firebase_firestore_document_ref_set}, ${function.firebase_firestore_document_ref_update},
+ * This function wraps the bytes of a buffer as a Firestore blob - binary data stored in the
+ * document. The whole buffer is the blob, so size it to the data; the SDK copies the bytes and the
+ * buffer can be deleted as soon as this returns. It reads back as a ${struct.FirestoreBlob}, whose
+ * `base64` a `buffer_base64_decode` turns into a buffer again. The handle stands for the value
+ * wherever a write takes data - as a field's value in the struct passed to
+ * ${function.firebase_firestore_document_ref_set}, ${function.firebase_firestore_document_ref_update},
  * ${function.firebase_firestore_collection_ref_add} or a write batch. Release it with
  * ${function.firebase_firestore_field_value_release} once the write has been started; the SDK keeps
  * its own copy.
  *
- * @param {String} data The bytes to store, as a string.
+ * Keep blobs small. A document is capped at 1 MB by Firestore, and a synchronous read through
+ * ${function.firebase_firestore_document_snapshot_get_data} or ${function.firebase_firestore_document_snapshot_get}
+ * returns through an 8 KB buffer that the base64 form has to fit in, which puts a blob of about
+ * 6 KB at the ceiling today. Anything bigger belongs in Cloud Storage (${module.storage}) with
+ * its path kept here.
+ *
+ * @param {Buffer} data The bytes to store; the whole buffer.
  * @returns {Real} A field value handle, to release with ${function.firebase_firestore_field_value_release} once the write has been started.
  * @function_end
  */
@@ -1754,12 +1761,13 @@
 /**
  * @function firebase_firestore_document_snapshot_get_info
  * @desc This function reads a document snapshot's properties into one ${struct.FirestoreDocumentSnapshotInfo}:
- * whether the document exists, its ID, a reference to it, and the two metadata flags. The
- * `reference` is a new handle to release with ${function.firebase_firestore_document_ref_release}.
- * The individual functions below return the same values one at a time.
+ * whether the document exists, its ID, and the two metadata flags. It hands out no handle; a
+ * reference to the document comes from ${function.firebase_firestore_document_snapshot_reference},
+ * which registers one to release. The individual functions below return the same values one at a
+ * time.
  *
  * @param {Real} ref A document snapshot handle.
- * @returns {Struct.FirestoreDocumentSnapshotInfo} The snapshot's properties; `exists` is `false`, the strings empty and `reference` `0` when the handle is not valid.
+ * @returns {Struct.FirestoreDocumentSnapshotInfo} The snapshot's properties, or `undefined` when the handle is not valid.
  * @function_end
  */
 
@@ -1774,13 +1782,14 @@
  * single value is needed; ${function.firebase_firestore_document_snapshot_get_data} converts all
  * of it.
  *
- * A `server_timestamp_behavior` outside the enum sets ${function.firebase_last_error_code} to
- * `FirebaseError.InvalidArgument` and returns a lookup with `exists` as `false`.
+ * A snapshot handle that is not valid, or a `server_timestamp_behavior` outside the enum, returns
+ * `undefined` with ${function.firebase_last_error_code} set (`InvalidHandle` or `InvalidArgument`); a
+ * missing field is a lookup with `exists` as `false`.
  *
  * @param {Real} ref A document snapshot handle.
  * @param {String} field The field's name, or a dot-separated path to a nested field (`"stats.wins"`).
  * @param {Enum.FirestoreServerTimestampBehavior} server_timestamp_behavior How a server timestamp that the server has not resolved yet is reported: `FirestoreServerTimestampBehavior.None`, `Estimate` or `Previous`.
- * @returns {Struct.FirestoreFieldLookup} The lookup; `exists` is `false` when the field or the snapshot is missing.
+ * @returns {Struct.FirestoreFieldLookup} The lookup, with `exists` as `false` for a missing field; `undefined` when the snapshot handle or the behavior argument is not valid.
  *
  * @example
  * ```gml
@@ -1801,13 +1810,19 @@
  *
  * This function converts the whole document into a GML struct, one member per field, values
  * converted as the Data section describes: numbers, strings and booleans as themselves, nested maps
- * as structs, arrays as arrays, timestamps and geo points as ${struct.FirestoreTimestamp} and
- * ${struct.FirestoreGeoPoint} structs, reference fields as new document reference handles (release
- * them), nulls as `undefined`. A document that does not exist gives an empty struct.
+ * as structs, arrays as arrays, timestamps, geo points, blobs and references as
+ * ${struct.FirestoreTimestamp}, ${struct.FirestoreGeoPoint}, ${struct.FirestoreBlob} and
+ * ${struct.FirestoreReference} structs, nulls as `undefined`. Nothing it returns is a handle to
+ * release. A document that does not exist gives an empty struct.
  *
  * The `server_timestamp_behavior` argument decides what a server timestamp the server has not
  * resolved yet reads as: `undefined` (`None`), the local clock's estimate (`Estimate`) or the value
  * the field held before the write (`Previous`).
+ *
+ * The converted struct returns through an 8 KB buffer, so a document larger than that cannot be
+ * read this way today. A document of many small fields can still be read one field at a time with
+ * ${function.firebase_firestore_document_snapshot_get}, which has the same limit per field; a
+ * single value over 8 KB - a large blob, a long string - belongs in Cloud Storage.
  *
  * @param {Real} ref A document snapshot handle.
  * @param {Enum.FirestoreServerTimestampBehavior} server_timestamp_behavior How a server timestamp that the server has not resolved yet is reported: `FirestoreServerTimestampBehavior.None`, `Estimate` or `Previous`.
@@ -1834,7 +1849,7 @@
  * functions below return the same values one at a time.
  *
  * @param {Real} ref A query snapshot handle.
- * @returns {Struct.FirestoreQuerySnapshotInfo} The snapshot's properties; `size` is `0` and the flags `false` when the handle is not valid.
+ * @returns {Struct.FirestoreQuerySnapshotInfo} The snapshot's properties, or `undefined` when the handle is not valid.
  * @function_end
  */
 
@@ -3193,7 +3208,7 @@
  * @param {Real} snapshot A document snapshot handle.
  * @param {Real} field_path A field path handle from ${function.firebase_firestore_field_path_create} or ${function.firebase_firestore_field_path_document_id}.
  * @param {Enum.FirestoreServerTimestampBehavior} server_timestamp_behavior How a server timestamp that the server has not resolved yet is reported: `FirestoreServerTimestampBehavior.None`, `Estimate` or `Previous`.
- * @returns {Struct.FirestoreFieldLookup} The lookup; `exists` is `false` when the field, the path or the snapshot is missing.
+ * @returns {Struct.FirestoreFieldLookup} The lookup, with `exists` as `false` for a missing field; `undefined` when the snapshot handle, the path handle or the behavior argument is not valid.
  * @function_end
  */
 
@@ -3490,6 +3505,29 @@
  */
 
 /**
+ * @struct FirestoreBlob
+ * @desc Binary data as it reads back out of a document. The bytes come base64-encoded, because a
+ * plain string cannot carry a zero byte across from the extension; `buffer_base64_decode(blob.base64)`
+ * gives a buffer holding them. To store one, use ${function.firebase_firestore_field_value_blob}
+ * with a buffer - writing this struct back stores a map with a `base64` member, not a blob.
+ *
+ * @member {String} base64 The bytes, base64-encoded.
+ * @struct_end
+ */
+
+/**
+ * @struct FirestoreReference
+ * @desc A document reference as it reads back out of a document: the referenced document's path
+ * (`"users/abc"`). Reading one registers nothing - ${function.firebase_firestore_document} turns
+ * the path into a document reference handle when the document is needed. To store one, use
+ * ${function.firebase_firestore_field_value_reference} with a document reference handle - writing
+ * this struct back stores a map with a `path` member, not a reference.
+ *
+ * @member {String} path The referenced document's path, relative to the database root.
+ * @struct_end
+ */
+
+/**
  * @struct FirestoreDocumentChange
  * @desc One change between two snapshots of a query listener, from
  * ${function.firebase_firestore_query_snapshot_document_changes}. Applying the changes in array
@@ -3546,7 +3584,6 @@
  *
  * @member {Bool} exists Whether the document existed when the snapshot was taken.
  * @member {String} id The document's ID.
- * @member {Real} reference A new reference handle to the document, to release with ${function.firebase_firestore_document_ref_release}.
  * @member {Bool} has_pending_writes Whether the snapshot reflects a local write the server has not confirmed.
  * @member {Bool} is_from_cache Whether the snapshot came from the local cache rather than the server.
  * @struct_end
@@ -3711,10 +3748,13 @@
  * type matters), a string a string, `true`/`false` a boolean, an array an array, a nested struct a
  * map, `undefined` a null, a document reference handle a reference, and a handle from the field
  * value constructors the value or sentinel it stands for - a server timestamp, an increment, an
- * array union, a delete. On the way out: integers and doubles both arrive as numbers, blobs as
- * strings of bytes, references as new document reference handles (release them), timestamps and
- * geo points as ${struct.FirestoreTimestamp} and ${struct.FirestoreGeoPoint} structs, maps as
- * structs, arrays as arrays, nulls as `undefined`.
+ * array union, a delete. On the way out: integers and doubles both arrive as numbers, maps as
+ * structs, arrays as arrays, nulls as `undefined`, and the four Firestore types GML has no value
+ * for as one struct each - ${struct.FirestoreTimestamp}, ${struct.FirestoreGeoPoint},
+ * ${struct.FirestoreBlob} (the bytes as base64) and ${struct.FirestoreReference} (the document's
+ * path). A read hands out no handles; to write one of the four back, use its
+ * `firebase_firestore_field_value_*` constructor - passing the struct itself stores a map of its
+ * members.
  *
  * A field name in a data struct or a query can be a dotted path into nested maps (`"stats.wins"`).
  * A field whose own name contains a dot is reached through a field path handle
@@ -4025,6 +4065,8 @@
  * @desc The following structs are used by this module:
  * @ref FirestoreTimestamp
  * @ref FirestoreGeoPoint
+ * @ref FirestoreBlob
+ * @ref FirestoreReference
  * @ref FirestoreDocumentChange
  * @ref FirestoreFieldLookup
  * @ref FirestoreFieldPathValue

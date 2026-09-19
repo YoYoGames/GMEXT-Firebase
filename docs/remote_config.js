@@ -506,11 +506,10 @@
  *
  * This function returns the state of the last fetch as a ${struct.FirebaseRemoteConfigInfo}: when
  * it completed, whether it succeeded, is still running or failed, why it failed, and - after a
- * `Throttled` failure - when the backend will accept a fetch again. For a handle that is not valid
- * the struct reads `Failure` / `Error` with the times at `0`.
+ * `Throttled` failure - when the backend will accept a fetch again.
  *
  * @param {Real} rc_ref The Remote Config handle from ${function.firebase_remote_config_get_instance}.
- * @returns {Struct.FirebaseRemoteConfigInfo} The last fetch's state.
+ * @returns {Struct.FirebaseRemoteConfigInfo} The last fetch's state, or `undefined` when the handle is not valid.
  * @function_end
  */
 

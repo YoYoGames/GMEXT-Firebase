@@ -5,7 +5,6 @@ firebase_database_ref_get_value(_ref, function(error_code, error_message, snapsh
 		var _value = firebase_database_snapshot_get_value(snapshot_ref);
 		show_debug_message($"Ref: {_info}");
 		show_debug_message($"Value: {_value}");
-		firebase_database_ref_release(_info.reference);
 	} else {
 		show_debug_message($"Realtime DB: get_value failed ({error_code}) {error_message}");
 	}

@@ -8,7 +8,6 @@ if(!listening)
 				var _value = firebase_database_snapshot_get_value(_snapshot);
 				show_debug_message($"Change Ref: {_info}");
 				show_debug_message($"Change Value: {_value}");
-				firebase_database_ref_release(_info.reference);
 				firebase_database_snapshot_release(_snapshot);
 	        },
 	        function(_error, _message)

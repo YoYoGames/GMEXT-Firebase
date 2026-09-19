@@ -719,7 +719,7 @@ class `[[FirebaseAuthUserInfo]]` prototype Object
 	[field, type_hint=`real`] property last_sign_in_timestamp: gmval { get; set; }
 }
 
-[global, bind = typed_gml, type_hint=`FirebaseAuthUserInfo`]
+[global, bind = typed_gml, type_hint=`FirebaseAuthUserInfo?`]
 function firebase_auth_user_get_info(
 	[type_hint=`uint64`] user: gmval
 ): gmval;
@@ -1303,33 +1303,28 @@ function firebase_database_query_release(
 // ============================================================
 
 // Explicit convenience materialization for a DatabaseReference. This allocates
-// one GML struct and registers the returned reference/parent/root handles, so
-// prefer the granular getters on frame-sensitive paths. It collects key,
-// identity flags, and the *_ref/*_url values that used to need five separate
-// round trips (get_reference/get_parent/get_root/get_database/get_url).
-// `reference`, `parent`, and `root` are newly registered GM_FB_TYPE_DATABASE_REF
-// refs owned by the caller - release them with firebase_database_ref_release()
-// when done. `database` is a GM_FB_TYPE_DATABASE ref (not owned/released,
-// same as every other Database-returning getter in this extension).
+// one GML struct, so prefer the granular getters on frame-sensitive paths. It
+// collects key, identity flags, the database and the url. It carries no
+// reference handles: the parent, root and reference of a location come from
+// firebase_database_ref_get_parent()/get_root()/query_get_reference(), each of
+// which registers a handle the caller owns. `database` is a GM_FB_TYPE_DATABASE
+// ref (not owned/released, same as every other Database-returning getter in
+// this extension).
 [global]
 class `[[FirebaseDatabaseReferenceInfo]]` prototype Object
 {
 	[field] property key: string { get; set; }
 	[field] property is_root: bool { get; set; }
 	[field] property is_valid: bool { get; set; }
-	[field, type_hint=`uint64`] property reference: gmval { get; set; }
-	[field, type_hint=`uint64`] property parent: gmval { get; set; }
-	[field, type_hint=`uint64`] property root: gmval { get; set; }
 	[field, type_hint=`uint64`] property database: gmval { get; set; }
 	[field] property url: string { get; set; }
 }
 
-// Consolidates firebase_database_ref_key/is_root/is_valid/get_reference/
-// get_parent/get_root/get_database/get_url into a single call. If `ref` is
-// not a valid registered DatabaseReference, returns a default-constructed
-// struct (key "", is_root/is_valid false, reference/parent/root/database 0,
-// url "") - same convention as firebase_database_snapshot_get_info().
-[global, bind = typed_gml, type_hint=`FirebaseDatabaseReferenceInfo`]
+// Consolidates firebase_database_ref_key/is_root/is_valid/get_database/get_url
+// into a single call. undefined when `ref` is not a registered
+// DatabaseReference (InvalidHandle in the last error); the struct's own
+// is_valid is the SDK's answer for a reference that did resolve.
+[global, bind = typed_gml, type_hint=`FirebaseDatabaseReferenceInfo?`]
 function firebase_database_ref_get(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
@@ -1443,9 +1438,8 @@ function firebase_database_ref_release(
 // getters when only one or two fields are needed. It contains everything
 // about a snapshot EXCEPT its (dynamically-typed) value/priority -
 // fetch those separately via firebase_database_snapshot_get_value()/
-// get_priority(). `reference` is a newly registered GM_FB_TYPE_DATABASE_REF
-// ref owned by the caller - release it with firebase_database_ref_release()
-// when done.
+// get_priority() - and its location, which firebase_database_snapshot_get_reference()
+// registers as a handle the caller owns.
 [global]
 class `[[FirebaseDataSnapshotInfo]]` prototype Object
 {
@@ -1454,7 +1448,6 @@ class `[[FirebaseDataSnapshotInfo]]` prototype Object
 	[field] property is_valid: bool { get; set; }
 	[field] property has_children: bool { get; set; }
 	[field, type_hint=`real`] property children_count: gmval { get; set; }
-	[field, type_hint=`uint64`] property reference: gmval { get; set; }
 }
 
 [global, bind = typed_gml]
@@ -1509,12 +1502,10 @@ function firebase_database_snapshot_get_reference(
 ): gmval;
 
 // Returns everything about the snapshot at this location - except its value/
-// priority, see get_value()/get_priority() below - as a FirebaseDataSnapshotInfo
-// struct. If `ref` is not a valid registered snapshot, returns a
-// default-constructed struct (key "", exists/is_valid/has_children false,
-// children_count 0, reference 0) - same convention as
-// firebase_remote_config_get_info().
-[global, bind = typed_gml, type_hint=`FirebaseDataSnapshotInfo`]
+// priority, see get_value()/get_priority() below, and its reference, see
+// get_reference() above - as a FirebaseDataSnapshotInfo struct. undefined
+// when `ref` is not a registered snapshot (InvalidHandle in the last error).
+[global, bind = typed_gml, type_hint=`FirebaseDataSnapshotInfo?`]
 function firebase_database_snapshot_get_info(
 	[type_hint=`uint64`] snapshot: gmval
 ): gmval;
@@ -1650,6 +1641,25 @@ class `[[FirestoreGeoPoint]]` prototype Object
 {
 	[field, type_hint=`real`] property latitude: gmval { get; set; }
 	[field, type_hint=`real`] property longitude: gmval { get; set; }
+}
+
+// A blob as read out of a document: the bytes base64-encoded, so
+// buffer_base64_decode() gives them back. A raw string cannot carry a 0x00
+// byte across the wire, base64 can. To write one, use
+// firebase_firestore_field_value_blob() with a buffer.
+[global]
+class `[[FirestoreBlob]]` prototype Object
+{
+	[field] property base64: string { get; set; }
+}
+
+// A document reference as read out of a document: the document's path.
+// firebase_firestore_document(firestore, path) resolves it to a handle. To
+// write one, use firebase_firestore_field_value_reference().
+[global]
+class `[[FirestoreReference]]` prototype Object
+{
+	[field] property path: string { get; set; }
 }
 
 // firebase::firestore::DocumentChange. document is a newly registered
@@ -2288,9 +2298,12 @@ function firebase_firestore_field_value_reference(
 	[type_hint=`uint64`] document_ref: gmval
 ): real;
 
+// data: the whole buffer is the blob - size it to the bytes. The SDK copies
+// them, so the buffer is free as soon as this returns. Reads back as a
+// FirestoreBlob.
 [global, bind = typed_gml]
 function firebase_firestore_field_value_blob(
-	data: string
+	[type_hint=buffer] data: gmval
 ): real;
 
 [global, bind = typed_gml]
@@ -2310,30 +2323,31 @@ class `[[FirestoreDocumentSnapshotInfo]]` prototype Object
 {
 	[field] property exists: bool { get; set; }
 	[field] property id: string { get; set; }
-	[field, type_hint=`uint64`] property reference: gmval { get; set; }
 	[field] property has_pending_writes: bool { get; set; }
 	[field] property is_from_cache: bool { get; set; }
 }
 
-// Consolidates firebase_firestore_document_snapshot_exists/id/reference/
-// metadata_has_pending_writes/metadata_is_from_cache into a single call.
-// `reference` is a newly registered DocumentReference ref owned by the
-// caller - release it with firebase_firestore_document_ref_release() when
-// done. If `ref` is not a valid registered DocumentSnapshot, returns a
-// default-constructed struct (exists/has_pending_writes/is_from_cache
-// false, id "", reference 0).
-[global, bind = typed_gml, type_hint=`FirestoreDocumentSnapshotInfo`]
+// Consolidates firebase_firestore_document_snapshot_exists/id/
+// metadata_has_pending_writes/metadata_is_from_cache into a single call. It
+// carries no handle: firebase_firestore_document_snapshot_reference()
+// registers the document's reference as a handle the caller owns. undefined
+// when `ref` is not a registered DocumentSnapshot (InvalidHandle in the last
+// error).
+[global, bind = typed_gml, type_hint=`FirestoreDocumentSnapshotInfo?`]
 function firebase_firestore_document_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
 
-// Returns a FirestoreFieldLookup. Value rules, shared with every document
-// read in this extension: a timestamp is a FirestoreTimestamp instance, a
-// geopoint a FirestoreGeoPoint instance, a document reference a plain uint64
-// DocumentReference ref (a real number), the same as every other
-// reference-typed handle in this extension; nested arrays/maps recurse using
-// the same rules; Firestore null is undefined.
-[global, bind = typed_gml, type_hint=`FirestoreFieldLookup`]
+// Returns a FirestoreFieldLookup, or undefined when `ref` is not a registered
+// DocumentSnapshot or server_timestamp_behavior is outside the enum (the last
+// error says which); a missing field is a lookup with exists false. Value
+// rules, shared with every document read in this extension: a timestamp is a
+// FirestoreTimestamp instance, a geopoint a FirestoreGeoPoint instance, a
+// blob a FirestoreBlob instance (base64), a document reference a
+// FirestoreReference instance (its path - no handle is registered on a
+// read); nested arrays/maps recurse using the same rules; Firestore null is
+// undefined.
+[global, bind = typed_gml, type_hint=`FirestoreFieldLookup?`]
 function firebase_firestore_document_snapshot_get(
 	[type_hint=`uint64`] ref: gmval,
 	field: string,
@@ -2367,11 +2381,10 @@ class `[[FirestoreQuerySnapshotInfo]]` prototype Object
 }
 
 // Consolidates firebase_firestore_query_snapshot_size/empty/
-// metadata_has_pending_writes/metadata_is_from_cache into a single call. If
-// `ref` is not a valid registered QuerySnapshot, returns a
-// default-constructed struct (size 0, empty/has_pending_writes/is_from_cache
-// false).
-[global, bind = typed_gml, type_hint=`FirestoreQuerySnapshotInfo`]
+// metadata_has_pending_writes/metadata_is_from_cache into a single call.
+// undefined when `ref` is not a registered QuerySnapshot (InvalidHandle in
+// the last error).
+[global, bind = typed_gml, type_hint=`FirestoreQuerySnapshotInfo?`]
 function firebase_firestore_query_snapshot_get_info(
 	[type_hint=`uint64`] ref: gmval
 ): gmval;
@@ -3199,7 +3212,7 @@ function firebase_remote_config_set_custom_signals(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigInfo`]
+[global, bind = typed_gml, type_hint=`FirebaseRemoteConfigInfo?`]
 function firebase_remote_config_get_info(
 	[type_hint=`uint64`] rc_ref: gmval
 ): gmval;
@@ -4050,7 +4063,7 @@ function firebase_firestore_document_snapshot_is_valid([type_hint=`uint64`] snap
 [global, bind = typed_gml]
 function firebase_firestore_document_snapshot_to_string([type_hint=`uint64`] snapshot: gmval): string;
 // Returns a FirestoreFieldLookup like firebase_firestore_document_snapshot_get().
-[global, bind = typed_gml, type_hint=`FirestoreFieldLookup`]
+[global, bind = typed_gml, type_hint=`FirestoreFieldLookup?`]
 function firebase_firestore_document_snapshot_get_field_path([type_hint=`uint64`] snapshot: gmval, [type_hint=`uint64`] field_path: gmval, [type_hint=`FirestoreServerTimestampBehavior`] server_timestamp_behavior: gmval): gmval;
 [global, bind = typed_gml]
 function firebase_firestore_query_snapshot_is_valid([type_hint=`uint64`] snapshot: gmval): bool;

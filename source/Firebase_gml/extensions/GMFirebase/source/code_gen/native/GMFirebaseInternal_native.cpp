@@ -957,7 +957,7 @@ GMEXPORT double __EXT_NATIVE__firebase_auth_user_get_info(char* __arg_buffer, do
     auto&& __result = firebase_auth_user_get_info(user);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirebaseAuthUserInfo
+    // return: __result, type: optional<struct FirebaseAuthUserInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -2337,7 +2337,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_get(char* __arg_buffer, doub
     auto&& __result = firebase_database_ref_get(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirebaseDatabaseReferenceInfo
+    // return: __result, type: optional<struct FirebaseDatabaseReferenceInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -2683,7 +2683,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_get_info(char* __arg_bu
     auto&& __result = firebase_database_snapshot_get_info(snapshot);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirebaseDataSnapshotInfo
+    // return: __result, type: optional<struct FirebaseDataSnapshotInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -4117,8 +4117,14 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_reference(char* __a
     return static_cast<double>(__result);
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* data)
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* __arg_buffer, double __arg_buffer_length)
 {
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: Buffer
+    gm::wire::GMBuffer data = __buffer_queue.front();
+    __buffer_queue.pop();
+
     auto&& __result = firebase_firestore_field_value_blob(data);
     return static_cast<double>(__result);
 }
@@ -4150,7 +4156,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_info(char
     auto&& __result = firebase_firestore_document_snapshot_get_info(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirestoreDocumentSnapshotInfo
+    // return: __result, type: optional<struct FirestoreDocumentSnapshotInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -4171,7 +4177,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get(char* __a
     auto&& __result = firebase_firestore_document_snapshot_get(ref, field, server_timestamp_behavior);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirestoreFieldLookup
+    // return: __result, type: optional<struct FirestoreFieldLookup>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -4215,7 +4221,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_query_snapshot_get_info(char* _
     auto&& __result = firebase_firestore_query_snapshot_get_info(ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirestoreQuerySnapshotInfo
+    // return: __result, type: optional<struct FirestoreQuerySnapshotInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -5926,7 +5932,7 @@ GMEXPORT double __EXT_NATIVE__firebase_remote_config_get_info(char* __arg_buffer
     auto&& __result = firebase_remote_config_get_info(rc_ref);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirebaseRemoteConfigInfo
+    // return: __result, type: optional<struct FirebaseRemoteConfigInfo>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }
@@ -8705,7 +8711,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_field_pat
     auto&& __result = firebase_firestore_document_snapshot_get_field_path(snapshot, field_path, server_timestamp_behavior);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
-    // return: __result, type: struct FirestoreFieldLookup
+    // return: __result, type: optional<struct FirestoreFieldLookup>
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
 }

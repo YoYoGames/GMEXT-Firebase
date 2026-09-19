@@ -389,168 +389,126 @@ void* unregisterFirebasePointer(uint64_t ref, uint8_t expected_type)
 // firebase::Variant <-> gm::wire converters
 // ============================================================
 
+namespace
+{
+	// One switch over Variant::Type for the three sinks below. emit() gets
+	// each converted value and writes it wherever its sink puts one value: an
+	// array element, a keyed struct field, or a bare stream value.
+	template<class Emit>
+	void visitVariant(const firebase::Variant& v, Emit&& emit)
+	{
+		switch (v.type())
+		{
+		case firebase::Variant::kTypeInt64:
+			// GML has no int64 - every Firebase numeric value crosses the wire as
+			// a double, same convention as everywhere else in this extension.
+			emit(static_cast<double>(v.int64_value()));
+			break;
+
+		case firebase::Variant::kTypeDouble:
+			emit(v.double_value());
+			break;
+
+		case firebase::Variant::kTypeBool:
+			emit(v.bool_value());
+			break;
+
+		case firebase::Variant::kTypeStaticString:
+		case firebase::Variant::kTypeMutableString:
+			emit(std::string_view{ v.string_value() });
+			break;
+
+		case firebase::Variant::kTypeStaticBlob:
+		case firebase::Variant::kTypeMutableBlob:
+			// Nothing this extension reads produces a Variant blob at SDK 13.13.0:
+			// Realtime Database and Functions values are JSON, and Remote Config
+			// only reaches FromMutableBlob when a value fails asString, which a
+			// string never does. Encoded like a Firestore blob regardless - a raw
+			// string would stop the GML reader at the first 0x00 byte.
+			emit(makeFirestoreBlob(v.blob_data(), v.blob_size()));
+			break;
+
+		case firebase::Variant::kTypeVector:
+		{
+			gm::wire::ArrayStream nested;
+			for (const auto& elem : v.vector())
+				pushVariantToArray(elem, nested);
+			emit(nested);
+			break;
+		}
+
+		case firebase::Variant::kTypeMap:
+		{
+			gm::wire::StructStream nested;
+			for (const auto& kv : v.map())
+				addVariantToStruct(kv.first.AsString().string_value(), kv.second, nested);
+			emit(nested);
+			break;
+		}
+
+		case firebase::Variant::kTypeNull:
+		default:
+			// Every sink writes an empty std::optional as GMKind::Undefined, which
+			// is exactly what a null needs to be.
+			emit(std::optional<std::uint8_t>{});
+			break;
+		}
+	}
+}
+
 void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out)
 {
-	switch (v.type())
-	{
-	case firebase::Variant::kTypeInt64:
-		// GML has no int64 - every Firebase numeric value crosses the wire as
-		// a double, same convention as everywhere else in this extension.
-		out.push(static_cast<double>(v.int64_value()));
-		break;
-
-	case firebase::Variant::kTypeDouble:
-		out.push(v.double_value());
-		break;
-
-	case firebase::Variant::kTypeBool:
-		out.push(v.bool_value());
-		break;
-
-	case firebase::Variant::kTypeStaticString:
-	case firebase::Variant::kTypeMutableString:
-		out.push(std::string_view{ v.string_value() });
-		break;
-
-	case firebase::Variant::kTypeStaticBlob:
-	case firebase::Variant::kTypeMutableBlob:
-		// No dedicated binary kind is threaded through here; expose blob
-		// bytes as a raw string so callers can still recover them.
-		out.push(std::string_view{ reinterpret_cast<const char*>(v.blob_data()), v.blob_size() });
-		break;
-
-	case firebase::Variant::kTypeVector:
-	{
-		gm::wire::ArrayStream nested;
-		for (const auto& elem : v.vector())
-			pushVariantToArray(elem, nested);
-		out.push(nested);
-		break;
-	}
-
-	case firebase::Variant::kTypeMap:
-	{
-		gm::wire::StructStream nested;
-		for (const auto& kv : v.map())
-			addVariantToStruct(kv.first.AsString().string_value(), kv.second, nested);
-		out.push(nested);
-		break;
-	}
-
-	case firebase::Variant::kTypeNull:
-	default:
-		// No push(undefined) overload exists on ArrayStream, but its
-		// inherited operator<< resolves std::optional<T> to a GMKind::Undefined
-		// write, which is exactly what we want for a null element.
-		out << std::optional<std::uint8_t>{};
-		break;
-	}
+	visitVariant(v, [&](const auto& value) { out << value; });
 }
 
 void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
 {
-	switch (v.type())
-	{
-	case firebase::Variant::kTypeInt64:
-		// GML has no int64 - every Firebase numeric value crosses the wire as
-		// a double, same convention as everywhere else in this extension.
-		out << static_cast<double>(v.int64_value());
-		break;
-
-	case firebase::Variant::kTypeDouble:
-		out << v.double_value();
-		break;
-
-	case firebase::Variant::kTypeBool:
-		out << v.bool_value();
-		break;
-
-	case firebase::Variant::kTypeStaticString:
-	case firebase::Variant::kTypeMutableString:
-		out << std::string_view{ v.string_value() };
-		break;
-
-	case firebase::Variant::kTypeStaticBlob:
-	case firebase::Variant::kTypeMutableBlob:
-		// No dedicated binary kind is threaded through here; expose blob
-		// bytes as a raw string so callers can still recover them.
-		out << std::string_view{ reinterpret_cast<const char*>(v.blob_data()), v.blob_size() };
-		break;
-
-	case firebase::Variant::kTypeVector:
-	{
-		gm::wire::ArrayStream nested;
-		for (const auto& elem : v.vector())
-			pushVariantToArray(elem, nested);
-		out << nested;
-		break;
-	}
-
-	case firebase::Variant::kTypeMap:
-	{
-		gm::wire::StructStream nested;
-		for (const auto& kv : v.map())
-			addVariantToStruct(kv.first.AsString().string_value(), kv.second, nested);
-		out << nested;
-		break;
-	}
-
-	case firebase::Variant::kTypeNull:
-	default:
-		out << std::optional<std::uint8_t>{};
-		break;
-	}
+	visitVariant(v, [&](const auto& value) { out << value; });
 }
 
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out)
 {
-	switch (v.type())
+	visitVariant(v, [&](const auto& value) { out.addKeyValue(key, value); });
+}
+
+// Standard alphabet, '=' padding, no line breaks: the form buffer_base64_decode()
+// reads.
+std::string base64Encode(const std::uint8_t* data, std::size_t size)
+{
+	static constexpr char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+	std::string out;
+	out.reserve(((size + 2) / 3) * 4);
+
+	std::size_t i = 0;
+	for (; i + 3 <= size; i += 3)
 	{
-	case firebase::Variant::kTypeInt64:
-		out.add(key, static_cast<double>(v.int64_value()));
-		break;
-
-	case firebase::Variant::kTypeDouble:
-		out.add(key, v.double_value());
-		break;
-
-	case firebase::Variant::kTypeBool:
-		out.add(key, v.bool_value());
-		break;
-
-	case firebase::Variant::kTypeStaticString:
-	case firebase::Variant::kTypeMutableString:
-		out.add(key, std::string_view{ v.string_value() });
-		break;
-
-	case firebase::Variant::kTypeStaticBlob:
-	case firebase::Variant::kTypeMutableBlob:
-		out.add(key, std::string_view{ reinterpret_cast<const char*>(v.blob_data()), v.blob_size() });
-		break;
-
-	case firebase::Variant::kTypeVector:
-	{
-		gm::wire::ArrayStream nested;
-		for (const auto& elem : v.vector())
-			pushVariantToArray(elem, nested);
-		out.add(key, nested);
-		break;
+		std::uint32_t triple = (static_cast<std::uint32_t>(data[i]) << 16) | (static_cast<std::uint32_t>(data[i + 1]) << 8) | data[i + 2];
+		out.push_back(alphabet[(triple >> 18) & 0x3F]);
+		out.push_back(alphabet[(triple >> 12) & 0x3F]);
+		out.push_back(alphabet[(triple >> 6) & 0x3F]);
+		out.push_back(alphabet[triple & 0x3F]);
 	}
 
-	case firebase::Variant::kTypeMap:
+	if (i < size)
 	{
-		gm::wire::StructStream nested;
-		for (const auto& kv : v.map())
-			addVariantToStruct(kv.first.AsString().string_value(), kv.second, nested);
-		out.add(key, nested);
-		break;
+		std::uint32_t triple = static_cast<std::uint32_t>(data[i]) << 16;
+		if (i + 1 < size)
+			triple |= static_cast<std::uint32_t>(data[i + 1]) << 8;
+		out.push_back(alphabet[(triple >> 18) & 0x3F]);
+		out.push_back(alphabet[(triple >> 12) & 0x3F]);
+		out.push_back(i + 1 < size ? alphabet[(triple >> 6) & 0x3F] : '=');
+		out.push_back('=');
 	}
 
-	case firebase::Variant::kTypeNull:
-	default:
-		out.addKeyValue(key, std::optional<std::uint8_t>{});
-		break;
-	}
+	return out;
+}
+
+gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size)
+{
+	gm_structs::FirestoreBlob out;
+	out.base64 = base64Encode(data, size);
+	return out;
 }
 
 // Dispatches on the wire kind rather than is<T>(), which is an exact-kind

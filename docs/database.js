@@ -1064,14 +1064,14 @@
 /**
  * @function firebase_database_ref_get
  * @desc This function reads a reference's properties into one ${struct.FirebaseDatabaseReferenceInfo}:
- * its key, whether it is the root, whether it is valid, its URL, and handles to itself, its parent,
- * the root and the database. The `reference`, `parent` and `root` handles are new and are released
- * with ${function.firebase_database_ref_release}; `database` is the instance handle, which is
- * never released. The individual `firebase_database_ref_*` getters return the same values one at
- * a time.
+ * its key, whether it is the root, whether it is valid, its URL and the database handle, which is
+ * never released. It hands out no reference handles: ${function.firebase_database_ref_get_parent},
+ * ${function.firebase_database_ref_get_root} and ${function.firebase_database_query_get_reference}
+ * each register one to release. The individual `firebase_database_ref_*` getters return the same
+ * values one at a time.
  *
  * @param {Real} ref A reference handle.
- * @returns {Struct.FirebaseDatabaseReferenceInfo} The reference's properties; the strings are empty, the flags `false` and the handles `0` when the handle is not valid.
+ * @returns {Struct.FirebaseDatabaseReferenceInfo} The reference's properties, or `undefined` when the handle is not valid.
  * @function_end
  */
 
@@ -1324,8 +1324,9 @@
 /**
  * @function firebase_database_ref_release
  * @desc This function releases a reference handle - one from the database, from
- * ${function.firebase_database_ref_child}, from a query's `get_reference`, from a snapshot, or out
- * of a ${struct.FirebaseDatabaseReferenceInfo}. Release it as soon as the calls that need it have
+ * ${function.firebase_database_ref_child}, from a query's `get_reference`, from a snapshot, or from
+ * ${function.firebase_database_ref_get_parent} and ${function.firebase_database_ref_get_root}.
+ * Release it as soon as the calls that need it have
  * been started; queries, listeners and writes keep their own copies. A handle that is not a reference sets
  * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
@@ -1449,14 +1450,14 @@
 /**
  * @function firebase_database_snapshot_get_info
  * @desc This function reads a snapshot's properties into one ${struct.FirebaseDataSnapshotInfo}: its
- * key, whether it holds data, whether it is valid, whether and how many children it has, and a
- * reference to its location. The `reference` is a new handle to release with
- * ${function.firebase_database_ref_release}. The value itself is read separately with
- * ${function.firebase_database_snapshot_get_value}; the individual functions below return the
- * same properties one at a time.
+ * key, whether it holds data, whether it is valid, and whether and how many children it has. It
+ * hands out no handle; a reference to the snapshot's location comes from
+ * ${function.firebase_database_snapshot_get_reference}, which registers one to release. The value
+ * itself is read separately with ${function.firebase_database_snapshot_get_value}; the individual
+ * functions below return the same properties one at a time.
  *
  * @param {Real} snapshot A snapshot handle.
- * @returns {Struct.FirebaseDataSnapshotInfo} The snapshot's properties; the key is empty, the flags `false`, the count `0` and the reference `0` when the handle is not valid.
+ * @returns {Struct.FirebaseDataSnapshotInfo} The snapshot's properties, or `undefined` when the handle is not valid.
  * @function_end
  */
 
@@ -1790,16 +1791,14 @@
 
 /**
  * @struct FirebaseDatabaseReferenceInfo
- * @desc Every property of a reference in one struct, from ${function.firebase_database_ref_get}. The
- * three reference handles are new and are released with ${function.firebase_database_ref_release};
- * the database handle is not released.
+ * @desc Every property of a reference in one struct, from ${function.firebase_database_ref_get}. It
+ * carries no reference handles - the parent, the root and a copy of the location itself come from
+ * ${function.firebase_database_ref_get_parent}, ${function.firebase_database_ref_get_root} and
+ * ${function.firebase_database_query_get_reference}; the database handle is not released.
  *
  * @member {String} key The last segment of the path, or an empty string for the root.
  * @member {Bool} is_root Whether this is the root of the database.
  * @member {Bool} is_valid Whether the reference can be used.
- * @member {Real} reference A new handle to this same location.
- * @member {Real} parent A new handle to the location above (the root again, for the root).
- * @member {Real} root A new handle to the root.
  * @member {Real} database The database handle.
  * @member {String} url The location's full URL.
  * @struct_end
@@ -1808,14 +1807,14 @@
 /**
  * @struct FirebaseDataSnapshotInfo
  * @desc Every property of a snapshot but its value, from ${function.firebase_database_snapshot_get_info}.
- * The `reference` handle is new and is released with ${function.firebase_database_ref_release}.
+ * It carries no handle; ${function.firebase_database_snapshot_get_reference} registers one to the
+ * snapshot's location.
  *
  * @member {String} key The key of the snapshot's location.
  * @member {Bool} exists Whether there is data.
  * @member {Bool} is_valid Whether the snapshot can be read.
  * @member {Bool} has_children Whether the location is a node with children.
  * @member {Real} children_count The number of direct children.
- * @member {Real} reference A new reference handle to the location.
  * @struct_end
  */
 

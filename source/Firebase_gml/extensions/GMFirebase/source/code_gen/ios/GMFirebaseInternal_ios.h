@@ -266,7 +266,7 @@
 - (double)__EXT_NATIVE__firebase_firestore_field_value_timestamp:(double)seconds arg1:(double)nanoseconds;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_geo_point:(double)latitude arg1:(double)longitude;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_reference:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
-- (double)__EXT_NATIVE__firebase_firestore_field_value_blob:(char*)data;
+- (double)__EXT_NATIVE__firebase_firestore_field_value_blob:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_null;
 - (double)__EXT_NATIVE__firebase_firestore_field_value_release:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_firestore_document_snapshot_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length;

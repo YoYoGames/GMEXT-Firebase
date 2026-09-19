@@ -1980,7 +1980,7 @@
 
 /**
  * @function_partial firebase_firestore_field_value_blob
- * @param {String} data
+ * @param {Buffer} data
  * @returns {Real}
  * @function_end
  */
@@ -4906,9 +4906,6 @@
  * @member {String} key
  * @member {Bool} is_root
  * @member {Bool} is_valid
- * @member {Real} reference
- * @member {Real} parent
- * @member {Real} root
  * @member {Real} database
  * @member {String} url
  * @struct_end
@@ -4921,7 +4918,6 @@
  * @member {Bool} is_valid
  * @member {Bool} has_children
  * @member {Real} children_count
- * @member {Real} reference
  * @struct_end
  */
 
@@ -4936,6 +4932,18 @@
  * @struct_partial FirestoreGeoPoint
  * @member {Real} latitude
  * @member {Real} longitude
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirestoreBlob
+ * @member {String} base64
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirestoreReference
+ * @member {String} path
  * @struct_end
  */
 
@@ -4976,7 +4984,6 @@
  * @struct_partial FirestoreDocumentSnapshotInfo
  * @member {Bool} exists
  * @member {String} id
- * @member {Real} reference
  * @member {Bool} has_pending_writes
  * @member {Bool} is_from_cache
  * @struct_end

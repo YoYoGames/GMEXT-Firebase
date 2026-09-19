@@ -105,17 +105,22 @@ bool resolveFirestoreQuery(uint64_t ref, firebase::firestore::Query& out);
 // ArrayStream/StructStream, exactly like the Variant converters - the same
 // stream that ends up passed as a callback.call(...) argument or returned as
 // a struct-typed value (DocumentSnapshot::Get/GetData return a StructStream
-// directly as their C++ return type; see GMFirebase_firestore_snapshot.cpp).
-// Composite value kinds that have no single GML primitive
-// (Timestamp/GeoPoint) travel as the generated FirestoreTimestamp /
-// FirestoreGeoPoint structs, which decode to real GML instances even when
-// nested inside a dynamic document; kReference is encoded as a plain
-// GM_FB_TYPE_FIRESTORE_DOC_REF ref (a real number), consistent with every
-// other reference-typed value in this extension.
+// directly as their C++ return type; see GMFirebase_firestore_snapshot.cpp),
+// or written as the one value of a gmval field (FirestoreFieldLookup.value).
+// The three are one conversion (visitFieldValue in GMFirebase_firestore.cpp)
+// with three sinks. Every value kind with no single GML primitive travels as
+// a generated struct that decodes to a real GML instance even when nested
+// inside a dynamic document: FirestoreTimestamp, FirestoreGeoPoint,
+// FirestoreBlob (base64 - a raw string cannot carry a 0x00 byte) and
+// FirestoreReference (the document path - a read registers no handle the
+// caller would have to release). Each has a firebase_firestore_field_value_*
+// constructor for the way back in.
 void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out);
 void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out);
+void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out);
 gm_structs::FirestoreTimestamp makeFirestoreTimestamp(const firebase::Timestamp& ts);
 gm_structs::FirestoreGeoPoint makeFirestoreGeoPoint(const firebase::firestore::GeoPoint& gp);
+gm_structs::FirestoreReference makeFirestoreReference(const firebase::firestore::DocumentReference& ref);
 
 // Inbound (GML -> C++): reconstructs a FieldValue from a decoded incoming
 // GMValue. Plain reals become FieldValue::Double() (GML has no separate

@@ -395,17 +395,13 @@ FirebaseError firebase_remote_config_set_custom_signals(uint64_t rc_ref, const G
 // Info
 // ============================================================
 
-FirebaseRemoteConfigInfo firebase_remote_config_get_info(uint64_t rc_ref)
+// undefined for a handle that does not resolve (InvalidHandle is already
+// recorded) - a made-up struct would have to invent a fetch status.
+std::optional<FirebaseRemoteConfigInfo> firebase_remote_config_get_info(uint64_t rc_ref)
 {
 	firebase::remote_config::RemoteConfig* rc = resolveRemoteConfig(rc_ref);
 	if (rc == nullptr)
-	{
-		// A zero-initialised struct would read as kLastFetchStatusSuccess.
-		FirebaseRemoteConfigInfo failed{};
-		failed.last_fetch_status = FirebaseRemoteConfigLastFetchStatus::Failure;
-		failed.last_fetch_failure_reason = FirebaseRemoteConfigFetchFailureReason::Error;
-		return failed;
-	}
+		return std::nullopt;
 	return toGmInfo(rc->GetInfo());
 }
 

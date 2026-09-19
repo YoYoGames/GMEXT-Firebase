@@ -5852,7 +5852,7 @@ several properties are needed together.</p>
 <blockquote>
 <p><a href="auth.html#firebaseauthuserinfo">FirebaseAuthUserInfo</a></p>
 </blockquote>
-<p>The user's properties; every string is empty and <code>is_valid</code> is <code>false</code> when the handle is not valid or nobody is signed in.</p>
+<p>The user's properties, or <code>undefined</code> when the handle is not valid; <code>is_valid</code> inside is the SDK's own answer for a user handle that did resolve.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
 <p><pre class="highlight"><code class="language-gml">var _user = firebase_auth_current_user();

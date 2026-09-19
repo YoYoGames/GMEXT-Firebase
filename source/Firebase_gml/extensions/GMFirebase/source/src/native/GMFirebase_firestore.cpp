@@ -240,152 +240,114 @@ gm_structs::FirestoreGeoPoint makeFirestoreGeoPoint(const firebase::firestore::G
 	return out;
 }
 
+gm_structs::FirestoreReference makeFirestoreReference(const firebase::firestore::DocumentReference& ref)
+{
+	gm_structs::FirestoreReference out;
+	out.path = ref.path();
+	return out;
+}
+
+namespace
+{
+	// One switch over FieldValue::Type for the three sinks below. emit() gets
+	// each converted value and writes it wherever its sink puts one value: an
+	// array element, a keyed struct field, or a bare stream value.
+	template<class Emit>
+	void visitFieldValue(const firebase::firestore::FieldValue& v, Emit&& emit)
+	{
+		switch (v.type())
+		{
+		case firebase::firestore::FieldValue::Type::kBoolean:
+			emit(v.boolean_value());
+			break;
+
+		case firebase::firestore::FieldValue::Type::kInteger:
+			// GML has no int64 - crosses as a double, same convention used
+			// everywhere else in this extension. Use
+			// firebase_firestore_field_value_integer() on the way back in if the exact
+			// stored type matters.
+			emit(static_cast<double>(v.integer_value()));
+			break;
+
+		case firebase::firestore::FieldValue::Type::kDouble:
+			emit(v.double_value());
+			break;
+
+		case firebase::firestore::FieldValue::Type::kString:
+			emit(std::string_view{ v.string_value() });
+			break;
+
+		case firebase::firestore::FieldValue::Type::kBlob:
+			// A raw string would stop the GML reader at the first 0x00 byte and
+			// leave its cursor mid-blob, so every field after it would decode as
+			// garbage. Base64 inside a typed struct carries any byte.
+			emit(makeFirestoreBlob(v.blob_value(), v.blob_size()));
+			break;
+
+		case firebase::firestore::FieldValue::Type::kReference:
+			// The path, not a handle: a read registers nothing the caller would
+			// have to release. firebase_firestore_document() resolves it.
+			emit(makeFirestoreReference(v.reference_value()));
+			break;
+
+		case firebase::firestore::FieldValue::Type::kGeoPoint:
+			emit(makeFirestoreGeoPoint(v.geo_point_value()));
+			break;
+
+		case firebase::firestore::FieldValue::Type::kTimestamp:
+			emit(makeFirestoreTimestamp(v.timestamp_value()));
+			break;
+
+		case firebase::firestore::FieldValue::Type::kArray:
+		{
+			gm::wire::ArrayStream nested;
+			for (const auto& elem : v.array_value())
+				pushFieldValueToArray(elem, nested);
+			emit(nested);
+			break;
+		}
+
+		case firebase::firestore::FieldValue::Type::kMap:
+		{
+			gm::wire::StructStream nested;
+			for (const auto& kv : v.map_value())
+				addFieldValueToStruct(kv.first.c_str(), kv.second, nested);
+			emit(nested);
+			break;
+		}
+
+		case firebase::firestore::FieldValue::Type::kNull:
+		case firebase::firestore::FieldValue::Type::kDelete:
+		case firebase::firestore::FieldValue::Type::kServerTimestamp:
+		case firebase::firestore::FieldValue::Type::kArrayUnion:
+		case firebase::firestore::FieldValue::Type::kArrayRemove:
+		case firebase::firestore::FieldValue::Type::kIncrementInteger:
+		case firebase::firestore::FieldValue::Type::kIncrementDouble:
+		default:
+			// The sentinel kinds are write-only - the server always resolves
+			// them to a concrete value before a document is ever read back, so
+			// this default only defends against an invalid/default-constructed
+			// FieldValue. Every sink writes an empty std::optional as
+			// GMKind::Undefined, which is what a null needs to be.
+			emit(std::optional<std::uint8_t>{});
+			break;
+		}
+	}
+}
+
 void pushFieldValueToArray(const firebase::firestore::FieldValue& v, gm::wire::ArrayStream& out)
 {
-	switch (v.type())
-	{
-	case firebase::firestore::FieldValue::Type::kBoolean:
-		out.push(v.boolean_value());
-		break;
-
-	case firebase::firestore::FieldValue::Type::kInteger:
-		// GML has no int64 - crosses as a double, same convention used
-		// everywhere else in this extension. Use
-		// firebase_firestore_field_value_integer() on the way back in if the exact
-		// stored type matters.
-		out.push(static_cast<double>(v.integer_value()));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kDouble:
-		out.push(v.double_value());
-		break;
-
-	case firebase::firestore::FieldValue::Type::kString:
-		out.push(std::string_view{ v.string_value() });
-		break;
-
-	case firebase::firestore::FieldValue::Type::kBlob:
-		out.push(std::string_view{ reinterpret_cast<const char*>(v.blob_value()), v.blob_size() });
-		break;
-
-	case firebase::firestore::FieldValue::Type::kReference:
-		// Encoded as a plain GM_FB_TYPE_FIRESTORE_DOC_REF ref (a real number),
-		// consistent with every other reference-typed value in this extension.
-		out.push(static_cast<double>(registerFirestoreDocRef(v.reference_value())));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kGeoPoint:
-		// A generated struct goes through operator<< (typed-struct tag + codec
-		// id); push() only has the scalar/string/stream overloads.
-		out << makeFirestoreGeoPoint(v.geo_point_value());
-		break;
-
-	case firebase::firestore::FieldValue::Type::kTimestamp:
-		out << makeFirestoreTimestamp(v.timestamp_value());
-		break;
-
-	case firebase::firestore::FieldValue::Type::kArray:
-	{
-		gm::wire::ArrayStream nested;
-		for (const auto& elem : v.array_value())
-			pushFieldValueToArray(elem, nested);
-		out.push(nested);
-		break;
-	}
-
-	case firebase::firestore::FieldValue::Type::kMap:
-	{
-		gm::wire::StructStream nested;
-		for (const auto& kv : v.map_value())
-			addFieldValueToStruct(kv.first.c_str(), kv.second, nested);
-		out.push(nested);
-		break;
-	}
-
-	case firebase::firestore::FieldValue::Type::kNull:
-	case firebase::firestore::FieldValue::Type::kDelete:
-	case firebase::firestore::FieldValue::Type::kServerTimestamp:
-	case firebase::firestore::FieldValue::Type::kArrayUnion:
-	case firebase::firestore::FieldValue::Type::kArrayRemove:
-	case firebase::firestore::FieldValue::Type::kIncrementInteger:
-	case firebase::firestore::FieldValue::Type::kIncrementDouble:
-	default:
-		// The sentinel kinds are write-only - the server always resolves
-		// them to a concrete value before a document is ever read back, so
-		// this default only defends against an invalid/default-constructed
-		// FieldValue. No push(undefined) overload exists on ArrayStream, but
-		// its inherited operator<< resolves std::optional<T> to a
-		// GMKind::Undefined write, exactly like the Variant converters.
-		out << std::optional<std::uint8_t>{};
-		break;
-	}
+	visitFieldValue(v, [&](const auto& value) { out << value; });
 }
 
 void addFieldValueToStruct(const char* key, const firebase::firestore::FieldValue& v, gm::wire::StructStream& out)
 {
-	switch (v.type())
-	{
-	case firebase::firestore::FieldValue::Type::kBoolean:
-		out.add(key, v.boolean_value());
-		break;
+	visitFieldValue(v, [&](const auto& value) { out.addKeyValue(key, value); });
+}
 
-	case firebase::firestore::FieldValue::Type::kInteger:
-		out.add(key, static_cast<double>(v.integer_value()));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kDouble:
-		out.add(key, v.double_value());
-		break;
-
-	case firebase::firestore::FieldValue::Type::kString:
-		out.add(key, std::string_view{ v.string_value() });
-		break;
-
-	case firebase::firestore::FieldValue::Type::kBlob:
-		out.add(key, std::string_view{ reinterpret_cast<const char*>(v.blob_value()), v.blob_size() });
-		break;
-
-	case firebase::firestore::FieldValue::Type::kReference:
-		out.add(key, static_cast<double>(registerFirestoreDocRef(v.reference_value())));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kGeoPoint:
-		out.addKeyValue(key, makeFirestoreGeoPoint(v.geo_point_value()));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kTimestamp:
-		out.addKeyValue(key, makeFirestoreTimestamp(v.timestamp_value()));
-		break;
-
-	case firebase::firestore::FieldValue::Type::kArray:
-	{
-		gm::wire::ArrayStream nested;
-		for (const auto& elem : v.array_value())
-			pushFieldValueToArray(elem, nested);
-		out.add(key, nested);
-		break;
-	}
-
-	case firebase::firestore::FieldValue::Type::kMap:
-	{
-		gm::wire::StructStream nested;
-		for (const auto& kv : v.map_value())
-			addFieldValueToStruct(kv.first.c_str(), kv.second, nested);
-		out.add(key, nested);
-		break;
-	}
-
-	case firebase::firestore::FieldValue::Type::kNull:
-	case firebase::firestore::FieldValue::Type::kDelete:
-	case firebase::firestore::FieldValue::Type::kServerTimestamp:
-	case firebase::firestore::FieldValue::Type::kArrayUnion:
-	case firebase::firestore::FieldValue::Type::kArrayRemove:
-	case firebase::firestore::FieldValue::Type::kIncrementInteger:
-	case firebase::firestore::FieldValue::Type::kIncrementDouble:
-	default:
-		out.addKeyValue(key, std::optional<std::uint8_t>{});
-		break;
-	}
+void writeFieldValueToStream(const firebase::firestore::FieldValue& v, gm::wire::DataStream& out)
+{
+	visitFieldValue(v, [&](const auto& value) { out << value; });
 }
 
 namespace
@@ -593,9 +555,11 @@ double firebase_firestore_field_value_reference(uint64_t document_ref)
 	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Reference(*doc)));
 }
 
-double firebase_firestore_field_value_blob(std::string_view data)
+// The whole buffer is the blob. FieldValue::Blob copies the bytes, so the GML
+// buffer is free as soon as this returns.
+double firebase_firestore_field_value_blob(GMBuffer data)
 {
-	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Blob(reinterpret_cast<const uint8_t*>(data.data()), data.size())));
+	return static_cast<double>(registerFirestoreFieldValue(firebase::firestore::FieldValue::Blob(static_cast<const uint8_t*>(data.data()), static_cast<size_t>(data.length()))));
 }
 
 double firebase_firestore_field_value_null()

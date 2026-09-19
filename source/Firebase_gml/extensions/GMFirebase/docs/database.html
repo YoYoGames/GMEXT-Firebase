@@ -6621,11 +6621,11 @@ started. A reference is not a query handle: release it with <a href="database.ht
 
 <h1 id="firebase_database_ref_get">firebase_database_ref_get<a class="headerlink" href="#firebase_database_ref_get" title="Permanent link">&para;</a></h1>
 <p>This function reads a reference's properties into one <a href="database.html#firebasedatabasereferenceinfo">FirebaseDatabaseReferenceInfo</a>:
-its key, whether it is the root, whether it is valid, its URL, and handles to itself, its parent,
-the root and the database. The <code>reference</code>, <code>parent</code> and <code>root</code> handles are new and are released
-with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>; <code>database</code> is the instance handle, which is
-never released. The individual <code>firebase_database_ref_*</code> getters return the same values one at
-a time.</p>
+its key, whether it is the root, whether it is valid, its URL and the database handle, which is
+never released. It hands out no reference handles: <a href="database.html#firebase_database_ref_get_parent">firebase_database_ref_get_parent</a>,
+<a href="database.html#firebase_database_ref_get_root">firebase_database_ref_get_root</a> and <a href="database.html#firebase_database_query_get_reference">firebase_database_query_get_reference</a>
+each register one to release. The individual <code>firebase_database_ref_*</code> getters return the same
+values one at a time.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -6652,7 +6652,7 @@ a time.</p>
 <blockquote>
 <p><a href="database.html#firebasedatabasereferenceinfo">FirebaseDatabaseReferenceInfo</a></p>
 </blockquote>
-<p>The reference's properties; the strings are empty, the flags <code>false</code> and the handles <code>0</code> when the handle is not valid.</p>
+<p>The reference's properties, or <code>undefined</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -7311,8 +7311,9 @@ together, <a href="database.html#firebase_database_ref_update_children">firebase
 
 <h1 id="firebase_database_ref_release">firebase_database_ref_release<a class="headerlink" href="#firebase_database_ref_release" title="Permanent link">&para;</a></h1>
 <p>This function releases a reference handle - one from the database, from
-<a href="database.html#firebase_database_ref_child">firebase_database_ref_child</a>, from a query's <code>get_reference</code>, from a snapshot, or out
-of a <a href="database.html#firebasedatabasereferenceinfo">FirebaseDatabaseReferenceInfo</a>. Release it as soon as the calls that need it have
+<a href="database.html#firebase_database_ref_child">firebase_database_ref_child</a>, from a query's <code>get_reference</code>, from a snapshot, or from
+<a href="database.html#firebase_database_ref_get_parent">firebase_database_ref_get_parent</a> and <a href="database.html#firebase_database_ref_get_root">firebase_database_ref_get_root</a>.
+Release it as soon as the calls that need it have
 been started; queries, listeners and writes keep their own copies. A handle that is not a reference sets
 <a href="app.html#firebase_last_error_code">firebase_last_error_code</a> to <code>FirebaseError.InvalidHandle</code>.</p>
 <p><br></p>
@@ -7675,11 +7676,11 @@ query delivered.</p>
 
 <h1 id="firebase_database_snapshot_get_info">firebase_database_snapshot_get_info<a class="headerlink" href="#firebase_database_snapshot_get_info" title="Permanent link">&para;</a></h1>
 <p>This function reads a snapshot's properties into one <a href="database.html#firebasedatasnapshotinfo">FirebaseDataSnapshotInfo</a>: its
-key, whether it holds data, whether it is valid, whether and how many children it has, and a
-reference to its location. The <code>reference</code> is a new handle to release with
-<a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>. The value itself is read separately with
-<a href="database.html#firebase_database_snapshot_get_value">firebase_database_snapshot_get_value</a>; the individual functions below return the
-same properties one at a time.</p>
+key, whether it holds data, whether it is valid, and whether and how many children it has. It
+hands out no handle; a reference to the snapshot's location comes from
+<a href="database.html#firebase_database_snapshot_get_reference">firebase_database_snapshot_get_reference</a>, which registers one to release. The value
+itself is read separately with <a href="database.html#firebase_database_snapshot_get_value">firebase_database_snapshot_get_value</a>; the individual
+functions below return the same properties one at a time.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -7706,7 +7707,7 @@ same properties one at a time.</p>
 <blockquote>
 <p><a href="database.html#firebasedatasnapshotinfo">FirebaseDataSnapshotInfo</a></p>
 </blockquote>
-<p>The snapshot's properties; the key is empty, the flags <code>false</code>, the count <code>0</code> and the reference <code>0</code> when the handle is not valid.</p>
+<p>The snapshot's properties, or <code>undefined</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -8760,9 +8761,10 @@ lapsed).</p>
 <p align="right"><a href="#top">Back To Top</a></p>
 
 <h1 id="firebasedatabasereferenceinfo">FirebaseDatabaseReferenceInfo<a class="headerlink" href="#firebasedatabasereferenceinfo" title="Permanent link">&para;</a></h1>
-<p>Every property of a reference in one struct, from <a href="database.html#firebase_database_ref_get">firebase_database_ref_get</a>. The
-three reference handles are new and are released with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>;
-the database handle is not released.</p>
+<p>Every property of a reference in one struct, from <a href="database.html#firebase_database_ref_get">firebase_database_ref_get</a>. It
+carries no reference handles - the parent, the root and a copy of the location itself come from
+<a href="database.html#firebase_database_ref_get_parent">firebase_database_ref_get_parent</a>, <a href="database.html#firebase_database_ref_get_root">firebase_database_ref_get_root</a> and
+<a href="database.html#firebase_database_query_get_reference">firebase_database_query_get_reference</a>; the database handle is not released.</p>
 <p>This struct is referenced by the following functions:</p>
 <ul>
 <li><a href="database.html#firebase_database_ref_get">firebase_database_ref_get</a></li>
@@ -8793,21 +8795,6 @@ the database handle is not released.</p>
 <td>Whether the reference can be used.</td>
 </tr>
 <tr>
-<td>reference</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A new handle to this same location.</td>
-</tr>
-<tr>
-<td>parent</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A new handle to the location above (the root again, for the root).</td>
-</tr>
-<tr>
-<td>root</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A new handle to the root.</td>
-</tr>
-<tr>
 <td>database</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
 <td>The database handle.</td>
@@ -8825,7 +8812,8 @@ the database handle is not released.</p>
 
 <h1 id="firebasedatasnapshotinfo">FirebaseDataSnapshotInfo<a class="headerlink" href="#firebasedatasnapshotinfo" title="Permanent link">&para;</a></h1>
 <p>Every property of a snapshot but its value, from <a href="database.html#firebase_database_snapshot_get_info">firebase_database_snapshot_get_info</a>.
-The <code>reference</code> handle is new and is released with <a href="database.html#firebase_database_ref_release">firebase_database_ref_release</a>.</p>
+It carries no handle; <a href="database.html#firebase_database_snapshot_get_reference">firebase_database_snapshot_get_reference</a> registers one to the
+snapshot's location.</p>
 <p>This struct is referenced by the following functions:</p>
 <ul>
 <li><a href="database.html#firebase_database_snapshot_get_info">firebase_database_snapshot_get_info</a></li>
@@ -8864,11 +8852,6 @@ The <code>reference</code> handle is new and is released with <a href="database.
 <td>children_count</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
 <td>The number of direct children.</td>
-</tr>
-<tr>
-<td>reference</td>
-<td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Real</a></td>
-<td>A new reference handle to the location.</td>
 </tr>
 </tbody>
 </table>

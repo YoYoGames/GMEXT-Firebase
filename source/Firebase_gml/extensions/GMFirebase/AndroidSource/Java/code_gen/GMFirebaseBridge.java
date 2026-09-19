@@ -282,7 +282,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds);
     public static native double __EXT_JNI__firebase_firestore_field_value_geo_point(double latitude, double longitude);
     public static native double __EXT_JNI__firebase_firestore_field_value_reference(ByteBuffer __arg_buffer, double __arg_buffer_length);
-    public static native double __EXT_JNI__firebase_firestore_field_value_blob(String data);
+    public static native double __EXT_JNI__firebase_firestore_field_value_blob(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_field_value_null();
     public static native double __EXT_JNI__firebase_firestore_field_value_release(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_firestore_document_snapshot_get_info(ByteBuffer __arg_buffer, double __arg_buffer_length, ByteBuffer __ret_buffer, double __ret_buffer_length);

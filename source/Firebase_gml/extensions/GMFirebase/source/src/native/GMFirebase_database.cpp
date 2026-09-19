@@ -456,27 +456,22 @@ void firebase_database_query_release(uint64_t ref)
 // DatabaseReference-only surface
 // ============================================================
 
-// Consolidates key/is_root/is_valid/get_reference/get_parent/get_root/
-// get_database/get_url into a single call. `reference`/`parent`/`root` are
-// newly registered GM_FB_TYPE_DATABASE_REF refs owned by the caller -
-// release them with firebase_database_ref_release(). `database` is a
+// Consolidates key/is_root/is_valid/get_database/get_url into a single call.
+// It carries no reference handles - get_parent/get_root/query_get_reference
+// are the getters that register one the caller owns. `database` is a
 // GM_FB_TYPE_DATABASE ref (not owned/released, same as every other
-// Database-returning getter in this extension). If `ref` is not a valid
-// registered DatabaseReference, returns a default-constructed struct (key "",
-// is_root/is_valid false, reference/parent/root/database 0, url "").
-gm_structs::FirebaseDatabaseReferenceInfo firebase_database_ref_get(uint64_t ref)
+// Database-returning getter in this extension). undefined for a handle that
+// does not resolve (InvalidHandle is already recorded); is_valid inside the
+// struct is the SDK's own answer.
+std::optional<gm_structs::FirebaseDatabaseReferenceInfo> firebase_database_ref_get(uint64_t ref)
 {
-	gm_structs::FirebaseDatabaseReferenceInfo out{};
-
 	DatabaseReference* r = resolve_db_ref(ref);
-	if (r == nullptr) return out;
+	if (r == nullptr) return std::nullopt;
 
+	gm_structs::FirebaseDatabaseReferenceInfo out{};
 	out.key = r->key_string();
 	out.is_root = r->is_root();
 	out.is_valid = r->is_valid();
-	out.reference = query_get_reference(r);
-	out.parent = registerDatabaseReference(r->GetParent());
-	out.root = registerDatabaseReference(r->GetRoot());
 	Database* db = r->database();
 	out.database = db != nullptr ? registerFirebasePointer(db, GM_FB_TYPE_DATABASE) : 0;
 	out.url = r->url();

@@ -4176,11 +4176,16 @@ static jdouble __JNI_WRAPPER__firebase_firestore_field_value_reference_3319FF8B0
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_firestore_field_value_blob JNI wrapper signature: (Ljava/lang/String;)D
-static jdouble __JNI_WRAPPER__firebase_firestore_field_value_blob_0DAECB112573(JNIEnv* env, jclass /* GMFirebaseBridge */, jstring data)
+// firebase_firestore_field_value_blob JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_firestore_field_value_blob_0DDF778B0A4D(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    UtfChars __pin_data(env, data);
-    double __ret = __EXT_NATIVE__firebase_firestore_field_value_blob((char *)__pin_data.c_str());
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_firestore_field_value_blob((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -10206,7 +10211,7 @@ extern "C" {
             { "__EXT_JNI__firebase_firestore_field_value_timestamp", "(DD)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_timestamp_EB09565FAC24 },
             { "__EXT_JNI__firebase_firestore_field_value_geo_point", "(DD)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_geo_point_BB33C02F1499 },
             { "__EXT_JNI__firebase_firestore_field_value_reference", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_reference_3319FF8B0B6C },
-            { "__EXT_JNI__firebase_firestore_field_value_blob", "(Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_blob_0DAECB112573 },
+            { "__EXT_JNI__firebase_firestore_field_value_blob", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_blob_0DDF778B0A4D },
             { "__EXT_JNI__firebase_firestore_field_value_null", "()D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_null_6DA7C39FDF24 },
             { "__EXT_JNI__firebase_firestore_field_value_release", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_field_value_release_26D69C35ED03 },
             { "__EXT_JNI__firebase_firestore_document_snapshot_get_info", "(Ljava/nio/ByteBuffer;DLjava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_firestore_document_snapshot_get_info_13B255C4E49E },

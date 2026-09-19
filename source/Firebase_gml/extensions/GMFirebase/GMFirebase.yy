@@ -4981,17 +4981,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_firestore_field_value_blob",
-          "argCount": 1,
+          "%Name": "__firebase_firestore_field_value_blob",
+          "argCount": 2,
           "args": [
-            1
+            1,
+            2
           ],
-          "documentation": "@param {String} data\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_firestore_field_value_blob",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_firestore_field_value_blob",
+          "name": "__firebase_firestore_field_value_blob",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2

@@ -272,7 +272,7 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_double(double value
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_timestamp(double seconds, double nanoseconds);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_geo_point(double latitude, double longitude);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_reference(char* __arg_buffer, double __arg_buffer_length);
-GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* data);
+GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_blob(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_null();
 GMEXPORT double __EXT_NATIVE__firebase_firestore_field_value_release(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_firestore_document_snapshot_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length);

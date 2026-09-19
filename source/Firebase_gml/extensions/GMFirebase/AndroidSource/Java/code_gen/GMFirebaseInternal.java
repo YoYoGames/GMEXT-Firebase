@@ -1064,9 +1064,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_firestore_field_value_reference(__arg_buffer, __arg_buffer_length);
     }
-    public double __EXT_NATIVE__firebase_firestore_field_value_blob(String data)
+    public double __EXT_NATIVE__firebase_firestore_field_value_blob(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_firestore_field_value_blob(data);
+        return __EXT_JNI__firebase_firestore_field_value_blob(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_firestore_field_value_null()
     {

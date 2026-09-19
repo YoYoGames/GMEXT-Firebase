@@ -962,7 +962,7 @@
  * several properties are needed together.
  *
  * @param {Real} user The user's handle, from ${function.firebase_auth_current_user} or a sign-in callback.
- * @returns {Struct.FirebaseAuthUserInfo} The user's properties; every string is empty and `is_valid` is `false` when the handle is not valid or nobody is signed in.
+ * @returns {Struct.FirebaseAuthUserInfo} The user's properties, or `undefined` when the handle is not valid; `is_valid` inside is the SDK's own answer for a user handle that did resolve.
  *
  * @example
  * ```gml

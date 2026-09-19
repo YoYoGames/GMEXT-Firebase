@@ -20,7 +20,6 @@ firebase_database_ref_set_value(_ref, click_count, function(error_code, error_me
 			var _value = firebase_database_snapshot_get_value(snapshot_ref);
 			show_debug_message($"firebase_database_snapshot_get_info: {_info}");
 			show_debug_message($"Realtime DB: read back click_count = {_value}");
-			firebase_database_ref_release(_info.reference);
 		} else {
 			show_debug_message($"Realtime DB: get_value failed ({error_code}) {error_message}");
 		}

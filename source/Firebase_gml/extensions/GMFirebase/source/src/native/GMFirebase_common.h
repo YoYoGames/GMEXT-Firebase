@@ -401,7 +401,8 @@ inline void completeFuture(const std::optional<gm::wire::GMFunction>& callback, 
 // rather than returning a GMValue (a read-only view over already-decoded
 // bytes) we append it directly onto an in-progress ArrayStream/StructStream -
 // the same stream that ends up passed as a callback.call(...) argument or
-// returned as a struct-typed value.
+// returned as a struct-typed value. The three functions are one conversion
+// (visitVariant in GMFirebase_common.cpp) with three sinks.
 void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out);
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out);
 
@@ -410,6 +411,14 @@ void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::S
 // "Any"-typed returns where the caller wants the value itself (a plain real/
 // string/array/struct/undefined), not a 1-element array wrapper.
 void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out);
+
+// Binary data on the way out. A raw string stops the GML reader at the first
+// 0x00 byte, so bytes travel base64-encoded inside the generated FirestoreBlob
+// struct (buffer_base64_decode() on the GML side). Shared by the Variant blob
+// branch above and the Firestore kBlob branch, which is why it lives here and
+// not in GMFirebase_firestore.*.
+std::string base64Encode(const std::uint8_t* data, std::size_t size);
+gm_structs::FirestoreBlob makeFirestoreBlob(const std::uint8_t* data, std::size_t size);
 
 // Inbound (GML -> C++): reconstructs a firebase::Variant from a decoded
 // incoming GMValue, recursing through GMArrayView/GMObjectView for

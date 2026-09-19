@@ -3475,8 +3475,7 @@ that the backend evaluates the console's conditions against them.</p>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/remote-config/remote-config#getinfo">firebase::remote_config::RemoteConfig::GetInfo</a></p>
 <p>This function returns the state of the last fetch as a <a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a>: when
 it completed, whether it succeeded, is still running or failed, why it failed, and - after a
-<code>Throttled</code> failure - when the backend will accept a fetch again. For a handle that is not valid
-the struct reads <code>Failure</code> / <code>Error</code> with the times at <code>0</code>.</p>
+<code>Throttled</code> failure - when the backend will accept a fetch again.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -3503,7 +3502,7 @@ the struct reads <code>Failure</code> / <code>Error</code> with the times at <co
 <blockquote>
 <p><a href="remote_config.html#firebaseremoteconfiginfo">FirebaseRemoteConfigInfo</a></p>
 </blockquote>
-<p>The last fetch's state.</p>
+<p>The last fetch's state, or <code>undefined</code> when the handle is not valid.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

@@ -53,7 +53,7 @@ namespace
 	{
 		HMODULE module = nullptr;
 		if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-			reinterpret_cast<LPCWSTR>(&s_module_anchor), &module))
+				reinterpret_cast<LPCWSTR>(&s_module_anchor), &module))
 		{
 			TRACE("[GMFirebase] getExtensionDir() GetModuleHandleExW failed (%lu)\n", (unsigned long)GetLastError());
 			return std::string();
@@ -218,10 +218,10 @@ firebase::App* getFirebaseApp()
 	g_firebase_app = createDesktopApp();
 #else
 	// iOS: the SDK reads GoogleService-Info.plist from the bundle itself.
-	TRACE( "[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
+	TRACE("[GMFirebase] getFirebaseApp() calling firebase::App::Create()\n");
 	g_firebase_app = firebase::App::Create();
 #endif
-	TRACE( "[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
+	TRACE("[GMFirebase] firebase::App::Create() returned %p\n", (void*)g_firebase_app);
 	return g_firebase_app;
 #endif
 }
@@ -394,7 +394,7 @@ namespace
 	// One switch over Variant::Type for the three sinks below. emit() gets
 	// each converted value and writes it wherever its sink puts one value: an
 	// array element, a keyed struct field, or a bare stream value.
-	template<class Emit>
+	template <class Emit>
 	void visitVariant(const firebase::Variant& v, Emit&& emit)
 	{
 		switch (v.type())
@@ -458,17 +458,26 @@ namespace
 
 void pushVariantToArray(const firebase::Variant& v, gm::wire::ArrayStream& out)
 {
-	visitVariant(v, [&](const auto& value) { out << value; });
+	visitVariant(v, [&](const auto& value)
+	{
+		out << value;
+	});
 }
 
 void writeVariantToStream(const firebase::Variant& v, gm::wire::DataStream& out)
 {
-	visitVariant(v, [&](const auto& value) { out << value; });
+	visitVariant(v, [&](const auto& value)
+	{
+		out << value;
+	});
 }
 
 void addVariantToStruct(const char* key, const firebase::Variant& v, gm::wire::StructStream& out)
 {
-	visitVariant(v, [&](const auto& value) { out.addKeyValue(key, value); });
+	visitVariant(v, [&](const auto& value)
+	{
+		out.addKeyValue(key, value);
+	});
 }
 
 // Dispatches on the wire kind rather than is<T>(), which is an exact-kind

@@ -127,8 +127,8 @@ FirebaseError firebase_remote_config_set_config_settings(uint64_t rc_ref, double
 	if (rc == nullptr) return FirebaseError::InvalidHandle;
 
 	firebase::remote_config::ConfigSettings settings;
-	if (!toUnsigned64(fetch_timeout_ms, "firebase_remote_config_set_config_settings", "fetch_timeout_ms", settings.fetch_timeout_in_milliseconds)
-		|| !toUnsigned64(minimum_fetch_interval_ms, "firebase_remote_config_set_config_settings", "minimum_fetch_interval_ms", settings.minimum_fetch_interval_in_milliseconds))
+	if (!toUnsigned64(fetch_timeout_ms, "firebase_remote_config_set_config_settings", "fetch_timeout_ms", settings.fetch_timeout_in_milliseconds) ||
+		!toUnsigned64(minimum_fetch_interval_ms, "firebase_remote_config_set_config_settings", "minimum_fetch_interval_ms", settings.minimum_fetch_interval_in_milliseconds))
 		return FirebaseError::InvalidArgument;
 
 	rc->SetConfigSettings(settings).OnCompletion([callback](const firebase::Future<void>& f)
@@ -190,7 +190,10 @@ FirebaseError firebase_remote_config_fetch_and_activate(uint64_t rc_ref, const s
 
 	rc->FetchAndActivate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		completeFuture(callback, f, [](bool activated) { return activated; });
+		completeFuture(callback, f, [](bool activated)
+		{
+			return activated;
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -203,7 +206,10 @@ FirebaseError firebase_remote_config_activate(uint64_t rc_ref, const std::option
 
 	rc->Activate().OnCompletion([callback](const firebase::Future<bool>& f)
 	{
-		completeFuture(callback, f, [](bool activated) { return activated; });
+		completeFuture(callback, f, [](bool activated)
+		{
+			return activated;
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -450,92 +456,103 @@ bool firebase_remote_config_remove_config_update_listener(uint64_t reg_ref)
 
 namespace
 {
-    // Every FirebaseRemoteConfig*Info carries the SDK's ValueInfo the same way.
-    template<class Info>
-    void fillValueInfo(Info& out, const firebase::remote_config::ValueInfo& info)
-    {
-        out.source = static_cast<gm_enums::FirebaseRemoteConfigValueSource>(info.source);
-        out.conversion_successful = info.conversion_successful;
-    }
+	// Every FirebaseRemoteConfig*Info carries the SDK's ValueInfo the same way.
+	template <class Info>
+	void fillValueInfo(Info& out, const firebase::remote_config::ValueInfo& info)
+	{
+		out.source = static_cast<gm_enums::FirebaseRemoteConfigValueSource>(info.source);
+		out.conversion_successful = info.conversion_successful;
+	}
 }
 
 FirebaseError firebase_remote_config_ensure_initialized_info(uint64_t rc_ref, const std::optional<GMFunction>& callback)
 {
-    auto* rc = resolveRemoteConfig(rc_ref);
-    if (!rc) return FirebaseError::InvalidHandle;
-    rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
-    {
-        completeFuture(callback, f, [](const firebase::remote_config::ConfigInfo& info) -> std::optional<FirebaseRemoteConfigInfo>
-        {
-            return toGmInfo(info);
-        });
-    });
-    return FirebaseError::Ok;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return FirebaseError::InvalidHandle;
+	rc->EnsureInitialized().OnCompletion([callback](const firebase::Future<firebase::remote_config::ConfigInfo>& f)
+	{
+		completeFuture(callback, f, [](const firebase::remote_config::ConfigInfo& info) -> std::optional<FirebaseRemoteConfigInfo>
+		{
+			return toGmInfo(info);
+		});
+	});
+	return FirebaseError::Ok;
 }
 
 std::optional<gm_structs::FirebaseRemoteConfigBooleanInfo> firebase_remote_config_get_boolean_with_info(uint64_t rc_ref, std::string_view key)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return std::nullopt;
-    firebase::remote_config::ValueInfo info{};
-    gm_structs::FirebaseRemoteConfigBooleanInfo out;
-    out.value = rc->GetBoolean(std::string(key).c_str(), &info);
-    fillValueInfo(out, info);
-    return out;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return std::nullopt;
+	firebase::remote_config::ValueInfo info{};
+	gm_structs::FirebaseRemoteConfigBooleanInfo out;
+	out.value = rc->GetBoolean(std::string(key).c_str(), &info);
+	fillValueInfo(out, info);
+	return out;
 }
 
 std::optional<gm_structs::FirebaseRemoteConfigLongInfo> firebase_remote_config_get_long_with_info(uint64_t rc_ref, std::string_view key)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return std::nullopt;
-    firebase::remote_config::ValueInfo info{};
-    gm_structs::FirebaseRemoteConfigLongInfo out;
-    out.value = static_cast<double>(rc->GetLong(std::string(key).c_str(), &info));
-    fillValueInfo(out, info);
-    return out;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return std::nullopt;
+	firebase::remote_config::ValueInfo info{};
+	gm_structs::FirebaseRemoteConfigLongInfo out;
+	out.value = static_cast<double>(rc->GetLong(std::string(key).c_str(), &info));
+	fillValueInfo(out, info);
+	return out;
 }
 
 std::optional<gm_structs::FirebaseRemoteConfigDoubleInfo> firebase_remote_config_get_double_with_info(uint64_t rc_ref, std::string_view key)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return std::nullopt;
-    firebase::remote_config::ValueInfo info{};
-    gm_structs::FirebaseRemoteConfigDoubleInfo out;
-    out.value = rc->GetDouble(std::string(key).c_str(), &info);
-    fillValueInfo(out, info);
-    return out;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return std::nullopt;
+	firebase::remote_config::ValueInfo info{};
+	gm_structs::FirebaseRemoteConfigDoubleInfo out;
+	out.value = rc->GetDouble(std::string(key).c_str(), &info);
+	fillValueInfo(out, info);
+	return out;
 }
 
 std::optional<gm_structs::FirebaseRemoteConfigStringInfo> firebase_remote_config_get_string_with_info(uint64_t rc_ref, std::string_view key)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return std::nullopt;
-    firebase::remote_config::ValueInfo info{};
-    gm_structs::FirebaseRemoteConfigStringInfo out;
-    out.value = rc->GetString(std::string(key).c_str(), &info);
-    fillValueInfo(out, info);
-    return out;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return std::nullopt;
+	firebase::remote_config::ValueInfo info{};
+	gm_structs::FirebaseRemoteConfigStringInfo out;
+	out.value = rc->GetString(std::string(key).c_str(), &info);
+	fillValueInfo(out, info);
+	return out;
 }
 
 std::optional<gm_structs::FirebaseRemoteConfigDataInfo> firebase_remote_config_get_data_with_info(uint64_t rc_ref, std::string_view key, GMBuffer out_buffer)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); if (!rc) return std::nullopt;
-    firebase::remote_config::ValueInfo info{};
-    auto value = rc->GetData(std::string(key).c_str(), &info);
-    size_t copied = std::min(value.size(), static_cast<size_t>(out_buffer.length()));
-    if (copied) std::memcpy(out_buffer.data(), value.data(), copied);
-    gm_structs::FirebaseRemoteConfigDataInfo out;
-    out.bytes_copied = static_cast<double>(copied);
-    out.size = static_cast<double>(value.size());
-    fillValueInfo(out, info);
-    return out;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	if (!rc) return std::nullopt;
+	firebase::remote_config::ValueInfo info{};
+	auto value = rc->GetData(std::string(key).c_str(), &info);
+	size_t copied = std::min(value.size(), static_cast<size_t>(out_buffer.length()));
+	if (copied) std::memcpy(out_buffer.data(), value.data(), copied);
+	gm_structs::FirebaseRemoteConfigDataInfo out;
+	out.bytes_copied = static_cast<double>(copied);
+	out.size = static_cast<double>(value.size());
+	fillValueInfo(out, info);
+	return out;
 }
 
 uint64_t firebase_remote_config_get_app(uint64_t rc_ref)
 {
-    auto* rc = resolveRemoteConfig(rc_ref); return rc ? wrapFirebaseApp(rc->app()) : 0;
+	auto* rc = resolveRemoteConfig(rc_ref);
+	return rc ? wrapFirebaseApp(rc->app()) : 0;
 }
 
 uint64_t firebase_remote_config_get_instance_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
-    auto* rc = firebase::remote_config::RemoteConfig::GetInstance(app);
-    if (!rc) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "RemoteConfig::GetInstance(app) returned null"); return 0; }
-    return registerFirebasePointer(rc, GM_FB_TYPE_REMOTE_CONFIG);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	auto* rc = firebase::remote_config::RemoteConfig::GetInstance(app);
+	if (!rc)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "RemoteConfig::GetInstance(app) returned null");
+		return 0;
+	}
+	return registerFirebasePointer(rc, GM_FB_TYPE_REMOTE_CONFIG);
 }

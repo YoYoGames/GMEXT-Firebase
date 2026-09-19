@@ -142,7 +142,17 @@ uint64_t packFirebaseRef(uint32_t index, uint8_t type);
 // from more than one of GMFirebase_auth*.cpp's three files, so the bits that
 // need a single definition live here rather than being duplicated or made
 // file-static like every other module's registries.
-namespace firebase { namespace auth { class Auth; class User; class Credential; class PhoneAuthCredential; struct AuthResult; } }
+namespace firebase
+{
+	namespace auth
+	{
+		class Auth;
+		class User;
+		class Credential;
+		class PhoneAuthCredential;
+		struct AuthResult;
+	}
+}
 
 // Auth is a singleton-per-App like g_firebase_app above (Firebase only ever
 // hands back one Auth* per App), so - like the App bootstrap above - it is
@@ -179,7 +189,13 @@ gm_structs::FirebaseAuthResult makeFirebaseAuthResult(uint64_t user_ref, const f
 // GM_FB_TYPE_AUTH_FEDERATED_PROVIDER handles are minted in GMFirebase_auth.cpp
 // and consumed by both the Auth and the User sign-in paths. Defined in
 // GMFirebase_auth.cpp; null (with the last error set) for anything else.
-namespace firebase { namespace auth { class FederatedOAuthProvider; } }
+namespace firebase
+{
+	namespace auth
+	{
+		class FederatedOAuthProvider;
+	}
+}
 firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provider_ref);
 
 // Core App

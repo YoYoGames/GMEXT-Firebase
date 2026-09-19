@@ -363,7 +363,10 @@ FirebaseError firebase_storage_ref_get_download_url(uint64_t ref, const std::opt
 	if (!firebaseFutureArmed(future, "firebase_storage_ref_get_download_url")) return FirebaseError::InvalidHandle;
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		completeFuture(callback, f, [](const std::string& url) { return std::string_view{ url }; });
+		completeFuture(callback, f, [](const std::string& url)
+		{
+			return std::string_view{ url };
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -555,7 +558,10 @@ FirebaseError firebase_storage_ref_get_file(uint64_t ref, std::string_view local
 	future.OnCompletion([callback, listener](const firebase::Future<size_t>& f)
 	{
 		delete listener;
-		completeFuture(callback, f, [](size_t bytes_read) { return static_cast<double>(bytes_read); });
+		completeFuture(callback, f, [](size_t bytes_read)
+		{
+			return static_cast<double>(bytes_read);
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -919,31 +925,43 @@ std::string firebase_storage_list_result_next_page_token(uint64_t ref)
 
 std::string firebase_storage_metadata_md5_hash(uint64_t ref)
 {
-    firebase::storage::Metadata* metadata = resolveMetadata(ref);
-    if (metadata == nullptr) return std::string();
-    const char* value = metadata->md5_hash();
-    return value ? std::string(value) : std::string();
+	firebase::storage::Metadata* metadata = resolveMetadata(ref);
+	if (metadata == nullptr) return std::string();
+	const char* value = metadata->md5_hash();
+	return value ? std::string(value) : std::string();
 }
 
 uint64_t firebase_storage_get_app(uint64_t storage_ref)
 {
-    auto* storage = resolveStorage(storage_ref); return storage ? wrapFirebaseApp(storage->app()) : 0;
+	auto* storage = resolveStorage(storage_ref);
+	return storage ? wrapFirebaseApp(storage->app()) : 0;
 }
 
 uint64_t firebase_storage_get_instance_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
-    firebase::InitResult result = firebase::kInitResultSuccess;
-    auto* storage = firebase::storage::Storage::GetInstance(app, &result);
-    if (!storage || result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Storage instance for app", result)); return 0; }
-    return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	firebase::InitResult result = firebase::kInitResultSuccess;
+	auto* storage = firebase::storage::Storage::GetInstance(app, &result);
+	if (!storage || result != firebase::kInitResultSuccess)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Storage instance for app", result));
+		return 0;
+	}
+	return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
 }
 
 uint64_t firebase_storage_get_instance_for_app_url(uint64_t app_ref, std::string_view url)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
-    std::string u(url); firebase::InitResult result = firebase::kInitResultSuccess;
-    auto* storage = firebase::storage::Storage::GetInstance(app, u.c_str(), &result);
-    if (!storage || result != firebase::kInitResultSuccess) { setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Storage instance for app/url", result)); return 0; }
-    return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	std::string u(url);
+	firebase::InitResult result = firebase::kInitResultSuccess;
+	auto* storage = firebase::storage::Storage::GetInstance(app, u.c_str(), &result);
+	if (!storage || result != firebase::kInitResultSuccess)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("failed to get Storage instance for app/url", result));
+		return 0;
+	}
+	return registerFirebasePointer(storage, GM_FB_TYPE_STORAGE);
 }

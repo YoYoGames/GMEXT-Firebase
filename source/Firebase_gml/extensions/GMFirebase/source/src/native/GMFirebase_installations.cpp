@@ -61,7 +61,10 @@ FirebaseError firebase_installations_get_id(uint64_t installations_ref, const st
 	if (installations == nullptr) return FirebaseError::InvalidHandle;
 	installations->GetId().OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		completeFuture(callback, f, [](const std::string& id) { return std::string_view{ id }; });
+		completeFuture(callback, f, [](const std::string& id)
+		{
+			return std::string_view{ id };
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -72,7 +75,10 @@ FirebaseError firebase_installations_get_token(uint64_t installations_ref, bool 
 	if (installations == nullptr) return FirebaseError::InvalidHandle;
 	installations->GetToken(force_refresh).OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		completeFuture(callback, f, [](const std::string& token) { return std::string_view{ token }; });
+		completeFuture(callback, f, [](const std::string& token)
+		{
+			return std::string_view{ token };
+		});
 	});
 	return FirebaseError::Ok;
 }

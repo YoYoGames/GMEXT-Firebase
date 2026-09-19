@@ -190,36 +190,40 @@ FirebaseError firebase_functions_callable_call_with_data(uint64_t ref, const GMV
 
 uint64_t firebase_functions_get_app(uint64_t functions_ref)
 {
-    auto* functions = resolveFunctions(functions_ref); return functions ? wrapFirebaseApp(functions->app()) : 0;
+	auto* functions = resolveFunctions(functions_ref);
+	return functions ? wrapFirebaseApp(functions->app()) : 0;
 }
 
 uint64_t firebase_functions_callable_get_functions(uint64_t callable_ref)
 {
-    auto* callable = resolveCallable(callable_ref);
-    auto* functions = callable ? callable->functions() : nullptr;
-    return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
+	auto* callable = resolveCallable(callable_ref);
+	auto* functions = callable ? callable->functions() : nullptr;
+	return functions ? registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS) : 0;
 }
 
 uint64_t firebase_functions_get_instance_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
-    auto* functions = firebase::functions::Functions::GetInstance(app);
-    if (!functions)
-    {
-        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app: Functions::GetInstance() returned null");
-        return 0;
-    }
-    return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	auto* functions = firebase::functions::Functions::GetInstance(app);
+	if (!functions)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app: Functions::GetInstance() returned null");
+		return 0;
+	}
+	return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }
 
 uint64_t firebase_functions_get_instance_for_app_region(uint64_t app_ref, std::string_view region)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0; std::string r(region);
-    auto* functions = firebase::functions::Functions::GetInstance(app, r.c_str());
-    if (!functions)
-    {
-        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app_region: Functions::GetInstance() returned null");
-        return 0;
-    }
-    return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	std::string r(region);
+	auto* functions = firebase::functions::Functions::GetInstance(app, r.c_str());
+	if (!functions)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_functions_get_instance_for_app_region: Functions::GetInstance() returned null");
+		return 0;
+	}
+	return registerFirebasePointer(functions, GM_FB_TYPE_FUNCTIONS);
 }

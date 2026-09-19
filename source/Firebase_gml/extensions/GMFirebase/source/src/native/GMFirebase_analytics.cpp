@@ -216,7 +216,10 @@ FirebaseError firebase_analytics_get_analytics_instance_id(const std::optional<g
 	firebase::Future<std::string> future = firebase::analytics::GetAnalyticsInstanceId();
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		completeFuture(callback, f, [](const std::string& id) { return std::string_view{ id }; });
+		completeFuture(callback, f, [](const std::string& id)
+		{
+			return std::string_view{ id };
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -229,7 +232,10 @@ FirebaseError firebase_analytics_get_session_id(const std::optional<gm::wire::GM
 	firebase::Future<int64_t> future = firebase::analytics::GetSessionId();
 	future.OnCompletion([callback](const firebase::Future<int64_t>& f)
 	{
-		completeFuture(callback, f, [](int64_t session_id) { return static_cast<double>(session_id); });
+		completeFuture(callback, f, [](int64_t session_id)
+		{
+			return static_cast<double>(session_id);
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -344,23 +350,24 @@ void firebase_analytics_notify_app_lifecycle_change(FirebaseAnalyticsAppLifecycl
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_email(GMBuffer hashed_email)
 {
 	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_hashed_email")) return;
-    const auto* begin = static_cast<const unsigned char*>(hashed_email.data());
-    std::vector<unsigned char> bytes(begin, begin + hashed_email.length());
-    firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedEmailAddress(std::move(bytes));
+	const auto* begin = static_cast<const unsigned char*>(hashed_email.data());
+	std::vector<unsigned char> bytes(begin, begin + hashed_email.length());
+	firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedEmailAddress(std::move(bytes));
 }
 
 void firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone(GMBuffer hashed_phone)
 {
 	if (!analyticsReady("firebase_analytics_initiate_on_device_conversion_measurement_hashed_phone")) return;
-    const auto* begin = static_cast<const unsigned char*>(hashed_phone.data());
-    std::vector<unsigned char> bytes(begin, begin + hashed_phone.length());
-    firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber(std::move(bytes));
+	const auto* begin = static_cast<const unsigned char*>(hashed_phone.data());
+	std::vector<unsigned char> bytes(begin, begin + hashed_phone.length());
+	firebase::analytics::InitiateOnDeviceConversionMeasurementWithHashedPhoneNumber(std::move(bytes));
 }
 
 bool firebase_analytics_initialize_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
-    firebase::analytics::Initialize(*app);
-    g_analytics_initialized = true;
-    return true;
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return false;
+	firebase::analytics::Initialize(*app);
+	g_analytics_initialized = true;
+	return true;
 }

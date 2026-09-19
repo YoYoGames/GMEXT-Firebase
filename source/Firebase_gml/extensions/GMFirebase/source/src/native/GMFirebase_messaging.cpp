@@ -424,7 +424,10 @@ FirebaseError firebase_messaging_get_token(const std::optional<GMFunction>& call
 	GMF_DEPRECATED_POP()
 	future.OnCompletion([callback](const firebase::Future<std::string>& f)
 	{
-		completeFuture(callback, f, [](const std::string& token) { return std::string_view{ token }; });
+		completeFuture(callback, f, [](const std::string& token)
+		{
+			return std::string_view{ token };
+		});
 	});
 	return FirebaseError::Ok;
 }
@@ -499,27 +502,29 @@ void firebase_messaging_raw_data_release(uint64_t raw_data_ref)
 // Firebase C++ MessagingOptions overload.
 bool firebase_messaging_initialize_with_options(bool suppress_notification_permission_prompt)
 {
-    firebase::App* app = getFirebaseApp();
-    if (app == nullptr)
-    {
-        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
-        return false;
-    }
-    firebase::messaging::MessagingOptions options;
-    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
-    return messagingInitialize(app, &options, "firebase_messaging_initialize_with_options");
+	firebase::App* app = getFirebaseApp();
+	if (app == nullptr)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, "firebase_messaging: no firebase::App - call firebase_app_initialize() first");
+		return false;
+	}
+	firebase::messaging::MessagingOptions options;
+	options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
+	return messagingInitialize(app, &options, "firebase_messaging_initialize_with_options");
 }
 
 bool firebase_messaging_initialize_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
-    return messagingInitialize(app, nullptr, "firebase_messaging_initialize_for_app");
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return false;
+	return messagingInitialize(app, nullptr, "firebase_messaging_initialize_for_app");
 }
 
 bool firebase_messaging_initialize_for_app_with_options(uint64_t app_ref, bool suppress_notification_permission_prompt)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return false;
-    firebase::messaging::MessagingOptions options;
-    options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
-    return messagingInitialize(app, &options, "firebase_messaging_initialize_for_app_with_options");
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return false;
+	firebase::messaging::MessagingOptions options;
+	options.suppress_notification_permission_prompt = suppress_notification_permission_prompt;
+	return messagingInitialize(app, &options, "firebase_messaging_initialize_for_app_with_options");
 }

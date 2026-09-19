@@ -223,7 +223,10 @@ uint64_t firebase_app_check_add_listener(uint64_t app_check_ref, const std::opti
 
 	GmAppCheckListener* listener = new GmAppCheckListener(callback.value());
 	app_check->AddAppCheckListener(listener);
-	{ std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex); g_app_check_listener_owner[listener] = app_check; }
+	{
+		std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex);
+		g_app_check_listener_owner[listener] = app_check;
+	}
 
 	return registerFirebasePointer(listener, GM_FB_TYPE_APPCHECK_LISTENER);
 }
@@ -240,7 +243,11 @@ bool firebase_app_check_remove_listener(uint64_t listener_ref)
 	{
 		std::lock_guard<std::mutex> lock(g_app_check_listener_owner_mutex);
 		auto it = g_app_check_listener_owner.find(listener);
-		if (it != g_app_check_listener_owner.end()) { app_check = it->second; g_app_check_listener_owner.erase(it); }
+		if (it != g_app_check_listener_owner.end())
+		{
+			app_check = it->second;
+			g_app_check_listener_owner.erase(it);
+		}
 	}
 	if (app_check != nullptr) app_check->RemoveAppCheckListener(listener);
 

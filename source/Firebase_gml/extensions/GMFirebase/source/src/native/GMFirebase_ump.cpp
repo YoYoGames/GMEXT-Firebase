@@ -252,13 +252,14 @@ FirebaseError firebase_ump_show_privacy_options_form(uint64_t consent_ref, const
 
 uint64_t firebase_ump_get_instance_for_app(uint64_t app_ref)
 {
-    auto* app = resolveFirebaseApp(app_ref); if (!app) return 0;
-    firebase::InitResult init_result = firebase::kInitResultSuccess;
-    auto* consent_info = firebase::ump::ConsentInfo::GetInstance(*app, &init_result);
-    if (!consent_info || init_result != firebase::kInitResultSuccess)
-    {
-        setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("UMP ConsentInfo::GetInstance(app) failed", init_result));
-        return 0;
-    }
-    return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
+	auto* app = resolveFirebaseApp(app_ref);
+	if (!app) return 0;
+	firebase::InitResult init_result = firebase::kInitResultSuccess;
+	auto* consent_info = firebase::ump::ConsentInfo::GetInstance(*app, &init_result);
+	if (!consent_info || init_result != firebase::kInitResultSuccess)
+	{
+		setFirebaseLastError(GM_FB_ERROR_NOT_INITIALIZED, firebaseInitResultMessage("UMP ConsentInfo::GetInstance(app) failed", init_result));
+		return 0;
+	}
+	return registerFirebasePointer(consent_info, GM_FB_TYPE_UMP_CONSENT_INFO);
 }

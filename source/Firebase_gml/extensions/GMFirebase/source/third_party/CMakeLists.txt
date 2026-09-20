@@ -411,6 +411,28 @@ elseif(APPLE)
       "SHELL:-framework SystemConfiguration"
       "SHELL:-framework Network"
       "-lresolv")
+
+    # Firebase, gRPC, abseil, protobuf and leveldb are private to
+    # libGMFirebase.dylib: export only what a runner resolves by name - the
+    # extgen entry points, GMRT's initialiser and the GMS2 runner's
+    # YYExtensionInitialise, which it looks up under this exact mangled name
+    # (YYEXPORT carries no extern "C"). This is the Apple spelling of the
+    # Android branch's --exclude-libs,ALL; ld64 takes globs in the list, so a
+    # regen that adds functions needs nothing here. The hidden names stay in
+    # the symbol table as locals so crash reports still resolve to function
+    # names; Release drops the STABS debug map (-S), which is what carries the
+    # build host's archive paths.
+    set(_FIREBASE_MAC_EXPORTS
+        "${CMAKE_CURRENT_BINARY_DIR}/GMFirebase_exported_symbols.txt")
+    file(WRITE "${_FIREBASE_MAC_EXPORTS}"
+      "___EXT_NATIVE__*\n"
+      "_GMExtensionInitialise\n"
+      "__Z21YYExtensionInitialisePK17YYRunnerInterfacem\n")
+    target_link_options(ext_third_party INTERFACE
+      "LINKER:-exported_symbols_list,${_FIREBASE_MAC_EXPORTS}"
+      "$<$<CONFIG:Release>:LINKER:-S>")
+    set_property(TARGET ext_third_party APPEND PROPERTY
+      INTERFACE_LINK_DEPENDS "${_FIREBASE_MAC_EXPORTS}")
   endif()
 
 # =============================================================================

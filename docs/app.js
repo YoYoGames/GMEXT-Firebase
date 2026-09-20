@@ -235,20 +235,18 @@
  * ${page.getting_started}. Use this function when the configuration has to come from somewhere else
  * at runtime - a second Firebase project, or values fetched from your own server.]]
  *
- * @param {Struct.FirebaseAppOptions} options The settings for the app; variables left `undefined` keep the SDK defaults.
+ * @param {Struct.FirebaseAppOptions} options The settings for the app, created with `new FirebaseAppOptions()`; variables left `undefined` keep the SDK defaults.
  * @param {String} name The name for the app, or an empty string to create the default app.
  *
  * @returns {Real} A handle to the new app, or `0` when it could not be created.
  *
  * @example
  * ```gml
- * var _options =
- * {
- *     app_id: "1:012345678901:android:0123456789abcdef",
- *     api_key: "AIza...",
- *     project_id: "my-second-project",
- *     messaging_sender_id: "012345678901"
- * };
+ * var _options = new FirebaseAppOptions();
+ * _options.app_id = "1:012345678901:android:0123456789abcdef";
+ * _options.api_key = "AIza...";
+ * _options.project_id = "my-second-project";
+ * _options.messaging_sender_id = "012345678901";
  * second_app = firebase_app_initialize_with_options(_options, "second");
  * if (second_app == 0)
  * {
@@ -256,8 +254,9 @@
  * }
  * ```
  * The above code creates a second, named app for another Firebase project and keeps its handle in an
- * instance variable so the `*_for_app` functions can use it later. The variables not given
- * (`database_url`, `storage_bucket`, `ga_tracking_id`) keep their defaults.
+ * instance variable so the `*_for_app` functions can use it later. The variables left `undefined`
+ * (`database_url`, `storage_bucket`, `ga_tracking_id`) keep their defaults. The struct has to come
+ * from `new FirebaseAppOptions()`: a plain struct literal is refused by the function.
  * @function_end
  */
 
@@ -440,8 +439,9 @@
 /**
  * @struct FirebaseAppOptions
  * @desc The settings a Firebase App is created from - the values `google-services.json` and
- * `GoogleService-Info.plist` carry. ${function.firebase_app_initialize_with_options} takes one; a
- * variable left `undefined` there keeps the SDK's default. ${function.firebase_app_get_default_options}
+ * `GoogleService-Info.plist` carry. ${function.firebase_app_initialize_with_options} takes one,
+ * created with `new FirebaseAppOptions()` (every variable starts `undefined`, and a variable left
+ * that way keeps the SDK's default; a plain struct literal is refused). ${function.firebase_app_get_default_options}
  * and ${function.firebase_app_handle_get_options} return one with every variable present, an empty
  * string standing for a setting that was not supplied.
  *

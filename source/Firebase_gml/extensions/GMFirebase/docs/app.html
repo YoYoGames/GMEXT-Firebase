@@ -2023,7 +2023,7 @@ at runtime - a second Firebase project, or values fetched from your own server.<
 <tr>
 <td>options</td>
 <td><a href="app.html#firebaseappoptions">FirebaseAppOptions</a></td>
-<td>The settings for the app; variables left <code>undefined</code> keep the SDK defaults.</td>
+<td>The settings for the app, created with <code>new FirebaseAppOptions()</code>; variables left <code>undefined</code> keep the SDK defaults.</td>
 </tr>
 <tr>
 <td>name</td>
@@ -2040,21 +2040,20 @@ at runtime - a second Firebase project, or values fetched from your own server.<
 <p>A handle to the new app, or <code>0</code> when it could not be created.</p>
 <p><br></p>
 <p><strong>Example:</strong></p>
-<p><pre class="highlight"><code class="language-gml">var _options =
-{
-    app_id: "1:012345678901:android:0123456789abcdef",
-    api_key: "AIza...",
-    project_id: "my-second-project",
-    messaging_sender_id: "012345678901"
-};
+<p><pre class="highlight"><code class="language-gml">var _options = new FirebaseAppOptions();
+_options.app_id = "1:012345678901:android:0123456789abcdef";
+_options.api_key = "AIza...";
+_options.project_id = "my-second-project";
+_options.messaging_sender_id = "012345678901";
 second_app = firebase_app_initialize_with_options(_options, "second");
 if (second_app == 0)
 {
     show_debug_message(firebase_last_error_message());
 }</code></pre>
 The above code creates a second, named app for another Firebase project and keeps its handle in an
-instance variable so the <code>*_for_app</code> functions can use it later. The variables not given
-(<code>database_url</code>, <code>storage_bucket</code>, <code>ga_tracking_id</code>) keep their defaults.</p>
+instance variable so the <code>*_for_app</code> functions can use it later. The variables left <code>undefined</code>
+(<code>database_url</code>, <code>storage_bucket</code>, <code>ga_tracking_id</code>) keep their defaults. The struct has to come
+from <code>new FirebaseAppOptions()</code>: a plain struct literal is refused by the function.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -2561,8 +2560,9 @@ every message at that level and above.</p>
 
 <h1 id="firebaseappoptions">FirebaseAppOptions<a class="headerlink" href="#firebaseappoptions" title="Permanent link">&para;</a></h1>
 <p>The settings a Firebase App is created from - the values <code>google-services.json</code> and
-<code>GoogleService-Info.plist</code> carry. <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> takes one; a
-variable left <code>undefined</code> there keeps the SDK's default. <a href="app.html#firebase_app_get_default_options">firebase_app_get_default_options</a>
+<code>GoogleService-Info.plist</code> carry. <a href="app.html#firebase_app_initialize_with_options">firebase_app_initialize_with_options</a> takes one,
+created with <code>new FirebaseAppOptions()</code> (every variable starts <code>undefined</code>, and a variable left
+that way keeps the SDK's default; a plain struct literal is refused). <a href="app.html#firebase_app_get_default_options">firebase_app_get_default_options</a>
 and <a href="app.html#firebase_app_handle_get_options">firebase_app_handle_get_options</a> return one with every variable present, an empty
 string standing for a setting that was not supplied.</p>
 <p>This struct is referenced by the following functions:</p>

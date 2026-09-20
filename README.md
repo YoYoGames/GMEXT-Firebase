@@ -3,6 +3,16 @@ Repository for GameMaker's Firebase Extension
 
 This repository was created with the intent of presenting users with the latest version available of the extension (even previous to marketplace updates) and also provide a way for the community to contribute with bug fixes and feature implementation.
 
+> [!IMPORTANT]
+> **Version 4.0.0 is a breaking change.** The extension has been rewritten over the Firebase C++
+> SDK, with the platform bindings generated from a single GMIDL spec and every asynchronous call
+> now taking a GML callback function directly, replacing the `async_load`-based Social Async
+> Events and the REST layer. Every 3.x function is renamed or gone, the per-product extensions are
+> now one `GMFirebase` plus three platform-SDK companions, and there is no HTML5 target, so moving
+> an existing project across is a migration rather than a drop-in upgrade. Projects that need the
+> old API should stay on the final 3.1.0 release. Check [the documentation](../../wiki) for the
+> current API.
+
 The package is four GameMaker extensions plus the shared `ExtensionCore`, all in the demo project under `source/Firebase_gml/extensions/`:
 
 * `GMFirebase` - the Firebase C++ SDK wrapped for Android, iOS, Windows, macOS and Linux: Analytics, Authentication, Cloud Firestore, Realtime Database, Cloud Storage, Cloud Messaging, Remote Config, Cloud Functions, App Check, Installations and the User Messaging Platform. Every project needs it.

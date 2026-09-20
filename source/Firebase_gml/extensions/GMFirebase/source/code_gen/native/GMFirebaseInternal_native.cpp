@@ -2138,6 +2138,16 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_run_transaction(char* __arg_
     // field: ref, type: UInt64
     std::uint64_t ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
+    // field: trigger_local_events, type: Bool
+    bool trigger_local_events = gm::wire::codec::readValue<bool>(__br);
+
+    // field: update_callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> update_callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        update_callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
     if (gm::wire::codec::readValue<bool>(__br))
@@ -2145,7 +2155,7 @@ GMEXPORT double __EXT_NATIVE__firebase_database_ref_run_transaction(char* __arg_
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    auto&& __result = firebase_database_ref_run_transaction(ref, callback);
+    auto&& __result = firebase_database_ref_run_transaction(ref, trigger_local_events, update_callback, callback);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
     // return: __result, type: enum FirebaseError
@@ -2291,6 +2301,148 @@ GMEXPORT double __EXT_NATIVE__firebase_database_snapshot_release(char* __arg_buf
 
     firebase_database_snapshot_release(snapshot);
     return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_get_info(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_mutable_data_get_info(data);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: optional<struct FirebaseMutableDataInfo>
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_child(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: path, type: String
+    std::string_view path = gm::wire::codec::readValue<std::string_view>(__br);
+
+    auto&& __result = firebase_database_mutable_data_child(data, path);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: UInt64
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_has_child(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: path, type: String
+    std::string_view path = gm::wire::codec::readValue<std::string_view>(__br);
+
+    auto&& __result = firebase_database_mutable_data_has_child(data, path);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_get_children(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_mutable_data_get_children(data);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: UInt64[]
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_get_value(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_mutable_data_get_value(data);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: Any
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_get_priority(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_mutable_data_get_priority(data);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: Any
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_set_value(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: value, type: Any
+    gm::wire::GMValue value = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    auto&& __result = firebase_database_mutable_data_set_value(data, value);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_mutable_data_set_priority(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: priority, type: Any
+    gm::wire::GMValue priority = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    auto&& __result = firebase_database_mutable_data_set_priority(data, priority);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_transaction_commit(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_transaction_commit(data);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_database_transaction_abort(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: data, type: UInt64
+    std::uint64_t data = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_database_transaction_abort(data);
+    return static_cast<double>(__result);
 }
 
 GMEXPORT double __EXT_NATIVE__firebase_firestore_get_instance(char* __ret_buffer, double __ret_buffer_length)
@@ -2611,6 +2763,16 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_run_transaction(char* __arg_buf
     // field: instance_ref, type: UInt64
     std::uint64_t instance_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
 
+    // field: max_attempts, type: Float64
+    double max_attempts = gm::wire::codec::readValue<double>(__br);
+
+    // field: update_callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> update_callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        update_callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
     // field: callback, type: optional<Function>
     std::optional<gm::wire::GMFunction> callback = std::nullopt;
     if (gm::wire::codec::readValue<bool>(__br))
@@ -2618,12 +2780,184 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_run_transaction(char* __arg_buf
         callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
     }
 
-    auto&& __result = firebase_firestore_run_transaction(instance_ref, callback);
+    auto&& __result = firebase_firestore_run_transaction(instance_ref, max_attempts, update_callback, callback);
     gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
 
     // return: __result, type: enum FirebaseError
     gm::wire::codec::writeValue(__bw, __result);
     return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_get(char* __arg_buffer, double __arg_buffer_length, char* __ret_buffer, double __ret_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: callback, type: optional<Function>
+    std::optional<gm::wire::GMFunction> callback = std::nullopt;
+    if (gm::wire::codec::readValue<bool>(__br))
+    {
+        callback = gm::wire::codec::readFunction(__br, &__dispatch_queue);
+    }
+
+    auto&& __result = firebase_firestore_transaction_get(transaction_ref, document_ref, callback);
+    gm::byteio::BufferWriter __bw{__ret_buffer, static_cast<size_t>(__ret_buffer_length)};
+
+    // return: __result, type: enum FirebaseError
+    gm::wire::codec::writeValue(__bw, __result);
+    return 0;
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_set(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: data, type: Any
+    gm::wire::GMValue data = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    auto&& __result = firebase_firestore_transaction_set(transaction_ref, document_ref, data);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_set_merge(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: data, type: Any
+    gm::wire::GMValue data = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    auto&& __result = firebase_firestore_transaction_set_merge(transaction_ref, document_ref, data);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_set_merge_fields(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: data, type: Any
+    gm::wire::GMValue data = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    // field: fields, type: String[]
+    std::vector<std::string_view> fields = gm::wire::codec::readVector<std::string_view>(__br);
+
+    auto&& __result = firebase_firestore_transaction_set_merge_fields(transaction_ref, document_ref, data, fields);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_set_merge_field_paths(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: data, type: Any
+    gm::wire::GMValue data = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    // field: field_paths, type: UInt64[]
+    std::vector<std::uint64_t> field_paths = gm::wire::codec::readVector<std::uint64_t>(__br);
+
+    auto&& __result = firebase_firestore_transaction_set_merge_field_paths(transaction_ref, document_ref, data, field_paths);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_update(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: data, type: Any
+    gm::wire::GMValue data = gm::wire::codec::readValue<gm::wire::GMValue>(__br);
+
+    auto&& __result = firebase_firestore_transaction_update(transaction_ref, document_ref, data);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_update_field_paths(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: entries, type: struct FirestoreFieldPathValue[]
+    std::vector<gm_structs::FirestoreFieldPathValue> entries = gm::wire::codec::readVector<gm_structs::FirestoreFieldPathValue>(__br);
+
+    auto&& __result = firebase_firestore_transaction_update_field_paths(transaction_ref, document_ref, entries);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_delete(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: document_ref, type: UInt64
+    std::uint64_t document_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_firestore_transaction_delete(transaction_ref, document_ref);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_commit(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    auto&& __result = firebase_firestore_transaction_commit(transaction_ref);
+    return static_cast<double>(__result);
+}
+
+GMEXPORT double __EXT_NATIVE__firebase_firestore_transaction_abort(char* __arg_buffer, double __arg_buffer_length)
+{
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: transaction_ref, type: UInt64
+    std::uint64_t transaction_ref = gm::wire::codec::readValue<std::uint64_t>(__br);
+
+    // field: error_message, type: String
+    std::string_view error_message = gm::wire::codec::readValue<std::string_view>(__br);
+
+    auto&& __result = firebase_firestore_transaction_abort(transaction_ref, error_message);
+    return static_cast<double>(__result);
 }
 
 GMEXPORT char* __EXT_NATIVE__firebase_firestore_collection_ref_id(char* __arg_buffer, double __arg_buffer_length)
@@ -7400,8 +7734,8 @@ GMEXPORT double __EXT_NATIVE__firebase_firestore_write_batch_set_merge_field_pat
     // field: field_paths, type: UInt64[]
     std::vector<std::uint64_t> field_paths = gm::wire::codec::readVector<std::uint64_t>(__br);
 
-    firebase_firestore_write_batch_set_merge_field_paths(batch, document, data, field_paths);
-    return 0;
+    auto&& __result = firebase_firestore_write_batch_set_merge_field_paths(batch, document, data, field_paths);
+    return static_cast<double>(__result);
 }
 
 GMEXPORT char* __EXT_NATIVE__firebase_storage_metadata_md5_hash(char* __arg_buffer, double __arg_buffer_length)

@@ -688,6 +688,46 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_database_snapshot_release(__arg_buffer, __arg_buffer_length);
 }
+- (double)__EXT_NATIVE__firebase_database_mutable_data_get_info:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_get_info(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_child:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_child(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_has_child:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_has_child(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_get_children:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_get_children(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_get_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_get_value(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_get_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_get_priority(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_set_value:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_set_value(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_mutable_data_set_priority:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_mutable_data_set_priority(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_transaction_commit:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_transaction_commit(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_database_transaction_abort:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_database_transaction_abort(__arg_buffer, __arg_buffer_length);
+}
 - (double)__EXT_NATIVE__firebase_firestore_get_instance:(char*)__ret_buffer arg1:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_firestore_get_instance(__ret_buffer, __ret_buffer_length);
@@ -771,6 +811,46 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 - (double)__EXT_NATIVE__firebase_firestore_run_transaction:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
 {
     return __EXT_NATIVE__firebase_firestore_run_transaction(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_get:(char*)__arg_buffer arg1:(double)__arg_buffer_length arg2:(char*)__ret_buffer arg3:(double)__ret_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_get(__arg_buffer, __arg_buffer_length, __ret_buffer, __ret_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_set:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_set(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_set_merge:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_set_merge(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_set_merge_fields:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_set_merge_fields(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_set_merge_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_set_merge_field_paths(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_update:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_update(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_update_field_paths:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_update_field_paths(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_delete:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_delete(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_commit:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_commit(__arg_buffer, __arg_buffer_length);
+}
+- (double)__EXT_NATIVE__firebase_firestore_transaction_abort:(char*)__arg_buffer arg1:(double)__arg_buffer_length
+{
+    return __EXT_NATIVE__firebase_firestore_transaction_abort(__arg_buffer, __arg_buffer_length);
 }
 - (char*)__EXT_NATIVE__firebase_firestore_collection_ref_id:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {

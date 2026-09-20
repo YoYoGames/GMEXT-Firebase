@@ -342,7 +342,7 @@
  * @desc **Firebase C++ SDK:** [firebase::firestore::Firestore::Terminate](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/firestore#terminate)
  *
  * This function shuts the instance down and releases its resources. After the callback the instance
- * handle and every reference, query, batch and snapshot derived from it are dead; only
+ * handle and every reference, query, batch, transaction and snapshot derived from it are dead; only
  * ${function.firebase_firestore_clear_persistence} may still be called on it, and
  * ${function.firebase_firestore_get_instance} then creates a fresh instance and frees the
  * terminated one. Pending writes are not cancelled - they are sent the next time the instance
@@ -414,29 +414,263 @@
 
 /**
  * @function firebase_firestore_run_transaction
- * @desc **Firebase C++ SDK:** [firebase::firestore::Firestore::RunTransaction](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/firestore#runtransaction)
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Firestore::RunTransaction](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/firestore#runtransaction_1)
  *
- * This function is not available. A Firestore transaction runs a handler that must read and write
- * synchronously inside the SDK's own retry loop, and the extension's callback bridge cannot hold a
- * GML function to that contract, so the call never reaches the SDK: it returns
- * `FirebaseError.Unsupported` at once, ${function.firebase_last_error_code} says the same, and the
- * callback is never called.
+ * This function runs a transaction: reads followed by writes that the server applies as one atomic
+ * unit, and only if none of the documents read changed in between. The SDK calls `update_callback`
+ * with a transaction handle; inside it the game reads with
+ * ${function.firebase_firestore_transaction_get}, records writes with
+ * ${function.firebase_firestore_transaction_set}, ${function.firebase_firestore_transaction_update}
+ * and ${function.firebase_firestore_transaction_delete}, and ends the attempt with
+ * ${function.firebase_firestore_transaction_commit} or
+ * ${function.firebase_firestore_transaction_abort}. Each read delivers its snapshot through its own
+ * callback, every read must come before the first write, and nothing is sent until the commit.
+ * The update callback need not finish in one step: the handle stays valid, across events, until
+ * the commit or abort.
  *
- * [[Important: For an atomic write of several documents that does not depend on reading them
- * first, use a write batch (${function.firebase_firestore_batch}). For a counter, use
- * ${function.firebase_firestore_field_value_increment_integer}, which the server applies
- * atomically. A read-then-write that must be atomic has to run in a Cloud Function
- * (${module.functions}).]]
+ * When a document the attempt read changed on the server before the commit, or the commit could
+ * not reach the server, the SDK discards the attempt and calls `update_callback` again with a new
+ * handle, up to `max_attempts` times in all (the SDK's default is 5); the game redoes its reads
+ * and writes on the new handle, so the update callback must keep no state from one attempt to
+ * the next. The callback fires once: when the commit has been accepted, with the error of the
+ * last attempt when it was not, or with `FirestoreError.Aborted` and the message given to
+ * ${function.firebase_firestore_transaction_abort} when the game aborted.
+ *
+ * A transaction needs the server: a read fails with `FirestoreError.Unavailable` offline, and the
+ * attempt should then be aborted. A transaction still waiting for its commit when
+ * ${function.firebase_firestore_terminate} is called is abandoned - its handle dies with the
+ * instance and its callback does not fire. For an atomic write that depends on no read, a write
+ * batch (${function.firebase_firestore_batch}) works offline as well; for a counter,
+ * ${function.firebase_firestore_field_value_increment_integer} needs no transaction.
  *
  * @param {Real} instance_ref The instance handle from ${function.firebase_firestore_get_instance}.
- * @param {Function} [callback] Not used.
- * @returns {Enum.FirebaseError} Always `FirebaseError.Unsupported`.
+ * @param {Real} max_attempts How many times the update callback may run before the transaction gives up; at least `1`.
+ * @param {Function} [update_callback] The function that performs the attempt's reads and writes; called once per attempt with the transaction handle.
+ * @param {Function} [callback] The function to call with the result.
+ * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire. `FirebaseError.InvalidArgument` when `update_callback` is not a function or `max_attempts` is below `1`.
+ *
+ * @event callback:update_callback
+ * @desc Fires once per attempt, with the handle the attempt's reads and writes take.
+ * @member {Real} transaction_ref The transaction handle; valid until ${function.firebase_firestore_transaction_commit} or ${function.firebase_firestore_transaction_abort}, when it is freed.
+ * @event_end
  *
  * @event callback
- * @desc Never fires.
+ * @desc Fires once when the server has accepted the commit, when the game aborted, or with the reason the transaction failed.
  * @member {Enum.FirestoreError} error_code `FirestoreError.Ok` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
  * @event_end
+ *
+ * @example
+ * ```gml
+ * // Create Event
+ * firestore = firebase_firestore_get_instance();
+ * transaction_ref = 0;
+ *
+ * // Left Pressed Event
+ * firebase_firestore_run_transaction(firestore, 5, function(_transaction_ref)
+ * {
+ *     transaction_ref = _transaction_ref;
+ *     var _player = firebase_firestore_document(firestore, "players/USER_123");
+ *     firebase_firestore_transaction_get(transaction_ref, _player, function(_error_code, _error_message, _snapshot)
+ *     {
+ *         if (_error_code != FirestoreError.Ok)
+ *         {
+ *             firebase_firestore_transaction_abort(transaction_ref, _error_message);
+ *             return;
+ *         }
+ *         var _data = firebase_firestore_document_snapshot_get_data(_snapshot, FirestoreServerTimestampBehavior.None);
+ *         var _level = _data[$ "level"] ?? 0;
+ *         var _doc = firebase_firestore_document_snapshot_reference(_snapshot);
+ *         firebase_firestore_transaction_set_merge(transaction_ref, _doc, { level: _level + 1 });
+ *         firebase_firestore_transaction_commit(transaction_ref);
+ *         firebase_firestore_document_ref_release(_doc);
+ *         firebase_firestore_document_snapshot_release(_snapshot);
+ *     });
+ *     firebase_firestore_document_ref_release(_player);
+ * },
+ * function(_error_code, _error_message)
+ * {
+ *     show_debug_message(_error_code == FirestoreError.Ok ? "Level up" : _error_message);
+ * });
+ * ```
+ * The above code raises the player's level by one, safely against another device doing the same
+ * at the same moment: the read and the write are one attempt, and if the document changed in
+ * between the SDK runs the update callback again. The handle is kept in an instance variable
+ * because a GML function literal does not capture the local variables of the function around it;
+ * each attempt overwrites it. A missing document reads as an empty struct, so the level starts at
+ * `0`. The reference is released as soon as the read is queued, and the snapshot and the
+ * reference taken from it once the commit has been started.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_get
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Get](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#get)
+ *
+ * This function reads a document inside the transaction, from the server: the snapshot is the
+ * document as the transaction sees it, and the commit only goes through if the document has not
+ * changed since. Reads come before writes - a read after the attempt's first write fails with
+ * `FirestoreError.InvalidArgument`. The calls on a handle run in the order they were made, and a
+ * read holds the ones after it until the server has answered; a commit made before the read's
+ * callback still commits, without the writes that callback would have recorded. Put the writes
+ * that depend on a read, and the commit, in the read's callback.
+ *
+ * A document that does not exist is not an error: the `exists` of its
+ * ${function.firebase_firestore_document_snapshot_get_info} is `false`. Release the snapshot with
+ * ${function.firebase_firestore_document_snapshot_release}. A read that fails - offline, a security
+ * rule - should end in ${function.firebase_firestore_transaction_abort}.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Function} [callback] The function to call with the result.
+ * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the read was queued, otherwise `FirebaseError.InvalidHandle` for a handle that is not valid or an attempt that has already ended.
+ *
+ * @event callback
+ * @desc Fires once with the snapshot.
+ * @member {Enum.FirestoreError} error_code `FirestoreError.Ok` on success, otherwise the reason it failed.
+ * @member {String} error_message The SDK's description of the failure, or an empty string on success.
+ * @member {Real} snapshot A document snapshot handle to release with ${function.firebase_firestore_document_snapshot_release}, or `undefined` on failure.
+ * @event_end
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_set
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Set](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#set)
+ *
+ * This function records a full write of a document in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_set}: the document is created or replaced with
+ * exactly the fields in `data`. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_set_merge
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Set](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#set)
+ *
+ * This function records a merge write of a document in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_set_merge}: the fields in `data` are written, the
+ * rest left alone, and the document is created if it does not exist. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_set_merge_fields
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Set](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#set)
+ *
+ * This function records a merge of the named fields in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_set_merge_fields}. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
+ * @param {Array[String]} fields The names of the fields to write.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_set_merge_field_paths
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Set](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#set)
+ *
+ * This function records a merge of the fields named by field path handles in the transaction -
+ * the transaction's ${function.firebase_firestore_document_ref_set_merge_field_paths}. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
+ * @param {Array[Real]} field_paths An array of field path handles naming the fields to write.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_update
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Update](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#update)
+ *
+ * This function records an update in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_update}: the given fields change, the document must
+ * already exist, and the values can be sentinels such as
+ * ${function.firebase_firestore_field_value_increment_integer}. A missing document fails the
+ * commit with `FirestoreError.NotFound`, which is not retried. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_update_field_paths
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Update](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#update_1)
+ *
+ * This function records an update by field path handles in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_update_field_paths}. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @param {Array[Struct.FirestoreFieldPathValue]} entries An array of `{ field_path, value }` structs.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_delete
+ * @desc **Firebase C++ SDK:** [firebase::firestore::Transaction::Delete](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/transaction#delete)
+ *
+ * This function records a delete of a document in the transaction - the transaction's
+ * ${function.firebase_firestore_document_ref_delete}. Nothing is sent until ${function.firebase_firestore_transaction_commit}; the function only
+ * records the write and returns whether it did.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {Real} document_ref A document reference handle.
+ * @returns {Bool} `true` when the write was recorded, `false` when a handle was not valid or the attempt has already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_commit
+ * @desc This function ends the attempt and lets the SDK commit it: the writes recorded on the handle go
+ * to the server as one atomic unit, on the condition that no document the attempt read has
+ * changed. The handle is freed at once - calls on it afterwards fail with
+ * `FirebaseError.InvalidHandle` - and the outcome arrives in the callback of
+ * ${function.firebase_firestore_run_transaction}, which runs the update callback again with a new
+ * handle when a document did change underneath the attempt. An attempt that recorded no write
+ * still checks its reads, and succeeds when they are unchanged.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @returns {Bool} `true` when the attempt was ended, `false` when the handle is not valid or the attempt had already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_firestore_transaction_abort
+ * @desc This function ends the attempt without committing it: nothing recorded on the handle is sent,
+ * the SDK does not retry, and the callback of ${function.firebase_firestore_run_transaction} fires
+ * with `FirestoreError.Aborted` and `error_message`. The handle is freed at once. This is the
+ * answer to a read that failed, and to data that makes the write pointless - a level already at
+ * its cap.
+ *
+ * @param {Real} transaction_ref The transaction handle the update callback of ${function.firebase_firestore_run_transaction} received.
+ * @param {String} error_message The message the transaction's callback receives.
+ * @returns {Bool} `true` when the attempt was ended, `false` when the handle is not valid or the attempt had already ended.
  * @function_end
  */
 
@@ -2763,14 +2997,14 @@
  * @desc **Firebase C++ SDK:** [firebase::firestore::WriteBatch::Set](https://firebase.google.com/docs/reference/cpp/class/firebase/firestore/write-batch#set)
  *
  * This function adds a merge of the fields named by field path handles to the batch - the batch's
- * ${function.firebase_firestore_document_ref_set_merge_field_paths}. Unlike the other batch
- * writes it returns nothing; a batch or document handle that is not valid leaves the batch
- * unchanged and sets ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
+ * ${function.firebase_firestore_document_ref_set_merge_field_paths}. Nothing happens until ${function.firebase_firestore_write_batch_commit}; the function only
+ * records the write and returns whether it did.
  *
  * @param {Real} batch A write batch handle from ${function.firebase_firestore_batch}.
  * @param {Real} document A document reference handle.
  * @param {Any} data A struct of field names to values; see the module's Data section for the conversion.
  * @param {Array[Real]} field_paths An array of field path handles naming the fields to write.
+ * @returns {Bool} `true` when the write was added to the batch, `false` when a handle was not valid.
  * @function_end
  */
 
@@ -3697,10 +3931,11 @@
  * fall back to the cache; the cache holds every document the game has read or written and every
  * result of a listened-to query, so a game that listens to what it shows keeps working offline.
  *
- * Firestore has no transactions here: ${function.firebase_firestore_run_transaction} returns
- * `FirebaseError.Unsupported`. Atomic writes of several documents are write batches; atomic
- * counters and array edits are the field value sentinels; anything that must read before it writes
- * belongs in a Cloud Function.
+ * A read that must be atomic with its write is a transaction
+ * (${function.firebase_firestore_run_transaction}): the update callback reads and writes through
+ * a transaction handle and commits, and the SDK runs it again when a document it read changed in
+ * between. Atomic writes of several documents that need no read are write batches; atomic
+ * counters and array edits are the field value sentinels.
  *
  * ### Console setup
  *
@@ -3739,7 +3974,6 @@
  * @ref firebase_firestore_named_query
  * @ref firebase_firestore_terminate
  * @ref firebase_firestore_clear_persistence
- * @ref firebase_firestore_run_transaction
  * @section_end
  *
  * @section_func Paths
@@ -3896,6 +4130,22 @@
  * @ref firebase_firestore_write_batch_commit
  * @ref firebase_firestore_write_batch_is_valid
  * @ref firebase_firestore_write_batch_release
+ * @section_end
+ *
+ * @section_func Transactions
+ * @desc The calls an update callback of ${function.firebase_firestore_run_transaction} makes on its
+ * handle - reads, then writes, then the commit or abort that ends the attempt:
+ * @ref firebase_firestore_run_transaction
+ * @ref firebase_firestore_transaction_get
+ * @ref firebase_firestore_transaction_set
+ * @ref firebase_firestore_transaction_set_merge
+ * @ref firebase_firestore_transaction_set_merge_fields
+ * @ref firebase_firestore_transaction_set_merge_field_paths
+ * @ref firebase_firestore_transaction_update
+ * @ref firebase_firestore_transaction_update_field_paths
+ * @ref firebase_firestore_transaction_delete
+ * @ref firebase_firestore_transaction_commit
+ * @ref firebase_firestore_transaction_abort
  * @section_end
  *
  * @section_func Field values

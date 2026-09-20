@@ -112,6 +112,7 @@
     {"id":{"name":"obj_firebase_firestore_doc_listener","path":"objects/obj_firebase_firestore_doc_listener/obj_firebase_firestore_doc_listener.yy",},},
     {"id":{"name":"obj_firebase_firestore_doc_merge","path":"objects/obj_firebase_firestore_doc_merge/obj_firebase_firestore_doc_merge.yy",},},
     {"id":{"name":"obj_firebase_firestore_doc_read","path":"objects/obj_firebase_firestore_doc_read/obj_firebase_firestore_doc_read.yy",},},
+    {"id":{"name":"obj_firebase_firestore_doc_transaction","path":"objects/obj_firebase_firestore_doc_transaction/obj_firebase_firestore_doc_transaction.yy",},},
     {"id":{"name":"obj_firebase_firestore_doc_update","path":"objects/obj_firebase_firestore_doc_update/obj_firebase_firestore_doc_update.yy",},},
     {"id":{"name":"obj_firebase_firestore_scores_listener","path":"objects/obj_firebase_firestore_scores_listener/obj_firebase_firestore_scores_listener.yy",},},
     {"id":{"name":"obj_firebase_firestore_scores_query","path":"objects/obj_firebase_firestore_scores_query/obj_firebase_firestore_scores_query.yy",},},

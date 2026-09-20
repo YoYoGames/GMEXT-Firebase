@@ -207,7 +207,7 @@ firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provid
 #define GM_FB_TYPE_DATABASE_QUERY 0x12       // map: firebase::database::Query
 #define GM_FB_TYPE_DATA_SNAPSHOT 0x13        // map: firebase::database::DataSnapshot
 #define GM_FB_TYPE_DATABASE_VALUE_LISTENER 0x14 // ptr registry: GMFirebaseValueListener
-#define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15   // map: firebase::database::MutableData (transactions)
+#define GM_FB_TYPE_DATABASE_MUTABLE_DATA 0x15   // map: a MutableData node of a parked transaction attempt (GMFirebase_database.cpp)
 #define GM_FB_TYPE_DATABASE_CHILD_LISTENER 0x16 // ptr registry: GMFirebaseChildListener
 #define GM_FB_TYPE_DATABASE_ON_DISCONNECT 0x17 // ptr: DisconnectionHandler - caller-owned on desktop, owned by a private DatabaseReference copy elsewhere (GMFirebase_database.cpp)
 
@@ -220,7 +220,7 @@ firebase::auth::FederatedOAuthProvider* resolveFederatedProvider(uint64_t provid
 #define GM_FB_TYPE_FIRESTORE_QUERY_SNAPSHOT 0x25 // map: QuerySnapshot
 #define GM_FB_TYPE_FIRESTORE_LISTENER_REG 0x26 // ptr: heap-boxed ListenerRegistration
 #define GM_FB_TYPE_FIRESTORE_WRITE_BATCH 0x27  // map: WriteBatch
-#define GM_FB_TYPE_FIRESTORE_TRANSACTION 0x28  // ptr: Transaction* (borrowed, callback-scoped)
+#define GM_FB_TYPE_FIRESTORE_TRANSACTION 0x28  // map: a parked transaction attempt (GMFirebase_firestore.cpp)
 #define GM_FB_TYPE_FIRESTORE_FIELD_VALUE 0x29  // map: FieldValue (sentinels + explicit-typed values)
 #define GM_FB_TYPE_FIRESTORE_FIELD_PATH 0x2A   // map: FieldPath
 #define GM_FB_TYPE_FIRESTORE_FILTER 0x2B       // map: Filter

@@ -2841,6 +2841,196 @@
         },
         {
           "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_get_info",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_get_info",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_get_info",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_child",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_child",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_child",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_has_child",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_has_child",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_has_child",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_get_children",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_get_children",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_get_children",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_get_value",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_get_value",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_get_value",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_get_priority",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_get_priority",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_get_priority",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_set_value",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_set_value",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_set_value",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_mutable_data_set_priority",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_mutable_data_set_priority",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_mutable_data_set_priority",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_transaction_commit",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_transaction_commit",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_transaction_commit",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_database_transaction_abort",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_database_transaction_abort",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_database_transaction_abort",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
           "%Name": "__firebase_firestore_get_instance",
           "argCount": 2,
           "args": [
@@ -3234,6 +3424,188 @@
           "hidden": true,
           "kind": 4,
           "name": "__firebase_firestore_run_transaction",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_get",
+          "argCount": 4,
+          "args": [
+            1,
+            2,
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@param {Pointer} _ret_buffer\r\n@param {Real} _ret_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_get",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_get",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_set",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_set",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_set",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_set_merge",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_set_merge",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_set_merge",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_set_merge_fields",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_set_merge_fields",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_set_merge_fields",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_set_merge_field_paths",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_set_merge_field_paths",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_set_merge_field_paths",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_update",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_update",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_update",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_update_field_paths",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_update_field_paths",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_update_field_paths",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_delete",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_delete",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_delete",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_commit",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_commit",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_commit",
+          "resourceType": "GMExtensionFunction",
+          "resourceVersion": "2.0",
+          "returnType": 2
+        },
+        {
+          "$GMExtensionFunction": "",
+          "%Name": "__firebase_firestore_transaction_abort",
+          "argCount": 2,
+          "args": [
+            1,
+            2
+          ],
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
+          "externalName": "__EXT_NATIVE__firebase_firestore_transaction_abort",
+          "help": "",
+          "hidden": true,
+          "kind": 4,
+          "name": "__firebase_firestore_transaction_abort",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2

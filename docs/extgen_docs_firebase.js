@@ -1026,6 +1026,8 @@
 /**
  * @function_partial firebase_database_ref_run_transaction
  * @param {Real} ref
+ * @param {Bool} trigger_local_events
+ * @param {Function} [update_callback]
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
  * @function_end
@@ -1098,6 +1100,80 @@
 /**
  * @function_partial firebase_database_snapshot_release
  * @param {Real} snapshot
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_get_info
+ * @param {Real} data
+ * @returns {Struct.FirebaseMutableDataInfo}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_child
+ * @param {Real} data
+ * @param {String} path
+ * @returns {Real}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_has_child
+ * @param {Real} data
+ * @param {String} path
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_get_children
+ * @param {Real} data
+ * @returns {Array[Real]}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_get_value
+ * @param {Real} data
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_get_priority
+ * @param {Real} data
+ * @returns {Any}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_set_value
+ * @param {Real} data
+ * @param {Any} value
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_mutable_data_set_priority
+ * @param {Real} data
+ * @param {Any} priority
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_transaction_commit
+ * @param {Real} data
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_database_transaction_abort
+ * @param {Real} data
+ * @returns {Bool}
  * @function_end
  */
 
@@ -1250,8 +1326,98 @@
 /**
  * @function_partial firebase_firestore_run_transaction
  * @param {Real} instance_ref
+ * @param {Real} max_attempts
+ * @param {Function} [update_callback]
  * @param {Function} [callback]
  * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_get
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Function} [callback]
+ * @returns {Enum.FirebaseError}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_set
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Any} data
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_set_merge
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Any} data
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_set_merge_fields
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Any} data
+ * @param {Array[String]} fields
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_set_merge_field_paths
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Any} data
+ * @param {Array[Real]} field_paths
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_update
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Any} data
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_update_field_paths
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @param {Array[Struct.FirestoreFieldPathValue]} entries
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_delete
+ * @param {Real} transaction_ref
+ * @param {Real} document_ref
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_commit
+ * @param {Real} transaction_ref
+ * @returns {Bool}
+ * @function_end
+ */
+
+/**
+ * @function_partial firebase_firestore_transaction_abort
+ * @param {Real} transaction_ref
+ * @param {String} error_message
+ * @returns {Bool}
  * @function_end
  */
 
@@ -3467,6 +3633,7 @@
  * @param {Real} document
  * @param {Any} data
  * @param {Array[Real]} field_paths
+ * @returns {Bool}
  * @function_end
  */
 
@@ -4231,6 +4398,13 @@
  * @member {Bool} exists
  * @member {Bool} is_valid
  * @member {Bool} has_children
+ * @member {Real} children_count
+ * @struct_end
+ */
+
+/**
+ * @struct_partial FirebaseMutableDataInfo
+ * @member {String} key
  * @member {Real} children_count
  * @struct_end
  */

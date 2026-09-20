@@ -1,4 +1,6 @@
 #include "GMFirebase_database.h"
+#include <atomic>
+#include <condition_variable>
 #include <memory>
 
 using firebase::database::Database;
@@ -622,26 +624,240 @@ FirebaseError firebase_database_ref_remove_value(uint64_t ref, const std::option
 	return FirebaseError::Ok;
 }
 
-FirebaseError firebase_database_ref_run_transaction(uint64_t ref, const std::optional<gm::wire::GMFunction>& callback)
+// ============================================================
+// Transactions
+// ============================================================
+// The SDK calls the transaction handler on the Realtime Database client's
+// own worker - the scheduler thread on desktop, the repo's run loop on
+// Android, the shared serial queue on iOS - and reruns it there after a
+// rejected write. That thread is parked here for as long as the game's
+// update callback takes to commit or abort, and the client with it, which
+// is why the callback answers inside itself. Every MutableData call runs on
+// the GML thread meanwhile, in memory, against the data the handler was
+// given; the handles minted for the attempt (root, child(), get_children())
+// are freed together when it ends. A game abort reaches the completion as
+// TransactionAbortedByUser from the run's own flag, never from the SDK's
+// code: desktop reports it as WriteCanceled with no snapshot on the first
+// attempt and as kErrorNone on a rerun (repo.cc), Android and iOS as the
+// documented code with the current data.
+
+namespace
 {
-	// Intentional limitation. RunTransaction()'s handler is invoked synchronously
-	// (possibly multiple times, for optimistic-concurrency retries) directly
-	// on the Realtime Database SDK's own run-loop thread, and must return a
-	// TransactionResult (commit/abort) before that call unwinds. There is no
-	// way to round-trip "pause this SDK thread, ask GML for a decision,
-	// resume" over this wire without either a blocking cross-thread wait
-	// (risking deadlock against the single-threaded GML step loop that is
-	// also responsible for draining the DispatchQueue the answer would
-	// arrive on) or a from-scratch mid-flight MutableData object model - both
-	// out of scope for this pass. The call never reaches the SDK, so it fails
-	// synchronously like every other pre-SDK failure and the callback is not
-	// touched; use ref_get_value()+ref_set_value() (accepting the
-	// non-atomicity) as a manual fallback for now.
-	(void)ref;
-	(void)callback;
-	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED,
-		"RunTransaction is not supported by this extension - synchronous mid-transaction GML callbacks cannot be round-tripped across the wire");
-	return FirebaseError::Unsupported;
+	struct DatabaseTransactionRun
+	{
+		std::atomic<bool> aborted_by_game{ false };
+	};
+
+	struct DatabaseTransactionAttempt
+	{
+		std::mutex mutex;
+		std::condition_variable wake;
+		bool finished = false;
+		firebase::database::TransactionResult result = firebase::database::kTransactionResultAbort;
+		std::vector<uint32_t> nodes;
+		std::shared_ptr<DatabaseTransactionRun> run;
+	};
+
+	// A handle over one MutableData node: the SDK's own root pointer for the
+	// duration of the handler, or a Child()/children() value the node owns.
+	struct DatabaseMutableNode
+	{
+		std::shared_ptr<DatabaseTransactionAttempt> attempt;
+		firebase::database::MutableData* data = nullptr;
+		std::unique_ptr<firebase::database::MutableData> owned;
+	};
+
+	std::map<uint32_t, DatabaseMutableNode> g_db_mutable_data_map;
+	uint32_t g_db_mutable_data_index = 0;
+
+	uint64_t registerMutableNode(DatabaseMutableNode node)
+	{
+		std::shared_ptr<DatabaseTransactionAttempt> attempt = node.attempt;
+		uint32_t id = registerFirebaseValue(std::move(node), g_db_mutable_data_index, g_db_mutable_data_map);
+		{
+			std::lock_guard<std::mutex> lock(attempt->mutex);
+			attempt->nodes.push_back(id);
+		}
+		return packFirebaseRef(id, GM_FB_TYPE_DATABASE_MUTABLE_DATA);
+	}
+
+	uint64_t registerOwnedMutableNode(const std::shared_ptr<DatabaseTransactionAttempt>& attempt, firebase::database::MutableData&& data)
+	{
+		DatabaseMutableNode node;
+		node.attempt = attempt;
+		node.owned = std::make_unique<firebase::database::MutableData>(std::move(data));
+		node.data = node.owned.get();
+		return registerMutableNode(std::move(node));
+	}
+
+	DatabaseMutableNode* resolve_mutable_node(uint64_t ref)
+	{
+		DatabaseMutableNode* node = nullptr;
+		validate_fb_ref_map(ref, GM_FB_TYPE_DATABASE_MUTABLE_DATA, DatabaseMutableNode, g_db_mutable_data_map, node);
+		return node;
+	}
+
+	// The handler, once per attempt on the client's worker thread; returns
+	// when the game has committed or aborted.
+	firebase::database::TransactionResult runDatabaseTransactionAttempt(const std::shared_ptr<DatabaseTransactionRun>& run, const gm::wire::GMFunction& update_callback, firebase::database::MutableData* data)
+	{
+		auto attempt = std::make_shared<DatabaseTransactionAttempt>();
+		attempt->run = run;
+		DatabaseMutableNode root;
+		root.attempt = attempt;
+		root.data = data;
+		update_callback.call(registerMutableNode(std::move(root)));
+
+		std::unique_lock<std::mutex> lock(attempt->mutex);
+		attempt->wake.wait(lock, [&]
+		{
+			return attempt->finished;
+		});
+		return attempt->result;
+	}
+
+	// Frees every handle of the attempt on the GML thread, then wakes the
+	// handler with the result.
+	bool finishDatabaseTransaction(uint64_t ref, firebase::database::TransactionResult result)
+	{
+		DatabaseMutableNode* node = resolve_mutable_node(ref);
+		if (node == nullptr) return false;
+		std::shared_ptr<DatabaseTransactionAttempt> attempt = node->attempt;
+
+		std::vector<uint32_t> nodes;
+		{
+			std::lock_guard<std::mutex> lock(attempt->mutex);
+			nodes.swap(attempt->nodes);
+		}
+		for (uint32_t id : nodes)
+			unregisterFirebaseValue(id, g_db_mutable_data_map);
+		{
+			std::lock_guard<std::mutex> lock(attempt->mutex);
+			attempt->finished = true;
+			attempt->result = result;
+		}
+		attempt->wake.notify_all();
+		return true;
+	}
+}
+
+FirebaseError firebase_database_ref_run_transaction(uint64_t ref, bool trigger_local_events, const std::optional<gm::wire::GMFunction>& update_callback, const std::optional<gm::wire::GMFunction>& callback)
+{
+	DatabaseReference* r = resolve_db_ref(ref);
+	if (r == nullptr) return FirebaseError::InvalidHandle;
+	if (!update_callback.has_value())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database_ref_run_transaction: update_callback is required");
+		return FirebaseError::InvalidArgument;
+	}
+
+	auto run = std::make_shared<DatabaseTransactionRun>();
+	gm::wire::GMFunction update = *update_callback;
+	firebase::Future<DataSnapshot> pending = r->RunTransaction([run, update](firebase::database::MutableData* data) -> firebase::database::TransactionResult
+	{
+		return runDatabaseTransactionAttempt(run, update, data);
+	}, trigger_local_events);
+	if (!firebaseFutureArmed(pending, "firebase_database_ref_run_transaction")) return FirebaseError::InvalidHandle;
+	pending.OnCompletion([run, callback](const firebase::Future<DataSnapshot>& future)
+	{
+		if (!callback.has_value()) return;
+		if (run->aborted_by_game)
+			callback->call(static_cast<double>(firebase::database::kErrorTransactionAbortedByUser), std::string("The transaction was aborted by the update callback."), uint64_t{ 0 });
+		else
+			completeFuture(callback, future, registerDatabaseSnapshot);
+	});
+	return FirebaseError::Ok;
+}
+
+std::optional<gm_structs::FirebaseMutableDataInfo> firebase_database_mutable_data_get_info(uint64_t data)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return std::nullopt;
+
+	gm_structs::FirebaseMutableDataInfo info{};
+	info.key = node->data->key_string();
+	info.children_count = static_cast<double>(node->data->children_count());
+	return info;
+}
+
+uint64_t firebase_database_mutable_data_child(uint64_t data, std::string_view path)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return 0;
+	std::string path_str(path);
+	return registerOwnedMutableNode(node->attempt, node->data->Child(path_str.c_str()));
+}
+
+bool firebase_database_mutable_data_has_child(uint64_t data, std::string_view path)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return false;
+	std::string path_str(path);
+	return node->data->HasChild(path_str.c_str());
+}
+
+std::vector<std::uint64_t> firebase_database_mutable_data_get_children(uint64_t data)
+{
+	std::vector<std::uint64_t> refs;
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return refs;
+
+	std::vector<firebase::database::MutableData> children = node->data->children();
+	refs.reserve(children.size());
+	for (firebase::database::MutableData& child : children)
+		refs.push_back(registerOwnedMutableNode(node->attempt, std::move(child)));
+	return refs;
+}
+
+gm::wire::DataStream firebase_database_mutable_data_get_value(uint64_t data)
+{
+	gm::wire::DataStream out;
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr)
+		out << std::optional<std::uint8_t>{};
+	else
+		writeVariantToStream(node->data->value(), out);
+	return out;
+}
+
+gm::wire::DataStream firebase_database_mutable_data_get_priority(uint64_t data)
+{
+	gm::wire::DataStream out;
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr)
+		out << std::optional<std::uint8_t>{};
+	else
+		writeVariantToStream(node->data->priority(), out);
+	return out;
+}
+
+bool firebase_database_mutable_data_set_value(uint64_t data, const gm::wire::GMValue& value)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return false;
+	node->data->set_value(gmValueToVariant(value));
+	return true;
+}
+
+bool firebase_database_mutable_data_set_priority(uint64_t data, const gm::wire::GMValue& priority)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return false;
+	node->data->set_priority(gmValueToVariant(priority));
+	return true;
+}
+
+bool firebase_database_transaction_commit(uint64_t data)
+{
+	return finishDatabaseTransaction(data, firebase::database::kTransactionResultSuccess);
+}
+
+bool firebase_database_transaction_abort(uint64_t data)
+{
+	DatabaseMutableNode* node = resolve_mutable_node(data);
+	if (node == nullptr) return false;
+	node->attempt->run->aborted_by_game = true;
+	return finishDatabaseTransaction(data, firebase::database::kTransactionResultAbort);
 }
 
 void firebase_database_ref_release(uint64_t ref)

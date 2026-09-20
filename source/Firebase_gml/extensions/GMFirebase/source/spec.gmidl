@@ -1240,28 +1240,19 @@ function firebase_database_ref_remove_value(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// Intentional limitation - returns FirebaseError.Unsupported without touching
-// the callback, until a safe synchronous GML transaction bridge exists.
-//
-// firebase::database::DatabaseReference::RunTransaction() invokes its
-// DoTransaction handler synchronously - possibly multiple times, retrying on
-// optimistic-concurrency conflicts - directly on the Realtime Database SDK's
-// own internal run-loop thread, and that handler must return a
-// TransactionResult (commit/abort) before RunTransaction() itself returns.
-// Every other async SDK call in this extension crosses the wire by firing a
-// GMFunction callback once, from whichever thread the SDK completes it on,
-// with no reply expected back - that fire-and-forget shape cannot express
-// "pause the SDK thread and block until GML answers with a MutableData
-// mutation," and attempting it risks deadlocking against the same
-// DispatchQueue/step-loop machinery the reply would need to arrive through.
-// Implementing this for real would need a from-scratch synchronous
-// mid-transaction round trip (or a queued-retry emulation built on top of
-// get_value+set_value) that cannot be represented safely by the current asynchronous GMFunction bridge.
-// callback(error_code: real, error_message: string, snapshot_ref: uint64) -
-// never fired today.
+// The SDK runs the transaction handler on its own thread, possibly more than
+// once. The extension parks that thread, hands GML the handler's MutableData
+// as a handle through update_callback, and resumes it when GML calls
+// firebase_database_transaction_commit() or _abort() on that handle - so
+// the update callback answers inside itself; the Realtime Database client is
+// paused until it does. A retry runs update_callback again with a new handle.
+// update_callback(data: uint64)
+// callback(error_code: FirebaseDatabaseError, error_message: string, snapshot_ref: uint64)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_database_ref_run_transaction(
 	[type_hint=`uint64`] ref: gmval,
+	trigger_local_events: bool,
+	[type_hint=`func?`] update_callback: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
@@ -1354,6 +1345,89 @@ function firebase_database_snapshot_get_priority(
 function firebase_database_snapshot_release(
 	[type_hint=`uint64`] snapshot: gmval
 ): unit;
+
+// ============================================================
+// Realtime Database - MutableData (transactions)
+// ============================================================
+// The data a transaction's update_callback works on. Every handle below is
+// minted for one run of the update callback and freed when that run ends in
+// firebase_database_transaction_commit() or _abort(); there is no release.
+
+// The scalar view of a MutableData node - its value and priority are
+// dynamically typed and come from get_value()/get_priority() below.
+[global]
+class `[[FirebaseMutableDataInfo]]` prototype Object
+{
+	[field] property key: string { get; set; }
+	[field, type_hint=`real`] property children_count: gmval { get; set; }
+}
+
+// undefined when `data` is not a live MutableData handle (InvalidHandle in
+// the last error).
+[global, bind = typed_gml, type_hint=`FirebaseMutableDataInfo?`]
+function firebase_database_mutable_data_get_info(
+	[type_hint=`uint64`] data: gmval
+): gmval;
+
+// The node at the relative path, as its own handle; a set_value() on it
+// writes that part of the tree.
+[global, bind = typed_gml, type_hint=`uint64`]
+function firebase_database_mutable_data_child(
+	[type_hint=`uint64`] data: gmval,
+	path: string
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_mutable_data_has_child(
+	[type_hint=`uint64`] data: gmval,
+	path: string
+): bool;
+
+// One handle per child, in the SDK's iteration order.
+[global, bind = typed_gml, type_hint=`uint64[]`]
+function firebase_database_mutable_data_get_children(
+	[type_hint=`uint64`] data: gmval
+): gmval;
+
+// The dynamically-typed value at this node (undefined/bool/real/string/
+// array/struct), the same convention as firebase_database_snapshot_get_value().
+[global, bind = typed_gml]
+function firebase_database_mutable_data_get_value(
+	[type_hint=`uint64`] data: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_database_mutable_data_get_priority(
+	[type_hint=`uint64`] data: gmval
+): gmval;
+
+// Replaces the value at this node; what the transaction writes when it is
+// committed.
+[global, bind = typed_gml]
+function firebase_database_mutable_data_set_value(
+	[type_hint=`uint64`] data: gmval,
+	value: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_database_mutable_data_set_priority(
+	[type_hint=`uint64`] data: gmval,
+	priority: gmval
+): bool;
+
+// Ends the update callback's run: commit writes the data as it now stands,
+// abort leaves the location untouched and completes run_transaction's
+// callback with FirebaseDatabaseError.TransactionAbortedByUser. Either takes
+// any handle minted for the run, and every one of them is freed.
+[global, bind = typed_gml]
+function firebase_database_transaction_commit(
+	[type_hint=`uint64`] data: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_database_transaction_abort(
+	[type_hint=`uint64`] data: gmval
+): bool;
 
 // ============================================================
 // Firestore - enums
@@ -1657,15 +1731,107 @@ function firebase_firestore_wait_for_pending_writes(
 	[type_hint=`func?`] callback: gmval
 ): gmval;
 
-// Intentional limitation - returns FirebaseError.Unsupported without touching
-// the callback, until a safe synchronous GML transaction bridge exists.
-// See GMFirebase_firestore.cpp's firestore_run_transaction() for why.
-// callback(error_code: real, error_message: string) - never fired today.
+// The SDK runs the transaction's update function on its own thread, and
+// again on a retry, up to max_attempts times (the SDK's default is 5). The
+// extension parks that thread, hands GML the Transaction as a handle through
+// update_callback, runs every firebase_firestore_transaction_* call on it in
+// order, and resumes it when GML calls _commit() or _abort(). A retry runs
+// update_callback again with a new handle. The reads come before the writes,
+// as the SDK requires, and each firebase_firestore_transaction_get() has
+// delivered its callback before the commit that depends on it.
+// update_callback(transaction_ref: uint64)
+// callback(error_code: FirestoreError, error_message: string)
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_run_transaction(
 	[type_hint=`uint64`] instance_ref: gmval,
+	max_attempts: real,
+	[type_hint=`func?`] update_callback: gmval,
 	[type_hint=`func?`] callback: gmval
 ): gmval;
+
+// ============================================================
+// Transaction
+// ============================================================
+// Every handle here lives from its update_callback until
+// firebase_firestore_transaction_commit() or _abort(); there is no release.
+// The writes mirror the WriteBatch family below and take effect when the
+// SDK commits; get() is asynchronous because the read goes to the server.
+
+// The document as the transaction sees it. snapshot_ref is a handle the
+// caller owns and releases with firebase_firestore_document_snapshot_release();
+// undefined when the read failed.
+// callback(error_code: FirestoreError, error_message: string, snapshot_ref: uint64?)
+[global, bind = typed_gml, type_hint=`FirebaseError`]
+function firebase_firestore_transaction_get(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	[type_hint=`func?`] callback: gmval
+): gmval;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_set(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_set_merge(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_set_merge_fields(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval,
+	[type_hint=`string[]`] fields: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_set_merge_field_paths(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval,
+	[type_hint=`uint64[]`] field_paths: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_update(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	data: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_update_field_paths(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval,
+	[type_hint=`FirestoreFieldPathValue[]`] entries: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_delete(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	[type_hint=`uint64`] document_ref: gmval
+): bool;
+
+// Ends the update callback's run: commit lets the SDK write what was set,
+// updated and deleted; abort completes run_transaction's callback with
+// FirestoreError.Aborted and error_message, with no retry. Either frees the
+// handle.
+[global, bind = typed_gml]
+function firebase_firestore_transaction_commit(
+	[type_hint=`uint64`] transaction_ref: gmval
+): bool;
+
+[global, bind = typed_gml]
+function firebase_firestore_transaction_abort(
+	[type_hint=`uint64`] transaction_ref: gmval,
+	error_message: string
+): bool;
 
 // ============================================================
 // CollectionReference
@@ -3695,7 +3861,7 @@ function firebase_firestore_named_query([type_hint=`uint64`] firestore: gmval, n
 [global, bind = typed_gml, type_hint=`FirebaseError`]
 function firebase_firestore_document_ref_set_merge_field_paths([type_hint=`uint64`] document: gmval, data: gmval, [type_hint=`uint64[]`] field_paths: gmval, [type_hint=`func?`] callback: gmval): gmval;
 [global, bind = typed_gml]
-function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, [type_hint=`uint64[]`] field_paths: gmval): unit;
+function firebase_firestore_write_batch_set_merge_field_paths([type_hint=`uint64`] batch: gmval, [type_hint=`uint64`] document: gmval, data: gmval, [type_hint=`uint64[]`] field_paths: gmval): bool;
 
 // ---- Storage ----
 [global, bind = typed_gml]

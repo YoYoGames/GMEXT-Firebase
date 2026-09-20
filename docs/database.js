@@ -973,27 +973,83 @@
  * @function firebase_database_ref_run_transaction
  * @desc **Firebase C++ SDK:** [firebase::database::DatabaseReference::RunTransaction](https://firebase.google.com/docs/reference/cpp/class/firebase/database/database-reference#runtransaction_1)
  *
- * This function is not available. A Realtime Database transaction runs a handler synchronously on
- * the SDK's own thread, possibly several times, and must return the new value before that call
- * unwinds; the extension's callback bridge cannot hold a GML function to that contract, so the
- * call never reaches the SDK: it returns `FirebaseError.Unsupported` at once,
- * ${function.firebase_last_error_code} says the same, and the callback is never called.
+ * This function runs a transaction: an atomic read-modify-write of one location that several
+ * devices may change at once - a counter, a seat only one player may take. The SDK calls
+ * `update_callback` with a handle to the location's current data; the game reads it with
+ * ${function.firebase_database_mutable_data_get_value}, changes it with
+ * ${function.firebase_database_mutable_data_set_value} - on the whole location or on a child
+ * through ${function.firebase_database_mutable_data_child} - and ends the attempt with
+ * ${function.firebase_database_transaction_commit}, which writes the data as it now stands, or
+ * ${function.firebase_database_transaction_abort}, which leaves the location alone.
  *
- * [[Important: For a counter or another value that several devices change at once, keep the
- * increment on a server you control - a Cloud Function (${module.functions}) reading and writing
- * the location - or accept the race and read with ${function.firebase_database_query_get_value} and
- * write with ${function.firebase_database_ref_set_value}. For several locations that must change
- * together, ${function.firebase_database_ref_update_children} is atomic and needs no read.]]
+ * The first attempt works on the data the client already has, which for a location it has never
+ * read is no data at all: `get_value` returns `undefined`, and the update callback must treat
+ * that as the empty starting value, not as an error. When the server turns out to hold something
+ * else, the SDK calls `update_callback` again with a new handle and the real data, and again
+ * whenever another client's write lands before the commit, up to 25 times before giving up with
+ * `FirebaseDatabaseError.MaxRetries`; the update callback must keep no state from one attempt to
+ * the next. The callback fires once: when the server has applied the committed data, with a
+ * snapshot of it; with `FirebaseDatabaseError.TransactionAbortedByUser` when the game aborted; or
+ * with the reason the transaction failed.
+ *
+ * [[Warning: The Realtime Database client is paused while an attempt waits for its commit or
+ * abort - no listener fires and no write completes until the update callback has answered.
+ * Answer inside the update callback, from the data the handle holds, as the example does; a
+ * handle left open stalls the module.]]
+ *
+ * For several locations that must change together without a read,
+ * ${function.firebase_database_ref_update_children} is atomic and needs no transaction.
  *
  * @param {Real} ref A reference handle.
- * @param {Function} [callback] Not used.
- * @returns {Enum.FirebaseError} Always `FirebaseError.Unsupported`.
+ * @param {Bool} trigger_local_events `true` to fire the local listeners for each attempt's intermediate value as well, `false` to fire them only for the final committed value.
+ * @param {Function} [update_callback] The function that reads and changes the data; called once per attempt with a MutableData handle.
+ * @param {Function} [callback] The function to call with the result.
+ * @returns {Enum.FirebaseError} `FirebaseError.Ok` when the call reached the SDK, otherwise the reason the callback will not fire. `FirebaseError.InvalidArgument` when `update_callback` is not a function.
+ *
+ * @event callback:update_callback
+ * @desc Fires once per attempt, with a handle to the location's data as this attempt sees it.
+ * @member {Real} data A MutableData handle; valid until ${function.firebase_database_transaction_commit} or ${function.firebase_database_transaction_abort}, when it and every child handle taken from it are freed.
+ * @event_end
  *
  * @event callback
- * @desc Never fires.
+ * @desc Fires once when the server has applied the transaction, when the game aborted it, or with the reason it failed.
  * @member {Enum.FirebaseDatabaseError} error_code `FirebaseDatabaseError.None` on success, otherwise the reason it failed.
  * @member {String} error_message The SDK's description of the failure, or an empty string on success.
+ * @member {Real} snapshot A snapshot handle of the location after the commit, to release with ${function.firebase_database_snapshot_release}, or `0` when nothing was committed.
  * @event_end
+ *
+ * @example
+ * ```gml
+ * // Create Event
+ * database = firebase_database_get_instance();
+ * click_count = 0;
+ *
+ * // Left Pressed Event
+ * var _counter = firebase_database_get_reference_at_path(database, "counters/clicks");
+ * firebase_database_ref_run_transaction(_counter, false, function(_data)
+ * {
+ *     var _count = firebase_database_mutable_data_get_value(_data);
+ *     if (!is_real(_count)) _count = 0;
+ *     firebase_database_mutable_data_set_value(_data, _count + 1);
+ *     firebase_database_transaction_commit(_data);
+ * },
+ * function(_error_code, _error_message, _snapshot)
+ * {
+ *     if (_error_code != FirebaseDatabaseError.None)
+ *     {
+ *         show_debug_message("Transaction failed: " + _error_message);
+ *         return;
+ *     }
+ *     click_count = firebase_database_snapshot_get_value(_snapshot);
+ *     firebase_database_snapshot_release(_snapshot);
+ * });
+ * firebase_database_ref_release(_counter);
+ * ```
+ * The above code counts clicks from every device in one location without losing any: each
+ * attempt adds one to the value the handle holds and commits in the same call, so the client is
+ * never left paused. The first attempt on a fresh client sees `undefined`, which the `is_real`
+ * check turns into a starting count of `0`; when the server's count arrives the update callback
+ * runs again with it. The reference is released as soon as the transaction has been started.
  * @function_end
  */
 
@@ -1125,6 +1181,137 @@
  * ${function.firebase_last_error_code} to `FirebaseError.InvalidHandle`.
  *
  * @param {Real} snapshot The handle to release.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_get_info
+ * @desc This function reads a MutableData node's properties into one ${struct.FirebaseMutableDataInfo}:
+ * its key and how many children it has. The value itself is read with
+ * ${function.firebase_database_mutable_data_get_value}.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @returns {Struct.FirebaseMutableDataInfo} The node's properties, or `undefined` when the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_child
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::Child](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#child)
+ *
+ * This function returns the node at a path below this one as its own handle, to read or change
+ * that part of the tree: a ${function.firebase_database_mutable_data_set_value} on it writes only
+ * there. The child need not exist yet; setting a value creates it. The handle belongs to the
+ * attempt and is freed with it - there is nothing to release.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @param {String} path A slash-separated path relative to this location (`"stats/wins"`).
+ * @returns {Real} A MutableData handle, or `0` when the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_has_child
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::HasChild](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#haschild)
+ *
+ * This function returns whether the node holds data at a path below it.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @param {String} path A slash-separated path relative to this location (`"stats/wins"`).
+ * @returns {Bool} `true` when there is data at the path, otherwise `false`.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_get_children
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::children](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#children)
+ *
+ * This function returns the node's direct children as an array of MutableData handles, in the
+ * SDK's order. They belong to the attempt and are freed with it.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @returns {Array[Real]} An array of MutableData handles, empty when there are no children or the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_get_value
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::value](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#value)
+ *
+ * This function converts the node's data into a GML value, the way
+ * ${function.firebase_database_snapshot_get_value} does: a number, string or boolean for a leaf, a
+ * struct for a node with children, an array for a node whose keys are `0`, `1`, `2`... and
+ * `undefined` for a node with no data - which is what the first attempt on a location the client
+ * has never read sees.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @returns {Any} The data, or `undefined` for an empty node or an invalid handle.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_get_priority
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::priority](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#priority)
+ *
+ * This function returns the priority of the node - a number, a string, or `undefined` when it has
+ * none (the usual case).
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @returns {Any} The priority, or `undefined`.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_set_value
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::set_value](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#set_value)
+ *
+ * This function replaces the data at the node with `value`, converted as the module's Data section
+ * describes; `undefined` removes it. This is what the transaction writes when the attempt is
+ * committed - the whole location through the handle the update callback received, or one part of
+ * it through a child from ${function.firebase_database_mutable_data_child}.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @param {Any} value The value to write: a number, string, boolean, array or struct, or `undefined` to delete.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_mutable_data_set_priority
+ * @desc **Firebase C++ SDK:** [firebase::database::MutableData::set_priority](https://firebase.google.com/docs/reference/cpp/class/firebase/database/mutable-data#set_priority)
+ *
+ * This function sets the priority the node's data is committed with.
+ *
+ * @param {Real} data A MutableData handle - the one the update callback of ${function.firebase_database_ref_run_transaction} received, or a child taken from it.
+ * @param {Any} priority A number, a string, or `undefined` for no priority.
+ * @returns {Bool} `true` when the call went through, `false` when the handle is not valid.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_transaction_commit
+ * @desc This function ends the attempt and commits it: the SDK writes the data as the handles now hold
+ * it, locally at once and to the server when it can, and runs the update callback again if the
+ * server's data turns out to differ from what the attempt started with. Every handle minted for
+ * the attempt - the one the update callback received and every child taken from it - is freed;
+ * calls on them afterwards fail with `FirebaseError.InvalidHandle`. The outcome arrives in the
+ * callback of ${function.firebase_database_ref_run_transaction}.
+ *
+ * @param {Real} data Any MutableData handle of the attempt.
+ * @returns {Bool} `true` when the attempt was ended, `false` when the handle is not valid or the attempt had already ended.
+ * @function_end
+ */
+
+/**
+ * @function firebase_database_transaction_abort
+ * @desc This function ends the attempt without writing: the location is left as it is, the SDK does not
+ * retry, and the callback of ${function.firebase_database_ref_run_transaction} fires with
+ * `FirebaseDatabaseError.TransactionAbortedByUser` and no snapshot. Every handle of the attempt is
+ * freed. This is the answer when the data says there is nothing to do - the seat is already
+ * taken.
+ *
+ * @param {Real} data Any MutableData handle of the attempt.
+ * @returns {Bool} `true` when the attempt was ended, `false` when the handle is not valid or the attempt had already ended.
  * @function_end
  */
 
@@ -1414,6 +1601,16 @@
  */
 
 /**
+ * @struct FirebaseMutableDataInfo
+ * @desc The properties of a MutableData node other than its value, from
+ * ${function.firebase_database_mutable_data_get_info}. It carries no handle.
+ *
+ * @member {String} key The key of the node - the last segment of the transaction's location, or the child's key for a handle from ${function.firebase_database_mutable_data_child}.
+ * @member {Real} children_count The number of direct children, `0` for a leaf or a node with no data.
+ * @struct_end
+ */
+
+/**
  * @const FirebaseDatabaseError
  * @desc The `error_code` every Realtime Database callback receives, mirroring the SDK's codes value for
  * value. `None` is success. The ones a game meets: `PermissionDenied` (the security rules refused
@@ -1435,7 +1632,7 @@
  * @member WriteCanceled The write was cancelled locally, for example by ${function.firebase_database_purge_outstanding_writes}.
  * @member InvalidVariantType A value of a kind the location does not accept - a priority or a map key that is not a number or a string.
  * @member ConflictingOperationInProgress Another write that cannot run alongside this one is in flight on the location - a set with a set-and-priority, an update with a set.
- * @member TransactionAbortedByUser A transaction was aborted by its handler (transactions are not available in this extension).
+ * @member TransactionAbortedByUser A transaction was aborted by its update callback, with ${function.firebase_database_transaction_abort}.
  * @const_end
  */
 
@@ -1484,9 +1681,10 @@
  * immediately - a listener on the location fires before the network is touched - and its callback
  * fires when the server has accepted it, which offline means when the connection is back. The SDK
  * keeps in memory every location a listener is attached to, and with
- * ${function.firebase_database_set_persistence_enabled} keeps it on disk across runs. Transactions
- * are not available: ${function.firebase_database_ref_run_transaction} returns
- * `FirebaseError.Unsupported`, and a counter several devices change at once belongs on a server.
+ * ${function.firebase_database_set_persistence_enabled} keeps it on disk across runs. A counter
+ * several devices change at once is a transaction (${function.firebase_database_ref_run_transaction}):
+ * the update callback changes the data through a handle and commits, and the SDK runs it again
+ * when the server's data differs.
  *
  * ### Console setup
  *
@@ -1539,7 +1737,6 @@
  * @ref firebase_database_ref_set_value_and_priority
  * @ref firebase_database_ref_update_children
  * @ref firebase_database_ref_remove_value
- * @ref firebase_database_ref_run_transaction
  * @ref firebase_database_server_timestamp
  * @section_end
  *
@@ -1603,10 +1800,27 @@
  * @ref firebase_database_snapshot_release
  * @section_end
  *
+ * @section_func Transactions
+ * @desc An atomic read-modify-write of one location, and the MutableData handles its update callback
+ * reads, changes and then commits or aborts:
+ * @ref firebase_database_ref_run_transaction
+ * @ref firebase_database_mutable_data_get_info
+ * @ref firebase_database_mutable_data_child
+ * @ref firebase_database_mutable_data_has_child
+ * @ref firebase_database_mutable_data_get_children
+ * @ref firebase_database_mutable_data_get_value
+ * @ref firebase_database_mutable_data_get_priority
+ * @ref firebase_database_mutable_data_set_value
+ * @ref firebase_database_mutable_data_set_priority
+ * @ref firebase_database_transaction_commit
+ * @ref firebase_database_transaction_abort
+ * @section_end
+ *
  * @section_struct Structs
  * @desc The following structs are used by this module:
  * @ref FirebaseDatabaseReferenceInfo
  * @ref FirebaseDataSnapshotInfo
+ * @ref FirebaseMutableDataInfo
  * @section_end
  *
  * @section_const Constants

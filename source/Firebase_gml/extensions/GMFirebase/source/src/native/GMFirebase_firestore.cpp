@@ -4,11 +4,16 @@
 // converter and FieldValue sentinel/explicit-typed-value constructors.
 //
 // DocumentSnapshot, QuerySnapshot and ListenerRegistration removal live in
-// GMFirebase_firebase_firestore_snapshot.cpp (sharing this file's header); Transaction
-// is an intentional limitation (see firebase_firestore_run_transaction below).
+// GMFirebase_firestore_snapshot.cpp (sharing this file's header); Transaction
+// parks the SDK's executor thread (see firebase_firestore_run_transaction below).
 #include "GMFirebase_firestore.h"
 #include <algorithm>
+#include <atomic>
+#include <condition_variable>
 #include <cstring>
+#include <deque>
+#include <functional>
+#include <memory>
 
 using namespace gm::wire;
 using namespace gm_structs;
@@ -617,6 +622,10 @@ namespace
 	std::mutex g_terminated_firestores_mutex;
 	std::map<firebase::firestore::Firestore*, uint64_t> g_terminated_firestores;
 
+	// Defined with the transaction bridge below: ~FirestoreInternal joins the
+	// transaction executor, so a parked attempt has to return first.
+	void abortParkedFirestoreTransactions(firebase::firestore::Firestore* fs);
+
 	void deleteTerminatedFirestores()
 	{
 		std::map<firebase::firestore::Firestore*, uint64_t> done;
@@ -627,6 +636,7 @@ namespace
 		for (const auto& entry : done)
 		{
 			unregisterFirebasePointer(entry.second, GM_FB_TYPE_FIRESTORE);
+			abortParkedFirestoreTransactions(entry.first);
 			delete entry.first;
 		}
 	}
@@ -848,26 +858,327 @@ FirebaseError firebase_firestore_wait_for_pending_writes(uint64_t instance_ref, 
 }
 
 // ============================================================
-// Transaction - intentional limitation
+// Transaction
 // ============================================================
-// firebase::firestore::Transaction cannot be copied and is only valid inside
-// the std::function<Error(Transaction&, std::string&)> RunTransaction hands
-// it to, where every Get/Set/Update/Delete call must complete synchronously
-// before that function returns (RunTransaction retries the whole function on
-// contention). Bridging that into a GML callback safely - keeping the
-// Transaction& alive and re-entrant-safe for the duration of a GML callback
-// invocation, handling retries, and surfacing Get()'s out-parameter error
-// reporting - is a substantial piece of work of its own and was explicitly
-// not representable safely by the current asynchronous callback bridge. The
-// call never reaches the SDK, so like every other pre-SDK failure it returns
-// synchronously and the callback is not touched.
-FirebaseError firebase_firestore_run_transaction(uint64_t instance_ref, const std::optional<gm::wire::GMFunction>& callback)
-{
-	(void)instance_ref;
-	(void)callback;
+// The SDK runs the update function on its own transaction executor - a
+// thread pool kept for exactly this on every platform (firestore_main.cc for
+// desktop and iOS, the Java SDK's transaction executor on Android) - and
+// expects it to return only once the transaction is decided. That thread is
+// parked here: each run of the update function registers an attempt, hands
+// the handle to update_callback, then executes whatever the game posts
+// through firebase_firestore_transaction_*, in order, until commit or abort.
+// Everything that touches the Transaction runs on that one thread: Get()
+// blocks on the server round trip, and the core Transaction has no locks of
+// its own, so a write from the GML thread during a read would race the
+// lookup's completion. The GML thread only converts and queues.
+//
+// A user error returned from the update function is retried by the SDK
+// unless its code is one it treats as permanent and outside its own retry
+// list (transaction_runner.cc: Aborted, AlreadyExists, FailedPrecondition and
+// every non-permanent code retry with backoff up to max_attempts), so a game
+// abort returns kErrorInvalidArgument - the non-retryable code the Unity
+// SDK's bridge uses - and the completion reports it to GML as Aborted from
+// the run's own flag.
 
-	setFirebaseLastError(GM_FB_ERROR_UNSUPPORTED, "firebase_firestore_run_transaction: a synchronous/retryable GML transaction handler is not safely representable by the current callback bridge.");
-	return FirebaseError::Unsupported;
+namespace
+{
+	struct FirestoreTransactionRun
+	{
+		firebase::firestore::Firestore* firestore = nullptr;
+		std::atomic<bool> aborted_by_game{ false };
+	};
+
+	struct FirestoreTransactionAttempt;
+	using FirestoreTransactionCommand = std::function<void(firebase::firestore::Transaction&, FirestoreTransactionAttempt&)>;
+
+	struct FirestoreTransactionAttempt
+	{
+		std::mutex mutex;
+		std::condition_variable wake;
+		std::deque<FirestoreTransactionCommand> commands;
+		bool finished = false;
+		firebase::firestore::Error result = firebase::firestore::kErrorOk;
+		std::string message;
+		std::shared_ptr<FirestoreTransactionRun> run;
+	};
+
+	std::map<uint32_t, std::shared_ptr<FirestoreTransactionAttempt>> g_fs_transaction_map;
+	uint32_t g_fs_transaction_index = 0;
+
+	void finishFirestoreTransaction(FirestoreTransactionAttempt& attempt, firebase::firestore::Error result, std::string message)
+	{
+		{
+			std::lock_guard<std::mutex> lock(attempt.mutex);
+			attempt.finished = true;
+			attempt.result = result;
+			attempt.message = std::move(message);
+		}
+		attempt.wake.notify_all();
+	}
+
+	// The GML thread's view of a handle. An attempt that finished on the
+	// executor thread (a command that threw) is dropped here, on the thread
+	// that owns every erase, and answers InvalidHandle from then on.
+	std::shared_ptr<FirestoreTransactionAttempt> resolveFirestoreTransaction(uint64_t ref)
+	{
+		std::shared_ptr<FirestoreTransactionAttempt>* slot = nullptr;
+		validate_fb_ref_map(ref, GM_FB_TYPE_FIRESTORE_TRANSACTION, std::shared_ptr<FirestoreTransactionAttempt>, g_fs_transaction_map, slot);
+		if (slot == nullptr) return nullptr;
+
+		std::shared_ptr<FirestoreTransactionAttempt> attempt = *slot;
+		bool finished = false;
+		{
+			std::lock_guard<std::mutex> lock(attempt->mutex);
+			finished = attempt->finished;
+		}
+		if (finished)
+		{
+			unregisterFirebaseValue(gm_fb_ref_id(ref), g_fs_transaction_map);
+			setFirebaseLastError(GM_FB_ERROR_INVALID_HANDLE, "invalid handle");
+			return nullptr;
+		}
+		return attempt;
+	}
+
+	void postFirestoreTransactionCommand(FirestoreTransactionAttempt& attempt, FirestoreTransactionCommand command)
+	{
+		{
+			std::lock_guard<std::mutex> lock(attempt.mutex);
+			attempt.commands.push_back(std::move(command));
+		}
+		attempt.wake.notify_one();
+	}
+
+	// The command runs later on the executor thread, after the game may have
+	// released the document handle, so it takes a copy.
+	bool copyFirestoreDocumentRef(uint64_t document_ref, firebase::firestore::DocumentReference& out)
+	{
+		firebase::firestore::DocumentReference* doc = nullptr;
+		validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
+		if (doc == nullptr) return false;
+		out = *doc;
+		return true;
+	}
+
+	// The update function, once per attempt on the SDK's transaction
+	// executor; returns when the game has committed or aborted.
+	firebase::firestore::Error runFirestoreTransactionAttempt(const std::shared_ptr<FirestoreTransactionRun>& run, const gm::wire::GMFunction& update_callback, firebase::firestore::Transaction& transaction, std::string& error_message)
+	{
+		auto attempt = std::make_shared<FirestoreTransactionAttempt>();
+		attempt->run = run;
+		uint32_t id = registerFirebaseValue(attempt, g_fs_transaction_index, g_fs_transaction_map);
+		update_callback.call(packFirebaseRef(id, GM_FB_TYPE_FIRESTORE_TRANSACTION));
+
+		for (;;)
+		{
+			FirestoreTransactionCommand command;
+			{
+				std::unique_lock<std::mutex> lock(attempt->mutex);
+				attempt->wake.wait(lock, [&]
+				{
+					return attempt->finished || !attempt->commands.empty();
+				});
+				if (attempt->finished)
+				{
+					error_message = attempt->message;
+					return attempt->result;
+				}
+				command = std::move(attempt->commands.front());
+				attempt->commands.pop_front();
+			}
+#if defined(__cpp_exceptions)
+			try
+			{
+				command(transaction, *attempt);
+			}
+			catch (const std::exception& e)
+			{
+				finishFirestoreTransaction(*attempt, firebase::firestore::kErrorInvalidArgument, e.what());
+			}
+#else
+			command(transaction, *attempt);
+#endif
+		}
+	}
+
+	// Every attempt parked on `fs`, released so ~FirestoreInternal can join
+	// its transaction executor. Called on the GML thread before the delete.
+	void abortParkedFirestoreTransactions(firebase::firestore::Firestore* fs)
+	{
+		std::vector<std::shared_ptr<FirestoreTransactionAttempt>> parked;
+		{
+			std::lock_guard<std::mutex> lock(g_firebase_value_registry_mutex);
+			for (auto it = g_fs_transaction_map.begin(); it != g_fs_transaction_map.end();)
+			{
+				if (it->second->run->firestore == fs)
+				{
+					parked.push_back(it->second);
+					it = g_fs_transaction_map.erase(it);
+				}
+				else
+				{
+					++it;
+				}
+			}
+		}
+		for (const auto& attempt : parked)
+			finishFirestoreTransaction(*attempt, firebase::firestore::kErrorInvalidArgument, "the Firestore instance was terminated");
+	}
+}
+
+FirebaseError firebase_firestore_run_transaction(uint64_t instance_ref, double max_attempts, const std::optional<gm::wire::GMFunction>& update_callback, const std::optional<gm::wire::GMFunction>& callback)
+{
+	firebase::firestore::Firestore* fs = resolveFirestore(instance_ref);
+	if (fs == nullptr) return FirebaseError::InvalidHandle;
+	if (!update_callback.has_value())
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_run_transaction: update_callback is required");
+		return FirebaseError::InvalidArgument;
+	}
+	if (!(max_attempts >= 1))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_firestore_run_transaction: max_attempts must be at least 1");
+		return FirebaseError::InvalidArgument;
+	}
+
+	auto run = std::make_shared<FirestoreTransactionRun>();
+	run->firestore = fs;
+	firebase::firestore::TransactionOptions options;
+	options.set_max_attempts(max_attempts > INT32_MAX ? INT32_MAX : static_cast<int32_t>(max_attempts));
+	gm::wire::GMFunction update = *update_callback;
+
+	fs->RunTransaction(options, [run, update](firebase::firestore::Transaction& transaction, std::string& error_message) -> firebase::firestore::Error
+	{
+		return runFirestoreTransactionAttempt(run, update, transaction, error_message);
+	}).OnCompletion([run, callback](const firebase::Future<void>& f)
+	{
+		if (!callback.has_value()) return;
+		if (run->aborted_by_game && f.error() == firebase::firestore::kErrorInvalidArgument)
+			callback->call(static_cast<double>(firebase::firestore::kErrorAborted), futureErrorMessage(f));
+		else
+			completeFuture(callback, f);
+	});
+	return FirebaseError::Ok;
+}
+
+FirebaseError firebase_firestore_transaction_get(uint64_t transaction_ref, uint64_t document_ref, const std::optional<gm::wire::GMFunction>& callback)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return FirebaseError::InvalidHandle;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return FirebaseError::InvalidHandle;
+
+	postFirestoreTransactionCommand(*attempt, [doc, callback](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		firebase::firestore::Error error = firebase::firestore::kErrorOk;
+		std::string message;
+		firebase::firestore::DocumentSnapshot snapshot = transaction.Get(doc, &error, &message);
+		if (!callback.has_value()) return;
+		std::optional<uint64_t> snapshot_ref;
+		if (error == firebase::firestore::kErrorOk) snapshot_ref = registerFirestoreDocSnapshot(snapshot);
+		callback->call(static_cast<double>(error), message, snapshot_ref);
+	});
+	return FirebaseError::Ok;
+}
+
+bool firebase_firestore_transaction_set(uint64_t transaction_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	postFirestoreTransactionCommand(*attempt, [doc, fields = gmValueToMapFieldValue(data)](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Set(doc, fields);
+	});
+	return true;
+}
+
+bool firebase_firestore_transaction_set_merge(uint64_t transaction_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	postFirestoreTransactionCommand(*attempt, [doc, fields = gmValueToMapFieldValue(data)](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Set(doc, fields, firebase::firestore::SetOptions::Merge());
+	});
+	return true;
+}
+
+bool firebase_firestore_transaction_set_merge_fields(uint64_t transaction_ref, uint64_t document_ref, const gm::wire::GMValue& data, const std::vector<std::string_view>& fields)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	auto options = firebase::firestore::SetOptions::MergeFields(toStringVector(fields));
+	postFirestoreTransactionCommand(*attempt, [doc, values = gmValueToMapFieldValue(data), options](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Set(doc, values, options);
+	});
+	return true;
+}
+
+bool firebase_firestore_transaction_update(uint64_t transaction_ref, uint64_t document_ref, const gm::wire::GMValue& data)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	postFirestoreTransactionCommand(*attempt, [doc, fields = gmValueToMapFieldValue(data)](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Update(doc, fields);
+	});
+	return true;
+}
+
+bool firebase_firestore_transaction_delete(uint64_t transaction_ref, uint64_t document_ref)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	postFirestoreTransactionCommand(*attempt, [doc](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Delete(doc);
+	});
+	return true;
+}
+
+// The handle is gone the moment the game commits or aborts; the command
+// itself runs after every read and write posted before it.
+bool firebase_firestore_transaction_commit(uint64_t transaction_ref)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	unregisterFirebaseValue(gm_fb_ref_id(transaction_ref), g_fs_transaction_map);
+
+	postFirestoreTransactionCommand(*attempt, [](firebase::firestore::Transaction&, FirestoreTransactionAttempt& a)
+	{
+		finishFirestoreTransaction(a, firebase::firestore::kErrorOk, std::string());
+	});
+	return true;
+}
+
+bool firebase_firestore_transaction_abort(uint64_t transaction_ref, std::string_view error_message)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	unregisterFirebaseValue(gm_fb_ref_id(transaction_ref), g_fs_transaction_map);
+
+	postFirestoreTransactionCommand(*attempt, [message = std::string(error_message)](firebase::firestore::Transaction&, FirestoreTransactionAttempt& a)
+	{
+		a.run->aborted_by_game = true;
+		finishFirestoreTransaction(a, firebase::firestore::kErrorInvalidArgument, message);
+	});
+	return true;
 }
 
 // ============================================================
@@ -1816,15 +2127,32 @@ FirebaseError firebase_firestore_document_ref_set_merge_field_paths(uint64_t ref
 	return FirebaseError::Ok;
 }
 
-void firebase_firestore_write_batch_set_merge_field_paths(uint64_t batch_ref, uint64_t document_ref,
+bool firebase_firestore_write_batch_set_merge_field_paths(uint64_t batch_ref, uint64_t document_ref,
 	const gm::wire::GMValue& data, const std::vector<uint64_t>& field_paths)
 {
 	firebase::firestore::WriteBatch* batch = nullptr;
 	validate_fb_ref_map(batch_ref, GM_FB_TYPE_FIRESTORE_WRITE_BATCH, firebase::firestore::WriteBatch, g_fs_write_batch_map, batch);
 	firebase::firestore::DocumentReference* doc = nullptr;
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
-	if (!batch || !doc) return;
+	if (!batch || !doc) return false;
 	batch->Set(*doc, gmValueToMapFieldValue(data), firebase::firestore::SetOptions::MergeFieldPaths(toFieldPathVector(field_paths)));
+	return true;
+}
+
+bool firebase_firestore_transaction_set_merge_field_paths(uint64_t transaction_ref, uint64_t document_ref,
+	const gm::wire::GMValue& data, const std::vector<uint64_t>& field_paths)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	auto options = firebase::firestore::SetOptions::MergeFieldPaths(toFieldPathVector(field_paths));
+	postFirestoreTransactionCommand(*attempt, [doc, values = gmValueToMapFieldValue(data), options](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Set(doc, values, options);
+	});
+	return true;
 }
 
 // ============================================================
@@ -2038,6 +2366,20 @@ bool firebase_firestore_write_batch_update_field_paths(uint64_t batch_ref, uint6
 	validate_fb_ref_map(document_ref, GM_FB_TYPE_FIRESTORE_DOC_REF, firebase::firestore::DocumentReference, g_fs_doc_ref_map, doc);
 	if (!batch || !doc) return false;
 	batch->Update(*doc, gmToMapFieldPathValue(entries));
+	return true;
+}
+
+bool firebase_firestore_transaction_update_field_paths(uint64_t transaction_ref, uint64_t document_ref, const std::vector<gm_structs::FirestoreFieldPathValue>& entries)
+{
+	std::shared_ptr<FirestoreTransactionAttempt> attempt = resolveFirestoreTransaction(transaction_ref);
+	if (!attempt) return false;
+	firebase::firestore::DocumentReference doc;
+	if (!copyFirestoreDocumentRef(document_ref, doc)) return false;
+
+	postFirestoreTransactionCommand(*attempt, [doc, fields = gmToMapFieldPathValue(entries)](firebase::firestore::Transaction& transaction, FirestoreTransactionAttempt&)
+	{
+		transaction.Update(doc, fields);
+	});
 	return true;
 }
 

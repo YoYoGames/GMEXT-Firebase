@@ -319,6 +319,24 @@ static FirebaseError query_get_value(Query* q, const char* function, const std::
 	return FirebaseError::Ok;
 }
 
+namespace
+{
+	// Retired listener shells, reused by the next add. Only the GML thread
+	// adds and removes listeners, so the pools need no lock; the shells' own
+	// state is under g_db_listener_mutex (GMFirebase_database.h).
+	std::vector<GMFirebaseValueListener*> g_value_listener_pool;
+	std::vector<GMFirebaseChildListener*> g_child_listener_pool;
+
+	template <typename T>
+	T* takeListener(std::vector<T*>& pool)
+	{
+		if (pool.empty()) return new T();
+		T* listener = pool.back();
+		pool.pop_back();
+		return listener;
+	}
+}
+
 static uint64_t query_add_value_listener(Query* q,
 	const std::optional<gm::wire::GMFunction>& on_value_changed,
 	const std::optional<gm::wire::GMFunction>& on_cancelled)
@@ -331,9 +349,8 @@ static uint64_t query_add_value_listener(Query* q,
 		return 0;
 	}
 	if (q == nullptr) return 0;
-	GMFirebaseValueListener* listener = new GMFirebaseValueListener();
-	listener->on_value_changed = on_value_changed;
-	listener->on_cancelled = on_cancelled;
+	GMFirebaseValueListener* listener = takeListener(g_value_listener_pool);
+	listener->arm(*q, on_value_changed, on_cancelled);
 	q->AddValueListener(listener);
 	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_VALUE_LISTENER);
 }
@@ -344,17 +361,27 @@ static bool query_remove_value_listener(Query* q, uint64_t listener_ref)
 	GMFirebaseValueListener* listener = nullptr;
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER, GMFirebaseValueListener, listener);
 	if (listener == nullptr) return false;
+	if (!(listener->query == *q))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database remove_value_listener: the listener was not added on this query");
+		return false;
+	}
+	// The SDK removal first (on desktop that flags the registration and
+	// schedules the rest), the handle gone so GML cannot resolve it again,
+	// then retire - which waits for a callback already inside the listener and
+	// closes the door on the next - and only then the shell is up for reuse.
 	q->RemoveValueListener(listener);
-	listener = static_cast<GMFirebaseValueListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER));
-	delete listener;
+	unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_VALUE_LISTENER);
+	listener->retire();
+	g_value_listener_pool.push_back(listener);
 	return true;
 }
 
 static bool query_remove_all_value_listeners(Query* q)
 {
 	if (q == nullptr) return false;
-	// Does not (and cannot) delete the GMFirebaseValueListener heap instances
-	// this query's equivalents were registered with - GML must still call
+	// Does not retire the GMFirebaseValueListener shells this query's
+	// equivalents were registered with - GML must still call
 	// remove_value_listener on each ref it holds to free them.
 	q->RemoveAllValueListeners();
 	return true;
@@ -374,12 +401,8 @@ static uint64_t query_add_child_listener(Query* q,
 		return 0;
 	}
 	if (q == nullptr) return 0;
-	GMFirebaseChildListener* listener = new GMFirebaseChildListener();
-	listener->on_child_added = on_child_added;
-	listener->on_child_changed = on_child_changed;
-	listener->on_child_moved = on_child_moved;
-	listener->on_child_removed = on_child_removed;
-	listener->on_cancelled = on_cancelled;
+	GMFirebaseChildListener* listener = takeListener(g_child_listener_pool);
+	listener->arm(*q, on_child_added, on_child_changed, on_child_moved, on_child_removed, on_cancelled);
 	q->AddChildListener(listener);
 	return registerFirebasePointer(listener, GM_FB_TYPE_DATABASE_CHILD_LISTENER);
 }
@@ -390,9 +413,15 @@ static bool query_remove_child_listener(Query* q, uint64_t listener_ref)
 	GMFirebaseChildListener* listener = nullptr;
 	validate_fb_ref_ptr(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER, GMFirebaseChildListener, listener);
 	if (listener == nullptr) return false;
+	if (!(listener->query == *q))
+	{
+		setFirebaseLastError(GM_FB_ERROR_INVALID_ARGUMENT, "firebase_database remove_child_listener: the listener was not added on this query");
+		return false;
+	}
 	q->RemoveChildListener(listener);
-	listener = static_cast<GMFirebaseChildListener*>(unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER));
-	delete listener;
+	unregisterFirebasePointer(listener_ref, GM_FB_TYPE_DATABASE_CHILD_LISTENER);
+	listener->retire();
+	g_child_listener_pool.push_back(listener);
 	return true;
 }
 

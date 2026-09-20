@@ -584,11 +584,12 @@
  * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveValueListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removevaluelistener)
  *
  * This function stops a value listener added with ${function.firebase_database_query_add_value_listener}
- * and frees its handle. The callbacks are not called again after this returns.
+ * and frees its handle. No new events are delivered after this returns; an event already queued for
+ * the game's next step can still arrive.
  *
  * @param {Real} ref A reference or a query handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid or the listener was not added on this query.
  * @function_end
  */
 
@@ -698,11 +699,12 @@
  * @desc **Firebase C++ SDK:** [firebase::database::Query::RemoveChildListener](https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removechildlistener)
  *
  * This function stops a child listener added with ${function.firebase_database_query_add_child_listener}
- * and frees its handle. The callbacks are not called again after this returns.
+ * and frees its handle. No new events are delivered after this returns; an event already queued for
+ * the game's next step can still arrive.
  *
  * @param {Real} ref A reference or a query handle.
  * @param {Real} listener_ref The listener handle.
- * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid.
+ * @returns {Bool} `true` when the listener was removed, `false` when a handle is not valid or the listener was not added on this query.
  * @function_end
  */
 

@@ -4799,7 +4799,8 @@ kept because removing the listener needs it; a reference is accepted wherever a 
 <h1 id="firebase_database_query_remove_value_listener">firebase_database_query_remove_value_listener<a class="headerlink" href="#firebase_database_query_remove_value_listener" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removevaluelistener">firebase::database::Query::RemoveValueListener</a></p>
 <p>This function stops a value listener added with <a href="database.html#firebase_database_query_add_value_listener">firebase_database_query_add_value_listener</a>
-and frees its handle. The callbacks are not called again after this returns.</p>
+and frees its handle. No new events are delivered after this returns; an event already queued for
+the game's next step can still arrive.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -4831,7 +4832,7 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid or the listener was not added on this query.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>
@@ -5101,7 +5102,8 @@ are not needed and are passed as <code>undefined</code>.</p>
 <h1 id="firebase_database_query_remove_child_listener">firebase_database_query_remove_child_listener<a class="headerlink" href="#firebase_database_query_remove_child_listener" title="Permanent link">&para;</a></h1>
 <p><strong>Firebase C++ SDK:</strong> <a href="https://firebase.google.com/docs/reference/cpp/class/firebase/database/query#removechildlistener">firebase::database::Query::RemoveChildListener</a></p>
 <p>This function stops a child listener added with <a href="database.html#firebase_database_query_add_child_listener">firebase_database_query_add_child_listener</a>
-and frees its handle. The callbacks are not called again after this returns.</p>
+and frees its handle. No new events are delivered after this returns; an event already queued for
+the game's next step can still arrive.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
@@ -5133,7 +5135,7 @@ and frees its handle. The callbacks are not called again after this returns.</p>
 <blockquote>
 <p><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></p>
 </blockquote>
-<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid.</p>
+<p><code>true</code> when the listener was removed, <code>false</code> when a handle is not valid or the listener was not added on this query.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

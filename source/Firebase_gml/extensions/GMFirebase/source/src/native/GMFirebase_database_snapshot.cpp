@@ -3,6 +3,7 @@
 using firebase::database::DataSnapshot;
 using firebase::database::DatabaseReference;
 using firebase::database::Error;
+using firebase::database::Query;
 
 // ============================================================
 // Value-copy registry (DataSnapshot)
@@ -131,60 +132,135 @@ void firebase_database_snapshot_release(uint64_t ref)
 }
 
 // ============================================================
+// Listeners
+// ============================================================
+// Every virtual below fires on a Firebase-owned thread (the desktop worker,
+// a JNI thread, the iOS main queue). GMFunction::call() locks DispatchQueue's
+// mutex internally, so the call itself needs no queueing of our own; what
+// does need care is the listener's own state, because on desktop a removal
+// only flags the SDK registration and an event already dequeued can still
+// arrive (GMFirebase_database.h). liveSlot copies the slot out under the
+// listener lock and reads nothing on the listener afterwards, which is what
+// lets a retired shell be reused while such an event is still on its way in.
+
+std::mutex g_db_listener_mutex;
+
+static std::optional<gm::wire::GMFunction> liveSlot(const bool& alive, const std::optional<gm::wire::GMFunction>& slot)
+{
+	std::lock_guard<std::mutex> lock(g_db_listener_mutex);
+	if (!alive) return std::nullopt;
+	return slot;
+}
+
+// ============================================================
 // GMFirebaseValueListener
 // ============================================================
-// Both virtuals below can fire on a Firebase-owned background/run-loop
-// thread; GMFunction::call() is documented as thread-safe (it locks
-// DispatchQueue's mutex internally), so calling it directly here - with no
-// queueing of our own - matches every other listener in this extension.
+
+void GMFirebaseValueListener::arm(const Query& q, std::optional<gm::wire::GMFunction> value_changed, std::optional<gm::wire::GMFunction> cancelled)
+{
+	query = q;
+	std::lock_guard<std::mutex> lock(g_db_listener_mutex);
+	alive = true;
+	on_value_changed = std::move(value_changed);
+	on_cancelled = std::move(cancelled);
+}
+
+void GMFirebaseValueListener::retire()
+{
+	// The slots are moved out under the lock and destroyed after it, so the
+	// GML function ids are released - a dispatch-queue enqueue - outside it.
+	std::optional<gm::wire::GMFunction> value_changed;
+	std::optional<gm::wire::GMFunction> cancelled;
+	{
+		std::lock_guard<std::mutex> lock(g_db_listener_mutex);
+		alive = false;
+		value_changed.swap(on_value_changed);
+		cancelled.swap(on_cancelled);
+	}
+	query = Query();
+}
 
 void GMFirebaseValueListener::OnValueChanged(const DataSnapshot& snapshot)
 {
-	if (!on_value_changed) return;
-	uint64_t snapshot_ref = registerDatabaseSnapshot(snapshot);
-	on_value_changed->call(snapshot_ref);
+	auto callback = liveSlot(alive, on_value_changed);
+	if (!callback) return;
+	callback->call(registerDatabaseSnapshot(snapshot));
 }
 
 void GMFirebaseValueListener::OnCancelled(const Error& error, const char* error_message)
 {
-	if (!on_cancelled) return;
-	on_cancelled->call((double)error, std::string(error_message != nullptr ? error_message : ""));
+	auto callback = liveSlot(alive, on_cancelled);
+	if (!callback) return;
+	callback->call((double)error, std::string(error_message != nullptr ? error_message : ""));
 }
 
 // ============================================================
 // GMFirebaseChildListener
 // ============================================================
 
+void GMFirebaseChildListener::arm(const Query& q, std::optional<gm::wire::GMFunction> child_added, std::optional<gm::wire::GMFunction> child_changed,
+	std::optional<gm::wire::GMFunction> child_moved, std::optional<gm::wire::GMFunction> child_removed, std::optional<gm::wire::GMFunction> cancelled)
+{
+	query = q;
+	std::lock_guard<std::mutex> lock(g_db_listener_mutex);
+	alive = true;
+	on_child_added = std::move(child_added);
+	on_child_changed = std::move(child_changed);
+	on_child_moved = std::move(child_moved);
+	on_child_removed = std::move(child_removed);
+	on_cancelled = std::move(cancelled);
+}
+
+void GMFirebaseChildListener::retire()
+{
+	std::optional<gm::wire::GMFunction> child_added;
+	std::optional<gm::wire::GMFunction> child_changed;
+	std::optional<gm::wire::GMFunction> child_moved;
+	std::optional<gm::wire::GMFunction> child_removed;
+	std::optional<gm::wire::GMFunction> cancelled;
+	{
+		std::lock_guard<std::mutex> lock(g_db_listener_mutex);
+		alive = false;
+		child_added.swap(on_child_added);
+		child_changed.swap(on_child_changed);
+		child_moved.swap(on_child_moved);
+		child_removed.swap(on_child_removed);
+		cancelled.swap(on_cancelled);
+	}
+	query = Query();
+}
+
 void GMFirebaseChildListener::OnChildAdded(const DataSnapshot& snapshot, const char* previous_sibling_key)
 {
-	if (!on_child_added) return;
-	uint64_t snapshot_ref = registerDatabaseSnapshot(snapshot);
-	on_child_added->call(snapshot_ref, std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
+	auto callback = liveSlot(alive, on_child_added);
+	if (!callback) return;
+	callback->call(registerDatabaseSnapshot(snapshot), std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
 }
 
 void GMFirebaseChildListener::OnChildChanged(const DataSnapshot& snapshot, const char* previous_sibling_key)
 {
-	if (!on_child_changed) return;
-	uint64_t snapshot_ref = registerDatabaseSnapshot(snapshot);
-	on_child_changed->call(snapshot_ref, std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
+	auto callback = liveSlot(alive, on_child_changed);
+	if (!callback) return;
+	callback->call(registerDatabaseSnapshot(snapshot), std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
 }
 
 void GMFirebaseChildListener::OnChildMoved(const DataSnapshot& snapshot, const char* previous_sibling_key)
 {
-	if (!on_child_moved) return;
-	uint64_t snapshot_ref = registerDatabaseSnapshot(snapshot);
-	on_child_moved->call(snapshot_ref, std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
+	auto callback = liveSlot(alive, on_child_moved);
+	if (!callback) return;
+	callback->call(registerDatabaseSnapshot(snapshot), std::string(previous_sibling_key != nullptr ? previous_sibling_key : ""));
 }
 
 void GMFirebaseChildListener::OnChildRemoved(const DataSnapshot& snapshot)
 {
-	if (!on_child_removed) return;
-	uint64_t snapshot_ref = registerDatabaseSnapshot(snapshot);
-	on_child_removed->call(snapshot_ref);
+	auto callback = liveSlot(alive, on_child_removed);
+	if (!callback) return;
+	callback->call(registerDatabaseSnapshot(snapshot));
 }
 
 void GMFirebaseChildListener::OnCancelled(const Error& error, const char* error_message)
 {
-	if (!on_cancelled) return;
-	on_cancelled->call((double)error, std::string(error_message != nullptr ? error_message : ""));
+	auto callback = liveSlot(alive, on_cancelled);
+	if (!callback) return;
+	callback->call((double)error, std::string(error_message != nullptr ? error_message : ""));
 }

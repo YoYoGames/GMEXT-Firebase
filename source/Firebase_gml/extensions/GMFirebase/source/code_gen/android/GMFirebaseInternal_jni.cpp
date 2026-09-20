@@ -206,10 +206,16 @@ static jdouble __JNI_WRAPPER__firebase_analytics_set_analytics_collection_enable
     return static_cast<jdouble>(__ret);
 }
 
-// firebase_analytics_set_consent JNI wrapper signature: (DDDD)D
-static jdouble __JNI_WRAPPER__firebase_analytics_set_consent_40B844F37DDF(JNIEnv* /* env */, jclass /* GMFirebaseBridge */, jdouble ad_storage, jdouble analytics_storage, jdouble ad_user_data, jdouble ad_personalization)
+// firebase_analytics_set_consent JNI wrapper signature: (Ljava/nio/ByteBuffer;D)D
+static jdouble __JNI_WRAPPER__firebase_analytics_set_consent_B489A5489721(JNIEnv* env, jclass /* GMFirebaseBridge */, jobject __arg_buffer, jdouble __arg_buffer_length)
 {
-    double __ret = __EXT_NATIVE__firebase_analytics_set_consent(static_cast<double>(ad_storage), static_cast<double>(analytics_storage), static_cast<double>(ad_user_data), static_cast<double>(ad_personalization));
+    void* __arg_buffer_ptr = env->GetDirectBufferAddress(__arg_buffer);
+    jlong __arg_buffer_cap = env->GetDirectBufferCapacity(__arg_buffer);
+    if (!__arg_buffer_ptr || __arg_buffer_cap <= 0) {
+        throwIAE(env, "__arg_buffer must be a DIRECT ByteBuffer");
+        return 0.0;
+    }
+    double __ret = __EXT_NATIVE__firebase_analytics_set_consent((char *)__arg_buffer_ptr, static_cast<double>(__arg_buffer_length));
     return static_cast<jdouble>(__ret);
 }
 
@@ -9259,7 +9265,7 @@ extern "C" {
             { "__EXT_JNI__firebase_analytics_initialize", "()D", (void*)__JNI_WRAPPER__firebase_analytics_initialize_E34927795131 },
             { "__EXT_JNI__firebase_analytics_terminate", "()D", (void*)__JNI_WRAPPER__firebase_analytics_terminate_6ACE03CFA924 },
             { "__EXT_JNI__firebase_analytics_set_analytics_collection_enabled", "(D)D", (void*)__JNI_WRAPPER__firebase_analytics_set_analytics_collection_enabled_17FC5444D5B4 },
-            { "__EXT_JNI__firebase_analytics_set_consent", "(DDDD)D", (void*)__JNI_WRAPPER__firebase_analytics_set_consent_40B844F37DDF },
+            { "__EXT_JNI__firebase_analytics_set_consent", "(Ljava/nio/ByteBuffer;D)D", (void*)__JNI_WRAPPER__firebase_analytics_set_consent_B489A5489721 },
             { "__EXT_JNI__firebase_analytics_log_event", "(Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_analytics_log_event_E65BB54C7224 },
             { "__EXT_JNI__firebase_analytics_log_event_string", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)D", (void*)__JNI_WRAPPER__firebase_analytics_log_event_string_8D964F96B7EB },
             { "__EXT_JNI__firebase_analytics_log_event_number", "(Ljava/lang/String;Ljava/lang/String;D)D", (void*)__JNI_WRAPPER__firebase_analytics_log_event_number_CD66711ABE84 },

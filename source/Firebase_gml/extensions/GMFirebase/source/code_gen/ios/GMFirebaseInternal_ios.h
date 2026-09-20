@@ -11,7 +11,7 @@
 - (double)__EXT_NATIVE__firebase_analytics_initialize;
 - (double)__EXT_NATIVE__firebase_analytics_terminate;
 - (double)__EXT_NATIVE__firebase_analytics_set_analytics_collection_enabled:(double)enabled;
-- (double)__EXT_NATIVE__firebase_analytics_set_consent:(double)ad_storage arg1:(double)analytics_storage arg2:(double)ad_user_data arg3:(double)ad_personalization;
+- (double)__EXT_NATIVE__firebase_analytics_set_consent:(char*)__arg_buffer arg1:(double)__arg_buffer_length;
 - (double)__EXT_NATIVE__firebase_analytics_log_event:(char*)name;
 - (double)__EXT_NATIVE__firebase_analytics_log_event_string:(char*)name arg1:(char*)parameter_name arg2:(char*)parameter_value;
 - (double)__EXT_NATIVE__firebase_analytics_log_event_number:(char*)name arg1:(char*)parameter_name arg2:(double)parameter_value;

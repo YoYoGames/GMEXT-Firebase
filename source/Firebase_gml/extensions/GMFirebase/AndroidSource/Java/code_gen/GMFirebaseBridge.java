@@ -27,7 +27,7 @@ public final class GMFirebaseBridge {
     public static native double __EXT_JNI__firebase_analytics_initialize();
     public static native double __EXT_JNI__firebase_analytics_terminate();
     public static native double __EXT_JNI__firebase_analytics_set_analytics_collection_enabled(double enabled);
-    public static native double __EXT_JNI__firebase_analytics_set_consent(double ad_storage, double analytics_storage, double ad_user_data, double ad_personalization);
+    public static native double __EXT_JNI__firebase_analytics_set_consent(ByteBuffer __arg_buffer, double __arg_buffer_length);
     public static native double __EXT_JNI__firebase_analytics_log_event(String name);
     public static native double __EXT_JNI__firebase_analytics_log_event_string(String name, String parameter_name, String parameter_value);
     public static native double __EXT_JNI__firebase_analytics_log_event_number(String name, String parameter_name, double parameter_value);

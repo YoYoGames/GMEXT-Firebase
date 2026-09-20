@@ -44,9 +44,9 @@ public class GMFirebaseInternal extends RunnerSocial {
     {
         return __EXT_JNI__firebase_analytics_set_analytics_collection_enabled(enabled);
     }
-    public double __EXT_NATIVE__firebase_analytics_set_consent(double ad_storage, double analytics_storage, double ad_user_data, double ad_personalization)
+    public double __EXT_NATIVE__firebase_analytics_set_consent(ByteBuffer __arg_buffer, double __arg_buffer_length)
     {
-        return __EXT_JNI__firebase_analytics_set_consent(ad_storage, analytics_storage, ad_user_data, ad_personalization);
+        return __EXT_JNI__firebase_analytics_set_consent(__arg_buffer, __arg_buffer_length);
     }
     public double __EXT_NATIVE__firebase_analytics_log_event(String name)
     {

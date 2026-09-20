@@ -83,26 +83,26 @@ void firebase_analytics_set_analytics_collection_enabled(bool enabled)
 	firebase::analytics::SetAnalyticsCollectionEnabled(enabled);
 }
 
-// Mirrors the legacy FirebaseAnalytics_SetConsent(adsConsent, analyticsConsent,
-// adUserDataConsent, adPersonalizationConsent) contract exactly: four fixed
-// real (truthy >= 0.5) params, all four consent types always included in the
-// settings map with no "omit to leave unchanged" semantics.
-void firebase_analytics_set_consent(bool ad_storage, bool analytics_storage,
-	bool ad_user_data, bool ad_personalization)
+// A type passed as undefined is left out of the map and the SDK keeps its
+// previous status for it (analytics.h, ConsentType); an empty map is a call
+// that changes nothing, which the SDK accepts as such.
+void firebase_analytics_set_consent(std::optional<bool> ad_storage, std::optional<bool> analytics_storage,
+	std::optional<bool> ad_user_data, std::optional<bool> ad_personalization)
 {
 	if (!analyticsReady("firebase_analytics_set_consent")) return;
 	using firebase::analytics::ConsentType;
 	using firebase::analytics::ConsentStatus;
 
 	std::map<ConsentType, ConsentStatus> settings;
-	settings[firebase::analytics::kConsentTypeAdStorage] =
-		ad_storage ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
-	settings[firebase::analytics::kConsentTypeAnalyticsStorage] =
-		analytics_storage ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
-	settings[firebase::analytics::kConsentTypeAdUserData] =
-		ad_user_data ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
-	settings[firebase::analytics::kConsentTypeAdPersonalization] =
-		ad_personalization ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+	auto put = [&settings](ConsentType type, const std::optional<bool>& granted)
+	{
+		if (!granted.has_value()) return;
+		settings[type] = *granted ? firebase::analytics::kConsentStatusGranted : firebase::analytics::kConsentStatusDenied;
+	};
+	put(firebase::analytics::kConsentTypeAdStorage, ad_storage);
+	put(firebase::analytics::kConsentTypeAnalyticsStorage, analytics_storage);
+	put(firebase::analytics::kConsentTypeAdUserData, ad_user_data);
+	put(firebase::analytics::kConsentTypeAdPersonalization, ad_personalization);
 
 	firebase::analytics::SetConsent(settings);
 }

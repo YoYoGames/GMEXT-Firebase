@@ -75,12 +75,14 @@ function firebase_analytics_set_analytics_collection_enabled(
 	enabled: bool
 ): unit;
 
+// A consent type passed as undefined keeps its previous status - the SDK's map
+// contract; a call with all four undefined changes nothing.
 [global, bind = typed_gml]
 function firebase_analytics_set_consent(
-	ad_storage: bool,
-	analytics_storage: bool,
-	ad_user_data: bool,
-	ad_personalization: bool
+	[type_hint=`bool?`] ad_storage: gmval,
+	[type_hint=`bool?`] analytics_storage: gmval,
+	[type_hint=`bool?`] ad_user_data: gmval,
+	[type_hint=`bool?`] ad_personalization: gmval
 ): unit;
 
 [global, bind = typed_gml]

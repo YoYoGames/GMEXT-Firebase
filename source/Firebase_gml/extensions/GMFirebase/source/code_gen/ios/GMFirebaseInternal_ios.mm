@@ -120,9 +120,9 @@ static void GMInjectSelectorsIntoSubclass(Class subclass, Class base)
 {
     return __EXT_NATIVE__firebase_analytics_set_analytics_collection_enabled(enabled);
 }
-- (double)__EXT_NATIVE__firebase_analytics_set_consent:(double)ad_storage arg1:(double)analytics_storage arg2:(double)ad_user_data arg3:(double)ad_personalization
+- (double)__EXT_NATIVE__firebase_analytics_set_consent:(char*)__arg_buffer arg1:(double)__arg_buffer_length
 {
-    return __EXT_NATIVE__firebase_analytics_set_consent(ad_storage, analytics_storage, ad_user_data, ad_personalization);
+    return __EXT_NATIVE__firebase_analytics_set_consent(__arg_buffer, __arg_buffer_length);
 }
 - (double)__EXT_NATIVE__firebase_analytics_log_event:(char*)name
 {

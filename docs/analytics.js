@@ -81,16 +81,25 @@
  * which decide how Analytics and Google Ads may use the data this device sends: `ad_storage`
  * (advertising cookies and identifiers), `analytics_storage` (analytics identifiers, which also
  * decides whether the game's own measurement is tied to a device), `ad_user_data` (sending user
- * data to Google for advertising) and `ad_personalization` (personalised advertising). All four
- * are set on every call - there is no "leave unchanged" - and the settings are stored on the
- * device across launches. By default every type is granted. A game that shows no ads and only
+ * data to Google for advertising) and `ad_personalization` (personalised advertising). A type
+ * passed as `undefined` keeps whatever status it has, so one type can be changed without touching
+ * the others (a call with all four `undefined` changes nothing), and the settings are stored on
+ * the device across launches. By default every type is granted. A game that shows no ads and only
  * measures itself typically grants `analytics_storage` alone. On Windows, macOS and Linux the
  * call does nothing. It does nothing before ${function.firebase_analytics_initialize}.
  *
- * @param {Bool} ad_storage `true` to grant, `false` to deny storage for advertising.
- * @param {Bool} analytics_storage `true` to grant, `false` to deny storage for analytics.
- * @param {Bool} ad_user_data `true` to grant, `false` to deny sending user data for advertising.
- * @param {Bool} ad_personalization `true` to grant, `false` to deny personalised advertising.
+ * @param {Bool} [ad_storage] `true` to grant, `false` to deny storage for advertising, `undefined` to leave it unchanged.
+ * @param {Bool} [analytics_storage] `true` to grant, `false` to deny storage for analytics, `undefined` to leave it unchanged.
+ * @param {Bool} [ad_user_data] `true` to grant, `false` to deny sending user data for advertising, `undefined` to leave it unchanged.
+ * @param {Bool} [ad_personalization] `true` to grant, `false` to deny personalised advertising, `undefined` to leave it unchanged.
+ *
+ * @example
+ * ```gml
+ * // The "personalised ads" switch on the privacy options screen
+ * firebase_analytics_set_consent(undefined, undefined, undefined, _personalised_ads);
+ * ```
+ * The above code changes `ad_personalization` alone: the other three types keep the status the
+ * consent screen gave them.
  * @function_end
  */
 

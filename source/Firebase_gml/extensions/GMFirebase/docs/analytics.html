@@ -2161,15 +2161,16 @@ game's own measurement - and denies the advertising ones.</p>
 which decide how Analytics and Google Ads may use the data this device sends: <code>ad_storage</code>
 (advertising cookies and identifiers), <code>analytics_storage</code> (analytics identifiers, which also
 decides whether the game's own measurement is tied to a device), <code>ad_user_data</code> (sending user
-data to Google for advertising) and <code>ad_personalization</code> (personalised advertising). All four
-are set on every call - there is no "leave unchanged" - and the settings are stored on the
-device across launches. By default every type is granted. A game that shows no ads and only
+data to Google for advertising) and <code>ad_personalization</code> (personalised advertising). A type
+passed as <code>undefined</code> keeps whatever status it has, so one type can be changed without touching
+the others (a call with all four <code>undefined</code> changes nothing), and the settings are stored on
+the device across launches. By default every type is granted. A game that shows no ads and only
 measures itself typically grants <code>analytics_storage</code> alone. On Windows, macOS and Linux the
 call does nothing. It does nothing before <a href="analytics.html#firebase_analytics_initialize">firebase_analytics_initialize</a>.</p>
 <p><br></p>
 <p><strong>Syntax:</strong></p>
 <blockquote>
-<pre class="highlight"><code class="language-gml">firebase_analytics_set_consent(ad_storage, analytics_storage, ad_user_data, ad_personalization)</code></pre>
+<pre class="highlight"><code class="language-gml">firebase_analytics_set_consent(ad_storage=undefined, analytics_storage=undefined, ad_user_data=undefined, ad_personalization=undefined)</code></pre>
 </blockquote>
 <table>
 <thead>
@@ -2183,22 +2184,22 @@ call does nothing. It does nothing before <a href="analytics.html#firebase_analy
 <tr>
 <td>ad_storage</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
-<td><code>true</code> to grant, <code>false</code> to deny storage for advertising.</td>
+<td><code>true</code> to grant, <code>false</code> to deny storage for advertising, <code>undefined</code> to leave it unchanged.</td>
 </tr>
 <tr>
 <td>analytics_storage</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
-<td><code>true</code> to grant, <code>false</code> to deny storage for analytics.</td>
+<td><code>true</code> to grant, <code>false</code> to deny storage for analytics, <code>undefined</code> to leave it unchanged.</td>
 </tr>
 <tr>
 <td>ad_user_data</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
-<td><code>true</code> to grant, <code>false</code> to deny sending user data for advertising.</td>
+<td><code>true</code> to grant, <code>false</code> to deny sending user data for advertising, <code>undefined</code> to leave it unchanged.</td>
 </tr>
 <tr>
 <td>ad_personalization</td>
 <td><a href="https://manual.gamemaker.io/monthly/en/GameMaker_Language/GML_Overview/Data_Types.htm">Boolean</a></td>
-<td><code>true</code> to grant, <code>false</code> to deny personalised advertising.</td>
+<td><code>true</code> to grant, <code>false</code> to deny personalised advertising, <code>undefined</code> to leave it unchanged.</td>
 </tr>
 </tbody>
 </table>
@@ -2207,6 +2208,12 @@ call does nothing. It does nothing before <a href="analytics.html#firebase_analy
 <blockquote>
 <p>N/A</p>
 </blockquote>
+<p><br></p>
+<p><strong>Example:</strong></p>
+<p><pre class="highlight"><code class="language-gml">// The "personalised ads" switch on the privacy options screen
+firebase_analytics_set_consent(undefined, undefined, undefined, _personalised_ads);</code></pre>
+The above code changes <code>ad_personalization</code> alone: the other three types keep the status the
+consent screen gave them.</p>
 <p><br></p>
 <hr />
 <p align="right"><a href="#top">Back To Top</a></p>

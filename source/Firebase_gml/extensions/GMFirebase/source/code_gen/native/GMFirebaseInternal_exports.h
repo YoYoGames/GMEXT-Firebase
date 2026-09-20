@@ -17,7 +17,7 @@ GMEXPORT char* __EXT_NATIVE__firebase_last_error_message();
 GMEXPORT double __EXT_NATIVE__firebase_analytics_initialize();
 GMEXPORT double __EXT_NATIVE__firebase_analytics_terminate();
 GMEXPORT double __EXT_NATIVE__firebase_analytics_set_analytics_collection_enabled(double enabled);
-GMEXPORT double __EXT_NATIVE__firebase_analytics_set_consent(double ad_storage, double analytics_storage, double ad_user_data, double ad_personalization);
+GMEXPORT double __EXT_NATIVE__firebase_analytics_set_consent(char* __arg_buffer, double __arg_buffer_length);
 GMEXPORT double __EXT_NATIVE__firebase_analytics_log_event(char* name);
 GMEXPORT double __EXT_NATIVE__firebase_analytics_log_event_string(char* name, char* parameter_name, char* parameter_value);
 GMEXPORT double __EXT_NATIVE__firebase_analytics_log_event_number(char* name, char* parameter_name, double parameter_value);

@@ -80,9 +80,23 @@ GMEXPORT double __EXT_NATIVE__firebase_analytics_set_analytics_collection_enable
     return 0;
 }
 
-GMEXPORT double __EXT_NATIVE__firebase_analytics_set_consent(double ad_storage, double analytics_storage, double ad_user_data, double ad_personalization)
+GMEXPORT double __EXT_NATIVE__firebase_analytics_set_consent(char* __arg_buffer, double __arg_buffer_length)
 {
-    firebase_analytics_set_consent(static_cast<bool>(ad_storage), static_cast<bool>(analytics_storage), static_cast<bool>(ad_user_data), static_cast<bool>(ad_personalization));
+    gm::byteio::BufferReader __br{__arg_buffer, static_cast<size_t>(__arg_buffer_length)};
+
+    // field: ad_storage, type: optional<Bool>
+    std::optional<bool> ad_storage = gm::wire::codec::readOptional<bool>(__br);
+
+    // field: analytics_storage, type: optional<Bool>
+    std::optional<bool> analytics_storage = gm::wire::codec::readOptional<bool>(__br);
+
+    // field: ad_user_data, type: optional<Bool>
+    std::optional<bool> ad_user_data = gm::wire::codec::readOptional<bool>(__br);
+
+    // field: ad_personalization, type: optional<Bool>
+    std::optional<bool> ad_personalization = gm::wire::codec::readOptional<bool>(__br);
+
+    firebase_analytics_set_consent(ad_storage, analytics_storage, ad_user_data, ad_personalization);
     return 0;
 }
 

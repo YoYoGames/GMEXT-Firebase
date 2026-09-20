@@ -47,10 +47,10 @@
 
 /**
  * @function_partial firebase_analytics_set_consent
- * @param {Bool} ad_storage
- * @param {Bool} analytics_storage
- * @param {Bool} ad_user_data
- * @param {Bool} ad_personalization
+ * @param {Bool} [ad_storage]
+ * @param {Bool} [analytics_storage]
+ * @param {Bool} [ad_user_data]
+ * @param {Bool} [ad_personalization]
  * @function_end
  */
 

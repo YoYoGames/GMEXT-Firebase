@@ -153,20 +153,18 @@
         },
         {
           "$GMExtensionFunction": "",
-          "%Name": "firebase_analytics_set_consent",
-          "argCount": 4,
+          "%Name": "__firebase_analytics_set_consent",
+          "argCount": 2,
           "args": [
-            2,
-            2,
-            2,
+            1,
             2
           ],
-          "documentation": "@param {Real} ad_storage\r\n@param {Real} analytics_storage\r\n@param {Real} ad_user_data\r\n@param {Real} ad_personalization\r\n@returns {Real}",
+          "documentation": "@param {Pointer} _arg_buffer\r\n@param {Real} _arg_buffer_length\r\n@returns {Real}",
           "externalName": "__EXT_NATIVE__firebase_analytics_set_consent",
           "help": "",
-          "hidden": false,
+          "hidden": true,
           "kind": 4,
-          "name": "firebase_analytics_set_consent",
+          "name": "__firebase_analytics_set_consent",
           "resourceType": "GMExtensionFunction",
           "resourceVersion": "2.0",
           "returnType": 2

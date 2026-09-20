@@ -1475,7 +1475,7 @@ std::string firebase_last_error_message();
 bool firebase_analytics_initialize();
 void firebase_analytics_terminate();
 void firebase_analytics_set_analytics_collection_enabled(bool enabled);
-void firebase_analytics_set_consent(bool ad_storage, bool analytics_storage, bool ad_user_data, bool ad_personalization);
+void firebase_analytics_set_consent(std::optional<bool> ad_storage, std::optional<bool> analytics_storage, std::optional<bool> ad_user_data, std::optional<bool> ad_personalization);
 void firebase_analytics_log_event(std::string_view name);
 void firebase_analytics_log_event_string(std::string_view name, std::string_view parameter_name, std::string_view parameter_value);
 void firebase_analytics_log_event_number(std::string_view name, std::string_view parameter_name, double parameter_value);

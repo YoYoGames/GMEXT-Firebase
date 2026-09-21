@@ -11,27 +11,16 @@ if /I "%YYPLATFORM_name%"=="iOS" exit /b 0
 if /I "%YYPLATFORM_name%"=="tvOS" exit /b 0
 if /I "%YYPLATFORM_name%"=="HTML5" exit /b 0
 
-echo [FirebaseSetup] Copying desktop Firebase JSON beside the built executable.
+call %Utils% logInformation "Copying desktop Firebase JSON beside the built executable."
 
 call %Utils% optionGetValue "jsonFile" CREDENTIAL_FILE
-if not defined CREDENTIAL_FILE (
-    echo [FirebaseSetup] ERROR: Extension option 'jsonFile' is empty.
-    exit /b 1
-)
+if not defined CREDENTIAL_FILE call %Utils% logError "Extension option 'jsonFile' is empty."
 
 call %Utils% pathResolveExisting "%YYprojectDir%" "%CREDENTIAL_FILE%" FIREBASE_JSON_SOURCE
 if errorlevel 1 exit /b 1
 
-if not defined YYoutputFolder (
-    echo [FirebaseSetup] ERROR: GameMaker variable 'YYoutputFolder' is empty.
-    exit /b 1
-)
-
-if not exist "%YYoutputFolder%" (
-    echo [FirebaseSetup] ERROR: GameMaker output folder does not exist:
-    echo [FirebaseSetup]   %YYoutputFolder%
-    exit /b 1
-)
+if not defined YYoutputFolder call %Utils% logError "GameMaker variable 'YYoutputFolder' is empty."
+if not exist "%YYoutputFolder%" call %Utils% logError "GameMaker output folder does not exist: '%YYoutputFolder%'."
 
 :: For Linux exports, inject the Firebase JSON into the GameMaker package ZIP.
 :: Firebase C++ desktop searches the process current working directory, so the
@@ -69,6 +58,15 @@ set "GMF_PLATFORM=%YYPLATFORM_name%"
 :: output root. macOS YYC: there is no .app yet, this step runs before
 :: xcodebuild; the Xcode project's <Proj>/<Proj>/Supporting Files is what becomes
 :: <Game>.app/Contents/Resources, the directory getConfigSearchDir() reads.
+:: PowerShell copies and says nothing: it writes one report line per event
+:: (COPIED <path>, DLL <path>, NOEXE, NOMAC) to a temp file, and the loop below
+:: turns each into a scriptUtils log call, so the label and logLevel are the
+:: extension's own. The exit code is read before the report so a PowerShell
+:: that died half-way still fails the build after logging what it did copy.
+:: A missing executable is information, not a warning: a Windows Run has none
+:: in the output (the runner is the runtime's), and a Linux export from this
+:: host has its executable inside the package ZIP, already staged above.
+set "GMF_REPORT=%TEMP%\GMFirebase_post_build_%RANDOM%.txt"
 powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command ^
   "$ErrorActionPreference='Stop';" ^
   "$src=$env:GMF_SOURCE;" ^
@@ -82,18 +80,18 @@ powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command ^
   "  New-Item -ItemType Directory -Path $dir -Force | Out-Null;" ^
   "  $dst=Join-Path $dir 'google-services.json';" ^
   "  Copy-Item -LiteralPath $src -Destination $dst -Force;" ^
-  "  Write-Host ('[FirebaseSetup] Desktop Firebase config copied: ' + $dst);" ^
+  "  Write-Output ('COPIED ' + $dst);" ^
   "  if (-not [string]::IsNullOrWhiteSpace($dll)) {" ^
   "    $dlldst=Join-Path $dir 'google_analytics.dll';" ^
   "    Copy-Item -LiteralPath $dll -Destination $dlldst -Force;" ^
-  "    Write-Host ('[FirebaseSetup] Windows Analytics DLL copied: ' + $dlldst);" ^
+  "    Write-Output ('DLL ' + $dlldst);" ^
   "  }" ^
   "};" ^
   "if ($platform -match '^(macOS|Mac|MacOS|OSX)$') {" ^
   "  Get-ChildItem -LiteralPath $out -Directory -Recurse -Depth 2 -Filter 'Supporting Files' -ErrorAction SilentlyContinue | ForEach-Object {" ^
   "    Copy-GMFirebaseJson $_.FullName; $copied=$true" ^
   "  };" ^
-  "  if (-not $copied) { Write-Host '[FirebaseSetup] WARNING: No Xcode project (<Proj>/<Proj>/Supporting Files) or package ZIP (game.zip, <project>.zip) under YYoutputFolder; the Firebase config was not staged into the macOS bundle.' }" ^
+  "  if (-not $copied) { Write-Output 'NOMAC' }" ^
   "} else {" ^
   "  if (-not [string]::IsNullOrWhiteSpace($project)) {" ^
   "    Get-ChildItem -LiteralPath $out -File -Recurse -Filter ($project + '.exe') -ErrorAction SilentlyContinue | ForEach-Object {" ^
@@ -105,13 +103,21 @@ powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command ^
   "    if ($null -ne $exe) { Copy-GMFirebaseJson $exe.DirectoryName; $copied=$true }" ^
   "  }" ^
   "};" ^
-  "if (-not $copied) { Write-Host '[FirebaseSetup] Exact desktop executable was not found; using YYoutputFolder.' };" ^
-  "Copy-GMFirebaseJson $out;"
+  "if (-not $copied) { Write-Output 'NOEXE' };" ^
+  "Copy-GMFirebaseJson $out;" > "%GMF_REPORT%"
+set "GMF_PS_RESULT=%errorlevel%"
 
-if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to copy desktop Firebase config to the build output.
-    exit /b 1
+for /f "usebackq tokens=1,* delims= " %%A in ("%GMF_REPORT%") do (
+    if "%%A"=="COPIED" call %Utils% logInformation "Desktop Firebase config copied: '%%B'."
+    if "%%A"=="DLL" call %Utils% logInformation "Windows Analytics DLL copied: '%%B'."
+    if "%%A"=="NOEXE" call %Utils% logInformation "Exact desktop executable was not found; using YYoutputFolder."
+    if "%%A"=="NOMAC" call %Utils% logWarning "No Xcode project (<Proj>/<Proj>/Supporting Files) or package ZIP (game.zip, <project>.zip) under YYoutputFolder; the Firebase config was not staged into the macOS bundle."
 )
+del /F /Q "%GMF_REPORT%" 2>nul
+set "GMF_REPORT="
+
+if not "%GMF_PS_RESULT%"=="0" call %Utils% logError "Failed to copy desktop Firebase config to the build output."
+set "GMF_PS_RESULT="
 
 set "GMF_SOURCE="
 set "GMF_ANALYTICS_DLL="
@@ -129,7 +135,7 @@ exit /b 0
 :resolveWindowsAnalyticsDll
     call %Utils% optionGetValue "sdkPath" GMF_SDK_OPTION
     if not defined GMF_SDK_OPTION (
-        echo [FirebaseSetup] NOTE: Extension option 'sdkPath' is empty; google_analytics.dll not staged, Analytics runs as the stub on Windows.
+        call %Utils% logWarning "Extension option 'sdkPath' is empty; google_analytics.dll not staged, Analytics runs as the stub on Windows."
         exit /b 0
     )
 
@@ -139,15 +145,14 @@ exit /b 0
     set "GMF_DLL_CANDIDATE=%GMF_SDK_ROOT%\libs\windows\google_analytics.dll"
     set "GMF_SDK_ROOT="
     if not exist "%GMF_DLL_CANDIDATE%" (
-        echo [FirebaseSetup] NOTE: google_analytics.dll not found at %GMF_DLL_CANDIDATE%; Analytics runs as the stub on Windows ^(see README^).
+        call %Utils% logWarning "google_analytics.dll not found at '%GMF_DLL_CANDIDATE%'; Analytics runs as the stub on Windows (see README)."
         set "GMF_DLL_CANDIDATE="
         exit /b 0
     )
 
     set "GMF_ANALYTICS_DLL=%GMF_DLL_CANDIDATE%"
     set "GMF_DLL_CANDIDATE="
-    echo [FirebaseSetup] Windows Analytics DLL resolved:
-    echo [FirebaseSetup]   %GMF_ANALYTICS_DLL%
+    call %Utils% logInformation "Windows Analytics DLL resolved: '%GMF_ANALYTICS_DLL%'."
 exit /b 0
 
 :: ----------------------------------------------------------------------------------------------------
@@ -161,38 +166,27 @@ if not defined GMF_LINUX_PROJECT (
     )
 )
 
-if not defined GMF_LINUX_PROJECT (
-    echo [FirebaseSetup] ERROR: Unable to determine the GameMaker project name for Linux asset ZIP staging.
-    endlocal & exit /b 1
-)
+if not defined GMF_LINUX_PROJECT call %Utils% logError "Unable to determine the GameMaker project name for Linux asset ZIP staging."
 
 set "GMF_LINUX_ZIP=%YYoutputFolder%\!GMF_LINUX_PROJECT!.zip"
-if not exist "!GMF_LINUX_ZIP!" (
-    echo [FirebaseSetup] ERROR: GameMaker Linux asset ZIP does not exist:
-    echo [FirebaseSetup]   !GMF_LINUX_ZIP!
-    endlocal & exit /b 1
-)
+if not exist "!GMF_LINUX_ZIP!" call %Utils% logError "GameMaker Linux asset ZIP does not exist: '!GMF_LINUX_ZIP!'."
 
 set "GMF_LINUX_TEMP=%YYoutputFolder%\!GMF_LINUX_PROJECT!___firebase_temp___"
 if exist "!GMF_LINUX_TEMP!" rmdir /S /Q "!GMF_LINUX_TEMP!"
 mkdir "!GMF_LINUX_TEMP!\assets"
-if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to create temporary Linux package directory.
-    endlocal & exit /b 1
-)
+if errorlevel 1 call %Utils% logError "Failed to create the temporary Linux package directory '!GMF_LINUX_TEMP!'."
 
+:: logError leaves the script, so the temp folder is removed before the call.
 copy /Y "%FIREBASE_JSON_SOURCE%" "!GMF_LINUX_TEMP!\google-services.json" >nul
 if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to stage root google-services.json for Linux package ZIP.
     rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
-    endlocal & exit /b 1
+    call %Utils% logError "Failed to stage the root google-services.json for the Linux package ZIP."
 )
 
 copy /Y "%FIREBASE_JSON_SOURCE%" "!GMF_LINUX_TEMP!\assets\google-services.json" >nul
 if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to stage fallback assets/google-services.json for Linux package ZIP.
     rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
-    endlocal & exit /b 1
+    call %Utils% logError "Failed to stage the fallback assets/google-services.json for the Linux package ZIP."
 )
 
 pushd "%YYoutputFolder%" >nul
@@ -202,14 +196,9 @@ popd >nul
 
 rmdir /S /Q "!GMF_LINUX_TEMP!" 2>nul
 
-if not "!GMF_ZIP_RESULT!"=="0" (
-    echo [FirebaseSetup] ERROR: Failed to add Firebase JSON to Linux asset ZIP.
-    endlocal & exit /b !GMF_ZIP_RESULT!
-)
+if not "!GMF_ZIP_RESULT!"=="0" call %Utils% logError "Failed to add the Firebase JSON to the Linux asset ZIP '!GMF_LINUX_ZIP!' (zipUpdate exit !GMF_ZIP_RESULT!)."
 
-echo [FirebaseSetup] Linux Firebase config added to GameMaker package ZIP:
-echo [FirebaseSetup]   !GMF_LINUX_ZIP! -^> google-services.json
-echo [FirebaseSetup]   !GMF_LINUX_ZIP! -^> assets/google-services.json ^(fallback^)
+call %Utils% logInformation "Linux Firebase config added to GameMaker package ZIP '!GMF_LINUX_ZIP!': google-services.json at the root, assets/google-services.json as the fallback."
 
 endlocal & exit /b 0
 
@@ -247,16 +236,13 @@ set "GMF_MAC_ZIP=%YYoutputFolder%\%~1.zip"
 set "GMF_MAC_TEMP=%YYoutputFolder%\%~1___firebase_temp___"
 if exist "%GMF_MAC_TEMP%" rmdir /S /Q "%GMF_MAC_TEMP%"
 mkdir "%GMF_MAC_TEMP%\assets"
-if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to create temporary macOS package directory.
-    exit /b 1
-)
+if errorlevel 1 call %Utils% logError "Failed to create the temporary macOS package directory '%GMF_MAC_TEMP%'."
 
+:: logError leaves the script, so the temp folder is removed before the call.
 copy /Y "%FIREBASE_JSON_SOURCE%" "%GMF_MAC_TEMP%\assets\google-services.json" >nul
 if errorlevel 1 (
-    echo [FirebaseSetup] ERROR: Failed to stage assets/google-services.json for the macOS package ZIP.
     rmdir /S /Q "%GMF_MAC_TEMP%" 2>nul
-    exit /b 1
+    call %Utils% logError "Failed to stage assets/google-services.json for the macOS package ZIP."
 )
 
 pushd "%YYoutputFolder%" >nul
@@ -266,11 +252,7 @@ popd >nul
 
 rmdir /S /Q "%GMF_MAC_TEMP%" 2>nul
 
-if not "%GMF_MAC_ZIP_RESULT%"=="0" (
-    echo [FirebaseSetup] ERROR: Failed to add Firebase JSON to the macOS package ZIP.
-    exit /b 1
-)
+if not "%GMF_MAC_ZIP_RESULT%"=="0" call %Utils% logError "Failed to add the Firebase JSON to the macOS package ZIP '%GMF_MAC_ZIP%' (zipUpdate exit %GMF_MAC_ZIP_RESULT%)."
 
-echo [FirebaseSetup] Desktop Firebase config added to package ZIP:
-echo [FirebaseSetup]   %GMF_MAC_ZIP% -^> assets/google-services.json
+call %Utils% logInformation "Desktop Firebase config added to package ZIP '%GMF_MAC_ZIP%': assets/google-services.json."
 exit /b 0

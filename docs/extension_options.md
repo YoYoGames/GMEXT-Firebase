@@ -25,7 +25,7 @@ The three platform-SDK extensions have one option each.
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| **Log Level** | Dropdown (`0`/`1`/`2`) | `1` | How much the extension's own build steps print while staging the credentials and the SDK. Unrelated to the Firebase SDK's runtime log level, which is ${function.firebase_set_log_level}. |
+| **Log Level** | Dropdown (`0`/`1`/`2`) | `1` | How much the extension's own build steps print while staging the credentials and the SDK, as `[GMFIREBASE]` lines in the compiler output: `0` only the errors that stop the build, `1` also the warnings (a missing `google_analytics.dll`, for example), `2` every file resolved, staged and copied. Unrelated to the Firebase SDK's runtime log level, which is ${function.firebase_set_log_level}. |
 | **Disable data collection** | Bool | `false` | Ships the game with Analytics collection and the Cloud Messaging auto-init token fetch turned off, for consent flows. See below. |
 
 All three file and folder paths are resolved relative to the project folder, so the defaults point at

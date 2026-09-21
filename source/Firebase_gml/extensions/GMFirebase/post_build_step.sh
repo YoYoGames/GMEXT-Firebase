@@ -15,7 +15,7 @@ case "$YYPLATFORM_name" in
         ;;
 esac
 
-echo "[FirebaseSetup] Copying desktop Firebase JSON beside the built executable."
+logInformation "Copying desktop Firebase JSON beside the built executable."
 
 optionGetValue "jsonFile" CREDENTIAL_FILE
 if [ -z "$CREDENTIAL_FILE" ]; then
@@ -38,8 +38,7 @@ copyFirebaseJson() {
     mkdir -p "$destination_dir"
     cp -f "$FIREBASE_JSON_SOURCE" "$destination_dir/google-services.json"
 
-    echo "[FirebaseSetup] Desktop Firebase config copied:"
-    echo "[FirebaseSetup]   $destination_dir/google-services.json"
+    logInformation "Desktop Firebase config copied: '$destination_dir/google-services.json'."
 }
 
 packageLinuxFirebaseJson() {
@@ -67,9 +66,7 @@ packageLinuxFirebaseJson() {
     # copy as well for GameMaker asset/debug workflows.
     addFirebaseJsonToZip "$project_zip" 1
 
-    echo "[FirebaseSetup] Linux Firebase config added to GameMaker package ZIP:"
-    echo "[FirebaseSetup]   $project_zip -> google-services.json"
-    echo "[FirebaseSetup]   $project_zip -> assets/google-services.json (fallback)"
+    logInformation "Linux Firebase config added to GameMaker package ZIP '$project_zip': google-services.json at the root, assets/google-services.json as the fallback."
 }
 
 # Adds google-services.json to a GameMaker package ZIP under assets/, where the
@@ -140,8 +137,7 @@ case "$YYPLATFORM_name" in
         for package_zip in "${package_zips[@]}"; do
             [ -f "$package_zip" ] || continue
             addFirebaseJsonToZip "$package_zip" 0
-            echo "[FirebaseSetup] Desktop Firebase config added to package ZIP:"
-            echo "[FirebaseSetup]   $package_zip -> assets/google-services.json"
+            logInformation "Desktop Firebase config added to package ZIP '$package_zip': assets/google-services.json."
             COPIED_NEXT_TO_EXE=1
         done
 
@@ -169,9 +165,12 @@ case "$YYPLATFORM_name" in
 esac
 
 # Fallback, and also useful because Firebase desktop searches the process
-# working directory: keep a copy at GameMaker's compiled output root.
+# working directory: keep a copy at GameMaker's compiled output root. Not a
+# warning: a Run has no executable in the output (the runner is the runtime's),
+# on Linux it normally sits inside the package ZIP staged above, and the macOS
+# branch has already warned when nothing was found.
 if [ "$COPIED_NEXT_TO_EXE" -eq 0 ]; then
-    echo "[FirebaseSetup] Exact desktop executable was not found; using YYoutputFolder."
+    logInformation "Exact desktop executable was not found; using YYoutputFolder."
 fi
 
 copyFirebaseJson "$YYoutputFolder"

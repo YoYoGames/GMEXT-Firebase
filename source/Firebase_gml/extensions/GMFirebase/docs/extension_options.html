@@ -1269,7 +1269,7 @@ The three platform-SDK extensions have one option each.</p>
 <td><strong>Log Level</strong></td>
 <td>Dropdown (<code>0</code>/<code>1</code>/<code>2</code>)</td>
 <td><code>1</code></td>
-<td>How much the extension's own build steps print while staging the credentials and the SDK. Unrelated to the Firebase SDK's runtime log level, which is <a href="app.html#firebase_set_log_level">firebase_set_log_level</a>.</td>
+<td>How much the extension's own build steps print while staging the credentials and the SDK, as <code>[GMFIREBASE]</code> lines in the compiler output: <code>0</code> only the errors that stop the build, <code>1</code> also the warnings (a missing <code>google_analytics.dll</code>, for example), <code>2</code> every file resolved, staged and copied. Unrelated to the Firebase SDK's runtime log level, which is <a href="app.html#firebase_set_log_level">firebase_set_log_level</a>.</td>
 </tr>
 <tr>
 <td><strong>Disable data collection</strong></td>

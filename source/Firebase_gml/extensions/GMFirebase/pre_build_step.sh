@@ -9,12 +9,11 @@ chmod +x "$SCRIPT_DIR/scriptUtils.sh"
 source "$SCRIPT_DIR/scriptUtils.sh"
 
 setupAndroid() {
-    echo "[FirebaseSetup] Staging Android Firebase files from extension options."
+    logInformation "Staging Android Firebase files from extension options."
 
     optionGetValue "jsonFile" CREDENTIAL_FILE
     if [ -z "$CREDENTIAL_FILE" ]; then
         logError "Extension option 'jsonFile' is empty."
-        exit 1
     fi
 
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
@@ -24,42 +23,38 @@ setupAndroid() {
     optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
         logError "Extension option 'sdkPath' is empty."
-        exit 1
     fi
 
     pathResolveExisting "$YYprojectDir" "$FIREBASE_CPP_SDK_OPTION" FIREBASE_CPP_SDK
 
     if [ ! -f "$FIREBASE_CPP_SDK/include/firebase/app.h" ]; then
         logError "'$FIREBASE_CPP_SDK' is not a Firebase C++ SDK root. Expected '$FIREBASE_CPP_SDK/include/firebase/app.h'."
-        exit 1
     fi
 
     MESSAGING_AAR="$FIREBASE_CPP_SDK/libs/android/firebase_messaging_cpp.aar"
     if [ ! -f "$MESSAGING_AAR" ]; then
         logError "Firebase Messaging C++ AAR not found: '$MESSAGING_AAR'."
-        exit 1
     fi
 
     mkdir -p "$1/AndroidSource/libs-aar"
     cp -f "$MESSAGING_AAR" "$1/AndroidSource/libs-aar/firebase_messaging_cpp.aar"
 
-    echo "[FirebaseSetup] Android Firebase assets staged successfully."
+    logInformation "Android Firebase assets staged successfully."
 }
 
 setupiOS() {
-    echo "[FirebaseSetup] Staging iOS Firebase credentials from extension options."
+    logInformation "Staging iOS Firebase credentials from extension options."
 
     optionGetValue "plistFile" CREDENTIAL_FILE
     if [ -z "$CREDENTIAL_FILE" ]; then
         logError "Extension option 'plistFile' is empty."
-        exit 1
     fi
 
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
     mkdir -p "$1/iOSProjectFiles"
     cp -f "$FILE_PATH" "$1/iOSProjectFiles/GoogleService-Info.plist"
 
-    echo "[FirebaseSetup] iOS Firebase credentials staged successfully."
+    logInformation "iOS Firebase credentials staged successfully."
 
     # Stage the Firebase C++ SDK's prebuilt iOS xcframeworks into
     # iOSSourceFromMac as one .zip per module (matching each entry already
@@ -71,7 +66,6 @@ setupiOS() {
     optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
         logError "Extension option 'sdkPath' is empty."
-        exit 1
     fi
 
     pathResolveExisting "$YYprojectDir" "$FIREBASE_CPP_SDK_OPTION" FIREBASE_CPP_SDK
@@ -85,7 +79,6 @@ setupiOS() {
         XCFW="$FIREBASE_CPP_SDK/xcframeworks/$module.xcframework"
         if [ ! -d "$XCFW" ]; then
             logError "Firebase xcframework not found: '$XCFW'."
-            exit 1
         fi
 
         ZIP="$IOS_DIR/$module.zip"
@@ -94,11 +87,11 @@ setupiOS() {
         # file under the source xcframework (avoids re-zipping ~900MB of
         # SDK binaries on every build when nothing changed).
         if [ -f "$ZIP" ] && [ -z "$(find "$XCFW" -newer "$ZIP" -print -quit)" ]; then
-            echo "[FirebaseSetup] $module.zip is up to date, skipping."
+            logInformation "$module.zip is up to date, skipping."
             continue
         fi
 
-        echo "[FirebaseSetup] Staging iOS dependency: $XCFW -> $module.zip"
+        logInformation "Staging iOS dependency: '$XCFW' -> '$module.zip'."
         rm -f "$ZIP"
         # --keepParent keeps the top-level <module>.xcframework folder inside
         # the archive; --norsrc/--noextattr avoid AppleDouble "._" files that
@@ -108,16 +101,15 @@ setupiOS() {
         fi
     done
 
-    echo "[FirebaseSetup] iOS Firebase SDK xcframeworks staged successfully."
+    logInformation "iOS Firebase SDK xcframeworks staged successfully."
 }
 
 setupDesktop() {
-    echo "[FirebaseSetup] Validating desktop Firebase JSON from extension options."
+    logInformation "Validating desktop Firebase JSON from extension options."
 
     optionGetValue "jsonFile" CREDENTIAL_FILE
     if [ -z "$CREDENTIAL_FILE" ]; then
         logError "Extension option 'jsonFile' is empty. This option is required for Windows/macOS/Linux Firebase C++ builds."
-        exit 1
     fi
 
     pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FILE_PATH
@@ -125,7 +117,7 @@ setupDesktop() {
     # Do not copy into the GameMaker project's datafiles directory.
     # post_build_step.sh copies this file into the compiled desktop output,
     # beside the executable when one exists there.
-    echo "[FirebaseSetup] Desktop Firebase config resolved: $FILE_PATH"
+    logInformation "Desktop Firebase config resolved: '$FILE_PATH'."
 }
 
 scriptInit
@@ -148,7 +140,7 @@ case "$YYPLATFORM_name" in
         setupiOS "$SCRIPT_DIR"
         ;;
     tvOS|HTML5)
-        echo "[FirebaseSetup] $YYPLATFORM_name: no desktop Firebase JSON staging required."
+        logInformation "$YYPLATFORM_name: no desktop Firebase JSON staging required."
         ;;
     *)
         # Windows/macOS/Linux native targets land here. This intentionally avoids

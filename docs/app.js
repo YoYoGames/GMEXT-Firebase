@@ -10,7 +10,7 @@
  * `google-services.json` file that the `jsonFile` extension option stages into the build, on iOS the
  * `GoogleService-Info.plist` that the `plistFile` option adds to the bundle, and on Windows, macOS and
  * Linux a `google-services-desktop.json` or `google-services.json` placed beside the executable, which
- * the `desktopJsonFile` option copies there at build time. See ${page.extension_options}.
+ * the same `jsonFile` option copies there at build time. See ${page.extension_options}.
  *
  * If the function succeeds it returns `true`. If it fails it returns `false` and ${function.firebase_last_error_code}
  * is `FirebaseError.NotInitialized`, with ${function.firebase_last_error_message} saying why - typically

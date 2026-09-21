@@ -17,9 +17,9 @@ esac
 
 echo "[FirebaseSetup] Copying desktop Firebase JSON beside the built executable."
 
-optionGetValue "desktopJsonFile" CREDENTIAL_FILE
+optionGetValue "jsonFile" CREDENTIAL_FILE
 if [ -z "$CREDENTIAL_FILE" ]; then
-    logError "Extension option 'desktopJsonFile' is empty."
+    logError "Extension option 'jsonFile' is empty."
 fi
 
 pathResolveExisting "$YYprojectDir" "$CREDENTIAL_FILE" FIREBASE_JSON_SOURCE

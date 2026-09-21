@@ -7,7 +7,7 @@ gives you a credential file for it that the extension stages into the build. Thi
 registration; where the files go afterwards is on ${page.extension_options}.
 
 [[Note: Desktop builds need no registration of their own. Windows, macOS and Linux use the Android
-app's `google-services.json` through the **google-services (desktop json)** option, so register an
+app's `google-services.json` through the same **google-services.json** option, so register an
 Android app even if you only ship on desktop.]]
 
 # Android
@@ -46,7 +46,7 @@ This is done once per project and gives you the `google-services.json` for the *
    ![](assets/setupAndroidStep4.PNG)
 
 7. Put the file in a folder outside the project (the option's default is `../Firebase_private/`)
-   and point **google-services (json)** at it.
+   and point **google-services.json** at it.
 
 A release build signed with a different keystore needs that keystore's SHA-1 added to the app in the
 console too, or Firebase Authentication rejects it.
@@ -54,7 +54,7 @@ console too, or Firebase Authentication rejects it.
 # iOS
 
 This is done once per project and gives you the `GoogleService-Info.plist` for the
-**GoogleService-Info (plist)** option. For the iOS project itself, see the
+**GoogleService-Info.plist** option. For the iOS project itself, see the
 [GameMaker helpdesk article](https://help.gamemaker.io/hc/en-us/articles/115001368747-Setting-Up-For-iOS-Including-iPadOS).
 
 1. In the [Firebase console](https://console.firebase.google.com/), click the **Settings** icon next
@@ -80,7 +80,7 @@ This is done once per project and gives you the `GoogleService-Info.plist` for t
    ![](assets/setupiOSStep5.PNG)
 
 7. Put the file outside the project (the option's default is `../Firebase_private/`) and point
-   **GoogleService-Info (plist)** at it.
+   **GoogleService-Info.plist** at it.
 
 8. The Firebase pods are pulled in through CocoaPods, so the Mac that builds the game needs it set up
    as described in the

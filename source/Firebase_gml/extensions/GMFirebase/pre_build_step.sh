@@ -21,9 +21,9 @@ setupAndroid() {
     mkdir -p "$1/AndroidSource/ProjectFiles"
     cp -f "$FILE_PATH" "$1/AndroidSource/ProjectFiles/google-services.json"
 
-    optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
-        logError "Extension option 'firebaseCppSdkPath' is empty."
+        logError "Extension option 'sdkPath' is empty."
         exit 1
     fi
 
@@ -68,9 +68,9 @@ setupiOS() {
     # Files step. Each framework binary is a plain static archive (no
     # codesign involved), so no signature stripping is needed here -
     # ditto alone produces a build-ready zip.
-    optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if [ -z "$FIREBASE_CPP_SDK_OPTION" ]; then
-        logError "Extension option 'firebaseCppSdkPath' is empty."
+        logError "Extension option 'sdkPath' is empty."
         exit 1
     fi
 
@@ -114,9 +114,9 @@ setupiOS() {
 setupDesktop() {
     echo "[FirebaseSetup] Validating desktop Firebase JSON from extension options."
 
-    optionGetValue "desktopJsonFile" CREDENTIAL_FILE
+    optionGetValue "jsonFile" CREDENTIAL_FILE
     if [ -z "$CREDENTIAL_FILE" ]; then
-        logError "Extension option 'desktopJsonFile' is empty. This option is required for Windows/macOS/Linux Firebase C++ builds."
+        logError "Extension option 'jsonFile' is empty. This option is required for Windows/macOS/Linux Firebase C++ builds."
         exit 1
     fi
 

@@ -58,7 +58,7 @@
   "macsourcedir":"",
   "name":"GMFirebaseCrashlytics",
   "options":[
-    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with Crashlytics collection off until firebase_crashlytics_set_collection_enabled(true) is called (consent flows).","displayName":"","exportToINI":false,"extensionId":null,"guid":"05f03caf-1195-47ab-8049-2a79b619ba9e","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with Crashlytics collection off until firebase_crashlytics_set_collection_enabled(true) is called (consent flows).","displayName":"Disable data collection","exportToINI":false,"extensionId":null,"guid":"05f03caf-1195-47ab-8049-2a79b619ba9e","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",

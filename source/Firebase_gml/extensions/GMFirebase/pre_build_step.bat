@@ -62,9 +62,9 @@ exit /b %errorlevel%
         exit /b 1
     )
 
-    call %Utils% optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    call %Utils% optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if not defined FIREBASE_CPP_SDK_OPTION (
-        echo [FirebaseSetup] ERROR: Extension option 'firebaseCppSdkPath' is empty.
+        echo [FirebaseSetup] ERROR: Extension option 'sdkPath' is empty.
         exit /b 1
     )
 
@@ -122,9 +122,9 @@ exit /b 0
     :: Files step. Each framework binary is a plain static archive (no
     :: codesign involved), so Compress-Archive alone is enough - no macOS-only
     :: tooling is required here.
-    call %Utils% optionGetValue "firebaseCppSdkPath" FIREBASE_CPP_SDK_OPTION
+    call %Utils% optionGetValue "sdkPath" FIREBASE_CPP_SDK_OPTION
     if not defined FIREBASE_CPP_SDK_OPTION (
-        echo [FirebaseSetup] ERROR: Extension option 'firebaseCppSdkPath' is empty.
+        echo [FirebaseSetup] ERROR: Extension option 'sdkPath' is empty.
         exit /b 1
     )
 
@@ -192,9 +192,9 @@ exit /b 0
 :setupDesktop
     echo [FirebaseSetup] Validating desktop Firebase JSON from extension options.
 
-    call %Utils% optionGetValue "desktopJsonFile" CREDENTIAL_FILE
+    call %Utils% optionGetValue "jsonFile" CREDENTIAL_FILE
     if not defined CREDENTIAL_FILE (
-        echo [FirebaseSetup] ERROR: Extension option 'desktopJsonFile' is empty.
+        echo [FirebaseSetup] ERROR: Extension option 'jsonFile' is empty.
         echo [FirebaseSetup] This option is required for Windows/macOS/Linux Firebase C++ builds.
         exit /b 1
     )

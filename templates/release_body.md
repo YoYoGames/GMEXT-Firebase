@@ -3,9 +3,9 @@
 - This extension is compatible with GameMaker **2026.0.x.x** and future releases.
 - Requires the Firebase C++ SDK **13.13.0**: download
   [firebase_cpp_sdk_13.13.0.zip](https://dl.google.com/firebase/sdk/cpp/firebase_cpp_sdk_13.13.0.zip),
-  unpack it and point the `firebaseCppSdkPath` extension option at the unpacked folder. The game
-  build reads the Android proguard files and messaging AAR, the iOS xcframeworks and the Windows
-  Analytics DLL from it; the DLL is a separate download from the SDK repository, see the README.
+  unpack it and point the `sdkPath` extension option at the unpacked folder. The game
+  build reads the Android messaging AAR, the iOS xcframeworks and the Windows Analytics DLL
+  from it; the DLL is a separate download from the SDK repository, see the README.
 - Works with **Windows**, **macOS**, **Linux**, **Android** and **iOS**.
 - Crashlytics, Performance Monitoring and In-App Messaging are Android and iOS only. On Windows,
   macOS and Linux, Cloud Messaging, Installations and the User Messaging Platform are SDK stubs

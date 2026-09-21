@@ -17,7 +17,7 @@ cmake_minimum_required(VERSION 3.18)
 #     library, so nothing linked here is merged into it; Firebase reaches the
 #     app through the firebase*.xcframework entries GMFirebase.yy lists under
 #     iosThirdPartyFrameworkEntries, which pre_build_step stages from the
-#     firebaseCppSdkPath option. The matching Firebase Cocoapods supply the
+#     sdkPath option. The matching Firebase Cocoapods supply the
 #     underlying Objective-C SDK symbols.
 #   * The SDK version is pinned below (EXT_TP_FIREBASE_VERSION) and checked
 #     against the SDK's own version.h at configure time.
@@ -334,7 +334,7 @@ elseif(APPLE)
     # holds the extension's own objects and nothing from Firebase. The
     # firebase*.xcframework entries GMFirebase.yy lists under
     # iosThirdPartyFrameworkEntries are what link Firebase into the game;
-    # pre_build_step stages them from the firebaseCppSdkPath option and fails
+    # pre_build_step stages them from the sdkPath option and fails
     # when one is missing.
     message(STATUS
       "[third_party] Firebase iOS/tvOS: headers only; firebase*.xcframework is linked by the GameMaker project (see GMFirebase.yy iosThirdPartyFrameworkEntries)")

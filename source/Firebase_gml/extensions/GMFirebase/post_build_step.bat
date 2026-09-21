@@ -13,9 +13,9 @@ if /I "%YYPLATFORM_name%"=="HTML5" exit /b 0
 
 echo [FirebaseSetup] Copying desktop Firebase JSON beside the built executable.
 
-call %Utils% optionGetValue "desktopJsonFile" CREDENTIAL_FILE
+call %Utils% optionGetValue "jsonFile" CREDENTIAL_FILE
 if not defined CREDENTIAL_FILE (
-    echo [FirebaseSetup] ERROR: Extension option 'desktopJsonFile' is empty.
+    echo [FirebaseSetup] ERROR: Extension option 'jsonFile' is empty.
     exit /b 1
 )
 
@@ -122,14 +122,14 @@ set "GMF_PLATFORM="
 exit /b 0
 
 :: ----------------------------------------------------------------------------------------------------
-:: Sets GMF_ANALYTICS_DLL to <firebaseCppSdkPath>\libs\windows\google_analytics.dll when
+:: Sets GMF_ANALYTICS_DLL to <sdkPath>\libs\windows\google_analytics.dll when
 :: that file exists, and leaves it empty otherwise. pathResolve rather than
 :: pathResolveExisting on purpose: a missing SDK root or DLL is a note here, not a
 :: failed build - Analytics simply runs as the SDK's stub.
 :resolveWindowsAnalyticsDll
-    call %Utils% optionGetValue "firebaseCppSdkPath" GMF_SDK_OPTION
+    call %Utils% optionGetValue "sdkPath" GMF_SDK_OPTION
     if not defined GMF_SDK_OPTION (
-        echo [FirebaseSetup] NOTE: Extension option 'firebaseCppSdkPath' is empty; google_analytics.dll not staged, Analytics runs as the stub on Windows.
+        echo [FirebaseSetup] NOTE: Extension option 'sdkPath' is empty; google_analytics.dll not staged, Analytics runs as the stub on Windows.
         exit /b 0
     )
 

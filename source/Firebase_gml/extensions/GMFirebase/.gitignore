@@ -5,7 +5,7 @@
 # whole folder into the .yymps (no dotfile filter), so the rules travel with the
 # extension into every game project that imports it. The staged copies are the
 # developer's own credentials and SDK binaries, resolved from the extension
-# options (jsonFile, plistFile, firebaseCppSdkPath); pre_build_step clears and
+# options (jsonFile, plistFile, sdkPath); pre_build_step clears and
 # re-stages them on every build, so nothing here is ever the source of truth.
 #
 # The extension's own compiled iOS archive, iOSSourceFromMac/GMFirebase.zip, is
@@ -17,7 +17,7 @@
 /AndroidSource/ProjectFiles/
 /iOSProjectFiles/
 
-# Firebase C++ SDK pieces staged from firebaseCppSdkPath
+# Firebase C++ SDK pieces staged from sdkPath
 /AndroidSource/libs-aar/
 /iOSSourceFromMac/firebase.zip
 /iOSSourceFromMac/firebase_*.zip

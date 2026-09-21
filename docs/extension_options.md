@@ -8,33 +8,27 @@ The three platform-SDK extensions have one option each.
 
 ## GMFirebase
 
-### Android Options
+### SDK Path
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| **google-services (json)** | File | `../Firebase_private/google-services.json` | The `google-services.json` downloaded from the Firebase console for your Android app (${page.platform_setup}). The build step copies it into the Android project, where the `google-services` Gradle plugin reads it. Required for every Android build. |
+| **Firebase C++ SDK path** | Folder | `../Firebase_sdk` | The root of an unpacked Firebase C++ SDK - the version the extension was built against, which ${function.firebase_get_sdk_version} reports and the README names. One root serves every target: the Android build reads `firebase_messaging_cpp.aar` from `libs/android/` (the SDK's ProGuard rules are built into the extension and injected into the Android project, so nothing else is read from it there); the iOS build stages the frameworks from `xcframeworks/`; the Windows build copies `libs/windows/google_analytics.dll` beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of ${module.analytics}). macOS and Linux builds link the SDK statically and stage nothing from it. |
 
-### iOS Options
+### Credentials
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| **GoogleService-Info (plist)** | File | `../Firebase_private/GoogleService-Info.plist` | The `GoogleService-Info.plist` downloaded from the Firebase console for your iOS app. The build step copies it into the Xcode project's resources. Required for every iOS build. |
+| **google-services.json** | File | `../Firebase_private/google-services.json` | The `google-services.json` downloaded from the Firebase console for your Android app (${page.platform_setup}). On Android the build step copies it into the Android project, where the `google-services` Gradle plugin reads it. On Windows, macOS and Linux the same file is the Firebase configuration: the build step copies it beside the executable (into the app bundle's resources on macOS), which is where ${function.firebase_app_initialize} looks for it. Required for every build except iOS. |
+| **GoogleService-Info.plist** | File | `../Firebase_private/GoogleService-Info.plist` | The `GoogleService-Info.plist` downloaded from the Firebase console for your iOS app. The build step copies it into the Xcode project's resources. Required for every iOS build. |
 
 ### Extra Options
 
 | Option | Type | Default | Description |
 |---|---|---|---|
 | **Log Level** | Dropdown (`0`/`1`/`2`) | `1` | How much the extension's own build steps print while staging the credentials and the SDK. Unrelated to the Firebase SDK's runtime log level, which is ${function.firebase_set_log_level}. |
-| **disableDataCollection** | Bool | `false` | Ships the game with Analytics collection and the Cloud Messaging auto-init token fetch turned off, for consent flows. See below. |
+| **Disable data collection** | Bool | `false` | Ships the game with Analytics collection and the Cloud Messaging auto-init token fetch turned off, for consent flows. See below. |
 
-### CPP SDK
-
-| Option | Type | Default | Description |
-|---|---|---|---|
-| **Firebase C++ SDK path** | Folder | `../Firebase_sdk` | The root of an unpacked Firebase C++ SDK - the version the extension was built against, which ${function.firebase_get_sdk_version} reports and the README names. The Android build reads the SDK's ProGuard rules and its `firebase_messaging_cpp.aar` from `libs/android/`; the iOS build stages the frameworks from `xcframeworks/`; the Windows build copies `libs/windows/google_analytics.dll` beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of ${module.analytics}). macOS and Linux builds do not read it. |
-| **google-services (desktop json)** | File | `../Firebase_private/google-services.json` | The Firebase configuration for Windows, macOS and Linux builds - the Android `google-services.json` does the job. The build step copies it beside the executable (into the app bundle's resources on macOS), which is where ${function.firebase_app_initialize} looks for it on desktop. |
-
-All four file and folder paths are resolved relative to the project folder, so the defaults point at
+All three file and folder paths are resolved relative to the project folder, so the defaults point at
 two folders that sit next to it: `Firebase_private` for the credential files and `Firebase_sdk` for
 the SDK.
 
@@ -63,7 +57,7 @@ consent screen only needs to make the call once.
 
 | Option | Type | Default | Description |
 |---|---|---|---|
-| **disableDataCollection** | Bool | `false` | The product's opt-out, as in the table above. |
+| **Disable data collection** | Bool | `false` | The product's opt-out, as in the table above. |
 
 These three extensions have no credential options of their own: they rely on GMFirebase being in the
 same project, which supplies the Firebase dependencies, the `google-services` plugin and the

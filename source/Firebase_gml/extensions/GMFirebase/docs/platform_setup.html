@@ -1045,7 +1045,7 @@ registration; where the files go afterwards is on <a href="extension_options.htm
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Desktop builds need no registration of their own. Windows, macOS and Linux use the Android
-app's <code>google-services.json</code> through the <strong>google-services (desktop json)</strong> option, so register an
+app's <code>google-services.json</code> through the same <strong>google-services.json</strong> option, so register an
 Android app even if you only ship on desktop.</p>
 </div>
 <h1 id="android">Android<a class="headerlink" href="#android" title="Permanent link">&para;</a></h1>
@@ -1091,14 +1091,14 @@ Android app even if you only ship on desktop.</p>
 </li>
 <li>
 <p>Put the file in a folder outside the project (the option's default is <code>../Firebase_private/</code>)
-   and point <strong>google-services (json)</strong> at it.</p>
+   and point <strong>google-services.json</strong> at it.</p>
 </li>
 </ol>
 <p>A release build signed with a different keystore needs that keystore's SHA-1 added to the app in the
 console too, or Firebase Authentication rejects it.</p>
 <h1 id="ios">iOS<a class="headerlink" href="#ios" title="Permanent link">&para;</a></h1>
 <p>This is done once per project and gives you the <code>GoogleService-Info.plist</code> for the
-<strong>GoogleService-Info (plist)</strong> option. For the iOS project itself, see the
+<strong>GoogleService-Info.plist</strong> option. For the iOS project itself, see the
 <a href="https://help.gamemaker.io/hc/en-us/articles/115001368747-Setting-Up-For-iOS-Including-iPadOS">GameMaker helpdesk article</a>.</p>
 <ol>
 <li>
@@ -1131,7 +1131,7 @@ console too, or Firebase Authentication rejects it.</p>
 </li>
 <li>
 <p>Put the file outside the project (the option's default is <code>../Firebase_private/</code>) and point
-   <strong>GoogleService-Info (plist)</strong> at it.</p>
+   <strong>GoogleService-Info.plist</strong> at it.</p>
 </li>
 <li>
 <p>The Firebase pods are pulled in through CocoaPods, so the Mac that builds the game needs it set up

@@ -354,10 +354,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#android-options" class="md-nav__link">
+  <a href="#sdk-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Android Options
+        SDK Path
       
     </span>
   </a>
@@ -365,10 +365,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ios-options" class="md-nav__link">
+  <a href="#credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iOS Options
+        Credentials
       
     </span>
   </a>
@@ -380,17 +380,6 @@
     <span class="md-ellipsis">
       
         Extra Options
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cpp-sdk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CPP SDK
       
     </span>
   </a>
@@ -1132,10 +1121,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#android-options" class="md-nav__link">
+  <a href="#sdk-path" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Android Options
+        SDK Path
       
     </span>
   </a>
@@ -1143,10 +1132,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ios-options" class="md-nav__link">
+  <a href="#credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iOS Options
+        Credentials
       
     </span>
   </a>
@@ -1158,17 +1147,6 @@
     <span class="md-ellipsis">
       
         Extra Options
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cpp-sdk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CPP SDK
       
     </span>
   </a>
@@ -1232,7 +1210,7 @@
 extension window. <strong>GMFirebase</strong> carries the credentials and the build settings every project needs.
 The three platform-SDK extensions have one option each.</p>
 <h2 id="gmfirebase">GMFirebase<a class="headerlink" href="#gmfirebase" title="Permanent link">&para;</a></h2>
-<h3 id="android-options">Android Options<a class="headerlink" href="#android-options" title="Permanent link">&para;</a></h3>
+<h3 id="sdk-path">SDK Path<a class="headerlink" href="#sdk-path" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1244,14 +1222,14 @@ The three platform-SDK extensions have one option each.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>google-services (json)</strong></td>
-<td>File</td>
-<td><code>../Firebase_private/google-services.json</code></td>
-<td>The <code>google-services.json</code> downloaded from the Firebase console for your Android app (<a href="platform_setup.html">Platform Setup</a>). The build step copies it into the Android project, where the <code>google-services</code> Gradle plugin reads it. Required for every Android build.</td>
+<td><strong>Firebase C++ SDK path</strong></td>
+<td>Folder</td>
+<td><code>../Firebase_sdk</code></td>
+<td>The root of an unpacked Firebase C++ SDK - the version the extension was built against, which <a href="app.html#firebase_get_sdk_version">firebase_get_sdk_version</a> reports and the README names. One root serves every target: the Android build reads <code>firebase_messaging_cpp.aar</code> from <code>libs/android/</code> (the SDK's ProGuard rules are built into the extension and injected into the Android project, so nothing else is read from it there); the iOS build stages the frameworks from <code>xcframeworks/</code>; the Windows build copies <code>libs/windows/google_analytics.dll</code> beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of <a href="analytics.html">Analytics</a>). macOS and Linux builds link the SDK statically and stage nothing from it.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="ios-options">iOS Options<a class="headerlink" href="#ios-options" title="Permanent link">&para;</a></h3>
+<h3 id="credentials">Credentials<a class="headerlink" href="#credentials" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1263,7 +1241,13 @@ The three platform-SDK extensions have one option each.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>GoogleService-Info (plist)</strong></td>
+<td><strong>google-services.json</strong></td>
+<td>File</td>
+<td><code>../Firebase_private/google-services.json</code></td>
+<td>The <code>google-services.json</code> downloaded from the Firebase console for your Android app (<a href="platform_setup.html">Platform Setup</a>). On Android the build step copies it into the Android project, where the <code>google-services</code> Gradle plugin reads it. On Windows, macOS and Linux the same file is the Firebase configuration: the build step copies it beside the executable (into the app bundle's resources on macOS), which is where <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> looks for it. Required for every build except iOS.</td>
+</tr>
+<tr>
+<td><strong>GoogleService-Info.plist</strong></td>
 <td>File</td>
 <td><code>../Firebase_private/GoogleService-Info.plist</code></td>
 <td>The <code>GoogleService-Info.plist</code> downloaded from the Firebase console for your iOS app. The build step copies it into the Xcode project's resources. Required for every iOS build.</td>
@@ -1288,39 +1272,14 @@ The three platform-SDK extensions have one option each.</p>
 <td>How much the extension's own build steps print while staging the credentials and the SDK. Unrelated to the Firebase SDK's runtime log level, which is <a href="app.html#firebase_set_log_level">firebase_set_log_level</a>.</td>
 </tr>
 <tr>
-<td><strong>disableDataCollection</strong></td>
+<td><strong>Disable data collection</strong></td>
 <td>Bool</td>
 <td><code>false</code></td>
 <td>Ships the game with Analytics collection and the Cloud Messaging auto-init token fetch turned off, for consent flows. See below.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="cpp-sdk">CPP SDK<a class="headerlink" href="#cpp-sdk" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Firebase C++ SDK path</strong></td>
-<td>Folder</td>
-<td><code>../Firebase_sdk</code></td>
-<td>The root of an unpacked Firebase C++ SDK - the version the extension was built against, which <a href="app.html#firebase_get_sdk_version">firebase_get_sdk_version</a> reports and the README names. The Android build reads the SDK's ProGuard rules and its <code>firebase_messaging_cpp.aar</code> from <code>libs/android/</code>; the iOS build stages the frameworks from <code>xcframeworks/</code>; the Windows build copies <code>libs/windows/google_analytics.dll</code> beside the executable when it is there (a file the SDK zip does not carry - see the README and the Platforms section of <a href="analytics.html">Analytics</a>). macOS and Linux builds do not read it.</td>
-</tr>
-<tr>
-<td><strong>google-services (desktop json)</strong></td>
-<td>File</td>
-<td><code>../Firebase_private/google-services.json</code></td>
-<td>The Firebase configuration for Windows, macOS and Linux builds - the Android <code>google-services.json</code> does the job. The build step copies it beside the executable (into the app bundle's resources on macOS), which is where <a href="app.html#firebase_app_initialize">firebase_app_initialize</a> looks for it on desktop.</td>
-</tr>
-</tbody>
-</table>
-<p>All four file and folder paths are resolved relative to the project folder, so the defaults point at
+<p>All three file and folder paths are resolved relative to the project folder, so the defaults point at
 two folders that sit next to it: <code>Firebase_private</code> for the credential files and <code>Firebase_sdk</code> for
 the SDK.</p>
 <div class="admonition warning">
@@ -1379,7 +1338,7 @@ consent screen only needs to make the call once.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>disableDataCollection</strong></td>
+<td><strong>Disable data collection</strong></td>
 <td>Bool</td>
 <td><code>false</code></td>
 <td>The product's opt-out, as in the table above.</td>

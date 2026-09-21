@@ -55,7 +55,7 @@
   "macsourcedir":"",
   "name":"GMFirebaseInAppMessaging",
   "options":[
-    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with In-App Messaging automatic data collection off until firebase_in_app_messaging_set_automatic_data_collection_enabled(true) is called (consent flows).","displayName":"","exportToINI":false,"extensionId":null,"guid":"5b6a324e-f61f-42b0-ad3d-d1033aa09905","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
+    {"$GMExtensionOption":"","%Name":"disableDataCollection","defaultValue":"False","description":"Ship with In-App Messaging automatic data collection off until firebase_in_app_messaging_set_automatic_data_collection_enabled(true) is called (consent flows).","displayName":"Disable data collection","exportToINI":false,"extensionId":null,"guid":"5b6a324e-f61f-42b0-ad3d-d1033aa09905","hidden":false,"listItems":[],"name":"disableDataCollection","optType":0,"resourceType":"GMExtensionOption","resourceVersion":"2.0",},
   ],
   "optionsFile":"options.json",
   "packageId":"",
